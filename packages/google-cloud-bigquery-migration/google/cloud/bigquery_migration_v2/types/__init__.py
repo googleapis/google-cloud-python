@@ -13,7 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .migration_entities import MigrationSubtask, MigrationTask, MigrationWorkflow
+from .migration_entities import (
+    MigrationSubtask,
+    MigrationTask,
+    MigrationTaskResult,
+    MigrationWorkflow,
+    TranslationTaskResult,
+)
 from .migration_error_details import ErrorDetail, ErrorLocation, ResourceErrorDetail
 from .migration_metrics import Point, TimeInterval, TimeSeries, TypedValue
 from .migration_service import (
@@ -30,7 +36,9 @@ from .migration_service import (
 from .translation_config import (
     AzureSynapseDialect,
     BigQueryDialect,
+    DB2Dialect,
     Dialect,
+    GreenplumDialect,
     HiveQLDialect,
     MySQLDialect,
     NameMappingKey,
@@ -45,16 +53,29 @@ from .translation_config import (
     SnowflakeDialect,
     SourceEnv,
     SparkSQLDialect,
+    SQLiteDialect,
     SQLServerDialect,
     TeradataDialect,
     TranslationConfigDetails,
     VerticaDialect,
 )
+from .translation_details import (
+    Literal,
+    SourceEnvironment,
+    SourceSpec,
+    SourceTargetMapping,
+    TargetSpec,
+    TranslationDetails,
+)
+from .translation_suggestion import TranslationReportRecord
+from .translation_usability import GcsReportLogMessage
 
 __all__ = (
     "MigrationSubtask",
     "MigrationTask",
+    "MigrationTaskResult",
     "MigrationWorkflow",
+    "TranslationTaskResult",
     "ErrorDetail",
     "ErrorLocation",
     "ResourceErrorDetail",
@@ -73,7 +94,9 @@ __all__ = (
     "StartMigrationWorkflowRequest",
     "AzureSynapseDialect",
     "BigQueryDialect",
+    "DB2Dialect",
     "Dialect",
+    "GreenplumDialect",
     "HiveQLDialect",
     "MySQLDialect",
     "NameMappingKey",
@@ -88,8 +111,17 @@ __all__ = (
     "SnowflakeDialect",
     "SourceEnv",
     "SparkSQLDialect",
+    "SQLiteDialect",
     "SQLServerDialect",
     "TeradataDialect",
     "TranslationConfigDetails",
     "VerticaDialect",
+    "Literal",
+    "SourceEnvironment",
+    "SourceSpec",
+    "SourceTargetMapping",
+    "TargetSpec",
+    "TranslationDetails",
+    "TranslationReportRecord",
+    "GcsReportLogMessage",
 )
