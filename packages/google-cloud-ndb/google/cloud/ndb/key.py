@@ -1408,7 +1408,7 @@ def _parse_from_args(
         ~.datastore.Key: The constructed key.
 
     Raises:
-        .BadValueError: If ``parent`` is passed but is not a ``Key``.
+        exceptions.BadValueError: If ``parent`` is passed but is not a ``Key``.
     """
     # Avoid circular import in Python 2.7
     from google.cloud.ndb import context as context_module
@@ -1514,7 +1514,7 @@ def _clean_flat_path(flat):
 
     Raises:
         TypeError: If the kind in a pair is an invalid type.
-        .BadArgumentError: If a key ID is :data:`None` (indicating a partial
+        exceptions.BadArgumentError: If a key ID is :data:`None` (indicating a partial
            key), but in a pair other than the last one.
         TypeError: If a key ID is not a string or integer.
     """

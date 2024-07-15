@@ -1487,7 +1487,7 @@ class Property(ModelAttribute):
         Raises:
             ReadonlyPropertyError: If the ``entity`` is the result of a
                 projection query.
-            .BadValueError: If the current property is repeated but the
+            exceptions.BadValueError: If the current property is repeated but the
                 ``value`` is not a basic container (:class:`list`,
                 :class:`tuple`, :class:`set` or :class:`frozenset`).
         """
@@ -2258,15 +2258,15 @@ def _validate_key(value, entity=None):
     """Validate a key.
 
     Args:
-        value (.Key): The key to be validated.
+        value (~google.cloud.ndb.key.Key): The key to be validated.
         entity (Optional[Model]): The entity that the key is being validated
             for.
 
     Returns:
-        .Key: The passed in ``value``.
+        ~google.cloud.ndb.key.Key: The passed in ``value``.
 
     Raises:
-        .BadValueError: If ``value`` is not a :class:`.Key`.
+        exceptions.BadValueError: If ``value`` is not a :class:`~google.cloud.ndb.key.Key`.
         KindError: If ``entity`` is specified, but the kind of the entity
             doesn't match the kind of ``value``.
     """
@@ -2315,7 +2315,7 @@ class ModelKey(Property):
             comparison.
 
         Raises:
-            .BadValueError: If ``value`` is :data:`None`.
+            exceptions.BadValueError: If ``value`` is :data:`None`.
         """
         if value is not None:
             return super(ModelKey, self)._comparison(op, value)
@@ -2326,10 +2326,10 @@ class ModelKey(Property):
         """Validate a ``value`` before setting it.
 
         Args:
-            value (.Key): The value to check.
+            value (~google.cloud.ndb.key.Key): The value to check.
 
         Returns:
-            .Key: The passed-in ``value``.
+            ~google.cloud.ndb.key.Key: The passed-in ``value``.
         """
         return _validate_key(value)
 
@@ -2339,7 +2339,7 @@ class ModelKey(Property):
 
         Args:
             entity (Model): An entity to set the entity key on.
-            value (.Key): The key to be set on the entity.
+            value (~google.cloud.ndb.key.Key): The key to be set on the entity.
         """
         if value is not None:
             value = _validate_key(value, entity=entity)
@@ -2355,7 +2355,7 @@ class ModelKey(Property):
             entity (Model): An entity to get the entity key from.
 
         Returns:
-            .Key: The entity key stored on ``entity``.
+            ~google.cloud.ndb.key.Key: The entity key stored on ``entity``.
         """
         return entity._entity_key
 
@@ -2385,7 +2385,7 @@ class BooleanProperty(Property):
             bool: The passed-in ``value``.
 
         Raises:
-            .BadValueError: If ``value`` is not a :class:`bool`.
+            exceptions.BadValueError: If ``value`` is not a :class:`bool`.
         """
         if not isinstance(value, bool):
             raise exceptions.BadValueError(
@@ -2431,7 +2431,7 @@ class IntegerProperty(Property):
             int: The passed-in ``value``.
 
         Raises:
-            .BadValueError: If ``value`` is not an :class:`int` or convertible
+            exceptions.BadValueError: If ``value`` is not an :class:`int` or convertible
                 to one.
         """
         if not isinstance(value, int):
@@ -2463,7 +2463,7 @@ class FloatProperty(Property):
             :class:`float`.
 
         Raises:
-            .BadValueError: If ``value`` is not a :class:`float` or convertible
+            exceptions.BadValueError: If ``value`` is not a :class:`float` or convertible
                 to one.
         """
         if not isinstance(value, (float, int)):
@@ -2595,8 +2595,8 @@ class BlobProperty(Property):
             value (bytes): The value to check.
 
         Raises:
-            .BadValueError: If ``value`` is not a :class:`bytes`.
-            .BadValueError: If the current property is indexed but the value
+            exceptions.BadValueError: If ``value`` is not a :class:`bytes`.
+            exceptions.BadValueError: If the current property is indexed but the value
                 exceeds the maximum length (1500 bytes).
         """
         if not isinstance(value, bytes):
@@ -2776,11 +2776,11 @@ class CompressedTextProperty(BlobProperty):
             value (Union[bytes, str]): The value to check.
 
         Raises:
-            .BadValueError: If ``value`` is :class:`bytes`, but is not a valid
+            exceptions.BadValueError: If ``value`` is :class:`bytes`, but is not a valid
                 UTF-8 encoded string.
-            .BadValueError: If ``value`` is neither :class:`bytes` nor
+            exceptions.BadValueError: If ``value`` is neither :class:`bytes` nor
                 :class:`str`.
-            .BadValueError: If the current property is indexed but the UTF-8
+            exceptions.BadValueError: If the current property is indexed but the UTF-8
                 encoded value exceeds the maximum length (1500 bytes).
         """
         if not isinstance(value, str):
@@ -2938,11 +2938,11 @@ class TextProperty(Property):
             value (Union[bytes, str]): The value to check.
 
         Raises:
-            .BadValueError: If ``value`` is :class:`bytes`, but is not a valid
+            exceptions.BadValueError: If ``value`` is :class:`bytes`, but is not a valid
                 UTF-8 encoded string.
-            .BadValueError: If ``value`` is neither :class:`bytes` nor
+            exceptions.BadValueError: If ``value`` is neither :class:`bytes` nor
                 :class:`str`.
-            .BadValueError: If the current property is indexed but the UTF-8
+            exceptions.BadValueError: If the current property is indexed but the UTF-8
                 encoded value exceeds the maximum length (1500 bytes).
         """
         if isinstance(value, bytes):
@@ -3056,7 +3056,7 @@ class GeoPtProperty(Property):
                 check.
 
         Raises:
-            .BadValueError: If ``value`` is not a :attr:`.GeoPt`.
+            exceptions.BadValueError: If ``value`` is not a :attr:`.GeoPt`.
         """
         if not isinstance(value, GeoPt):
             raise exceptions.BadValueError(
@@ -3478,7 +3478,7 @@ class UserProperty(Property):
             value (User): The value to check.
 
         Raises:
-            .BadValueError: If ``value`` is not a :class:`User`.
+            exceptions.BadValueError: If ``value`` is not a :class:`User`.
         """
         # Might be GAE User or our own version
         if type(value).__name__ != "User":
@@ -3552,7 +3552,7 @@ class UserProperty(Property):
 
 
 class KeyProperty(Property):
-    """A property that contains :class:`.Key` values.
+    """A property that contains :class:`~google.cloud.ndb.key.Key` values.
 
     The constructor for :class:`KeyProperty` allows at most two positional
     arguments. Any usage of :data:`None` as a positional argument will
@@ -3595,10 +3595,10 @@ class KeyProperty(Property):
             multiple values.
         required (bool): Indicates if this property is required on the given
             model type.
-        default (.Key): The default value for this property.
-        choices (Iterable[.Key]): A container of allowed values for this
+        default (~google.cloud.ndb.key.Key): The default value for this property.
+        choices (Iterable[~google.cloud.ndb.key.Key]): A container of allowed values for this
             property.
-        validator (Callable[[~google.cloud.ndb.model.Property, .Key], bool]): A
+        validator (Callable[[~google.cloud.ndb.model.Property, ~google.cloud.ndb.key.Key], bool]): A
             validator to be used to check values.
         verbose_name (str): A longer, user-friendly name for this property.
         write_empty_list (bool): Indicates if an empty list should be written
@@ -3686,13 +3686,13 @@ class KeyProperty(Property):
         """Validate a ``value`` before setting it.
 
         Args:
-            value (.Key): The value to check.
+            value (~google.cloud.ndb.key.Key): The value to check.
 
         Raises:
-            .BadValueError: If ``value`` is not a :class:`.Key`.
-            .BadValueError: If ``value`` is a partial :class:`.Key` (i.e. it
+            exceptions.BadValueError: If ``value`` is not a :class:`.Key`.
+            exceptions.BadValueError: If ``value`` is a partial :class:`.Key` (i.e. it
                 has no name or ID set).
-            .BadValueError: If the current property has an associated ``kind``
+            exceptions.BadValueError: If the current property has an associated ``kind``
                 and ``value`` does not match that kind.
         """
         if not isinstance(value, Key):
@@ -3758,7 +3758,7 @@ class BlobKeyProperty(Property):
             value (~google.cloud.ndb.model.BlobKey): The value to check.
 
         Raises:
-            .BadValueError: If ``value`` is not a
+            exceptions.BadValueError: If ``value`` is not a
                 :class:`~google.cloud.ndb.model.BlobKey`.
         """
         if not isinstance(value, BlobKey):
@@ -3877,7 +3877,7 @@ class DateTimeProperty(Property):
             value (~datetime.datetime): The value to check.
 
         Raises:
-            .BadValueError: If ``value`` is not a :class:`~datetime.datetime`.
+            exceptions.BadValueError: If ``value`` is not a :class:`~datetime.datetime`.
         """
         if not isinstance(value, datetime.datetime):
             raise exceptions.BadValueError(
@@ -3976,7 +3976,7 @@ class DateProperty(DateTimeProperty):
             value (~datetime.date): The value to check.
 
         Raises:
-            .BadValueError: If ``value`` is not a :class:`~datetime.date`.
+            exceptions.BadValueError: If ``value`` is not a :class:`~datetime.date`.
         """
         if not isinstance(value, datetime.date):
             raise exceptions.BadValueError(
@@ -4036,7 +4036,7 @@ class TimeProperty(DateTimeProperty):
             value (~datetime.time): The value to check.
 
         Raises:
-            .BadValueError: If ``value`` is not a :class:`~datetime.time`.
+            exceptions.BadValueError: If ``value`` is not a :class:`~datetime.time`.
         """
         if not isinstance(value, datetime.time):
             raise exceptions.BadValueError(
@@ -4440,7 +4440,7 @@ class LocalStructuredProperty(BlobProperty):
         Args:
             value: The value to check.
         Raises:
-            .BadValueError: If ``value`` is not a given class.
+            exceptions.BadValueError: If ``value`` is not a given class.
         """
         if isinstance(value, dict):
             # A dict is assumed to be the result of a _to_dict() call.
@@ -4869,7 +4869,7 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
             to properties of this model.
 
     Raises:
-        .BadArgumentError: If the constructor is called with ``key`` and one
+        exceptions.BadArgumentError: If the constructor is called with ``key`` and one
             of ``id``, ``app``, ``namespace``, ``database``, or ``parent`` specified.
     """
 
@@ -5371,10 +5371,10 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
         """Validation for ``_key`` attribute (designed to be overridden).
 
         Args:
-            key (.Key): Proposed key to use for this entity.
+            key (~google.cloud.ndb.key.Key): Proposed key to use for this entity.
 
         Returns:
-            .Key: The validated ``key``.
+            ~google.cloud.ndb.key.Key: The validated ``key``.
         """
         return key
 

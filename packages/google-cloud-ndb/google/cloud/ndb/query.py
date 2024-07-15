@@ -338,7 +338,7 @@ class Parameter(ParameterizedThing):
             Any: The bound value for the current parameter.
 
         Raises:
-            .BadArgumentError: If the current parameter is not in ``bindings``.
+            exceptions.BadArgumentError: If the current parameter is not in ``bindings``.
         """
         key = self._key
         if key not in bindings:
@@ -565,7 +565,7 @@ class ParameterNode(Node):
             post (bool): Indicates if this is a post-filter node.
 
         Raises:
-            .BadArgumentError: Always. This is because this node represents
+            exceptions.BadArgumentError: Always. This is because this node represents
             a parameter, i.e. no value exists to be filtered on.
         """
         raise exceptions.BadArgumentError(

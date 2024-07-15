@@ -105,7 +105,7 @@ def get_context(raise_context_error=True):
         Context: The current context.
 
     Raises:
-        .ContextError: If called outside of a context
+        exceptions.ContextError: If called outside of a context
             established by :meth:`google.cloud.ndb.client.Client.context` and
             ``raise_context_error`` is :data:`True`.
     """
@@ -139,7 +139,7 @@ def get_toplevel_context(raise_context_error=True):
         Context: The current context.
 
     Raises:
-        .ContextError: If called outside of a context
+        exceptions.ContextError: If called outside of a context
             established by :meth:`google.cloud.ndb.client.Client.context` and
             ``raise_context_error`` is :data:`True`.
     """

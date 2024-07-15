@@ -42,6 +42,9 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "google-cloud-core",
 ]
 
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
 
 def get_path(*names):
     return os.path.join(NOX_DIR, *names)
@@ -262,7 +265,7 @@ def blacken(session):
     run_black(session)
 
 
-@nox.session(py="3.9")
+@nox.session(py="3.10")
 def docs(session):
     """Build the docs for this library."""
 
@@ -277,7 +280,7 @@ def docs(session):
         "sphinxcontrib-htmlhelp==2.0.1",
         "sphinxcontrib-qthelp==1.0.3",
         "sphinxcontrib-serializinghtml==1.1.5",
-        "sphinx==4.0.1",
+        "sphinx==4.5.0",
         "alabaster",
         "recommonmark",
         "sphinxcontrib.spelling",

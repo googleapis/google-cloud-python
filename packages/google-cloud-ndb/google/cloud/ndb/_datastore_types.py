@@ -46,8 +46,8 @@ class BlobKey(object):
         blob_key (Optional[bytes]): The key used for the blobstore.
 
     Raises:
-        .BadValueError: If the ``blob_key`` exceeds 1500 bytes.
-        .BadValueError: If the ``blob_key`` is not :data:`None` or a
+        exceptions.BadValueError: If the ``blob_key`` exceeds 1500 bytes.
+        exceptions.BadValueError: If the ``blob_key`` is not :data:`None` or a
             :class:`bytes` instance.
     """
 

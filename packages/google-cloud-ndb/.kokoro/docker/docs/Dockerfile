@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ubuntu:22.04
+from ubuntu:24.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -44,7 +44,6 @@ RUN apt-get update \
     libsqlite3-dev \
     memcached \
     portaudio19-dev \
-    python3-distutils \
     redis-server \
     software-properties-common \
     ssh \
@@ -64,17 +63,21 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && rm -f /var/cache/apt/archives/*.deb
 
-###################### Install python 3.9.13
 
-# Download python 3.9.13
-RUN wget https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tgz
+###################### Install python 3.10.14 for docs/docfx session
+
+# Download python 3.10.14
+RUN wget https://www.python.org/ftp/python/3.10.14/Python-3.10.14.tgz
 
 # Extract files
-RUN tar -xvf Python-3.9.13.tgz
+RUN tar -xvf Python-3.10.14.tgz
 
-# Install python 3.9.13
-RUN ./Python-3.9.13/configure --enable-optimizations
+# Install python 3.10.14
+RUN ./Python-3.10.14/configure --enable-optimizations
 RUN make altinstall
+
+RUN python3.10 -m venv /venv
+ENV PATH /venv/bin:$PATH
 
 ###################### Install pip
 RUN wget -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
@@ -88,4 +91,4 @@ RUN python3 -m pip
 COPY requirements.txt /requirements.txt
 RUN python3 -m pip install --require-hashes -r requirements.txt
 
-CMD ["python3.8"]
+CMD ["python3.10"]
