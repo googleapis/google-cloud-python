@@ -20,6 +20,11 @@
                 "delete_dataset"
               ]
             },
+            "FetchDatasetErrors": {
+              "methods": [
+                "fetch_dataset_errors"
+              ]
+            },
             "GetDataset": {
               "methods": [
                 "get_dataset"
@@ -50,6 +55,11 @@
                 "delete_dataset"
               ]
             },
+            "FetchDatasetErrors": {
+              "methods": [
+                "fetch_dataset_errors"
+              ]
+            },
             "GetDataset": {
               "methods": [
                 "get_dataset"
@@ -78,6 +88,11 @@
             "DeleteDataset": {
               "methods": [
                 "delete_dataset"
+              ]
+            },
+            "FetchDatasetErrors": {
+              "methods": [
+                "fetch_dataset_errors"
               ]
             },
             "GetDataset": {

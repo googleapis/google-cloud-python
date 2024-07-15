@@ -41,6 +41,7 @@ class mapsplatformdatasetsCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_dataset': ('parent', 'dataset', ),
         'delete_dataset': ('name', ),
+        'fetch_dataset_errors': ('dataset', 'page_size', 'page_token', ),
         'get_dataset': ('name', ),
         'list_datasets': ('parent', 'page_size', 'page_token', 'tag', ),
         'update_dataset_metadata': ('dataset', 'update_mask', ),

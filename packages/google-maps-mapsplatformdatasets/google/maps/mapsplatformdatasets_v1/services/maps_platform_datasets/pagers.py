@@ -24,7 +24,141 @@ from typing import (
     Tuple,
 )
 
+from google.rpc import status_pb2  # type: ignore
+
 from google.maps.mapsplatformdatasets_v1.types import dataset, maps_platform_datasets
+
+
+class FetchDatasetErrorsPager:
+    """A pager for iterating through ``fetch_dataset_errors`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.maps.mapsplatformdatasets_v1.types.FetchDatasetErrorsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``errors`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``FetchDatasetErrors`` requests and continue to iterate
+    through the ``errors`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.maps.mapsplatformdatasets_v1.types.FetchDatasetErrorsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., maps_platform_datasets.FetchDatasetErrorsResponse],
+        request: maps_platform_datasets.FetchDatasetErrorsRequest,
+        response: maps_platform_datasets.FetchDatasetErrorsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.maps.mapsplatformdatasets_v1.types.FetchDatasetErrorsRequest):
+                The initial request object.
+            response (google.maps.mapsplatformdatasets_v1.types.FetchDatasetErrorsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = maps_platform_datasets.FetchDatasetErrorsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[maps_platform_datasets.FetchDatasetErrorsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[status_pb2.Status]:
+        for page in self.pages:
+            yield from page.errors
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class FetchDatasetErrorsAsyncPager:
+    """A pager for iterating through ``fetch_dataset_errors`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.maps.mapsplatformdatasets_v1.types.FetchDatasetErrorsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``errors`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``FetchDatasetErrors`` requests and continue to iterate
+    through the ``errors`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.maps.mapsplatformdatasets_v1.types.FetchDatasetErrorsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[maps_platform_datasets.FetchDatasetErrorsResponse]
+        ],
+        request: maps_platform_datasets.FetchDatasetErrorsRequest,
+        response: maps_platform_datasets.FetchDatasetErrorsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.maps.mapsplatformdatasets_v1.types.FetchDatasetErrorsRequest):
+                The initial request object.
+            response (google.maps.mapsplatformdatasets_v1.types.FetchDatasetErrorsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = maps_platform_datasets.FetchDatasetErrorsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[maps_platform_datasets.FetchDatasetErrorsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[status_pb2.Status]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.errors:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListDatasetsPager:

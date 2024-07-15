@@ -18,6 +18,8 @@ from .dataset import Dataset, Status, Usage
 from .maps_platform_datasets import (
     CreateDatasetRequest,
     DeleteDatasetRequest,
+    FetchDatasetErrorsRequest,
+    FetchDatasetErrorsResponse,
     GetDatasetRequest,
     ListDatasetsRequest,
     ListDatasetsResponse,
@@ -33,6 +35,8 @@ __all__ = (
     "Usage",
     "CreateDatasetRequest",
     "DeleteDatasetRequest",
+    "FetchDatasetErrorsRequest",
+    "FetchDatasetErrorsResponse",
     "GetDatasetRequest",
     "ListDatasetsRequest",
     "ListDatasetsResponse",
