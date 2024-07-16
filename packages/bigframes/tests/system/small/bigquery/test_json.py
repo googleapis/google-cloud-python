@@ -85,18 +85,18 @@ def test_json_set_w_more_pairs():
     )
 
 
-@pytest.mark.parametrize(
-    ("series", "json_path_value_pairs"),
-    [
-        pytest.param(
+def test_json_set_w_invalid_json_path_value_pairs():
+    with pytest.raises(ValueError):
+        bbq.json_set(
+            _get_series_from_json([{"a": 10}]), json_path_value_pairs=[("$.a", 1, 100)]  # type: ignore
+        )
+
+
+def test_json_set_w_invalid_value_type():
+    with pytest.raises(TypeError):
+        bbq.json_set(
             _get_series_from_json([{"a": 10}]),
-            [("$.a", 1, 100)],
-            id="invalid_json_path_value_pairs",
-            marks=pytest.mark.xfail(raises=ValueError),
-        ),
-        pytest.param(
-            _get_series_from_json([{"a": 10}]),
-            [
+            json_path_value_pairs=[
                 (
                     "$.a",
                     bpd.read_pandas(
@@ -104,16 +104,9 @@ def test_json_set_w_more_pairs():
                     ),
                 )
             ],
-            id="invalid_json_value_type",
-            marks=pytest.mark.xfail(raises=TypeError),
-        ),
-        pytest.param(
-            bpd.Series([1, 2]),
-            [("$.a", 1)],
-            id="invalid_series_type",
-            marks=pytest.mark.xfail(raises=TypeError),
-        ),
-    ],
-)
-def test_json_set_w_invalid(series, json_path_value_pairs):
-    bbq.json_set(series, json_path_value_pairs=json_path_value_pairs)
+        )
+
+
+def test_json_set_w_invalid_series_type():
+    with pytest.raises(TypeError):
+        bbq.json_set(bpd.Series([1, 2]), json_path_value_pairs=[("$.a", 1)])
