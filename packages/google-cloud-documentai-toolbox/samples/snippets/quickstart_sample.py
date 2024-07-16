@@ -1,3 +1,4 @@
+# flake8: noqa: C901
 # Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -126,6 +127,20 @@ def quickstart_sample(
         print(f"{entity.type_} : {entity.mention_text}")
         if entity.normalized_text:
             print(f"\tNormalized Text: {entity.normalized_text}")
+
+    # Only supported with Layout Parser
+    for chunk in wrapped_document.chunks:
+        print(f"Chunk {chunk.chunk_id}: {chunk.content}")
+
+    for block in wrapped_document.document_layout_blocks:
+        print(f"Document Layout Block {block.block_id}")
+
+        if block.text_block:
+            print(f"{block.text_block.type_}: {block.text_block.text}")
+        if block.list_block:
+            print(f"{block.list_block.type_}: {block.list_block.list_entries}")
+        if block.table_block:
+            print(block.table_block.header_rows, block.table_block.body_rows)
 
     # [END documentai_toolbox_quickstart]
 

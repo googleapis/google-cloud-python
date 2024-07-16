@@ -60,7 +60,7 @@ setuptools.setup(
         "proto-plus>=1.22.3, <2.0.0dev",
         "grpc-google-iam-v1>=0.12.6, <1.0.0dev",
         "google-cloud-bigquery>=3.5.0, <4.0.0dev",
-        "google-cloud-documentai>=2.20.0, <3.0.0dev",
+        "google-cloud-documentai>=2.29.2, <3.0.0dev",
         "google-cloud-storage>=1.31.0, <3.0.0dev",
         "google-cloud-vision>=2.7.0, <4.0.0dev",
         "numpy>=1.23.5, <2.0.0",
