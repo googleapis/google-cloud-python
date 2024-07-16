@@ -20,6 +20,15 @@ import bigframes.pandas as bpd
 from tests.system.utils import assert_pandas_df_equal, skip_legacy_pandas
 
 
+def test_unordered_mode_job_label(unordered_session):
+    pd_df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]}, dtype=pd.Int64Dtype())
+    df = bpd.DataFrame(pd_df, session=unordered_session)
+    df.to_pandas()
+    job_labels = df.query_job.labels  # type:ignore
+    assert "bigframes-mode" in job_labels
+    assert job_labels["bigframes-mode"] == "unordered"
+
+
 def test_unordered_mode_cache_aggregate(unordered_session):
     pd_df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]}, dtype=pd.Int64Dtype())
     df = bpd.DataFrame(pd_df, session=unordered_session)

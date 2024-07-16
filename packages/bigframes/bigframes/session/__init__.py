@@ -1849,6 +1849,8 @@ class Session(
         Starts BigQuery query job and waits for results.
         """
         job_config = self._prepare_query_job_config(job_config)
+        if not self._strictly_ordered:
+            job_config.labels = {"bigframes-mode": "unordered"}
         try:
             return bigframes.session._io.bigquery.start_query_with_client(
                 self,
