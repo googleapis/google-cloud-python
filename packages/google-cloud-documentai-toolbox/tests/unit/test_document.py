@@ -80,6 +80,13 @@ def get_bytes_splitter_mock():
 
 
 @pytest.fixture
+def get_bytes_classifier_mock():
+    with mock.patch.object(gcs_utilities, "get_bytes") as byte_factory:
+        byte_factory.return_value = get_bytes("tests/unit/resources/classifier")
+        yield byte_factory
+
+
+@pytest.fixture
 def get_bytes_images_mock():
     with mock.patch.object(gcs_utilities, "get_bytes") as byte_factory:
         byte_factory.return_value = get_bytes("tests/unit/resources/images")
@@ -204,6 +211,30 @@ def test_entities_from_shards_with_hex_ids():
     assert actual[1].documentai_object.id == "ef4fd8a921c0e000"
     assert actual[1].mention_text == "G06F 1/26"
     assert actual[1].type_ == "class_international"
+
+
+def test_entities_from_shards_classifier(get_bytes_classifier_mock):
+    shards = document._get_shards(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0/"
+    )
+    get_bytes_classifier_mock.assert_called_once()
+
+    actual = document._entities_from_shards(shards=shards)
+
+    # Check for error reported in https://github.com/googleapis/python-documentai-toolbox/issues/332
+    assert repr(actual)
+    assert actual[0].type_ == "computer_vision"
+    assert round(actual[0].documentai_object.confidence, 8) == 0.47925246
+    assert actual[0].documentai_object.id == "0"
+    assert actual[1].type_ == "crypto"
+    assert round(actual[1].documentai_object.confidence, 8) == 0.0433604
+    assert actual[1].documentai_object.id == "1"
+    assert actual[2].type_ == "med_tech"
+    assert round(actual[2].documentai_object.confidence, 8) == 0.26732057
+    assert actual[2].documentai_object.id == "2"
+    assert actual[3].type_ == "other"
+    assert round(actual[3].documentai_object.confidence, 8) == 0.2100666
+    assert actual[3].documentai_object.id == "3"
 
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.documentai")
@@ -701,6 +732,22 @@ def test_split_pdf(mock_Pdf, get_bytes_splitter_mock):
         "procurement_multi_document_pg5_restaurant_statement.pdf",
         "procurement_multi_document_pg6-7_other.pdf",
     ]
+
+
+def test_split_pdf_with_non_splitter(get_bytes_classifier_mock):
+    doc = document.Document.from_gcs(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="Entities do not contain start or end pages.",
+    ):
+        doc.split_pdf(
+            pdf_path="procurement_multi_document.pdf", output_path="splitter/output/"
+        )
+
+    get_bytes_classifier_mock.assert_called_once()
 
 
 def test_convert_document_to_annotate_file_response():

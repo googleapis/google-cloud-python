@@ -765,7 +765,7 @@ class Document:
         )
 
     def split_pdf(self, pdf_path: str, output_path: str) -> List[str]:
-        r"""Splits local PDF file into multiple PDF files based on output from a Splitter/Classifier processor.
+        r"""Splits local PDF file into multiple PDF files based on output from a Splitter processor.
 
         Args:
             pdf_path (str):
@@ -776,6 +776,8 @@ class Document:
             List[str]:
                 A list of output pdf files.
         """
+        if self.entities[0].start_page is None or self.entities[0].end_page is None:
+            raise ValueError("Entities do not contain start or end pages.")
         output_files: List[str] = []
         input_filename, input_extension = os.path.splitext(os.path.basename(pdf_path))
         with Pdf.open(pdf_path) as pdf:

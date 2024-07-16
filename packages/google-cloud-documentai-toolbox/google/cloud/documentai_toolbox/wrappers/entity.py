@@ -40,45 +40,46 @@ class Entity:
             Required. Entity type from a schema e.g. "Address".
         mention_text (str):
             Optional. Text value in the document e.g. "1600 Amphitheatre Pkwy".
-            If the entity is not present in
-            the document, this field will be empty.
+            Only populated for Extraction processors.
         normalized_text (str):
             Optional. Normalized text value in the document e.g. "1970-01-01".
-            If the entity is not present in
-            the document, this field will be empty.
+            Only populated for Extraction processors.
         start_page (int):
-            Required. `Page` containing the `Entity` or the first page of the
-            classification (for Splitter/Classifier processors).
+            Optional. `Page` containing the `Entity` for Extraction processors or the first page of the
+            subdocument for Splitter processors.
         end_page (int):
-            Required. Last page of the classification
+            Optional. Last page of the subdocument for Splitter processors.
     """
 
     documentai_object: documentai.Document.Entity = dataclasses.field(repr=False)
     page_offset: dataclasses.InitVar[Optional[int]] = 0
 
     type_: str = dataclasses.field(init=False)
-    mention_text: str = dataclasses.field(init=False, default="")
-    normalized_text: str = dataclasses.field(init=False, default="")
+    mention_text: Optional[str] = dataclasses.field(init=False, default=None)
+    normalized_text: Optional[str] = dataclasses.field(init=False, default=None)
 
-    start_page: int = dataclasses.field(init=False)
-    # Only Populated for Splitter/Classifier Output
-    end_page: int = dataclasses.field(init=False)
+    start_page: Optional[int] = dataclasses.field(init=False, default=None)
+    end_page: Optional[int] = dataclasses.field(init=False, default=None)
 
     _image: Optional[Image.Image] = dataclasses.field(init=False, default=None)
 
     def __post_init__(self, page_offset: int) -> None:
         self.type_ = self.documentai_object.type_
-        self.mention_text = self.documentai_object.mention_text
+
+        if self.documentai_object.mention_text:
+            self.mention_text = self.documentai_object.mention_text
+
         if (
             self.documentai_object.normalized_value
             and self.documentai_object.normalized_value.text
         ):
             self.normalized_text = self.documentai_object.normalized_value.text
 
-        page_refs = self.documentai_object.page_anchor.page_refs
-        if page_refs:
-            self.start_page = int(page_refs[0].page) + page_offset
-            self.end_page = int(page_refs[-1].page) + page_offset
+        if self.documentai_object.page_anchor:
+            page_refs = self.documentai_object.page_anchor.page_refs
+            if page_refs:
+                self.start_page = int(page_refs[0].page) + page_offset
+                self.end_page = int(page_refs[-1].page) + page_offset
 
     def crop_image(
         self, documentai_page: documentai.Document.Page
