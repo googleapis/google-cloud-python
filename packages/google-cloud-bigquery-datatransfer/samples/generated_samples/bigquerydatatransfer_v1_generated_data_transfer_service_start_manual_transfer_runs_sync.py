@@ -32,7 +32,7 @@
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import bigquery_datatransfer_v1
-
+from google.protobuf.timestamp_pb2 import Timestamp
 
 def sample_start_manual_transfer_runs():
     # Create a client
@@ -41,6 +41,7 @@ def sample_start_manual_transfer_runs():
     # Initialize request argument(s)
     request = bigquery_datatransfer_v1.StartManualTransferRunsRequest(
         parent="parent_value",
+        requested_run_time=Timestamp(),
     )
 
     # Make the request
