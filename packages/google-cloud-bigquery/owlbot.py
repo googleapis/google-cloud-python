@@ -101,29 +101,6 @@ s.replace(
 # Add .pytype to .gitignore
 s.replace(".gitignore", r"\.pytest_cache", "\\g<0>\n.pytype")
 
-# Add pytype config to setup.cfg
-s.replace(
-    "setup.cfg",
-    r"universal = 1",
-    textwrap.dedent(
-        """    \\g<0>
-
-    [pytype]
-    python_version = 3.8
-    inputs =
-        google/cloud/
-    exclude =
-        tests/
-        google/cloud/bigquery_v2/  # Legacy proto-based types.
-    output = .pytype/
-    disable =
-        # There's some issue with finding some pyi files, thus disabling.
-        # The issue https://github.com/google/pytype/issues/150 is closed, but the
-        # error still occurs for some reason.
-        pyi-error"""
-    ),
-)
-
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 for noxfile in REPO_ROOT.glob("samples/**/noxfile.py"):
     s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)
