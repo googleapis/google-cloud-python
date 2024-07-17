@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -39,6 +40,7 @@ __protobuf__ = proto.module(
         "Hcx",
         "Nsx",
         "Vcenter",
+        "AutoscalingSettings",
         "DnsForwarding",
         "NetworkPeering",
         "PeeringRoute",
@@ -411,6 +413,9 @@ class Cluster(proto.Message):
             management cluster; false otherwise. There can
             only be one management cluster in a private
             cloud and it has to be the first one.
+        autoscaling_settings (google.cloud.vmwareengine_v1.types.AutoscalingSettings):
+            Optional. Configuration of the autoscaling
+            applied to this cluster.
         uid (str):
             Output only. System-generated unique
             identifier for the resource.
@@ -474,6 +479,11 @@ class Cluster(proto.Message):
     management: bool = proto.Field(
         proto.BOOL,
         number=7,
+    )
+    autoscaling_settings: "AutoscalingSettings" = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message="AutoscalingSettings",
     )
     uid: str = proto.Field(
         proto.STRING,
@@ -1020,10 +1030,19 @@ class LoggingServer(proto.Message):
                 UDP
             TCP (2):
                 TCP
+            TLS (3):
+                TLS
+            SSL (4):
+                SSL
+            RELP (5):
+                RELP
         """
         PROTOCOL_UNSPECIFIED = 0
         UDP = 1
         TCP = 2
+        TLS = 3
+        SSL = 4
+        RELP = 5
 
     class SourceType(proto.Enum):
         r"""Defines possible types of component that produces logs.
@@ -1314,10 +1333,13 @@ class Hcx(proto.Message):
                 The appliance is operational and can be used.
             CREATING (2):
                 The appliance is being deployed.
+            ACTIVATING (3):
+                The appliance is being activated.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
+        ACTIVATING = 3
 
     internal_ip: str = proto.Field(
         proto.STRING,
@@ -1433,6 +1455,148 @@ class Vcenter(proto.Message):
     fqdn: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+
+
+class AutoscalingSettings(proto.Message):
+    r"""Autoscaling settings define the rules used by VMware Engine
+    to automatically scale-out and scale-in the clusters in a
+    private cloud.
+
+    Attributes:
+        autoscaling_policies (MutableMapping[str, google.cloud.vmwareengine_v1.types.AutoscalingSettings.AutoscalingPolicy]):
+            Required. The map with autoscaling policies applied to the
+            cluster. The key is the identifier of the policy. It must
+            meet the following requirements:
+
+            -  Only contains 1-63 alphanumeric characters and hyphens
+            -  Begins with an alphabetical character
+            -  Ends with a non-hyphen character
+            -  Not formatted as a UUID
+            -  Complies with `RFC
+               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+               (section 3.5)
+
+            Currently there map must contain only one element that
+            describes the autoscaling policy for compute nodes.
+        min_cluster_node_count (int):
+            Optional. Minimum number of nodes of any type
+            in a cluster. If not specified the default
+            limits apply.
+        max_cluster_node_count (int):
+            Optional. Maximum number of nodes of any type
+            in a cluster. If not specified the default
+            limits apply.
+        cool_down_period (google.protobuf.duration_pb2.Duration):
+            Optional. The minimum duration between
+            consecutive autoscale operations. It starts once
+            addition or removal of nodes is fully completed.
+            Defaults to 30 minutes if not specified. Cool
+            down period must be in whole minutes (for
+            example, 30, 31, 50, 180 minutes).
+    """
+
+    class Thresholds(proto.Message):
+        r"""Thresholds define the utilization of resources triggering
+        scale-out and scale-in operations.
+
+        Attributes:
+            scale_out (int):
+                Required. The utilization triggering the
+                scale-out operation in percent.
+            scale_in (int):
+                Required. The utilization triggering the
+                scale-in operation in percent.
+        """
+
+        scale_out: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        scale_in: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+
+    class AutoscalingPolicy(proto.Message):
+        r"""Autoscaling policy describes the behavior of the autoscaling
+        with respect to the resource utilization.
+        The scale-out operation is initiated if the utilization exceeds
+        ANY of the respective thresholds.
+        The scale-in operation is initiated if the utilization is below
+        ALL of the respective thresholds.
+
+        Attributes:
+            node_type_id (str):
+                Required. The canonical identifier of the node type to add
+                or remove. Corresponds to the ``NodeType``.
+            scale_out_size (int):
+                Required. Number of nodes to add to a cluster
+                during a scale-out operation. Must be divisible
+                by 2 for stretched clusters. During a scale-in
+                operation only one node (or 2 for stretched
+                clusters) are removed in a single iteration.
+            cpu_thresholds (google.cloud.vmwareengine_v1.types.AutoscalingSettings.Thresholds):
+                Optional. Utilization thresholds pertaining
+                to CPU utilization.
+            granted_memory_thresholds (google.cloud.vmwareengine_v1.types.AutoscalingSettings.Thresholds):
+                Optional. Utilization thresholds pertaining
+                to amount of granted memory.
+            consumed_memory_thresholds (google.cloud.vmwareengine_v1.types.AutoscalingSettings.Thresholds):
+                Optional. Utilization thresholds pertaining
+                to amount of consumed memory.
+            storage_thresholds (google.cloud.vmwareengine_v1.types.AutoscalingSettings.Thresholds):
+                Optional. Utilization thresholds pertaining
+                to amount of consumed storage.
+        """
+
+        node_type_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        scale_out_size: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        cpu_thresholds: "AutoscalingSettings.Thresholds" = proto.Field(
+            proto.MESSAGE,
+            number=11,
+            message="AutoscalingSettings.Thresholds",
+        )
+        granted_memory_thresholds: "AutoscalingSettings.Thresholds" = proto.Field(
+            proto.MESSAGE,
+            number=12,
+            message="AutoscalingSettings.Thresholds",
+        )
+        consumed_memory_thresholds: "AutoscalingSettings.Thresholds" = proto.Field(
+            proto.MESSAGE,
+            number=13,
+            message="AutoscalingSettings.Thresholds",
+        )
+        storage_thresholds: "AutoscalingSettings.Thresholds" = proto.Field(
+            proto.MESSAGE,
+            number=14,
+            message="AutoscalingSettings.Thresholds",
+        )
+
+    autoscaling_policies: MutableMapping[str, AutoscalingPolicy] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message=AutoscalingPolicy,
+    )
+    min_cluster_node_count: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    max_cluster_node_count: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    cool_down_period: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
     )
 
 
@@ -1656,6 +1820,9 @@ class NetworkPeering(proto.Message):
             DELL_POWERSCALE (6):
                 Peering connection used for connecting to
                 Dell PowerScale Filers
+            GOOGLE_CLOUD_NETAPP_VOLUMES (7):
+                Peering connection used for connecting to
+                Google Cloud NetApp Volumes.
         """
         PEER_NETWORK_TYPE_UNSPECIFIED = 0
         STANDARD = 1
@@ -1664,6 +1831,7 @@ class NetworkPeering(proto.Message):
         NETAPP_CLOUD_VOLUMES = 4
         THIRD_PARTY_SERVICE = 5
         DELL_POWERSCALE = 6
+        GOOGLE_CLOUD_NETAPP_VOLUMES = 7
 
     name: str = proto.Field(
         proto.STRING,
