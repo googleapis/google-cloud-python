@@ -6681,6 +6681,658 @@
       "clientMethod": {
         "async": true,
         "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceAsyncClient",
+          "shortName": "EvaluationServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceAsyncClient.create_evaluation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService.CreateEvaluation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService",
+            "shortName": "EvaluationService"
+          },
+          "shortName": "CreateEvaluation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.CreateEvaluationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "evaluation",
+            "type": "google.cloud.discoveryengine_v1beta.types.Evaluation"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_evaluation"
+      },
+      "description": "Sample for CreateEvaluation",
+      "file": "discoveryengine_v1beta_generated_evaluation_service_create_evaluation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EvaluationService_CreateEvaluation_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_evaluation_service_create_evaluation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceClient",
+          "shortName": "EvaluationServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceClient.create_evaluation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService.CreateEvaluation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService",
+            "shortName": "EvaluationService"
+          },
+          "shortName": "CreateEvaluation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.CreateEvaluationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "evaluation",
+            "type": "google.cloud.discoveryengine_v1beta.types.Evaluation"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_evaluation"
+      },
+      "description": "Sample for CreateEvaluation",
+      "file": "discoveryengine_v1beta_generated_evaluation_service_create_evaluation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EvaluationService_CreateEvaluation_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_evaluation_service_create_evaluation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceAsyncClient",
+          "shortName": "EvaluationServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceAsyncClient.get_evaluation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService.GetEvaluation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService",
+            "shortName": "EvaluationService"
+          },
+          "shortName": "GetEvaluation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetEvaluationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.Evaluation",
+        "shortName": "get_evaluation"
+      },
+      "description": "Sample for GetEvaluation",
+      "file": "discoveryengine_v1beta_generated_evaluation_service_get_evaluation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EvaluationService_GetEvaluation_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_evaluation_service_get_evaluation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceClient",
+          "shortName": "EvaluationServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceClient.get_evaluation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService.GetEvaluation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService",
+            "shortName": "EvaluationService"
+          },
+          "shortName": "GetEvaluation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetEvaluationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.Evaluation",
+        "shortName": "get_evaluation"
+      },
+      "description": "Sample for GetEvaluation",
+      "file": "discoveryengine_v1beta_generated_evaluation_service_get_evaluation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EvaluationService_GetEvaluation_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_evaluation_service_get_evaluation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceAsyncClient",
+          "shortName": "EvaluationServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceAsyncClient.list_evaluation_results",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluationResults",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService",
+            "shortName": "EvaluationService"
+          },
+          "shortName": "ListEvaluationResults"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListEvaluationResultsRequest"
+          },
+          {
+            "name": "evaluation",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.evaluation_service.pagers.ListEvaluationResultsAsyncPager",
+        "shortName": "list_evaluation_results"
+      },
+      "description": "Sample for ListEvaluationResults",
+      "file": "discoveryengine_v1beta_generated_evaluation_service_list_evaluation_results_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EvaluationService_ListEvaluationResults_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_evaluation_service_list_evaluation_results_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceClient",
+          "shortName": "EvaluationServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceClient.list_evaluation_results",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluationResults",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService",
+            "shortName": "EvaluationService"
+          },
+          "shortName": "ListEvaluationResults"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListEvaluationResultsRequest"
+          },
+          {
+            "name": "evaluation",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.evaluation_service.pagers.ListEvaluationResultsPager",
+        "shortName": "list_evaluation_results"
+      },
+      "description": "Sample for ListEvaluationResults",
+      "file": "discoveryengine_v1beta_generated_evaluation_service_list_evaluation_results_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EvaluationService_ListEvaluationResults_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_evaluation_service_list_evaluation_results_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceAsyncClient",
+          "shortName": "EvaluationServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceAsyncClient.list_evaluations",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluations",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService",
+            "shortName": "EvaluationService"
+          },
+          "shortName": "ListEvaluations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListEvaluationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.evaluation_service.pagers.ListEvaluationsAsyncPager",
+        "shortName": "list_evaluations"
+      },
+      "description": "Sample for ListEvaluations",
+      "file": "discoveryengine_v1beta_generated_evaluation_service_list_evaluations_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EvaluationService_ListEvaluations_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_evaluation_service_list_evaluations_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceClient",
+          "shortName": "EvaluationServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EvaluationServiceClient.list_evaluations",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluations",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EvaluationService",
+            "shortName": "EvaluationService"
+          },
+          "shortName": "ListEvaluations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListEvaluationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.evaluation_service.pagers.ListEvaluationsPager",
+        "shortName": "list_evaluations"
+      },
+      "description": "Sample for ListEvaluations",
+      "file": "discoveryengine_v1beta_generated_evaluation_service_list_evaluations_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EvaluationService_ListEvaluations_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_evaluation_service_list_evaluations_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
           "fullName": "google.cloud.discoveryengine_v1beta.GroundedGenerationServiceAsyncClient",
           "shortName": "GroundedGenerationServiceAsyncClient"
         },
@@ -7295,6 +7947,1805 @@
         }
       ],
       "title": "discoveryengine_v1beta_generated_recommendation_service_recommend_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceAsyncClient",
+          "shortName": "SampleQueryServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceAsyncClient.create_sample_query",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService.CreateSampleQuery",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService",
+            "shortName": "SampleQueryService"
+          },
+          "shortName": "CreateSampleQuery"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.CreateSampleQueryRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "sample_query",
+            "type": "google.cloud.discoveryengine_v1beta.types.SampleQuery"
+          },
+          {
+            "name": "sample_query_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SampleQuery",
+        "shortName": "create_sample_query"
+      },
+      "description": "Sample for CreateSampleQuery",
+      "file": "discoveryengine_v1beta_generated_sample_query_service_create_sample_query_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQueryService_CreateSampleQuery_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_service_create_sample_query_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceClient",
+          "shortName": "SampleQueryServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceClient.create_sample_query",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService.CreateSampleQuery",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService",
+            "shortName": "SampleQueryService"
+          },
+          "shortName": "CreateSampleQuery"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.CreateSampleQueryRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "sample_query",
+            "type": "google.cloud.discoveryengine_v1beta.types.SampleQuery"
+          },
+          {
+            "name": "sample_query_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SampleQuery",
+        "shortName": "create_sample_query"
+      },
+      "description": "Sample for CreateSampleQuery",
+      "file": "discoveryengine_v1beta_generated_sample_query_service_create_sample_query_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQueryService_CreateSampleQuery_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_service_create_sample_query_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceAsyncClient",
+          "shortName": "SampleQueryServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceAsyncClient.delete_sample_query",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService.DeleteSampleQuery",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService",
+            "shortName": "SampleQueryService"
+          },
+          "shortName": "DeleteSampleQuery"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.DeleteSampleQueryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_sample_query"
+      },
+      "description": "Sample for DeleteSampleQuery",
+      "file": "discoveryengine_v1beta_generated_sample_query_service_delete_sample_query_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQueryService_DeleteSampleQuery_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_service_delete_sample_query_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceClient",
+          "shortName": "SampleQueryServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceClient.delete_sample_query",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService.DeleteSampleQuery",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService",
+            "shortName": "SampleQueryService"
+          },
+          "shortName": "DeleteSampleQuery"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.DeleteSampleQueryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_sample_query"
+      },
+      "description": "Sample for DeleteSampleQuery",
+      "file": "discoveryengine_v1beta_generated_sample_query_service_delete_sample_query_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQueryService_DeleteSampleQuery_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_service_delete_sample_query_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceAsyncClient",
+          "shortName": "SampleQueryServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceAsyncClient.get_sample_query",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService.GetSampleQuery",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService",
+            "shortName": "SampleQueryService"
+          },
+          "shortName": "GetSampleQuery"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetSampleQueryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SampleQuery",
+        "shortName": "get_sample_query"
+      },
+      "description": "Sample for GetSampleQuery",
+      "file": "discoveryengine_v1beta_generated_sample_query_service_get_sample_query_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQueryService_GetSampleQuery_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_service_get_sample_query_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceClient",
+          "shortName": "SampleQueryServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceClient.get_sample_query",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService.GetSampleQuery",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService",
+            "shortName": "SampleQueryService"
+          },
+          "shortName": "GetSampleQuery"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetSampleQueryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SampleQuery",
+        "shortName": "get_sample_query"
+      },
+      "description": "Sample for GetSampleQuery",
+      "file": "discoveryengine_v1beta_generated_sample_query_service_get_sample_query_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQueryService_GetSampleQuery_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_service_get_sample_query_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceAsyncClient",
+          "shortName": "SampleQueryServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceAsyncClient.import_sample_queries",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService.ImportSampleQueries",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService",
+            "shortName": "SampleQueryService"
+          },
+          "shortName": "ImportSampleQueries"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ImportSampleQueriesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "import_sample_queries"
+      },
+      "description": "Sample for ImportSampleQueries",
+      "file": "discoveryengine_v1beta_generated_sample_query_service_import_sample_queries_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQueryService_ImportSampleQueries_async",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_service_import_sample_queries_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceClient",
+          "shortName": "SampleQueryServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceClient.import_sample_queries",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService.ImportSampleQueries",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService",
+            "shortName": "SampleQueryService"
+          },
+          "shortName": "ImportSampleQueries"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ImportSampleQueriesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "import_sample_queries"
+      },
+      "description": "Sample for ImportSampleQueries",
+      "file": "discoveryengine_v1beta_generated_sample_query_service_import_sample_queries_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQueryService_ImportSampleQueries_sync",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_service_import_sample_queries_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceAsyncClient",
+          "shortName": "SampleQueryServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceAsyncClient.list_sample_queries",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService.ListSampleQueries",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService",
+            "shortName": "SampleQueryService"
+          },
+          "shortName": "ListSampleQueries"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListSampleQueriesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.sample_query_service.pagers.ListSampleQueriesAsyncPager",
+        "shortName": "list_sample_queries"
+      },
+      "description": "Sample for ListSampleQueries",
+      "file": "discoveryengine_v1beta_generated_sample_query_service_list_sample_queries_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQueryService_ListSampleQueries_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_service_list_sample_queries_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceClient",
+          "shortName": "SampleQueryServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceClient.list_sample_queries",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService.ListSampleQueries",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService",
+            "shortName": "SampleQueryService"
+          },
+          "shortName": "ListSampleQueries"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListSampleQueriesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.sample_query_service.pagers.ListSampleQueriesPager",
+        "shortName": "list_sample_queries"
+      },
+      "description": "Sample for ListSampleQueries",
+      "file": "discoveryengine_v1beta_generated_sample_query_service_list_sample_queries_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQueryService_ListSampleQueries_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_service_list_sample_queries_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceAsyncClient",
+          "shortName": "SampleQueryServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceAsyncClient.update_sample_query",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService.UpdateSampleQuery",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService",
+            "shortName": "SampleQueryService"
+          },
+          "shortName": "UpdateSampleQuery"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.UpdateSampleQueryRequest"
+          },
+          {
+            "name": "sample_query",
+            "type": "google.cloud.discoveryengine_v1beta.types.SampleQuery"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SampleQuery",
+        "shortName": "update_sample_query"
+      },
+      "description": "Sample for UpdateSampleQuery",
+      "file": "discoveryengine_v1beta_generated_sample_query_service_update_sample_query_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQueryService_UpdateSampleQuery_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_service_update_sample_query_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceClient",
+          "shortName": "SampleQueryServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQueryServiceClient.update_sample_query",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService.UpdateSampleQuery",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQueryService",
+            "shortName": "SampleQueryService"
+          },
+          "shortName": "UpdateSampleQuery"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.UpdateSampleQueryRequest"
+          },
+          {
+            "name": "sample_query",
+            "type": "google.cloud.discoveryengine_v1beta.types.SampleQuery"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SampleQuery",
+        "shortName": "update_sample_query"
+      },
+      "description": "Sample for UpdateSampleQuery",
+      "file": "discoveryengine_v1beta_generated_sample_query_service_update_sample_query_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQueryService_UpdateSampleQuery_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_service_update_sample_query_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceAsyncClient",
+          "shortName": "SampleQuerySetServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceAsyncClient.create_sample_query_set",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService.CreateSampleQuerySet",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService",
+            "shortName": "SampleQuerySetService"
+          },
+          "shortName": "CreateSampleQuerySet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.CreateSampleQuerySetRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "sample_query_set",
+            "type": "google.cloud.discoveryengine_v1beta.types.SampleQuerySet"
+          },
+          {
+            "name": "sample_query_set_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SampleQuerySet",
+        "shortName": "create_sample_query_set"
+      },
+      "description": "Sample for CreateSampleQuerySet",
+      "file": "discoveryengine_v1beta_generated_sample_query_set_service_create_sample_query_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQuerySetService_CreateSampleQuerySet_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_set_service_create_sample_query_set_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceClient",
+          "shortName": "SampleQuerySetServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceClient.create_sample_query_set",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService.CreateSampleQuerySet",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService",
+            "shortName": "SampleQuerySetService"
+          },
+          "shortName": "CreateSampleQuerySet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.CreateSampleQuerySetRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "sample_query_set",
+            "type": "google.cloud.discoveryengine_v1beta.types.SampleQuerySet"
+          },
+          {
+            "name": "sample_query_set_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SampleQuerySet",
+        "shortName": "create_sample_query_set"
+      },
+      "description": "Sample for CreateSampleQuerySet",
+      "file": "discoveryengine_v1beta_generated_sample_query_set_service_create_sample_query_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQuerySetService_CreateSampleQuerySet_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_set_service_create_sample_query_set_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceAsyncClient",
+          "shortName": "SampleQuerySetServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceAsyncClient.delete_sample_query_set",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService.DeleteSampleQuerySet",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService",
+            "shortName": "SampleQuerySetService"
+          },
+          "shortName": "DeleteSampleQuerySet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.DeleteSampleQuerySetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_sample_query_set"
+      },
+      "description": "Sample for DeleteSampleQuerySet",
+      "file": "discoveryengine_v1beta_generated_sample_query_set_service_delete_sample_query_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQuerySetService_DeleteSampleQuerySet_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_set_service_delete_sample_query_set_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceClient",
+          "shortName": "SampleQuerySetServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceClient.delete_sample_query_set",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService.DeleteSampleQuerySet",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService",
+            "shortName": "SampleQuerySetService"
+          },
+          "shortName": "DeleteSampleQuerySet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.DeleteSampleQuerySetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_sample_query_set"
+      },
+      "description": "Sample for DeleteSampleQuerySet",
+      "file": "discoveryengine_v1beta_generated_sample_query_set_service_delete_sample_query_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQuerySetService_DeleteSampleQuerySet_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_set_service_delete_sample_query_set_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceAsyncClient",
+          "shortName": "SampleQuerySetServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceAsyncClient.get_sample_query_set",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService.GetSampleQuerySet",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService",
+            "shortName": "SampleQuerySetService"
+          },
+          "shortName": "GetSampleQuerySet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetSampleQuerySetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SampleQuerySet",
+        "shortName": "get_sample_query_set"
+      },
+      "description": "Sample for GetSampleQuerySet",
+      "file": "discoveryengine_v1beta_generated_sample_query_set_service_get_sample_query_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQuerySetService_GetSampleQuerySet_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_set_service_get_sample_query_set_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceClient",
+          "shortName": "SampleQuerySetServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceClient.get_sample_query_set",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService.GetSampleQuerySet",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService",
+            "shortName": "SampleQuerySetService"
+          },
+          "shortName": "GetSampleQuerySet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetSampleQuerySetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SampleQuerySet",
+        "shortName": "get_sample_query_set"
+      },
+      "description": "Sample for GetSampleQuerySet",
+      "file": "discoveryengine_v1beta_generated_sample_query_set_service_get_sample_query_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQuerySetService_GetSampleQuerySet_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_set_service_get_sample_query_set_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceAsyncClient",
+          "shortName": "SampleQuerySetServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceAsyncClient.list_sample_query_sets",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService.ListSampleQuerySets",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService",
+            "shortName": "SampleQuerySetService"
+          },
+          "shortName": "ListSampleQuerySets"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListSampleQuerySetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.sample_query_set_service.pagers.ListSampleQuerySetsAsyncPager",
+        "shortName": "list_sample_query_sets"
+      },
+      "description": "Sample for ListSampleQuerySets",
+      "file": "discoveryengine_v1beta_generated_sample_query_set_service_list_sample_query_sets_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQuerySetService_ListSampleQuerySets_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_set_service_list_sample_query_sets_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceClient",
+          "shortName": "SampleQuerySetServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceClient.list_sample_query_sets",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService.ListSampleQuerySets",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService",
+            "shortName": "SampleQuerySetService"
+          },
+          "shortName": "ListSampleQuerySets"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListSampleQuerySetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.sample_query_set_service.pagers.ListSampleQuerySetsPager",
+        "shortName": "list_sample_query_sets"
+      },
+      "description": "Sample for ListSampleQuerySets",
+      "file": "discoveryengine_v1beta_generated_sample_query_set_service_list_sample_query_sets_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQuerySetService_ListSampleQuerySets_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_set_service_list_sample_query_sets_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceAsyncClient",
+          "shortName": "SampleQuerySetServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceAsyncClient.update_sample_query_set",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService.UpdateSampleQuerySet",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService",
+            "shortName": "SampleQuerySetService"
+          },
+          "shortName": "UpdateSampleQuerySet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.UpdateSampleQuerySetRequest"
+          },
+          {
+            "name": "sample_query_set",
+            "type": "google.cloud.discoveryengine_v1beta.types.SampleQuerySet"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SampleQuerySet",
+        "shortName": "update_sample_query_set"
+      },
+      "description": "Sample for UpdateSampleQuerySet",
+      "file": "discoveryengine_v1beta_generated_sample_query_set_service_update_sample_query_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQuerySetService_UpdateSampleQuerySet_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_set_service_update_sample_query_set_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceClient",
+          "shortName": "SampleQuerySetServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SampleQuerySetServiceClient.update_sample_query_set",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService.UpdateSampleQuerySet",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SampleQuerySetService",
+            "shortName": "SampleQuerySetService"
+          },
+          "shortName": "UpdateSampleQuerySet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.UpdateSampleQuerySetRequest"
+          },
+          {
+            "name": "sample_query_set",
+            "type": "google.cloud.discoveryengine_v1beta.types.SampleQuerySet"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SampleQuerySet",
+        "shortName": "update_sample_query_set"
+      },
+      "description": "Sample for UpdateSampleQuerySet",
+      "file": "discoveryengine_v1beta_generated_sample_query_set_service_update_sample_query_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SampleQuerySetService_UpdateSampleQuerySet_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_sample_query_set_service_update_sample_query_set_sync.py"
     },
     {
       "canonical": true,

@@ -54,6 +54,12 @@ from google.cloud.discoveryengine_v1beta.services.engine_service.async_client im
 from google.cloud.discoveryengine_v1beta.services.engine_service.client import (
     EngineServiceClient,
 )
+from google.cloud.discoveryengine_v1beta.services.evaluation_service.async_client import (
+    EvaluationServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.evaluation_service.client import (
+    EvaluationServiceClient,
+)
 from google.cloud.discoveryengine_v1beta.services.grounded_generation_service.async_client import (
     GroundedGenerationServiceAsyncClient,
 )
@@ -77,6 +83,18 @@ from google.cloud.discoveryengine_v1beta.services.recommendation_service.async_c
 )
 from google.cloud.discoveryengine_v1beta.services.recommendation_service.client import (
     RecommendationServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.services.sample_query_service.async_client import (
+    SampleQueryServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.sample_query_service.client import (
+    SampleQueryServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.services.sample_query_set_service.async_client import (
+    SampleQuerySetServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.sample_query_set_service.client import (
+    SampleQuerySetServiceClient,
 )
 from google.cloud.discoveryengine_v1beta.services.schema_service.async_client import (
     SchemaServiceAsyncClient,
@@ -210,6 +228,19 @@ from google.cloud.discoveryengine_v1beta.types.engine_service import (
     TuneEngineResponse,
     UpdateEngineRequest,
 )
+from google.cloud.discoveryengine_v1beta.types.evaluation import (
+    Evaluation,
+    QualityMetrics,
+)
+from google.cloud.discoveryengine_v1beta.types.evaluation_service import (
+    CreateEvaluationMetadata,
+    CreateEvaluationRequest,
+    GetEvaluationRequest,
+    ListEvaluationResultsRequest,
+    ListEvaluationResultsResponse,
+    ListEvaluationsRequest,
+    ListEvaluationsResponse,
+)
 from google.cloud.discoveryengine_v1beta.types.grounded_generation_service import (
     CheckGroundingRequest,
     CheckGroundingResponse,
@@ -228,6 +259,9 @@ from google.cloud.discoveryengine_v1beta.types.import_config import (
     ImportDocumentsRequest,
     ImportDocumentsResponse,
     ImportErrorConfig,
+    ImportSampleQueriesMetadata,
+    ImportSampleQueriesRequest,
+    ImportSampleQueriesResponse,
     ImportSuggestionDenyListEntriesMetadata,
     ImportSuggestionDenyListEntriesRequest,
     ImportSuggestionDenyListEntriesResponse,
@@ -257,6 +291,24 @@ from google.cloud.discoveryengine_v1beta.types.rank_service import (
 from google.cloud.discoveryengine_v1beta.types.recommendation_service import (
     RecommendRequest,
     RecommendResponse,
+)
+from google.cloud.discoveryengine_v1beta.types.sample_query import SampleQuery
+from google.cloud.discoveryengine_v1beta.types.sample_query_service import (
+    CreateSampleQueryRequest,
+    DeleteSampleQueryRequest,
+    GetSampleQueryRequest,
+    ListSampleQueriesRequest,
+    ListSampleQueriesResponse,
+    UpdateSampleQueryRequest,
+)
+from google.cloud.discoveryengine_v1beta.types.sample_query_set import SampleQuerySet
+from google.cloud.discoveryengine_v1beta.types.sample_query_set_service import (
+    CreateSampleQuerySetRequest,
+    DeleteSampleQuerySetRequest,
+    GetSampleQuerySetRequest,
+    ListSampleQuerySetsRequest,
+    ListSampleQuerySetsResponse,
+    UpdateSampleQuerySetRequest,
 )
 from google.cloud.discoveryengine_v1beta.types.schema import Schema
 from google.cloud.discoveryengine_v1beta.types.schema_service import (
@@ -351,6 +403,8 @@ __all__ = (
     "DocumentServiceAsyncClient",
     "EngineServiceClient",
     "EngineServiceAsyncClient",
+    "EvaluationServiceClient",
+    "EvaluationServiceAsyncClient",
     "GroundedGenerationServiceClient",
     "GroundedGenerationServiceAsyncClient",
     "ProjectServiceClient",
@@ -359,6 +413,10 @@ __all__ = (
     "RankServiceAsyncClient",
     "RecommendationServiceClient",
     "RecommendationServiceAsyncClient",
+    "SampleQueryServiceClient",
+    "SampleQueryServiceAsyncClient",
+    "SampleQuerySetServiceClient",
+    "SampleQuerySetServiceAsyncClient",
     "SchemaServiceClient",
     "SchemaServiceAsyncClient",
     "SearchServiceClient",
@@ -448,6 +506,15 @@ __all__ = (
     "TuneEngineRequest",
     "TuneEngineResponse",
     "UpdateEngineRequest",
+    "Evaluation",
+    "QualityMetrics",
+    "CreateEvaluationMetadata",
+    "CreateEvaluationRequest",
+    "GetEvaluationRequest",
+    "ListEvaluationResultsRequest",
+    "ListEvaluationResultsResponse",
+    "ListEvaluationsRequest",
+    "ListEvaluationsResponse",
     "CheckGroundingRequest",
     "CheckGroundingResponse",
     "CheckGroundingSpec",
@@ -464,6 +531,9 @@ __all__ = (
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
     "ImportErrorConfig",
+    "ImportSampleQueriesMetadata",
+    "ImportSampleQueriesRequest",
+    "ImportSampleQueriesResponse",
     "ImportSuggestionDenyListEntriesMetadata",
     "ImportSuggestionDenyListEntriesRequest",
     "ImportSuggestionDenyListEntriesResponse",
@@ -485,6 +555,20 @@ __all__ = (
     "RankResponse",
     "RecommendRequest",
     "RecommendResponse",
+    "SampleQuery",
+    "CreateSampleQueryRequest",
+    "DeleteSampleQueryRequest",
+    "GetSampleQueryRequest",
+    "ListSampleQueriesRequest",
+    "ListSampleQueriesResponse",
+    "UpdateSampleQueryRequest",
+    "SampleQuerySet",
+    "CreateSampleQuerySetRequest",
+    "DeleteSampleQuerySetRequest",
+    "GetSampleQuerySetRequest",
+    "ListSampleQuerySetsRequest",
+    "ListSampleQuerySetsResponse",
+    "UpdateSampleQuerySetRequest",
     "Schema",
     "CreateSchemaMetadata",
     "CreateSchemaRequest",
