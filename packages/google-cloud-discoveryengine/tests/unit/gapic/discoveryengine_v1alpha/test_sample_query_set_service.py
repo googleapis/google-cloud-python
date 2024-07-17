@@ -5777,14 +5777,14 @@ def test_parse_location_path():
 def test_sample_query_set_path():
     project = "oyster"
     location = "nudibranch"
-    sampleQuerySet = "cuttlefish"
-    expected = "projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}".format(
+    sample_query_set = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}".format(
         project=project,
         location=location,
-        sampleQuerySet=sampleQuerySet,
+        sample_query_set=sample_query_set,
     )
     actual = SampleQuerySetServiceClient.sample_query_set_path(
-        project, location, sampleQuerySet
+        project, location, sample_query_set
     )
     assert expected == actual
 
@@ -5793,7 +5793,7 @@ def test_parse_sample_query_set_path():
     expected = {
         "project": "mussel",
         "location": "winkle",
-        "sampleQuerySet": "nautilus",
+        "sample_query_set": "nautilus",
     }
     path = SampleQuerySetServiceClient.sample_query_set_path(**expected)
 

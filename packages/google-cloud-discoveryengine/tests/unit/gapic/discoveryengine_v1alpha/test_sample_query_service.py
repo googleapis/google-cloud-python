@@ -6319,16 +6319,16 @@ def test_sample_query_service_grpc_lro_async_client():
 def test_sample_query_path():
     project = "squid"
     location = "clam"
-    sampleQuerySet = "whelk"
-    sampleQuery = "octopus"
-    expected = "projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}/sampleQueries/{sampleQuery}".format(
+    sample_query_set = "whelk"
+    sample_query = "octopus"
+    expected = "projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}".format(
         project=project,
         location=location,
-        sampleQuerySet=sampleQuerySet,
-        sampleQuery=sampleQuery,
+        sample_query_set=sample_query_set,
+        sample_query=sample_query,
     )
     actual = SampleQueryServiceClient.sample_query_path(
-        project, location, sampleQuerySet, sampleQuery
+        project, location, sample_query_set, sample_query
     )
     assert expected == actual
 
@@ -6337,8 +6337,8 @@ def test_parse_sample_query_path():
     expected = {
         "project": "oyster",
         "location": "nudibranch",
-        "sampleQuerySet": "cuttlefish",
-        "sampleQuery": "mussel",
+        "sample_query_set": "cuttlefish",
+        "sample_query": "mussel",
     }
     path = SampleQueryServiceClient.sample_query_path(**expected)
 
@@ -6350,14 +6350,14 @@ def test_parse_sample_query_path():
 def test_sample_query_set_path():
     project = "winkle"
     location = "nautilus"
-    sampleQuerySet = "scallop"
-    expected = "projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}".format(
+    sample_query_set = "scallop"
+    expected = "projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}".format(
         project=project,
         location=location,
-        sampleQuerySet=sampleQuerySet,
+        sample_query_set=sample_query_set,
     )
     actual = SampleQueryServiceClient.sample_query_set_path(
-        project, location, sampleQuerySet
+        project, location, sample_query_set
     )
     assert expected == actual
 
@@ -6366,7 +6366,7 @@ def test_parse_sample_query_set_path():
     expected = {
         "project": "abalone",
         "location": "squid",
-        "sampleQuerySet": "clam",
+        "sample_query_set": "clam",
     }
     path = SampleQueryServiceClient.sample_query_set_path(**expected)
 

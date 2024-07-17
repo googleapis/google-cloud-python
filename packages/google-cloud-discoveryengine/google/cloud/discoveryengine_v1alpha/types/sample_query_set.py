@@ -34,10 +34,10 @@ class SampleQuerySet(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The full resource name of the
+            Identifier. The full resource name of the
             [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],
             in the format of
-            ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.
+            ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
             This field must be a UTF-8 encoded string with a length
             limit of 1024 characters.

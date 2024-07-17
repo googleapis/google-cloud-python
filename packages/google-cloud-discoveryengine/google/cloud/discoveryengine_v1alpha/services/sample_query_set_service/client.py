@@ -217,20 +217,20 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
     def sample_query_set_path(
         project: str,
         location: str,
-        sampleQuerySet: str,
+        sample_query_set: str,
     ) -> str:
         """Returns a fully-qualified sample_query_set string."""
-        return "projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}".format(
+        return "projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}".format(
             project=project,
             location=location,
-            sampleQuerySet=sampleQuerySet,
+            sample_query_set=sample_query_set,
         )
 
     @staticmethod
     def parse_sample_query_set_path(path: str) -> Dict[str, str]:
         """Parses a sample_query_set path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sampleQuerySets/(?P<sampleQuerySet>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sampleQuerySets/(?P<sample_query_set>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -763,7 +763,7 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
                 Required. Full resource name of
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],
                 such as
-                ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.
+                ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
                 If the caller does not have permission to access the
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],
@@ -1299,7 +1299,7 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
                 Required. Full resource name of
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],
                 such as
-                ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.
+                ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
                 If the caller does not have permission to delete the
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],

@@ -47,7 +47,7 @@ class GetSampleQuerySetRequest(proto.Message):
             Required. Full resource name of
             [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],
             such as
-            ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.
+            ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
             If the caller does not have permission to access the
             [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],
@@ -244,7 +244,7 @@ class DeleteSampleQuerySetRequest(proto.Message):
             Required. Full resource name of
             [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],
             such as
-            ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.
+            ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
             If the caller does not have permission to delete the
             [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],

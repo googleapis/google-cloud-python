@@ -39,7 +39,7 @@ class Evaluation(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The full resource name of the
+            Identifier. The full resource name of the
             [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation],
             in the format of
             ``projects/{project}/locations/{location}/evaluations/{evaluation}``.

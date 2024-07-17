@@ -199,22 +199,22 @@ class SampleQueryServiceClient(metaclass=SampleQueryServiceClientMeta):
     def sample_query_path(
         project: str,
         location: str,
-        sampleQuerySet: str,
-        sampleQuery: str,
+        sample_query_set: str,
+        sample_query: str,
     ) -> str:
         """Returns a fully-qualified sample_query string."""
-        return "projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}/sampleQueries/{sampleQuery}".format(
+        return "projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}".format(
             project=project,
             location=location,
-            sampleQuerySet=sampleQuerySet,
-            sampleQuery=sampleQuery,
+            sample_query_set=sample_query_set,
+            sample_query=sample_query,
         )
 
     @staticmethod
     def parse_sample_query_path(path: str) -> Dict[str, str]:
         """Parses a sample_query path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sampleQuerySets/(?P<sampleQuerySet>.+?)/sampleQueries/(?P<sampleQuery>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sampleQuerySets/(?P<sample_query_set>.+?)/sampleQueries/(?P<sample_query>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -223,20 +223,20 @@ class SampleQueryServiceClient(metaclass=SampleQueryServiceClientMeta):
     def sample_query_set_path(
         project: str,
         location: str,
-        sampleQuerySet: str,
+        sample_query_set: str,
     ) -> str:
         """Returns a fully-qualified sample_query_set string."""
-        return "projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}".format(
+        return "projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}".format(
             project=project,
             location=location,
-            sampleQuerySet=sampleQuerySet,
+            sample_query_set=sample_query_set,
         )
 
     @staticmethod
     def parse_sample_query_set_path(path: str) -> Dict[str, str]:
         """Parses a sample_query_set path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sampleQuerySets/(?P<sampleQuerySet>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sampleQuerySets/(?P<sample_query_set>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -767,7 +767,7 @@ class SampleQueryServiceClient(metaclass=SampleQueryServiceClientMeta):
                 Required. Full resource name of
                 [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery],
                 such as
-                ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}/sampleQueries/{sampleQuery}``.
+                ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}``.
 
                 If the caller does not have permission to access the
                 [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery],
@@ -1294,7 +1294,7 @@ class SampleQueryServiceClient(metaclass=SampleQueryServiceClientMeta):
                 Required. Full resource name of
                 [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery],
                 such as
-                ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}/sampleQueries/{sampleQuery}``.
+                ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}``.
 
                 If the caller does not have permission to delete the
                 [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery],
