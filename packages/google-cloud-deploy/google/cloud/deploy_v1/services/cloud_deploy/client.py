@@ -1331,7 +1331,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The request object. The request object for ``CreateDeliveryPipeline``.
             parent (str):
                 Required. The parent collection in which the
-                ``DeliveryPipeline`` should be created. Format should be
+                ``DeliveryPipeline`` must be created. The format is
                 ``projects/{project_id}/locations/{location_name}``.
 
                 This corresponds to the ``parent`` field
@@ -1473,8 +1473,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. Field mask is used to specify the fields to be
-                overwritten in the ``DeliveryPipeline`` resource by the
-                update. The fields specified in the update_mask are
+                overwritten by the update in the ``DeliveryPipeline``
+                resource. The fields specified in the update_mask are
                 relative to the resource, not the full request. A field
                 will be overwritten if it's in the mask. If the user
                 doesn't provide a mask then all fields are overwritten.
@@ -1603,7 +1603,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The request object. The request object for ``DeleteDeliveryPipeline``.
             name (str):
                 Required. The name of the ``DeliveryPipeline`` to
-                delete. Format should be
+                delete. The format is
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
 
                 This corresponds to the ``name`` field
@@ -1843,7 +1843,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The request object. The request object for ``RollbackTarget``.
             name (str):
                 Required. The ``DeliveryPipeline`` for which the
-                rollback ``Rollout`` should be created. Format should be
+                rollback ``Rollout`` must be created. The format is
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
 
                 This corresponds to the ``name`` field
@@ -2071,7 +2071,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The request object. The request object for ``CreateTarget``.
             parent (str):
                 Required. The parent collection in which the ``Target``
-                should be created. Format should be
+                must be created. The format is
                 ``projects/{project_id}/locations/{location_name}``.
 
                 This corresponds to the ``parent`` field
@@ -2211,9 +2211,9 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. Field mask is used to specify the fields to be
-                overwritten in the Target resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
+                overwritten by the update in the ``Target`` resource.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
                 overwritten if it's in the mask. If the user doesn't
                 provide a mask then all fields are overwritten.
 
@@ -2338,8 +2338,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
             request (Union[google.cloud.deploy_v1.types.DeleteTargetRequest, dict]):
                 The request object. The request object for ``DeleteTarget``.
             name (str):
-                Required. The name of the ``Target`` to delete. Format
-                should be
+                Required. The name of the ``Target`` to delete. The
+                format is
                 ``projects/{project_id}/locations/{location_name}/targets/{target_name}``.
 
                 This corresponds to the ``name`` field
@@ -2699,7 +2699,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The request object. The request object for ``CreateCustomTargetType``.
             parent (str):
                 Required. The parent collection in which the
-                ``CustomTargetType`` should be created. Format should be
+                ``CustomTargetType`` must be created. The format is
                 ``projects/{project_id}/locations/{location_name}``.
 
                 This corresponds to the ``parent`` field
@@ -2849,8 +2849,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. Field mask is used to specify the fields to be
-                overwritten in the ``CustomTargetType`` resource by the
-                update. The fields specified in the update_mask are
+                overwritten by the update in the ``CustomTargetType``
+                resource. The fields specified in the update_mask are
                 relative to the resource, not the full request. A field
                 will be overwritten if it's in the mask. If the user
                 doesn't provide a mask then all fields are overwritten.
@@ -3332,7 +3332,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The request object. The request object for ``CreateRelease``,
             parent (str):
                 Required. The parent collection in which the ``Release``
-                should be created. Format should be
+                is created. The format is
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
 
                 This corresponds to the ``parent`` field
@@ -3575,7 +3575,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The request object. The request object for ``CreateDeployPolicy``.
             parent (str):
                 Required. The parent collection in which the
-                ``DeployPolicy`` should be created. Format should be
+                ``DeployPolicy`` must be created. The format is
                 ``projects/{project_id}/locations/{location_name}``.
 
                 This corresponds to the ``parent`` field
@@ -3719,8 +3719,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. Field mask is used to specify the fields to be
-                overwritten in the ``DeployPolicy`` resource by the
-                update. The fields specified in the update_mask are
+                overwritten by the update in the ``DeployPolicy``
+                resource. The fields specified in the update_mask are
                 relative to the resource, not the full request. A field
                 will be overwritten if it's in the mask. If the user
                 doesn't provide a mask then all fields are overwritten.
@@ -3847,7 +3847,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The request object. The request object for ``DeleteDeployPolicy``.
             name (str):
                 Required. The name of the ``DeployPolicy`` to delete.
-                Format should be
+                The format is
                 ``projects/{project_id}/locations/{location_name}/deployPolicies/{deploy_policy_name}``.
 
                 This corresponds to the ``name`` field
@@ -4731,7 +4731,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 ``CreateRollout``.
             parent (str):
                 Required. The parent collection in which the ``Rollout``
-                should be created. Format should be
+                must be created. The format is
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}``.
 
                 This corresponds to the ``parent`` field
@@ -5541,7 +5541,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The request object. The request object for ``CreateAutomation``.
             parent (str):
                 Required. The parent collection in which the
-                ``Automation`` should be created. Format should be
+                ``Automation`` must be created. The format is
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
 
                 This corresponds to the ``parent`` field
@@ -5691,8 +5691,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. Field mask is used to specify the fields to be
-                overwritten in the ``Automation`` resource by the
-                update. The fields specified in the update_mask are
+                overwritten by the update in the ``Automation``
+                resource. The fields specified in the update_mask are
                 relative to the resource, not the full request. A field
                 will be overwritten if it's in the mask. If the user
                 doesn't provide a mask then all fields are overwritten.
@@ -5822,8 +5822,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
             request (Union[google.cloud.deploy_v1.types.DeleteAutomationRequest, dict]):
                 The request object. The request object for ``DeleteAutomation``.
             name (str):
-                Required. The name of the ``Automation`` to delete.
-                Format should be
+                Required. The name of the ``Automation`` to delete. The
+                format is
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/automations/{automation_name}``.
 
                 This corresponds to the ``name`` field

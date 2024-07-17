@@ -21,11 +21,10 @@ import proto  # type: ignore
 
 from google.cloud.deploy_v1.types import cloud_deploy
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.deploy.v1',
+    package="google.cloud.deploy.v1",
     manifest={
-        'DeployPolicyEvaluationEvent',
+        "DeployPolicyEvaluationEvent",
     },
 )
 
@@ -76,6 +75,7 @@ class DeployPolicyEvaluationEvent(proto.Message):
             verdict. Overrides together with verdict decide
             whether the request is allowed.
     """
+
     class PolicyVerdict(proto.Enum):
         r"""The policy verdict of the request.
 

@@ -1149,7 +1149,7 @@ class CreateDeliveryPipelineRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent collection in which the
-            ``DeliveryPipeline`` should be created. Format should be
+            ``DeliveryPipeline`` must be created. The format is
             ``projects/{project_id}/locations/{location_name}``.
         delivery_pipeline_id (str):
             Required. ID of the ``DeliveryPipeline``.
@@ -1210,11 +1210,11 @@ class UpdateDeliveryPipelineRequest(proto.Message):
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Field mask is used to specify the fields to be
-            overwritten in the ``DeliveryPipeline`` resource by the
-            update. The fields specified in the update_mask are relative
-            to the resource, not the full request. A field will be
-            overwritten if it's in the mask. If the user doesn't provide
-            a mask then all fields are overwritten.
+            overwritten by the update in the ``DeliveryPipeline``
+            resource. The fields specified in the update_mask are
+            relative to the resource, not the full request. A field will
+            be overwritten if it's in the mask. If the user doesn't
+            provide a mask then all fields are overwritten.
         delivery_pipeline (google.cloud.deploy_v1.types.DeliveryPipeline):
             Required. The ``DeliveryPipeline`` to update.
         request_id (str):
@@ -1277,7 +1277,7 @@ class DeleteDeliveryPipelineRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the ``DeliveryPipeline`` to delete.
-            Format should be
+            The format is
             ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
         request_id (str):
             Optional. A request ID to identify requests.
@@ -1372,7 +1372,7 @@ class RollbackTargetRequest(proto.Message):
     Attributes:
         name (str):
             Required. The ``DeliveryPipeline`` for which the rollback
-            ``Rollout`` should be created. Format should be
+            ``Rollout`` must be created. The format is
             ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
         target_id (str):
             Required. ID of the ``Target`` that is being rolled back.
@@ -2013,8 +2013,8 @@ class CreateTargetRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent collection in which the ``Target``
-            should be created. Format should be
+            Required. The parent collection in which the ``Target`` must
+            be created. The format is
             ``projects/{project_id}/locations/{location_name}``.
         target_id (str):
             Required. ID of the ``Target``.
@@ -2075,11 +2075,11 @@ class UpdateTargetRequest(proto.Message):
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Field mask is used to specify the fields to be
-            overwritten in the Target resource by the update. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it's in
-            the mask. If the user doesn't provide a mask then all fields
-            are overwritten.
+            overwritten by the update in the ``Target`` resource. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it's in the mask. If the user doesn't provide a mask then
+            all fields are overwritten.
         target (google.cloud.deploy_v1.types.Target):
             Required. The ``Target`` to update.
         request_id (str):
@@ -2140,8 +2140,8 @@ class DeleteTargetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the ``Target`` to delete. Format
-            should be
+            Required. The name of the ``Target`` to delete. The format
+            is
             ``projects/{project_id}/locations/{location_name}/targets/{target_name}``.
         request_id (str):
             Optional. A request ID to identify requests.
@@ -2585,7 +2585,7 @@ class CreateCustomTargetTypeRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent collection in which the
-            ``CustomTargetType`` should be created. Format should be
+            ``CustomTargetType`` must be created. The format is
             ``projects/{project_id}/locations/{location_name}``.
         custom_target_type_id (str):
             Required. ID of the ``CustomTargetType``.
@@ -2646,11 +2646,11 @@ class UpdateCustomTargetTypeRequest(proto.Message):
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Field mask is used to specify the fields to be
-            overwritten in the ``CustomTargetType`` resource by the
-            update. The fields specified in the update_mask are relative
-            to the resource, not the full request. A field will be
-            overwritten if it's in the mask. If the user doesn't provide
-            a mask then all fields are overwritten.
+            overwritten by the update in the ``CustomTargetType``
+            resource. The fields specified in the update_mask are
+            relative to the resource, not the full request. A field will
+            be overwritten if it's in the mask. If the user doesn't
+            provide a mask then all fields are overwritten.
         custom_target_type (google.cloud.deploy_v1.types.CustomTargetType):
             Required. The ``CustomTargetType`` to update.
         request_id (str):
@@ -2859,8 +2859,9 @@ class DeployPolicy(proto.Message):
             INVOKER_UNSPECIFIED (0):
                 Unspecified.
             USER (1):
-                The action is user-driven (e.g. creating a
-                rollout manually via a gcloud create command).
+                The action is user-driven. For example,
+                creating a rollout manually via a gcloud create
+                command.
             DEPLOY_AUTOMATION (2):
                 Automated action by Cloud Deploy.
         """
@@ -2923,10 +2924,10 @@ class DeployPolicy(proto.Message):
 class DeployPolicyResourceSelector(proto.Message):
     r"""Contains information on the resources to select for a deploy
     policy. Attributes provided must all match the resource in order
-    for policy restrictions to apply. E.g. if delivery pipelines
-    attributes given are an id "prod" and labels "foo: bar", a
-    delivery pipeline resource must match both that id and have that
-    label in order to be subject to the policy.
+    for policy restrictions to apply. For example, if delivery
+    pipelines attributes given are an id "prod" and labels "foo:
+    bar", a delivery pipeline resource must match both that id and
+    have that label in order to be subject to the policy.
 
     Attributes:
         delivery_pipeline (google.cloud.deploy_v1.types.DeliveryPipelineAttribute):
@@ -3036,7 +3037,7 @@ class RestrictRollout(proto.Message):
             the policy. If left empty, all actions will be
             restricted.
         time_window (google.cloud.deploy_v1.types.TimeWindow):
-            Required. Time Window within which actions
+            Required. Time window within which actions
             are restricted.
     """
 
@@ -3095,7 +3096,7 @@ class RestrictRollout(proto.Message):
 
 
 class TimeWindow(proto.Message):
-    r"""Time Window within which actions are restricted.
+    r"""Time window within which actions are restricted.
 
     Attributes:
         time_zone (str):
@@ -3636,7 +3637,7 @@ class CreateDeployPolicyRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent collection in which the
-            ``DeployPolicy`` should be created. Format should be
+            ``DeployPolicy`` must be created. The format is
             ``projects/{project_id}/locations/{location_name}``.
         deploy_policy_id (str):
             Required. ID of the ``DeployPolicy``.
@@ -3697,7 +3698,7 @@ class UpdateDeployPolicyRequest(proto.Message):
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Field mask is used to specify the fields to be
-            overwritten in the ``DeployPolicy`` resource by the update.
+            overwritten by the update in the ``DeployPolicy`` resource.
             The fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten
             if it's in the mask. If the user doesn't provide a mask then
@@ -3763,8 +3764,8 @@ class DeleteDeployPolicyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the ``DeployPolicy`` to delete. Format
-            should be
+            Required. The name of the ``DeployPolicy`` to delete. The
+            format is
             ``projects/{project_id}/locations/{location_name}/deployPolicies/{deploy_policy_name}``.
         request_id (str):
             Optional. A request ID to identify requests.
@@ -4191,8 +4192,8 @@ class CreateReleaseRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent collection in which the ``Release``
-            should be created. Format should be
+            Required. The parent collection in which the ``Release`` is
+            created. The format is
             ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
         release_id (str):
             Required. ID of the ``Release``.
@@ -5152,7 +5153,7 @@ class CreateRolloutRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent collection in which the ``Rollout``
-            should be created. Format should be
+            must be created. The format is
             ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}``.
         rollout_id (str):
             Required. ID of the ``Rollout``.
@@ -6382,8 +6383,8 @@ class AutomationRule(proto.Message):
 
 
 class PromoteReleaseRule(proto.Message):
-    r"""``PromoteRelease`` rule will automatically promote a release from
-    the current target to a specified target.
+    r"""The ``PromoteRelease`` rule will automatically promote a release
+    from the current target to a specified target.
 
     Attributes:
         id (str):
@@ -6646,7 +6647,7 @@ class CreateAutomationRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent collection in which the ``Automation``
-            should be created. Format should be
+            must be created. The format is
             ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
         automation_id (str):
             Required. ID of the ``Automation``.
@@ -6707,7 +6708,7 @@ class UpdateAutomationRequest(proto.Message):
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Field mask is used to specify the fields to be
-            overwritten in the ``Automation`` resource by the update.
+            overwritten by the update in the ``Automation`` resource.
             The fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten
             if it's in the mask. If the user doesn't provide a mask then
@@ -6773,8 +6774,8 @@ class DeleteAutomationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the ``Automation`` to delete. Format
-            should be
+            Required. The name of the ``Automation`` to delete. The
+            format is
             ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/automations/{automation_name}``.
         request_id (str):
             Optional. A request ID to identify requests.
@@ -7025,6 +7026,8 @@ class AutomationRun(proto.Message):
                 The ``AutomationRun`` is in progress.
             PENDING (5):
                 The ``AutomationRun`` is pending.
+            ABORTED (6):
+                The ``AutomationRun`` was aborted.
         """
         STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
@@ -7032,6 +7035,7 @@ class AutomationRun(proto.Message):
         FAILED = 3
         IN_PROGRESS = 4
         PENDING = 5
+        ABORTED = 6
 
     name: str = proto.Field(
         proto.STRING,

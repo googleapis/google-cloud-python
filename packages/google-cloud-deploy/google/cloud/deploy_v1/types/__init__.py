@@ -175,7 +175,10 @@ from .cloud_deploy import (
     VerifyJob,
     VerifyJobRun,
 )
+from .customtargettype_notification_payload import CustomTargetTypeNotificationEvent
 from .deliverypipeline_notification_payload import DeliveryPipelineNotificationEvent
+from .deploypolicy_evaluation_payload import DeployPolicyEvaluationEvent
+from .deploypolicy_notification_payload import DeployPolicyNotificationEvent
 from .jobrun_notification_payload import JobRunNotificationEvent
 from .log_enums import Type
 from .release_notification_payload import ReleaseNotificationEvent
@@ -345,7 +348,10 @@ __all__ = (
     "BackoffMode",
     "RepairState",
     "SkaffoldSupportState",
+    "CustomTargetTypeNotificationEvent",
     "DeliveryPipelineNotificationEvent",
+    "DeployPolicyEvaluationEvent",
+    "DeployPolicyNotificationEvent",
     "JobRunNotificationEvent",
     "Type",
     "ReleaseNotificationEvent",

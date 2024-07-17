@@ -184,8 +184,17 @@ from google.cloud.deploy_v1.types.cloud_deploy import (
     VerifyJob,
     VerifyJobRun,
 )
+from google.cloud.deploy_v1.types.customtargettype_notification_payload import (
+    CustomTargetTypeNotificationEvent,
+)
 from google.cloud.deploy_v1.types.deliverypipeline_notification_payload import (
     DeliveryPipelineNotificationEvent,
+)
+from google.cloud.deploy_v1.types.deploypolicy_evaluation_payload import (
+    DeployPolicyEvaluationEvent,
+)
+from google.cloud.deploy_v1.types.deploypolicy_notification_payload import (
+    DeployPolicyNotificationEvent,
 )
 from google.cloud.deploy_v1.types.jobrun_notification_payload import (
     JobRunNotificationEvent,
@@ -366,7 +375,10 @@ __all__ = (
     "BackoffMode",
     "RepairState",
     "SkaffoldSupportState",
+    "CustomTargetTypeNotificationEvent",
     "DeliveryPipelineNotificationEvent",
+    "DeployPolicyEvaluationEvent",
+    "DeployPolicyNotificationEvent",
     "JobRunNotificationEvent",
     "Type",
     "ReleaseNotificationEvent",

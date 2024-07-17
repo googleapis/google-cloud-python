@@ -21,28 +21,28 @@ import proto  # type: ignore
 
 from google.cloud.deploy_v1.types import log_enums
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.deploy.v1',
+    package="google.cloud.deploy.v1",
     manifest={
-        'AutomationEvent',
+        "DeployPolicyNotificationEvent",
     },
 )
 
 
-class AutomationEvent(proto.Message):
-    r"""Payload proto for "clouddeploy.googleapis.com/automation"
-    Platform Log event that describes the Automation related events.
+class DeployPolicyNotificationEvent(proto.Message):
+    r"""Payload proto for
+    "clouddeploy.googleapis.com/deploypolicy_notification". Platform Log
+    event that describes the failure to send a pub/sub notification when
+    there is a DeployPolicy status change.
 
     Attributes:
         message (str):
-            Debug message for when there is an update on
-            the AutomationRun. Provides further details
-            about the resource creation or state change.
-        automation (str):
-            The name of the ``AutomationRun``.
-        pipeline_uid (str):
-            Unique identifier of the ``DeliveryPipeline``.
+            Debug message for when a deploy policy fails
+            to send a pub/sub notification.
+        deploy_policy (str):
+            The name of the ``DeployPolicy``.
+        deploy_policy_uid (str):
+            Unique identifier of the deploy policy.
         type_ (google.cloud.deploy_v1.types.Type):
             Type of this notification, e.g. for a Pub/Sub
             failure.
@@ -52,11 +52,11 @@ class AutomationEvent(proto.Message):
         proto.STRING,
         number=1,
     )
-    automation: str = proto.Field(
+    deploy_policy: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    pipeline_uid: str = proto.Field(
+    deploy_policy_uid: str = proto.Field(
         proto.STRING,
         number=3,
     )
