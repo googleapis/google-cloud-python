@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
 import uuid
 
 from google.api_core import exceptions
-import pytest
+from google.protobuf import descriptor_pb2
 
 from google.cloud.bigquery_storage_v1 import types as gapic_types
 from google.cloud.bigquery_storage_v1.writer import AppendRowsStream
+
+from .resources import person_pb2
 
 
 @pytest.fixture
@@ -58,29 +61,7 @@ def test_append_rows_with_invalid_stream_name_fails_fast(bqstorage_write_client)
 
 
 def test_append_rows_with_proto3(bqstorage_write_client, table):
-    from google.protobuf import descriptor_pb2
-    import proto
-
-    # Using Proto Plus to build proto3
-    # Declare proto3 field `optional` for presence
-    class PersonProto(proto.Message):
-        first_name = proto.Field(
-            proto.STRING,
-            number=1,
-            optional=True,
-        )
-        last_name = proto.Field(
-            proto.STRING,
-            number=2,
-            optional=True,
-        )
-        age = proto.Field(
-            proto.INT64,
-            number=3,
-            optional=True,
-        )
-
-    person_pb = PersonProto.pb()
+    person_pb = person_pb2.PersonProto()
 
     stream_name = f"projects/{table.project}/datasets/{table.dataset_id}/tables/{table.table_id}/_default"
     request_template = gapic_types.AppendRowsRequest()
@@ -104,7 +85,7 @@ def test_append_rows_with_proto3(bqstorage_write_client, table):
     request = gapic_types.AppendRowsRequest()
     proto_data = gapic_types.AppendRowsRequest.ProtoData()
     proto_rows = gapic_types.ProtoRows()
-    row = person_pb()
+    row = person_pb
     row.first_name = "fn"
     row.last_name = "ln"
     row.age = 20
