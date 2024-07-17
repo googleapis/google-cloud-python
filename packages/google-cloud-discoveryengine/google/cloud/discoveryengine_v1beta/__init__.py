@@ -62,6 +62,7 @@ from .services.user_event_service import (
     UserEventServiceClient,
 )
 from .types.answer import Answer
+from .types.chunk import Chunk
 from .types.common import (
     CustomAttribute,
     DoubleList,
@@ -289,6 +290,7 @@ __all__ = (
     "CheckGroundingRequest",
     "CheckGroundingResponse",
     "CheckGroundingSpec",
+    "Chunk",
     "CloudSqlSource",
     "CollectUserEventRequest",
     "CompleteQueryRequest",

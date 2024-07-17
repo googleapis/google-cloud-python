@@ -115,6 +115,7 @@ from google.cloud.discoveryengine_v1beta.services.user_event_service.client impo
     UserEventServiceClient,
 )
 from google.cloud.discoveryengine_v1beta.types.answer import Answer
+from google.cloud.discoveryengine_v1beta.types.chunk import Chunk
 from google.cloud.discoveryengine_v1beta.types.common import (
     CustomAttribute,
     DoubleList,
@@ -371,6 +372,7 @@ __all__ = (
     "UserEventServiceClient",
     "UserEventServiceAsyncClient",
     "Answer",
+    "Chunk",
     "CustomAttribute",
     "DoubleList",
     "EmbeddingConfig",

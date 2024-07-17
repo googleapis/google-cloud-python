@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .answer import Answer
+from .chunk import Chunk
 from .common import (
     CustomAttribute,
     DoubleList,
@@ -211,6 +212,7 @@ from .user_event_service import CollectUserEventRequest, WriteUserEventRequest
 
 __all__ = (
     "Answer",
+    "Chunk",
     "CustomAttribute",
     "DoubleList",
     "EmbeddingConfig",
