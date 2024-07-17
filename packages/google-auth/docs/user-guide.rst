@@ -578,7 +578,7 @@ can be used to make HTTP requests.::
     credentials = aws.Credentials(
         AUDIENCE, # Set GCP Audience.
         "urn:ietf:params:aws:token-type:aws4_request", # Set AWS subject token type.
-        aws_security_token_supplier=supplier, # Set supplier.
+        aws_security_credentials_supplier=supplier, # Set supplier.
         scopes=SCOPES # Set desired scopes.
     )
 
