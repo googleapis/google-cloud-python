@@ -28,6 +28,7 @@ API Reference
   storage/bucket
   storage/client
   storage/constants
+  storage/exceptions
   storage/fileio
   storage/hmac_key
   storage/notification
