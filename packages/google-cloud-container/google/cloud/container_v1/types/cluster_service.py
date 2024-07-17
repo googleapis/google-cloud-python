@@ -69,6 +69,7 @@ __protobuf__ = proto.module(
         "GcePersistentDiskCsiDriverConfig",
         "GcpFilestoreCsiDriverConfig",
         "GcsFuseCsiDriverConfig",
+        "RayOperatorConfig",
         "GkeBackupAgentConfig",
         "StatefulHAConfig",
         "MasterAuthorizedNetworksConfig",
@@ -183,8 +184,10 @@ __protobuf__ = proto.module(
         "WorkloadPolicyConfig",
         "LoggingConfig",
         "LoggingComponentConfig",
+        "RayClusterLoggingConfig",
         "MonitoringConfig",
         "AdvancedDatapathObservabilityConfig",
+        "RayClusterMonitoringConfig",
         "NodePoolLoggingConfig",
         "LoggingVariantConfig",
         "MonitoringComponentConfig",
@@ -1195,13 +1198,13 @@ class AdditionalPodNetworkConfig(proto.Message):
     Attributes:
         subnetwork (str):
             Name of the subnetwork where the additional
-            pod network belongs
+            pod network belongs.
         secondary_pod_range (str):
             The name of the secondary range on the subnet
-            which provides IP address for this pod range
+            which provides IP address for this pod range.
         max_pods_per_node (google.cloud.container_v1.types.MaxPodsConstraint):
             The maximum number of pods per node which use
-            this pod network
+            this pod network.
 
             This field is a member of `oneof`_ ``_max_pods_per_node``.
     """
@@ -1765,6 +1768,9 @@ class AddonsConfig(proto.Message):
         stateful_ha_config (google.cloud.container_v1.types.StatefulHAConfig):
             Optional. Configuration for the StatefulHA
             add-on.
+        ray_operator_config (google.cloud.container_v1.types.RayOperatorConfig):
+            Optional. Configuration for Ray Operator
+            addon.
     """
 
     http_load_balancing: "HttpLoadBalancing" = proto.Field(
@@ -1828,6 +1834,11 @@ class AddonsConfig(proto.Message):
         proto.MESSAGE,
         number=18,
         message="StatefulHAConfig",
+    )
+    ray_operator_config: "RayOperatorConfig" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="RayOperatorConfig",
     )
 
 
@@ -2123,6 +2134,37 @@ class GcsFuseCsiDriverConfig(proto.Message):
     enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+
+
+class RayOperatorConfig(proto.Message):
+    r"""Configuration options for the Ray Operator add-on.
+
+    Attributes:
+        enabled (bool):
+            Whether the Ray Operator addon is enabled for
+            this cluster.
+        ray_cluster_logging_config (google.cloud.container_v1.types.RayClusterLoggingConfig):
+            Optional. Logging configuration for Ray
+            clusters.
+        ray_cluster_monitoring_config (google.cloud.container_v1.types.RayClusterMonitoringConfig):
+            Optional. Monitoring configuration for Ray
+            clusters.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    ray_cluster_logging_config: "RayClusterLoggingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RayClusterLoggingConfig",
+    )
+    ray_cluster_monitoring_config: "RayClusterMonitoringConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="RayClusterMonitoringConfig",
     )
 
 
@@ -9372,6 +9414,21 @@ class LoggingComponentConfig(proto.Message):
     )
 
 
+class RayClusterLoggingConfig(proto.Message):
+    r"""RayClusterLoggingConfig specifies configuration of Ray
+    logging.
+
+    Attributes:
+        enabled (bool):
+            Enable log collection for Ray clusters.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
 class MonitoringConfig(proto.Message):
     r"""MonitoringConfig is cluster monitoring configuration.
 
@@ -9454,6 +9511,21 @@ class AdvancedDatapathObservabilityConfig(proto.Message):
         proto.BOOL,
         number=3,
         optional=True,
+    )
+
+
+class RayClusterMonitoringConfig(proto.Message):
+    r"""RayClusterMonitoringConfig specifies monitoring configuration
+    for Ray clusters.
+
+    Attributes:
+        enabled (bool):
+            Enable metrics collection for Ray clusters.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
     )
 
 
