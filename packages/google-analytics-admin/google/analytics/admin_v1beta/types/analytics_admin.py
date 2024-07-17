@@ -69,6 +69,12 @@ __protobuf__ = proto.module(
         "DeleteConversionEventRequest",
         "ListConversionEventsRequest",
         "ListConversionEventsResponse",
+        "CreateKeyEventRequest",
+        "UpdateKeyEventRequest",
+        "GetKeyEventRequest",
+        "DeleteKeyEventRequest",
+        "ListKeyEventsRequest",
+        "ListKeyEventsResponse",
         "CreateCustomDimensionRequest",
         "UpdateCustomDimensionRequest",
         "ListCustomDimensionsRequest",
@@ -179,6 +185,20 @@ class RunAccessReportRequest(proto.Message):
             Analytics Property's quota. Quota is returned in
             `AccessQuota <#AccessQuota>`__. For account-level requests,
             this field must be false.
+        include_all_users (bool):
+            Optional. Determines whether to include users
+            who have never made an API call in the response.
+            If true, all users with access to the specified
+            property or account are included in the
+            response, regardless of whether they have made
+            an API call or not. If false, only the users who
+            have made an API call will be included.
+        expand_groups (bool):
+            Optional. Decides whether to return the users within user
+            groups. This field works only when include_all_users is set
+            to true. If true, it will return all users with access to
+            the specified property or account. If false, only the users
+            with direct access will be returned.
     """
 
     entity: str = proto.Field(
@@ -230,6 +250,14 @@ class RunAccessReportRequest(proto.Message):
     return_entity_quota: bool = proto.Field(
         proto.BOOL,
         number=11,
+    )
+    include_all_users: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    expand_groups: bool = proto.Field(
+        proto.BOOL,
+        number=13,
     )
 
 
@@ -624,8 +652,9 @@ class CreateFirebaseLinkRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Format: properties/{property_id} Example:
-            properties/1234
+            Required. Format: properties/{property_id}
+
+            Example: ``properties/1234``
         firebase_link (google.analytics.admin_v1beta.types.FirebaseLink):
             Required. The Firebase link to create.
     """
@@ -648,7 +677,8 @@ class DeleteFirebaseLinkRequest(proto.Message):
         name (str):
             Required. Format:
             properties/{property_id}/firebaseLinks/{firebase_link_id}
-            Example: properties/1234/firebaseLinks/5678
+
+            Example: ``properties/1234/firebaseLinks/5678``
     """
 
     name: str = proto.Field(
@@ -662,8 +692,9 @@ class ListFirebaseLinksRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Format: properties/{property_id} Example:
-            properties/1234
+            Required. Format: properties/{property_id}
+
+            Example: ``properties/1234``
         page_size (int):
             The maximum number of resources to return.
             The service may return fewer than this value,
@@ -850,9 +881,10 @@ class GetDataSharingSettingsRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the settings to lookup.
-            Format: accounts/{account}/dataSharingSettings
-            Example: "accounts/1000/dataSharingSettings".
+            Required. The name of the settings to lookup. Format:
+            accounts/{account}/dataSharingSettings
+
+            Example: ``accounts/1000/dataSharingSettings``
     """
 
     name: str = proto.Field(
@@ -960,12 +992,16 @@ class SearchChangeHistoryEventsRequest(proto.Message):
 
     Attributes:
         account (str):
-            Required. The account resource for which to
-            return change history resources.
+            Required. The account resource for which to return change
+            history resources. Format: accounts/{account}
+
+            Example: ``accounts/100``
         property (str):
-            Optional. Resource name for a child property.
-            If set, only return changes made to this
-            property or its child resources.
+            Optional. Resource name for a child property. If set, only
+            return changes made to this property or its child resources.
+            Format: properties/{propertyId}
+
+            Example: ``properties/100``
         resource_type (MutableSequence[google.analytics.admin_v1beta.types.ChangeHistoryResourceType]):
             Optional. If set, only return changes if they
             are for a resource that matches at least one of
@@ -1355,6 +1391,148 @@ class ListConversionEventsResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=resources.ConversionEvent,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateKeyEventRequest(proto.Message):
+    r"""Request message for CreateKeyEvent RPC
+
+    Attributes:
+        key_event (google.analytics.admin_v1beta.types.KeyEvent):
+            Required. The Key Event to create.
+        parent (str):
+            Required. The resource name of the parent
+            property where this Key Event will be created.
+            Format: properties/123
+    """
+
+    key_event: resources.KeyEvent = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.KeyEvent,
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateKeyEventRequest(proto.Message):
+    r"""Request message for UpdateKeyEvent RPC
+
+    Attributes:
+        key_event (google.analytics.admin_v1beta.types.KeyEvent):
+            Required. The Key Event to update. The ``name`` field is
+            used to identify the settings to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    key_event: resources.KeyEvent = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.KeyEvent,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class GetKeyEventRequest(proto.Message):
+    r"""Request message for GetKeyEvent RPC
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Key Event to retrieve.
+            Format: properties/{property}/keyEvents/{key_event} Example:
+            "properties/123/keyEvents/456".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteKeyEventRequest(proto.Message):
+    r"""Request message for DeleteKeyEvent RPC
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Key Event to delete.
+            Format: properties/{property}/keyEvents/{key_event} Example:
+            "properties/123/keyEvents/456".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListKeyEventsRequest(proto.Message):
+    r"""Request message for ListKeyEvents RPC
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the parent
+            property. Example: 'properties/123'
+        page_size (int):
+            The maximum number of resources to return.
+            If unspecified, at most 50 resources will be
+            returned. The maximum value is 200; (higher
+            values will be coerced to the maximum)
+        page_token (str):
+            A page token, received from a previous ``ListKeyEvents``
+            call. Provide this to retrieve the subsequent page. When
+            paginating, all other parameters provided to
+            ``ListKeyEvents`` must match the call that provided the page
+            token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListKeyEventsResponse(proto.Message):
+    r"""Response message for ListKeyEvents RPC.
+
+    Attributes:
+        key_events (MutableSequence[google.analytics.admin_v1beta.types.KeyEvent]):
+            The requested Key Events
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    key_events: MutableSequence[resources.KeyEvent] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.KeyEvent,
     )
     next_page_token: str = proto.Field(
         proto.STRING,

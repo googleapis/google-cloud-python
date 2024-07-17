@@ -1063,6 +1063,134 @@ class ListConversionEventsAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListKeyEventsPager:
+    """A pager for iterating through ``list_key_events`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1beta.types.ListKeyEventsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``key_events`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListKeyEvents`` requests and continue to iterate
+    through the ``key_events`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1beta.types.ListKeyEventsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_admin.ListKeyEventsResponse],
+        request: analytics_admin.ListKeyEventsRequest,
+        response: analytics_admin.ListKeyEventsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1beta.types.ListKeyEventsRequest):
+                The initial request object.
+            response (google.analytics.admin_v1beta.types.ListKeyEventsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListKeyEventsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[analytics_admin.ListKeyEventsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[resources.KeyEvent]:
+        for page in self.pages:
+            yield from page.key_events
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListKeyEventsAsyncPager:
+    """A pager for iterating through ``list_key_events`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1beta.types.ListKeyEventsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``key_events`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListKeyEvents`` requests and continue to iterate
+    through the ``key_events`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1beta.types.ListKeyEventsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[analytics_admin.ListKeyEventsResponse]],
+        request: analytics_admin.ListKeyEventsRequest,
+        response: analytics_admin.ListKeyEventsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1beta.types.ListKeyEventsRequest):
+                The initial request object.
+            response (google.analytics.admin_v1beta.types.ListKeyEventsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListKeyEventsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[analytics_admin.ListKeyEventsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resources.KeyEvent]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.key_events:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListCustomDimensionsPager:
     """A pager for iterating through ``list_custom_dimensions`` requests.
 

@@ -287,6 +287,31 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_key_event: gapic_v1.method.wrap_method(
+                self.create_key_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_key_event: gapic_v1.method.wrap_method(
+                self.update_key_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_key_event: gapic_v1.method.wrap_method(
+                self.get_key_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_key_event: gapic_v1.method.wrap_method(
+                self.delete_key_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_key_events: gapic_v1.method.wrap_method(
+                self.list_key_events,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_custom_dimension: gapic_v1.method.wrap_method(
                 self.create_custom_dimension,
                 default_timeout=None,
@@ -702,6 +727,54 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         Union[
             analytics_admin.ListConversionEventsResponse,
             Awaitable[analytics_admin.ListConversionEventsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_key_event(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateKeyEventRequest],
+        Union[resources.KeyEvent, Awaitable[resources.KeyEvent]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_key_event(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateKeyEventRequest],
+        Union[resources.KeyEvent, Awaitable[resources.KeyEvent]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_key_event(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetKeyEventRequest],
+        Union[resources.KeyEvent, Awaitable[resources.KeyEvent]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_key_event(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteKeyEventRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_key_events(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListKeyEventsRequest],
+        Union[
+            analytics_admin.ListKeyEventsResponse,
+            Awaitable[analytics_admin.ListKeyEventsResponse],
         ],
     ]:
         raise NotImplementedError()
