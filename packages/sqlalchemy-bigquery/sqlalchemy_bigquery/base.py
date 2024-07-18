@@ -990,6 +990,7 @@ class BigQueryDialect(DefaultDialect):
     type_compiler = BigQueryTypeCompiler
     ddl_compiler = BigQueryDDLCompiler
     execution_ctx_cls = BigQueryExecutionContext
+    cte_follows_insert = True
     supports_alter = False
     supports_comments = True
     inline_comments = True

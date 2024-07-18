@@ -537,10 +537,6 @@ else:
 
 
 class CTETest(_CTETest):
-    @pytest.mark.skip("Can't use CTEs with insert")
-    def test_insert_from_select_round_trip(self):
-        pass
-
     @pytest.mark.skip("Recusive CTEs aren't supported.")
     def test_select_recursive_round_trip(self):
         pass
