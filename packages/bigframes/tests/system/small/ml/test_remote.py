@@ -13,10 +13,12 @@
 # limitations under the License.
 
 import pandas as pd
+import pytest
 
 from bigframes.ml import remote
 
 
+@pytest.mark.skip("b/353775058 BQML internal error")
 def test_remote_linear_vertex_model_predict(
     linear_remote_vertex_model: remote.VertexAIModel, new_penguins_df
 ):

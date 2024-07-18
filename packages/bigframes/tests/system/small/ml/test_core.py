@@ -312,6 +312,7 @@ def test_model_detect_anomalies(
     )
 
 
+@pytest.mark.skip("b/353775058 BQML internal error")
 def test_remote_model_predict(
     bqml_linear_remote_model: core.BqmlModel, new_penguins_df
 ):
