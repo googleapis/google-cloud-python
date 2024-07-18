@@ -19,6 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.cloud.bigtable_v2.types import types
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.bigtable.v2",
@@ -28,6 +32,7 @@ __protobuf__ = proto.module(
         "Column",
         "Cell",
         "Value",
+        "ArrayValue",
         "RowRange",
         "RowSet",
         "ColumnRange",
@@ -39,6 +44,13 @@ __protobuf__ = proto.module(
         "StreamPartition",
         "StreamContinuationTokens",
         "StreamContinuationToken",
+        "ProtoFormat",
+        "ColumnMetadata",
+        "ProtoSchema",
+        "ResultSetMetadata",
+        "ProtoRows",
+        "ProtoRowsBatch",
+        "PartialResultSet",
     },
 )
 
@@ -179,6 +191,23 @@ class Value(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        type_ (google.cloud.bigtable_v2.types.Type):
+            The verified ``Type`` of this ``Value``, if it cannot be
+            inferred.
+
+            Read results will never specify the encoding for ``type``
+            since the value will already have been decoded by the
+            server. Furthermore, the ``type`` will be omitted entirely
+            if it can be inferred from a previous response. The exact
+            semantics for inferring ``type`` will vary, and are
+            therefore documented separately for each read method.
+
+            When using composite types (Struct, Array, Map) only the
+            outermost ``Value`` will specify the ``type``. This
+            top-level ``type`` will define the types for any nested
+            ``Struct' fields,``\ Array\ ``elements, or``\ Map\ ``key/value pairs. If a nested``\ Value\ ``provides a``\ type\`
+            on write, the request will be rejected with
+            INVALID_ARGUMENT.
         raw_value (bytes):
             Represents a raw byte sequence with no type information. The
             ``type`` field must be omitted.
@@ -189,13 +218,57 @@ class Value(proto.Message):
             The ``type`` field must be omitted.
 
             This field is a member of `oneof`_ ``kind``.
+        bytes_value (bytes):
+            Represents a typed value transported as a
+            byte sequence.
+
+            This field is a member of `oneof`_ ``kind``.
+        string_value (str):
+            Represents a typed value transported as a
+            string.
+
+            This field is a member of `oneof`_ ``kind``.
         int_value (int):
-            Represents a typed value transported as an integer. Default
-            type for writes: ``Int64``
+            Represents a typed value transported as an
+            integer.
+
+            This field is a member of `oneof`_ ``kind``.
+        bool_value (bool):
+            Represents a typed value transported as a
+            boolean.
+
+            This field is a member of `oneof`_ ``kind``.
+        float_value (float):
+            Represents a typed value transported as a
+            floating point number.
+
+            This field is a member of `oneof`_ ``kind``.
+        timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
+            Represents a typed value transported as a
+            timestamp.
+
+            This field is a member of `oneof`_ ``kind``.
+        date_value (google.type.date_pb2.Date):
+            Represents a typed value transported as a
+            date.
+
+            This field is a member of `oneof`_ ``kind``.
+        array_value (google.cloud.bigtable_v2.types.ArrayValue):
+            Represents a typed value transported as a sequence of
+            values. To differentiate between ``Struct``, ``Array``, and
+            ``Map``, the outermost ``Value`` must provide an explicit
+            ``type`` on write. This ``type`` will apply recursively to
+            the nested ``Struct`` fields, ``Array`` elements, or ``Map``
+            key/value pairs, which *must not* supply their own ``type``.
 
             This field is a member of `oneof`_ ``kind``.
     """
 
+    type_: types.Type = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=types.Type,
+    )
     raw_value: bytes = proto.Field(
         proto.BYTES,
         number=8,
@@ -206,10 +279,63 @@ class Value(proto.Message):
         number=9,
         oneof="kind",
     )
+    bytes_value: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
+        oneof="kind",
+    )
+    string_value: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="kind",
+    )
     int_value: int = proto.Field(
         proto.INT64,
         number=6,
         oneof="kind",
+    )
+    bool_value: bool = proto.Field(
+        proto.BOOL,
+        number=10,
+        oneof="kind",
+    )
+    float_value: float = proto.Field(
+        proto.DOUBLE,
+        number=11,
+        oneof="kind",
+    )
+    timestamp_value: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="kind",
+        message=timestamp_pb2.Timestamp,
+    )
+    date_value: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="kind",
+        message=date_pb2.Date,
+    )
+    array_value: "ArrayValue" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="kind",
+        message="ArrayValue",
+    )
+
+
+class ArrayValue(proto.Message):
+    r"""``ArrayValue`` is an ordered list of ``Value``.
+
+    Attributes:
+        values (MutableSequence[google.cloud.bigtable_v2.types.Value]):
+            The ordered elements in the array.
+    """
+
+    values: MutableSequence["Value"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Value",
     )
 
 
@@ -1196,6 +1322,168 @@ class StreamContinuationToken(proto.Message):
     token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class ProtoFormat(proto.Message):
+    r"""Protocol buffers format descriptor, as described by Messages
+    ProtoSchema and ProtoRows
+
+    """
+
+
+class ColumnMetadata(proto.Message):
+    r"""Describes a column in a Bigtable Query Language result set.
+
+    Attributes:
+        name (str):
+            The name of the column.
+        type_ (google.cloud.bigtable_v2.types.Type):
+            The type of the column.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_: types.Type = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=types.Type,
+    )
+
+
+class ProtoSchema(proto.Message):
+    r"""ResultSet schema in proto format
+
+    Attributes:
+        columns (MutableSequence[google.cloud.bigtable_v2.types.ColumnMetadata]):
+            The columns in the result set.
+    """
+
+    columns: MutableSequence["ColumnMetadata"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ColumnMetadata",
+    )
+
+
+class ResultSetMetadata(proto.Message):
+    r"""Describes the structure of a Bigtable result set.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        proto_schema (google.cloud.bigtable_v2.types.ProtoSchema):
+            Schema in proto format
+
+            This field is a member of `oneof`_ ``schema``.
+    """
+
+    proto_schema: "ProtoSchema" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="schema",
+        message="ProtoSchema",
+    )
+
+
+class ProtoRows(proto.Message):
+    r"""Rows represented in proto format.
+
+    This should be constructed by concatenating the ``batch_data`` from
+    each of the relevant ``ProtoRowsBatch`` messages and parsing the
+    result as a ``ProtoRows`` message.
+
+    Attributes:
+        values (MutableSequence[google.cloud.bigtable_v2.types.Value]):
+            A proto rows message consists of a list of values. Every N
+            complete values defines a row, where N is equal to the
+            number of entries in the ``metadata.proto_schema.columns``
+            value received in the first response.
+    """
+
+    values: MutableSequence["Value"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Value",
+    )
+
+
+class ProtoRowsBatch(proto.Message):
+    r"""Batch of serialized ProtoRows.
+
+    Attributes:
+        batch_data (bytes):
+            Merge partial results by concatenating these bytes, then
+            parsing the overall value as a ``ProtoRows`` message.
+    """
+
+    batch_data: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+
+
+class PartialResultSet(proto.Message):
+    r"""A partial result set from the streaming query API. CBT client will
+    buffer partial_rows from result_sets until it gets a
+    resumption_token.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        proto_rows_batch (google.cloud.bigtable_v2.types.ProtoRowsBatch):
+            Partial rows in serialized ProtoRows format.
+
+            This field is a member of `oneof`_ ``partial_rows``.
+        resume_token (bytes):
+            An opaque token sent by the server to allow query resumption
+            and signal the client to accumulate ``partial_rows`` since
+            the last non-empty ``resume_token``. On resumption, the
+            resumed query will return the remaining rows for this query.
+
+            If there is a batch in progress, a non-empty
+            ``resume_token`` means that that the batch of
+            ``partial_rows`` will be complete after merging the
+            ``partial_rows`` from this response. The client must only
+            yield completed batches to the application, and must ensure
+            that any future retries send the latest token to avoid
+            returning duplicate data.
+
+            The server may set 'resume_token' without a 'partial_rows'.
+            If there is a batch in progress the client should yield it.
+
+            The server will also send a sentinel ``resume_token`` when
+            last batch of ``partial_rows`` is sent. If the client
+            retries the ExecuteQueryRequest with the sentinel
+            ``resume_token``, the server will emit it again without any
+            ``partial_rows``, then return OK.
+        estimated_batch_size (int):
+            Estimated size of a new batch. The server will always set
+            this when returning the first ``partial_rows`` of a batch,
+            and will not set it at any other time.
+
+            The client can use this estimate to allocate an initial
+            buffer for the batched results. This helps minimize the
+            number of allocations required, though the buffer size may
+            still need to be increased if the estimate is too low.
+    """
+
+    proto_rows_batch: "ProtoRowsBatch" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="partial_rows",
+        message="ProtoRowsBatch",
+    )
+    resume_token: bytes = proto.Field(
+        proto.BYTES,
+        number=5,
+    )
+    estimated_batch_size: int = proto.Field(
+        proto.INT32,
+        number=4,
     )
 
 

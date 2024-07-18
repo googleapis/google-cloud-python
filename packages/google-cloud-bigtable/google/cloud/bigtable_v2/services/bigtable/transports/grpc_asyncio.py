@@ -170,7 +170,8 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
 
         if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
@@ -518,6 +519,35 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
             )
         return self._stubs["read_change_stream"]
 
+    @property
+    def execute_query(
+        self,
+    ) -> Callable[
+        [bigtable.ExecuteQueryRequest], Awaitable[bigtable.ExecuteQueryResponse]
+    ]:
+        r"""Return a callable for the execute query method over gRPC.
+
+        Executes a BTQL query against a particular Cloud
+        Bigtable instance.
+
+        Returns:
+            Callable[[~.ExecuteQueryRequest],
+                    Awaitable[~.ExecuteQueryResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "execute_query" not in self._stubs:
+            self._stubs["execute_query"] = self.grpc_channel.unary_stream(
+                "/google.bigtable.v2.Bigtable/ExecuteQuery",
+                request_serializer=bigtable.ExecuteQueryRequest.serialize,
+                response_deserializer=bigtable.ExecuteQueryResponse.deserialize,
+            )
+        return self._stubs["execute_query"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -574,6 +604,11 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
             self.read_change_stream: gapic_v1.method_async.wrap_method(
                 self.read_change_stream,
                 default_timeout=43200.0,
+                client_info=client_info,
+            ),
+            self.execute_query: gapic_v1.method_async.wrap_method(
+                self.execute_query,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }

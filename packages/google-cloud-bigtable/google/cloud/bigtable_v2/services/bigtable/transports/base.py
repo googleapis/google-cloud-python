@@ -89,6 +89,8 @@ class BigtableTransport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes
+        if not hasattr(self, "_ignore_credentials"):
+            self._ignore_credentials: bool = False
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -101,7 +103,7 @@ class BigtableTransport(abc.ABC):
             credentials, _ = google.auth.load_credentials_from_file(
                 credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
             )
-        elif credentials is None:
+        elif credentials is None and not self._ignore_credentials:
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
@@ -187,6 +189,11 @@ class BigtableTransport(abc.ABC):
             self.read_change_stream: gapic_v1.method.wrap_method(
                 self.read_change_stream,
                 default_timeout=43200.0,
+                client_info=client_info,
+            ),
+            self.execute_query: gapic_v1.method.wrap_method(
+                self.execute_query,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -292,6 +299,15 @@ class BigtableTransport(abc.ABC):
             bigtable.ReadChangeStreamResponse,
             Awaitable[bigtable.ReadChangeStreamResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def execute_query(
+        self,
+    ) -> Callable[
+        [bigtable.ExecuteQueryRequest],
+        Union[bigtable.ExecuteQueryResponse, Awaitable[bigtable.ExecuteQueryResponse]],
     ]:
         raise NotImplementedError()
 

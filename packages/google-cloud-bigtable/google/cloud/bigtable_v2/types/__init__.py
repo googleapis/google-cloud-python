@@ -16,6 +16,8 @@
 from .bigtable import (
     CheckAndMutateRowRequest,
     CheckAndMutateRowResponse,
+    ExecuteQueryRequest,
+    ExecuteQueryResponse,
     GenerateInitialChangeStreamPartitionsRequest,
     GenerateInitialChangeStreamPartitionsResponse,
     MutateRowRequest,
@@ -35,12 +37,20 @@ from .bigtable import (
     SampleRowKeysResponse,
 )
 from .data import (
+    ArrayValue,
     Cell,
     Column,
+    ColumnMetadata,
     ColumnRange,
     Family,
     Mutation,
+    PartialResultSet,
+    ProtoFormat,
+    ProtoRows,
+    ProtoRowsBatch,
+    ProtoSchema,
     ReadModifyWriteRule,
+    ResultSetMetadata,
     Row,
     RowFilter,
     RowRange,
@@ -64,10 +74,15 @@ from .request_stats import (
 from .response_params import (
     ResponseParams,
 )
+from .types import (
+    Type,
+)
 
 __all__ = (
     "CheckAndMutateRowRequest",
     "CheckAndMutateRowResponse",
+    "ExecuteQueryRequest",
+    "ExecuteQueryResponse",
     "GenerateInitialChangeStreamPartitionsRequest",
     "GenerateInitialChangeStreamPartitionsResponse",
     "MutateRowRequest",
@@ -85,12 +100,20 @@ __all__ = (
     "ReadRowsResponse",
     "SampleRowKeysRequest",
     "SampleRowKeysResponse",
+    "ArrayValue",
     "Cell",
     "Column",
+    "ColumnMetadata",
     "ColumnRange",
     "Family",
     "Mutation",
+    "PartialResultSet",
+    "ProtoFormat",
+    "ProtoRows",
+    "ProtoRowsBatch",
+    "ProtoSchema",
     "ReadModifyWriteRule",
+    "ResultSetMetadata",
     "Row",
     "RowFilter",
     "RowRange",
@@ -107,4 +130,5 @@ __all__ = (
     "RequestLatencyStats",
     "RequestStats",
     "ResponseParams",
+    "Type",
 )

@@ -49,6 +49,8 @@ __protobuf__ = proto.module(
         "GenerateInitialChangeStreamPartitionsResponse",
         "ReadChangeStreamRequest",
         "ReadChangeStreamResponse",
+        "ExecuteQueryRequest",
+        "ExecuteQueryResponse",
     },
 )
 
@@ -1255,6 +1257,127 @@ class ReadChangeStreamResponse(proto.Message):
         number=3,
         oneof="stream_record",
         message=CloseStream,
+    )
+
+
+class ExecuteQueryRequest(proto.Message):
+    r"""Request message for Bigtable.ExecuteQuery
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance_name (str):
+            Required. The unique name of the instance against which the
+            query should be executed. Values are of the form
+            ``projects/<project>/instances/<instance>``
+        app_profile_id (str):
+            Optional. This value specifies routing for replication. If
+            not specified, the ``default`` application profile will be
+            used.
+        query (str):
+            Required. The query string.
+        proto_format (google.cloud.bigtable_v2.types.ProtoFormat):
+            Protocol buffer format as described by
+            ProtoSchema and ProtoRows messages.
+
+            This field is a member of `oneof`_ ``data_format``.
+        resume_token (bytes):
+            Optional. If this request is resuming a previously
+            interrupted query execution, ``resume_token`` should be
+            copied from the last PartialResultSet yielded before the
+            interruption. Doing this enables the query execution to
+            resume where the last one left off. The rest of the request
+            parameters must exactly match the request that yielded this
+            token. Otherwise the request will fail.
+        params (MutableMapping[str, google.cloud.bigtable_v2.types.Value]):
+            Required. params contains string type keys and Bigtable type
+            values that bind to placeholders in the query string. In
+            query string, a parameter placeholder consists of the ``@``
+            character followed by the parameter name (for example,
+            ``@firstName``) in the query string.
+
+            For example, if
+            ``params["firstName"] = bytes_value: "foo" type {bytes_type {}}``
+            then ``@firstName`` will be replaced with googlesql bytes
+            value "foo" in the query string during query evaluation.
+
+            In case of Value.kind is not set, it will be set to
+            corresponding null value in googlesql.
+            ``params["firstName"] = type {string_type {}}`` then
+            ``@firstName`` will be replaced with googlesql null string.
+
+            Value.type should always be set and no inference of type
+            will be made from Value.kind. If Value.type is not set, we
+            will return INVALID_ARGUMENT error.
+    """
+
+    instance_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    app_profile_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    query: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    proto_format: data.ProtoFormat = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="data_format",
+        message=data.ProtoFormat,
+    )
+    resume_token: bytes = proto.Field(
+        proto.BYTES,
+        number=8,
+    )
+    params: MutableMapping[str, data.Value] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=7,
+        message=data.Value,
+    )
+
+
+class ExecuteQueryResponse(proto.Message):
+    r"""Response message for Bigtable.ExecuteQuery
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        metadata (google.cloud.bigtable_v2.types.ResultSetMetadata):
+            Structure of rows in this response stream.
+            The first (and only the first) response streamed
+            from the server will be of this type.
+
+            This field is a member of `oneof`_ ``response``.
+        results (google.cloud.bigtable_v2.types.PartialResultSet):
+            A partial result set with row data
+            potentially including additional instructions on
+            how recent past and future partial responses
+            should be interpreted.
+
+            This field is a member of `oneof`_ ``response``.
+    """
+
+    metadata: data.ResultSetMetadata = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="response",
+        message=data.ResultSetMetadata,
+    )
+    results: data.PartialResultSet = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="response",
+        message=data.PartialResultSet,
     )
 
 

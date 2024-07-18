@@ -23,6 +23,8 @@ from .services.bigtable import BigtableAsyncClient
 
 from .types.bigtable import CheckAndMutateRowRequest
 from .types.bigtable import CheckAndMutateRowResponse
+from .types.bigtable import ExecuteQueryRequest
+from .types.bigtable import ExecuteQueryResponse
 from .types.bigtable import GenerateInitialChangeStreamPartitionsRequest
 from .types.bigtable import GenerateInitialChangeStreamPartitionsResponse
 from .types.bigtable import MutateRowRequest
@@ -40,12 +42,20 @@ from .types.bigtable import ReadRowsRequest
 from .types.bigtable import ReadRowsResponse
 from .types.bigtable import SampleRowKeysRequest
 from .types.bigtable import SampleRowKeysResponse
+from .types.data import ArrayValue
 from .types.data import Cell
 from .types.data import Column
+from .types.data import ColumnMetadata
 from .types.data import ColumnRange
 from .types.data import Family
 from .types.data import Mutation
+from .types.data import PartialResultSet
+from .types.data import ProtoFormat
+from .types.data import ProtoRows
+from .types.data import ProtoRowsBatch
+from .types.data import ProtoSchema
 from .types.data import ReadModifyWriteRule
+from .types.data import ResultSetMetadata
 from .types.data import Row
 from .types.data import RowFilter
 from .types.data import RowRange
@@ -62,15 +72,20 @@ from .types.request_stats import ReadIterationStats
 from .types.request_stats import RequestLatencyStats
 from .types.request_stats import RequestStats
 from .types.response_params import ResponseParams
+from .types.types import Type
 
 __all__ = (
     "BigtableAsyncClient",
+    "ArrayValue",
     "BigtableClient",
     "Cell",
     "CheckAndMutateRowRequest",
     "CheckAndMutateRowResponse",
     "Column",
+    "ColumnMetadata",
     "ColumnRange",
+    "ExecuteQueryRequest",
+    "ExecuteQueryResponse",
     "Family",
     "FeatureFlags",
     "FullReadStatsView",
@@ -81,8 +96,13 @@ __all__ = (
     "MutateRowsRequest",
     "MutateRowsResponse",
     "Mutation",
+    "PartialResultSet",
     "PingAndWarmRequest",
     "PingAndWarmResponse",
+    "ProtoFormat",
+    "ProtoRows",
+    "ProtoRowsBatch",
+    "ProtoSchema",
     "RateLimitInfo",
     "ReadChangeStreamRequest",
     "ReadChangeStreamResponse",
@@ -95,6 +115,7 @@ __all__ = (
     "RequestLatencyStats",
     "RequestStats",
     "ResponseParams",
+    "ResultSetMetadata",
     "Row",
     "RowFilter",
     "RowRange",
@@ -105,6 +126,7 @@ __all__ = (
     "StreamContinuationTokens",
     "StreamPartition",
     "TimestampRange",
+    "Type",
     "Value",
     "ValueRange",
 )
