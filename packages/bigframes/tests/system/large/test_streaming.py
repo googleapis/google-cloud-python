@@ -14,9 +14,12 @@
 
 import time
 
+import pytest
+
 import bigframes.streaming
 
 
+@pytest.mark.skip(reason="b/354024943. Concurrency error need to be fixed.")
 def test_streaming_to_bigtable():
     # launch a continuous query
     job_id_prefix = "test_streaming_"
@@ -49,6 +52,7 @@ def test_streaming_to_bigtable():
         query_job.cancel()
 
 
+@pytest.mark.skip(reason="b/354024943. Concurrency error need to be fixed.")
 def test_streaming_to_pubsub():
     # launch a continuous query
     job_id_prefix = "test_streaming_pubsub_"
