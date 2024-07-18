@@ -40,6 +40,7 @@ class bigtableCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'check_and_mutate_row': ('row_key', 'table_name', 'authorized_view_name', 'app_profile_id', 'predicate_filter', 'true_mutations', 'false_mutations', ),
+        'execute_query': ('instance_name', 'query', 'params', 'app_profile_id', 'proto_format', 'resume_token', ),
         'generate_initial_change_stream_partitions': ('table_name', 'app_profile_id', ),
         'mutate_row': ('row_key', 'mutations', 'table_name', 'authorized_view_name', 'app_profile_id', ),
         'mutate_rows': ('entries', 'table_name', 'authorized_view_name', 'app_profile_id', ),

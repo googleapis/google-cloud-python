@@ -123,7 +123,8 @@ class BigtableGrpcTransport(BigtableTransport):
 
         if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
@@ -507,6 +508,33 @@ class BigtableGrpcTransport(BigtableTransport):
                 response_deserializer=bigtable.ReadChangeStreamResponse.deserialize,
             )
         return self._stubs["read_change_stream"]
+
+    @property
+    def execute_query(
+        self,
+    ) -> Callable[[bigtable.ExecuteQueryRequest], bigtable.ExecuteQueryResponse]:
+        r"""Return a callable for the execute query method over gRPC.
+
+        Executes a BTQL query against a particular Cloud
+        Bigtable instance.
+
+        Returns:
+            Callable[[~.ExecuteQueryRequest],
+                    ~.ExecuteQueryResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "execute_query" not in self._stubs:
+            self._stubs["execute_query"] = self.grpc_channel.unary_stream(
+                "/google.bigtable.v2.Bigtable/ExecuteQuery",
+                request_serializer=bigtable.ExecuteQueryRequest.serialize,
+                response_deserializer=bigtable.ExecuteQueryResponse.deserialize,
+            )
+        return self._stubs["execute_query"]
 
     def close(self):
         self.grpc_channel.close()

@@ -74,6 +74,14 @@ class BigtableRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_execute_query(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_execute_query(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_generate_initial_change_stream_partitions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -160,6 +168,27 @@ class BigtableRestInterceptor:
         self, response: bigtable.CheckAndMutateRowResponse
     ) -> bigtable.CheckAndMutateRowResponse:
         """Post-rpc interceptor for check_and_mutate_row
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Bigtable server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_execute_query(
+        self, request: bigtable.ExecuteQueryRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[bigtable.ExecuteQueryRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for execute_query
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Bigtable server.
+        """
+        return request, metadata
+
+    def post_execute_query(
+        self, response: rest_streaming.ResponseIterator
+    ) -> rest_streaming.ResponseIterator:
+        """Post-rpc interceptor for execute_query
 
         Override in a subclass to manipulate the response
         after it is returned by the Bigtable server but before
@@ -543,6 +572,100 @@ class BigtableRestTransport(BigtableTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_check_and_mutate_row(resp)
+            return resp
+
+    class _ExecuteQuery(BigtableRestStub):
+        def __hash__(self):
+            return hash("ExecuteQuery")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: bigtable.ExecuteQueryRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> rest_streaming.ResponseIterator:
+            r"""Call the execute query method over HTTP.
+
+            Args:
+                request (~.bigtable.ExecuteQueryRequest):
+                    The request object. Request message for
+                Bigtable.ExecuteQuery
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.bigtable.ExecuteQueryResponse:
+                    Response message for
+                Bigtable.ExecuteQuery
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{instance_name=projects/*/instances/*}:executeQuery",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_execute_query(request, metadata)
+            pb_request = bigtable.ExecuteQueryRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = rest_streaming.ResponseIterator(
+                response, bigtable.ExecuteQueryResponse
+            )
+            resp = self._interceptor.post_execute_query(resp)
             return resp
 
     class _GenerateInitialChangeStreamPartitions(BigtableRestStub):
@@ -1323,6 +1446,14 @@ class BigtableRestTransport(BigtableTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CheckAndMutateRow(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def execute_query(
+        self,
+    ) -> Callable[[bigtable.ExecuteQueryRequest], bigtable.ExecuteQueryResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExecuteQuery(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def generate_initial_change_stream_partitions(
