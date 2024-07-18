@@ -62,7 +62,6 @@ def test_llm_palm_configure_fit(llm_fine_tune_df_default_index, llm_remote_text_
     # TODO(ashleyxu b/335492787): After bqml rolled out version control: save, load, check parameters to ensure configuration was kept
 
 
-@pytest.mark.skip(reason="b/351905648. Credential error to be fixed.")
 @pytest.mark.flaky(retries=2)
 def test_llm_gemini_configure_fit(llm_fine_tune_df_default_index, llm_remote_text_df):
     model = llm.GeminiTextGenerator(model_name="gemini-pro", max_iterations=1)
