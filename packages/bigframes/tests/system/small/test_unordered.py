@@ -40,6 +40,13 @@ def test_unordered_mode_cache_aggregate(unordered_session):
     assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
 
 
+def test_unordered_mode_single_aggregate(unordered_session):
+    pd_df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]}, dtype=pd.Int64Dtype())
+    bf_df = bpd.DataFrame(pd_df, session=unordered_session)
+
+    assert bf_df.a.mean() == pd_df.a.mean()
+
+
 def test_unordered_mode_print(unordered_session):
     pd_df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]}, dtype=pd.Int64Dtype())
     df = bpd.DataFrame(pd_df, session=unordered_session).cache()
