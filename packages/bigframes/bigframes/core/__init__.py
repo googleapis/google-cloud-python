@@ -147,7 +147,7 @@ class ArrayValue:
     def as_cached(
         self: ArrayValue,
         cache_table: google.cloud.bigquery.Table,
-        ordering: Optional[orderings.TotalOrdering],
+        ordering: Optional[orderings.RowOrdering],
     ) -> ArrayValue:
         """
         Replace the node with an equivalent one that references a tabel where the value has been materialized to.

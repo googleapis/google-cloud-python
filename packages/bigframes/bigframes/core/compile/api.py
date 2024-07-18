@@ -25,38 +25,44 @@ if TYPE_CHECKING:
 _STRICT_COMPILER = compiler.Compiler(strict=True)
 
 
-def compile_peek(node: bigframes.core.nodes.BigFrameNode, n_rows: int) -> str:
-    """Compile node into sql that selects N arbitrary rows, may not execute deterministically."""
-    return _STRICT_COMPILER.compile_unordered_ir(node).peek_sql(n_rows)
+class SQLCompiler:
+    def __init__(self, strict: bool = True):
+        self._compiler = compiler.Compiler(strict=strict)
 
+    def compile_peek(self, node: bigframes.core.nodes.BigFrameNode, n_rows: int) -> str:
+        """Compile node into sql that selects N arbitrary rows, may not execute deterministically."""
+        return self._compiler.compile_unordered_ir(node).peek_sql(n_rows)
 
-def compile_unordered(
-    node: bigframes.core.nodes.BigFrameNode, *, col_id_overrides: Mapping[str, str] = {}
-) -> str:
-    """Compile node into sql where rows are unsorted, and no ordering information is preserved."""
-    return _STRICT_COMPILER.compile_unordered_ir(node).to_sql(
-        col_id_overrides=col_id_overrides
-    )
+    def compile_unordered(
+        self,
+        node: bigframes.core.nodes.BigFrameNode,
+        *,
+        col_id_overrides: Mapping[str, str] = {},
+    ) -> str:
+        """Compile node into sql where rows are unsorted, and no ordering information is preserved."""
+        return self._compiler.compile_unordered_ir(node).to_sql(
+            col_id_overrides=col_id_overrides
+        )
 
+    def compile_ordered(
+        self,
+        node: bigframes.core.nodes.BigFrameNode,
+        *,
+        col_id_overrides: Mapping[str, str] = {},
+    ) -> str:
+        """Compile node into sql where rows are sorted with ORDER BY."""
+        return self._compiler.compile_ordered_ir(node).to_sql(
+            col_id_overrides=col_id_overrides, ordered=True
+        )
 
-def compile_ordered(
-    node: bigframes.core.nodes.BigFrameNode, *, col_id_overrides: Mapping[str, str] = {}
-) -> str:
-    """Compile node into sql where rows are sorted with ORDER BY."""
-    return _STRICT_COMPILER.compile_ordered_ir(node).to_sql(
-        col_id_overrides=col_id_overrides, ordered=True
-    )
-
-
-def compile_raw(
-    node: bigframes.core.nodes.BigFrameNode,
-) -> Tuple[str, bigframes.core.ordering.TotalOrdering]:
-    """Compile node into sql that exposes all columns, including hidden ordering-only columns."""
-    ir = _STRICT_COMPILER.compile_ordered_ir(node)
-    sql = ir.raw_sql()
-    ordering_info = ir._ordering
-    assert ir.has_total_order
-    return sql, ordering_info  # type: ignore
+    def compile_raw(
+        self,
+        node: bigframes.core.nodes.BigFrameNode,
+    ) -> Tuple[str, bigframes.core.ordering.RowOrdering]:
+        """Compile node into sql that exposes all columns, including hidden ordering-only columns."""
+        ir = self._compiler.compile_ordered_ir(node)
+        sql = ir.raw_sql()
+        return sql, ir._ordering
 
 
 def test_only_try_evaluate(node: bigframes.core.nodes.BigFrameNode):

@@ -14,19 +14,13 @@
 from __future__ import annotations
 
 from bigframes.core.compile.api import (
-    compile_ordered,
-    compile_peek,
-    compile_raw,
-    compile_unordered,
+    SQLCompiler,
     test_only_ibis_inferred_schema,
     test_only_try_evaluate,
 )
 
 __all__ = [
-    "compile_peek",
-    "compile_unordered",
-    "compile_ordered",
-    "compile_raw",
+    "SQLCompiler",
     "test_only_try_evaluate",
     "test_only_ibis_inferred_schema",
 ]

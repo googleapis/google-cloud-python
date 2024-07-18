@@ -304,6 +304,9 @@ class Session(
             if context._strictly_ordered
             else bigframes.enums.DefaultIndexKind.NULL
         )
+        self._compiler = bigframes.core.compile.SQLCompiler(
+            strict=context._strictly_ordered
+        )
 
         self._remote_function_session = bigframes_rf._RemoteFunctionSession()
 
@@ -1893,10 +1896,8 @@ class Session(
         """Executes the query and uses the resulting table to rewrite future executions."""
         # TODO: Use this for all executions? Problem is that caching materializes extra
         # ordering columns
-        # TODO: May want to support some partial ordering info even for non-strict ordering mode
-        keep_order_info = self._strictly_ordered
 
-        sql, ordering_info = bigframes.core.compile.compile_raw(
+        sql, ordering_info = self._compiler.compile_raw(
             self._with_cached_executions(array_value.node)
         )
         tmp_table = self._sql_to_temp_table(
@@ -1904,7 +1905,7 @@ class Session(
         )
         cached_replacement = array_value.as_cached(
             cache_table=self.bqclient.get_table(tmp_table),
-            ordering=ordering_info if keep_order_info else None,
+            ordering=ordering_info,
         ).node
         self._cached_executions[array_value.node] = cached_replacement
 
@@ -1917,7 +1918,7 @@ class Session(
                 "Caching with offsets only supported in strictly ordered mode."
             )
         offset_column = bigframes.core.guid.generate_guid("bigframes_offsets")
-        sql = bigframes.core.compile.compile_unordered(
+        sql = self._compiler.compile_unordered(
             self._with_cached_executions(
                 array_value.promote_offsets(offset_column).node
             )
@@ -2023,7 +2024,7 @@ class Session(
         """A 'peek' efficiently accesses a small number of rows in the dataframe."""
         if not tree_properties.peekable(self._with_cached_executions(array_value.node)):
             warnings.warn("Peeking this value cannot be done efficiently.")
-        sql = bigframes.core.compile.compile_peek(
+        sql = self._compiler.compile_peek(
             self._with_cached_executions(array_value.node), n_rows
         )
 
@@ -2044,10 +2045,10 @@ class Session(
             array_value = array_value.promote_offsets(offset_column)
         node_w_cached = self._with_cached_executions(array_value.node)
         if ordered:
-            return bigframes.core.compile.compile_ordered(
+            return self._compiler.compile_ordered(
                 node_w_cached, col_id_overrides=col_id_overrides
             )
-        return bigframes.core.compile.compile_unordered(
+        return self._compiler.compile_unordered(
             node_w_cached, col_id_overrides=col_id_overrides
         )
 

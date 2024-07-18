@@ -132,3 +132,17 @@ def test_unordered_mode_blocks_windowing(unordered_session, function):
         match=r"Op.*not supported when strict ordering is disabled",
     ):
         function(df)
+
+
+def test_unordered_mode_cache_preserves_order(unordered_session):
+    pd_df = pd.DataFrame(
+        {"a": [1, 2, 3, 4, 5, 6], "b": [4, 5, 9, 3, 1, 6]}, dtype=pd.Int64Dtype()
+    )
+    pd_df.index = pd_df.index.astype(pd.Int64Dtype())
+    df = bpd.DataFrame(pd_df, session=unordered_session)
+    sorted_df = df.sort_values("b").cache()
+    bf_result = sorted_df.to_pandas()
+    pd_result = pd_df.sort_values("b")
+
+    # B is unique so unstrict order mode result here should be equivalent to strictly ordered
+    assert_pandas_df_equal(bf_result, pd_result, ignore_order=False)
