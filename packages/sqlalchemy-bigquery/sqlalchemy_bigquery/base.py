@@ -194,6 +194,8 @@ class BigQueryCompiler(_struct.SQLCompiler, vendored_postgresql.PGCompiler):
     compound_keywords = SQLCompiler.compound_keywords.copy()
     compound_keywords[selectable.CompoundSelect.UNION] = "UNION DISTINCT"
     compound_keywords[selectable.CompoundSelect.UNION_ALL] = "UNION ALL"
+    compound_keywords[selectable.CompoundSelect.EXCEPT] = "EXCEPT DISTINCT"
+    compound_keywords[selectable.CompoundSelect.INTERSECT] = "INTERSECT DISTINCT"
 
     def __init__(self, dialect, statement, *args, **kwargs):
         if isinstance(statement, Column):

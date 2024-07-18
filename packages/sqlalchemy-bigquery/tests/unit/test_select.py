@@ -168,6 +168,94 @@ def test_typed_parameters(faux_conn, type_, val, btype, vrep):
     )
 
 
+def test_except(faux_conn):
+    table = setup_table(
+        faux_conn,
+        "table",
+        sqlalchemy.Column("id", sqlalchemy.Integer),
+        sqlalchemy.Column("foo", sqlalchemy.Integer),
+    )
+
+    s1 = sqlalchemy.select(table.c.foo).where(table.c.id >= 2)
+    s2 = sqlalchemy.select(table.c.foo).where(table.c.id >= 4)
+
+    s3 = s1.except_(s2)
+
+    result = s3.compile(faux_conn).string
+
+    expected = (
+        "SELECT `table`.`foo` \n"
+        "FROM `table` \n"
+        "WHERE `table`.`id` >= %(id_1:INT64)s EXCEPT DISTINCT SELECT `table`.`foo` \n"
+        "FROM `table` \n"
+        "WHERE `table`.`id` >= %(id_2:INT64)s"
+    )
+    assert result == expected
+
+
+def test_intersect(faux_conn):
+    table = setup_table(
+        faux_conn,
+        "table",
+        sqlalchemy.Column("id", sqlalchemy.Integer),
+        sqlalchemy.Column("foo", sqlalchemy.Integer),
+    )
+
+    s1 = sqlalchemy.select(table.c.foo).where(table.c.id >= 2)
+    s2 = sqlalchemy.select(table.c.foo).where(table.c.id >= 4)
+
+    s3 = s1.intersect(s2)
+
+    result = s3.compile(faux_conn).string
+
+    expected = (
+        "SELECT `table`.`foo` \n"
+        "FROM `table` \n"
+        "WHERE `table`.`id` >= %(id_1:INT64)s INTERSECT DISTINCT SELECT `table`.`foo` \n"
+        "FROM `table` \n"
+        "WHERE `table`.`id` >= %(id_2:INT64)s"
+    )
+    assert result == expected
+
+
+def test_union(faux_conn):
+    table = setup_table(
+        faux_conn,
+        "table",
+        sqlalchemy.Column("id", sqlalchemy.Integer),
+        sqlalchemy.Column("foo", sqlalchemy.Integer),
+    )
+
+    s1 = sqlalchemy.select(table.c.foo).where(table.c.id >= 2)
+    s2 = sqlalchemy.select(table.c.foo).where(table.c.id >= 4)
+
+    s3 = s1.union(s2)
+
+    result = s3.compile(faux_conn).string
+
+    expected = (
+        "SELECT `table`.`foo` \n"
+        "FROM `table` \n"
+        "WHERE `table`.`id` >= %(id_1:INT64)s UNION DISTINCT SELECT `table`.`foo` \n"
+        "FROM `table` \n"
+        "WHERE `table`.`id` >= %(id_2:INT64)s"
+    )
+    assert result == expected
+
+    s4 = s1.union_all(s2)
+
+    result = s4.compile(faux_conn).string
+
+    expected = (
+        "SELECT `table`.`foo` \n"
+        "FROM `table` \n"
+        "WHERE `table`.`id` >= %(id_1:INT64)s UNION ALL SELECT `table`.`foo` \n"
+        "FROM `table` \n"
+        "WHERE `table`.`id` >= %(id_2:INT64)s"
+    )
+    assert result == expected
+
+
 def test_select_struct(faux_conn, metadata):
     from sqlalchemy_bigquery import STRUCT
 
