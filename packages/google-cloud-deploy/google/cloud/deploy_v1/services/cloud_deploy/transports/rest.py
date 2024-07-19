@@ -138,6 +138,14 @@ class CloudDeployRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_deploy_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_deploy_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_release(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -186,6 +194,14 @@ class CloudDeployRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_deploy_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_deploy_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_target(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -231,6 +247,14 @@ class CloudDeployRestInterceptor:
                 return request, metadata
 
             def post_get_delivery_pipeline(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_deploy_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_deploy_policy(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -303,6 +327,14 @@ class CloudDeployRestInterceptor:
                 return request, metadata
 
             def post_list_delivery_pipelines(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_deploy_policies(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_deploy_policies(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -383,6 +415,14 @@ class CloudDeployRestInterceptor:
                 return request, metadata
 
             def post_update_delivery_pipeline(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_deploy_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_deploy_policy(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -584,6 +624,29 @@ class CloudDeployRestInterceptor:
         """
         return response
 
+    def pre_create_deploy_policy(
+        self,
+        request: cloud_deploy.CreateDeployPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.CreateDeployPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_deploy_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_create_deploy_policy(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_deploy_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_release(
         self,
         request: cloud_deploy.CreateReleaseRequest,
@@ -722,6 +785,29 @@ class CloudDeployRestInterceptor:
         """
         return response
 
+    def pre_delete_deploy_policy(
+        self,
+        request: cloud_deploy.DeleteDeployPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.DeleteDeployPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_deploy_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_delete_deploy_policy(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_deploy_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_target(
         self,
         request: cloud_deploy.DeleteTargetRequest,
@@ -851,6 +937,29 @@ class CloudDeployRestInterceptor:
         self, response: cloud_deploy.DeliveryPipeline
     ) -> cloud_deploy.DeliveryPipeline:
         """Post-rpc interceptor for get_delivery_pipeline
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_deploy_policy(
+        self,
+        request: cloud_deploy.GetDeployPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.GetDeployPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_deploy_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_get_deploy_policy(
+        self, response: cloud_deploy.DeployPolicy
+    ) -> cloud_deploy.DeployPolicy:
+        """Post-rpc interceptor for get_deploy_policy
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudDeploy server but before
@@ -1050,6 +1159,29 @@ class CloudDeployRestInterceptor:
         self, response: cloud_deploy.ListDeliveryPipelinesResponse
     ) -> cloud_deploy.ListDeliveryPipelinesResponse:
         """Post-rpc interceptor for list_delivery_pipelines
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_deploy_policies(
+        self,
+        request: cloud_deploy.ListDeployPoliciesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.ListDeployPoliciesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_deploy_policies
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_list_deploy_policies(
+        self, response: cloud_deploy.ListDeployPoliciesResponse
+    ) -> cloud_deploy.ListDeployPoliciesResponse:
+        """Post-rpc interceptor for list_deploy_policies
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudDeploy server but before
@@ -1278,6 +1410,29 @@ class CloudDeployRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_delivery_pipeline
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_deploy_policy(
+        self,
+        request: cloud_deploy.UpdateDeployPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.UpdateDeployPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_deploy_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_update_deploy_policy(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_deploy_policy
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudDeploy server but before
@@ -2413,6 +2568,103 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = self._interceptor.post_create_delivery_pipeline(resp)
             return resp
 
+    class _CreateDeployPolicy(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("CreateDeployPolicy")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "deployPolicyId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.CreateDeployPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create deploy policy method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.CreateDeployPolicyRequest):
+                    The request object. The request object for ``CreateDeployPolicy``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/deployPolicies",
+                    "body": "deploy_policy",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_deploy_policy(
+                request, metadata
+            )
+            pb_request = cloud_deploy.CreateDeployPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_deploy_policy(resp)
+            return resp
+
     class _CreateRelease(CloudDeployRestStub):
         def __hash__(self):
             return hash("CreateRelease")
@@ -2963,6 +3215,94 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = self._interceptor.post_delete_delivery_pipeline(resp)
             return resp
 
+    class _DeleteDeployPolicy(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("DeleteDeployPolicy")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.DeleteDeployPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete deploy policy method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.DeleteDeployPolicyRequest):
+                    The request object. The request object for ``DeleteDeployPolicy``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/deployPolicies/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_deploy_policy(
+                request, metadata
+            )
+            pb_request = cloud_deploy.DeleteDeployPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_deploy_policy(resp)
+            return resp
+
     class _DeleteTarget(CloudDeployRestStub):
         def __hash__(self):
             return hash("DeleteTarget")
@@ -3500,6 +3840,97 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_delivery_pipeline(resp)
+            return resp
+
+    class _GetDeployPolicy(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("GetDeployPolicy")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.GetDeployPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.DeployPolicy:
+            r"""Call the get deploy policy method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.GetDeployPolicyRequest):
+                    The request object. The request object for ``GetDeployPolicy``
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.DeployPolicy:
+                    A ``DeployPolicy`` resource in the Cloud Deploy API.
+
+                A ``DeployPolicy`` inhibits manual or automation driven
+                actions within a Delivery Pipeline or Target.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/deployPolicies/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_deploy_policy(
+                request, metadata
+            )
+            pb_request = cloud_deploy.GetDeployPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.DeployPolicy()
+            pb_resp = cloud_deploy.DeployPolicy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_deploy_policy(resp)
             return resp
 
     class _GetJobRun(CloudDeployRestStub):
@@ -4298,6 +4729,93 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_delivery_pipelines(resp)
+            return resp
+
+    class _ListDeployPolicies(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("ListDeployPolicies")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.ListDeployPoliciesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.ListDeployPoliciesResponse:
+            r"""Call the list deploy policies method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.ListDeployPoliciesRequest):
+                    The request object. The request object for ``ListDeployPolicies``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.ListDeployPoliciesResponse:
+                    The response object from ``ListDeployPolicies``.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/deployPolicies",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_deploy_policies(
+                request, metadata
+            )
+            pb_request = cloud_deploy.ListDeployPoliciesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.ListDeployPoliciesResponse()
+            pb_resp = cloud_deploy.ListDeployPoliciesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_deploy_policies(resp)
             return resp
 
     class _ListJobRuns(CloudDeployRestStub):
@@ -5216,6 +5734,103 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = self._interceptor.post_update_delivery_pipeline(resp)
             return resp
 
+    class _UpdateDeployPolicy(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("UpdateDeployPolicy")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.UpdateDeployPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update deploy policy method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.UpdateDeployPolicyRequest):
+                    The request object. The request object for ``UpdateDeployPolicy``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{deploy_policy.name=projects/*/locations/*/deployPolicies/*}",
+                    "body": "deploy_policy",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_deploy_policy(
+                request, metadata
+            )
+            pb_request = cloud_deploy.UpdateDeployPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_deploy_policy(resp)
+            return resp
+
     class _UpdateTarget(CloudDeployRestStub):
         def __hash__(self):
             return hash("UpdateTarget")
@@ -5391,6 +6006,14 @@ class CloudDeployRestTransport(CloudDeployTransport):
         return self._CreateDeliveryPipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_deploy_policy(
+        self,
+    ) -> Callable[[cloud_deploy.CreateDeployPolicyRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateDeployPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_release(
         self,
     ) -> Callable[[cloud_deploy.CreateReleaseRequest], operations_pb2.Operation]:
@@ -5443,6 +6066,14 @@ class CloudDeployRestTransport(CloudDeployTransport):
         return self._DeleteDeliveryPipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_deploy_policy(
+        self,
+    ) -> Callable[[cloud_deploy.DeleteDeployPolicyRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteDeployPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_target(
         self,
     ) -> Callable[[cloud_deploy.DeleteTargetRequest], operations_pb2.Operation]:
@@ -5493,6 +6124,14 @@ class CloudDeployRestTransport(CloudDeployTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeliveryPipeline(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_deploy_policy(
+        self,
+    ) -> Callable[[cloud_deploy.GetDeployPolicyRequest], cloud_deploy.DeployPolicy]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetDeployPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_job_run(
@@ -5576,6 +6215,17 @@ class CloudDeployRestTransport(CloudDeployTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDeliveryPipelines(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_deploy_policies(
+        self,
+    ) -> Callable[
+        [cloud_deploy.ListDeployPoliciesRequest],
+        cloud_deploy.ListDeployPoliciesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListDeployPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_job_runs(
@@ -5668,6 +6318,14 @@ class CloudDeployRestTransport(CloudDeployTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDeliveryPipeline(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_deploy_policy(
+        self,
+    ) -> Callable[[cloud_deploy.UpdateDeployPolicyRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateDeployPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_target(

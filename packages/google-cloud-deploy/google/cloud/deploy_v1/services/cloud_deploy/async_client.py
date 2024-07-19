@@ -96,6 +96,8 @@ class CloudDeployAsyncClient:
     parse_delivery_pipeline_path = staticmethod(
         CloudDeployClient.parse_delivery_pipeline_path
     )
+    deploy_policy_path = staticmethod(CloudDeployClient.deploy_policy_path)
+    parse_deploy_policy_path = staticmethod(CloudDeployClient.parse_deploy_policy_path)
     job_path = staticmethod(CloudDeployClient.job_path)
     parse_job_path = staticmethod(CloudDeployClient.parse_job_path)
     job_run_path = staticmethod(CloudDeployClient.job_run_path)
@@ -583,7 +585,7 @@ class CloudDeployAsyncClient:
                 The request object. The request object for ``CreateDeliveryPipeline``.
             parent (:class:`str`):
                 Required. The parent collection in which the
-                ``DeliveryPipeline`` should be created. Format should be
+                ``DeliveryPipeline`` must be created. The format is
                 ``projects/{project_id}/locations/{location_name}``.
 
                 This corresponds to the ``parent`` field
@@ -728,8 +730,8 @@ class CloudDeployAsyncClient:
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Field mask is used to specify the fields to be
-                overwritten in the ``DeliveryPipeline`` resource by the
-                update. The fields specified in the update_mask are
+                overwritten by the update in the ``DeliveryPipeline``
+                resource. The fields specified in the update_mask are
                 relative to the resource, not the full request. A field
                 will be overwritten if it's in the mask. If the user
                 doesn't provide a mask then all fields are overwritten.
@@ -861,7 +863,7 @@ class CloudDeployAsyncClient:
                 The request object. The request object for ``DeleteDeliveryPipeline``.
             name (:class:`str`):
                 Required. The name of the ``DeliveryPipeline`` to
-                delete. Format should be
+                delete. The format is
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
 
                 This corresponds to the ``name`` field
@@ -1107,7 +1109,7 @@ class CloudDeployAsyncClient:
                 The request object. The request object for ``RollbackTarget``.
             name (:class:`str`):
                 Required. The ``DeliveryPipeline`` for which the
-                rollback ``Rollout`` should be created. Format should be
+                rollback ``Rollout`` must be created. The format is
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
 
                 This corresponds to the ``name`` field
@@ -1341,7 +1343,7 @@ class CloudDeployAsyncClient:
                 The request object. The request object for ``CreateTarget``.
             parent (:class:`str`):
                 Required. The parent collection in which the ``Target``
-                should be created. Format should be
+                must be created. The format is
                 ``projects/{project_id}/locations/{location_name}``.
 
                 This corresponds to the ``parent`` field
@@ -1484,9 +1486,9 @@ class CloudDeployAsyncClient:
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Field mask is used to specify the fields to be
-                overwritten in the Target resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
+                overwritten by the update in the ``Target`` resource.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
                 overwritten if it's in the mask. If the user doesn't
                 provide a mask then all fields are overwritten.
 
@@ -1614,8 +1616,8 @@ class CloudDeployAsyncClient:
             request (Optional[Union[google.cloud.deploy_v1.types.DeleteTargetRequest, dict]]):
                 The request object. The request object for ``DeleteTarget``.
             name (:class:`str`):
-                Required. The name of the ``Target`` to delete. Format
-                should be
+                Required. The name of the ``Target`` to delete. The
+                format is
                 ``projects/{project_id}/locations/{location_name}/targets/{target_name}``.
 
                 This corresponds to the ``name`` field
@@ -1984,7 +1986,7 @@ class CloudDeployAsyncClient:
                 The request object. The request object for ``CreateCustomTargetType``.
             parent (:class:`str`):
                 Required. The parent collection in which the
-                ``CustomTargetType`` should be created. Format should be
+                ``CustomTargetType`` must be created. The format is
                 ``projects/{project_id}/locations/{location_name}``.
 
                 This corresponds to the ``parent`` field
@@ -2135,8 +2137,8 @@ class CloudDeployAsyncClient:
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Field mask is used to specify the fields to be
-                overwritten in the ``CustomTargetType`` resource by the
-                update. The fields specified in the update_mask are
+                overwritten by the update in the ``CustomTargetType``
+                resource. The fields specified in the update_mask are
                 relative to the resource, not the full request. A field
                 will be overwritten if it's in the mask. If the user
                 doesn't provide a mask then all fields are overwritten.
@@ -2626,7 +2628,7 @@ class CloudDeployAsyncClient:
                 The request object. The request object for ``CreateRelease``,
             parent (:class:`str`):
                 Required. The parent collection in which the ``Release``
-                should be created. Format should be
+                is created. The format is
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
 
                 This corresponds to the ``parent`` field
@@ -2799,6 +2801,645 @@ class CloudDeployAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.abandon_release
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_deploy_policy(
+        self,
+        request: Optional[Union[cloud_deploy.CreateDeployPolicyRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        deploy_policy: Optional[cloud_deploy.DeployPolicy] = None,
+        deploy_policy_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a new DeployPolicy in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_create_deploy_policy():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                deploy_policy = deploy_v1.DeployPolicy()
+                deploy_policy.rules.restrict_rollouts.time_window.time_zone = "time_zone_value"
+
+                request = deploy_v1.CreateDeployPolicyRequest(
+                    parent="parent_value",
+                    deploy_policy_id="deploy_policy_id_value",
+                    deploy_policy=deploy_policy,
+                )
+
+                # Make the request
+                operation = client.create_deploy_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.CreateDeployPolicyRequest, dict]]):
+                The request object. The request object for ``CreateDeployPolicy``.
+            parent (:class:`str`):
+                Required. The parent collection in which the
+                ``DeployPolicy`` must be created. The format is
+                ``projects/{project_id}/locations/{location_name}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            deploy_policy (:class:`google.cloud.deploy_v1.types.DeployPolicy`):
+                Required. The ``DeployPolicy`` to create.
+                This corresponds to the ``deploy_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            deploy_policy_id (:class:`str`):
+                Required. ID of the ``DeployPolicy``.
+                This corresponds to the ``deploy_policy_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.deploy_v1.types.DeployPolicy` A
+                DeployPolicy resource in the Cloud Deploy API.
+
+                   A DeployPolicy inhibits manual or automation driven
+                   actions within a Delivery Pipeline or Target.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, deploy_policy, deploy_policy_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.CreateDeployPolicyRequest):
+            request = cloud_deploy.CreateDeployPolicyRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if deploy_policy is not None:
+            request.deploy_policy = deploy_policy
+        if deploy_policy_id is not None:
+            request.deploy_policy_id = deploy_policy_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_deploy_policy
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            cloud_deploy.DeployPolicy,
+            metadata_type=cloud_deploy.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_deploy_policy(
+        self,
+        request: Optional[Union[cloud_deploy.UpdateDeployPolicyRequest, dict]] = None,
+        *,
+        deploy_policy: Optional[cloud_deploy.DeployPolicy] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates the parameters of a single DeployPolicy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_update_deploy_policy():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                deploy_policy = deploy_v1.DeployPolicy()
+                deploy_policy.rules.restrict_rollouts.time_window.time_zone = "time_zone_value"
+
+                request = deploy_v1.UpdateDeployPolicyRequest(
+                    deploy_policy=deploy_policy,
+                )
+
+                # Make the request
+                operation = client.update_deploy_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.UpdateDeployPolicyRequest, dict]]):
+                The request object. The request object for ``UpdateDeployPolicy``.
+            deploy_policy (:class:`google.cloud.deploy_v1.types.DeployPolicy`):
+                Required. The ``DeployPolicy`` to update.
+                This corresponds to the ``deploy_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. Field mask is used to specify the fields to be
+                overwritten by the update in the ``DeployPolicy``
+                resource. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it's in the mask. If the user
+                doesn't provide a mask then all fields are overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.deploy_v1.types.DeployPolicy` A
+                DeployPolicy resource in the Cloud Deploy API.
+
+                   A DeployPolicy inhibits manual or automation driven
+                   actions within a Delivery Pipeline or Target.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([deploy_policy, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.UpdateDeployPolicyRequest):
+            request = cloud_deploy.UpdateDeployPolicyRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if deploy_policy is not None:
+            request.deploy_policy = deploy_policy
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_deploy_policy
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("deploy_policy.name", request.deploy_policy.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            cloud_deploy.DeployPolicy,
+            metadata_type=cloud_deploy.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_deploy_policy(
+        self,
+        request: Optional[Union[cloud_deploy.DeleteDeployPolicyRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes a single DeployPolicy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_delete_deploy_policy():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.DeleteDeployPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_deploy_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.DeleteDeployPolicyRequest, dict]]):
+                The request object. The request object for ``DeleteDeployPolicy``.
+            name (:class:`str`):
+                Required. The name of the ``DeployPolicy`` to delete.
+                The format is
+                ``projects/{project_id}/locations/{location_name}/deployPolicies/{deploy_policy_name}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.DeleteDeployPolicyRequest):
+            request = cloud_deploy.DeleteDeployPolicyRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_deploy_policy
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=cloud_deploy.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_deploy_policies(
+        self,
+        request: Optional[Union[cloud_deploy.ListDeployPoliciesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListDeployPoliciesAsyncPager:
+        r"""Lists DeployPolicies in a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_list_deploy_policies():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.ListDeployPoliciesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_deploy_policies(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.ListDeployPoliciesRequest, dict]]):
+                The request object. The request object for ``ListDeployPolicies``.
+            parent (:class:`str`):
+                Required. The parent, which owns this collection of
+                deploy policies. Format must be
+                ``projects/{project_id}/locations/{location_name}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.deploy_v1.services.cloud_deploy.pagers.ListDeployPoliciesAsyncPager:
+                The response object from ListDeployPolicies.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.ListDeployPoliciesRequest):
+            request = cloud_deploy.ListDeployPoliciesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_deploy_policies
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListDeployPoliciesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_deploy_policy(
+        self,
+        request: Optional[Union[cloud_deploy.GetDeployPolicyRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_deploy.DeployPolicy:
+        r"""Gets details of a single DeployPolicy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_get_deploy_policy():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.GetDeployPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_deploy_policy(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.GetDeployPolicyRequest, dict]]):
+                The request object. The request object for ``GetDeployPolicy``
+            name (:class:`str`):
+                Required. Name of the ``DeployPolicy``. Format must be
+                ``projects/{project_id}/locations/{location_name}/deployPolicies/{deploy_policy_name}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.deploy_v1.types.DeployPolicy:
+                A DeployPolicy resource in the Cloud Deploy API.
+
+                   A DeployPolicy inhibits manual or automation driven
+                   actions within a Delivery Pipeline or Target.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.GetDeployPolicyRequest):
+            request = cloud_deploy.GetDeployPolicyRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_deploy_policy
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -3422,7 +4063,7 @@ class CloudDeployAsyncClient:
                 ``CreateRollout``.
             parent (:class:`str`):
                 Required. The parent collection in which the ``Rollout``
-                should be created. Format should be
+                must be created. The format is
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}``.
 
                 This corresponds to the ``parent`` field
@@ -4253,7 +4894,7 @@ class CloudDeployAsyncClient:
                 The request object. The request object for ``CreateAutomation``.
             parent (:class:`str`):
                 Required. The parent collection in which the
-                ``Automation`` should be created. Format should be
+                ``Automation`` must be created. The format is
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
 
                 This corresponds to the ``parent`` field
@@ -4406,8 +5047,8 @@ class CloudDeployAsyncClient:
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Field mask is used to specify the fields to be
-                overwritten in the ``Automation`` resource by the
-                update. The fields specified in the update_mask are
+                overwritten by the update in the ``Automation``
+                resource. The fields specified in the update_mask are
                 relative to the resource, not the full request. A field
                 will be overwritten if it's in the mask. If the user
                 doesn't provide a mask then all fields are overwritten.
@@ -4540,8 +5181,8 @@ class CloudDeployAsyncClient:
             request (Optional[Union[google.cloud.deploy_v1.types.DeleteAutomationRequest, dict]]):
                 The request object. The request object for ``DeleteAutomation``.
             name (:class:`str`):
-                Required. The name of the ``Automation`` to delete.
-                Format should be
+                Required. The name of the ``Automation`` to delete. The
+                format is
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/automations/{automation_name}``.
 
                 This corresponds to the ``name`` field
