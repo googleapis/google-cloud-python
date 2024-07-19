@@ -19,16 +19,15 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.speech.v2',
+    package="google.cloud.speech.v2",
     manifest={
-        'ModelFeature',
-        'ModelFeatures',
-        'ModelMetadata',
-        'LanguageMetadata',
-        'AccessMetadata',
-        'LocationsMetadata',
+        "ModelFeature",
+        "ModelFeatures",
+        "ModelMetadata",
+        "LanguageMetadata",
+        "AccessMetadata",
+        "LocationsMetadata",
     },
 )
 
@@ -65,10 +64,10 @@ class ModelFeatures(proto.Message):
             the model
     """
 
-    model_feature: MutableSequence['ModelFeature'] = proto.RepeatedField(
+    model_feature: MutableSequence["ModelFeature"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='ModelFeature',
+        message="ModelFeature",
     )
 
 
@@ -83,11 +82,11 @@ class ModelMetadata(proto.Message):
             model
     """
 
-    model_features: MutableMapping[str, 'ModelFeatures'] = proto.MapField(
+    model_features: MutableMapping[str, "ModelFeatures"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
-        message='ModelFeatures',
+        message="ModelFeatures",
     )
 
 
@@ -101,11 +100,11 @@ class LanguageMetadata(proto.Message):
             Map of locale (language code) -> models
     """
 
-    models: MutableMapping[str, 'ModelMetadata'] = proto.MapField(
+    models: MutableMapping[str, "ModelMetadata"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
-        message='ModelMetadata',
+        message="ModelMetadata",
     )
 
 
@@ -119,6 +118,7 @@ class AccessMetadata(proto.Message):
             Describes the different types of constraints
             that are applied.
     """
+
     class ConstraintType(proto.Enum):
         r"""Describes the different types of constraints that can be
         applied on a region.
@@ -154,15 +154,15 @@ class LocationsMetadata(proto.Message):
             region and given project.
     """
 
-    languages: 'LanguageMetadata' = proto.Field(
+    languages: "LanguageMetadata" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='LanguageMetadata',
+        message="LanguageMetadata",
     )
-    access_metadata: 'AccessMetadata' = proto.Field(
+    access_metadata: "AccessMetadata" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='AccessMetadata',
+        message="AccessMetadata",
     )
 
 

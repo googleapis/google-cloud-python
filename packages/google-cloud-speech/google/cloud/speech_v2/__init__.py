@@ -84,9 +84,18 @@ from .types.cloud_speech import (
     VttOutputFileFormatConfig,
     WordInfo,
 )
+from .types.locations_metadata import (
+    AccessMetadata,
+    LanguageMetadata,
+    LocationsMetadata,
+    ModelFeature,
+    ModelFeatures,
+    ModelMetadata,
+)
 
 __all__ = (
     "SpeechAsyncClient",
+    "AccessMetadata",
     "AutoDetectDecodingConfig",
     "BatchRecognizeFileMetadata",
     "BatchRecognizeFileResult",
@@ -112,12 +121,17 @@ __all__ = (
     "GetRecognizerRequest",
     "InlineOutputConfig",
     "InlineResult",
+    "LanguageMetadata",
     "ListCustomClassesRequest",
     "ListCustomClassesResponse",
     "ListPhraseSetsRequest",
     "ListPhraseSetsResponse",
     "ListRecognizersRequest",
     "ListRecognizersResponse",
+    "LocationsMetadata",
+    "ModelFeature",
+    "ModelFeatures",
+    "ModelMetadata",
     "NativeOutputFileFormatConfig",
     "OperationMetadata",
     "OutputFormatConfig",
