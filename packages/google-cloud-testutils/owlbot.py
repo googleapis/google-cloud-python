@@ -34,9 +34,9 @@ s.move(
         ".kokoro/docs/",
         ".kokoro/publish-docs.sh",
         "CONTRIBUTING.rst",
-        "renovate.json", # no bundle, ignore test resources
-        ".github/workflows/docs.yml", # no docs to publish
-	"README.rst",
+        "renovate.json",  # no bundle, ignore test resources
+        ".github/workflows/docs.yml",  # no docs to publish
+        "README.rst",
     ],
 )
 

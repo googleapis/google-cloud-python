@@ -22,14 +22,14 @@ import shutil
 
 import nox
 
-# 'update_lower_bounds' is excluded 
+# 'update_lower_bounds' is excluded
 nox.options.sessions = [
     "lint",
     "blacken",
     "lint_setup_py",
     "mypy",
     "unit",
-    "check_lower_bounds"
+    "check_lower_bounds",
 ]
 
 
@@ -50,7 +50,9 @@ def lint(session):
     """
     session.install("flake8", BLACK_VERSION)
     session.run(
-        "black", "--check", *BLACK_PATHS,
+        "black",
+        "--check",
+        *BLACK_PATHS,
     )
     session.run("flake8", *BLACK_PATHS)
 
@@ -63,7 +65,8 @@ def blacken(session):
     """
     session.install(BLACK_VERSION)
     session.run(
-        "black", *BLACK_PATHS,
+        "black",
+        *BLACK_PATHS,
     )
 
 
@@ -93,7 +96,9 @@ def unit(session):
     )
 
     # Install two fake packages for the lower-bound-checker tests
-    session.install("-e", "tests/unit/resources/good_package", "tests/unit/resources/bad_package")
+    session.install(
+        "-e", "tests/unit/resources/good_package", "tests/unit/resources/bad_package"
+    )
 
     session.install("pytest", "pytest-cov")
     session.install("-e", ".", "-c", constraints_path)
@@ -112,6 +117,7 @@ def unit(session):
         os.path.join("tests", "unit"),
         *session.posargs,
     )
+
 
 @nox.session(python="3.8")
 def check_lower_bounds(session):
