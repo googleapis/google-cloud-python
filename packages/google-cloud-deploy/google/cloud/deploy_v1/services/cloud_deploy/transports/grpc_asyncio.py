@@ -835,6 +835,148 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
         return self._stubs["abandon_release"]
 
     @property
+    def create_deploy_policy(
+        self,
+    ) -> Callable[
+        [cloud_deploy.CreateDeployPolicyRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create deploy policy method over gRPC.
+
+        Creates a new DeployPolicy in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateDeployPolicyRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_deploy_policy" not in self._stubs:
+            self._stubs["create_deploy_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/CreateDeployPolicy",
+                request_serializer=cloud_deploy.CreateDeployPolicyRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_deploy_policy"]
+
+    @property
+    def update_deploy_policy(
+        self,
+    ) -> Callable[
+        [cloud_deploy.UpdateDeployPolicyRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update deploy policy method over gRPC.
+
+        Updates the parameters of a single DeployPolicy.
+
+        Returns:
+            Callable[[~.UpdateDeployPolicyRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_deploy_policy" not in self._stubs:
+            self._stubs["update_deploy_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/UpdateDeployPolicy",
+                request_serializer=cloud_deploy.UpdateDeployPolicyRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_deploy_policy"]
+
+    @property
+    def delete_deploy_policy(
+        self,
+    ) -> Callable[
+        [cloud_deploy.DeleteDeployPolicyRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete deploy policy method over gRPC.
+
+        Deletes a single DeployPolicy.
+
+        Returns:
+            Callable[[~.DeleteDeployPolicyRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_deploy_policy" not in self._stubs:
+            self._stubs["delete_deploy_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/DeleteDeployPolicy",
+                request_serializer=cloud_deploy.DeleteDeployPolicyRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_deploy_policy"]
+
+    @property
+    def list_deploy_policies(
+        self,
+    ) -> Callable[
+        [cloud_deploy.ListDeployPoliciesRequest],
+        Awaitable[cloud_deploy.ListDeployPoliciesResponse],
+    ]:
+        r"""Return a callable for the list deploy policies method over gRPC.
+
+        Lists DeployPolicies in a given project and location.
+
+        Returns:
+            Callable[[~.ListDeployPoliciesRequest],
+                    Awaitable[~.ListDeployPoliciesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_deploy_policies" not in self._stubs:
+            self._stubs["list_deploy_policies"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/ListDeployPolicies",
+                request_serializer=cloud_deploy.ListDeployPoliciesRequest.serialize,
+                response_deserializer=cloud_deploy.ListDeployPoliciesResponse.deserialize,
+            )
+        return self._stubs["list_deploy_policies"]
+
+    @property
+    def get_deploy_policy(
+        self,
+    ) -> Callable[
+        [cloud_deploy.GetDeployPolicyRequest], Awaitable[cloud_deploy.DeployPolicy]
+    ]:
+        r"""Return a callable for the get deploy policy method over gRPC.
+
+        Gets details of a single DeployPolicy.
+
+        Returns:
+            Callable[[~.GetDeployPolicyRequest],
+                    Awaitable[~.DeployPolicy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_deploy_policy" not in self._stubs:
+            self._stubs["get_deploy_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/GetDeployPolicy",
+                request_serializer=cloud_deploy.GetDeployPolicyRequest.serialize,
+                response_deserializer=cloud_deploy.DeployPolicy.deserialize,
+            )
+        return self._stubs["get_deploy_policy"]
+
+    @property
     def approve_rollout(
         self,
     ) -> Callable[
@@ -1574,6 +1716,49 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
             ),
             self.abandon_release: gapic_v1.method_async.wrap_method(
                 self.abandon_release,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_deploy_policy: gapic_v1.method_async.wrap_method(
+                self.create_deploy_policy,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_deploy_policy: gapic_v1.method_async.wrap_method(
+                self.update_deploy_policy,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_deploy_policy: gapic_v1.method_async.wrap_method(
+                self.delete_deploy_policy,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_deploy_policies: gapic_v1.method_async.wrap_method(
+                self.list_deploy_policies,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_deploy_policy: gapic_v1.method_async.wrap_method(
+                self.get_deploy_policy,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
