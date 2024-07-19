@@ -2503,6 +2503,43 @@ def test_parse_branch_path():
     assert expected == actual
 
 
+def test_chunk_path():
+    project = "winkle"
+    location = "nautilus"
+    data_store = "scallop"
+    branch = "abalone"
+    document = "squid"
+    chunk = "clam"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}/chunks/{chunk}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        branch=branch,
+        document=document,
+        chunk=chunk,
+    )
+    actual = SearchServiceClient.chunk_path(
+        project, location, data_store, branch, document, chunk
+    )
+    assert expected == actual
+
+
+def test_parse_chunk_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "data_store": "oyster",
+        "branch": "nudibranch",
+        "document": "cuttlefish",
+        "chunk": "mussel",
+    }
+    path = SearchServiceClient.chunk_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SearchServiceClient.parse_chunk_path(path)
+    assert expected == actual
+
+
 def test_data_store_path():
     project = "winkle"
     location = "nautilus"
