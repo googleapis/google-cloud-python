@@ -400,7 +400,7 @@ class Session(
     def close(self):
         """Delete resources that were created with this session's session_id.
         This includes BigQuery tables, remote functions and cloud functions
-        serving the remote functions"""
+        serving the remote functions."""
         self._clean_up_tables()
         self._remote_function_session.clean_up(
             self.bqclient, self.cloudfunctionsclient, self.session_id

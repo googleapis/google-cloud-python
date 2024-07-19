@@ -847,10 +847,28 @@ options = config.options
 option_context = config.option_context
 """Global :class:`~bigframes._config.option_context` to configure BigQuery DataFrames."""
 
+
 # Session management APIs
-get_global_session = global_session.get_global_session
-close_session = global_session.close_session
-reset_session = global_session.close_session
+def get_global_session():
+    return global_session.get_global_session()
+
+
+get_global_session.__doc__ = global_session.get_global_session.__doc__
+
+
+def close_session():
+    return global_session.close_session()
+
+
+close_session.__doc__ = global_session.close_session.__doc__
+
+
+def reset_session():
+    return global_session.close_session()
+
+
+reset_session.__doc__ = global_session.close_session.__doc__
+
 
 # SQL Compilation uses recursive algorithms on deep trees
 # 10M tree depth should be sufficient to generate any sql that is under bigquery limit

@@ -204,9 +204,12 @@ class IbisSignature(NamedTuple):
     output_type: IbisDataType
 
 
-def get_cloud_function_name(function_hash, session_id, uniq_suffix=None):
+def get_cloud_function_name(function_hash, session_id=None, uniq_suffix=None):
     "Get a name for the cloud function for the given user defined function."
-    parts = [_BIGFRAMES_REMOTE_FUNCTION_PREFIX, session_id, function_hash]
+    parts = [_BIGFRAMES_REMOTE_FUNCTION_PREFIX]
+    if session_id:
+        parts.append(session_id)
+    parts.append(function_hash)
     if uniq_suffix:
         parts.append(uniq_suffix)
     return _GCF_FUNCTION_NAME_SEPERATOR.join(parts)
@@ -566,10 +569,13 @@ class RemoteFunctionClient:
             )
 
         # Derive the name of the cloud function underlying the intended BQ
-        # remote function, also collect updated package requirements as
-        # determined in the name resolution
+        # remote function. Use the session id to identify the GCF for unnamed
+        # functions. The named remote functions are treated as a persistant
+        # artifacts, so let's keep them independent of session id, which also
+        # makes their naming more stable for the same udf code
+        session_id = None if name else self._session.session_id
         cloud_function_name = get_cloud_function_name(
-            function_hash, self._session.session_id, uniq_suffix
+            function_hash, session_id, uniq_suffix
         )
         cf_endpoint = self.get_cloud_function_endpoint(cloud_function_name)
 
@@ -635,13 +641,12 @@ class RemoteFunctionClient:
         )
         try:
             for routine in routines:
+                routine = cast(bigquery.Routine, routine)
                 if routine.reference.routine_id == remote_function_name:
-                    # TODO(shobs): Use first class properties when they are available
-                    # https://github.com/googleapis/python-bigquery/issues/1552
-                    rf_options = routine._properties.get("remoteFunctionOptions")
+                    rf_options = routine.remote_function_options
                     if rf_options:
-                        http_endpoint = rf_options.get("endpoint")
-                        bq_connection = rf_options.get("connection")
+                        http_endpoint = rf_options.endpoint
+                        bq_connection = rf_options.connection
                         if bq_connection:
                             bq_connection = os.path.basename(bq_connection)
                     break
@@ -731,15 +736,15 @@ class _RemoteFunctionSession:
 
     def __init__(self):
         # Session level mapping of remote function artifacts
-        self._temp_session_artifacts: Dict[str, str] = dict()
+        self._temp_artifacts: Dict[str, str] = dict()
 
-        # Lock to synchronize the update of the session level mapping
-        self._session_artifacts_lock = threading.Lock()
+        # Lock to synchronize the update of the session artifacts
+        self._artifacts_lock = threading.Lock()
 
-    def _update_artifacts(self, bqrf_routine: str, gcf_path: str):
+    def _update_temp_artifacts(self, bqrf_routine: str, gcf_path: str):
         """Update remote function artifacts in the current session."""
-        with self._session_artifacts_lock:
-            self._temp_session_artifacts[bqrf_routine] = gcf_path
+        with self._artifacts_lock:
+            self._temp_artifacts[bqrf_routine] = gcf_path
 
     def clean_up(
         self,
@@ -748,8 +753,8 @@ class _RemoteFunctionSession:
         session_id: str,
     ):
         """Delete remote function artifacts in the current session."""
-        with self._session_artifacts_lock:
-            for bqrf_routine, gcf_path in self._temp_session_artifacts.items():
+        with self._artifacts_lock:
+            for bqrf_routine, gcf_path in self._temp_artifacts.items():
                 # Let's accept the possibility that the remote function may have
                 # been deleted directly by the user
                 bqclient.delete_routine(bqrf_routine, not_found_ok=True)
@@ -761,7 +766,7 @@ class _RemoteFunctionSession:
                 except google.api_core.exceptions.NotFound:
                     pass
 
-            self._temp_session_artifacts.clear()
+            self._temp_artifacts.clear()
 
     # Inspired by @udf decorator implemented in ibis-bigquery package
     # https://github.com/ibis-project/ibis-bigquery/blob/main/ibis_bigquery/udf/__init__.py
@@ -1206,7 +1211,7 @@ class _RemoteFunctionSession:
             # explicit name, we are assuming that the user wants to persist them
             # with that name and would directly manage their lifecycle.
             if created_new and (not name):
-                self._update_artifacts(
+                self._update_temp_artifacts(
                     func.bigframes_remote_function, func.bigframes_cloud_function
                 )
             return func
