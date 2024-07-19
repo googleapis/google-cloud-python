@@ -636,6 +636,10 @@ class AnswerQueryRequest(proto.Message):
 
                     If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
                     returned.
+                search_result_mode (google.cloud.discoveryengine_v1beta.types.SearchRequest.ContentSearchSpec.SearchResultMode):
+                    Specifies the search result mode. If unspecified, the search
+                    result mode defaults to ``DOCUMENTS``. See `parse and chunk
+                    documents <https://cloud.google.com/generative-ai-app-builder/docs/parse-chunk-documents>`__
                 data_store_specs (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchRequest.DataStoreSpec]):
                     Specs defining dataStores to filter on in a
                     search call and configurations for those
@@ -661,6 +665,11 @@ class AnswerQueryRequest(proto.Message):
             order_by: str = proto.Field(
                 proto.STRING,
                 number=4,
+            )
+            search_result_mode: search_service.SearchRequest.ContentSearchSpec.SearchResultMode = proto.Field(
+                proto.ENUM,
+                number=5,
+                enum=search_service.SearchRequest.ContentSearchSpec.SearchResultMode,
             )
             data_store_specs: MutableSequence[
                 search_service.SearchRequest.DataStoreSpec
@@ -995,8 +1004,8 @@ class AnswerQueryResponse(proto.Message):
     Attributes:
         answer (google.cloud.discoveryengine_v1beta.types.Answer):
             Answer resource object. If
-            [AnswerQueryRequest.StepSpec.max_step_count][] is greater
-            than 1, use
+            [AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.max_rephrase_steps][google.cloud.discoveryengine.v1beta.AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.max_rephrase_steps]
+            is greater than 1, use
             [Answer.name][google.cloud.discoveryengine.v1beta.Answer.name]
             to fetch answer information using
             [ConversationalSearchService.GetAnswer][google.cloud.discoveryengine.v1beta.ConversationalSearchService.GetAnswer]
