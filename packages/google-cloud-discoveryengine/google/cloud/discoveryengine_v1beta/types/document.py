@@ -119,7 +119,7 @@ class Document(proto.Message):
             uri (str):
                 The URI of the content. Only Cloud Storage URIs (e.g.
                 ``gs://bucket-name/path/to/file``) are supported. The
-                maximum file size is 2.5 MB for text-based formats, 100 MB
+                maximum file size is 2.5 MB for text-based formats, 200 MB
                 for other formats.
 
                 This field is a member of `oneof`_ ``content``.

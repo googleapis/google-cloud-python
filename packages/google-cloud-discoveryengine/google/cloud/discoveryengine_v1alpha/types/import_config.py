@@ -23,7 +23,12 @@ from google.rpc import status_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import completion, document, user_event
+from google.cloud.discoveryengine_v1alpha.types import (
+    completion,
+    document,
+    sample_query,
+    user_event,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
@@ -46,6 +51,9 @@ __protobuf__ = proto.module(
         "ImportSuggestionDenyListEntriesRequest",
         "ImportSuggestionDenyListEntriesResponse",
         "ImportSuggestionDenyListEntriesMetadata",
+        "ImportSampleQueriesRequest",
+        "ImportSampleQueriesResponse",
+        "ImportSampleQueriesMetadata",
     },
 )
 
@@ -1210,6 +1218,169 @@ class ImportSuggestionDenyListEntriesMetadata(proto.Message):
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class ImportSampleQueriesRequest(proto.Message):
+    r"""Request message for
+    [SampleQueryService.ImportSampleQueries][google.cloud.discoveryengine.v1alpha.SampleQueryService.ImportSampleQueries]
+    method.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        inline_source (google.cloud.discoveryengine_v1alpha.types.ImportSampleQueriesRequest.InlineSource):
+            The Inline source for sample query entries.
+
+            This field is a member of `oneof`_ ``source``.
+        gcs_source (google.cloud.discoveryengine_v1alpha.types.GcsSource):
+            Cloud Storage location for the input content.
+
+            This field is a member of `oneof`_ ``source``.
+        bigquery_source (google.cloud.discoveryengine_v1alpha.types.BigQuerySource):
+            BigQuery input source.
+
+            This field is a member of `oneof`_ ``source``.
+        parent (str):
+            Required. The parent sample query set resource name, such as
+            ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.
+
+            If the caller does not have permission to list
+            [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s
+            under this sample query set, regardless of whether or not
+            this sample query set exists, a ``PERMISSION_DENIED`` error
+            is returned.
+        error_config (google.cloud.discoveryengine_v1alpha.types.ImportErrorConfig):
+            The desired location of errors incurred
+            during the Import.
+    """
+
+    class InlineSource(proto.Message):
+        r"""The inline source for
+        [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s.
+
+        Attributes:
+            sample_queries (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SampleQuery]):
+                Required. A list of
+                [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s
+                to import. Max of 1000 items.
+        """
+
+        sample_queries: MutableSequence[sample_query.SampleQuery] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=sample_query.SampleQuery,
+        )
+
+    inline_source: InlineSource = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message=InlineSource,
+    )
+    gcs_source: "GcsSource" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="source",
+        message="GcsSource",
+    )
+    bigquery_source: "BigQuerySource" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="source",
+        message="BigQuerySource",
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    error_config: "ImportErrorConfig" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="ImportErrorConfig",
+    )
+
+
+class ImportSampleQueriesResponse(proto.Message):
+    r"""Response of the
+    [SampleQueryService.ImportSampleQueries][google.cloud.discoveryengine.v1alpha.SampleQueryService.ImportSampleQueries]
+    method. If the long running operation is done, this message is
+    returned by the google.longrunning.Operations.response field if the
+    operation is successful.
+
+    Attributes:
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
+            A sample of errors encountered while
+            processing the request.
+        error_config (google.cloud.discoveryengine_v1alpha.types.ImportErrorConfig):
+            The desired location of errors incurred
+            during the Import.
+    """
+
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
+    )
+    error_config: "ImportErrorConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ImportErrorConfig",
+    )
+
+
+class ImportSampleQueriesMetadata(proto.Message):
+    r"""Metadata related to the progress of the ImportSampleQueries
+    operation. This will be returned by the
+    google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            ImportSampleQueries operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            ImportSampleQueries operation last update
+            time. If the operation is done, this is also the
+            finish time.
+        success_count (int):
+            Count of
+            [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s
+            successfully imported.
+        failure_count (int):
+            Count of
+            [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s
+            that failed to be imported.
+        total_count (int):
+            Total count of
+            [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s
+            that were processed.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    success_count: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    failure_count: int = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    total_count: int = proto.Field(
+        proto.INT64,
+        number=5,
     )
 
 

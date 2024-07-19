@@ -470,7 +470,15 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/evaluations/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/sampleQuerySets/*/operations/*}",
                     },
                     {
                         "method": "get",
@@ -1223,7 +1231,15 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/evaluations/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/sampleQuerySets/*/operations/*}",
                 },
                 {
                     "method": "get",

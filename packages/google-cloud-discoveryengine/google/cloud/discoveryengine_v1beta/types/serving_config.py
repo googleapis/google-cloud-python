@@ -119,19 +119,27 @@ class ServingConfig(proto.Message):
             functions that are joined by "+".
 
             -  ranking_expression = function, { " + ", function };
-               Supported functions:
-            -  double \* relevance_score
-            -  double \* dotProduct(embedding_field_path) Function
-               variables: relevance_score: pre-defined keywords, used
-               for measure relevance between query and document.
-               embedding_field_path: the document embedding field used
-               with query embedding vector. dotProduct: embedding
-               function between embedding_field_path and query embedding
-               vector.
 
-            Example ranking expression: If document has an embedding
-            field doc_embedding, the ranking expression could be 0.5 \*
-            relevance_score + 0.3 \* dotProduct(doc_embedding).
+            Supported functions:
+
+            -  double \* relevance_score
+            -  double \* dotProduct(embedding_field_path)
+
+            Function variables:
+
+            -  ``relevance_score``: pre-defined keywords, used for
+               measure relevance between query and document.
+            -  ``embedding_field_path``: the document embedding field
+               used with query embedding vector.
+            -  ``dotProduct``: embedding function between
+               embedding_field_path and query embedding vector.
+
+            Example ranking expression:
+
+            ::
+
+               If document has an embedding field doc_embedding, the ranking expression
+               could be `0.5 * relevance_score + 0.3 * dotProduct(doc_embedding)`.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. ServingConfig created timestamp.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
