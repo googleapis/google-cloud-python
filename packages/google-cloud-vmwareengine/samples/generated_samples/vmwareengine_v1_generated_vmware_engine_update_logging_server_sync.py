@@ -42,7 +42,7 @@ def sample_update_logging_server():
     logging_server = vmwareengine_v1.LoggingServer()
     logging_server.hostname = "hostname_value"
     logging_server.port = 453
-    logging_server.protocol = "TCP"
+    logging_server.protocol = "RELP"
     logging_server.source_type = "VCSA"
 
     request = vmwareengine_v1.UpdateLoggingServerRequest(

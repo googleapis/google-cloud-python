@@ -41,7 +41,7 @@ async def sample_update_network_peering():
     # Initialize request argument(s)
     network_peering = vmwareengine_v1.NetworkPeering()
     network_peering.peer_network = "peer_network_value"
-    network_peering.peer_network_type = "DELL_POWERSCALE"
+    network_peering.peer_network_type = "GOOGLE_CLOUD_NETAPP_VOLUMES"
     network_peering.vmware_engine_network = "vmware_engine_network_value"
 
     request = vmwareengine_v1.UpdateNetworkPeeringRequest(

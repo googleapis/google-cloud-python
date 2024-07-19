@@ -47,6 +47,7 @@ from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
@@ -36966,6 +36967,12 @@ def test_create_cluster_rest(request_type):
         "update_time": {},
         "state": 1,
         "management": True,
+        "autoscaling_settings": {
+            "autoscaling_policies": {},
+            "min_cluster_node_count": 2354,
+            "max_cluster_node_count": 2356,
+            "cool_down_period": {"seconds": 751, "nanos": 543},
+        },
         "uid": "uid_value",
         "node_type_configs": {},
         "stretched_cluster_config": {
@@ -37394,6 +37401,12 @@ def test_update_cluster_rest(request_type):
         "update_time": {},
         "state": 1,
         "management": True,
+        "autoscaling_settings": {
+            "autoscaling_policies": {},
+            "min_cluster_node_count": 2354,
+            "max_cluster_node_count": 2356,
+            "cool_down_period": {"seconds": 751, "nanos": 543},
+        },
         "uid": "uid_value",
         "node_type_configs": {},
         "stretched_cluster_config": {

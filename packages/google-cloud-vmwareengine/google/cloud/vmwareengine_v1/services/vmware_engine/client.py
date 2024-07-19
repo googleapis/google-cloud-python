@@ -4816,7 +4816,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 logging_server = vmwareengine_v1.LoggingServer()
                 logging_server.hostname = "hostname_value"
                 logging_server.port = 453
-                logging_server.protocol = "TCP"
+                logging_server.protocol = "RELP"
                 logging_server.source_type = "VCSA"
 
                 request = vmwareengine_v1.CreateLoggingServerRequest(
@@ -4978,7 +4978,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 logging_server = vmwareengine_v1.LoggingServer()
                 logging_server.hostname = "hostname_value"
                 logging_server.port = 453
-                logging_server.protocol = "TCP"
+                logging_server.protocol = "RELP"
                 logging_server.source_type = "VCSA"
 
                 request = vmwareengine_v1.UpdateLoggingServerRequest(
@@ -6423,7 +6423,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 # Initialize request argument(s)
                 network_peering = vmwareengine_v1.NetworkPeering()
                 network_peering.peer_network = "peer_network_value"
-                network_peering.peer_network_type = "DELL_POWERSCALE"
+                network_peering.peer_network_type = "GOOGLE_CLOUD_NETAPP_VOLUMES"
                 network_peering.vmware_engine_network = "vmware_engine_network_value"
 
                 request = vmwareengine_v1.CreateNetworkPeeringRequest(
@@ -6719,7 +6719,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 # Initialize request argument(s)
                 network_peering = vmwareengine_v1.NetworkPeering()
                 network_peering.peer_network = "peer_network_value"
-                network_peering.peer_network_type = "DELL_POWERSCALE"
+                network_peering.peer_network_type = "GOOGLE_CLOUD_NETAPP_VOLUMES"
                 network_peering.vmware_engine_network = "vmware_engine_network_value"
 
                 request = vmwareengine_v1.UpdateNetworkPeeringRequest(
