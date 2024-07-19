@@ -114,6 +114,7 @@ from .types.vmwareengine import (
     UpdateVmwareEngineNetworkRequest,
 )
 from .types.vmwareengine_resources import (
+    AutoscalingSettings,
     Cluster,
     Credentials,
     DnsBindPermission,
@@ -144,6 +145,7 @@ from .types.vmwareengine_resources import (
 
 __all__ = (
     "VmwareEngineAsyncClient",
+    "AutoscalingSettings",
     "Cluster",
     "CreateClusterRequest",
     "CreateExternalAccessRuleRequest",

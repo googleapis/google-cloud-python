@@ -108,6 +108,7 @@ from .vmwareengine import (
     UpdateVmwareEngineNetworkRequest,
 )
 from .vmwareengine_resources import (
+    AutoscalingSettings,
     Cluster,
     Credentials,
     DnsBindPermission,
@@ -229,6 +230,7 @@ __all__ = (
     "UpdatePrivateConnectionRequest",
     "UpdateSubnetRequest",
     "UpdateVmwareEngineNetworkRequest",
+    "AutoscalingSettings",
     "Cluster",
     "Credentials",
     "DnsBindPermission",
