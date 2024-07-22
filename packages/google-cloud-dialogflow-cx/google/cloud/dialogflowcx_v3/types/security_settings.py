@@ -251,6 +251,10 @@ class SecuritySettings(proto.Message):
             and use default. Setting a value higher than
             that has no effect. A missing value or setting
             to 0 also means we use default TTL.
+            When data retention configuration is changed, it
+            only applies to the data created after the
+            change; the TTL of existing data created before
+            the change stays intact.
 
             This field is a member of `oneof`_ ``data_retention``.
         retention_strategy (google.cloud.dialogflowcx_v3.types.SecuritySettings.RetentionStrategy):
@@ -368,9 +372,15 @@ class SecuritySettings(proto.Message):
                 Filename pattern for exported audio.
             enable_audio_redaction (bool):
                 Enable audio redaction if it is true.
+                Note that this only redacts end-user audio data;
+                Synthesised audio from the virtual agent is not
+                redacted.
             audio_format (google.cloud.dialogflowcx_v3.types.SecuritySettings.AudioExportSettings.AudioFormat):
                 File format for exported audio file.
                 Currently only in telephony recordings.
+            store_tts_audio (bool):
+                Whether to store TTS audio. By default, TTS
+                audio from the virtual agent is not exported.
         """
 
         class AudioFormat(proto.Enum):
@@ -408,6 +418,10 @@ class SecuritySettings(proto.Message):
             proto.ENUM,
             number=4,
             enum="SecuritySettings.AudioExportSettings.AudioFormat",
+        )
+        store_tts_audio: bool = proto.Field(
+            proto.BOOL,
+            number=6,
         )
 
     class InsightsExportSettings(proto.Message):

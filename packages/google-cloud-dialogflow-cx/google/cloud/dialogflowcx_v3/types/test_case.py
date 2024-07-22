@@ -222,20 +222,18 @@ class TestConfig(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
 
             Only one of ``flow`` and ``page`` should be set to indicate
-            the starting point of the test case. If both are set,
-            ``page`` takes precedence over ``flow``. If neither is set,
-            the test case will start with start page on the default
-            start flow.
+            the starting point of the test case. If neither is set, the
+            test case will start with start page on the default start
+            flow.
         page (str):
             The [page][google.cloud.dialogflow.cx.v3.Page] to start the
             test case with. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
 
             Only one of ``flow`` and ``page`` should be set to indicate
-            the starting point of the test case. If both are set,
-            ``page`` takes precedence over ``flow``. If neither is set,
-            the test case will start with start page on the default
-            start flow.
+            the starting point of the test case. If neither is set, the
+            test case will start with start page on the default start
+            flow.
     """
 
     tracking_parameters: MutableSequence[str] = proto.RepeatedField(

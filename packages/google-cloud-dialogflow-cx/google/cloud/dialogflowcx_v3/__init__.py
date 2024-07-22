@@ -82,7 +82,11 @@ from .types.changelog import (
     ListChangelogsRequest,
     ListChangelogsResponse,
 )
-from .types.data_store_connection import DataStoreConnection, DataStoreType
+from .types.data_store_connection import (
+    DataStoreConnection,
+    DataStoreConnectionSignals,
+    DataStoreType,
+)
 from .types.deployment import (
     Deployment,
     GetDeploymentRequest,
@@ -313,6 +317,7 @@ from .types.webhook import (
     CreateWebhookRequest,
     DeleteWebhookRequest,
     GetWebhookRequest,
+    LanguageInfo,
     ListWebhooksRequest,
     ListWebhooksResponse,
     PageInfo,
@@ -380,6 +385,7 @@ __all__ = (
     "CreateVersionRequest",
     "CreateWebhookRequest",
     "DataStoreConnection",
+    "DataStoreConnectionSignals",
     "DataStoreType",
     "DeleteAgentRequest",
     "DeleteEntityTypeRequest",
@@ -477,6 +483,7 @@ __all__ = (
     "IntentView",
     "IntentsClient",
     "KnowledgeConnectorSettings",
+    "LanguageInfo",
     "ListAgentsRequest",
     "ListAgentsResponse",
     "ListChangelogsRequest",

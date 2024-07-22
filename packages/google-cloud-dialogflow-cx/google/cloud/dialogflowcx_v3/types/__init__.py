@@ -51,7 +51,11 @@ from .changelog import (
     ListChangelogsRequest,
     ListChangelogsResponse,
 )
-from .data_store_connection import DataStoreConnection, DataStoreType
+from .data_store_connection import (
+    DataStoreConnection,
+    DataStoreConnectionSignals,
+    DataStoreType,
+)
 from .deployment import (
     Deployment,
     GetDeploymentRequest,
@@ -282,6 +286,7 @@ from .webhook import (
     CreateWebhookRequest,
     DeleteWebhookRequest,
     GetWebhookRequest,
+    LanguageInfo,
     ListWebhooksRequest,
     ListWebhooksResponse,
     PageInfo,
@@ -326,6 +331,7 @@ __all__ = (
     "ListChangelogsRequest",
     "ListChangelogsResponse",
     "DataStoreConnection",
+    "DataStoreConnectionSignals",
     "DataStoreType",
     "Deployment",
     "GetDeploymentRequest",
@@ -530,6 +536,7 @@ __all__ = (
     "CreateWebhookRequest",
     "DeleteWebhookRequest",
     "GetWebhookRequest",
+    "LanguageInfo",
     "ListWebhooksRequest",
     "ListWebhooksResponse",
     "PageInfo",

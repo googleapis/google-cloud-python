@@ -6808,14 +6808,23 @@ def test_create_test_case_rest(request_type):
                             ],
                             "advanced_settings": {
                                 "audio_export_gcs_destination": {"uri": "uri_value"},
+                                "speech_settings": {
+                                    "endpointer_sensitivity": 2402,
+                                    "no_speech_timeout": {},
+                                    "use_timeout_based_endpointing": True,
+                                    "models": {},
+                                },
                                 "dtmf_settings": {
                                     "enabled": True,
                                     "max_digits": 1065,
                                     "finish_digit": "finish_digit_value",
+                                    "interdigit_timeout_duration": {},
+                                    "endpointing_timeout_duration": {},
                                 },
                                 "logging_settings": {
                                     "enable_stackdriver_logging": True,
                                     "enable_interaction_logging": True,
+                                    "enable_consent_based_redaction": True,
                                 },
                             },
                             "enable_generative_fallback": True,
@@ -7442,14 +7451,23 @@ def test_update_test_case_rest(request_type):
                             ],
                             "advanced_settings": {
                                 "audio_export_gcs_destination": {"uri": "uri_value"},
+                                "speech_settings": {
+                                    "endpointer_sensitivity": 2402,
+                                    "no_speech_timeout": {},
+                                    "use_timeout_based_endpointing": True,
+                                    "models": {},
+                                },
                                 "dtmf_settings": {
                                     "enabled": True,
                                     "max_digits": 1065,
                                     "finish_digit": "finish_digit_value",
+                                    "interdigit_timeout_duration": {},
+                                    "endpointing_timeout_duration": {},
                                 },
                                 "logging_settings": {
                                     "enable_stackdriver_logging": True,
                                     "enable_interaction_logging": True,
+                                    "enable_consent_based_redaction": True,
                                 },
                             },
                             "enable_generative_fallback": True,
