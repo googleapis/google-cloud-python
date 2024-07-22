@@ -40,7 +40,7 @@ from google.cloud.spanner_admin_database_v1 import RestoreDatabaseEncryptionConf
 from google.cloud.spanner_admin_database_v1 import RestoreDatabaseRequest
 from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect
-from google.cloud.spanner_dbapi.partition_helper import BatchTransactionId
+from google.cloud.spanner_v1.transaction import BatchTransactionId
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1 import Type
 from google.cloud.spanner_v1 import TypeCode

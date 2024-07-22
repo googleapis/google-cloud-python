@@ -36,6 +36,8 @@ from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from google.cloud.spanner_v1 import RequestOptions
 from google.api_core import gapic_v1
 from google.api_core.exceptions import InternalServerError
+from dataclasses import dataclass
+from typing import Any
 
 
 class Transaction(_SnapshotBase, _BatchBase):
@@ -554,3 +556,10 @@ class Transaction(_SnapshotBase, _BatchBase):
             self.commit()
         else:
             self.rollback()
+
+
+@dataclass
+class BatchTransactionId:
+    transaction_id: str
+    session_id: str
+    read_timestamp: Any
