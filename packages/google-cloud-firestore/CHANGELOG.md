@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.17.0](https://github.com/googleapis/python-firestore/compare/v2.16.1...v2.17.0) (2024-07-12)
+
+
+### Features
+
+* Support async Vector Search ([#901](https://github.com/googleapis/python-firestore/issues/901)) ([2de1620](https://github.com/googleapis/python-firestore/commit/2de16209409c9d9ba41d3444400e6a39ee1b2936))
+* Use generator for stream results ([#926](https://github.com/googleapis/python-firestore/issues/926)) ([3e5df35](https://github.com/googleapis/python-firestore/commit/3e5df3565c9fc6f73f60207a46ebe1cd70c4df8d))
+
 ## [2.16.1](https://github.com/googleapis/python-firestore/compare/v2.16.0...v2.16.1) (2024-04-17)
 
 
