@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.25.0](https://github.com/googleapis/python-bigtable/compare/v2.24.0...v2.25.0) (2024-07-18)
+
+
+### Features
+
+* Publish ProtoRows Message ([7ac8e14](https://github.com/googleapis/python-bigtable/commit/7ac8e142f99a6891b6bc286858f764def503e89a))
+* Publish the Cloud Bigtable ExecuteQuery API ([7ac8e14](https://github.com/googleapis/python-bigtable/commit/7ac8e142f99a6891b6bc286858f764def503e89a))
+
+
+### Bug Fixes
+
+* Allow protobuf 5.x ([7ac8e14](https://github.com/googleapis/python-bigtable/commit/7ac8e142f99a6891b6bc286858f764def503e89a))
+
 ## [2.24.0](https://github.com/googleapis/python-bigtable/compare/v2.23.1...v2.24.0) (2024-06-11)
 
 
