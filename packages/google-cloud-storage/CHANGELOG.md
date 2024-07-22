@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.18.0](https://github.com/googleapis/python-storage/compare/v2.17.0...v2.18.0) (2024-07-09)
+
+
+### Features
+
+* Add OpenTelemetry Tracing support as a preview feature ([#1288](https://github.com/googleapis/python-storage/issues/1288)) ([c2ab0e0](https://github.com/googleapis/python-storage/commit/c2ab0e035b179a919b27c7f50318472f14656e00))
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#1317](https://github.com/googleapis/python-storage/issues/1317)) ([152b249](https://github.com/googleapis/python-storage/commit/152b249472a09342777237d47b6c09f99c2d28e6))
+* Correct notification error message ([#1290](https://github.com/googleapis/python-storage/issues/1290)) ([1cb977d](https://github.com/googleapis/python-storage/commit/1cb977daa2d97c255a382ce81f56a43168b0637d)), closes [#1289](https://github.com/googleapis/python-storage/issues/1289)
+
 ## [2.17.0](https://github.com/googleapis/python-storage/compare/v2.16.0...v2.17.0) (2024-05-22)
 
 
