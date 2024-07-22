@@ -58,6 +58,7 @@ s.move(
         "README.rst",
         # exclude this file as we have an alternate prerelease.cfg
         ".kokoro/presubmit/prerelease-deps.cfg",
+        ".kokoro/presubmit/presubmit.cfg",
     ],
 )
 

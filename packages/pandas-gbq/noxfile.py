@@ -98,9 +98,6 @@ def _calculate_duration(func):
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
-    "unit",
-    "system",
-    "cover",
     "lint",
     "lint_setup_py",
     "blacken",
