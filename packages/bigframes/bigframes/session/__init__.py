@@ -889,6 +889,8 @@ class Session(
             table=table,
             index_cols=index_cols,
             api_name=api_name,
+            # If non in strict ordering mode, don't go through overhead of scanning index column(s) to determine if unique
+            metadata_only=not self._strictly_ordered,
         )
         schema = schemata.ArraySchema.from_bq_table(table)
         if columns:

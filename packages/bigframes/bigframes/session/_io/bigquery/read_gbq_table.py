@@ -152,6 +152,7 @@ def are_index_cols_unique(
     table: bigquery.table.Table,
     index_cols: List[str],
     api_name: str,
+    metadata_only: bool = False,
 ) -> bool:
     if len(index_cols) == 0:
         return False
@@ -161,6 +162,9 @@ def are_index_cols_unique(
     if (len(primary_keys) > 0) and primary_keys <= frozenset(index_cols):
         return True
 
+    if metadata_only:
+        # Sometimes not worth scanning data to check uniqueness
+        return False
     # TODO(b/337925142): Avoid a "SELECT *" subquery here by ensuring
     # table_expression only selects just index_cols.
     is_unique_sql = bigframes.core.sql.is_distinct_sql(index_cols, table.reference)
