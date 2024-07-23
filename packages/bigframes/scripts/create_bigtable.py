@@ -18,6 +18,7 @@
 import os
 import sys
 
+from google.cloud.bigtable import column_family
 import google.cloud.bigtable as bigtable
 
 PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT")
@@ -57,8 +58,11 @@ def create_table(instance):
         table_id,
         instance,
     )
+    max_versions_rule = column_family.MaxVersionsGCRule(1)
+    column_family_id = "body_mass_g"
+    column_families = {column_family_id: max_versions_rule}
     if not table.exists():
-        table.create()
+        table.create(column_families=column_families)
         print(f"Created table {table_id}")
 
 
