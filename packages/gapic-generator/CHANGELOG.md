@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.18.3](https://github.com/googleapis/gapic-generator-python/compare/v1.18.2...v1.18.3) (2024-07-23)
+
+
+### Bug Fixes
+
+* Allow pyi files to be included in the output of py_gapic_assembly_pkg ([#2036](https://github.com/googleapis/gapic-generator-python/issues/2036)) ([8c517a0](https://github.com/googleapis/gapic-generator-python/commit/8c517a030c88cceb179c6d83ad706b2d7f1eba89))
+* Retry and timeout values do not propagate in requests during pagination ([#2065](https://github.com/googleapis/gapic-generator-python/issues/2065)) ([76aa98e](https://github.com/googleapis/gapic-generator-python/commit/76aa98eda53cfc5c406fb5ed705e894c5c6c2513))
+
 ## [1.18.2](https://github.com/googleapis/gapic-generator-python/compare/v1.18.1...v1.18.2) (2024-07-02)
 
 
