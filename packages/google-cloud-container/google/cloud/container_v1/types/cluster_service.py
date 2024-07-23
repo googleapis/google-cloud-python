@@ -1079,9 +1079,9 @@ class NodeNetworkConfig(proto.Message):
             corresponds to an additional alias IP range for
             the node
         pod_ipv4_range_utilization (float):
-            Output only. [Output only] The utilization of the IPv4 range
-            for the pod. The ratio is Usage/[Total number of IPs in the
-            secondary range], Usage=numNodes\ *numZones*\ podIPsPerNode.
+            Output only. The utilization of the IPv4 range for the pod.
+            The ratio is Usage/[Total number of IPs in the secondary
+            range], Usage=numNodes\ *numZones*\ podIPsPerNode.
     """
 
     class NetworkPerformanceConfig(proto.Message):
@@ -1661,14 +1661,17 @@ class MasterAuth(proto.Message):
             before v1.12, if no configuration is specified,
             a client certificate is issued.
         cluster_ca_certificate (str):
-            [Output only] Base64-encoded public certificate that is the
-            root of trust for the cluster.
+            Output only. Base64-encoded public
+            certificate that is the root of trust for the
+            cluster.
         client_certificate (str):
-            [Output only] Base64-encoded public certificate used by
-            clients to authenticate to the cluster endpoint.
+            Output only. Base64-encoded public
+            certificate used by clients to authenticate to
+            the cluster endpoint.
         client_key (str):
-            [Output only] Base64-encoded private key used by clients to
-            authenticate to the cluster endpoint.
+            Output only. Base64-encoded private key used
+            by clients to authenticate to the cluster
+            endpoint.
     """
 
     username: str = proto.Field(
@@ -2511,20 +2514,21 @@ class IPAllocationPolicy(proto.Message):
             will result in 32 IPs (/27) when overprovisioning is
             disabled.
         subnet_ipv6_cidr_block (str):
-            Output only. [Output only] The subnet's IPv6 CIDR block used
-            by nodes and pods.
+            Output only. The subnet's IPv6 CIDR block
+            used by nodes and pods.
         services_ipv6_cidr_block (str):
-            Output only. [Output only] The services IPv6 CIDR block for
+            Output only. The services IPv6 CIDR block for
             the cluster.
         additional_pod_ranges_config (google.cloud.container_v1.types.AdditionalPodRangesConfig):
-            Output only. [Output only] The additional pod ranges that
-            are added to the cluster. These pod ranges can be used by
-            new node pools to allocate pod IPs automatically. Once the
-            range is removed it will not show up in IPAllocationPolicy.
+            Output only. The additional pod ranges that
+            are added to the cluster. These pod ranges can
+            be used by new node pools to allocate pod IPs
+            automatically. Once the range is removed it will
+            not show up in IPAllocationPolicy.
         default_pod_ipv4_range_utilization (float):
-            Output only. [Output only] The utilization of the cluster
-            default IPv4 range for the pod. The ratio is Usage/[Total
-            number of IPs in the secondary range],
+            Output only. The utilization of the cluster default IPv4
+            range for the pod. The ratio is Usage/[Total number of IPs
+            in the secondary range],
             Usage=numNodes\ *numZones*\ podIPsPerNode.
     """
 
@@ -2812,14 +2816,15 @@ class Cluster(proto.Message):
         identity_service_config (google.cloud.container_v1.types.IdentityServiceConfig):
             Configuration for Identity Service component.
         self_link (str):
-            [Output only] Server-defined URL for the resource.
+            Output only. Server-defined URL for the
+            resource.
         zone (str):
-            [Output only] The name of the Google Compute Engine
+            Output only. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
             in which the cluster resides. This field is deprecated, use
             location instead.
         endpoint (str):
-            [Output only] The IP address of this cluster's master
+            Output only. The IP address of this cluster's master
             endpoint. The endpoint can be accessed from the internet at
             ``https://username:password@endpoint/``.
 
@@ -2847,49 +2852,50 @@ class Cluster(proto.Message):
               version
             - "","-": picks the default Kubernetes version
         current_master_version (str):
-            [Output only] The current software version of the master
-            endpoint.
+            Output only. The current software version of
+            the master endpoint.
         current_node_version (str):
-            [Output only] Deprecated, use
+            Output only. Deprecated, use
             `NodePools.version <https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools>`__
             instead. The current version of the node software
             components. If they are currently at multiple versions
             because they're in the process of being upgraded, this
             reflects the minimum version of all nodes.
         create_time (str):
-            [Output only] The time the cluster was created, in
+            Output only. The time the cluster was created, in
             `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ text
             format.
         status (google.cloud.container_v1.types.Cluster.Status):
-            [Output only] The current status of this cluster.
+            Output only. The current status of this
+            cluster.
         status_message (str):
-            [Output only] Deprecated. Use conditions instead. Additional
-            information about the current status of this cluster, if
-            available.
+            Output only. Deprecated. Use conditions
+            instead. Additional information about the
+            current status of this cluster, if available.
         node_ipv4_cidr_size (int):
-            [Output only] The size of the address space on each node for
+            Output only. The size of the address space on each node for
             hosting containers. This is provisioned from within the
             ``container_ipv4_cidr`` range. This field will only be set
             when cluster is in route-based network mode.
         services_ipv4_cidr (str):
-            [Output only] The IP address range of the Kubernetes
-            services in this cluster, in
+            Output only. The IP address range of the Kubernetes services
+            in this cluster, in
             `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``1.2.3.4/29``). Service addresses are
             typically put in the last ``/16`` from the container CIDR.
         instance_group_urls (MutableSequence[str]):
-            Deprecated. Use node_pools.instance_group_urls.
+            Output only. Deprecated. Use node_pools.instance_group_urls.
         current_node_count (int):
-            [Output only] The number of nodes currently in the cluster.
-            Deprecated. Call Kubernetes API directly to retrieve node
-            information.
+            Output only. The number of nodes currently in
+            the cluster. Deprecated. Call Kubernetes API
+            directly to retrieve node information.
         expire_time (str):
-            [Output only] The time the cluster will be automatically
+            Output only. The time the cluster will be automatically
             deleted in
             `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ text
             format.
         location (str):
-            [Output only] The name of the Google Compute Engine
+            Output only. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>`__
             or
             `region <https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>`__
@@ -2898,7 +2904,7 @@ class Cluster(proto.Message):
             Enable the ability to use Cloud TPUs in this
             cluster.
         tpu_ipv4_cidr_block (str):
-            [Output only] The IP address range of the Cloud TPUs in this
+            Output only. The IP address range of the Cloud TPUs in this
             cluster, in
             `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``1.2.3.4/29``).
@@ -4038,7 +4044,7 @@ class AdditionalPodRangesConfig(proto.Message):
             Name for pod secondary ipv4 range which has
             the actual range defined ahead.
         pod_range_info (MutableSequence[google.cloud.container_v1.types.RangeInfo]):
-            Output only. [Output only] Information for additional pod
+            Output only. Information for additional pod
             range.
     """
 
@@ -4059,9 +4065,9 @@ class RangeInfo(proto.Message):
 
     Attributes:
         range_name (str):
-            Output only. [Output only] Name of a range.
+            Output only. Name of a range.
         utilization (float):
-            Output only. [Output only] The utilization of the range.
+            Output only. The utilization of the range.
     """
 
     range_name: str = proto.Field(
@@ -4081,31 +4087,34 @@ class Operation(proto.Message):
 
     Attributes:
         name (str):
-            The server-assigned ID for the operation.
+            Output only. The server-assigned ID for the
+            operation.
         zone (str):
-            The name of the Google Compute Engine
+            Output only. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
             in which the operation is taking place. This field is
             deprecated, use location instead.
         operation_type (google.cloud.container_v1.types.Operation.Type):
-            The operation type.
+            Output only. The operation type.
         status (google.cloud.container_v1.types.Operation.Status):
-            The current status of the operation.
+            Output only. The current status of the
+            operation.
         detail (str):
-            Detailed operation progress, if available.
+            Output only. Detailed operation progress, if
+            available.
         status_message (str):
             Output only. If an error has occurred, a
             textual description of the error. Deprecated.
             Use the field error instead.
         self_link (str):
-            Server-defined URI for the operation. Example:
+            Output only. Server-defined URI for the operation. Example:
             ``https://container.googleapis.com/v1alpha1/projects/123/locations/us-central1/operations/operation-123``.
         target_link (str):
-            Server-defined URI for the target of the operation. The
-            format of this is a URI to the resource being modified (such
-            as a cluster, node pool, or node). For node pool repairs,
-            there may be multiple nodes being repaired, but only one
-            will be the target.
+            Output only. Server-defined URI for the target of the
+            operation. The format of this is a URI to the resource being
+            modified (such as a cluster, node pool, or node). For node
+            pool repairs, there may be multiple nodes being repaired,
+            but only one will be the target.
 
             Examples:
 
@@ -4117,21 +4126,21 @@ class Operation(proto.Message):
 
             ``https://container.googleapis.com/v1/projects/123/zones/us-central1-c/clusters/my-cluster/nodePools/my-np/node/my-node``
         location (str):
-            [Output only] The name of the Google Compute Engine
+            Output only. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>`__
             or
             `region <https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>`__
             in which the cluster resides.
         start_time (str):
-            [Output only] The time the operation started, in
+            Output only. The time the operation started, in
             `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ text
             format.
         end_time (str):
-            [Output only] The time the operation completed, in
+            Output only. The time the operation completed, in
             `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ text
             format.
         progress (google.cloud.container_v1.types.OperationProgress):
-            Output only. [Output only] Progress information for an
+            Output only. Progress information for an
             operation.
         cluster_conditions (MutableSequence[google.cloud.container_v1.types.StatusCondition]):
             Which conditions caused the current cluster
@@ -5994,23 +6003,26 @@ class NodePool(proto.Message):
             If specified, it overrides the cluster-level
             defaults.
         self_link (str):
-            [Output only] Server-defined URL for the resource.
+            Output only. Server-defined URL for the
+            resource.
         version (str):
             The version of Kubernetes running on this NodePool's nodes.
             If unspecified, it defaults as described
             `here <https://cloud.google.com/kubernetes-engine/versioning#specifying_node_version>`__.
         instance_group_urls (MutableSequence[str]):
-            [Output only] The resource URLs of the `managed instance
+            Output only. The resource URLs of the `managed instance
             groups <https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances>`__
             associated with this node pool. During the node pool
             blue-green upgrade operation, the URLs contain both blue and
             green resources.
         status (google.cloud.container_v1.types.NodePool.Status):
-            [Output only] The status of the nodes in this pool instance.
+            Output only. The status of the nodes in this
+            pool instance.
         status_message (str):
-            [Output only] Deprecated. Use conditions instead. Additional
-            information about the current status of this node pool
-            instance, if available.
+            Output only. Deprecated. Use conditions
+            instead. Additional information about the
+            current status of this node pool instance, if
+            available.
         autoscaling (google.cloud.container_v1.types.NodePoolAutoscaling):
             Autoscaler configuration for this NodePool.
             Autoscaler is enabled only if a valid
@@ -6026,15 +6038,15 @@ class NodePool(proto.Message):
             Which conditions caused the current node pool
             state.
         pod_ipv4_cidr_size (int):
-            [Output only] The pod CIDR block size per node in this node
-            pool.
+            Output only. The pod CIDR block size per node
+            in this node pool.
         upgrade_settings (google.cloud.container_v1.types.NodePool.UpgradeSettings):
             Upgrade settings control disruption and speed
             of the upgrade.
         placement_policy (google.cloud.container_v1.types.NodePool.PlacementPolicy):
             Specifies the node placement policy.
         update_info (google.cloud.container_v1.types.NodePool.UpdateInfo):
-            Output only. [Output only] Update info contains relevant
+            Output only. Update info contains relevant
             information during a node pool update.
         etag (str):
             This checksum is computed by the server based
@@ -6509,13 +6521,14 @@ class AutoUpgradeOptions(proto.Message):
 
     Attributes:
         auto_upgrade_start_time (str):
-            [Output only] This field is set when upgrades are about to
+            Output only. This field is set when upgrades are about to
             commence with the approximate start time for the upgrades,
             in `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ text
             format.
         description (str):
-            [Output only] This field is set when upgrades are about to
-            commence with the description of the upgrade.
+            Output only. This field is set when upgrades
+            are about to commence with the description of
+            the upgrade.
     """
 
     auto_upgrade_start_time: str = proto.Field(
@@ -6748,7 +6761,7 @@ class DailyMaintenanceWindow(proto.Message):
             `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ format
             "HH:MM", where HH : [00-23] and MM : [00-59] GMT.
         duration (str):
-            [Output only] Duration of the time window, automatically
+            Output only. Duration of the time window, automatically
             chosen to be smallest possible in the given scenario.
             Duration will be in
             `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ format
@@ -9666,12 +9679,12 @@ class Fleet(proto.Message):
             to. This field cannot be changed after the
             cluster has been registered.
         membership (str):
-            [Output only] The full resource name of the registered fleet
+            Output only. The full resource name of the registered fleet
             membership of the cluster, in the format
             ``//gkehub.googleapis.com/projects/*/locations/*/memberships/*``.
         pre_registered (bool):
-            [Output only] Whether the cluster has been registered
-            through the fleet API.
+            Output only. Whether the cluster has been
+            registered through the fleet API.
     """
 
     project: str = proto.Field(
@@ -9787,8 +9800,8 @@ class EnterpriseConfig(proto.Message):
 
     Attributes:
         cluster_tier (google.cloud.container_v1.types.EnterpriseConfig.ClusterTier):
-            Output only. [Output only] cluster_tier specifies the
-            premium tier of the cluster.
+            Output only. cluster_tier specifies the premium tier of the
+            cluster.
     """
 
     class ClusterTier(proto.Enum):
