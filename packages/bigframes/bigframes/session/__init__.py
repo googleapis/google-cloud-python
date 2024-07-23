@@ -650,15 +650,17 @@ class Session(
 
         index_cols = _to_index_cols(index_col)
 
-        filters = list(filters)
-        if len(filters) != 0 or max_results is not None:
+        filters_copy1, filters_copy2 = itertools.tee(filters)
+        has_filters = len(list(filters_copy1)) != 0
+        filters = typing.cast(third_party_pandas_gbq.FiltersType, filters_copy2)
+        if has_filters or max_results is not None:
             # TODO(b/338111344): If we are running a query anyway, we might as
             # well generate ROW_NUMBER() at the same time.
             all_columns = itertools.chain(index_cols, columns) if columns else ()
             query = bf_io_bigquery.to_query(
                 query,
                 all_columns,
-                bf_io_bigquery.compile_filters(filters) if filters else None,
+                bf_io_bigquery.compile_filters(filters) if has_filters else None,
                 max_results=max_results,
                 # We're executing the query, so we don't need time travel for
                 # determinism.
@@ -768,7 +770,7 @@ class Session(
         )
 
         columns = list(columns)
-        filters = list(filters)
+        filters = typing.cast(list, list(filters))
 
         # ---------------------------------
         # Fetch table metadata and validate

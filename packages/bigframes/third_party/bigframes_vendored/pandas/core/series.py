@@ -3521,7 +3521,7 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def clip(self):
+    def clip(self, lower, upper):
         """Trim values at input threshold(s).
 
         Assigns values outside boundary to boundary values. Thresholds can be
