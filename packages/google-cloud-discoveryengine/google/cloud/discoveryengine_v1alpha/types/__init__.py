@@ -117,6 +117,16 @@ from .estimate_billing_service import (
     EstimateDataSizeRequest,
     EstimateDataSizeResponse,
 )
+from .evaluation import Evaluation, QualityMetrics
+from .evaluation_service import (
+    CreateEvaluationMetadata,
+    CreateEvaluationRequest,
+    GetEvaluationRequest,
+    ListEvaluationResultsRequest,
+    ListEvaluationResultsResponse,
+    ListEvaluationsRequest,
+    ListEvaluationsResponse,
+)
 from .grounded_generation_service import (
     CheckGroundingRequest,
     CheckGroundingResponse,
@@ -135,6 +145,9 @@ from .import_config import (
     ImportDocumentsRequest,
     ImportDocumentsResponse,
     ImportErrorConfig,
+    ImportSampleQueriesMetadata,
+    ImportSampleQueriesRequest,
+    ImportSampleQueriesResponse,
     ImportSuggestionDenyListEntriesMetadata,
     ImportSuggestionDenyListEntriesRequest,
     ImportSuggestionDenyListEntriesResponse,
@@ -164,6 +177,24 @@ from .purge_config import (
 )
 from .rank_service import RankingRecord, RankRequest, RankResponse
 from .recommendation_service import RecommendRequest, RecommendResponse
+from .sample_query import SampleQuery
+from .sample_query_service import (
+    CreateSampleQueryRequest,
+    DeleteSampleQueryRequest,
+    GetSampleQueryRequest,
+    ListSampleQueriesRequest,
+    ListSampleQueriesResponse,
+    UpdateSampleQueryRequest,
+)
+from .sample_query_set import SampleQuerySet
+from .sample_query_set_service import (
+    CreateSampleQuerySetRequest,
+    DeleteSampleQuerySetRequest,
+    GetSampleQuerySetRequest,
+    ListSampleQuerySetsRequest,
+    ListSampleQuerySetsResponse,
+    UpdateSampleQuerySetRequest,
+)
 from .schema import FieldConfig, Schema
 from .schema_service import (
     CreateSchemaMetadata,
@@ -329,6 +360,15 @@ __all__ = (
     "EstimateDataSizeMetadata",
     "EstimateDataSizeRequest",
     "EstimateDataSizeResponse",
+    "Evaluation",
+    "QualityMetrics",
+    "CreateEvaluationMetadata",
+    "CreateEvaluationRequest",
+    "GetEvaluationRequest",
+    "ListEvaluationResultsRequest",
+    "ListEvaluationResultsResponse",
+    "ListEvaluationsRequest",
+    "ListEvaluationsResponse",
     "CheckGroundingRequest",
     "CheckGroundingResponse",
     "CheckGroundingSpec",
@@ -345,6 +385,9 @@ __all__ = (
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
     "ImportErrorConfig",
+    "ImportSampleQueriesMetadata",
+    "ImportSampleQueriesRequest",
+    "ImportSampleQueriesResponse",
     "ImportSuggestionDenyListEntriesMetadata",
     "ImportSuggestionDenyListEntriesRequest",
     "ImportSuggestionDenyListEntriesResponse",
@@ -372,6 +415,20 @@ __all__ = (
     "RankResponse",
     "RecommendRequest",
     "RecommendResponse",
+    "SampleQuery",
+    "CreateSampleQueryRequest",
+    "DeleteSampleQueryRequest",
+    "GetSampleQueryRequest",
+    "ListSampleQueriesRequest",
+    "ListSampleQueriesResponse",
+    "UpdateSampleQueryRequest",
+    "SampleQuerySet",
+    "CreateSampleQuerySetRequest",
+    "DeleteSampleQuerySetRequest",
+    "GetSampleQuerySetRequest",
+    "ListSampleQuerySetsRequest",
+    "ListSampleQuerySetsResponse",
+    "UpdateSampleQuerySetRequest",
     "FieldConfig",
     "Schema",
     "CreateSchemaMetadata",

@@ -12,10 +12,13 @@ Services for Google Cloud Discoveryengine v1alpha API
     document_service
     engine_service
     estimate_billing_service
+    evaluation_service
     grounded_generation_service
     project_service
     rank_service
     recommendation_service
+    sample_query_service
+    sample_query_set_service
     schema_service
     search_service
     search_tuning_service
