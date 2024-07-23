@@ -28,6 +28,7 @@ from typing import (
     Type,
     Union,
 )
+import warnings
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -121,11 +122,19 @@ class AnalyticsAdminServiceAsyncClient:
     parse_google_ads_link_path = staticmethod(
         AnalyticsAdminServiceClient.parse_google_ads_link_path
     )
+    key_event_path = staticmethod(AnalyticsAdminServiceClient.key_event_path)
+    parse_key_event_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_key_event_path
+    )
     measurement_protocol_secret_path = staticmethod(
         AnalyticsAdminServiceClient.measurement_protocol_secret_path
     )
     parse_measurement_protocol_secret_path = staticmethod(
         AnalyticsAdminServiceClient.parse_measurement_protocol_secret_path
+    )
+    organization_path = staticmethod(AnalyticsAdminServiceClient.organization_path)
+    parse_organization_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_organization_path
     )
     property_path = staticmethod(AnalyticsAdminServiceClient.property_path)
     parse_property_path = staticmethod(AnalyticsAdminServiceClient.parse_property_path)
@@ -545,8 +554,8 @@ class AnalyticsAdminServiceAsyncClient:
 
         If the accounts are not restored before the expiration
         time, the account and all child resources (eg:
-        Properties, GoogleAdsLinks, Streams, UserLinks) will be
-        permanently purged.
+        Properties, GoogleAdsLinks, Streams, AccessBindings)
+        will be permanently purged.
         https://support.google.com/analytics/answer/6154772
 
         Returns an error if the target is not found.
@@ -1256,8 +1265,8 @@ class AnalyticsAdminServiceAsyncClient:
 
         If the properties are not restored before the expiration
         time, the Property and all child resources (eg:
-        GoogleAdsLinks, Streams, UserLinks) will be permanently
-        purged.
+        GoogleAdsLinks, Streams, AccessBindings) will be
+        permanently purged.
         https://support.google.com/analytics/answer/6154772
 
         Returns an error if the target is not found, or is not a
@@ -1532,8 +1541,9 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 CreateFirebaseLink RPC
             parent (:class:`str`):
-                Required. Format: properties/{property_id} Example:
-                properties/1234
+                Required. Format: properties/{property_id}
+
+                Example: ``properties/1234``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1648,7 +1658,8 @@ class AnalyticsAdminServiceAsyncClient:
             name (:class:`str`):
                 Required. Format:
                 properties/{property_id}/firebaseLinks/{firebase_link_id}
-                Example: properties/1234/firebaseLinks/5678
+
+                Example: ``properties/1234/firebaseLinks/5678``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1746,8 +1757,9 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for ListFirebaseLinks
                 RPC
             parent (:class:`str`):
-                Required. Format: properties/{property_id} Example:
-                properties/1234
+                Required. Format: properties/{property_id}
+
+                Example: ``properties/1234``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2322,11 +2334,10 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 GetDataSharingSettings RPC.
             name (:class:`str`):
-                Required. The name of the settings to
-                lookup. Format:
+                Required. The name of the settings to lookup. Format:
                 accounts/{account}/dataSharingSettings
-                Example:
-                "accounts/1000/dataSharingSettings"
+
+                Example: ``accounts/1000/dataSharingSettings``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3192,8 +3203,8 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.ConversionEvent:
-        r"""Creates a conversion event with the specified
-        attributes.
+        r"""Deprecated: Use ``CreateKeyEvent`` instead. Creates a conversion
+        event with the specified attributes.
 
         .. code-block:: python
 
@@ -3253,6 +3264,11 @@ class AnalyticsAdminServiceAsyncClient:
                 Analytics property.
 
         """
+        warnings.warn(
+            "AnalyticsAdminServiceAsyncClient.create_conversion_event is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3313,8 +3329,8 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.ConversionEvent:
-        r"""Updates a conversion event with the specified
-        attributes.
+        r"""Deprecated: Use ``UpdateKeyEvent`` instead. Updates a conversion
+        event with the specified attributes.
 
         .. code-block:: python
 
@@ -3374,6 +3390,11 @@ class AnalyticsAdminServiceAsyncClient:
                 Analytics property.
 
         """
+        warnings.warn(
+            "AnalyticsAdminServiceAsyncClient.update_conversion_event is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3435,7 +3456,8 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.ConversionEvent:
-        r"""Retrieve a single conversion event.
+        r"""Deprecated: Use ``GetKeyEvent`` instead. Retrieve a single
+        conversion event.
 
         .. code-block:: python
 
@@ -3488,6 +3510,11 @@ class AnalyticsAdminServiceAsyncClient:
                 Analytics property.
 
         """
+        warnings.warn(
+            "AnalyticsAdminServiceAsyncClient.get_conversion_event is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3545,7 +3572,8 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes a conversion event in a property.
+        r"""Deprecated: Use ``DeleteKeyEvent`` instead. Deletes a conversion
+        event in a property.
 
         .. code-block:: python
 
@@ -3589,6 +3617,11 @@ class AnalyticsAdminServiceAsyncClient:
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
+        warnings.warn(
+            "AnalyticsAdminServiceAsyncClient.delete_conversion_event is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3643,8 +3676,9 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConversionEventsAsyncPager:
-        r"""Returns a list of conversion events in the specified
-        parent property.
+        r"""Deprecated: Use ``ListKeyEvents`` instead. Returns a list of
+        conversion events in the specified parent property.
+
         Returns an empty list if no conversion events are found.
 
         .. code-block:: python
@@ -3701,6 +3735,11 @@ class AnalyticsAdminServiceAsyncClient:
                 automatically.
 
         """
+        warnings.warn(
+            "AnalyticsAdminServiceAsyncClient.list_conversion_events is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3747,6 +3786,572 @@ class AnalyticsAdminServiceAsyncClient:
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListConversionEventsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_key_event(
+        self,
+        request: Optional[Union[analytics_admin.CreateKeyEventRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        key_event: Optional[resources.KeyEvent] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.KeyEvent:
+        r"""Creates a Key Event.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1beta
+
+            async def sample_create_key_event():
+                # Create a client
+                client = admin_v1beta.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                key_event = admin_v1beta.KeyEvent()
+                key_event.counting_method = "ONCE_PER_SESSION"
+
+                request = admin_v1beta.CreateKeyEventRequest(
+                    key_event=key_event,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.create_key_event(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1beta.types.CreateKeyEventRequest, dict]]):
+                The request object. Request message for CreateKeyEvent
+                RPC
+            parent (:class:`str`):
+                Required. The resource name of the
+                parent property where this Key Event
+                will be created. Format: properties/123
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            key_event (:class:`google.analytics.admin_v1beta.types.KeyEvent`):
+                Required. The Key Event to create.
+                This corresponds to the ``key_event`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1beta.types.KeyEvent:
+                A key event in a Google Analytics
+                property.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, key_event])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.CreateKeyEventRequest):
+            request = analytics_admin.CreateKeyEventRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if key_event is not None:
+            request.key_event = key_event
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_key_event
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_key_event(
+        self,
+        request: Optional[Union[analytics_admin.UpdateKeyEventRequest, dict]] = None,
+        *,
+        key_event: Optional[resources.KeyEvent] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.KeyEvent:
+        r"""Updates a Key Event.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1beta
+
+            async def sample_update_key_event():
+                # Create a client
+                client = admin_v1beta.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                key_event = admin_v1beta.KeyEvent()
+                key_event.counting_method = "ONCE_PER_SESSION"
+
+                request = admin_v1beta.UpdateKeyEventRequest(
+                    key_event=key_event,
+                )
+
+                # Make the request
+                response = await client.update_key_event(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1beta.types.UpdateKeyEventRequest, dict]]):
+                The request object. Request message for UpdateKeyEvent
+                RPC
+            key_event (:class:`google.analytics.admin_v1beta.types.KeyEvent`):
+                Required. The Key Event to update. The ``name`` field is
+                used to identify the settings to be updated.
+
+                This corresponds to the ``key_event`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1beta.types.KeyEvent:
+                A key event in a Google Analytics
+                property.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([key_event, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.UpdateKeyEventRequest):
+            request = analytics_admin.UpdateKeyEventRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if key_event is not None:
+            request.key_event = key_event
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_key_event
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("key_event.name", request.key_event.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_key_event(
+        self,
+        request: Optional[Union[analytics_admin.GetKeyEventRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.KeyEvent:
+        r"""Retrieve a single Key Event.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1beta
+
+            async def sample_get_key_event():
+                # Create a client
+                client = admin_v1beta.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1beta.GetKeyEventRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_key_event(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1beta.types.GetKeyEventRequest, dict]]):
+                The request object. Request message for GetKeyEvent RPC
+            name (:class:`str`):
+                Required. The resource name of the Key Event to
+                retrieve. Format:
+                properties/{property}/keyEvents/{key_event} Example:
+                "properties/123/keyEvents/456"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1beta.types.KeyEvent:
+                A key event in a Google Analytics
+                property.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.GetKeyEventRequest):
+            request = analytics_admin.GetKeyEventRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_key_event
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_key_event(
+        self,
+        request: Optional[Union[analytics_admin.DeleteKeyEventRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a Key Event.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1beta
+
+            async def sample_delete_key_event():
+                # Create a client
+                client = admin_v1beta.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1beta.DeleteKeyEventRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_key_event(request=request)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1beta.types.DeleteKeyEventRequest, dict]]):
+                The request object. Request message for DeleteKeyEvent
+                RPC
+            name (:class:`str`):
+                Required. The resource name of the Key Event to delete.
+                Format: properties/{property}/keyEvents/{key_event}
+                Example: "properties/123/keyEvents/456"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.DeleteKeyEventRequest):
+            request = analytics_admin.DeleteKeyEventRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_key_event
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def list_key_events(
+        self,
+        request: Optional[Union[analytics_admin.ListKeyEventsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListKeyEventsAsyncPager:
+        r"""Returns a list of Key Events in the specified parent
+        property. Returns an empty list if no Key Events are
+        found.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1beta
+
+            async def sample_list_key_events():
+                # Create a client
+                client = admin_v1beta.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1beta.ListKeyEventsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_key_events(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1beta.types.ListKeyEventsRequest, dict]]):
+                The request object. Request message for ListKeyEvents RPC
+            parent (:class:`str`):
+                Required. The resource name of the
+                parent property. Example:
+                'properties/123'
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1beta.services.analytics_admin_service.pagers.ListKeyEventsAsyncPager:
+                Response message for ListKeyEvents
+                RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.ListKeyEventsRequest):
+            request = analytics_admin.ListKeyEventsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_key_events
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListKeyEventsAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -5689,9 +6294,10 @@ class AnalyticsAdminServiceAsyncClient:
         provides records of each time a user reads Google Analytics
         reporting data. Access records are retained for up to 2 years.
 
-        Data Access Reports can be requested for a property. The
-        property must be in Google Analytics 360. This method is only
-        available to Administrators.
+        Data Access Reports can be requested for a property. Reports may
+        be requested for any property, but dimensions that aren't
+        related to quota can only be requested on Google Analytics 360
+        properties. This method is only available to Administrators.
 
         These data access records include GA4 UI Reporting, GA4 UI
         Explorations, GA4 Data API, and other products like Firebase &

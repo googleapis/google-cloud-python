@@ -55,6 +55,11 @@
                 "create_google_ads_link"
               ]
             },
+            "CreateKeyEvent": {
+              "methods": [
+                "create_key_event"
+              ]
+            },
             "CreateMeasurementProtocolSecret": {
               "methods": [
                 "create_measurement_protocol_secret"
@@ -88,6 +93,11 @@
             "DeleteGoogleAdsLink": {
               "methods": [
                 "delete_google_ads_link"
+              ]
+            },
+            "DeleteKeyEvent": {
+              "methods": [
+                "delete_key_event"
               ]
             },
             "DeleteMeasurementProtocolSecret": {
@@ -133,6 +143,11 @@
             "GetDataStream": {
               "methods": [
                 "get_data_stream"
+              ]
+            },
+            "GetKeyEvent": {
+              "methods": [
+                "get_key_event"
               ]
             },
             "GetMeasurementProtocolSecret": {
@@ -183,6 +198,11 @@
             "ListGoogleAdsLinks": {
               "methods": [
                 "list_google_ads_links"
+              ]
+            },
+            "ListKeyEvents": {
+              "methods": [
+                "list_key_events"
               ]
             },
             "ListMeasurementProtocolSecrets": {
@@ -243,6 +263,11 @@
             "UpdateGoogleAdsLink": {
               "methods": [
                 "update_google_ads_link"
+              ]
+            },
+            "UpdateKeyEvent": {
+              "methods": [
+                "update_key_event"
               ]
             },
             "UpdateMeasurementProtocolSecret": {
@@ -305,6 +330,11 @@
                 "create_google_ads_link"
               ]
             },
+            "CreateKeyEvent": {
+              "methods": [
+                "create_key_event"
+              ]
+            },
             "CreateMeasurementProtocolSecret": {
               "methods": [
                 "create_measurement_protocol_secret"
@@ -338,6 +368,11 @@
             "DeleteGoogleAdsLink": {
               "methods": [
                 "delete_google_ads_link"
+              ]
+            },
+            "DeleteKeyEvent": {
+              "methods": [
+                "delete_key_event"
               ]
             },
             "DeleteMeasurementProtocolSecret": {
@@ -383,6 +418,11 @@
             "GetDataStream": {
               "methods": [
                 "get_data_stream"
+              ]
+            },
+            "GetKeyEvent": {
+              "methods": [
+                "get_key_event"
               ]
             },
             "GetMeasurementProtocolSecret": {
@@ -433,6 +473,11 @@
             "ListGoogleAdsLinks": {
               "methods": [
                 "list_google_ads_links"
+              ]
+            },
+            "ListKeyEvents": {
+              "methods": [
+                "list_key_events"
               ]
             },
             "ListMeasurementProtocolSecrets": {
@@ -493,6 +538,11 @@
             "UpdateGoogleAdsLink": {
               "methods": [
                 "update_google_ads_link"
+              ]
+            },
+            "UpdateKeyEvent": {
+              "methods": [
+                "update_key_event"
               ]
             },
             "UpdateMeasurementProtocolSecret": {
@@ -555,6 +605,11 @@
                 "create_google_ads_link"
               ]
             },
+            "CreateKeyEvent": {
+              "methods": [
+                "create_key_event"
+              ]
+            },
             "CreateMeasurementProtocolSecret": {
               "methods": [
                 "create_measurement_protocol_secret"
@@ -588,6 +643,11 @@
             "DeleteGoogleAdsLink": {
               "methods": [
                 "delete_google_ads_link"
+              ]
+            },
+            "DeleteKeyEvent": {
+              "methods": [
+                "delete_key_event"
               ]
             },
             "DeleteMeasurementProtocolSecret": {
@@ -633,6 +693,11 @@
             "GetDataStream": {
               "methods": [
                 "get_data_stream"
+              ]
+            },
+            "GetKeyEvent": {
+              "methods": [
+                "get_key_event"
               ]
             },
             "GetMeasurementProtocolSecret": {
@@ -683,6 +748,11 @@
             "ListGoogleAdsLinks": {
               "methods": [
                 "list_google_ads_links"
+              ]
+            },
+            "ListKeyEvents": {
+              "methods": [
+                "list_key_events"
               ]
             },
             "ListMeasurementProtocolSecrets": {
@@ -743,6 +813,11 @@
             "UpdateGoogleAdsLink": {
               "methods": [
                 "update_google_ads_link"
+              ]
+            },
+            "UpdateKeyEvent": {
+              "methods": [
+                "update_key_event"
               ]
             },
             "UpdateMeasurementProtocolSecret": {

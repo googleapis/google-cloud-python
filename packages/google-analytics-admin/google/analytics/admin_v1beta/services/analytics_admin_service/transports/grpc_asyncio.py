@@ -313,8 +313,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
 
         If the accounts are not restored before the expiration
         time, the account and all child resources (eg:
-        Properties, GoogleAdsLinks, Streams, UserLinks) will be
-        permanently purged.
+        Properties, GoogleAdsLinks, Streams, AccessBindings)
+        will be permanently purged.
         https://support.google.com/analytics/answer/6154772
 
         Returns an error if the target is not found.
@@ -528,8 +528,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
 
         If the properties are not restored before the expiration
         time, the Property and all child resources (eg:
-        GoogleAdsLinks, Streams, UserLinks) will be permanently
-        purged.
+        GoogleAdsLinks, Streams, AccessBindings) will be
+        permanently purged.
         https://support.google.com/analytics/answer/6154772
 
         Returns an error if the target is not found, or is not a
@@ -1048,8 +1048,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the create conversion event method over gRPC.
 
-        Creates a conversion event with the specified
-        attributes.
+        Deprecated: Use ``CreateKeyEvent`` instead. Creates a conversion
+        event with the specified attributes.
 
         Returns:
             Callable[[~.CreateConversionEventRequest],
@@ -1078,8 +1078,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the update conversion event method over gRPC.
 
-        Updates a conversion event with the specified
-        attributes.
+        Deprecated: Use ``UpdateKeyEvent`` instead. Updates a conversion
+        event with the specified attributes.
 
         Returns:
             Callable[[~.UpdateConversionEventRequest],
@@ -1108,7 +1108,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the get conversion event method over gRPC.
 
-        Retrieve a single conversion event.
+        Deprecated: Use ``GetKeyEvent`` instead. Retrieve a single
+        conversion event.
 
         Returns:
             Callable[[~.GetConversionEventRequest],
@@ -1136,7 +1137,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the delete conversion event method over gRPC.
 
-        Deletes a conversion event in a property.
+        Deprecated: Use ``DeleteKeyEvent`` instead. Deletes a conversion
+        event in a property.
 
         Returns:
             Callable[[~.DeleteConversionEventRequest],
@@ -1165,8 +1167,9 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the list conversion events method over gRPC.
 
-        Returns a list of conversion events in the specified
-        parent property.
+        Deprecated: Use ``ListKeyEvents`` instead. Returns a list of
+        conversion events in the specified parent property.
+
         Returns an empty list if no conversion events are found.
 
         Returns:
@@ -1186,6 +1189,145 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 response_deserializer=analytics_admin.ListConversionEventsResponse.deserialize,
             )
         return self._stubs["list_conversion_events"]
+
+    @property
+    def create_key_event(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateKeyEventRequest], Awaitable[resources.KeyEvent]
+    ]:
+        r"""Return a callable for the create key event method over gRPC.
+
+        Creates a Key Event.
+
+        Returns:
+            Callable[[~.CreateKeyEventRequest],
+                    Awaitable[~.KeyEvent]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_key_event" not in self._stubs:
+            self._stubs["create_key_event"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1beta.AnalyticsAdminService/CreateKeyEvent",
+                request_serializer=analytics_admin.CreateKeyEventRequest.serialize,
+                response_deserializer=resources.KeyEvent.deserialize,
+            )
+        return self._stubs["create_key_event"]
+
+    @property
+    def update_key_event(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateKeyEventRequest], Awaitable[resources.KeyEvent]
+    ]:
+        r"""Return a callable for the update key event method over gRPC.
+
+        Updates a Key Event.
+
+        Returns:
+            Callable[[~.UpdateKeyEventRequest],
+                    Awaitable[~.KeyEvent]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_key_event" not in self._stubs:
+            self._stubs["update_key_event"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateKeyEvent",
+                request_serializer=analytics_admin.UpdateKeyEventRequest.serialize,
+                response_deserializer=resources.KeyEvent.deserialize,
+            )
+        return self._stubs["update_key_event"]
+
+    @property
+    def get_key_event(
+        self,
+    ) -> Callable[[analytics_admin.GetKeyEventRequest], Awaitable[resources.KeyEvent]]:
+        r"""Return a callable for the get key event method over gRPC.
+
+        Retrieve a single Key Event.
+
+        Returns:
+            Callable[[~.GetKeyEventRequest],
+                    Awaitable[~.KeyEvent]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_key_event" not in self._stubs:
+            self._stubs["get_key_event"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1beta.AnalyticsAdminService/GetKeyEvent",
+                request_serializer=analytics_admin.GetKeyEventRequest.serialize,
+                response_deserializer=resources.KeyEvent.deserialize,
+            )
+        return self._stubs["get_key_event"]
+
+    @property
+    def delete_key_event(
+        self,
+    ) -> Callable[[analytics_admin.DeleteKeyEventRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete key event method over gRPC.
+
+        Deletes a Key Event.
+
+        Returns:
+            Callable[[~.DeleteKeyEventRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_key_event" not in self._stubs:
+            self._stubs["delete_key_event"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1beta.AnalyticsAdminService/DeleteKeyEvent",
+                request_serializer=analytics_admin.DeleteKeyEventRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_key_event"]
+
+    @property
+    def list_key_events(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListKeyEventsRequest],
+        Awaitable[analytics_admin.ListKeyEventsResponse],
+    ]:
+        r"""Return a callable for the list key events method over gRPC.
+
+        Returns a list of Key Events in the specified parent
+        property. Returns an empty list if no Key Events are
+        found.
+
+        Returns:
+            Callable[[~.ListKeyEventsRequest],
+                    Awaitable[~.ListKeyEventsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_key_events" not in self._stubs:
+            self._stubs["list_key_events"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1beta.AnalyticsAdminService/ListKeyEvents",
+                request_serializer=analytics_admin.ListKeyEventsRequest.serialize,
+                response_deserializer=analytics_admin.ListKeyEventsResponse.deserialize,
+            )
+        return self._stubs["list_key_events"]
 
     @property
     def create_custom_dimension(
@@ -1688,9 +1830,10 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         provides records of each time a user reads Google Analytics
         reporting data. Access records are retained for up to 2 years.
 
-        Data Access Reports can be requested for a property. The
-        property must be in Google Analytics 360. This method is only
-        available to Administrators.
+        Data Access Reports can be requested for a property. Reports may
+        be requested for any property, but dimensions that aren't
+        related to quota can only be requested on Google Analytics 360
+        properties. This method is only available to Administrators.
 
         These data access records include GA4 UI Reporting, GA4 UI
         Explorations, GA4 Data API, and other products like Firebase &
@@ -1873,6 +2016,31 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
             ),
             self.list_conversion_events: gapic_v1.method_async.wrap_method(
                 self.list_conversion_events,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_key_event: gapic_v1.method_async.wrap_method(
+                self.create_key_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_key_event: gapic_v1.method_async.wrap_method(
+                self.update_key_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_key_event: gapic_v1.method_async.wrap_method(
+                self.get_key_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_key_event: gapic_v1.method_async.wrap_method(
+                self.delete_key_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_key_events: gapic_v1.method_async.wrap_method(
+                self.list_key_events,
                 default_timeout=None,
                 client_info=client_info,
             ),

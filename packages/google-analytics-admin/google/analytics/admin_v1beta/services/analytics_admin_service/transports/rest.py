@@ -129,6 +129,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_key_event(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_key_event(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_measurement_protocol_secret(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -162,6 +170,10 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def pre_delete_google_ads_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_key_event(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -230,6 +242,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_get_data_stream(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_key_event(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_key_event(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -310,6 +330,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_list_google_ads_links(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_key_events(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_key_events(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -406,6 +434,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_update_google_ads_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_key_event(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_key_event(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -620,6 +656,27 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_create_key_event(
+        self,
+        request: analytics_admin.CreateKeyEventRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.CreateKeyEventRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_key_event
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_key_event(self, response: resources.KeyEvent) -> resources.KeyEvent:
+        """Post-rpc interceptor for create_key_event
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_measurement_protocol_secret(
         self,
         request: analytics_admin.CreateMeasurementProtocolSecretRequest,
@@ -721,6 +778,18 @@ class AnalyticsAdminServiceRestInterceptor:
         metadata: Sequence[Tuple[str, str]],
     ) -> Tuple[analytics_admin.DeleteGoogleAdsLinkRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_google_ads_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def pre_delete_key_event(
+        self,
+        request: analytics_admin.DeleteKeyEventRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.DeleteKeyEventRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_key_event
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the AnalyticsAdminService server.
@@ -919,6 +988,27 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: resources.DataStream
     ) -> resources.DataStream:
         """Post-rpc interceptor for get_data_stream
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_key_event(
+        self,
+        request: analytics_admin.GetKeyEventRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.GetKeyEventRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_key_event
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_key_event(self, response: resources.KeyEvent) -> resources.KeyEvent:
+        """Post-rpc interceptor for get_key_event
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -1149,6 +1239,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: analytics_admin.ListGoogleAdsLinksResponse
     ) -> analytics_admin.ListGoogleAdsLinksResponse:
         """Post-rpc interceptor for list_google_ads_links
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_key_events(
+        self,
+        request: analytics_admin.ListKeyEventsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.ListKeyEventsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_key_events
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_key_events(
+        self, response: analytics_admin.ListKeyEventsResponse
+    ) -> analytics_admin.ListKeyEventsResponse:
+        """Post-rpc interceptor for list_key_events
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -1431,6 +1544,27 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: resources.GoogleAdsLink
     ) -> resources.GoogleAdsLink:
         """Post-rpc interceptor for update_google_ads_link
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_key_event(
+        self,
+        request: analytics_admin.UpdateKeyEventRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.UpdateKeyEventRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_key_event
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_update_key_event(self, response: resources.KeyEvent) -> resources.KeyEvent:
+        """Post-rpc interceptor for update_key_event
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -2426,6 +2560,103 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_google_ads_link(resp)
             return resp
 
+    class _CreateKeyEvent(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("CreateKeyEvent")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateKeyEventRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.KeyEvent:
+            r"""Call the create key event method over HTTP.
+
+            Args:
+                request (~.analytics_admin.CreateKeyEventRequest):
+                    The request object. Request message for CreateKeyEvent
+                RPC
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.KeyEvent:
+                    A key event in a Google Analytics
+                property.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=properties/*}/keyEvents",
+                    "body": "key_event",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_key_event(
+                request, metadata
+            )
+            pb_request = analytics_admin.CreateKeyEventRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.KeyEvent()
+            pb_resp = resources.KeyEvent.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_key_event(resp)
+            return resp
+
     class _CreateMeasurementProtocolSecret(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("CreateMeasurementProtocolSecret")
@@ -2971,6 +3202,82 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request, metadata
             )
             pb_request = analytics_admin.DeleteGoogleAdsLinkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteKeyEvent(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteKeyEvent")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.DeleteKeyEventRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete key event method over HTTP.
+
+            Args:
+                request (~.analytics_admin.DeleteKeyEventRequest):
+                    The request object. Request message for DeleteKeyEvent
+                RPC
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1beta/{name=properties/*/keyEvents/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_key_event(
+                request, metadata
+            )
+            pb_request = analytics_admin.DeleteKeyEventRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -3793,6 +4100,93 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_data_stream(resp)
+            return resp
+
+    class _GetKeyEvent(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("GetKeyEvent")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.GetKeyEventRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.KeyEvent:
+            r"""Call the get key event method over HTTP.
+
+            Args:
+                request (~.analytics_admin.GetKeyEventRequest):
+                    The request object. Request message for GetKeyEvent RPC
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.KeyEvent:
+                    A key event in a Google Analytics
+                property.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=properties/*/keyEvents/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_key_event(request, metadata)
+            pb_request = analytics_admin.GetKeyEventRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.KeyEvent()
+            pb_resp = resources.KeyEvent.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_key_event(resp)
             return resp
 
     class _GetMeasurementProtocolSecret(AnalyticsAdminServiceRestStub):
@@ -4664,6 +5058,93 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_google_ads_links(resp)
+            return resp
+
+    class _ListKeyEvents(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("ListKeyEvents")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.ListKeyEventsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.ListKeyEventsResponse:
+            r"""Call the list key events method over HTTP.
+
+            Args:
+                request (~.analytics_admin.ListKeyEventsRequest):
+                    The request object. Request message for ListKeyEvents RPC
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.ListKeyEventsResponse:
+                    Response message for ListKeyEvents
+                RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{parent=properties/*}/keyEvents",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_key_events(request, metadata)
+            pb_request = analytics_admin.ListKeyEventsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListKeyEventsResponse()
+            pb_resp = analytics_admin.ListKeyEventsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_key_events(resp)
             return resp
 
     class _ListMeasurementProtocolSecrets(AnalyticsAdminServiceRestStub):
@@ -5812,6 +6293,105 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_google_ads_link(resp)
             return resp
 
+    class _UpdateKeyEvent(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateKeyEvent")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.UpdateKeyEventRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.KeyEvent:
+            r"""Call the update key event method over HTTP.
+
+            Args:
+                request (~.analytics_admin.UpdateKeyEventRequest):
+                    The request object. Request message for UpdateKeyEvent
+                RPC
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.KeyEvent:
+                    A key event in a Google Analytics
+                property.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1beta/{key_event.name=properties/*/keyEvents/*}",
+                    "body": "key_event",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_key_event(
+                request, metadata
+            )
+            pb_request = analytics_admin.UpdateKeyEventRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.KeyEvent()
+            pb_resp = resources.KeyEvent.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_key_event(resp)
+            return resp
+
     class _UpdateMeasurementProtocolSecret(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("UpdateMeasurementProtocolSecret")
@@ -6096,6 +6676,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._CreateGoogleAdsLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_key_event(
+        self,
+    ) -> Callable[[analytics_admin.CreateKeyEventRequest], resources.KeyEvent]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateKeyEvent(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_measurement_protocol_secret(
         self,
     ) -> Callable[
@@ -6153,6 +6741,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteGoogleAdsLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_key_event(
+        self,
+    ) -> Callable[[analytics_admin.DeleteKeyEventRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteKeyEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_measurement_protocol_secret(
@@ -6236,6 +6832,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataStream(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_key_event(
+        self,
+    ) -> Callable[[analytics_admin.GetKeyEventRequest], resources.KeyEvent]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetKeyEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_measurement_protocol_secret(
@@ -6342,6 +6946,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGoogleAdsLinks(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_key_events(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListKeyEventsRequest], analytics_admin.ListKeyEventsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListKeyEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_measurement_protocol_secrets(
@@ -6461,6 +7075,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGoogleAdsLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_key_event(
+        self,
+    ) -> Callable[[analytics_admin.UpdateKeyEventRequest], resources.KeyEvent]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateKeyEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_measurement_protocol_secret(
