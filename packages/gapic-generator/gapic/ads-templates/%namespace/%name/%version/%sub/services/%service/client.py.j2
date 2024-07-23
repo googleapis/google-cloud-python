@@ -509,6 +509,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
         {% endif %}

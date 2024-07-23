@@ -434,7 +434,9 @@ def showcase_mypy(
     """Perform typecheck analysis on the generated Showcase library."""
 
     # Install pytest and gapic-generator-python
-    session.install("mypy", "types-pkg-resources", "types-protobuf", "types-requests", "types-dataclasses")
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2066):
+    # Ignore release of mypy 1.11.0 which may have a regression
+    session.install("mypy!=1.11.0", "types-pkg-resources", "types-protobuf", "types-requests", "types-dataclasses")
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)

@@ -51,6 +51,7 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import path_template
+from google.api_core import retry as retries
 {% if service.has_lro or service.has_extended_lro %}
 from google.api_core import future
 {% endif %}

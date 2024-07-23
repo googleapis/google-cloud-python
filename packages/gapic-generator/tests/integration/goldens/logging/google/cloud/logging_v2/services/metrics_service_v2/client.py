@@ -682,6 +682,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

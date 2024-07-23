@@ -45,6 +45,7 @@ from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import grpc_helpers
 from google.api_core import path_template
+from google.api_core import retry as retries
 {% if service.has_lro %}
 from google.api_core import future
 from google.api_core import operation
@@ -938,6 +939,8 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         {% if method.field_headers %}
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -949,7 +952,7 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
             )),
         )
         {% endif %}
-        pager = client.{{ method_name }}(request={})
+        pager = client.{{ method_name }}(request={}, retry=retry, timeout=timeout)
 
         {% if service.version %}
         if HAS_GOOGLE_API_CORE_VERSION_HEADER:
@@ -958,6 +961,8 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
             )
         {% endif %}
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
