@@ -659,8 +659,8 @@ class Entry(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The Data Catalog resource name of the entry in
-            URL format. Example:
+            Output only. Identifier. The Data Catalog resource name of
+            the entry in URL format. Example:
 
             -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
 
@@ -838,7 +838,8 @@ class EntryGroup(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the entry group in URL format. Example:
+            Identifier. The resource name of the entry group in URL
+            format. Example:
 
             -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
 

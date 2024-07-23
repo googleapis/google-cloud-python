@@ -45,7 +45,8 @@ class Tag(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the tag in URL format. Example:
+            Identifier. The resource name of the tag in URL format.
+            Example:
 
             -  projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
 
@@ -219,8 +220,8 @@ class TagTemplate(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the tag template in URL format.
-            Example:
+            Identifier. The resource name of the tag template in URL
+            format. Example:
 
             -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
 
@@ -240,7 +241,26 @@ class TagTemplate(proto.Message):
             (0-9) and underscores (_). Field IDs must be at least 1
             character long and at most 64 characters long. Field IDs
             must start with a letter or underscore.
+        dataplex_transfer_status (google.cloud.datacatalog_v1beta1.types.TagTemplate.DataplexTransferStatus):
+            Output only. Transfer status of the
+            TagTemplate
     """
+
+    class DataplexTransferStatus(proto.Enum):
+        r"""This enum describes TagTemplate transfer status to Dataplex
+        service.
+
+        Values:
+            DATAPLEX_TRANSFER_STATUS_UNSPECIFIED (0):
+                Default value. TagTemplate and its tags are
+                only visible and editable in DataCatalog.
+            MIGRATED (1):
+                TagTemplate and its tags are auto-copied to
+                Dataplex service. Visible in both services.
+                Editable in DataCatalog, read-only in Dataplex.
+        """
+        DATAPLEX_TRANSFER_STATUS_UNSPECIFIED = 0
+        MIGRATED = 1
 
     name: str = proto.Field(
         proto.STRING,
@@ -256,6 +276,11 @@ class TagTemplate(proto.Message):
         number=3,
         message="TagTemplateField",
     )
+    dataplex_transfer_status: DataplexTransferStatus = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=DataplexTransferStatus,
+    )
 
 
 class TagTemplateField(proto.Message):
@@ -263,8 +288,8 @@ class TagTemplateField(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the tag template field in
-            URL format. Example:
+            Output only. Identifier. The resource name of the tag
+            template field in URL format. Example:
 
             -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template}/fields/{field}
 
