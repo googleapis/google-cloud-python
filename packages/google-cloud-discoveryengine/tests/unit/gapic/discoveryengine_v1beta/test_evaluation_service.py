@@ -3812,6 +3812,8 @@ def test_create_evaluation_rest(request_type):
                     "user_id": "user_id_value",
                     "user_agent": "user_agent_value",
                 },
+                "language_code": "language_code_value",
+                "region_code": "region_code_value",
                 "facet_specs": [
                     {
                         "facet_key": {
@@ -3904,6 +3906,19 @@ def test_create_evaluation_rest(request_type):
                 "ranking_expression": "ranking_expression_value",
                 "safe_search": True,
                 "user_labels": {},
+                "natural_language_query_understanding_spec": {
+                    "filter_extraction_condition": 1,
+                    "geo_search_query_detection_field_names": [
+                        "geo_search_query_detection_field_names_value1",
+                        "geo_search_query_detection_field_names_value2",
+                    ],
+                },
+                "search_as_you_type_spec": {"condition": 1},
+                "session": "session_value",
+                "session_spec": {
+                    "query_id": "query_id_value",
+                    "search_result_persistence_count": 3328,
+                },
             },
             "query_set_spec": {"sample_query_set": "sample_query_set_value"},
         },
@@ -5493,8 +5508,39 @@ def test_parse_serving_config_path():
     assert expected == actual
 
 
+def test_session_path():
+    project = "scallop"
+    location = "abalone"
+    data_store = "squid"
+    session = "clam"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/sessions/{session}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        session=session,
+    )
+    actual = EvaluationServiceClient.session_path(
+        project, location, data_store, session
+    )
+    assert expected == actual
+
+
+def test_parse_session_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "data_store": "oyster",
+        "session": "nudibranch",
+    }
+    path = EvaluationServiceClient.session_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = EvaluationServiceClient.parse_session_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5504,7 +5550,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "mussel",
     }
     path = EvaluationServiceClient.common_billing_account_path(**expected)
 
@@ -5514,7 +5560,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5524,7 +5570,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "nautilus",
     }
     path = EvaluationServiceClient.common_folder_path(**expected)
 
@@ -5534,7 +5580,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5544,7 +5590,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "abalone",
     }
     path = EvaluationServiceClient.common_organization_path(**expected)
 
@@ -5554,7 +5600,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5564,7 +5610,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "clam",
     }
     path = EvaluationServiceClient.common_project_path(**expected)
 
@@ -5574,8 +5620,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5586,8 +5632,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = EvaluationServiceClient.common_location_path(**expected)
 

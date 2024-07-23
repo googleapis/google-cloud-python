@@ -24,14 +24,131 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
     manifest={
+        "PurgeUserEventsRequest",
+        "PurgeUserEventsResponse",
+        "PurgeUserEventsMetadata",
         "PurgeDocumentsRequest",
         "PurgeDocumentsResponse",
         "PurgeDocumentsMetadata",
         "PurgeSuggestionDenyListEntriesRequest",
         "PurgeSuggestionDenyListEntriesResponse",
         "PurgeSuggestionDenyListEntriesMetadata",
+        "PurgeCompletionSuggestionsRequest",
+        "PurgeCompletionSuggestionsResponse",
+        "PurgeCompletionSuggestionsMetadata",
     },
 )
+
+
+class PurgeUserEventsRequest(proto.Message):
+    r"""Request message for PurgeUserEvents method.
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the catalog under which the
+            events are created. The format is
+            ``projects/${projectId}/locations/global/collections/{$collectionId}/dataStores/${dataStoreId}``
+        filter (str):
+            Required. The filter string to specify the events to be
+            deleted with a length limit of 5,000 characters. The
+            eligible fields for filtering are:
+
+            -  ``eventType``: Double quoted
+               [UserEvent.event_type][google.cloud.discoveryengine.v1beta.UserEvent.event_type]
+               string.
+            -  ``eventTime``: in ISO 8601 "zulu" format.
+            -  ``userPseudoId``: Double quoted string. Specifying this
+               will delete all events associated with a visitor.
+            -  ``userId``: Double quoted string. Specifying this will
+               delete all events associated with a user.
+
+            Examples:
+
+            -  Deleting all events in a time range:
+               ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z"``
+            -  Deleting specific eventType: ``eventType = "search"``
+            -  Deleting all events for a specific visitor:
+               ``userPseudoId = "visitor1024"``
+            -  Deleting all events inside a DataStore: ``*``
+
+            The filtering fields are assumed to have an implicit AND.
+        force (bool):
+            The ``force`` field is currently not supported. Purge user
+            event requests will permanently delete all purgeable events.
+            Once the development is complete: If ``force`` is set to
+            false, the method will return the expected purge count
+            without deleting any user events. This field will default to
+            false if not included in the request.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class PurgeUserEventsResponse(proto.Message):
+    r"""Response of the PurgeUserEventsRequest. If the long running
+    operation is successfully done, then this message is returned by
+    the google.longrunning.Operations.response field.
+
+    Attributes:
+        purge_count (int):
+            The total count of events purged as a result
+            of the operation.
+    """
+
+    purge_count: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+
+
+class PurgeUserEventsMetadata(proto.Message):
+    r"""Metadata related to the progress of the PurgeUserEvents
+    operation. This will be returned by the
+    google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+        success_count (int):
+            Count of entries that were deleted
+            successfully.
+        failure_count (int):
+            Count of entries that encountered errors
+            while processing.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    success_count: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    failure_count: int = proto.Field(
+        proto.INT64,
+        number=4,
+    )
 
 
 class PurgeDocumentsRequest(proto.Message):
@@ -186,6 +303,74 @@ class PurgeSuggestionDenyListEntriesMetadata(proto.Message):
     r"""Metadata related to the progress of the
     PurgeSuggestionDenyListEntries operation. This is returned by
     the google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class PurgeCompletionSuggestionsRequest(proto.Message):
+    r"""Request message for
+    [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1beta.CompletionService.PurgeCompletionSuggestions]
+    method.
+
+    Attributes:
+        parent (str):
+            Required. The parent data store resource name for which to
+            purge completion suggestions. Follows pattern
+            projects/\ */locations/*/collections/*/dataStores/*.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PurgeCompletionSuggestionsResponse(proto.Message):
+    r"""Response message for
+    [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1beta.CompletionService.PurgeCompletionSuggestions]
+    method.
+
+    Attributes:
+        purge_succeeded (bool):
+            Whether the completion suggestions were
+            successfully purged.
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
+            A sample of errors encountered while
+            processing the request.
+    """
+
+    purge_succeeded: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+
+
+class PurgeCompletionSuggestionsMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    PurgeCompletionSuggestions operation. This is returned by the
+    google.longrunning.Operation.metadata field.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):

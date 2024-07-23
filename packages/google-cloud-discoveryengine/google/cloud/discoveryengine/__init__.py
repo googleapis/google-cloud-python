@@ -146,7 +146,10 @@ from google.cloud.discoveryengine_v1beta.types.common import (
     SolutionType,
     UserInfo,
 )
-from google.cloud.discoveryengine_v1beta.types.completion import SuggestionDenyListEntry
+from google.cloud.discoveryengine_v1beta.types.completion import (
+    CompletionSuggestion,
+    SuggestionDenyListEntry,
+)
 from google.cloud.discoveryengine_v1beta.types.completion_service import (
     CompleteQueryRequest,
     CompleteQueryResponse,
@@ -189,7 +192,7 @@ from google.cloud.discoveryengine_v1beta.types.conversational_search_service imp
 from google.cloud.discoveryengine_v1beta.types.custom_tuning_model import (
     CustomTuningModel,
 )
-from google.cloud.discoveryengine_v1beta.types.data_store import DataStore
+from google.cloud.discoveryengine_v1beta.types.data_store import DataStore, LanguageInfo
 from google.cloud.discoveryengine_v1beta.types.data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -248,6 +251,7 @@ from google.cloud.discoveryengine_v1beta.types.grounded_generation_service impor
 )
 from google.cloud.discoveryengine_v1beta.types.grounding import FactChunk, GroundingFact
 from google.cloud.discoveryengine_v1beta.types.import_config import (
+    AlloyDbSource,
     BigQuerySource,
     BigtableOptions,
     BigtableSource,
@@ -255,6 +259,9 @@ from google.cloud.discoveryengine_v1beta.types.import_config import (
     FhirStoreSource,
     FirestoreSource,
     GcsSource,
+    ImportCompletionSuggestionsMetadata,
+    ImportCompletionSuggestionsRequest,
+    ImportCompletionSuggestionsResponse,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
     ImportDocumentsResponse,
@@ -276,12 +283,18 @@ from google.cloud.discoveryengine_v1beta.types.project_service import (
     ProvisionProjectRequest,
 )
 from google.cloud.discoveryengine_v1beta.types.purge_config import (
+    PurgeCompletionSuggestionsMetadata,
+    PurgeCompletionSuggestionsRequest,
+    PurgeCompletionSuggestionsResponse,
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
     PurgeDocumentsResponse,
     PurgeSuggestionDenyListEntriesMetadata,
     PurgeSuggestionDenyListEntriesRequest,
     PurgeSuggestionDenyListEntriesResponse,
+    PurgeUserEventsMetadata,
+    PurgeUserEventsRequest,
+    PurgeUserEventsResponse,
 )
 from google.cloud.discoveryengine_v1beta.types.rank_service import (
     RankingRecord,
@@ -441,6 +454,7 @@ __all__ = (
     "SearchTier",
     "SearchUseCase",
     "SolutionType",
+    "CompletionSuggestion",
     "SuggestionDenyListEntry",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
@@ -476,6 +490,7 @@ __all__ = (
     "UpdateSessionRequest",
     "CustomTuningModel",
     "DataStore",
+    "LanguageInfo",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
     "DeleteDataStoreMetadata",
@@ -520,6 +535,7 @@ __all__ = (
     "CheckGroundingSpec",
     "FactChunk",
     "GroundingFact",
+    "AlloyDbSource",
     "BigQuerySource",
     "BigtableOptions",
     "BigtableSource",
@@ -527,6 +543,9 @@ __all__ = (
     "FhirStoreSource",
     "FirestoreSource",
     "GcsSource",
+    "ImportCompletionSuggestionsMetadata",
+    "ImportCompletionSuggestionsRequest",
+    "ImportCompletionSuggestionsResponse",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
@@ -544,12 +563,18 @@ __all__ = (
     "Project",
     "ProvisionProjectMetadata",
     "ProvisionProjectRequest",
+    "PurgeCompletionSuggestionsMetadata",
+    "PurgeCompletionSuggestionsRequest",
+    "PurgeCompletionSuggestionsResponse",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
     "PurgeSuggestionDenyListEntriesMetadata",
     "PurgeSuggestionDenyListEntriesRequest",
     "PurgeSuggestionDenyListEntriesResponse",
+    "PurgeUserEventsMetadata",
+    "PurgeUserEventsRequest",
+    "PurgeUserEventsResponse",
     "RankingRecord",
     "RankRequest",
     "RankResponse",

@@ -94,6 +94,8 @@ class EvaluationServiceAsyncClient:
     parse_serving_config_path = staticmethod(
         EvaluationServiceClient.parse_serving_config_path
     )
+    session_path = staticmethod(EvaluationServiceClient.session_path)
+    parse_session_path = staticmethod(EvaluationServiceClient.parse_session_path)
     common_billing_account_path = staticmethod(
         EvaluationServiceClient.common_billing_account_path
     )

@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
     manifest={
         "DataStore",
+        "LanguageInfo",
     },
 )
 
@@ -76,6 +77,8 @@ class DataStore(proto.Message):
             Output only. Timestamp the
             [DataStore][google.cloud.discoveryengine.v1beta.DataStore]
             was created at.
+        language_info (google.cloud.discoveryengine_v1beta.types.LanguageInfo):
+            Language info for DataStore.
         document_processing_config (google.cloud.discoveryengine_v1beta.types.DocumentProcessingConfig):
             Configuration for Document understanding and
             enrichment.
@@ -152,6 +155,11 @@ class DataStore(proto.Message):
         number=4,
         message=timestamp_pb2.Timestamp,
     )
+    language_info: "LanguageInfo" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="LanguageInfo",
+    )
     document_processing_config: gcd_document_processing_config.DocumentProcessingConfig = proto.Field(
         proto.MESSAGE,
         number=27,
@@ -161,6 +169,44 @@ class DataStore(proto.Message):
         proto.MESSAGE,
         number=28,
         message=schema.Schema,
+    )
+
+
+class LanguageInfo(proto.Message):
+    r"""Language info for DataStore.
+
+    Attributes:
+        language_code (str):
+            The language code for the DataStore.
+        normalized_language_code (str):
+            Output only. This is the normalized form of language_code.
+            E.g.: language_code of ``en-GB``, ``en_GB``, ``en-UK`` or
+            ``en-gb`` will have normalized_language_code of ``en-GB``.
+        language (str):
+            Output only. Language part of normalized_language_code.
+            E.g.: ``en-US`` -> ``en``, ``zh-Hans-HK`` -> ``zh``, ``en``
+            -> ``en``.
+        region (str):
+            Output only. Region part of normalized_language_code, if
+            present. E.g.: ``en-US`` -> ``US``, ``zh-Hans-HK`` ->
+            ``HK``, ``en`` -> \``.
+    """
+
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    normalized_language_code: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    language: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 

@@ -87,7 +87,7 @@ from .types.common import (
     SolutionType,
     UserInfo,
 )
-from .types.completion import SuggestionDenyListEntry
+from .types.completion import CompletionSuggestion, SuggestionDenyListEntry
 from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .types.control import Condition, Control
 from .types.control_service import (
@@ -125,7 +125,7 @@ from .types.conversational_search_service import (
     UpdateSessionRequest,
 )
 from .types.custom_tuning_model import CustomTuningModel
-from .types.data_store import DataStore
+from .types.data_store import DataStore, LanguageInfo
 from .types.data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -179,6 +179,7 @@ from .types.grounded_generation_service import (
 )
 from .types.grounding import FactChunk, GroundingFact
 from .types.import_config import (
+    AlloyDbSource,
     BigQuerySource,
     BigtableOptions,
     BigtableSource,
@@ -186,6 +187,9 @@ from .types.import_config import (
     FhirStoreSource,
     FirestoreSource,
     GcsSource,
+    ImportCompletionSuggestionsMetadata,
+    ImportCompletionSuggestionsRequest,
+    ImportCompletionSuggestionsResponse,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
     ImportDocumentsResponse,
@@ -204,12 +208,18 @@ from .types.import_config import (
 from .types.project import Project
 from .types.project_service import ProvisionProjectMetadata, ProvisionProjectRequest
 from .types.purge_config import (
+    PurgeCompletionSuggestionsMetadata,
+    PurgeCompletionSuggestionsRequest,
+    PurgeCompletionSuggestionsResponse,
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
     PurgeDocumentsResponse,
     PurgeSuggestionDenyListEntriesMetadata,
     PurgeSuggestionDenyListEntriesRequest,
     PurgeSuggestionDenyListEntriesResponse,
+    PurgeUserEventsMetadata,
+    PurgeUserEventsRequest,
+    PurgeUserEventsResponse,
 )
 from .types.rank_service import RankingRecord, RankRequest, RankResponse
 from .types.recommendation_service import RecommendRequest, RecommendResponse
@@ -321,6 +331,7 @@ __all__ = (
     "ServingConfigServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceAsyncClient",
+    "AlloyDbSource",
     "Answer",
     "AnswerQueryRequest",
     "AnswerQueryResponse",
@@ -343,6 +354,7 @@ __all__ = (
     "CompleteQueryResponse",
     "CompletionInfo",
     "CompletionServiceClient",
+    "CompletionSuggestion",
     "Condition",
     "Control",
     "ControlServiceClient",
@@ -424,6 +436,9 @@ __all__ = (
     "GetTargetSiteRequest",
     "GroundedGenerationServiceClient",
     "GroundingFact",
+    "ImportCompletionSuggestionsMetadata",
+    "ImportCompletionSuggestionsRequest",
+    "ImportCompletionSuggestionsResponse",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
@@ -439,6 +454,7 @@ __all__ = (
     "ImportUserEventsResponse",
     "IndustryVertical",
     "Interval",
+    "LanguageInfo",
     "ListControlsRequest",
     "ListControlsResponse",
     "ListConversationsRequest",
@@ -475,12 +491,18 @@ __all__ = (
     "ProjectServiceClient",
     "ProvisionProjectMetadata",
     "ProvisionProjectRequest",
+    "PurgeCompletionSuggestionsMetadata",
+    "PurgeCompletionSuggestionsRequest",
+    "PurgeCompletionSuggestionsResponse",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
     "PurgeSuggestionDenyListEntriesMetadata",
     "PurgeSuggestionDenyListEntriesRequest",
     "PurgeSuggestionDenyListEntriesResponse",
+    "PurgeUserEventsMetadata",
+    "PurgeUserEventsRequest",
+    "PurgeUserEventsResponse",
     "QualityMetrics",
     "Query",
     "RankRequest",

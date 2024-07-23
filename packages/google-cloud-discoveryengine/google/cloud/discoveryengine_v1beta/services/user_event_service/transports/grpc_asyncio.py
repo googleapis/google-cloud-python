@@ -29,6 +29,7 @@ from grpc.experimental import aio  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import (
     import_config,
+    purge_config,
     user_event,
     user_event_service,
 )
@@ -326,6 +327,38 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         return self._stubs["collect_user_event"]
 
     @property
+    def purge_user_events(
+        self,
+    ) -> Callable[
+        [purge_config.PurgeUserEventsRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the purge user events method over gRPC.
+
+        Deletes permanently all user events specified by the
+        filter provided. Depending on the number of events
+        specified by the filter, this operation could take hours
+        or days to complete. To test a filter, use the list
+        command first.
+
+        Returns:
+            Callable[[~.PurgeUserEventsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "purge_user_events" not in self._stubs:
+            self._stubs["purge_user_events"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.UserEventService/PurgeUserEvents",
+                request_serializer=purge_config.PurgeUserEventsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["purge_user_events"]
+
+    @property
     def import_user_events(
         self,
     ) -> Callable[
@@ -370,6 +403,11 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
             ),
             self.collect_user_event: gapic_v1.method_async.wrap_method(
                 self.collect_user_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.purge_user_events: gapic_v1.method_async.wrap_method(
+                self.purge_user_events,
                 default_timeout=None,
                 client_info=client_info,
             ),

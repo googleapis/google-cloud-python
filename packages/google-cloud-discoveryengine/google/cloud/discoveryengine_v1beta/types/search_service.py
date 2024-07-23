@@ -149,6 +149,19 @@ class SearchRequest(proto.Message):
             analytics.
             [UserInfo.user_agent][google.cloud.discoveryengine.v1beta.UserInfo.user_agent]
             is used to deduce ``device_type`` for analytics.
+        language_code (str):
+            The BCP-47 language code, such as "en-US" or "sr-Latn". For
+            more information, see `Standard
+            fields <https://cloud.google.com/apis/design/standard_fields>`__.
+            This field helps to better interpret the query. If a value
+            isn't specified, the query language code is automatically
+            detected, which may not be accurate.
+        region_code (str):
+            The Unicode country/region code (CLDR) of a location, such
+            as "US" and "419". For more information, see `Standard
+            fields <https://cloud.google.com/apis/design/standard_fields>`__.
+            If set, then results will be boosted based on the
+            region_code provided.
         facet_specs (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchRequest.FacetSpec]):
             Facet specifications for faceted search. If empty, no facets
             are returned.
@@ -271,6 +284,51 @@ class SearchRequest(proto.Message):
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
+        natural_language_query_understanding_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.NaturalLanguageQueryUnderstandingSpec):
+            If ``naturalLanguageQueryUnderstandingSpec`` is not
+            specified, no additional natural language query
+            understanding will be done.
+        search_as_you_type_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.SearchAsYouTypeSpec):
+            Search as you type configuration. Only supported for the
+            [IndustryVertical.MEDIA][google.cloud.discoveryengine.v1beta.IndustryVertical.MEDIA]
+            vertical.
+        session (str):
+            The session resource name. Optional.
+
+            Session allows users to do multi-turn /search API calls or
+            coordination between /search API calls and /answer API
+            calls.
+
+            Example #1 (multi-turn /search API calls):
+
+            1. Call /search API with the auto-session mode (see below).
+            2. Call /search API with the session ID generated in the
+               first call. Here, the previous search query gets
+               considered in query standing. I.e., if the first query is
+               "How did Alphabet do in 2022?" and the current query is
+               "How about 2023?", the current query will be interpreted
+               as "How did Alphabet do in 2023?".
+
+            Example #2 (coordination between /search API calls and
+            /answer API calls):
+
+            1. Call /search API with the auto-session mode (see below).
+            2. Call /answer API with the session ID generated in the
+               first call. Here, the answer generation happens in the
+               context of the search results from the first search call.
+
+            Auto-session mode: when ``projects/.../sessions/-`` is used,
+            a new session gets automatically created. Otherwise, users
+            can use the create-session API to create a session manually.
+
+            Multi-turn Search feature is currently at private GA stage.
+            Please use v1alpha or v1beta version instead before we
+            launch this feature to public GA. Or ask for allowlisting
+            through Google Support team.
+        session_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.SessionSpec):
+            Session specification.
+
+            Can be used only when ``session`` is set.
     """
 
     class ImageQuery(proto.Message):
@@ -1190,6 +1248,138 @@ class SearchRequest(proto.Message):
             message="SearchRequest.EmbeddingSpec.EmbeddingVector",
         )
 
+    class NaturalLanguageQueryUnderstandingSpec(proto.Message):
+        r"""Specification to enable natural language understanding
+        capabilities for search requests.
+
+        Attributes:
+            filter_extraction_condition (google.cloud.discoveryengine_v1beta.types.SearchRequest.NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition):
+                The condition under which filter extraction should occur.
+                Default to [Condition.DISABLED][].
+            geo_search_query_detection_field_names (MutableSequence[str]):
+                Field names used for location-based filtering, where
+                geolocation filters are detected in natural language search
+                queries. Only valid when the FilterExtractionCondition is
+                set to ``ENABLED``.
+
+                If this field is set, it overrides the field names set in
+                [ServingConfig.geo_search_query_detection_field_names][google.cloud.discoveryengine.v1beta.ServingConfig.geo_search_query_detection_field_names].
+        """
+
+        class FilterExtractionCondition(proto.Enum):
+            r"""Enum describing under which condition filter extraction
+            should occur.
+
+            Values:
+                CONDITION_UNSPECIFIED (0):
+                    Server behavior defaults to [Condition.DISABLED][].
+                DISABLED (1):
+                    Disables NL filter extraction.
+                ENABLED (2):
+                    Enables NL filter extraction.
+            """
+            CONDITION_UNSPECIFIED = 0
+            DISABLED = 1
+            ENABLED = 2
+
+        filter_extraction_condition: "SearchRequest.NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="SearchRequest.NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition",
+        )
+        geo_search_query_detection_field_names: MutableSequence[
+            str
+        ] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+
+    class SearchAsYouTypeSpec(proto.Message):
+        r"""Specification for search as you type in search requests.
+
+        Attributes:
+            condition (google.cloud.discoveryengine_v1beta.types.SearchRequest.SearchAsYouTypeSpec.Condition):
+                The condition under which search as you type should occur.
+                Default to
+                [Condition.DISABLED][google.cloud.discoveryengine.v1beta.SearchRequest.SearchAsYouTypeSpec.Condition.DISABLED].
+        """
+
+        class Condition(proto.Enum):
+            r"""Enum describing under which condition search as you type
+            should occur.
+
+            Values:
+                CONDITION_UNSPECIFIED (0):
+                    Server behavior defaults to
+                    [Condition.DISABLED][google.cloud.discoveryengine.v1beta.SearchRequest.SearchAsYouTypeSpec.Condition.DISABLED].
+                DISABLED (1):
+                    Disables Search As You Type.
+                ENABLED (2):
+                    Enables Search As You Type.
+            """
+            CONDITION_UNSPECIFIED = 0
+            DISABLED = 1
+            ENABLED = 2
+
+        condition: "SearchRequest.SearchAsYouTypeSpec.Condition" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="SearchRequest.SearchAsYouTypeSpec.Condition",
+        )
+
+    class SessionSpec(proto.Message):
+        r"""Session specification.
+
+        Multi-turn Search feature is currently at private GA stage.
+        Please use v1alpha or v1beta version instead before we launch
+        this feature to public GA. Or ask for allowlisting through
+        Google Support team.
+
+        Attributes:
+            query_id (str):
+                If set, the search result gets stored to the "turn"
+                specified by this query ID.
+
+                Example: Let's say the session looks like this: session {
+                name: ".../sessions/xxx" turns { query { text: "What is
+                foo?" query_id: ".../questions/yyy" } answer: "Foo is ..." }
+                turns { query { text: "How about bar then?" query_id:
+                ".../questions/zzz" } } }
+
+                The user can call /search API with a request like this:
+
+                ::
+
+                   session: ".../sessions/xxx"
+                   session_spec { query_id: ".../questions/zzz" }
+
+                Then, the API stores the search result, associated with the
+                last turn. The stored search result can be used by a
+                subsequent /answer API call (with the session ID and the
+                query ID specified). Also, it is possible to call /search
+                and /answer in parallel with the same session ID & query ID.
+            search_result_persistence_count (int):
+                The number of top search results to persist. The persisted
+                search results can be used for the subsequent /answer api
+                call.
+
+                This field is simliar to the ``summary_result_count`` field
+                in
+                [SearchRequest.ContentSearchSpec.SummarySpec.summary_result_count][google.cloud.discoveryengine.v1beta.SearchRequest.ContentSearchSpec.SummarySpec.summary_result_count].
+
+                At most 10 results for documents mode, or 50 for chunks
+                mode.
+        """
+
+        query_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        search_result_persistence_count: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+
     serving_config: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1240,6 +1430,14 @@ class SearchRequest(proto.Message):
         proto.MESSAGE,
         number=21,
         message=common.UserInfo,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=35,
+    )
+    region_code: str = proto.Field(
+        proto.STRING,
+        number=36,
     )
     facet_specs: MutableSequence[FacetSpec] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1293,6 +1491,27 @@ class SearchRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=22,
+    )
+    natural_language_query_understanding_spec: NaturalLanguageQueryUnderstandingSpec = (
+        proto.Field(
+            proto.MESSAGE,
+            number=28,
+            message=NaturalLanguageQueryUnderstandingSpec,
+        )
+    )
+    search_as_you_type_spec: SearchAsYouTypeSpec = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message=SearchAsYouTypeSpec,
+    )
+    session: str = proto.Field(
+        proto.STRING,
+        number=41,
+    )
+    session_spec: SessionSpec = proto.Field(
+        proto.MESSAGE,
+        number=42,
+        message=SessionSpec,
     )
 
 
@@ -1351,6 +1570,15 @@ class SearchResponse(proto.Message):
         query_expansion_info (google.cloud.discoveryengine_v1beta.types.SearchResponse.QueryExpansionInfo):
             Query expansion information for the returned
             results.
+        natural_language_query_understanding_info (google.cloud.discoveryengine_v1beta.types.SearchResponse.NaturalLanguageQueryUnderstandingInfo):
+            Natural language query understanding
+            information for the returned results.
+        session_info (google.cloud.discoveryengine_v1beta.types.SearchResponse.SessionInfo):
+            Session information.
+
+            Only set if
+            [SearchRequest.session][google.cloud.discoveryengine.v1beta.SearchRequest.session]
+            is provided. See its description for more details.
     """
 
     class SearchResult(proto.Message):
@@ -1567,6 +1795,11 @@ class SearchResponse(proto.Message):
 
                     Google skips the summary if the LLM addon is not
                     enabled.
+                NO_RELEVANT_CONTENT (6):
+                    The no relevant content case.
+
+                    Google skips the summary if there is no relevant
+                    content in the retrieved search results.
             """
             SUMMARY_SKIPPED_REASON_UNSPECIFIED = 0
             ADVERSARIAL_QUERY_IGNORED = 1
@@ -1574,6 +1807,7 @@ class SearchResponse(proto.Message):
             OUT_OF_DOMAIN_QUERY_IGNORED = 3
             POTENTIAL_POLICY_VIOLATION = 4
             LLM_ADDON_NOT_ENABLED = 5
+            NO_RELEVANT_CONTENT = 6
 
         class SafetyAttributes(proto.Message):
             r"""Safety Attribute categories and their associated confidence
@@ -1816,6 +2050,294 @@ class SearchResponse(proto.Message):
             number=2,
         )
 
+    class NaturalLanguageQueryUnderstandingInfo(proto.Message):
+        r"""Information describing what natural language understanding
+        was done on the input query.
+
+        Attributes:
+            extracted_filters (str):
+                The filters that were extracted from the
+                input query.
+            rewritten_query (str):
+                Rewritten input query minus the extracted
+                filters.
+            structured_extracted_filter (google.cloud.discoveryengine_v1beta.types.SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter):
+                The filters that were extracted from the
+                input query represented in a structured form.
+        """
+
+        class StructuredExtractedFilter(proto.Message):
+            r"""The filters that were extracted from the input query
+            represented in a structured form.
+
+            Attributes:
+                expression (google.cloud.discoveryengine_v1beta.types.SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression):
+                    The expression denoting the filter that was
+                    extracted from the input query in a structured
+                    form. It can be a simple expression denoting a
+                    single string, numerical or geolocation
+                    constraint or a compound expression which is a
+                    combination of multiple expressions connected
+                    using logical (OR and AND) operators.
+            """
+
+            class StringConstraint(proto.Message):
+                r"""Constraint expression of a string field.
+
+                Attributes:
+                    field_name (str):
+                        Name of the string field as defined in the
+                        schema.
+                    values (MutableSequence[str]):
+                        Values of the string field. The record will
+                        only be returned if the field value matches one
+                        of the values specified here.
+                """
+
+                field_name: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                values: MutableSequence[str] = proto.RepeatedField(
+                    proto.STRING,
+                    number=2,
+                )
+
+            class NumberConstraint(proto.Message):
+                r"""Constraint expression of a number field. Example: price <
+                100.
+
+                Attributes:
+                    field_name (str):
+                        Name of the numerical field as defined in the
+                        schema.
+                    comparison (google.cloud.discoveryengine_v1beta.types.SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint.Comparison):
+                        The comparison operation performed between
+                        the field value and the value specified in the
+                        constraint.
+                    value (float):
+                        The value specified in the numerical
+                        constraint.
+                """
+
+                class Comparison(proto.Enum):
+                    r"""The comparison operation that was performed.
+
+                    Values:
+                        COMPARISON_UNSPECIFIED (0):
+                            Undefined comparison operator.
+                        EQUALS (1):
+                            Denotes equality ``=`` operator.
+                        LESS_THAN_EQUALS (2):
+                            Denotes less than or equal to ``<=`` operator.
+                        LESS_THAN (3):
+                            Denotes less than ``<`` operator.
+                        GREATER_THAN_EQUALS (4):
+                            Denotes greater than or equal to ``>=`` operator.
+                        GREATER_THAN (5):
+                            Denotes greater than ``>`` operator.
+                    """
+                    COMPARISON_UNSPECIFIED = 0
+                    EQUALS = 1
+                    LESS_THAN_EQUALS = 2
+                    LESS_THAN = 3
+                    GREATER_THAN_EQUALS = 4
+                    GREATER_THAN = 5
+
+                field_name: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                comparison: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint.Comparison" = proto.Field(
+                    proto.ENUM,
+                    number=2,
+                    enum="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint.Comparison",
+                )
+                value: float = proto.Field(
+                    proto.DOUBLE,
+                    number=3,
+                )
+
+            class GeolocationConstraint(proto.Message):
+                r"""Constraint of a geolocation field.
+                Name of the geolocation field as defined in the schema.
+
+                Attributes:
+                    field_name (str):
+                        The name of the geolocation field as defined
+                        in the schema.
+                    address (str):
+                        The reference address that was inferred from
+                        the input query. The proximity of the reference
+                        address to the geolocation field will be used to
+                        filter the results.
+                    radius_in_meters (float):
+                        The radius in meters around the address. The
+                        record is returned if the location of the
+                        geolocation field is within the radius.
+                """
+
+                field_name: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                address: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
+                radius_in_meters: float = proto.Field(
+                    proto.FLOAT,
+                    number=3,
+                )
+
+            class AndExpression(proto.Message):
+                r"""Logical ``And`` operator.
+
+                Attributes:
+                    expressions (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression]):
+                        The expressions that were ANDed together.
+                """
+
+                expressions: MutableSequence[
+                    "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression",
+                )
+
+            class OrExpression(proto.Message):
+                r"""Logical ``Or`` operator.
+
+                Attributes:
+                    expressions (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression]):
+                        The expressions that were ORed together.
+                """
+
+                expressions: MutableSequence[
+                    "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression",
+                )
+
+            class Expression(proto.Message):
+                r"""The expression denoting the filter that was extracted from
+                the input query.
+
+                This message has `oneof`_ fields (mutually exclusive fields).
+                For each oneof, at most one member field can be set at the same time.
+                Setting any member of the oneof automatically clears all other
+                members.
+
+                .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+                Attributes:
+                    string_constraint (google.cloud.discoveryengine_v1beta.types.SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.StringConstraint):
+                        String constraint expression.
+
+                        This field is a member of `oneof`_ ``expr``.
+                    number_constraint (google.cloud.discoveryengine_v1beta.types.SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint):
+                        Numerical constraint expression.
+
+                        This field is a member of `oneof`_ ``expr``.
+                    geolocation_constraint (google.cloud.discoveryengine_v1beta.types.SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.GeolocationConstraint):
+                        Geolocation constraint expression.
+
+                        This field is a member of `oneof`_ ``expr``.
+                    and_expr (google.cloud.discoveryengine_v1beta.types.SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.AndExpression):
+                        Logical "And" compound operator connecting
+                        multiple expressions.
+
+                        This field is a member of `oneof`_ ``expr``.
+                    or_expr (google.cloud.discoveryengine_v1beta.types.SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.OrExpression):
+                        Logical "Or" compound operator connecting
+                        multiple expressions.
+
+                        This field is a member of `oneof`_ ``expr``.
+                """
+
+                string_constraint: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.StringConstraint" = proto.Field(
+                    proto.MESSAGE,
+                    number=1,
+                    oneof="expr",
+                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.StringConstraint",
+                )
+                number_constraint: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint" = proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    oneof="expr",
+                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint",
+                )
+                geolocation_constraint: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.GeolocationConstraint" = proto.Field(
+                    proto.MESSAGE,
+                    number=3,
+                    oneof="expr",
+                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.GeolocationConstraint",
+                )
+                and_expr: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.AndExpression" = proto.Field(
+                    proto.MESSAGE,
+                    number=4,
+                    oneof="expr",
+                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.AndExpression",
+                )
+                or_expr: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.OrExpression" = proto.Field(
+                    proto.MESSAGE,
+                    number=5,
+                    oneof="expr",
+                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.OrExpression",
+                )
+
+            expression: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression",
+            )
+
+        extracted_filters: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        rewritten_query: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        structured_extracted_filter: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter",
+        )
+
+    class SessionInfo(proto.Message):
+        r"""Information about the session.
+
+        Attributes:
+            name (str):
+                Name of the session. If the auto-session mode is used (when
+                [SearchRequest.session][google.cloud.discoveryengine.v1beta.SearchRequest.session]
+                ends with "-"), this field holds the newly generated session
+                name.
+            query_id (str):
+                Query ID that corresponds to this search API
+                call. One session can have multiple turns, each
+                with a unique query ID.
+
+                By specifying the session name and this query ID
+                in the Answer API call, the answer generation
+                happens in the context of the search results
+                from this search call.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        query_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     @property
     def raw_page(self):
         return self
@@ -1873,6 +2395,18 @@ class SearchResponse(proto.Message):
         proto.MESSAGE,
         number=14,
         message=QueryExpansionInfo,
+    )
+    natural_language_query_understanding_info: NaturalLanguageQueryUnderstandingInfo = (
+        proto.Field(
+            proto.MESSAGE,
+            number=15,
+            message=NaturalLanguageQueryUnderstandingInfo,
+        )
+    )
+    session_info: SessionInfo = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=SessionInfo,
     )
 
 

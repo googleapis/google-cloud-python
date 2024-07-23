@@ -993,6 +993,222 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
         # Done; return the response.
         return response
 
+    def import_completion_suggestions(
+        self,
+        request: Optional[
+            Union[import_config.ImportCompletionSuggestionsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Imports
+        [CompletionSuggestion][google.cloud.discoveryengine.v1beta.CompletionSuggestion]s
+        for a DataStore.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            def sample_import_completion_suggestions():
+                # Create a client
+                client = discoveryengine_v1beta.CompletionServiceClient()
+
+                # Initialize request argument(s)
+                inline_source = discoveryengine_v1beta.InlineSource()
+                inline_source.suggestions.global_score = 0.126
+                inline_source.suggestions.suggestion = "suggestion_value"
+
+                request = discoveryengine_v1beta.ImportCompletionSuggestionsRequest(
+                    inline_source=inline_source,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.import_completion_suggestions(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1beta.types.ImportCompletionSuggestionsRequest, dict]):
+                The request object. Request message for
+                [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1beta.CompletionService.ImportCompletionSuggestions]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1beta.types.ImportCompletionSuggestionsResponse` Response of the
+                   [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1beta.CompletionService.ImportCompletionSuggestions]
+                   method. If the long running operation is done, this
+                   message is returned by the
+                   google.longrunning.Operations.response field if the
+                   operation is successful.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, import_config.ImportCompletionSuggestionsRequest):
+            request = import_config.ImportCompletionSuggestionsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.import_completion_suggestions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            import_config.ImportCompletionSuggestionsResponse,
+            metadata_type=import_config.ImportCompletionSuggestionsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def purge_completion_suggestions(
+        self,
+        request: Optional[
+            Union[purge_config.PurgeCompletionSuggestionsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Permanently deletes all
+        [CompletionSuggestion][google.cloud.discoveryengine.v1beta.CompletionSuggestion]s
+        for a DataStore.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            def sample_purge_completion_suggestions():
+                # Create a client
+                client = discoveryengine_v1beta.CompletionServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1beta.PurgeCompletionSuggestionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.purge_completion_suggestions(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1beta.types.PurgeCompletionSuggestionsRequest, dict]):
+                The request object. Request message for
+                [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1beta.CompletionService.PurgeCompletionSuggestions]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1beta.types.PurgeCompletionSuggestionsResponse` Response message for
+                   [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1beta.CompletionService.PurgeCompletionSuggestions]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, purge_config.PurgeCompletionSuggestionsRequest):
+            request = purge_config.PurgeCompletionSuggestionsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.purge_completion_suggestions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            purge_config.PurgeCompletionSuggestionsResponse,
+            metadata_type=purge_config.PurgeCompletionSuggestionsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "CompletionServiceClient":
         return self
 

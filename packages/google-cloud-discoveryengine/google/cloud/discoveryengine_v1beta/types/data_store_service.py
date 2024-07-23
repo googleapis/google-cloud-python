@@ -67,6 +67,17 @@ class CreateDataStoreRequest(proto.Message):
             create an advanced data store for site search. If the data
             store is not configured as site search (GENERIC vertical and
             PUBLIC_WEBSITE content_config), this flag will be ignored.
+        skip_default_schema_creation (bool):
+            A boolean flag indicating whether to skip the default schema
+            creation for the data store. Only enable this flag if you
+            are certain that the default schema is incompatible with
+            your use case.
+
+            If set to true, you must manually create a schema for the
+            data store before any documents can be ingested.
+
+            This flag cannot be specified if
+            ``data_store.starting_schema`` is specified.
     """
 
     parent: str = proto.Field(
@@ -85,6 +96,10 @@ class CreateDataStoreRequest(proto.Message):
     create_advanced_site_search: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    skip_default_schema_creation: bool = proto.Field(
+        proto.BOOL,
+        number=7,
     )
 
 
