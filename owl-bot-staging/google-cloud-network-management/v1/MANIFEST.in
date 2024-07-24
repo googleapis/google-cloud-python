@@ -1,0 +1,2 @@
+recursive-include google/cloud/network_management *.py
+recursive-include google/cloud/network_management_v1 *.py
