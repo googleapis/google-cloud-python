@@ -1250,6 +1250,8 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1839,6 +1841,8 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2473,6 +2477,8 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2822,6 +2828,8 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3875,6 +3883,8 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3969,6 +3979,8 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

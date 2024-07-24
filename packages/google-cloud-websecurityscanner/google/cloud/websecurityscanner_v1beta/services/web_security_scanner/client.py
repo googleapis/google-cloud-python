@@ -1180,6 +1180,8 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1632,6 +1634,8 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1855,6 +1859,8 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2088,6 +2094,8 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
