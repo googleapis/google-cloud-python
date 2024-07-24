@@ -932,6 +932,8 @@ class DataformClient(metaclass=DataformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1609,6 +1611,8 @@ class DataformClient(metaclass=DataformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1703,6 +1707,8 @@ class DataformClient(metaclass=DataformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1980,6 +1986,8 @@ class DataformClient(metaclass=DataformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2998,6 +3006,8 @@ class DataformClient(metaclass=DataformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3672,6 +3682,8 @@ class DataformClient(metaclass=DataformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4223,6 +4235,8 @@ class DataformClient(metaclass=DataformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4543,6 +4557,8 @@ class DataformClient(metaclass=DataformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4658,6 +4674,8 @@ class DataformClient(metaclass=DataformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5211,6 +5229,8 @@ class DataformClient(metaclass=DataformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5695,6 +5715,8 @@ class DataformClient(metaclass=DataformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
