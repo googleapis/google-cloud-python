@@ -1032,6 +1032,8 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

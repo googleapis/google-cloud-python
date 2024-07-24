@@ -2540,6 +2540,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

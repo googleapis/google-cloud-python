@@ -1097,6 +1097,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1945,6 +1947,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2111,6 +2115,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

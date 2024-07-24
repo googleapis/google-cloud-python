@@ -1074,6 +1074,8 @@ class DisksClient(metaclass=DisksClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2667,6 +2669,8 @@ class DisksClient(metaclass=DisksClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

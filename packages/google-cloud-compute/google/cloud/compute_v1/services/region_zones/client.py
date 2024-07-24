@@ -773,6 +773,8 @@ class RegionZonesClient(metaclass=RegionZonesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
