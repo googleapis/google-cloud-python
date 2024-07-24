@@ -1218,6 +1218,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
