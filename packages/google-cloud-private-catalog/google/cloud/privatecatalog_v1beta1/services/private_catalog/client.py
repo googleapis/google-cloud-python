@@ -820,6 +820,8 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -917,6 +919,8 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1015,6 +1019,8 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
