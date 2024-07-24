@@ -803,6 +803,8 @@ class AccountIssueServiceClient(metaclass=AccountIssueServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
