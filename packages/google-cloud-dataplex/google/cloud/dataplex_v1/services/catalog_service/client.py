@@ -1257,6 +1257,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1869,6 +1871,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2475,6 +2479,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3057,6 +3063,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3368,6 +3376,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
