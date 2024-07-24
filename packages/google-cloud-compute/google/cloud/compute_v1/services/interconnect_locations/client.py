@@ -896,6 +896,8 @@ class InterconnectLocationsClient(metaclass=InterconnectLocationsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
