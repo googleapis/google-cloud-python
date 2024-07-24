@@ -1164,6 +1164,8 @@ class CertificateAuthorityServiceClient(
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2308,6 +2310,8 @@ class CertificateAuthorityServiceClient(
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3231,6 +3235,8 @@ class CertificateAuthorityServiceClient(
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3702,6 +3708,8 @@ class CertificateAuthorityServiceClient(
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4355,6 +4363,8 @@ class CertificateAuthorityServiceClient(
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

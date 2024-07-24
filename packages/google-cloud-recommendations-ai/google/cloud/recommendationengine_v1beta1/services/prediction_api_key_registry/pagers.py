@@ -22,7 +22,18 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
+    Union,
 )
+
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+    OptionalAsyncRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+    OptionalAsyncRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import (
     prediction_apikey_registry_service,
@@ -56,6 +67,8 @@ class ListPredictionApiKeyRegistrationsPager:
         request: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
         response: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -67,6 +80,9 @@ class ListPredictionApiKeyRegistrationsPager:
                 The initial request object.
             response (google.cloud.recommendationengine_v1beta1.types.ListPredictionApiKeyRegistrationsResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -77,6 +93,8 @@ class ListPredictionApiKeyRegistrationsPager:
             )
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -91,7 +109,12 @@ class ListPredictionApiKeyRegistrationsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(
@@ -133,6 +156,8 @@ class ListPredictionApiKeyRegistrationsAsyncPager:
         request: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
         response: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -144,6 +169,9 @@ class ListPredictionApiKeyRegistrationsAsyncPager:
                 The initial request object.
             response (google.cloud.recommendationengine_v1beta1.types.ListPredictionApiKeyRegistrationsResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -154,6 +182,8 @@ class ListPredictionApiKeyRegistrationsAsyncPager:
             )
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -168,7 +198,12 @@ class ListPredictionApiKeyRegistrationsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(

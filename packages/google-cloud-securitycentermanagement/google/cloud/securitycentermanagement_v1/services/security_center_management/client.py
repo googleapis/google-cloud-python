@@ -942,6 +942,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1211,6 +1213,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1349,6 +1353,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2161,6 +2167,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2433,6 +2441,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2569,6 +2579,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3457,6 +3469,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
