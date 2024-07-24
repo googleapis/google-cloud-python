@@ -1,0 +1,2 @@
+recursive-include google/cloud/clouddms *.py
+recursive-include google/cloud/clouddms_v1 *.py
