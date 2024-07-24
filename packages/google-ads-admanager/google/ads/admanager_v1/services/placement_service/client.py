@@ -917,6 +917,8 @@ class PlacementServiceClient(metaclass=PlacementServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

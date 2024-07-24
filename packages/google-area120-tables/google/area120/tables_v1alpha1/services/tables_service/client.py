@@ -899,6 +899,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1090,6 +1092,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1310,6 +1314,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
