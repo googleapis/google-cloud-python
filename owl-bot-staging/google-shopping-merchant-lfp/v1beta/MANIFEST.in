@@ -1,0 +1,2 @@
+recursive-include google/shopping/merchant_lfp *.py
+recursive-include google/shopping/merchant_lfp_v1beta *.py
