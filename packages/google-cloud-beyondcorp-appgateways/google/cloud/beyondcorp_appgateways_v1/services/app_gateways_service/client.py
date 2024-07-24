@@ -820,6 +820,8 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
