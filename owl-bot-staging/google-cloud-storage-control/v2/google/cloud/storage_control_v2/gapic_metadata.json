@@ -1,0 +1,123 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.storage_control_v2",
+  "protoPackage": "google.storage.control.v2",
+  "schema": "1.0",
+  "services": {
+    "StorageControl": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "StorageControlClient",
+          "rpcs": {
+            "CreateFolder": {
+              "methods": [
+                "create_folder"
+              ]
+            },
+            "CreateManagedFolder": {
+              "methods": [
+                "create_managed_folder"
+              ]
+            },
+            "DeleteFolder": {
+              "methods": [
+                "delete_folder"
+              ]
+            },
+            "DeleteManagedFolder": {
+              "methods": [
+                "delete_managed_folder"
+              ]
+            },
+            "GetFolder": {
+              "methods": [
+                "get_folder"
+              ]
+            },
+            "GetManagedFolder": {
+              "methods": [
+                "get_managed_folder"
+              ]
+            },
+            "GetStorageLayout": {
+              "methods": [
+                "get_storage_layout"
+              ]
+            },
+            "ListFolders": {
+              "methods": [
+                "list_folders"
+              ]
+            },
+            "ListManagedFolders": {
+              "methods": [
+                "list_managed_folders"
+              ]
+            },
+            "RenameFolder": {
+              "methods": [
+                "rename_folder"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "StorageControlAsyncClient",
+          "rpcs": {
+            "CreateFolder": {
+              "methods": [
+                "create_folder"
+              ]
+            },
+            "CreateManagedFolder": {
+              "methods": [
+                "create_managed_folder"
+              ]
+            },
+            "DeleteFolder": {
+              "methods": [
+                "delete_folder"
+              ]
+            },
+            "DeleteManagedFolder": {
+              "methods": [
+                "delete_managed_folder"
+              ]
+            },
+            "GetFolder": {
+              "methods": [
+                "get_folder"
+              ]
+            },
+            "GetManagedFolder": {
+              "methods": [
+                "get_managed_folder"
+              ]
+            },
+            "GetStorageLayout": {
+              "methods": [
+                "get_storage_layout"
+              ]
+            },
+            "ListFolders": {
+              "methods": [
+                "list_folders"
+              ]
+            },
+            "ListManagedFolders": {
+              "methods": [
+                "list_managed_folders"
+              ]
+            },
+            "RenameFolder": {
+              "methods": [
+                "rename_folder"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
