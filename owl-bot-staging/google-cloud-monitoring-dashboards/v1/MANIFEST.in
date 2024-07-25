@@ -1,2 +1,0 @@
-recursive-include google/cloud/monitoring_dashboard *.py
-recursive-include google/cloud/monitoring_dashboard_v1 *.py
