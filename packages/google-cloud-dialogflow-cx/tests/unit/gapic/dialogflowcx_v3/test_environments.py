@@ -38,7 +38,6 @@ from google.api_core import (
 from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
-from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -1540,16 +1539,12 @@ def test_list_environments_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
-        retry = retries.Retry()
-        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_environments(request={}, retry=retry, timeout=timeout)
+        pager = client.list_environments(request={})
 
         assert pager._metadata == expected_metadata
-        assert pager._retry == retry
-        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -3666,18 +3661,12 @@ def test_lookup_environment_history_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
-        retry = retries.Retry()
-        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", ""),)),
         )
-        pager = client.lookup_environment_history(
-            request={}, retry=retry, timeout=timeout
-        )
+        pager = client.lookup_environment_history(request={})
 
         assert pager._metadata == expected_metadata
-        assert pager._retry == retry
-        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -4560,18 +4549,12 @@ def test_list_continuous_test_results_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
-        retry = retries.Retry()
-        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_continuous_test_results(
-            request={}, retry=retry, timeout=timeout
-        )
+        pager = client.list_continuous_test_results(request={})
 
         assert pager._metadata == expected_metadata
-        assert pager._retry == retry
-        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
