@@ -955,8 +955,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
             method=rpc,
             request=request,
             response=response,
-            retry=retry,
-            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1557,8 +1555,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
             method=rpc,
             request=request,
             response=response,
-            retry=retry,
-            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2292,8 +2288,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
             method=rpc,
             request=request,
             response=response,
-            retry=retry,
-            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3927,8 +3921,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
             method=rpc,
             request=request,
             response=response,
-            retry=retry,
-            timeout=timeout,
             metadata=metadata,
         )
 

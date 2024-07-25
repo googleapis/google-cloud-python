@@ -27,7 +27,6 @@ import math
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -1451,13 +1450,9 @@ def test_search_catalog_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
-        retry = retries.Retry()
-        timeout = 5
-        pager = client.search_catalog(request={}, retry=retry, timeout=timeout)
+        pager = client.search_catalog(request={})
 
         assert pager._metadata == expected_metadata
-        assert pager._retry == retry
-        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -3604,16 +3599,12 @@ def test_list_entry_groups_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
-        retry = retries.Retry()
-        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_entry_groups(request={}, retry=retry, timeout=timeout)
+        pager = client.list_entry_groups(request={})
 
         assert pager._metadata == expected_metadata
-        assert pager._retry == retry
-        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -5915,16 +5906,12 @@ def test_list_entries_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
-        retry = retries.Retry()
-        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_entries(request={}, retry=retry, timeout=timeout)
+        pager = client.list_entries(request={})
 
         assert pager._metadata == expected_metadata
-        assert pager._retry == retry
-        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -11235,16 +11222,12 @@ def test_list_tags_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
-        retry = retries.Retry()
-        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_tags(request={}, retry=retry, timeout=timeout)
+        pager = client.list_tags(request={})
 
         assert pager._metadata == expected_metadata
-        assert pager._retry == retry
-        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
