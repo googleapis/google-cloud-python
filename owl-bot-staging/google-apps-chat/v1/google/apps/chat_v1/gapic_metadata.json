@@ -1,0 +1,448 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.apps.chat_v1",
+  "protoPackage": "google.chat.v1",
+  "schema": "1.0",
+  "services": {
+    "ChatService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ChatServiceClient",
+          "rpcs": {
+            "CompleteImportSpace": {
+              "methods": [
+                "complete_import_space"
+              ]
+            },
+            "CreateMembership": {
+              "methods": [
+                "create_membership"
+              ]
+            },
+            "CreateMessage": {
+              "methods": [
+                "create_message"
+              ]
+            },
+            "CreateReaction": {
+              "methods": [
+                "create_reaction"
+              ]
+            },
+            "CreateSpace": {
+              "methods": [
+                "create_space"
+              ]
+            },
+            "DeleteMembership": {
+              "methods": [
+                "delete_membership"
+              ]
+            },
+            "DeleteMessage": {
+              "methods": [
+                "delete_message"
+              ]
+            },
+            "DeleteReaction": {
+              "methods": [
+                "delete_reaction"
+              ]
+            },
+            "DeleteSpace": {
+              "methods": [
+                "delete_space"
+              ]
+            },
+            "FindDirectMessage": {
+              "methods": [
+                "find_direct_message"
+              ]
+            },
+            "GetAttachment": {
+              "methods": [
+                "get_attachment"
+              ]
+            },
+            "GetMembership": {
+              "methods": [
+                "get_membership"
+              ]
+            },
+            "GetMessage": {
+              "methods": [
+                "get_message"
+              ]
+            },
+            "GetSpace": {
+              "methods": [
+                "get_space"
+              ]
+            },
+            "GetSpaceEvent": {
+              "methods": [
+                "get_space_event"
+              ]
+            },
+            "GetSpaceReadState": {
+              "methods": [
+                "get_space_read_state"
+              ]
+            },
+            "GetThreadReadState": {
+              "methods": [
+                "get_thread_read_state"
+              ]
+            },
+            "ListMemberships": {
+              "methods": [
+                "list_memberships"
+              ]
+            },
+            "ListMessages": {
+              "methods": [
+                "list_messages"
+              ]
+            },
+            "ListReactions": {
+              "methods": [
+                "list_reactions"
+              ]
+            },
+            "ListSpaceEvents": {
+              "methods": [
+                "list_space_events"
+              ]
+            },
+            "ListSpaces": {
+              "methods": [
+                "list_spaces"
+              ]
+            },
+            "SetUpSpace": {
+              "methods": [
+                "set_up_space"
+              ]
+            },
+            "UpdateMembership": {
+              "methods": [
+                "update_membership"
+              ]
+            },
+            "UpdateMessage": {
+              "methods": [
+                "update_message"
+              ]
+            },
+            "UpdateSpace": {
+              "methods": [
+                "update_space"
+              ]
+            },
+            "UpdateSpaceReadState": {
+              "methods": [
+                "update_space_read_state"
+              ]
+            },
+            "UploadAttachment": {
+              "methods": [
+                "upload_attachment"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ChatServiceAsyncClient",
+          "rpcs": {
+            "CompleteImportSpace": {
+              "methods": [
+                "complete_import_space"
+              ]
+            },
+            "CreateMembership": {
+              "methods": [
+                "create_membership"
+              ]
+            },
+            "CreateMessage": {
+              "methods": [
+                "create_message"
+              ]
+            },
+            "CreateReaction": {
+              "methods": [
+                "create_reaction"
+              ]
+            },
+            "CreateSpace": {
+              "methods": [
+                "create_space"
+              ]
+            },
+            "DeleteMembership": {
+              "methods": [
+                "delete_membership"
+              ]
+            },
+            "DeleteMessage": {
+              "methods": [
+                "delete_message"
+              ]
+            },
+            "DeleteReaction": {
+              "methods": [
+                "delete_reaction"
+              ]
+            },
+            "DeleteSpace": {
+              "methods": [
+                "delete_space"
+              ]
+            },
+            "FindDirectMessage": {
+              "methods": [
+                "find_direct_message"
+              ]
+            },
+            "GetAttachment": {
+              "methods": [
+                "get_attachment"
+              ]
+            },
+            "GetMembership": {
+              "methods": [
+                "get_membership"
+              ]
+            },
+            "GetMessage": {
+              "methods": [
+                "get_message"
+              ]
+            },
+            "GetSpace": {
+              "methods": [
+                "get_space"
+              ]
+            },
+            "GetSpaceEvent": {
+              "methods": [
+                "get_space_event"
+              ]
+            },
+            "GetSpaceReadState": {
+              "methods": [
+                "get_space_read_state"
+              ]
+            },
+            "GetThreadReadState": {
+              "methods": [
+                "get_thread_read_state"
+              ]
+            },
+            "ListMemberships": {
+              "methods": [
+                "list_memberships"
+              ]
+            },
+            "ListMessages": {
+              "methods": [
+                "list_messages"
+              ]
+            },
+            "ListReactions": {
+              "methods": [
+                "list_reactions"
+              ]
+            },
+            "ListSpaceEvents": {
+              "methods": [
+                "list_space_events"
+              ]
+            },
+            "ListSpaces": {
+              "methods": [
+                "list_spaces"
+              ]
+            },
+            "SetUpSpace": {
+              "methods": [
+                "set_up_space"
+              ]
+            },
+            "UpdateMembership": {
+              "methods": [
+                "update_membership"
+              ]
+            },
+            "UpdateMessage": {
+              "methods": [
+                "update_message"
+              ]
+            },
+            "UpdateSpace": {
+              "methods": [
+                "update_space"
+              ]
+            },
+            "UpdateSpaceReadState": {
+              "methods": [
+                "update_space_read_state"
+              ]
+            },
+            "UploadAttachment": {
+              "methods": [
+                "upload_attachment"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ChatServiceClient",
+          "rpcs": {
+            "CompleteImportSpace": {
+              "methods": [
+                "complete_import_space"
+              ]
+            },
+            "CreateMembership": {
+              "methods": [
+                "create_membership"
+              ]
+            },
+            "CreateMessage": {
+              "methods": [
+                "create_message"
+              ]
+            },
+            "CreateReaction": {
+              "methods": [
+                "create_reaction"
+              ]
+            },
+            "CreateSpace": {
+              "methods": [
+                "create_space"
+              ]
+            },
+            "DeleteMembership": {
+              "methods": [
+                "delete_membership"
+              ]
+            },
+            "DeleteMessage": {
+              "methods": [
+                "delete_message"
+              ]
+            },
+            "DeleteReaction": {
+              "methods": [
+                "delete_reaction"
+              ]
+            },
+            "DeleteSpace": {
+              "methods": [
+                "delete_space"
+              ]
+            },
+            "FindDirectMessage": {
+              "methods": [
+                "find_direct_message"
+              ]
+            },
+            "GetAttachment": {
+              "methods": [
+                "get_attachment"
+              ]
+            },
+            "GetMembership": {
+              "methods": [
+                "get_membership"
+              ]
+            },
+            "GetMessage": {
+              "methods": [
+                "get_message"
+              ]
+            },
+            "GetSpace": {
+              "methods": [
+                "get_space"
+              ]
+            },
+            "GetSpaceEvent": {
+              "methods": [
+                "get_space_event"
+              ]
+            },
+            "GetSpaceReadState": {
+              "methods": [
+                "get_space_read_state"
+              ]
+            },
+            "GetThreadReadState": {
+              "methods": [
+                "get_thread_read_state"
+              ]
+            },
+            "ListMemberships": {
+              "methods": [
+                "list_memberships"
+              ]
+            },
+            "ListMessages": {
+              "methods": [
+                "list_messages"
+              ]
+            },
+            "ListReactions": {
+              "methods": [
+                "list_reactions"
+              ]
+            },
+            "ListSpaceEvents": {
+              "methods": [
+                "list_space_events"
+              ]
+            },
+            "ListSpaces": {
+              "methods": [
+                "list_spaces"
+              ]
+            },
+            "SetUpSpace": {
+              "methods": [
+                "set_up_space"
+              ]
+            },
+            "UpdateMembership": {
+              "methods": [
+                "update_membership"
+              ]
+            },
+            "UpdateMessage": {
+              "methods": [
+                "update_message"
+              ]
+            },
+            "UpdateSpace": {
+              "methods": [
+                "update_space"
+              ]
+            },
+            "UpdateSpaceReadState": {
+              "methods": [
+                "update_space_read_state"
+              ]
+            },
+            "UploadAttachment": {
+              "methods": [
+                "upload_attachment"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
