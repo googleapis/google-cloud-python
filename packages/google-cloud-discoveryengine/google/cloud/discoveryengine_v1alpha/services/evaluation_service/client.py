@@ -1067,8 +1067,6 @@ class EvaluationServiceClient(metaclass=EvaluationServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
-            retry=retry,
-            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1338,8 +1336,6 @@ class EvaluationServiceClient(metaclass=EvaluationServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
-            retry=retry,
-            timeout=timeout,
             metadata=metadata,
         )
 

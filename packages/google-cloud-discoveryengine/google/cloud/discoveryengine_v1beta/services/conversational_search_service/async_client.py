@@ -1021,8 +1021,6 @@ class ConversationalSearchServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
-            retry=retry,
-            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1790,8 +1788,6 @@ class ConversationalSearchServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
-            retry=retry,
-            timeout=timeout,
             metadata=metadata,
         )
 
