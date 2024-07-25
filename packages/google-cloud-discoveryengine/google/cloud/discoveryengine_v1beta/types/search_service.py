@@ -1335,6 +1335,9 @@ class SearchRequest(proto.Message):
         this feature to public GA. Or ask for allowlisting through
         Google Support team.
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             query_id (str):
                 If set, the search result gets stored to the "turn"
@@ -1369,6 +1372,8 @@ class SearchRequest(proto.Message):
 
                 At most 10 results for documents mode, or 50 for chunks
                 mode.
+
+                This field is a member of `oneof`_ ``_search_result_persistence_count``.
         """
 
         query_id: str = proto.Field(
@@ -1378,6 +1383,7 @@ class SearchRequest(proto.Message):
         search_result_persistence_count: int = proto.Field(
             proto.INT32,
             number=2,
+            optional=True,
         )
 
     serving_config: str = proto.Field(
