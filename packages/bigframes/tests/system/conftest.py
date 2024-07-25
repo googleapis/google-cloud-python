@@ -141,9 +141,7 @@ def session() -> Generator[bigframes.Session, None, None]:
 
 @pytest.fixture(scope="session", params=["ordered", "unordered"])
 def maybe_ordered_session(request) -> Generator[bigframes.Session, None, None]:
-    context = bigframes.BigQueryOptions(
-        location="US", _strictly_ordered=request.param == "ordered"
-    )
+    context = bigframes.BigQueryOptions(location="US", ordering_mode="partial")
     session = bigframes.Session(context=context)
     yield session
     session.close()  # close generated session at cleanup type
@@ -151,7 +149,7 @@ def maybe_ordered_session(request) -> Generator[bigframes.Session, None, None]:
 
 @pytest.fixture(scope="session")
 def unordered_session() -> Generator[bigframes.Session, None, None]:
-    context = bigframes.BigQueryOptions(location="US", _strictly_ordered=False)
+    context = bigframes.BigQueryOptions(location="US", ordering_mode="partial")
     session = bigframes.Session(context=context)
     yield session
     session.close()  # close generated session at cleanup type

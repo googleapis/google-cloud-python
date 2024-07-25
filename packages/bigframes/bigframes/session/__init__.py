@@ -297,15 +297,21 @@ class Session(
         self._execution_count = 0
         # Whether this session treats objects as totally ordered.
         # Will expose as feature later, only False for internal testing
-        self._strictly_ordered: bool = context._strictly_ordered
+        self._strictly_ordered: bool = context.ordering_mode != "partial"
+        if not self._strictly_ordered:
+            warnings.warn(
+                "Partial ordering mode is a preview feature and is subject to change.",
+                bigframes.exceptions.PreviewWarning,
+            )
+
         # Sequential index needs total ordering to generate, so use null index with unstrict ordering.
         self._default_index_type: bigframes.enums.DefaultIndexKind = (
             bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64
-            if context._strictly_ordered
+            if self._strictly_ordered
             else bigframes.enums.DefaultIndexKind.NULL
         )
         self._compiler = bigframes.core.compile.SQLCompiler(
-            strict=context._strictly_ordered
+            strict=self._strictly_ordered
         )
 
         self._remote_function_session = bigframes_rf._RemoteFunctionSession()

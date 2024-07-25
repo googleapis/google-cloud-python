@@ -16,7 +16,8 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from enum import Enum
+from typing import Literal, Optional
 import warnings
 
 import google.api_core.exceptions
@@ -25,6 +26,12 @@ import jellyfish
 
 import bigframes.constants
 import bigframes.exceptions
+
+
+class OrderingMode(Enum):
+    STRICT = "strict"
+    PARTIAL = "partial"
+
 
 SESSION_STARTED_MESSAGE = (
     "Cannot change '{attribute}' once a session has started. "
@@ -57,6 +64,14 @@ def _validate_location(value: Optional[str]):
         )
 
 
+def _validate_ordering_mode(value: str) -> OrderingMode:
+    if value.casefold() == OrderingMode.STRICT.value.casefold():
+        return OrderingMode.STRICT
+    if value.casefold() == OrderingMode.PARTIAL.value.casefold():
+        return OrderingMode.PARTIAL
+    raise ValueError("Ordering mode must be one of 'strict' or 'partial'.")
+
+
 class BigQueryOptions:
     """Encapsulates configuration for working with a session."""
 
@@ -71,7 +86,7 @@ class BigQueryOptions:
         kms_key_name: Optional[str] = None,
         skip_bq_connection_check: bool = False,
         *,
-        _strictly_ordered: bool = True,
+        ordering_mode: Literal["strict", "partial"] = "strict",
     ):
         self._credentials = credentials
         self._project = project
@@ -82,8 +97,8 @@ class BigQueryOptions:
         self._kms_key_name = kms_key_name
         self._skip_bq_connection_check = skip_bq_connection_check
         self._session_started = False
-        # Determines the ordering strictness for the session. For internal use only.
-        self._strictly_ordered_internal = _strictly_ordered
+        # Determines the ordering strictness for the session.
+        self._ordering_mode = _validate_ordering_mode(ordering_mode)
 
     @property
     def application_name(self) -> Optional[str]:
@@ -241,6 +256,10 @@ class BigQueryOptions:
         self._kms_key_name = value
 
     @property
-    def _strictly_ordered(self) -> bool:
-        """Internal use only. Controls whether total row order is always maintained for DataFrame/Series."""
-        return self._strictly_ordered_internal
+    def ordering_mode(self) -> Literal["strict", "partial"]:
+        """Controls whether total row order is always maintained for DataFrame/Series."""
+        return self._ordering_mode.value
+
+    @ordering_mode.setter
+    def ordering_mode(self, ordering_mode: Literal["strict", "partial"]) -> None:
+        self._ordering_mode = _validate_ordering_mode(ordering_mode)
