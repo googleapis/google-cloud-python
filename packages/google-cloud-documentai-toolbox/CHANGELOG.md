@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.14.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.13.5-alpha...v0.14.0-alpha) (2024-07-16)
+
+
+### Features
+
+* Add Support for Layout Parser Documents ([#334](https://github.com/googleapis/python-documentai-toolbox/issues/334)) ([c877b22](https://github.com/googleapis/python-documentai-toolbox/commit/c877b22367adb821ca4dd4e783249f8dd9a32501))
+
+
+### Bug Fixes
+
+* Add support for Classifier entities ([#333](https://github.com/googleapis/python-documentai-toolbox/issues/333)) ([2352cae](https://github.com/googleapis/python-documentai-toolbox/commit/2352cae6a04669188244a6dda443d7fa668cc457))
+
 ## [0.13.5-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.13.4-alpha...v0.13.5-alpha) (2024-07-02)
 
 
