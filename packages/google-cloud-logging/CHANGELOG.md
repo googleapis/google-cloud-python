@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.11.0](https://github.com/googleapis/python-logging/compare/v3.10.0...v3.11.0) (2024-07-15)
+
+
+### Features
+
+* OpenTelemetry trace/spanID integration for Python handlers ([#889](https://github.com/googleapis/python-logging/issues/889)) ([78168a3](https://github.com/googleapis/python-logging/commit/78168a38577b698130a861af4e4d229f42660330))
+
+
+### Bug Fixes
+
+* Added environment specific labels to client library when running in Cloud Run Jobs ([#877](https://github.com/googleapis/python-logging/issues/877)) ([9c5e8f0](https://github.com/googleapis/python-logging/commit/9c5e8f0548f88235fe6474469bc37685e2498dd1))
+* Added missing import into logger.py ([#896](https://github.com/googleapis/python-logging/issues/896)) ([9ca242d](https://github.com/googleapis/python-logging/commit/9ca242d10f9f3bca120b292f478d62f5fa1d3c06))
+* Added type hints to CloudLoggingHandler constructor ([#903](https://github.com/googleapis/python-logging/issues/903)) ([6959345](https://github.com/googleapis/python-logging/commit/69593459614be968f7a0136aa76701c4fc408834))
+
+
+### Documentation
+
+* Add summary_overview template ([#878](https://github.com/googleapis/python-logging/issues/878)) ([b60714c](https://github.com/googleapis/python-logging/commit/b60714cb1cc3aac79c86225f8f9cbd24d8ab170f))
+* Changed table in web-framework-integration to bulleted list ([#875](https://github.com/googleapis/python-logging/issues/875)) ([a4aa3a7](https://github.com/googleapis/python-logging/commit/a4aa3a7cf1e3bb32ec2772084a7dc6c16e1454ff))
+* Documentation update for OpenTelemetry ([#915](https://github.com/googleapis/python-logging/issues/915)) ([2a0539a](https://github.com/googleapis/python-logging/commit/2a0539a30e6dcf45c0970e3aacfd4a2772877526))
+* Update `dictConfig` snippet ([#885](https://github.com/googleapis/python-logging/issues/885)) ([6264107](https://github.com/googleapis/python-logging/commit/62641075042a3da9bb9c059d963bad14a1586b1c))
+
 ## [3.10.0](https://github.com/googleapis/python-logging/compare/v3.9.0...v3.10.0) (2024-03-13)
 
 
