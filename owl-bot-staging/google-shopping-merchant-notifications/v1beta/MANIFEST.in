@@ -1,2 +1,0 @@
-recursive-include google/shopping/merchant_notifications *.py
-recursive-include google/shopping/merchant_notifications_v1beta *.py
