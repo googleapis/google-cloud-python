@@ -248,7 +248,7 @@ class EmailPreferencesServiceGrpcTransport(EmailPreferencesServiceTransport):
         Returns the email preferences for a Merchant Center account
         user.
 
-        Use the `name=accounts/*/users/me/emailPreferences` alias to get
+        Use the name=accounts/*/users/me/emailPreferences alias to get
         preferences for the authenticated user.
 
         Returns:
@@ -288,7 +288,7 @@ class EmailPreferencesServiceGrpcTransport(EmailPreferencesServiceTransport):
         It is invalid for updates to specify an UNCONFIRMED opt-in
         status value.
 
-        Use the `name=accounts/*/users/me/emailPreferences` alias to
+        Use the name=accounts/*/users/me/emailPreferences alias to
         update preferences for the authenticated user.
 
         Returns:
