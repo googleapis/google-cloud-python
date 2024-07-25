@@ -328,12 +328,7 @@ def test_create_load_gemini_text_generator_model(
 
 @pytest.mark.parametrize(
     "model_name",
-    (
-        "gemini-pro",
-        "gemini-1.5-pro-preview-0514",
-        # TODO(garrrettwu): enable when cl/637028077 is in prod.
-        #  "gemini-1.5-flash-preview-0514"
-    ),
+    ("gemini-pro", "gemini-1.5-pro-preview-0514", "gemini-1.5-flash-preview-0514"),
 )
 @pytest.mark.flaky(retries=2)
 def test_gemini_text_generator_predict_default_params_success(
