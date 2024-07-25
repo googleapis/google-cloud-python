@@ -5036,8 +5036,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
-            retry=retry,
-            timeout=timeout,
             metadata=metadata,
         )
 
