@@ -194,8 +194,6 @@ def mypy(session):
         'types-protobuf'
     )
     session.install('.')
-    # Remove once https://github.com/googleapis/python-api-core/pull/650 is merged
-    session.install("google-api-core>=2.19.1rc0")
     session.run(
         'mypy',
         '-p',
