@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.18.4](https://github.com/googleapis/gapic-generator-python/compare/v1.18.3...v1.18.4) (2024-07-26)
+
+
+### Bug Fixes
+
+* Fix AttributeError with AsyncRetry ([#2072](https://github.com/googleapis/gapic-generator-python/issues/2072)) ([dcddac8](https://github.com/googleapis/gapic-generator-python/commit/dcddac803fc5eb58c0d242d88c8b4c419b83fe90))
+
 ## [1.18.3](https://github.com/googleapis/gapic-generator-python/compare/v1.18.2...v1.18.3) (2024-07-23)
 
 
