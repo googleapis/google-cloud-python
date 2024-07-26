@@ -43,11 +43,15 @@ import tests.system.utils
 
 # Use this to control the number of cloud functions being deleted in a single
 # test session. This should help soften the spike of the number of mutations per
-# minute tracked against a quota limit (default 60, increased to 120 for
-# bigframes-dev project) by the Cloud Functions API
-# We are running pytest with "-n 20". Let's say each session lasts about a
-# minute, so we are setting a limit of 120/20 = 6 deletions per session.
-MAX_NUM_FUNCTIONS_TO_DELETE_PER_SESSION = 6
+# minute tracked against the quota limit:
+#   Cloud Functions API -> Per project mutation requests per minute per region
+#   (default 60, increased to 1000 for the test projects)
+# We are running pytest with "-n 20". For a rough estimation, let's say all
+# parallel sessions run in parallel. So that allows 1000/20 = 50 mutations per
+# minute. One session takes about 1 minute to create a remote function. This
+# would allow 50-1 = 49 deletions per session. As a heuristic let's use half of
+# that potential for the clean up.
+MAX_NUM_FUNCTIONS_TO_DELETE_PER_SESSION = 25
 
 CURRENT_DIR = pathlib.Path(__file__).parent
 DATA_DIR = CURRENT_DIR.parent / "data"
