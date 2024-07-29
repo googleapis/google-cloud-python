@@ -30,6 +30,7 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.discoveryengine_v1beta import gapic_version as package_version
 from google.cloud.discoveryengine_v1beta.types import (
     import_config,
+    purge_config,
     user_event,
     user_event_service,
 )
@@ -145,6 +146,11 @@ class UserEventServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.purge_user_events: gapic_v1.method.wrap_method(
+                self.purge_user_events,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.import_user_events: gapic_v1.method.wrap_method(
                 self.import_user_events,
                 default_retry=retries.Retry(
@@ -190,6 +196,15 @@ class UserEventServiceTransport(abc.ABC):
     ) -> Callable[
         [user_event_service.CollectUserEventRequest],
         Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def purge_user_events(
+        self,
+    ) -> Callable[
+        [purge_config.PurgeUserEventsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
