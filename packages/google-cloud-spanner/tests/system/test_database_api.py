@@ -897,7 +897,6 @@ def test_db_run_in_transaction_w_max_commit_delay(shared_database):
 
 
 def test_create_table_with_proto_columns(
-    not_emulator,
     not_postgres,
     shared_instance,
     databases_to_delete,
