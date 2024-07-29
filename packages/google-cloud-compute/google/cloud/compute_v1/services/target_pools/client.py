@@ -1397,6 +1397,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2369,6 +2371,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

@@ -1442,6 +1442,8 @@ class BinauthzManagementServiceV1Beta1Client(
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

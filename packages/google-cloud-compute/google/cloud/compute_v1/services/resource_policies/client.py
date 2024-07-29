@@ -773,6 +773,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1742,6 +1744,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
