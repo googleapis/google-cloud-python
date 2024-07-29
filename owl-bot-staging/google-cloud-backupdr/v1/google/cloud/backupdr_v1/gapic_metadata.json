@@ -1,0 +1,88 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.backupdr_v1",
+  "protoPackage": "google.cloud.backupdr.v1",
+  "schema": "1.0",
+  "services": {
+    "BackupDR": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BackupDRClient",
+          "rpcs": {
+            "CreateManagementServer": {
+              "methods": [
+                "create_management_server"
+              ]
+            },
+            "DeleteManagementServer": {
+              "methods": [
+                "delete_management_server"
+              ]
+            },
+            "GetManagementServer": {
+              "methods": [
+                "get_management_server"
+              ]
+            },
+            "ListManagementServers": {
+              "methods": [
+                "list_management_servers"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BackupDRAsyncClient",
+          "rpcs": {
+            "CreateManagementServer": {
+              "methods": [
+                "create_management_server"
+              ]
+            },
+            "DeleteManagementServer": {
+              "methods": [
+                "delete_management_server"
+              ]
+            },
+            "GetManagementServer": {
+              "methods": [
+                "get_management_server"
+              ]
+            },
+            "ListManagementServers": {
+              "methods": [
+                "list_management_servers"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "BackupDRClient",
+          "rpcs": {
+            "CreateManagementServer": {
+              "methods": [
+                "create_management_server"
+              ]
+            },
+            "DeleteManagementServer": {
+              "methods": [
+                "delete_management_server"
+              ]
+            },
+            "GetManagementServer": {
+              "methods": [
+                "get_management_server"
+              ]
+            },
+            "ListManagementServers": {
+              "methods": [
+                "list_management_servers"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
