@@ -6083,6 +6083,7 @@ def test_create_tag_template(request_type, transport: str = "grpc"):
         call.return_value = tags.TagTemplate(
             name="name_value",
             display_name="display_name_value",
+            dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
         )
         response = client.create_tag_template(request)
 
@@ -6096,6 +6097,10 @@ def test_create_tag_template(request_type, transport: str = "grpc"):
     assert isinstance(response, tags.TagTemplate)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 def test_create_tag_template_empty_call():
@@ -6208,6 +6213,7 @@ async def test_create_tag_template_empty_call_async():
             tags.TagTemplate(
                 name="name_value",
                 display_name="display_name_value",
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         response = await client.create_tag_template()
@@ -6279,6 +6285,7 @@ async def test_create_tag_template_async(
             tags.TagTemplate(
                 name="name_value",
                 display_name="display_name_value",
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         response = await client.create_tag_template(request)
@@ -6293,6 +6300,10 @@ async def test_create_tag_template_async(
     assert isinstance(response, tags.TagTemplate)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 @pytest.mark.asyncio
@@ -6490,6 +6501,7 @@ def test_get_tag_template(request_type, transport: str = "grpc"):
         call.return_value = tags.TagTemplate(
             name="name_value",
             display_name="display_name_value",
+            dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
         )
         response = client.get_tag_template(request)
 
@@ -6503,6 +6515,10 @@ def test_get_tag_template(request_type, transport: str = "grpc"):
     assert isinstance(response, tags.TagTemplate)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 def test_get_tag_template_empty_call():
@@ -6605,6 +6621,7 @@ async def test_get_tag_template_empty_call_async():
             tags.TagTemplate(
                 name="name_value",
                 display_name="display_name_value",
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         response = await client.get_tag_template()
@@ -6674,6 +6691,7 @@ async def test_get_tag_template_async(
             tags.TagTemplate(
                 name="name_value",
                 display_name="display_name_value",
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         response = await client.get_tag_template(request)
@@ -6688,6 +6706,10 @@ async def test_get_tag_template_async(
     assert isinstance(response, tags.TagTemplate)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 @pytest.mark.asyncio
@@ -6859,6 +6881,7 @@ def test_update_tag_template(request_type, transport: str = "grpc"):
         call.return_value = tags.TagTemplate(
             name="name_value",
             display_name="display_name_value",
+            dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
         )
         response = client.update_tag_template(request)
 
@@ -6872,6 +6895,10 @@ def test_update_tag_template(request_type, transport: str = "grpc"):
     assert isinstance(response, tags.TagTemplate)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 def test_update_tag_template_empty_call():
@@ -6978,6 +7005,7 @@ async def test_update_tag_template_empty_call_async():
             tags.TagTemplate(
                 name="name_value",
                 display_name="display_name_value",
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         response = await client.update_tag_template()
@@ -7049,6 +7077,7 @@ async def test_update_tag_template_async(
             tags.TagTemplate(
                 name="name_value",
                 display_name="display_name_value",
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         response = await client.update_tag_template(request)
@@ -7063,6 +7092,10 @@ async def test_update_tag_template_async(
     assert isinstance(response, tags.TagTemplate)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 @pytest.mark.asyncio
