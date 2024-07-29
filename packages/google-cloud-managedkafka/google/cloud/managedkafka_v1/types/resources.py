@@ -243,8 +243,6 @@ class GcpConfig(proto.Message):
             encryption. The key must be located in the same region as
             the cluster and cannot be changed. Structured like:
             projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}.
-            Note that the project component only accepts a project ID,
-            and not a project number.
     """
 
     access_config: "AccessConfig" = proto.Field(
