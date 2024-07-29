@@ -1603,6 +1603,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2139,6 +2141,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
