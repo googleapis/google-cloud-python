@@ -933,6 +933,8 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1336,6 +1338,8 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

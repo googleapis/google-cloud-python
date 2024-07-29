@@ -1161,6 +1161,8 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
