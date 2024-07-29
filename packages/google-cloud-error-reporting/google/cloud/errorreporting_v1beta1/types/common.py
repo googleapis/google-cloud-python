@@ -70,18 +70,38 @@ class ErrorGroup(proto.Message):
 
     Attributes:
         name (str):
-            The group resource name.
-            Example:
-            <code>projects/my-project-123/groups/CNSgkpnppqKCUw</code>
+            The group resource name. Written as
+            ``projects/{projectID}/groups/{group_id}`` or
+            ``projects/{projectID}/locations/{location}/groups/{group_id}``
+
+            Examples: ``projects/my-project-123/groups/my-group``,
+            ``projects/my-project-123/locations/us-central1/groups/my-group``
+
+            In the group resource name, the ``group_id`` is a unique
+            identifier for a particular error group. The identifier is
+            derived from key parts of the error-log content and is
+            treated as Service Data. For information about how Service
+            Data is handled, see `Google Cloud Privacy
+            Notice <https://cloud.google.com/terms/cloud-privacy-notice>`__.
+
+            For a list of supported locations, see `Supported
+            Regions <https://cloud.google.com/logging/docs/region-support>`__.
+            ``global`` is the default when unspecified.
         group_id (str):
-            Group IDs are unique for a given project. If
-            the same kind of error occurs in different
-            service contexts, it will receive the same group
-            ID.
+            An opaque identifier of the group. This field is assigned by
+            the Error Reporting system and always populated.
+
+            In the group resource name, the ``group_id`` is a unique
+            identifier for a particular error group. The identifier is
+            derived from key parts of the error-log content and is
+            treated as Service Data. For information about how Service
+            Data is handled, see `Google Cloud Privacy
+            Notice <https://cloud.google.com/terms/cloud-privacy-notice>`__.
         tracking_issues (MutableSequence[google.cloud.errorreporting_v1beta1.types.TrackingIssue]):
             Associated tracking issues.
         resolution_status (google.cloud.errorreporting_v1beta1.types.ResolutionStatus):
             Error group's resolution status.
+
             An unspecified resolution status will be
             interpreted as OPEN
     """

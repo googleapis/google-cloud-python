@@ -53,12 +53,18 @@ class TimedCountAlignment(proto.Enum):
         ALIGNMENT_EQUAL_ROUNDED (1):
             The time periods shall be consecutive, have width equal to
             the requested duration, and be aligned at the
-            ``alignment_time`` provided in the request. The
-            ``alignment_time`` does not have to be inside the query
-            period but even if it is outside, only time periods are
-            returned which overlap with the query period. A rounded
-            alignment will typically result in a different size of the
-            first or the last time period.
+            [alignment_time]
+            [google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.alignment_time]
+            provided in the request.
+
+            The [alignment_time]
+            [google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.alignment_time]
+            does not have to be inside the query period but even if it
+            is outside, only time periods are returned which overlap
+            with the query period.
+
+            A rounded alignment will typically result in a different
+            size of the first or the last time period.
         ALIGNMENT_EQUAL_AT_END (2):
             The time periods shall be consecutive, have
             width equal to the requested duration, and be
@@ -106,29 +112,54 @@ class ListGroupStatsRequest(proto.Message):
             project. Written as ``projects/{projectID}`` or
             ``projects/{projectNumber}``, where ``{projectID}`` and
             ``{projectNumber}`` can be found in the `Google Cloud
-            Console <https://support.google.com/cloud/answer/6158840>`__.
+            console <https://support.google.com/cloud/answer/6158840>`__.
+            It may also include a location, such as
+            ``projects/{projectID}/locations/{location}`` where
+            ``{location}`` is a cloud region.
 
-            Examples: ``projects/my-project-123``, ``projects/5551234``.
+            Examples: ``projects/my-project-123``, ``projects/5551234``,
+            ``projects/my-project-123/locations/us-central1``,
+            ``projects/5551234/locations/us-central1``.
+
+            For a list of supported locations, see `Supported
+            Regions <https://cloud.google.com/logging/docs/region-support>`__.
+            ``global`` is the default when unspecified. Use ``-`` as a
+            wildcard to request group stats from all regions.
         group_id (MutableSequence[str]):
-            Optional. List all
-            <code>ErrorGroupStats</code> with these IDs.
+            Optional. List all [ErrorGroupStats]
+            [google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats]
+            with these IDs. The ``group_id`` is a unique identifier for
+            a particular error group. The identifier is derived from key
+            parts of the error-log content and is treated as Service
+            Data. For information about how Service Data is handled, see
+            [Google Cloud Privacy Notice]
+            (https://cloud.google.com/terms/cloud-privacy-notice).
         service_filter (google.cloud.errorreporting_v1beta1.types.ServiceContextFilter):
-            Optional. List only
-            <code>ErrorGroupStats</code> which belong to a
-            service context that matches the filter. Data
-            for all service contexts is returned if this
-            field is not specified.
+            Optional. List only [ErrorGroupStats]
+            [google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats]
+            which belong to a service context that matches the filter.
+            Data for all service contexts is returned if this field is
+            not specified.
         time_range (google.cloud.errorreporting_v1beta1.types.QueryTimeRange):
             Optional. List data for the given time range. If not set, a
-            default time range is used. The field time_range_begin in
-            the response will specify the beginning of this time range.
-            Only ErrorGroupStats with a non-zero count in the given time
-            range are returned, unless the request contains an explicit
-            group_id list. If a group_id list is given, also
-            ErrorGroupStats with zero occurrences are returned.
+            default time range is used. The field [time_range_begin]
+            [google.devtools.clouderrorreporting.v1beta1.ListGroupStatsResponse.time_range_begin]
+            in the response will specify the beginning of this time
+            range. Only [ErrorGroupStats]
+            [google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats]
+            with a non-zero count in the given time range are returned,
+            unless the request contains an explicit [group_id]
+            [google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.group_id]
+            list. If a [group_id]
+            [google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.group_id]
+            list is given, also [ErrorGroupStats]
+            [google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats]
+            with zero occurrences are returned.
         timed_count_duration (google.protobuf.duration_pb2.Duration):
             Optional. The preferred duration for a single returned
-            ``TimedCount``. If not set, no timed counts are returned.
+            [TimedCount]
+            [google.devtools.clouderrorreporting.v1beta1.TimedCount]. If
+            not set, no timed counts are returned.
         alignment (google.cloud.errorreporting_v1beta1.types.TimedCountAlignment):
             Optional. The alignment of the timed counts to be returned.
             Default is ``ALIGNMENT_EQUAL_AT_END``.
@@ -143,9 +174,11 @@ class ListGroupStatsRequest(proto.Message):
             Optional. The maximum number of results to
             return per response. Default is 20.
         page_token (str):
-            Optional. A ``next_page_token`` provided by a previous
-            response. To view additional results, pass this token along
-            with the identical query parameters as the first request.
+            Optional. A [next_page_token]
+            [google.devtools.clouderrorreporting.v1beta1.ListGroupStatsResponse.next_page_token]
+            provided by a previous response. To view additional results,
+            pass this token along with the identical query parameters as
+            the first request.
     """
 
     project_name: str = proto.Field(
@@ -251,15 +284,16 @@ class ErrorGroupStats(proto.Message):
         affected_users_count (int):
             Approximate number of affected users in the given group that
             match the filter criteria. Users are distinguished by data
-            in the ``ErrorContext`` of the individual error events, such
-            as their login name or their remote IP address in case of
-            HTTP requests. The number of affected users can be zero even
-            if the number of errors is non-zero if no data was provided
-            from which the affected user could be deduced. Users are
-            counted based on data in the request context that was
-            provided in the error report. If more users are implicitly
-            affected, such as due to a crash of the whole service, this
-            is not reflected here.
+            in the [ErrorContext]
+            [google.devtools.clouderrorreporting.v1beta1.ErrorContext]
+            of the individual error events, such as their login name or
+            their remote IP address in case of HTTP requests. The number
+            of affected users can be zero even if the number of errors
+            is non-zero if no data was provided from which the affected
+            user could be deduced. Users are counted based on data in
+            the request context that was provided in the error report.
+            If more users are implicitly affected, such as due to a
+            crash of the whole service, this is not reflected here.
         timed_counts (MutableSequence[google.cloud.errorreporting_v1beta1.types.TimedCount]):
             Approximate number of occurrences over time.
             Timed counts returned by ListGroups are
@@ -377,14 +411,26 @@ class ListEventsRequest(proto.Message):
     Attributes:
         project_name (str):
             Required. The resource name of the Google Cloud Platform
-            project. Written as ``projects/{projectID}``, where
+            project. Written as ``projects/{projectID}`` or
+            ``projects/{projectID}/locations/{location}``, where
             ``{projectID}`` is the `Google Cloud Platform project
-            ID <https://support.google.com/cloud/answer/6158840>`__.
+            ID <https://support.google.com/cloud/answer/6158840>`__ and
+            ``{location}`` is a Cloud region.
 
-            Example: ``projects/my-project-123``.
+            Examples: ``projects/my-project-123``,
+            ``projects/my-project-123/locations/global``.
+
+            For a list of supported locations, see `Supported
+            Regions <https://cloud.google.com/logging/docs/region-support>`__.
+            ``global`` is the default when unspecified.
         group_id (str):
-            Required. The group for which events shall be
-            returned.
+            Required. The group for which events shall be returned. The
+            ``group_id`` is a unique identifier for a particular error
+            group. The identifier is derived from key parts of the
+            error-log content and is treated as Service Data. For
+            information about how Service Data is handled, see `Google
+            Cloud Privacy
+            Notice <https://cloud.google.com/terms/cloud-privacy-notice>`__.
         service_filter (google.cloud.errorreporting_v1beta1.types.ServiceContextFilter):
             Optional. List only ErrorGroups which belong
             to a service context that matches the filter.
@@ -469,7 +515,13 @@ class ListEventsResponse(proto.Message):
 
 
 class QueryTimeRange(proto.Message):
-    r"""Requests might be rejected or the resulting timed count
+    r"""A time range for which error group data shall be displayed.
+    Query time ranges end at 'now'.
+    When longer time ranges are selected, the resolution of the data
+    decreases. The description of each time range below indicates
+    the suggested minimum timed count duration for that range.
+
+    Requests might be rejected or the resulting timed count
     durations might be adjusted for lower durations.
 
     Attributes:
@@ -555,11 +607,18 @@ class DeleteEventsRequest(proto.Message):
     Attributes:
         project_name (str):
             Required. The resource name of the Google Cloud Platform
-            project. Written as ``projects/{projectID}``, where
+            project. Written as ``projects/{projectID}`` or
+            ``projects/{projectID}/locations/{location}``, where
             ``{projectID}`` is the `Google Cloud Platform project
-            ID <https://support.google.com/cloud/answer/6158840>`__.
+            ID <https://support.google.com/cloud/answer/6158840>`__ and
+            ``{location}`` is a Cloud region.
 
-            Example: ``projects/my-project-123``.
+            Examples: ``projects/my-project-123``,
+            ``projects/my-project-123/locations/global``.
+
+            For a list of supported locations, see `Supported
+            Regions <https://cloud.google.com/logging/docs/region-support>`__.
+            ``global`` is the default when unspecified.
     """
 
     project_name: str = proto.Field(

@@ -315,10 +315,20 @@ class ErrorStatsServiceAsyncClient:
                 project. Written as ``projects/{projectID}`` or
                 ``projects/{projectNumber}``, where ``{projectID}`` and
                 ``{projectNumber}`` can be found in the `Google Cloud
-                Console <https://support.google.com/cloud/answer/6158840>`__.
+                console <https://support.google.com/cloud/answer/6158840>`__.
+                It may also include a location, such as
+                ``projects/{projectID}/locations/{location}`` where
+                ``{location}`` is a cloud region.
 
                 Examples: ``projects/my-project-123``,
-                ``projects/5551234``.
+                ``projects/5551234``,
+                ``projects/my-project-123/locations/us-central1``,
+                ``projects/5551234/locations/us-central1``.
+
+                For a list of supported locations, see `Supported
+                Regions <https://cloud.google.com/logging/docs/region-support>`__.
+                ``global`` is the default when unspecified. Use ``-`` as
+                a wildcard to request group stats from all regions.
 
                 This corresponds to the ``project_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -326,12 +336,20 @@ class ErrorStatsServiceAsyncClient:
             time_range (:class:`google.cloud.errorreporting_v1beta1.types.QueryTimeRange`):
                 Optional. List data for the given time range. If not
                 set, a default time range is used. The field
-                time_range_begin in the response will specify the
-                beginning of this time range. Only ErrorGroupStats with
-                a non-zero count in the given time range are returned,
-                unless the request contains an explicit group_id list.
-                If a group_id list is given, also ErrorGroupStats with
-                zero occurrences are returned.
+                [time_range_begin]
+                [google.devtools.clouderrorreporting.v1beta1.ListGroupStatsResponse.time_range_begin]
+                in the response will specify the beginning of this time
+                range. Only [ErrorGroupStats]
+                [google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats]
+                with a non-zero count in the given time range are
+                returned, unless the request contains an explicit
+                [group_id]
+                [google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.group_id]
+                list. If a [group_id]
+                [google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest.group_id]
+                list is given, also [ErrorGroupStats]
+                [google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats]
+                with zero occurrences are returned.
 
                 This corresponds to the ``time_range`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -456,18 +474,30 @@ class ErrorStatsServiceAsyncClient:
                 return.
             project_name (:class:`str`):
                 Required. The resource name of the Google Cloud Platform
-                project. Written as ``projects/{projectID}``, where
+                project. Written as ``projects/{projectID}`` or
+                ``projects/{projectID}/locations/{location}``, where
                 ``{projectID}`` is the `Google Cloud Platform project
-                ID <https://support.google.com/cloud/answer/6158840>`__.
+                ID <https://support.google.com/cloud/answer/6158840>`__
+                and ``{location}`` is a Cloud region.
 
-                Example: ``projects/my-project-123``.
+                Examples: ``projects/my-project-123``,
+                ``projects/my-project-123/locations/global``.
+
+                For a list of supported locations, see `Supported
+                Regions <https://cloud.google.com/logging/docs/region-support>`__.
+                ``global`` is the default when unspecified.
 
                 This corresponds to the ``project_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             group_id (:class:`str`):
-                Required. The group for which events
-                shall be returned.
+                Required. The group for which events shall be returned.
+                The ``group_id`` is a unique identifier for a particular
+                error group. The identifier is derived from key parts of
+                the error-log content and is treated as Service Data.
+                For information about how Service Data is handled, see
+                `Google Cloud Privacy
+                Notice <https://cloud.google.com/terms/cloud-privacy-notice>`__.
 
                 This corresponds to the ``group_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -588,11 +618,18 @@ class ErrorStatsServiceAsyncClient:
                 The request object. Deletes all events in the project.
             project_name (:class:`str`):
                 Required. The resource name of the Google Cloud Platform
-                project. Written as ``projects/{projectID}``, where
+                project. Written as ``projects/{projectID}`` or
+                ``projects/{projectID}/locations/{location}``, where
                 ``{projectID}`` is the `Google Cloud Platform project
-                ID <https://support.google.com/cloud/answer/6158840>`__.
+                ID <https://support.google.com/cloud/answer/6158840>`__
+                and ``{location}`` is a Cloud region.
 
-                Example: ``projects/my-project-123``.
+                Examples: ``projects/my-project-123``,
+                ``projects/my-project-123/locations/global``.
+
+                For a list of supported locations, see `Supported
+                Regions <https://cloud.google.com/logging/docs/region-support>`__.
+                ``global`` is the default when unspecified.
 
                 This corresponds to the ``project_name`` field
                 on the ``request`` instance; if ``request`` is provided, this

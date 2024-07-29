@@ -311,6 +311,10 @@ class ErrorStatsServiceRestTransport(ErrorStatsServiceTransport):
                     "method": "delete",
                     "uri": "/v1beta1/{project_name=projects/*}/events",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v1beta1/{project_name=projects/*/locations/*}/events",
+                },
             ]
             request, metadata = self._interceptor.pre_delete_events(request, metadata)
             pb_request = error_stats_service.DeleteEventsRequest.pb(request)
@@ -401,6 +405,10 @@ class ErrorStatsServiceRestTransport(ErrorStatsServiceTransport):
                     "method": "get",
                     "uri": "/v1beta1/{project_name=projects/*}/events",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{project_name=projects/*/locations/*}/events",
+                },
             ]
             request, metadata = self._interceptor.pre_list_events(request, metadata)
             pb_request = error_stats_service.ListEventsRequest.pb(request)
@@ -487,6 +495,10 @@ class ErrorStatsServiceRestTransport(ErrorStatsServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1beta1/{project_name=projects/*}/groupStats",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{project_name=projects/*/locations/*}/groupStats",
                 },
             ]
             request, metadata = self._interceptor.pre_list_group_stats(

@@ -277,6 +277,10 @@ class ErrorGroupServiceRestTransport(ErrorGroupServiceTransport):
                     "method": "get",
                     "uri": "/v1beta1/{group_name=projects/*/groups/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{group_name=projects/*/locations/*/groups/*}",
+                },
             ]
             request, metadata = self._interceptor.pre_get_group(request, metadata)
             pb_request = error_group_service.GetGroupRequest.pb(request)
@@ -364,6 +368,11 @@ class ErrorGroupServiceRestTransport(ErrorGroupServiceTransport):
                 {
                     "method": "put",
                     "uri": "/v1beta1/{group.name=projects/*/groups/*}",
+                    "body": "group",
+                },
+                {
+                    "method": "put",
+                    "uri": "/v1beta1/{group.name=projects/*/locations/*/groups/*}",
                     "body": "group",
                 },
             ]

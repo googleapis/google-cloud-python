@@ -36,12 +36,26 @@ class GetGroupRequest(proto.Message):
 
     Attributes:
         group_name (str):
-            Required. The group resource name. Written as
-            ``projects/{projectID}/groups/{group_name}``. Call
-            ```groupStats.list`` <https://cloud.google.com/error-reporting/reference/rest/v1beta1/projects.groupStats/list>`__
+            Required. The group resource name. Written as either
+            ``projects/{projectID}/groups/{group_id}`` or
+            ``projects/{projectID}/locations/{location}/groups/{group_id}``.
+            Call [groupStats.list]
+            [google.devtools.clouderrorreporting.v1beta1.ErrorStatsService.ListGroupStats]
             to return a list of groups belonging to this project.
 
-            Example: ``projects/my-project-123/groups/my-group``
+            Examples: ``projects/my-project-123/groups/my-group``,
+            ``projects/my-project-123/locations/global/groups/my-group``
+
+            In the group resource name, the ``group_id`` is a unique
+            identifier for a particular error group. The identifier is
+            derived from key parts of the error-log content and is
+            treated as Service Data. For information about how Service
+            Data is handled, see `Google Cloud Privacy
+            Notice <https://cloud.google.com/terms/cloud-privacy-notice>`__.
+
+            For a list of supported locations, see `Supported
+            Regions <https://cloud.google.com/logging/docs/region-support>`__.
+            ``global`` is the default when unspecified.
     """
 
     group_name: str = proto.Field(

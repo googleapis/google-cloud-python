@@ -72,10 +72,13 @@ class ReportedErrorEvent(proto.Message):
 
     Attributes:
         event_time (google.protobuf.timestamp_pb2.Timestamp):
-            Optional. Time when the event occurred.
-            If not provided, the time when the event was
-            received by the Error Reporting system will be
-            used.
+            Optional. Time when the event occurred. If not provided, the
+            time when the event was received by the Error Reporting
+            system is used. If provided, the time must not exceed the
+            `logs retention
+            period <https://cloud.google.com/logging/quotas#logs_retention_periods>`__
+            in the past, or be more than 24 hours in the future. If an
+            invalid time is provided, then an error is returned.
         service_context (google.cloud.errorreporting_v1beta1.types.ServiceContext):
             Required. The service context in which this
             error has occurred.
@@ -99,10 +102,10 @@ class ReportedErrorEvent(proto.Message):
                ```Exception.backtrace`` <https://ruby-doc.org/core-2.2.0/Exception.html#method-i-backtrace>`__.
             -  **C#**: Must be the return value of
                ```Exception.ToString()`` <https://msdn.microsoft.com/en-us/library/system.exception.tostring.aspx>`__.
-            -  **PHP**: Must start with
-               ``PHP (Notice|Parse error|Fatal error|Warning)`` and
+            -  **PHP**: Must be prefixed with
+               ``"PHP (Notice|Parse error|Fatal error|Warning): "`` and
                contain the result of
-               ```(string)$exception`` <http://php.net/manual/en/exception.tostring.php>`__.
+               ```(string)$exception`` <https://php.net/manual/en/exception.tostring.php>`__.
             -  **Go**: Must be the return value of
                ```runtime.Stack()`` <https://golang.org/pkg/runtime/debug/#Stack>`__.
         context (google.cloud.errorreporting_v1beta1.types.ErrorContext):
