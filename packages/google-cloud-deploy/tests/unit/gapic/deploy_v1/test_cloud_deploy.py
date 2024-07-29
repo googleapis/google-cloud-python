@@ -38,6 +38,7 @@ from google.api_core import (
 from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
+from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -1539,12 +1540,16 @@ def test_list_delivery_pipelines_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_delivery_pipelines(request={})
+        pager = client.list_delivery_pipelines(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -3720,12 +3725,16 @@ def test_list_targets_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_targets(request={})
+        pager = client.list_targets(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -6208,12 +6217,18 @@ def test_list_custom_target_types_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_custom_target_types(request={})
+        pager = client.list_custom_target_types(
+            request={}, retry=retry, timeout=timeout
+        )
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -8389,12 +8404,16 @@ def test_list_releases_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_releases(request={})
+        pager = client.list_releases(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -11322,12 +11341,16 @@ def test_list_deploy_policies_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_deploy_policies(request={})
+        pager = client.list_deploy_policies(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -13377,12 +13400,16 @@ def test_list_rollouts_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_rollouts(request={})
+        pager = client.list_rollouts(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -15518,12 +15545,16 @@ def test_list_job_runs_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_job_runs(request={})
+        pager = client.list_job_runs(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -18788,12 +18819,16 @@ def test_list_automations_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_automations(request={})
+        pager = client.list_automations(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -19798,12 +19833,16 @@ def test_list_automation_runs_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_automation_runs(request={})
+        pager = client.list_automation_runs(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -21094,11 +21133,13 @@ def test_create_delivery_pipeline_rest(request_type):
                                             "nanos": 543,
                                         },
                                         "stable_cutback_duration": {},
+                                        "pod_selector_label": "pod_selector_label_value",
                                     },
                                     "service_networking": {
                                         "service": "service_value",
                                         "deployment": "deployment_value",
                                         "disable_pod_overprovisioning": True,
+                                        "pod_selector_label": "pod_selector_label_value",
                                     },
                                 },
                                 "cloud_run": {
@@ -21614,11 +21655,13 @@ def test_update_delivery_pipeline_rest(request_type):
                                             "nanos": 543,
                                         },
                                         "stable_cutback_duration": {},
+                                        "pod_selector_label": "pod_selector_label_value",
                                     },
                                     "service_networking": {
                                         "service": "service_value",
                                         "deployment": "deployment_value",
                                         "disable_pod_overprovisioning": True,
+                                        "pod_selector_label": "pod_selector_label_value",
                                     },
                                 },
                                 "cloud_run": {
@@ -27308,11 +27351,13 @@ def test_create_release_rest(request_type):
                                                 "nanos": 543,
                                             },
                                             "stable_cutback_duration": {},
+                                            "pod_selector_label": "pod_selector_label_value",
                                         },
                                         "service_networking": {
                                             "service": "service_value",
                                             "deployment": "deployment_value",
                                             "disable_pod_overprovisioning": True,
+                                            "pod_selector_label": "pod_selector_label_value",
                                         },
                                     },
                                     "cloud_run": {
@@ -34273,16 +34318,7 @@ def test_create_automation_rest(request_type):
                 },
                 "repair_rollout_rule": {
                     "id": "id_value",
-                    "source_phases": ["source_phases_value1", "source_phases_value2"],
                     "jobs": ["jobs_value1", "jobs_value2"],
-                    "repair_modes": [
-                        {
-                            "retry": {"attempts": 882, "wait": {}, "backoff_mode": 1},
-                            "rollback": {
-                                "destination_phase": "destination_phase_value"
-                            },
-                        }
-                    ],
                     "condition": {},
                 },
             }
@@ -34743,16 +34779,7 @@ def test_update_automation_rest(request_type):
                 },
                 "repair_rollout_rule": {
                     "id": "id_value",
-                    "source_phases": ["source_phases_value1", "source_phases_value2"],
                     "jobs": ["jobs_value1", "jobs_value2"],
-                    "repair_modes": [
-                        {
-                            "retry": {"attempts": 882, "wait": {}, "backoff_mode": 1},
-                            "rollback": {
-                                "destination_phase": "destination_phase_value"
-                            },
-                        }
-                    ],
                     "condition": {},
                 },
             }

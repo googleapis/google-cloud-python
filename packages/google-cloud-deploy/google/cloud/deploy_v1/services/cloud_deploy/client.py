@@ -1168,6 +1168,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1791,6 +1793,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2530,6 +2534,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3172,6 +3178,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4035,6 +4043,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4565,6 +4575,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5175,6 +5187,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6119,6 +6133,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6338,6 +6354,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
