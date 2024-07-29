@@ -869,6 +869,8 @@ class AppConnectionsServiceClient(metaclass=AppConnectionsServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1536,6 +1538,8 @@ class AppConnectionsServiceClient(metaclass=AppConnectionsServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

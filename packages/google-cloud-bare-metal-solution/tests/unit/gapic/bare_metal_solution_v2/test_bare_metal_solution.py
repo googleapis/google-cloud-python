@@ -38,6 +38,7 @@ from google.api_core import (
 from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
+from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -1598,12 +1599,16 @@ def test_list_instances_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_instances(request={})
+        pager = client.list_instances(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -5608,12 +5613,16 @@ def test_list_ssh_keys_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_ssh_keys(request={})
+        pager = client.list_ssh_keys(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -6906,12 +6915,16 @@ def test_list_volumes_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_volumes(request={})
+        pager = client.list_volumes(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -9531,12 +9544,16 @@ def test_list_networks_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_networks(request={})
+        pager = client.list_networks(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -12866,12 +12883,16 @@ def test_list_volume_snapshots_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_volume_snapshots(request={})
+        pager = client.list_volume_snapshots(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -13839,12 +13860,16 @@ def test_list_luns_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_luns(request={})
+        pager = client.list_luns(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -15154,12 +15179,16 @@ def test_list_nfs_shares_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_nfs_shares(request={})
+        pager = client.list_nfs_shares(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -17254,12 +17283,18 @@ def test_list_provisioning_quotas_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_provisioning_quotas(request={})
+        pager = client.list_provisioning_quotas(
+            request={}, retry=retry, timeout=timeout
+        )
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -19956,12 +19991,16 @@ def test_list_os_images_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_os_images(request={})
+        pager = client.list_os_images(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6

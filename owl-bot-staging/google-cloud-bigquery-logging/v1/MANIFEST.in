@@ -1,2 +1,0 @@
-recursive-include google/cloud/bigquery_logging *.py
-recursive-include google/cloud/bigquery_logging_v1 *.py
