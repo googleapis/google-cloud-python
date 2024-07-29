@@ -191,10 +191,9 @@ class Entity(proto.Message):
         metadata (MutableMapping[str, str]):
             Metadata associated with the entity.
 
-            For most entity types, the metadata is a Wikipedia URL
-            (``wikipedia_url``) and Knowledge Graph MID (``mid``), if
-            they are available. For the metadata associated with other
-            entity types, see the Type table below.
+            For the metadata
+            associated with other entity types, see the Type
+            table below.
         mentions (MutableSequence[google.cloud.language_v2.types.EntityMention]):
             The mentions of this entity in the input
             document. The API currently supports proper noun
@@ -208,10 +207,9 @@ class Entity(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The type of the entity. For most entity types, the associated
-        metadata is a Wikipedia URL (``wikipedia_url``) and Knowledge Graph
-        MID (``mid``). The table below lists the associated fields for
-        entities that have different metadata.
+        r"""The type of the entity. The table
+        below lists the associated fields for entities that have
+        different metadata.
 
         Values:
             UNKNOWN (0):
@@ -253,7 +251,7 @@ class Entity(proto.Message):
                 -  ``locality`` - city or town
                 -  ``street_name`` - street/route name, if detected
                 -  ``postal_code`` - postal code, if detected
-                -  ``country`` - country, if detected<
+                -  ``country`` - country, if detected
                 -  ``broad_region`` - administrative area, such as the
                    state, if detected
                 -  ``narrow_region`` - smaller administrative area, such as
@@ -434,6 +432,11 @@ class ClassificationCategory(proto.Message):
             The classifier's confidence of the category.
             Number represents how certain the classifier is
             that this category represents the given text.
+        severity (float):
+            Optional. The classifier's severity of the category. This is
+            only present when the ModerateTextRequest.ModelVersion is
+            set to MODEL_VERSION_2, and the corresponding category has a
+            severity score.
     """
 
     name: str = proto.Field(
@@ -443,6 +446,10 @@ class ClassificationCategory(proto.Message):
     confidence: float = proto.Field(
         proto.FLOAT,
         number=2,
+    )
+    severity: float = proto.Field(
+        proto.FLOAT,
+        number=3,
     )
 
 
@@ -621,12 +628,42 @@ class ModerateTextRequest(proto.Message):
     Attributes:
         document (google.cloud.language_v2.types.Document):
             Required. Input document.
+        model_version (google.cloud.language_v2.types.ModerateTextRequest.ModelVersion):
+            Optional. The model version to use for
+            ModerateText.
     """
+
+    class ModelVersion(proto.Enum):
+        r"""The model version to use for ModerateText.
+
+        Values:
+            MODEL_VERSION_UNSPECIFIED (0):
+                The default model version.
+            MODEL_VERSION_1 (1):
+                Use the v1 model, this model is used by
+                default when not provided. The v1 model only
+                returns probability (confidence) score for each
+                category.
+            MODEL_VERSION_2 (2):
+                Use the v2 model.
+                The v2 model only returns probability
+                (confidence) score for each category, and
+                returns severity score for a subset of the
+                categories.
+        """
+        MODEL_VERSION_UNSPECIFIED = 0
+        MODEL_VERSION_1 = 1
+        MODEL_VERSION_2 = 2
 
     document: "Document" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Document",
+    )
+    model_version: ModelVersion = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ModelVersion,
     )
 
 

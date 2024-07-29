@@ -43,7 +43,7 @@ class languageCallTransformer(cst.CSTTransformer):
         'analyze_sentiment': ('document', 'encoding_type', ),
         'annotate_text': ('document', 'features', 'encoding_type', ),
         'classify_text': ('document', ),
-        'moderate_text': ('document', ),
+        'moderate_text': ('document', 'model_version', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
