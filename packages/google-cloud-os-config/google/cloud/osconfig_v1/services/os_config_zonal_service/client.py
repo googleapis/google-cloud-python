@@ -1397,6 +1397,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1522,6 +1524,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1940,6 +1944,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2184,6 +2190,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2432,6 +2440,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

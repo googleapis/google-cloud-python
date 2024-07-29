@@ -796,6 +796,8 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1430,6 +1432,8 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
