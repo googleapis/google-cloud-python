@@ -781,6 +781,8 @@ class QuotaServiceClient(metaclass=QuotaServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
