@@ -972,6 +972,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1590,6 +1592,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2220,6 +2224,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2866,6 +2872,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3504,6 +3512,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4034,6 +4044,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

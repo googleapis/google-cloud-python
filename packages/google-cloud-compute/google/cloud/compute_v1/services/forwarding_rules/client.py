@@ -770,6 +770,8 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1608,6 +1610,8 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

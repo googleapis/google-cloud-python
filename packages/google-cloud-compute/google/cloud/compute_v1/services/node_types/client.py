@@ -758,6 +758,8 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1024,6 +1026,8 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

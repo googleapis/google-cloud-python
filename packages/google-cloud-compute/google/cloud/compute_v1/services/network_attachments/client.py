@@ -776,6 +776,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1746,6 +1748,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

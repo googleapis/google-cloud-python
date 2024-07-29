@@ -22,7 +22,21 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
+    Union,
 )
+
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
+from google.api_core import retry_async as retries_async
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+    OptionalAsyncRetry = Union[
+        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
+    ]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
 from google.cloud.certificate_manager_v1.types import (
     certificate_issuance_config,
@@ -55,6 +69,8 @@ class ListCertificatesPager:
         request: certificate_manager.ListCertificatesRequest,
         response: certificate_manager.ListCertificatesResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -66,12 +82,17 @@ class ListCertificatesPager:
                 The initial request object.
             response (google.cloud.certificate_manager_v1.types.ListCertificatesResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = certificate_manager.ListCertificatesRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -82,7 +103,12 @@ class ListCertificatesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[certificate_manager.Certificate]:
@@ -117,6 +143,8 @@ class ListCertificatesAsyncPager:
         request: certificate_manager.ListCertificatesRequest,
         response: certificate_manager.ListCertificatesResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -128,12 +156,17 @@ class ListCertificatesAsyncPager:
                 The initial request object.
             response (google.cloud.certificate_manager_v1.types.ListCertificatesResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = certificate_manager.ListCertificatesRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -146,7 +179,12 @@ class ListCertificatesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[certificate_manager.Certificate]:
@@ -185,6 +223,8 @@ class ListCertificateMapsPager:
         request: certificate_manager.ListCertificateMapsRequest,
         response: certificate_manager.ListCertificateMapsResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -196,12 +236,17 @@ class ListCertificateMapsPager:
                 The initial request object.
             response (google.cloud.certificate_manager_v1.types.ListCertificateMapsResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = certificate_manager.ListCertificateMapsRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -212,7 +257,12 @@ class ListCertificateMapsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[certificate_manager.CertificateMap]:
@@ -249,6 +299,8 @@ class ListCertificateMapsAsyncPager:
         request: certificate_manager.ListCertificateMapsRequest,
         response: certificate_manager.ListCertificateMapsResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -260,12 +312,17 @@ class ListCertificateMapsAsyncPager:
                 The initial request object.
             response (google.cloud.certificate_manager_v1.types.ListCertificateMapsResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = certificate_manager.ListCertificateMapsRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -278,7 +335,12 @@ class ListCertificateMapsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[certificate_manager.CertificateMap]:
@@ -317,6 +379,8 @@ class ListCertificateMapEntriesPager:
         request: certificate_manager.ListCertificateMapEntriesRequest,
         response: certificate_manager.ListCertificateMapEntriesResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -328,12 +392,17 @@ class ListCertificateMapEntriesPager:
                 The initial request object.
             response (google.cloud.certificate_manager_v1.types.ListCertificateMapEntriesResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = certificate_manager.ListCertificateMapEntriesRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -344,7 +413,12 @@ class ListCertificateMapEntriesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[certificate_manager.CertificateMapEntry]:
@@ -381,6 +455,8 @@ class ListCertificateMapEntriesAsyncPager:
         request: certificate_manager.ListCertificateMapEntriesRequest,
         response: certificate_manager.ListCertificateMapEntriesResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -392,12 +468,17 @@ class ListCertificateMapEntriesAsyncPager:
                 The initial request object.
             response (google.cloud.certificate_manager_v1.types.ListCertificateMapEntriesResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = certificate_manager.ListCertificateMapEntriesRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -410,7 +491,12 @@ class ListCertificateMapEntriesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[certificate_manager.CertificateMapEntry]:
@@ -449,6 +535,8 @@ class ListDnsAuthorizationsPager:
         request: certificate_manager.ListDnsAuthorizationsRequest,
         response: certificate_manager.ListDnsAuthorizationsResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -460,12 +548,17 @@ class ListDnsAuthorizationsPager:
                 The initial request object.
             response (google.cloud.certificate_manager_v1.types.ListDnsAuthorizationsResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = certificate_manager.ListDnsAuthorizationsRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -476,7 +569,12 @@ class ListDnsAuthorizationsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[certificate_manager.DnsAuthorization]:
@@ -513,6 +611,8 @@ class ListDnsAuthorizationsAsyncPager:
         request: certificate_manager.ListDnsAuthorizationsRequest,
         response: certificate_manager.ListDnsAuthorizationsResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -524,12 +624,17 @@ class ListDnsAuthorizationsAsyncPager:
                 The initial request object.
             response (google.cloud.certificate_manager_v1.types.ListDnsAuthorizationsResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = certificate_manager.ListDnsAuthorizationsRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -542,7 +647,12 @@ class ListDnsAuthorizationsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[certificate_manager.DnsAuthorization]:
@@ -583,6 +693,8 @@ class ListCertificateIssuanceConfigsPager:
         request: certificate_issuance_config.ListCertificateIssuanceConfigsRequest,
         response: certificate_issuance_config.ListCertificateIssuanceConfigsResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -594,6 +706,9 @@ class ListCertificateIssuanceConfigsPager:
                 The initial request object.
             response (google.cloud.certificate_manager_v1.types.ListCertificateIssuanceConfigsResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -602,6 +717,8 @@ class ListCertificateIssuanceConfigsPager:
             certificate_issuance_config.ListCertificateIssuanceConfigsRequest(request)
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -614,7 +731,12 @@ class ListCertificateIssuanceConfigsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(
@@ -656,6 +778,8 @@ class ListCertificateIssuanceConfigsAsyncPager:
         request: certificate_issuance_config.ListCertificateIssuanceConfigsRequest,
         response: certificate_issuance_config.ListCertificateIssuanceConfigsResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -667,6 +791,9 @@ class ListCertificateIssuanceConfigsAsyncPager:
                 The initial request object.
             response (google.cloud.certificate_manager_v1.types.ListCertificateIssuanceConfigsResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -675,6 +802,8 @@ class ListCertificateIssuanceConfigsAsyncPager:
             certificate_issuance_config.ListCertificateIssuanceConfigsRequest(request)
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -689,7 +818,12 @@ class ListCertificateIssuanceConfigsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(
@@ -730,6 +864,8 @@ class ListTrustConfigsPager:
         request: trust_config.ListTrustConfigsRequest,
         response: trust_config.ListTrustConfigsResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -741,12 +877,17 @@ class ListTrustConfigsPager:
                 The initial request object.
             response (google.cloud.certificate_manager_v1.types.ListTrustConfigsResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = trust_config.ListTrustConfigsRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -757,7 +898,12 @@ class ListTrustConfigsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[trust_config.TrustConfig]:
@@ -792,6 +938,8 @@ class ListTrustConfigsAsyncPager:
         request: trust_config.ListTrustConfigsRequest,
         response: trust_config.ListTrustConfigsResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -803,12 +951,17 @@ class ListTrustConfigsAsyncPager:
                 The initial request object.
             response (google.cloud.certificate_manager_v1.types.ListTrustConfigsResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = trust_config.ListTrustConfigsRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -819,7 +972,12 @@ class ListTrustConfigsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[trust_config.TrustConfig]:
