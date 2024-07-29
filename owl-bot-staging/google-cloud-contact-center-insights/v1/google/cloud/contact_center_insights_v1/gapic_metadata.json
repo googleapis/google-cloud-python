@@ -1,0 +1,613 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.contact_center_insights_v1",
+  "protoPackage": "google.cloud.contactcenterinsights.v1",
+  "schema": "1.0",
+  "services": {
+    "ContactCenterInsights": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ContactCenterInsightsClient",
+          "rpcs": {
+            "BulkAnalyzeConversations": {
+              "methods": [
+                "bulk_analyze_conversations"
+              ]
+            },
+            "BulkDeleteConversations": {
+              "methods": [
+                "bulk_delete_conversations"
+              ]
+            },
+            "CalculateIssueModelStats": {
+              "methods": [
+                "calculate_issue_model_stats"
+              ]
+            },
+            "CalculateStats": {
+              "methods": [
+                "calculate_stats"
+              ]
+            },
+            "CreateAnalysis": {
+              "methods": [
+                "create_analysis"
+              ]
+            },
+            "CreateConversation": {
+              "methods": [
+                "create_conversation"
+              ]
+            },
+            "CreateIssueModel": {
+              "methods": [
+                "create_issue_model"
+              ]
+            },
+            "CreatePhraseMatcher": {
+              "methods": [
+                "create_phrase_matcher"
+              ]
+            },
+            "CreateView": {
+              "methods": [
+                "create_view"
+              ]
+            },
+            "DeleteAnalysis": {
+              "methods": [
+                "delete_analysis"
+              ]
+            },
+            "DeleteConversation": {
+              "methods": [
+                "delete_conversation"
+              ]
+            },
+            "DeleteIssue": {
+              "methods": [
+                "delete_issue"
+              ]
+            },
+            "DeleteIssueModel": {
+              "methods": [
+                "delete_issue_model"
+              ]
+            },
+            "DeletePhraseMatcher": {
+              "methods": [
+                "delete_phrase_matcher"
+              ]
+            },
+            "DeleteView": {
+              "methods": [
+                "delete_view"
+              ]
+            },
+            "DeployIssueModel": {
+              "methods": [
+                "deploy_issue_model"
+              ]
+            },
+            "ExportInsightsData": {
+              "methods": [
+                "export_insights_data"
+              ]
+            },
+            "GetAnalysis": {
+              "methods": [
+                "get_analysis"
+              ]
+            },
+            "GetConversation": {
+              "methods": [
+                "get_conversation"
+              ]
+            },
+            "GetIssue": {
+              "methods": [
+                "get_issue"
+              ]
+            },
+            "GetIssueModel": {
+              "methods": [
+                "get_issue_model"
+              ]
+            },
+            "GetPhraseMatcher": {
+              "methods": [
+                "get_phrase_matcher"
+              ]
+            },
+            "GetSettings": {
+              "methods": [
+                "get_settings"
+              ]
+            },
+            "GetView": {
+              "methods": [
+                "get_view"
+              ]
+            },
+            "IngestConversations": {
+              "methods": [
+                "ingest_conversations"
+              ]
+            },
+            "ListAnalyses": {
+              "methods": [
+                "list_analyses"
+              ]
+            },
+            "ListConversations": {
+              "methods": [
+                "list_conversations"
+              ]
+            },
+            "ListIssueModels": {
+              "methods": [
+                "list_issue_models"
+              ]
+            },
+            "ListIssues": {
+              "methods": [
+                "list_issues"
+              ]
+            },
+            "ListPhraseMatchers": {
+              "methods": [
+                "list_phrase_matchers"
+              ]
+            },
+            "ListViews": {
+              "methods": [
+                "list_views"
+              ]
+            },
+            "UndeployIssueModel": {
+              "methods": [
+                "undeploy_issue_model"
+              ]
+            },
+            "UpdateConversation": {
+              "methods": [
+                "update_conversation"
+              ]
+            },
+            "UpdateIssue": {
+              "methods": [
+                "update_issue"
+              ]
+            },
+            "UpdateIssueModel": {
+              "methods": [
+                "update_issue_model"
+              ]
+            },
+            "UpdatePhraseMatcher": {
+              "methods": [
+                "update_phrase_matcher"
+              ]
+            },
+            "UpdateSettings": {
+              "methods": [
+                "update_settings"
+              ]
+            },
+            "UpdateView": {
+              "methods": [
+                "update_view"
+              ]
+            },
+            "UploadConversation": {
+              "methods": [
+                "upload_conversation"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ContactCenterInsightsAsyncClient",
+          "rpcs": {
+            "BulkAnalyzeConversations": {
+              "methods": [
+                "bulk_analyze_conversations"
+              ]
+            },
+            "BulkDeleteConversations": {
+              "methods": [
+                "bulk_delete_conversations"
+              ]
+            },
+            "CalculateIssueModelStats": {
+              "methods": [
+                "calculate_issue_model_stats"
+              ]
+            },
+            "CalculateStats": {
+              "methods": [
+                "calculate_stats"
+              ]
+            },
+            "CreateAnalysis": {
+              "methods": [
+                "create_analysis"
+              ]
+            },
+            "CreateConversation": {
+              "methods": [
+                "create_conversation"
+              ]
+            },
+            "CreateIssueModel": {
+              "methods": [
+                "create_issue_model"
+              ]
+            },
+            "CreatePhraseMatcher": {
+              "methods": [
+                "create_phrase_matcher"
+              ]
+            },
+            "CreateView": {
+              "methods": [
+                "create_view"
+              ]
+            },
+            "DeleteAnalysis": {
+              "methods": [
+                "delete_analysis"
+              ]
+            },
+            "DeleteConversation": {
+              "methods": [
+                "delete_conversation"
+              ]
+            },
+            "DeleteIssue": {
+              "methods": [
+                "delete_issue"
+              ]
+            },
+            "DeleteIssueModel": {
+              "methods": [
+                "delete_issue_model"
+              ]
+            },
+            "DeletePhraseMatcher": {
+              "methods": [
+                "delete_phrase_matcher"
+              ]
+            },
+            "DeleteView": {
+              "methods": [
+                "delete_view"
+              ]
+            },
+            "DeployIssueModel": {
+              "methods": [
+                "deploy_issue_model"
+              ]
+            },
+            "ExportInsightsData": {
+              "methods": [
+                "export_insights_data"
+              ]
+            },
+            "GetAnalysis": {
+              "methods": [
+                "get_analysis"
+              ]
+            },
+            "GetConversation": {
+              "methods": [
+                "get_conversation"
+              ]
+            },
+            "GetIssue": {
+              "methods": [
+                "get_issue"
+              ]
+            },
+            "GetIssueModel": {
+              "methods": [
+                "get_issue_model"
+              ]
+            },
+            "GetPhraseMatcher": {
+              "methods": [
+                "get_phrase_matcher"
+              ]
+            },
+            "GetSettings": {
+              "methods": [
+                "get_settings"
+              ]
+            },
+            "GetView": {
+              "methods": [
+                "get_view"
+              ]
+            },
+            "IngestConversations": {
+              "methods": [
+                "ingest_conversations"
+              ]
+            },
+            "ListAnalyses": {
+              "methods": [
+                "list_analyses"
+              ]
+            },
+            "ListConversations": {
+              "methods": [
+                "list_conversations"
+              ]
+            },
+            "ListIssueModels": {
+              "methods": [
+                "list_issue_models"
+              ]
+            },
+            "ListIssues": {
+              "methods": [
+                "list_issues"
+              ]
+            },
+            "ListPhraseMatchers": {
+              "methods": [
+                "list_phrase_matchers"
+              ]
+            },
+            "ListViews": {
+              "methods": [
+                "list_views"
+              ]
+            },
+            "UndeployIssueModel": {
+              "methods": [
+                "undeploy_issue_model"
+              ]
+            },
+            "UpdateConversation": {
+              "methods": [
+                "update_conversation"
+              ]
+            },
+            "UpdateIssue": {
+              "methods": [
+                "update_issue"
+              ]
+            },
+            "UpdateIssueModel": {
+              "methods": [
+                "update_issue_model"
+              ]
+            },
+            "UpdatePhraseMatcher": {
+              "methods": [
+                "update_phrase_matcher"
+              ]
+            },
+            "UpdateSettings": {
+              "methods": [
+                "update_settings"
+              ]
+            },
+            "UpdateView": {
+              "methods": [
+                "update_view"
+              ]
+            },
+            "UploadConversation": {
+              "methods": [
+                "upload_conversation"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ContactCenterInsightsClient",
+          "rpcs": {
+            "BulkAnalyzeConversations": {
+              "methods": [
+                "bulk_analyze_conversations"
+              ]
+            },
+            "BulkDeleteConversations": {
+              "methods": [
+                "bulk_delete_conversations"
+              ]
+            },
+            "CalculateIssueModelStats": {
+              "methods": [
+                "calculate_issue_model_stats"
+              ]
+            },
+            "CalculateStats": {
+              "methods": [
+                "calculate_stats"
+              ]
+            },
+            "CreateAnalysis": {
+              "methods": [
+                "create_analysis"
+              ]
+            },
+            "CreateConversation": {
+              "methods": [
+                "create_conversation"
+              ]
+            },
+            "CreateIssueModel": {
+              "methods": [
+                "create_issue_model"
+              ]
+            },
+            "CreatePhraseMatcher": {
+              "methods": [
+                "create_phrase_matcher"
+              ]
+            },
+            "CreateView": {
+              "methods": [
+                "create_view"
+              ]
+            },
+            "DeleteAnalysis": {
+              "methods": [
+                "delete_analysis"
+              ]
+            },
+            "DeleteConversation": {
+              "methods": [
+                "delete_conversation"
+              ]
+            },
+            "DeleteIssue": {
+              "methods": [
+                "delete_issue"
+              ]
+            },
+            "DeleteIssueModel": {
+              "methods": [
+                "delete_issue_model"
+              ]
+            },
+            "DeletePhraseMatcher": {
+              "methods": [
+                "delete_phrase_matcher"
+              ]
+            },
+            "DeleteView": {
+              "methods": [
+                "delete_view"
+              ]
+            },
+            "DeployIssueModel": {
+              "methods": [
+                "deploy_issue_model"
+              ]
+            },
+            "ExportInsightsData": {
+              "methods": [
+                "export_insights_data"
+              ]
+            },
+            "GetAnalysis": {
+              "methods": [
+                "get_analysis"
+              ]
+            },
+            "GetConversation": {
+              "methods": [
+                "get_conversation"
+              ]
+            },
+            "GetIssue": {
+              "methods": [
+                "get_issue"
+              ]
+            },
+            "GetIssueModel": {
+              "methods": [
+                "get_issue_model"
+              ]
+            },
+            "GetPhraseMatcher": {
+              "methods": [
+                "get_phrase_matcher"
+              ]
+            },
+            "GetSettings": {
+              "methods": [
+                "get_settings"
+              ]
+            },
+            "GetView": {
+              "methods": [
+                "get_view"
+              ]
+            },
+            "IngestConversations": {
+              "methods": [
+                "ingest_conversations"
+              ]
+            },
+            "ListAnalyses": {
+              "methods": [
+                "list_analyses"
+              ]
+            },
+            "ListConversations": {
+              "methods": [
+                "list_conversations"
+              ]
+            },
+            "ListIssueModels": {
+              "methods": [
+                "list_issue_models"
+              ]
+            },
+            "ListIssues": {
+              "methods": [
+                "list_issues"
+              ]
+            },
+            "ListPhraseMatchers": {
+              "methods": [
+                "list_phrase_matchers"
+              ]
+            },
+            "ListViews": {
+              "methods": [
+                "list_views"
+              ]
+            },
+            "UndeployIssueModel": {
+              "methods": [
+                "undeploy_issue_model"
+              ]
+            },
+            "UpdateConversation": {
+              "methods": [
+                "update_conversation"
+              ]
+            },
+            "UpdateIssue": {
+              "methods": [
+                "update_issue"
+              ]
+            },
+            "UpdateIssueModel": {
+              "methods": [
+                "update_issue_model"
+              ]
+            },
+            "UpdatePhraseMatcher": {
+              "methods": [
+                "update_phrase_matcher"
+              ]
+            },
+            "UpdateSettings": {
+              "methods": [
+                "update_settings"
+              ]
+            },
+            "UpdateView": {
+              "methods": [
+                "update_view"
+              ]
+            },
+            "UploadConversation": {
+              "methods": [
+                "upload_conversation"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

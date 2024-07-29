@@ -1,0 +1,2 @@
+recursive-include google/cloud/devtools/cloudbuild *.py
+recursive-include google/cloud/devtools/cloudbuild_v2 *.py
