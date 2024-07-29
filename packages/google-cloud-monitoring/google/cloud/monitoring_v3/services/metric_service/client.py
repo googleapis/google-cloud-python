@@ -840,6 +840,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1087,6 +1089,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1592,6 +1596,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

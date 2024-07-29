@@ -1006,6 +1006,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1640,6 +1642,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2357,6 +2361,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2973,6 +2979,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3613,6 +3621,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4417,6 +4427,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5588,6 +5600,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6220,6 +6234,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6839,6 +6855,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
