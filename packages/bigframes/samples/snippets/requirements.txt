@@ -1,2 +1,2 @@
 # samples/snippets should be runnable with no "extras"
-bigframes==1.6.0
+bigframes==1.7.0
