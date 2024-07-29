@@ -888,6 +888,8 @@ class AppPlatformClient(metaclass=AppPlatformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2106,6 +2108,8 @@ class AppPlatformClient(metaclass=AppPlatformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2719,6 +2723,8 @@ class AppPlatformClient(metaclass=AppPlatformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3327,6 +3333,8 @@ class AppPlatformClient(metaclass=AppPlatformClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
