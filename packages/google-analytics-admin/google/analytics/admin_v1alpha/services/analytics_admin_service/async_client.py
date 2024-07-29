@@ -582,6 +582,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -882,6 +884,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1031,6 +1035,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1558,6 +1564,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1998,6 +2006,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2268,6 +2278,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3093,6 +3105,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3166,6 +3180,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3800,6 +3816,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3983,6 +4001,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4478,6 +4498,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5111,6 +5133,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5539,6 +5563,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6226,6 +6252,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6483,6 +6511,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6893,6 +6923,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -7846,6 +7878,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -8262,6 +8296,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -8699,6 +8735,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -9259,6 +9297,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -10017,6 +10057,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -10206,6 +10248,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -10809,7 +10853,7 @@ class AnalyticsAdminServiceAsyncClient:
                 metric's resource name.
 
                 This value should be 1-80 characters and valid
-                characters are `[a-zA-Z0-9_]`, no spaces allowed.
+                characters are /[a-zA-Z0-9_]/, no spaces allowed.
                 calculated_metric_id must be unique between all
                 calculated metrics under a property. The
                 calculated_metric_id is used when referencing this
@@ -10967,6 +11011,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -11379,6 +11425,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -11884,6 +11932,8 @@ class AnalyticsAdminServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

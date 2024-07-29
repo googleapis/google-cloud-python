@@ -893,6 +893,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1521,6 +1523,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2132,6 +2136,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
