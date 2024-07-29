@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.23.0](https://github.com/googleapis/python-pubsub/compare/v2.22.0...v2.23.0) (2024-07-29)
+
+
+### Features
+
+* Add max messages batching for Cloud Storage subscriptions ([#1224](https://github.com/googleapis/python-pubsub/issues/1224)) ([91c89d3](https://github.com/googleapis/python-pubsub/commit/91c89d36c5099591408ab0661c55929e786b1b04))
+
 ## [2.22.0](https://github.com/googleapis/python-pubsub/compare/v2.21.5...v2.22.0) (2024-07-06)
 
 
