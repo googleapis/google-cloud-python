@@ -14,6 +14,7 @@
 
 import collections
 import copy
+from typing import Iterable
 
 from proto.utils import cached_property
 
@@ -48,7 +49,7 @@ class Repeated(collections.abc.MutableSequence):
     def __eq__(self, other):
         if hasattr(other, "pb"):
             return tuple(self.pb) == tuple(other.pb)
-        return tuple(self.pb) == tuple(other)
+        return tuple(self.pb) == tuple(other) if isinstance(other, Iterable) else False
 
     def __getitem__(self, key):
         """Return the given item."""
@@ -119,7 +120,11 @@ class RepeatedComposite(Repeated):
     def __eq__(self, other):
         if super().__eq__(other):
             return True
-        return tuple([i for i in self]) == tuple(other)
+        return (
+            tuple([i for i in self]) == tuple(other)
+            if isinstance(other, Iterable)
+            else False
+        )
 
     def __getitem__(self, key):
         return self._marshal.to_python(self._pb_type, self.pb[key])

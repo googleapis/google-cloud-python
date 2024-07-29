@@ -47,6 +47,7 @@ def test_repeated_composite_equality():
 
     baz = Baz(foos=[Foo(bar=42)])
     assert baz.foos == baz.foos
+    assert baz.foos != None
 
 
 def test_repeated_composite_init_struct():
