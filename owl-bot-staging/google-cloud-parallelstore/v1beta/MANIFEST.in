@@ -1,0 +1,2 @@
+recursive-include google/cloud/parallelstore *.py
+recursive-include google/cloud/parallelstore_v1beta *.py
