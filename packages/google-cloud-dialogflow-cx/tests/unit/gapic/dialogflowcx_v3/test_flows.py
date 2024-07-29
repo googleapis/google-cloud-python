@@ -44,6 +44,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
@@ -1097,6 +1098,7 @@ def test_create_flow(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             transition_route_groups=["transition_route_groups_value"],
+            locked=True,
         )
         response = client.create_flow(request)
 
@@ -1112,6 +1114,7 @@ def test_create_flow(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
 
 
 def test_create_flow_empty_call():
@@ -1216,6 +1219,7 @@ async def test_create_flow_empty_call_async():
                 display_name="display_name_value",
                 description="description_value",
                 transition_route_groups=["transition_route_groups_value"],
+                locked=True,
             )
         )
         response = await client.create_flow()
@@ -1287,6 +1291,7 @@ async def test_create_flow_async(
                 display_name="display_name_value",
                 description="description_value",
                 transition_route_groups=["transition_route_groups_value"],
+                locked=True,
             )
         )
         response = await client.create_flow(request)
@@ -1303,6 +1308,7 @@ async def test_create_flow_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
 
 
 @pytest.mark.asyncio
@@ -2388,6 +2394,7 @@ def test_get_flow(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             transition_route_groups=["transition_route_groups_value"],
+            locked=True,
         )
         response = client.get_flow(request)
 
@@ -2403,6 +2410,7 @@ def test_get_flow(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
 
 
 def test_get_flow_empty_call():
@@ -2507,6 +2515,7 @@ async def test_get_flow_empty_call_async():
                 display_name="display_name_value",
                 description="description_value",
                 transition_route_groups=["transition_route_groups_value"],
+                locked=True,
             )
         )
         response = await client.get_flow()
@@ -2576,6 +2585,7 @@ async def test_get_flow_async(
                 display_name="display_name_value",
                 description="description_value",
                 transition_route_groups=["transition_route_groups_value"],
+                locked=True,
             )
         )
         response = await client.get_flow(request)
@@ -2592,6 +2602,7 @@ async def test_get_flow_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
 
 
 @pytest.mark.asyncio
@@ -2763,6 +2774,7 @@ def test_update_flow(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             transition_route_groups=["transition_route_groups_value"],
+            locked=True,
         )
         response = client.update_flow(request)
 
@@ -2778,6 +2790,7 @@ def test_update_flow(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
 
 
 def test_update_flow_empty_call():
@@ -2880,6 +2893,7 @@ async def test_update_flow_empty_call_async():
                 display_name="display_name_value",
                 description="description_value",
                 transition_route_groups=["transition_route_groups_value"],
+                locked=True,
             )
         )
         response = await client.update_flow()
@@ -2951,6 +2965,7 @@ async def test_update_flow_async(
                 display_name="display_name_value",
                 description="description_value",
                 transition_route_groups=["transition_route_groups_value"],
+                locked=True,
             )
         )
         response = await client.update_flow(request)
@@ -2967,6 +2982,7 @@ async def test_update_flow_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
 
 
 @pytest.mark.asyncio
@@ -4818,14 +4834,23 @@ def test_create_flow_rest(request_type):
                     ],
                     "advanced_settings": {
                         "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "speech_settings": {
+                            "endpointer_sensitivity": 2402,
+                            "no_speech_timeout": {"seconds": 751, "nanos": 543},
+                            "use_timeout_based_endpointing": True,
+                            "models": {},
+                        },
                         "dtmf_settings": {
                             "enabled": True,
                             "max_digits": 1065,
                             "finish_digit": "finish_digit_value",
+                            "interdigit_timeout_duration": {},
+                            "endpointing_timeout_duration": {},
                         },
                         "logging_settings": {
                             "enable_stackdriver_logging": True,
                             "enable_interaction_logging": True,
+                            "enable_consent_based_redaction": True,
                         },
                     },
                     "enable_generative_fallback": True,
@@ -4862,6 +4887,14 @@ def test_create_flow_rest(request_type):
                 {"data_store_type": 1, "data_store": "data_store_value"}
             ],
         },
+        "multi_language_settings": {
+            "enable_multi_language_detection": True,
+            "supported_response_language_codes": [
+                "supported_response_language_codes_value1",
+                "supported_response_language_codes_value2",
+            ],
+        },
+        "locked": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4940,6 +4973,7 @@ def test_create_flow_rest(request_type):
             display_name="display_name_value",
             description="description_value",
             transition_route_groups=["transition_route_groups_value"],
+            locked=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -4959,6 +4993,7 @@ def test_create_flow_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
 
 
 def test_create_flow_rest_use_cached_wrapped_rpc():
@@ -5912,6 +5947,7 @@ def test_get_flow_rest(request_type):
             display_name="display_name_value",
             description="description_value",
             transition_route_groups=["transition_route_groups_value"],
+            locked=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -5931,6 +5967,7 @@ def test_get_flow_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
 
 
 def test_get_flow_rest_use_cached_wrapped_rpc():
@@ -6290,14 +6327,23 @@ def test_update_flow_rest(request_type):
                     ],
                     "advanced_settings": {
                         "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "speech_settings": {
+                            "endpointer_sensitivity": 2402,
+                            "no_speech_timeout": {"seconds": 751, "nanos": 543},
+                            "use_timeout_based_endpointing": True,
+                            "models": {},
+                        },
                         "dtmf_settings": {
                             "enabled": True,
                             "max_digits": 1065,
                             "finish_digit": "finish_digit_value",
+                            "interdigit_timeout_duration": {},
+                            "endpointing_timeout_duration": {},
                         },
                         "logging_settings": {
                             "enable_stackdriver_logging": True,
                             "enable_interaction_logging": True,
+                            "enable_consent_based_redaction": True,
                         },
                     },
                     "enable_generative_fallback": True,
@@ -6334,6 +6380,14 @@ def test_update_flow_rest(request_type):
                 {"data_store_type": 1, "data_store": "data_store_value"}
             ],
         },
+        "multi_language_settings": {
+            "enable_multi_language_detection": True,
+            "supported_response_language_codes": [
+                "supported_response_language_codes_value1",
+                "supported_response_language_codes_value2",
+            ],
+        },
+        "locked": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6412,6 +6466,7 @@ def test_update_flow_rest(request_type):
             display_name="display_name_value",
             description="description_value",
             transition_route_groups=["transition_route_groups_value"],
+            locked=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -6431,6 +6486,7 @@ def test_update_flow_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
 
 
 def test_update_flow_rest_use_cached_wrapped_rpc():

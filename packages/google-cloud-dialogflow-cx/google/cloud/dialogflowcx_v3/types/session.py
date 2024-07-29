@@ -24,6 +24,7 @@ from google.rpc import status_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3.types import audio_config, data_store_connection, flow
 from google.cloud.dialogflowcx_v3.types import (
     page,
     response_message,
@@ -32,7 +33,6 @@ from google.cloud.dialogflowcx_v3.types import (
 from google.cloud.dialogflowcx_v3.types import (
     advanced_settings as gcdc_advanced_settings,
 )
-from google.cloud.dialogflowcx_v3.types import audio_config, flow
 from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 
 __protobuf__ = proto.module(
@@ -939,6 +939,11 @@ class QueryParameters(proto.Message):
         search_config (google.cloud.dialogflowcx_v3.types.SearchConfig):
             Optional. Search configuration for UCS search
             queries.
+        populate_data_store_connection_signals (bool):
+            Optional. If set to true and data stores are involved in
+            serving the request then
+            DetectIntentResponse.query_result.data_store_connection_signals
+            will be filled with data that can help evaluations.
     """
 
     time_zone: str = proto.Field(
@@ -1006,6 +1011,10 @@ class QueryParameters(proto.Message):
         proto.MESSAGE,
         number=20,
         message="SearchConfig",
+    )
+    populate_data_store_connection_signals: bool = proto.Field(
+        proto.BOOL,
+        number=25,
     )
 
 
@@ -1401,6 +1410,12 @@ class QueryResult(proto.Message):
             Indicates whether the Thumbs up/Thumbs down
             rating controls are need to be shown for the
             response in the Dialogflow Messenger widget.
+        data_store_connection_signals (google.cloud.dialogflowcx_v3.types.DataStoreConnectionSignals):
+            Optional. Data store connection feature output signals.
+            Filled only when data stores are involved in serving the
+            query and DetectIntentRequest.populate
+            data_store_connection_quality_signals is set to true in the
+            request.
     """
 
     text: str = proto.Field(
@@ -1514,6 +1529,13 @@ class QueryResult(proto.Message):
     allow_answer_feedback: bool = proto.Field(
         proto.BOOL,
         number=32,
+    )
+    data_store_connection_signals: data_store_connection.DataStoreConnectionSignals = (
+        proto.Field(
+            proto.MESSAGE,
+            number=35,
+            message=data_store_connection.DataStoreConnectionSignals,
+        )
     )
 
 
@@ -1685,6 +1707,11 @@ class Match(proto.Message):
                 Indicates an empty query.
             EVENT (6):
                 The query directly triggered an event.
+            KNOWLEDGE_CONNECTOR (8):
+                The query was matched to a Knowledge
+                Connector answer.
+            PLAYBOOK (9):
+                The query was handled by a [``Playbook``][Playbook].
         """
         MATCH_TYPE_UNSPECIFIED = 0
         INTENT = 1
@@ -1693,6 +1720,8 @@ class Match(proto.Message):
         NO_MATCH = 4
         NO_INPUT = 5
         EVENT = 6
+        KNOWLEDGE_CONNECTOR = 8
+        PLAYBOOK = 9
 
     intent: gcdc_intent.Intent = proto.Field(
         proto.MESSAGE,

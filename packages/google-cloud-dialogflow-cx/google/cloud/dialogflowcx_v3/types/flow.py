@@ -208,7 +208,43 @@ class Flow(proto.Message):
             level.
         knowledge_connector_settings (google.cloud.dialogflowcx_v3.types.KnowledgeConnectorSettings):
             Optional. Knowledge connector configuration.
+        multi_language_settings (google.cloud.dialogflowcx_v3.types.Flow.MultiLanguageSettings):
+            Optional. Multi-lingual agent settings for
+            this flow.
+        locked (bool):
+            Indicates whether the flow is locked for
+            changes. If the flow is locked, modifications to
+            the flow will be rejected.
     """
+
+    class MultiLanguageSettings(proto.Message):
+        r"""Settings for multi-lingual agents.
+
+        Attributes:
+            enable_multi_language_detection (bool):
+                Optional. Enable multi-language detection for this flow.
+                This can be set only if [agent level multi language
+                setting][Agent.enable_multi_language_training] is enabled.
+            supported_response_language_codes (MutableSequence[str]):
+                Optional. Agent will respond in the detected language if the
+                detected language code is in the supported resolved
+                languages for this flow. This will be used only if
+                multi-language training is enabled in the
+                [agent][google.cloud.dialogflow.cx.v3.Agent.enable_multi_language_training]
+                and multi-language detection is enabled in the
+                [flow][google.cloud.dialogflow.cx.v3.Flow.MultiLanguageSettings.enable_multi_language_detection].
+                The supported languages must be a subset of the languages
+                supported by the agent.
+        """
+
+        enable_multi_language_detection: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        supported_response_language_codes: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -250,6 +286,15 @@ class Flow(proto.Message):
         proto.MESSAGE,
         number=18,
         message=page.KnowledgeConnectorSettings,
+    )
+    multi_language_settings: MultiLanguageSettings = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message=MultiLanguageSettings,
+    )
+    locked: bool = proto.Field(
+        proto.BOOL,
+        number=30,
     )
 
 

@@ -126,6 +126,7 @@ from google.cloud.dialogflowcx_v3.types.changelog import (
 )
 from google.cloud.dialogflowcx_v3.types.data_store_connection import (
     DataStoreConnection,
+    DataStoreConnectionSignals,
     DataStoreType,
 )
 from google.cloud.dialogflowcx_v3.types.deployment import (
@@ -361,6 +362,7 @@ from google.cloud.dialogflowcx_v3.types.webhook import (
     CreateWebhookRequest,
     DeleteWebhookRequest,
     GetWebhookRequest,
+    LanguageInfo,
     ListWebhooksRequest,
     ListWebhooksResponse,
     PageInfo,
@@ -439,6 +441,7 @@ __all__ = (
     "ListChangelogsRequest",
     "ListChangelogsResponse",
     "DataStoreConnection",
+    "DataStoreConnectionSignals",
     "DataStoreType",
     "Deployment",
     "GetDeploymentRequest",
@@ -643,6 +646,7 @@ __all__ = (
     "CreateWebhookRequest",
     "DeleteWebhookRequest",
     "GetWebhookRequest",
+    "LanguageInfo",
     "ListWebhooksRequest",
     "ListWebhooksResponse",
     "PageInfo",
