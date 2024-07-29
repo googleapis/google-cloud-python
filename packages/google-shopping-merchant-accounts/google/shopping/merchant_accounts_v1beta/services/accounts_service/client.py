@@ -1190,6 +1190,8 @@ class AccountsServiceClient(metaclass=AccountsServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1308,6 +1310,8 @@ class AccountsServiceClient(metaclass=AccountsServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

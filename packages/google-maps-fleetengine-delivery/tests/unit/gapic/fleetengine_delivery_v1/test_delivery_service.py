@@ -29,6 +29,7 @@ import math
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -4021,9 +4022,13 @@ def test_list_tasks_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
-        pager = client.list_tasks(request={})
+        retry = retries.Retry()
+        timeout = 5
+        pager = client.list_tasks(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -4934,9 +4939,13 @@ def test_list_delivery_vehicles_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
-        pager = client.list_delivery_vehicles(request={})
+        retry = retries.Retry()
+        timeout = 5
+        pager = client.list_delivery_vehicles(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6

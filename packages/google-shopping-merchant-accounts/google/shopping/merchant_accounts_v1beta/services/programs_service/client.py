@@ -905,6 +905,8 @@ class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

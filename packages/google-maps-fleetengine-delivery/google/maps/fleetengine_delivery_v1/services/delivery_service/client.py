@@ -1805,6 +1805,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2043,6 +2045,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

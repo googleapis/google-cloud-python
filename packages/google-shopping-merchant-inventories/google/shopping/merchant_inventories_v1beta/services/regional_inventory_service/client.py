@@ -815,6 +815,8 @@ class RegionalInventoryServiceClient(metaclass=RegionalInventoryServiceClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
