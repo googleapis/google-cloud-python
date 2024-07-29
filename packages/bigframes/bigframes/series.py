@@ -633,7 +633,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             result = result.reset_index()
         return Series(result)
 
-    @validations.requires_strict_ordering()
+    @validations.requires_strict_ordering(bigframes.constants.SUGGEST_PEEK_PREVIEW)
     def head(self, n: int = 5) -> Series:
         return typing.cast(Series, self.iloc[0:n])
 

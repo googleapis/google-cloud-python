@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import functools
-from typing import Protocol, TYPE_CHECKING
+from typing import Optional, Protocol, TYPE_CHECKING
 
 import bigframes.constants
 import bigframes.exceptions
@@ -32,11 +32,11 @@ class HasSession(Protocol):
         ...
 
 
-def requires_strict_ordering():
+def requires_strict_ordering(suggestion: Optional[str] = None):
     def decorator(meth):
         @functools.wraps(meth)
         def guarded_meth(object: HasSession, *args, **kwargs):
-            enforce_ordered(object, meth.__name__)
+            enforce_ordered(object, meth.__name__, suggestion)
             return meth(object, *args, **kwargs)
 
         return guarded_meth
@@ -44,8 +44,11 @@ def requires_strict_ordering():
     return decorator
 
 
-def enforce_ordered(object: HasSession, opname: str) -> None:
+def enforce_ordered(
+    object: HasSession, opname: str, suggestion: Optional[str] = None
+) -> None:
     if not object._session._strictly_ordered:
+        suggestion_substr = suggestion + " " if suggestion else ""
         raise bigframes.exceptions.OrderRequiredError(
-            f"Op {opname} not supported when strict ordering is disabled. {bigframes.constants.FEEDBACK_LINK}"
+            f"Op {opname} not supported when strict ordering is disabled. {suggestion_substr}{bigframes.constants.FEEDBACK_LINK}"
         )

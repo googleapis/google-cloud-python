@@ -49,6 +49,7 @@ import tabulate
 
 import bigframes
 import bigframes._config.display_options as display_options
+import bigframes.constants
 import bigframes.constants as constants
 import bigframes.core
 from bigframes.core import log_adapter
@@ -1293,6 +1294,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def copy(self) -> DataFrame:
         return DataFrame(self._block)
 
+    @validations.requires_strict_ordering(bigframes.constants.SUGGEST_PEEK_PREVIEW)
     def head(self, n: int = 5) -> DataFrame:
         return typing.cast(DataFrame, self.iloc[:n])
 

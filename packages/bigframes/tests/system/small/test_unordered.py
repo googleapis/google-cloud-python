@@ -131,6 +131,10 @@ def test_unordered_drop_duplicates(unordered_session, keep):
             lambda x: x.a.iloc[1::2],
             id="series_iloc",
         ),
+        pytest.param(
+            lambda x: x.head(3),
+            id="head",
+        ),
     ],
 )
 def test_unordered_mode_blocks_windowing(unordered_session, function):

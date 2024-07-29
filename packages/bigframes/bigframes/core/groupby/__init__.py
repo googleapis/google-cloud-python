@@ -109,6 +109,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
                 dropna=self._dropna,
             )
 
+    @validations.requires_strict_ordering()
     def head(self, n: int = 5) -> df.DataFrame:
         block = self._block
         if self._dropna:
@@ -531,6 +532,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
     def _session(self) -> core.Session:
         return self._block.session
 
+    @validations.requires_strict_ordering()
     def head(self, n: int = 5) -> series.Series:
         block = self._block
         if self._dropna:

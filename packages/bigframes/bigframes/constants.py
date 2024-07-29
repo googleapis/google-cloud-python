@@ -99,3 +99,5 @@ LEP_ENABLED_BIGQUERY_LOCATIONS = frozenset(
 
 # BigQuery default is 10000, leave 100 for overhead
 MAX_COLUMNS = 9900
+
+SUGGEST_PEEK_PREVIEW = "Use .peek(n) to preview n arbitrary rows."
