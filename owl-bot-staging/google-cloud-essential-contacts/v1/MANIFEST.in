@@ -1,0 +1,2 @@
+recursive-include google/cloud/essential_contacts *.py
+recursive-include google/cloud/essential_contacts_v1 *.py
