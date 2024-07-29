@@ -285,7 +285,7 @@ def mypy(session):
     session.install(
         "mypy", "types-setuptools", "types-mock", "types-protobuf!=4.24.0.20240106", "types-requests"
     )
-    session.run("mypy", "-p", "google")
+    session.run("mypy", "-p", "google.cloud.datastore")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
