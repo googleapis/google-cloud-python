@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.29.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.29.2...google-cloud-documentai-v2.29.3) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([ba1064f](https://github.com/googleapis/google-cloud-python/commit/ba1064fd6a63ccbe8a390c0026f32c5772c728a5))
+
 ## [2.29.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.29.1...google-cloud-documentai-v2.29.2) (2024-07-08)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.10...google-cloud-gke-backup-v0.5.11) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([189922a](https://github.com/googleapis/google-cloud-python/commit/189922a0fbe969dedc7b0f78a62ccb2e5d3f29a9))
+
 ## [0.5.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.9...google-cloud-gke-backup-v0.5.10) (2024-07-08)
 
 
