@@ -21094,11 +21094,13 @@ def test_create_delivery_pipeline_rest(request_type):
                                             "nanos": 543,
                                         },
                                         "stable_cutback_duration": {},
+                                        "pod_selector_label": "pod_selector_label_value",
                                     },
                                     "service_networking": {
                                         "service": "service_value",
                                         "deployment": "deployment_value",
                                         "disable_pod_overprovisioning": True,
+                                        "pod_selector_label": "pod_selector_label_value",
                                     },
                                 },
                                 "cloud_run": {
@@ -21614,11 +21616,13 @@ def test_update_delivery_pipeline_rest(request_type):
                                             "nanos": 543,
                                         },
                                         "stable_cutback_duration": {},
+                                        "pod_selector_label": "pod_selector_label_value",
                                     },
                                     "service_networking": {
                                         "service": "service_value",
                                         "deployment": "deployment_value",
                                         "disable_pod_overprovisioning": True,
+                                        "pod_selector_label": "pod_selector_label_value",
                                     },
                                 },
                                 "cloud_run": {
@@ -27308,11 +27312,13 @@ def test_create_release_rest(request_type):
                                                 "nanos": 543,
                                             },
                                             "stable_cutback_duration": {},
+                                            "pod_selector_label": "pod_selector_label_value",
                                         },
                                         "service_networking": {
                                             "service": "service_value",
                                             "deployment": "deployment_value",
                                             "disable_pod_overprovisioning": True,
+                                            "pod_selector_label": "pod_selector_label_value",
                                         },
                                     },
                                     "cloud_run": {
@@ -34273,16 +34279,7 @@ def test_create_automation_rest(request_type):
                 },
                 "repair_rollout_rule": {
                     "id": "id_value",
-                    "source_phases": ["source_phases_value1", "source_phases_value2"],
                     "jobs": ["jobs_value1", "jobs_value2"],
-                    "repair_modes": [
-                        {
-                            "retry": {"attempts": 882, "wait": {}, "backoff_mode": 1},
-                            "rollback": {
-                                "destination_phase": "destination_phase_value"
-                            },
-                        }
-                    ],
                     "condition": {},
                 },
             }
@@ -34743,16 +34740,7 @@ def test_update_automation_rest(request_type):
                 },
                 "repair_rollout_rule": {
                     "id": "id_value",
-                    "source_phases": ["source_phases_value1", "source_phases_value2"],
                     "jobs": ["jobs_value1", "jobs_value2"],
-                    "repair_modes": [
-                        {
-                            "retry": {"attempts": 882, "wait": {}, "backoff_mode": 1},
-                            "rollback": {
-                                "destination_phase": "destination_phase_value"
-                            },
-                        }
-                    ],
                     "condition": {},
                 },
             }
