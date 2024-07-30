@@ -825,7 +825,7 @@ class Iterator(page_iterator.Iterator):
             old_query_pb = query_pb
             query_pb = query_pb2.Query()
             query_pb._pb.CopyFrom(old_query_pb._pb)  # copy for testability
-            query_pb.start_cursor = response_pb.batch.skipped_cursor
+            query_pb.start_cursor = response_pb.batch.end_cursor
             query_pb.offset -= response_pb.batch.skipped_results
 
             request = {

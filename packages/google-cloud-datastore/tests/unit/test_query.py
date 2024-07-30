@@ -1019,7 +1019,8 @@ def test_iterator__next_page_no_more(database_id):
 
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
-def test_iterator__next_page_w_skipped_lt_offset(database_id):
+@pytest.mark.parametrize("skipped_cursor_1", [b"DEADBEEF", b""])
+def test_iterator__next_page_w_skipped_lt_offset(skipped_cursor_1, database_id):
     from google.api_core import page_iterator
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
@@ -1028,16 +1029,17 @@ def test_iterator__next_page_w_skipped_lt_offset(database_id):
 
     project = "prujekt"
     skipped_1 = 100
-    skipped_cursor_1 = b"DEADBEEF"
+    end_cursor_1 = b"DEADBEEF"
     skipped_2 = 50
-    skipped_cursor_2 = b"FACEDACE"
+    end_cursor_2 = b"FACEDACE"
 
     more_enum = query_pb2.QueryResultBatch.MoreResultsType.NOT_FINISHED
 
     result_1 = _make_query_response([], b"", more_enum, skipped_1)
     result_1.batch.skipped_cursor = skipped_cursor_1
+    result_1.batch.end_cursor = end_cursor_1
     result_2 = _make_query_response([], b"", more_enum, skipped_2)
-    result_2.batch.skipped_cursor = skipped_cursor_2
+    result_2.batch.end_cursor = end_cursor_2
 
     ds_api = _make_datastore_api(result_1, result_2)
     client = _Client(project, datastore_api=ds_api, database=database_id)
@@ -1055,9 +1057,7 @@ def test_iterator__next_page_w_skipped_lt_offset(database_id):
     read_options = datastore_pb2.ReadOptions()
 
     query_1 = query_pb2.Query(offset=offset)
-    query_2 = query_pb2.Query(
-        start_cursor=skipped_cursor_1, offset=(offset - skipped_1)
-    )
+    query_2 = query_pb2.Query(start_cursor=end_cursor_1, offset=(offset - skipped_1))
     expected_calls = []
     for query in [query_1, query_2]:
         expected_request = {
