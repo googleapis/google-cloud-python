@@ -766,6 +766,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1744,6 +1746,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

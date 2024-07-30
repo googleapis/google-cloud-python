@@ -934,6 +934,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1554,6 +1556,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1885,6 +1889,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2969,6 +2975,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3286,6 +3294,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

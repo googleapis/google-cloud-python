@@ -768,6 +768,8 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1136,6 +1138,8 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

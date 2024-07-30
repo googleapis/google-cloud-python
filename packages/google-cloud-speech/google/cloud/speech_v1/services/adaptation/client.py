@@ -1080,6 +1080,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1687,6 +1689,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

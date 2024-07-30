@@ -915,6 +915,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2318,6 +2320,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3208,6 +3212,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3559,6 +3565,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4335,6 +4343,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5169,6 +5179,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5471,6 +5483,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

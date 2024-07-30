@@ -826,6 +826,8 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1057,6 +1059,8 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
