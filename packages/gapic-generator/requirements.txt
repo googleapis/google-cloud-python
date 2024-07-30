@@ -338,9 +338,9 @@ pypandoc==1.13 \
     --hash=sha256:31652073c7960c2b03570bd1e94f602ca9bc3e70099df5ead4cea98ff5151c1e \
     --hash=sha256:4c7d71bf2f1ed122aac287113b5c4d537a33bbc3c1df5aed11a7d4a7ac074681
     # via -r requirements.in
-pytest==8.3.1 \
-    --hash=sha256:7e8e5c5abd6e93cb1cc151f23e57adc31fcf8cfd2a3ff2da63e23f732de35db6 \
-    --hash=sha256:e9600ccf4f563976e2c99fa02c7624ab938296551f280835ee6516df8bc4ae8c
+pytest==8.3.2 \
+    --hash=sha256:4ba08f9ae7dcf84ded419494d229b48d0903ea6407b030eaec46df5e6a73bba5 \
+    --hash=sha256:c132345d12ce551242c87269de812483f5bcc87cdbb4722e48487ba194f9fdce
     # via pytest-asyncio
 pytest-asyncio==0.23.8 \
     --hash=sha256:50265d892689a5faefb84df80819d1ecef566eb3549cf915dfb33569359d1ce2 \
