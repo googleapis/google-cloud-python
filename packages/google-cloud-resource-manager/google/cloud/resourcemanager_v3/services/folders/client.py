@@ -902,6 +902,8 @@ class FoldersClient(metaclass=FoldersClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1050,6 +1052,8 @@ class FoldersClient(metaclass=FoldersClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
