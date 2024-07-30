@@ -215,9 +215,9 @@ def udf_http_row_processor(request):
 
 
 def generate_udf_code(def_, directory):
-    """Generate serialized bytecode using cloudpickle given a udf."""
+    """Generate serialized code using cloudpickle given a udf."""
     udf_code_file_name = "udf.py"
-    udf_bytecode_file_name = "udf.cloudpickle"
+    udf_pickle_file_name = "udf.cloudpickle"
 
     # original code, only for debugging purpose
     udf_code = textwrap.dedent(inspect.getsource(def_))
@@ -225,13 +225,13 @@ def generate_udf_code(def_, directory):
     with open(udf_code_file_path, "w") as f:
         f.write(udf_code)
 
-    # serialized bytecode
-    udf_bytecode_file_path = os.path.join(directory, udf_bytecode_file_name)
+    # serialized udf
+    udf_pickle_file_path = os.path.join(directory, udf_pickle_file_name)
     # TODO(b/345433300): try io.BytesIO to avoid writing to the file system
-    with open(udf_bytecode_file_path, "wb") as f:
+    with open(udf_pickle_file_path, "wb") as f:
         cloudpickle.dump(def_, f, protocol=_pickle_protocol_version)
 
-    return udf_code_file_name, udf_bytecode_file_name
+    return udf_code_file_name, udf_pickle_file_name
 
 
 def generate_cloud_function_main_code(
@@ -252,15 +252,15 @@ def generate_cloud_function_main_code(
     """
 
     # Pickle the udf with all its dependencies
-    udf_code_file, udf_bytecode_file = generate_udf_code(def_, directory)
+    udf_code_file, udf_pickle_file = generate_udf_code(def_, directory)
 
     code_blocks = [
         f"""\
 import cloudpickle
 
 # original udf code is in {udf_code_file}
-# serialized udf code is in {udf_bytecode_file}
-with open("{udf_bytecode_file}", "rb") as f:
+# serialized udf code is in {udf_pickle_file}
+with open("{udf_pickle_file}", "rb") as f:
     udf = cloudpickle.load(f)
 
 input_types = {repr(input_types)}

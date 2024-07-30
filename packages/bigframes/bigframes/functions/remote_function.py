@@ -167,7 +167,23 @@ def get_remote_function_locations(bq_location):
 
 def _get_hash(def_, package_requirements=None):
     "Get hash (32 digits alphanumeric) of a function."
-    def_repr = cloudpickle.dumps(def_, protocol=_pickle_protocol_version)
+    # There is a known cell-id sensitivity of the cloudpickle serialization in
+    # notebooks https://github.com/cloudpipe/cloudpickle/issues/538. Because of
+    # this, if a cell contains a udf decorated with @remote_function, a unique
+    # cloudpickle code is generated every time the cell is run, creating new
+    # cloud artifacts every time. This is slow and wasteful.
+    # A workaround of the same can be achieved by replacing the filename in the
+    # code object to a static value
+    # https://github.com/cloudpipe/cloudpickle/issues/120#issuecomment-338510661.
+    #
+    # To respect the user code/environment let's make this modification on a
+    # copy of the udf, not on the original udf itself.
+    def_copy = cloudpickle.loads(cloudpickle.dumps(def_))
+    def_copy.__code__ = def_copy.__code__.replace(
+        co_filename="bigframes_place_holder_filename"
+    )
+
+    def_repr = cloudpickle.dumps(def_copy, protocol=_pickle_protocol_version)
     if package_requirements:
         for p in sorted(package_requirements):
             def_repr += p.encode()
@@ -877,11 +893,16 @@ class _RemoteFunctionSession:
                 dynamically using the `bigquery_connection_client` assuming the user has necessary
                 priviliges. The PROJECT_ID should be the same as the BigQuery connection project.
             reuse (bool, Optional):
-                Reuse the remote function if is already exists.
-                `True` by default, which results in reusing an existing remote
+                Reuse the remote function if already exists.
+                `True` by default, which will result in reusing an existing remote
                 function and corresponding cloud function (if any) that was
                 previously created for the same udf.
-                Setting it to `False` forces the creation of a unique remote function.
+                Please note that for an unnamed (i.e. created without an explicit
+                `name` argument) remote function, the BigQuery DataFrames
+                session id is attached in the cloud artifacts names. So for the
+                effective reuse across the sessions it is recommended to create
+                the remote function with an explicit `name`.
+                Setting it to `False` would force creating a unique remote function.
                 If the required remote function does not exist then it would be
                 created irrespective of this param.
             name (str, Optional):

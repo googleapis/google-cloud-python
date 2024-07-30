@@ -1629,15 +1629,21 @@ class Session(
                 `True` by default, which will result in reusing an existing remote
                 function and corresponding cloud function (if any) that was
                 previously created for the same udf.
+                Please note that for an unnamed (i.e. created without an explicit
+                `name` argument) remote function, the BigQuery DataFrames
+                session id is attached in the cloud artifacts names. So for the
+                effective reuse across the sessions it is recommended to create
+                the remote function with an explicit `name`.
                 Setting it to `False` would force creating a unique remote function.
                 If the required remote function does not exist then it would be
                 created irrespective of this param.
             name (str, Optional):
-                Explicit name of the persisted BigQuery remote function. Use it with
-                caution, because two users working in the same project and dataset
-                could overwrite each other's remote functions if they use the same
-                persistent name. When an explicit name is provided, any session
-                specific clean up (``bigframes.session.Session.close``/
+                Explicit name of the persisted BigQuery remote function. Use it
+                with caution, because more than one users working in the same
+                project and dataset could overwrite each other's remote
+                functions if they use the same persistent name. When an explicit
+                name is provided, any session specific clean up (
+                ``bigframes.session.Session.close``/
                 ``bigframes.pandas.close_session``/
                 ``bigframes.pandas.reset_session``/
                 ``bigframes.pandas.clean_up_by_session_id``) does not clean up
