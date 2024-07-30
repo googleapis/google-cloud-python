@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.10.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.10.1...google-cloud-dataproc-v5.10.2) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([ba1064f](https://github.com/googleapis/google-cloud-python/commit/ba1064fd6a63ccbe8a390c0026f32c5772c728a5))
+
 ## [5.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.10.0...google-cloud-dataproc-v5.10.1) (2024-07-08)
 
 

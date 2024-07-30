@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.14...google-cloud-discoveryengine-v0.12.0) (2024-07-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* [google-cloud-discoveryengine] update sample query, sample query set patterns
+
+### Features
+
+* [google-cloud-discoveryengine] add Chunk resource in the search response ([e18fcb8](https://github.com/googleapis/google-cloud-python/commit/e18fcb82cb5d9a14c506d242417fc9bf0a2a73db))
+* [google-cloud-discoveryengine] add sample query set APIs ([e18fcb8](https://github.com/googleapis/google-cloud-python/commit/e18fcb82cb5d9a14c506d242417fc9bf0a2a73db))
+* [google-cloud-discoveryengine] Update CompletionService ([772d270](https://github.com/googleapis/google-cloud-python/commit/772d270e118adce670b7d68e0453acff50358b48))
+* [google-cloud-discoveryengine] Update SearchService ([772d270](https://github.com/googleapis/google-cloud-python/commit/772d270e118adce670b7d68e0453acff50358b48))
+* A new resource pattern value `projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}` added to the resource definition `discoveryengine.googleapis.com/SampleQuery` ([e18fcb8](https://github.com/googleapis/google-cloud-python/commit/e18fcb82cb5d9a14c506d242417fc9bf0a2a73db))
+* A new resource pattern value `projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}` added to the resource definition `discoveryengine.googleapis.com/SampleQuerySet` ([e18fcb8](https://github.com/googleapis/google-cloud-python/commit/e18fcb82cb5d9a14c506d242417fc9bf0a2a73db))
+* add evaluation APIs ([e18fcb8](https://github.com/googleapis/google-cloud-python/commit/e18fcb82cb5d9a14c506d242417fc9bf0a2a73db))
+* add sample query APIs ([e18fcb8](https://github.com/googleapis/google-cloud-python/commit/e18fcb82cb5d9a14c506d242417fc9bf0a2a73db))
+* Update SearchService ([772d270](https://github.com/googleapis/google-cloud-python/commit/772d270e118adce670b7d68e0453acff50358b48))
+
+
+### Bug Fixes
+
+* [google-cloud-discoveryengine] update sample query, sample query set patterns ([e18fcb8](https://github.com/googleapis/google-cloud-python/commit/e18fcb82cb5d9a14c506d242417fc9bf0a2a73db))
+* Retry and timeout values do not propagate in requests during pagination ([ba1064f](https://github.com/googleapis/google-cloud-python/commit/ba1064fd6a63ccbe8a390c0026f32c5772c728a5))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([772d270](https://github.com/googleapis/google-cloud-python/commit/772d270e118adce670b7d68e0453acff50358b48))
+* keep the API doc up-to-date with recent changes ([e18fcb8](https://github.com/googleapis/google-cloud-python/commit/e18fcb82cb5d9a14c506d242417fc9bf0a2a73db))
+
 ## [0.11.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.13...google-cloud-discoveryengine-v0.11.14) (2024-07-08)
 
 

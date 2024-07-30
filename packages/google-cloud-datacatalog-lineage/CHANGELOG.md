@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.3.7...google-cloud-datacatalog-lineage-v0.3.8) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([ba1064f](https://github.com/googleapis/google-cloud-python/commit/ba1064fd6a63ccbe8a390c0026f32c5772c728a5))
+
 ## [0.3.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.3.6...google-cloud-datacatalog-lineage-v0.3.7) (2024-07-08)
 
 
