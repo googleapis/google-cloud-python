@@ -7383,6 +7383,11 @@ def test_create_occurrence_rest(request_type):
             "last_scan_time": {},
             "archive_time": {},
             "sbom_status": {"sbom_state": 1, "error": "error_value"},
+            "vulnerability_attestation": {
+                "last_attempt_time": {},
+                "state": 1,
+                "error": "error_value",
+            },
         },
         "attestation": {
             "serialized_payload": b"serialized_payload_blob",
@@ -7421,6 +7426,11 @@ def test_create_occurrence_rest(request_type):
                 }
             ],
             "non_compliance_reason": "non_compliance_reason_value",
+            "version": {
+                "cpe_uri": "cpe_uri_value",
+                "benchmark_document": "benchmark_document_value",
+                "version": "version_value",
+            },
         },
         "dsse_attestation": {
             "envelope": {
@@ -8442,6 +8452,11 @@ def test_update_occurrence_rest(request_type):
             "last_scan_time": {},
             "archive_time": {},
             "sbom_status": {"sbom_state": 1, "error": "error_value"},
+            "vulnerability_attestation": {
+                "last_attempt_time": {},
+                "state": 1,
+                "error": "error_value",
+            },
         },
         "attestation": {
             "serialized_payload": b"serialized_payload_blob",
@@ -8480,6 +8495,11 @@ def test_update_occurrence_rest(request_type):
                 }
             ],
             "non_compliance_reason": "non_compliance_reason_value",
+            "version": {
+                "cpe_uri": "cpe_uri_value",
+                "benchmark_document": "benchmark_document_value",
+                "version": "version_value",
+            },
         },
         "dsse_attestation": {
             "envelope": {

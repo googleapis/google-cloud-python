@@ -609,6 +609,11 @@ class GrafeasRestTransport(GrafeasTransport):
                     "uri": "/v1/{parent=projects/*}/notes:batchCreate",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/notes:batchCreate",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_batch_create_notes(
                 request, metadata
@@ -704,6 +709,11 @@ class GrafeasRestTransport(GrafeasTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{parent=projects/*}/occurrences:batchCreate",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/occurrences:batchCreate",
                     "body": "*",
                 },
             ]
@@ -804,6 +814,11 @@ class GrafeasRestTransport(GrafeasTransport):
                     "uri": "/v1/{parent=projects/*}/notes",
                     "body": "note",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/notes",
+                    "body": "note",
+                },
             ]
             request, metadata = self._interceptor.pre_create_note(request, metadata)
             pb_request = grafeas.CreateNoteRequest.pb(request)
@@ -898,6 +913,11 @@ class GrafeasRestTransport(GrafeasTransport):
                     "uri": "/v1/{parent=projects/*}/occurrences",
                     "body": "occurrence",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/occurrences",
+                    "body": "occurrence",
+                },
             ]
             request, metadata = self._interceptor.pre_create_occurrence(
                 request, metadata
@@ -987,6 +1007,10 @@ class GrafeasRestTransport(GrafeasTransport):
                     "method": "delete",
                     "uri": "/v1/{name=projects/*/notes/*}",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/notes/*}",
+                },
             ]
             request, metadata = self._interceptor.pre_delete_note(request, metadata)
             pb_request = grafeas.DeleteNoteRequest.pb(request)
@@ -1059,6 +1083,10 @@ class GrafeasRestTransport(GrafeasTransport):
                 {
                     "method": "delete",
                     "uri": "/v1/{name=projects/*/occurrences/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/occurrences/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_delete_occurrence(
@@ -1692,6 +1720,11 @@ class GrafeasRestTransport(GrafeasTransport):
                     "uri": "/v1/{name=projects/*/notes/*}",
                     "body": "note",
                 },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{name=projects/*/locations/*/notes/*}",
+                    "body": "note",
+                },
             ]
             request, metadata = self._interceptor.pre_update_note(request, metadata)
             pb_request = grafeas.UpdateNoteRequest.pb(request)
@@ -1784,6 +1817,11 @@ class GrafeasRestTransport(GrafeasTransport):
                 {
                     "method": "patch",
                     "uri": "/v1/{name=projects/*/occurrences/*}",
+                    "body": "occurrence",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{name=projects/*/locations/*/occurrences/*}",
                     "body": "occurrence",
                 },
             ]
