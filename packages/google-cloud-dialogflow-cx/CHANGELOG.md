@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.35.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.34.1...google-cloud-dialogflow-cx-v1.35.0) (2024-07-30)
+
+
+### Features
+
+* [google-cloud-dialogflow-cx] exposed DataStoreConnectionSignals ([fbe3394](https://github.com/googleapis/google-cloud-python/commit/fbe33947332e5477afc35a31815853840598c319))
+* added support for lock flow ([fbe3394](https://github.com/googleapis/google-cloud-python/commit/fbe33947332e5477afc35a31815853840598c319))
+* added support for multi language settings in flow ([fbe3394](https://github.com/googleapis/google-cloud-python/commit/fbe33947332e5477afc35a31815853840598c319))
+* added support for oauth and service agent auth for webhook. ([fbe3394](https://github.com/googleapis/google-cloud-python/commit/fbe33947332e5477afc35a31815853840598c319))
+* added support for service directory in tools ([fbe3394](https://github.com/googleapis/google-cloud-python/commit/fbe33947332e5477afc35a31815853840598c319))
+* expose PersonalizationSettings & SpeechSettings in v3 API. ([fbe3394](https://github.com/googleapis/google-cloud-python/commit/fbe33947332e5477afc35a31815853840598c319))
+* expose store tts option in security settings ([fbe3394](https://github.com/googleapis/google-cloud-python/commit/fbe33947332e5477afc35a31815853840598c319))
+
+
+### Documentation
+
+* clarified wording around audio redaction ([fbe3394](https://github.com/googleapis/google-cloud-python/commit/fbe33947332e5477afc35a31815853840598c319))
+* clarified wording around enable_stackdriver_logging & enable_interaction_logging ([fbe3394](https://github.com/googleapis/google-cloud-python/commit/fbe33947332e5477afc35a31815853840598c319))
+* clarified wording around start point of test config. ([fbe3394](https://github.com/googleapis/google-cloud-python/commit/fbe33947332e5477afc35a31815853840598c319))
+
 ## [1.34.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.34.0...google-cloud-dialogflow-cx-v1.34.1) (2024-07-08)
 
 

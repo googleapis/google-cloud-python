@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.50.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.49.0...google-cloud-container-v2.50.0) (2024-07-30)
+
+
+### Features
+
+* [google-cloud-container] A new field ray_operator_config is added to message .google.container.v1beta1.AddonsConfig ([1cdd6d3](https://github.com/googleapis/google-cloud-python/commit/1cdd6d3d355db24fe217afbc04f3dae2b854efd9))
+* [google-cloud-container] support for Ray Clusters ([1cdd6d3](https://github.com/googleapis/google-cloud-python/commit/1cdd6d3d355db24fe217afbc04f3dae2b854efd9))
+* A new message `RayClusterLoggingConfig` is added ([1cdd6d3](https://github.com/googleapis/google-cloud-python/commit/1cdd6d3d355db24fe217afbc04f3dae2b854efd9))
+* A new message `RayClusterMonitoringConfig` is added ([1cdd6d3](https://github.com/googleapis/google-cloud-python/commit/1cdd6d3d355db24fe217afbc04f3dae2b854efd9))
+* A new message `RayOperatorConfig` is added ([1cdd6d3](https://github.com/googleapis/google-cloud-python/commit/1cdd6d3d355db24fe217afbc04f3dae2b854efd9))
+
+
+### Documentation
+
+* [google-cloud-container] minor updates to reference documentation ([#12919](https://github.com/googleapis/google-cloud-python/issues/12919)) ([732c303](https://github.com/googleapis/google-cloud-python/commit/732c303108a453b838e7f3c0fe0450ddf48eb2df))
+* A comment for field `max_pods_per_node` in message `.google.container.v1beta1.AdditionalPodNetworkConfig` is changed ([1cdd6d3](https://github.com/googleapis/google-cloud-python/commit/1cdd6d3d355db24fe217afbc04f3dae2b854efd9))
+* A comment for field `secondary_pod_range` in message `.google.container.v1beta1.AdditionalPodNetworkConfig` is changed ([1cdd6d3](https://github.com/googleapis/google-cloud-python/commit/1cdd6d3d355db24fe217afbc04f3dae2b854efd9))
+* A comment for field `subnetwork` in message `.google.container.v1beta1.AdditionalPodNetworkConfig` is changed ([1cdd6d3](https://github.com/googleapis/google-cloud-python/commit/1cdd6d3d355db24fe217afbc04f3dae2b854efd9))
+* trivial updates ([1cdd6d3](https://github.com/googleapis/google-cloud-python/commit/1cdd6d3d355db24fe217afbc04f3dae2b854efd9))
+
 ## [2.49.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.48.0...google-cloud-container-v2.49.0) (2024-07-11)
 
 

@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.19.1...google-cloud-deploy-v2.0.0) (2024-07-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove an API that was mistakenly made public
+
+### Features
+
+* [google-cloud-deploy] added support for deploy policies ([40a5c2a](https://github.com/googleapis/google-cloud-python/commit/40a5c2a1a9b8061615eedc24d0ff55e1c8bdffe9))
+* [google-cloud-deploy] added support for new custom target type and deploy policy platform logs ([40a5c2a](https://github.com/googleapis/google-cloud-python/commit/40a5c2a1a9b8061615eedc24d0ff55e1c8bdffe9))
+* Add support for different Pod selector labels when doing canaries ([cf7022d](https://github.com/googleapis/google-cloud-python/commit/cf7022d39d41599023db6f15aa29b625e398270a))
+* added support for configuring a proxy_url to a Kubernetes server ([40a5c2a](https://github.com/googleapis/google-cloud-python/commit/40a5c2a1a9b8061615eedc24d0ff55e1c8bdffe9))
+
+
+### Bug Fixes
+
+* Remove an API that was mistakenly made public ([cf7022d](https://github.com/googleapis/google-cloud-python/commit/cf7022d39d41599023db6f15aa29b625e398270a))
+
+
+### Documentation
+
+* small corrections to Cloud Deploy API documentation ([40a5c2a](https://github.com/googleapis/google-cloud-python/commit/40a5c2a1a9b8061615eedc24d0ff55e1c8bdffe9))
+
 ## [1.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.19.0...google-cloud-deploy-v1.19.1) (2024-07-08)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.11.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.8...google-cloud-bigquery-migration-v0.11.9) (2024-07-30)
+
+
+### Features
+
+* Update MS API stubs with Unified API ([33e9b14](https://github.com/googleapis/google-cloud-python/commit/33e9b145edc2c87be5244a092b529bc88c249696))
+
+
+### Documentation
+
+* A comment for field `name` in message `.google.cloud.bigquery.migration.v2.MigrationWorkflow` is changed to include 'Identifier' ([33e9b14](https://github.com/googleapis/google-cloud-python/commit/33e9b145edc2c87be5244a092b529bc88c249696))
+* A comment for field `translation_config_details` in message `.google.cloud.bigquery.migration.v2.MigrationTask` is changed ([33e9b14](https://github.com/googleapis/google-cloud-python/commit/33e9b145edc2c87be5244a092b529bc88c249696))
+* A comment for field `type` in message `.google.cloud.bigquery.migration.v2.MigrationTask` is changed to include new supported types ([33e9b14](https://github.com/googleapis/google-cloud-python/commit/33e9b145edc2c87be5244a092b529bc88c249696))
+
 ## [0.11.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.7...google-cloud-bigquery-migration-v0.11.8) (2024-07-08)
 
 

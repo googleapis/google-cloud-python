@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.22.9](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.8...google-analytics-admin-v0.22.9) (2024-07-30)
+
+
+### Features
+
+* [google-analytics-admin] add GetKeyEvent, CreateKeyEvent, ListKeyEvents, UpdateKeyEvent, DeleteKeyEvent methods to the Admin API v1beta ([7b156ee](https://github.com/googleapis/google-cloud-python/commit/7b156ee7b233afc0f5f2050df7c654cad82772c9))
+* add the `default_conversion_value` field to the `ConversionEvent` resource in the Admin API v1beta ([7b156ee](https://github.com/googleapis/google-cloud-python/commit/7b156ee7b233afc0f5f2050df7c654cad82772c9))
+* add the `gmp_organization` field to the `Account` resource in the Admin API v1beta ([7b156ee](https://github.com/googleapis/google-cloud-python/commit/7b156ee7b233afc0f5f2050df7c654cad82772c9))
+* add the `include_all_users` and `expand_groups` fields to the `RunAccessReportRequest` resource in the Admin API v1beta ([7b156ee](https://github.com/googleapis/google-cloud-python/commit/7b156ee7b233afc0f5f2050df7c654cad82772c9))
+* mark `GetConversionEvent`, `CreateConversionEvent`, `ListConversionEvents`, `UpdateConversionEvent`, `DeleteConversionEvent` methods as deprecated in the Admin API v1beta ([7b156ee](https://github.com/googleapis/google-cloud-python/commit/7b156ee7b233afc0f5f2050df7c654cad82772c9))
+
+
+### Documentation
+
+* change comment for field `property_type` in message `Property` ([7b156ee](https://github.com/googleapis/google-cloud-python/commit/7b156ee7b233afc0f5f2050df7c654cad82772c9))
+* change comment for methods `DeleteAccount`, `DeleteProperty`, and `RunAccessReport` in service `AnalyticsAdminService` ([7b156ee](https://github.com/googleapis/google-cloud-python/commit/7b156ee7b233afc0f5f2050df7c654cad82772c9))
+* change comment in fields `account` and `property` in message `SearchChangeHistoryEventsRequest` ([7b156ee](https://github.com/googleapis/google-cloud-python/commit/7b156ee7b233afc0f5f2050df7c654cad82772c9))
+
 ## [0.22.8](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.7...google-analytics-admin-v0.22.8) (2024-07-08)
 
 

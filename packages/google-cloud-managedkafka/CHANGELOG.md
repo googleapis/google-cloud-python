@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.1...google-cloud-managedkafka-v0.1.2) (2024-07-30)
+
+
+### Documentation
+
+* [google-cloud-managedkafka] update values allowed in kms_key ([c28cdc3](https://github.com/googleapis/google-cloud-python/commit/c28cdc330ce43c35cb87f0c881ed78a60ad657bc))
+* [google-cloud-managedkafka] update values allowed in kms_key ([#12922](https://github.com/googleapis/google-cloud-python/issues/12922)) ([c28cdc3](https://github.com/googleapis/google-cloud-python/commit/c28cdc330ce43c35cb87f0c881ed78a60ad657bc))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.0...google-cloud-managedkafka-v0.1.1) (2024-07-08)
 
 

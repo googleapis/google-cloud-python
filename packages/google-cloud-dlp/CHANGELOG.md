@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.18.1...google-cloud-dlp-v3.19.0) (2024-07-30)
+
+
+### Features
+
+* add Cloud Storage discovery support ([aed54ad](https://github.com/googleapis/google-cloud-python/commit/aed54ad804c496221b1feb8208288cc866af32d6))
+
+
+### Documentation
+
+* Updated method documentation ([aed54ad](https://github.com/googleapis/google-cloud-python/commit/aed54ad804c496221b1feb8208288cc866af32d6))
+
 ## [3.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.18.0...google-cloud-dlp-v3.18.1) (2024-07-08)
 
 

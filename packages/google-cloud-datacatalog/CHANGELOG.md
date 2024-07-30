@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.19.1...google-cloud-datacatalog-v3.20.0) (2024-07-30)
+
+
+### Features
+
+* [google-cloud-datacatalog] add DataplexTransferStatus enum and field to TagTemplate ([8a2814b](https://github.com/googleapis/google-cloud-python/commit/8a2814bc35b17bbf2611de1a43dd5239f87ded24))
+
+
+### Documentation
+
+* update field comments for updated IDENTIFIER field behavior ([8a2814b](https://github.com/googleapis/google-cloud-python/commit/8a2814bc35b17bbf2611de1a43dd5239f87ded24))
+
 ## [3.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.19.0...google-cloud-datacatalog-v3.19.1) (2024-07-08)
 
 

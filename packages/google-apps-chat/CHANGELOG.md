@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.8...google-apps-chat-v0.1.9) (2024-07-30)
+
+
+### Features
+
+* [google-apps-chat] add GetSpaceEvent and ListSpaceEvents APIs ([#12904](https://github.com/googleapis/google-cloud-python/issues/12904)) ([c6f70a6](https://github.com/googleapis/google-cloud-python/commit/c6f70a609e2f94161fb8ead8fcbfb49b3734d4d4))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.7...google-apps-chat-v0.1.8) (2024-07-08)
 
 
