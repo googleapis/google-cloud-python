@@ -304,49 +304,6 @@ class CloudDeployTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_deploy_policy: gapic_v1.method.wrap_method(
-                self.create_deploy_policy,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_deploy_policy: gapic_v1.method.wrap_method(
-                self.update_deploy_policy,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.delete_deploy_policy: gapic_v1.method.wrap_method(
-                self.delete_deploy_policy,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_deploy_policies: gapic_v1.method.wrap_method(
-                self.list_deploy_policies,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_deploy_policy: gapic_v1.method.wrap_method(
-                self.get_deploy_policy,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
             self.approve_rollout: gapic_v1.method.wrap_method(
                 self.approve_rollout,
                 default_timeout=60.0,
@@ -739,54 +696,6 @@ class CloudDeployTransport(abc.ABC):
             cloud_deploy.AbandonReleaseResponse,
             Awaitable[cloud_deploy.AbandonReleaseResponse],
         ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def create_deploy_policy(
-        self,
-    ) -> Callable[
-        [cloud_deploy.CreateDeployPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_deploy_policy(
-        self,
-    ) -> Callable[
-        [cloud_deploy.UpdateDeployPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_deploy_policy(
-        self,
-    ) -> Callable[
-        [cloud_deploy.DeleteDeployPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_deploy_policies(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListDeployPoliciesRequest],
-        Union[
-            cloud_deploy.ListDeployPoliciesResponse,
-            Awaitable[cloud_deploy.ListDeployPoliciesResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_deploy_policy(
-        self,
-    ) -> Callable[
-        [cloud_deploy.GetDeployPolicyRequest],
-        Union[cloud_deploy.DeployPolicy, Awaitable[cloud_deploy.DeployPolicy]],
     ]:
         raise NotImplementedError()
 
