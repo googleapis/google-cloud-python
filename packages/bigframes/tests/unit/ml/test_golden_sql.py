@@ -78,6 +78,7 @@ def mock_X(mock_y, mock_session):
         ["index_column_label"],
     )
     mock_X.join(mock_y).sql = "input_X_y_sql"
+    mock_X.join(mock_y).cache.return_value = mock_X.join(mock_y)
     mock_X.join(mock_y)._to_sql_query.return_value = (
         "input_X_y_sql",
         ["index_column_id"],

@@ -2307,11 +2307,11 @@ class Block:
                 f"Only how='outer','left','right','inner' currently supported. {constants.FEEDBACK_LINK}"
             )
         # Handle null index, which only supports row join
-        if (self.index.nlevels == other.index.nlevels == 0) and not block_identity_join:
-            if not block_identity_join:
-                result = try_row_join(self, other, how=how)
-                if result is not None:
-                    return result
+        # This is the canonical way of aligning on null index, so always allow (ignore block_identity_join)
+        if self.index.nlevels == other.index.nlevels == 0:
+            result = try_row_join(self, other, how=how)
+            if result is not None:
+                return result
             raise bigframes.exceptions.NullIndexError(
                 "Cannot implicitly align objects. Set an explicit index using set_index."
             )

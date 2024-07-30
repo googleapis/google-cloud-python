@@ -201,6 +201,20 @@ def test_null_index_stack(scalars_df_null_index, scalars_pandas_df_default_index
     )
 
 
+def test_null_index_series_self_join(
+    scalars_df_null_index, scalars_pandas_df_default_index
+):
+    bf_result = scalars_df_null_index[["int64_col"]].join(
+        scalars_df_null_index[["int64_too"]]
+    )
+    pd_result = scalars_pandas_df_default_index[["int64_col"]].join(
+        scalars_pandas_df_default_index[["int64_too"]]
+    )
+    pd.testing.assert_frame_equal(
+        bf_result.to_pandas(), pd_result.reset_index(drop=True), check_dtype=False
+    )
+
+
 def test_null_index_series_self_aligns(
     scalars_df_null_index, scalars_pandas_df_default_index
 ):
