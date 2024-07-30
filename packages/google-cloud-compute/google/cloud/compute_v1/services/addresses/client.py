@@ -761,6 +761,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1578,6 +1580,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

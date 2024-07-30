@@ -1048,6 +1048,8 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1469,6 +1471,8 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

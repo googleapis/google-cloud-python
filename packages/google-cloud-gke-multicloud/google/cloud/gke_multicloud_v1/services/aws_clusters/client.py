@@ -1317,6 +1317,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2358,6 +2360,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

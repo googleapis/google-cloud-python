@@ -1277,6 +1277,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1505,6 +1507,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1985,6 +1989,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3429,6 +3435,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

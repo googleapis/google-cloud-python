@@ -1189,6 +1189,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1754,6 +1756,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2430,6 +2434,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

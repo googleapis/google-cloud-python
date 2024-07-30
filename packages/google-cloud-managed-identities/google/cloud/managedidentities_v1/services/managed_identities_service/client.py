@@ -1107,6 +1107,8 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

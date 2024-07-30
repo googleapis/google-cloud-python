@@ -860,6 +860,8 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -968,6 +970,8 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

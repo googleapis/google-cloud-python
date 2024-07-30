@@ -1161,6 +1161,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1963,6 +1965,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2617,6 +2621,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2842,6 +2848,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2972,6 +2980,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3634,6 +3644,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4003,6 +4015,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4670,6 +4684,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5328,6 +5344,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6383,6 +6401,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6945,6 +6965,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -7234,6 +7256,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -7583,6 +7607,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -8159,6 +8185,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -9573,6 +9601,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -9970,6 +10000,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -10377,6 +10409,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

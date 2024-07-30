@@ -899,6 +899,8 @@ class ContactServiceClient(metaclass=ContactServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

@@ -1316,6 +1316,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2176,6 +2178,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3374,6 +3378,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

@@ -770,6 +770,8 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

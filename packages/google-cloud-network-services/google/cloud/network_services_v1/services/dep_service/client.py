@@ -820,6 +820,8 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1471,6 +1473,8 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
