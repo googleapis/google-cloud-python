@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.13...google-cloud-network-services-v0.5.14) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([d95af77](https://github.com/googleapis/google-cloud-python/commit/d95af77248f0935a5fe3dba1fccc75124c8b1451))
+
 ## [0.5.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.12...google-cloud-network-services-v0.5.13) (2024-07-08)
 
 

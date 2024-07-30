@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.14.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-websecurityscanner-v1.14.4...google-cloud-websecurityscanner-v1.14.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([4adddf4](https://github.com/googleapis/google-cloud-python/commit/4adddf4d90634e454ee006774bfc631fc12c1700))
+
 ## [1.14.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-websecurityscanner-v1.14.3...google-cloud-websecurityscanner-v1.14.4) (2024-07-08)
 
 

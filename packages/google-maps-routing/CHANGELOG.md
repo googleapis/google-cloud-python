@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.10](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.9...google-maps-routing-v0.6.10) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([4adddf4](https://github.com/googleapis/google-cloud-python/commit/4adddf4d90634e454ee006774bfc631fc12c1700))
+
 ## [0.6.9](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.8...google-maps-routing-v0.6.9) (2024-07-08)
 
 

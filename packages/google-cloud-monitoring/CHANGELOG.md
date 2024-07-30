@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.22.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.22.1...google-cloud-monitoring-v2.22.2) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([d95af77](https://github.com/googleapis/google-cloud-python/commit/d95af77248f0935a5fe3dba1fccc75124c8b1451))
+
 ## [2.22.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.22.0...google-cloud-monitoring-v2.22.1) (2024-07-08)
 
 

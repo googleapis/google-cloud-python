@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.8.11...google-cloud-dataflow-client-v0.8.12) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([ba1064f](https://github.com/googleapis/google-cloud-python/commit/ba1064fd6a63ccbe8a390c0026f32c5772c728a5))
+
 ## [0.8.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.8.10...google-cloud-dataflow-client-v0.8.11) (2024-07-08)
 
 

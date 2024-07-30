@@ -1102,9 +1102,10 @@ class MultiColumnDatatypeChange(proto.Message):
             if not specified and relevant uses the source
             column precision.
         override_fractional_seconds_precision (int):
-            Optional. Column fractional seconds precision
-            - used only for timestamp based datatypes - if
-              not specified and relevant uses the source
+            Optional. Column fractional seconds precision:
+
+            - used only for timestamp based datatypes
+            - if not specified and relevant uses the source
               column fractional seconds precision.
         custom_features (google.protobuf.struct_pb2.Struct):
             Optional. Custom engine specific features.

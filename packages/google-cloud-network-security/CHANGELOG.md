@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.10...google-cloud-network-security-v0.9.11) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([d95af77](https://github.com/googleapis/google-cloud-python/commit/d95af77248f0935a5fe3dba1fccc75124c8b1451))
+
 ## [0.9.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.9...google-cloud-network-security-v0.9.10) (2024-07-08)
 
 

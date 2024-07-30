@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-fusion-v1.10.4...google-cloud-data-fusion-v1.10.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([a6f7356](https://github.com/googleapis/google-cloud-python/commit/a6f7356f1549721f9fab83d4dcfa226cec1965d0))
+
 ## [1.10.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-fusion-v1.10.3...google-cloud-data-fusion-v1.10.4) (2024-07-08)
 
 

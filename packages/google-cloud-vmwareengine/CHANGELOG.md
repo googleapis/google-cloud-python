@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v1.4.4...google-cloud-vmwareengine-v1.5.0) (2024-07-30)
+
+
+### Features
+
+* [google-cloud-vmwareengine] Adding autoscaling settings ([#12913](https://github.com/googleapis/google-cloud-python/issues/12913)) ([c95d4e7](https://github.com/googleapis/google-cloud-python/commit/c95d4e7eb74a3b3eb23b28ae6a62b0483af12f06))
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([9cdac77](https://github.com/googleapis/google-cloud-python/commit/9cdac77b20a8c9720aa668639e3ca6d1e759a2de))
+
 ## [1.4.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v1.4.3...google-cloud-vmwareengine-v1.4.4) (2024-07-08)
 
 

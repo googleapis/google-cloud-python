@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.26.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.26.2...google-cloud-asset-v3.26.3) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([6e83a37](https://github.com/googleapis/google-cloud-python/commit/6e83a37612d9eb951cb0ef1e372ef4241f8afa59))
+
 ## [3.26.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.26.1...google-cloud-asset-v3.26.2) (2024-07-08)
 
 

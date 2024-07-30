@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.2...google-maps-fleetengine-delivery-v0.2.3) (2024-07-30)
+
+
+### Documentation
+
+* [google-maps-fleetengine-delivery] document that delivery_vehicle.type can be set on CreateDeliveryVehicle ([#12959](https://github.com/googleapis/google-cloud-python/issues/12959)) ([895cbec](https://github.com/googleapis/google-cloud-python/commit/895cbec764f18fd5b775e0544d1eb0ac9506acab))
+
 ## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.1...google-maps-fleetengine-delivery-v0.2.2) (2024-07-11)
 
 

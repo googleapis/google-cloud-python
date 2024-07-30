@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.17.4...google-cloud-contact-center-insights-v1.17.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([a6f7356](https://github.com/googleapis/google-cloud-python/commit/a6f7356f1549721f9fab83d4dcfa226cec1965d0))
+
 ## [1.17.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.17.3...google-cloud-contact-center-insights-v1.17.4) (2024-07-08)
 
 

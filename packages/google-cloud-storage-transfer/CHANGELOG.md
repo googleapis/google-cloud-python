@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.11.4...google-cloud-storage-transfer-v1.11.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([9cdac77](https://github.com/googleapis/google-cloud-python/commit/9cdac77b20a8c9720aa668639e3ca6d1e759a2de))
+
 ## [1.11.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.11.3...google-cloud-storage-transfer-v1.11.4) (2024-07-08)
 
 

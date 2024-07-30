@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.12...google-cloud-bigquery-data-exchange-v0.5.13) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([6e83a37](https://github.com/googleapis/google-cloud-python/commit/6e83a37612d9eb951cb0ef1e372ef4241f8afa59))
+
 ## [0.5.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.11...google-cloud-bigquery-data-exchange-v0.5.12) (2024-07-08)
 
 

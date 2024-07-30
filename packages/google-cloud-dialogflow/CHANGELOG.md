@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.30.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.30.1...google-cloud-dialogflow-v2.30.2) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([ba1064f](https://github.com/googleapis/google-cloud-python/commit/ba1064fd6a63ccbe8a390c0026f32c5772c728a5))
+
 ## [2.30.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.30.0...google-cloud-dialogflow-v2.30.1) (2024-07-08)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vpc-access-v1.10.4...google-cloud-vpc-access-v1.10.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([4adddf4](https://github.com/googleapis/google-cloud-python/commit/4adddf4d90634e454ee006774bfc631fc12c1700))
+
 ## [1.10.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vpc-access-v1.10.3...google-cloud-vpc-access-v1.10.4) (2024-07-08)
 
 

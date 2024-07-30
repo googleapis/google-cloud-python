@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.7.4...google-cloud-bare-metal-solution-v1.7.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([6e83a37](https://github.com/googleapis/google-cloud-python/commit/6e83a37612d9eb951cb0ef1e372ef4241f8afa59))
+
 ## [1.7.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.7.3...google-cloud-bare-metal-solution-v1.7.4) (2024-07-08)
 
 

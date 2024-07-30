@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.10.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datalabeling-v1.10.4...google-cloud-datalabeling-v1.10.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([ba1064f](https://github.com/googleapis/google-cloud-python/commit/ba1064fd6a63ccbe8a390c0026f32c5772c728a5))
+
 ## [1.10.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datalabeling-v1.10.3...google-cloud-datalabeling-v1.10.4) (2024-07-08)
 
 

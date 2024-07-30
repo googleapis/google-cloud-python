@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-clientgateways-v0.4.9...google-cloud-beyondcorp-clientgateways-v0.4.10) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([6e83a37](https://github.com/googleapis/google-cloud-python/commit/6e83a37612d9eb951cb0ef1e372ef4241f8afa59))
+
 ## [0.4.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-clientgateways-v0.4.8...google-cloud-beyondcorp-clientgateways-v0.4.9) (2024-07-08)
 
 

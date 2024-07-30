@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.1.3...google-apps-card-v0.1.4) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([c6eeae0](https://github.com/googleapis/google-cloud-python/commit/c6eeae00de802d98badd3de879ce5e870ba60a3a))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.1.2...google-apps-card-v0.1.3) (2024-07-08)
 
 

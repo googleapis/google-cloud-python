@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.1...google-cloud-parallelstore-v0.2.2) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([d95af77](https://github.com/googleapis/google-cloud-python/commit/d95af77248f0935a5fe3dba1fccc75124c8b1451))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.0...google-cloud-parallelstore-v0.2.1) (2024-07-08)
 
 

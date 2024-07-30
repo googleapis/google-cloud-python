@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.11...google-cloud-alloydb-v0.3.12) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([c6eeae0](https://github.com/googleapis/google-cloud-python/commit/c6eeae00de802d98badd3de879ce5e870ba60a3a))
+
 ## [0.3.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.10...google-cloud-alloydb-v0.3.11) (2024-07-08)
 
 

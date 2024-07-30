@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.7...google-cloud-securesourcemanager-v0.1.8) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([52db52e](https://github.com/googleapis/google-cloud-python/commit/52db52ea05c6883b07956d323fdd1d3029806374))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.6...google-cloud-securesourcemanager-v0.1.7) (2024-07-10)
 
 

@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.10.1...grafeas-v1.11.0) (2024-07-30)
+
+
+### Features
+
+* A new field `version` is added to message `.grafeas.v1.ComplianceOccurrence` ([5feea7e](https://github.com/googleapis/google-cloud-python/commit/5feea7ea9a5c20c13f57c5d51b4e0cedeeffa709))
+* A new field `vulnerability_attestation` is added to message `.grafeas.v1.DiscoveryOccurrence` ([5feea7e](https://github.com/googleapis/google-cloud-python/commit/5feea7ea9a5c20c13f57c5d51b4e0cedeeffa709))
+* A new message `VulnerabilityAttestation` is added ([5feea7e](https://github.com/googleapis/google-cloud-python/commit/5feea7ea9a5c20c13f57c5d51b4e0cedeeffa709))
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([11c0629](https://github.com/googleapis/google-cloud-python/commit/11c06293cef3391f5fb433d5de26c066943082d0))
+
 ## [1.10.1](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.10.0...grafeas-v1.10.1) (2024-07-08)
 
 

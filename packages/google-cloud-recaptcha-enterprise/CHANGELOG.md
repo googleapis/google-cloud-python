@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.21.1...google-cloud-recaptcha-enterprise-v1.21.2) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([42c4d04](https://github.com/googleapis/google-cloud-python/commit/42c4d04ee1362ba0ed0f1b6a134ac8e409875b63))
+
 ## [1.21.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.21.0...google-cloud-recaptcha-enterprise-v1.21.1) (2024-07-08)
 
 

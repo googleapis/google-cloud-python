@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.33.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.33.0...google-cloud-securitycenter-v1.33.1) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([52db52e](https://github.com/googleapis/google-cloud-python/commit/52db52ea05c6883b07956d323fdd1d3029806374))
+
 ## [1.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.32.1...google-cloud-securitycenter-v1.33.0) (2024-07-09)
 
 

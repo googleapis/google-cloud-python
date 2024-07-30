@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.24.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.24.1...google-cloud-build-v3.24.2) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([a6f7356](https://github.com/googleapis/google-cloud-python/commit/a6f7356f1549721f9fab83d4dcfa226cec1965d0))
+
 ## [3.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.24.0...google-cloud-build-v3.24.1) (2024-07-08)
 
 

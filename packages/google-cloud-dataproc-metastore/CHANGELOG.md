@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-metastore-v1.15.4...google-cloud-dataproc-metastore-v1.15.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([ba1064f](https://github.com/googleapis/google-cloud-python/commit/ba1064fd6a63ccbe8a390c0026f32c5772c728a5))
+
 ## [1.15.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-metastore-v1.15.3...google-cloud-dataproc-metastore-v1.15.4) (2024-07-08)
 
 
