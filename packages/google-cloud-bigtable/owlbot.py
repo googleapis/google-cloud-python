@@ -143,6 +143,17 @@ insert(
     escape='"'
 )
 
+# ----------------------------------------------------------------------------
+# Patch duplicate routing header: https://github.com/googleapis/gapic-generator-python/issues/2078
+# ----------------------------------------------------------------------------
+for file in ["client.py", "async_client.py"]:
+    s.replace(
+        f"google/cloud/bigtable_v2/services/bigtable/{file}",
+        "metadata \= tuple\(metadata\) \+ \(",
+        """metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata += ("""
+    )
 
 # ----------------------------------------------------------------------------
 # Samples templates
