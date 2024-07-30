@@ -991,6 +991,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1217,6 +1219,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1453,6 +1457,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1676,6 +1682,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1900,6 +1908,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2133,6 +2143,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

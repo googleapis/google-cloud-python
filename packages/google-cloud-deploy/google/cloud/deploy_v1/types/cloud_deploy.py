@@ -163,9 +163,6 @@ __protobuf__ = proto.module(
         "PromoteReleaseRule",
         "AdvanceRolloutRule",
         "RepairRolloutRule",
-        "RepairMode",
-        "Retry",
-        "Rollback",
         "AutomationRuleCondition",
         "CreateAutomationRequest",
         "UpdateAutomationRequest",
@@ -241,8 +238,8 @@ class RepairState(proto.Enum):
             The ``repair`` action is in progress.
         REPAIR_STATE_PENDING (5):
             The ``repair`` action is pending.
-        REPAIR_STATE_SKIPPED (6):
-            The ``repair`` action was skipped.
+        REPAIR_STATE_ABORTED (7):
+            The ``repair`` action was aborted.
     """
     REPAIR_STATE_UNSPECIFIED = 0
     REPAIR_STATE_SUCCEEDED = 1
@@ -250,7 +247,7 @@ class RepairState(proto.Enum):
     REPAIR_STATE_FAILED = 3
     REPAIR_STATE_IN_PROGRESS = 4
     REPAIR_STATE_PENDING = 5
-    REPAIR_STATE_SKIPPED = 6
+    REPAIR_STATE_ABORTED = 7
 
 
 class DeliveryPipeline(proto.Message):
@@ -780,6 +777,11 @@ class KubernetesConfig(proto.Message):
                 deployment. If specified, must be between 15s
                 and 3600s. If unspecified, there is no cutback
                 time.
+            pod_selector_label (str):
+                Optional. The label to use when selecting
+                Pods for the Deployment and Service resources.
+                This label must already be present in both
+                resources.
         """
 
         http_route: str = proto.Field(
@@ -804,6 +806,10 @@ class KubernetesConfig(proto.Message):
             number=5,
             message=duration_pb2.Duration,
         )
+        pod_selector_label: str = proto.Field(
+            proto.STRING,
+            number=6,
+        )
 
     class ServiceNetworking(proto.Message):
         r"""Information about the Kubernetes Service networking
@@ -823,6 +829,10 @@ class KubernetesConfig(proto.Message):
                 of total Pods used for the deployment strategy
                 to the number of Pods the Deployment has on the
                 cluster.
+            pod_selector_label (str):
+                Optional. The label to use when selecting
+                Pods for the Deployment resource. This label
+                must already be present in the Deployment.
         """
 
         service: str = proto.Field(
@@ -836,6 +846,10 @@ class KubernetesConfig(proto.Message):
         disable_pod_overprovisioning: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        pod_selector_label: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     gateway_service_mesh: GatewayServiceMesh = proto.Field(
@@ -2408,7 +2422,7 @@ class SkaffoldModules(proto.Message):
         Attributes:
             source (str):
                 Required. Cloud Storage source paths to copy recursively.
-                For example, providing `gs://my-bucket/dir/configs/*` will
+                For example, providing "gs://my-bucket/dir/configs/*" will
                 result in Skaffold copying all files within the
                 "dir/configs" directory in the bucket "my-bucket".
             path (str):
@@ -6490,15 +6504,6 @@ class RepairRolloutRule(proto.Message):
             Required. ID of the rule. This id must be unique in the
             ``Automation`` resource to which this rule belongs. The
             format is ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``.
-        source_phases (MutableSequence[str]):
-            Optional. Phases within which jobs are subject to automatic
-            repair actions on failure. Proceeds only after phase name
-            matched any one in the list, or for all phases if
-            unspecified. This value must consist of lower-case letters,
-            numbers, and hyphens, start with a letter and end with a
-            letter or a number, and have a max length of 63 characters.
-            In other words, it must match the following regex:
-            ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
         jobs (MutableSequence[str]):
             Optional. Jobs to repair. Proceeds only after job name
             matched any one in the list, or for all jobs if unspecified
@@ -6508,9 +6513,6 @@ class RepairRolloutRule(proto.Message):
             with a letter and end with a letter or a number, and have a
             max length of 63 characters. In other words, it must match
             the following regex: ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
-        repair_modes (MutableSequence[google.cloud.deploy_v1.types.RepairMode]):
-            Required. Defines the types of automatic
-            repair actions for failed jobs.
         condition (google.cloud.deploy_v1.types.AutomationRuleCondition):
             Output only. Information around the state of
             the 'Automation' rule.
@@ -6520,107 +6522,14 @@ class RepairRolloutRule(proto.Message):
         proto.STRING,
         number=1,
     )
-    source_phases: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=2,
-    )
     jobs: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
-    )
-    repair_modes: MutableSequence["RepairMode"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="RepairMode",
     )
     condition: "AutomationRuleCondition" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="AutomationRuleCondition",
-    )
-
-
-class RepairMode(proto.Message):
-    r"""Configuration of the repair action.
-
-    This message has `oneof`_ fields (mutually exclusive fields).
-    For each oneof, at most one member field can be set at the same time.
-    Setting any member of the oneof automatically clears all other
-    members.
-
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
-    Attributes:
-        retry (google.cloud.deploy_v1.types.Retry):
-            Optional. Retries a failed job.
-
-            This field is a member of `oneof`_ ``mode``.
-        rollback (google.cloud.deploy_v1.types.Rollback):
-            Optional. Rolls back a ``Rollout``.
-
-            This field is a member of `oneof`_ ``mode``.
-    """
-
-    retry: "Retry" = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        oneof="mode",
-        message="Retry",
-    )
-    rollback: "Rollback" = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        oneof="mode",
-        message="Rollback",
-    )
-
-
-class Retry(proto.Message):
-    r"""Retries the failed job.
-
-    Attributes:
-        attempts (int):
-            Required. Total number of retries. Retry is
-            skipped if set to 0; The minimum value is 1, and
-            the maximum value is 10.
-        wait (google.protobuf.duration_pb2.Duration):
-            Optional. How long to wait for the first
-            retry. Default is 0, and the maximum value is
-            14d.
-        backoff_mode (google.cloud.deploy_v1.types.BackoffMode):
-            Optional. The pattern of how wait time will be increased.
-            Default is linear. Backoff mode will be ignored if ``wait``
-            is 0.
-    """
-
-    attempts: int = proto.Field(
-        proto.INT64,
-        number=1,
-    )
-    wait: duration_pb2.Duration = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message=duration_pb2.Duration,
-    )
-    backoff_mode: "BackoffMode" = proto.Field(
-        proto.ENUM,
-        number=3,
-        enum="BackoffMode",
-    )
-
-
-class Rollback(proto.Message):
-    r"""Rolls back a ``Rollout``.
-
-    Attributes:
-        destination_phase (str):
-            Optional. The starting phase ID for the ``Rollout``. If
-            unspecified, the ``Rollout`` will start in the stable phase.
-    """
-
-    destination_phase: str = proto.Field(
-        proto.STRING,
-        number=1,
     )
 
 
@@ -7206,27 +7115,34 @@ class RepairRolloutOperation(proto.Message):
         rollout (str):
             Output only. The name of the rollout that initiates the
             ``AutomationRun``.
-        current_repair_mode_index (int):
-            Output only. The index of the current repair
-            action in the repair sequence.
         repair_phases (MutableSequence[google.cloud.deploy_v1.types.RepairPhase]):
             Output only. Records of the repair attempts.
             Each repair phase may have multiple retry
             attempts or single rollback attempt.
+        phase_id (str):
+            Output only. The phase ID of the phase that
+            includes the job being repaired.
+        job_id (str):
+            Output only. The job ID for the Job to
+            repair.
     """
 
     rollout: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    current_repair_mode_index: int = proto.Field(
-        proto.INT64,
-        number=2,
-    )
     repair_phases: MutableSequence["RepairPhase"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="RepairPhase",
+    )
+    phase_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    job_id: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -7279,11 +7195,6 @@ class RetryPhase(proto.Message):
         backoff_mode (google.cloud.deploy_v1.types.BackoffMode):
             Output only. The pattern of how the wait time
             of the retry attempt is calculated.
-        phase_id (str):
-            Output only. The phase ID of the phase that
-            includes the job being retried.
-        job_id (str):
-            Output only. The job ID for the Job to retry.
         attempts (MutableSequence[google.cloud.deploy_v1.types.RetryAttempt]):
             Output only. Detail of a retry action.
     """
@@ -7296,14 +7207,6 @@ class RetryPhase(proto.Message):
         proto.ENUM,
         number=2,
         enum="BackoffMode",
-    )
-    phase_id: str = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-    job_id: str = proto.Field(
-        proto.STRING,
-        number=4,
     )
     attempts: MutableSequence["RetryAttempt"] = proto.RepeatedField(
         proto.MESSAGE,

@@ -761,6 +761,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2072,6 +2074,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2186,6 +2190,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

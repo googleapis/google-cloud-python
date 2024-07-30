@@ -1052,6 +1052,8 @@ class SpeechClient(metaclass=SpeechClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2548,6 +2550,8 @@ class SpeechClient(metaclass=SpeechClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3294,6 +3298,8 @@ class SpeechClient(metaclass=SpeechClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

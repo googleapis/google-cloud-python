@@ -1028,6 +1028,8 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1246,6 +1248,8 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1584,6 +1588,8 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

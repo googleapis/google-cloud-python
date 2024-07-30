@@ -1192,6 +1192,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1910,6 +1912,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2794,6 +2798,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

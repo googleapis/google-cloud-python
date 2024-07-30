@@ -1042,6 +1042,8 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1144,6 +1146,8 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

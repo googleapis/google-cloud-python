@@ -1657,6 +1657,8 @@ class RegionInstantSnapshotsClient(metaclass=RegionInstantSnapshotsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

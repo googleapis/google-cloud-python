@@ -829,6 +829,8 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -943,6 +945,8 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

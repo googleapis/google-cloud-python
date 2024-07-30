@@ -941,6 +941,8 @@ class CreativeServiceClient(metaclass=CreativeServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

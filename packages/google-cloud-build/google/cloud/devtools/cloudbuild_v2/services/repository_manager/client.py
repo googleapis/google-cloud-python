@@ -1116,6 +1116,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1872,6 +1874,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2310,6 +2314,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
