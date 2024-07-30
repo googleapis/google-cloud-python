@@ -1331,7 +1331,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
                 ::
 
-                    locations/<var>LOCATION_ID</var>
+                    `locations/{location_id}`
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1440,13 +1440,13 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
-                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                   ``projects/{project_id}/locations/{location_id}``
                 -  Projects scope, no location specified (defaults to
-                   global): ``projects/``\ PROJECT_ID
+                   global): ``projects/{project_id}``
                 -  Organizations scope, location specified:
-                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+                   ``organizations/{org_id}/locations/{location_id}``
                 -  Organizations scope, no location specified (defaults
-                   to global): ``organizations/``\ ORG_ID
+                   to global): ``organizations/{org_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -1827,13 +1827,13 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
-                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                   ``projects/{project_id}/locations/{location_id}``
                 -  Projects scope, no location specified (defaults to
-                   global): ``projects/``\ PROJECT_ID
+                   global): ``projects/{project_id}``
                 -  Organizations scope, location specified:
-                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+                   ``organizations/{org_id}/locations/{location_id}``
                 -  Organizations scope, no location specified (defaults
-                   to global): ``organizations/``\ ORG_ID
+                   to global): ``organizations/{org_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -2067,13 +2067,13 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
-                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                   ``projects/{project_id}/locations/{location_id}``
                 -  Projects scope, no location specified (defaults to
-                   global): ``projects/``\ PROJECT_ID
+                   global): ``projects/{project_id}``
                 -  Organizations scope, location specified:
-                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+                   ``organizations/{org_id}/locations/{location_id}``
                 -  Organizations scope, no location specified (defaults
-                   to global): ``organizations/``\ ORG_ID
+                   to global): ``organizations/{org_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -2452,13 +2452,13 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
-                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                   ``projects/{project_id}/locations/{location_id}``
                 -  Projects scope, no location specified (defaults to
-                   global): ``projects/``\ PROJECT_ID
+                   global): ``projects/{project_id}``
                 -  Organizations scope, location specified:
-                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+                   ``organizations/{org_id}/locations/{location_id}``
                 -  Organizations scope, no location specified (defaults
-                   to global): ``organizations/``\ ORG_ID
+                   to global): ``organizations/{org_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -2698,9 +2698,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
-                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                   ``projects/{project_id}/locations/{location_id}``
                 -  Projects scope, no location specified (defaults to
-                   global): ``projects/``\ PROJECT_ID
+                   global): ``projects/{project_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -3173,9 +3173,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
-                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                   ``projects/{project_id}/locations/{location_id}``
                 -  Projects scope, no location specified (defaults to
-                   global): ``projects/``\ PROJECT_ID
+                   global): ``projects/{project_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -3490,9 +3490,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 of the request (project or organization):
 
                 -  Projects scope:
-                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                   ``projects/{project_id}/locations/{location_id}``
                 -  Organizations scope:
-                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+                   ``organizations/{org_id}/locations/{location_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -3861,7 +3861,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 Required. Parent resource name.
 
                 The format of this value is as follows:
-                ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                ``projects/{project_id}/locations/{location_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -4100,9 +4100,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
-                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                   ``projects/{project_id}/locations/{location_id}``
                 -  Projects scope, no location specified (defaults to
-                   global): ``projects/``\ PROJECT_ID
+                   global): ``projects/{project_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -4245,9 +4245,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
-                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                   ``projects/{project_id}/locations/{location_id}``
                 -  Projects scope, no location specified (defaults to
-                   global): ``projects/``\ PROJECT_ID
+                   global): ``projects/{project_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -4666,13 +4666,13 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
-                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                   ``projects/{project_id}/locations/{location_id}``
                 -  Projects scope, no location specified (defaults to
-                   global): ``projects/``\ PROJECT_ID
+                   global): ``projects/{project_id}``
                 -  Organizations scope, location specified:
-                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+                   ``organizations/{org_id}/locations/{location_id}``
                 -  Organizations scope, no location specified (defaults
-                   to global): ``organizations/``\ ORG_ID
+                   to global): ``organizations/{org_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -5046,9 +5046,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
-                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                   ``projects/{project_id}/locations/{location_id}``
                 -  Projects scope, no location specified (defaults to
-                   global): ``projects/``\ PROJECT_ID
+                   global): ``projects/{project_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -6548,9 +6548,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 of the request (project or organization):
 
                 -  Projects scope:
-                   ``projects/PROJECT_ID/locations/LOCATION_ID``
+                   ``projects/{project_id}/locations/{location_id}``
                 -  Organizations scope:
-                   ``organizations/ORG_ID/locations/LOCATION_ID``
+                   ``organizations/{org_id}/locations/{location_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

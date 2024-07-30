@@ -1923,9 +1923,9 @@ class RedactImageRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -2100,9 +2100,9 @@ class DeidentifyContentRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -2213,9 +2213,9 @@ class ReidentifyContentRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -2331,9 +2331,9 @@ class InspectContentRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -3145,7 +3145,7 @@ class ListInfoTypesRequest(proto.Message):
 
             ::
 
-                locations/<var>LOCATION_ID</var>
+                `locations/{location_id}`
         language_code (str):
             BCP-47 language code for localized infoType
             friendly names. If omitted, or if localized
@@ -5370,8 +5370,7 @@ class CryptoReplaceFfxFpeConfig(proto.Message):
             range [2, 95]. This must be encoded as ASCII. The order of
             characters does not matter. The full list of allowed
             characters is:
-            0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
-            ~`!@#$%^&*()_-+={[}]|:;"'<,>.?/
+            :literal:`0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_-+={[}]|\:;"'<,>.?/`
 
             This field is a member of `oneof`_ ``alphabet``.
         radix (int):
@@ -6976,13 +6975,13 @@ class CreateInspectTemplateRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
             -  Organizations scope, location specified:
-               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+               ``organizations/{org_id}/locations/{location_id}``
             -  Organizations scope, no location specified (defaults to
-               global): ``organizations/``\ ORG_ID
+               global): ``organizations/{org_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -7083,13 +7082,13 @@ class ListInspectTemplatesRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
             -  Organizations scope, location specified:
-               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+               ``organizations/{org_id}/locations/{location_id}``
             -  Organizations scope, no location specified (defaults to
-               global): ``organizations/``\ ORG_ID
+               global): ``organizations/{org_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -7205,9 +7204,9 @@ class CreateJobTriggerRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -7319,9 +7318,9 @@ class CreateDiscoveryConfigRequest(proto.Message):
             the request (project or organization):
 
             -  Projects scope:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Organizations scope:
-               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+               ``organizations/{org_id}/locations/{location_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -7409,7 +7408,7 @@ class ListDiscoveryConfigsRequest(proto.Message):
             Required. Parent resource name.
 
             The format of this value is as follows:
-            ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            ``projects/{project_id}/locations/{location_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -7524,9 +7523,9 @@ class CreateDlpJobRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -7594,9 +7593,9 @@ class ListJobTriggersRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -9653,9 +9652,9 @@ class ListDlpJobsRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -9849,13 +9848,13 @@ class CreateDeidentifyTemplateRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
             -  Organizations scope, location specified:
-               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+               ``organizations/{org_id}/locations/{location_id}``
             -  Organizations scope, no location specified (defaults to
-               global): ``organizations/``\ ORG_ID
+               global): ``organizations/{org_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -9956,13 +9955,13 @@ class ListDeidentifyTemplatesRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
             -  Organizations scope, location specified:
-               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+               ``organizations/{org_id}/locations/{location_id}``
             -  Organizations scope, no location specified (defaults to
-               global): ``organizations/``\ ORG_ID
+               global): ``organizations/{org_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -10326,13 +10325,13 @@ class CreateStoredInfoTypeRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
             -  Organizations scope, location specified:
-               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+               ``organizations/{org_id}/locations/{location_id}``
             -  Organizations scope, no location specified (defaults to
-               global): ``organizations/``\ ORG_ID
+               global): ``organizations/{org_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -10437,9 +10436,9 @@ class ListStoredInfoTypesRequest(proto.Message):
             location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
             -  Projects scope, location specified:
-               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+               ``projects/{project_id}/locations/{location_id}``
             -  Projects scope, no location specified (defaults to
-               global): ``projects/``\ PROJECT_ID
+               global): ``projects/{project_id}``
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -12448,9 +12447,9 @@ class CreateConnectionRequest(proto.Message):
             the request (project or organization):
 
             -  Projects scope:
-               ``projects/PROJECT_ID/locations/LOCATION_ID``
+               ``projects/{project_id}/locations/{location_id}``
             -  Organizations scope:
-               ``organizations/ORG_ID/locations/LOCATION_ID``
+               ``organizations/{org_id}/locations/{location_id}``
         connection (google.cloud.dlp_v2.types.Connection):
             Required. The connection resource.
     """
