@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.23](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.22...google-cloud-batch-v0.17.23) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([6e83a37](https://github.com/googleapis/google-cloud-python/commit/6e83a37612d9eb951cb0ef1e372ef4241f8afa59))
+
 ## [0.17.22](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.21...google-cloud-batch-v0.17.22) (2024-07-08)
 
 

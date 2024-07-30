@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.13.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.13.4...google-cloud-automl-v2.13.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([6e83a37](https://github.com/googleapis/google-cloud-python/commit/6e83a37612d9eb951cb0ef1e372ef4241f8afa59))
+
 ## [2.13.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.13.3...google-cloud-automl-v2.13.4) (2024-07-08)
 
 

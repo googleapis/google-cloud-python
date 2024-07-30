@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.11.4...google-cloud-artifact-registry-v1.11.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([6e83a37](https://github.com/googleapis/google-cloud-python/commit/6e83a37612d9eb951cb0ef1e372ef4241f8afa59))
+
 ## [1.11.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.11.3...google-cloud-artifact-registry-v1.11.4) (2024-07-08)
 
 
