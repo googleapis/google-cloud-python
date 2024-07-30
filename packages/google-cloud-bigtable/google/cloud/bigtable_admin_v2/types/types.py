@@ -36,26 +36,20 @@ class Type(proto.Message):
 
     For compatibility with Bigtable's existing untyped APIs, each
     ``Type`` includes an ``Encoding`` which describes how to convert
-    to/from the underlying data. This might involve composing a series
-    of steps into an "encoding chain," for example to convert from INT64
-    -> STRING -> raw bytes. In most cases, a "link" in the encoding
-    chain will be based an on existing GoogleSQL conversion function
-    like ``CAST``.
+    to/from the underlying data.
 
-    Each link in the encoding chain also defines the following
-    properties:
+    Each encoding also defines the following properties:
 
-    -  Natural sort: Does the encoded value sort consistently with the
-       original typed value? Note that Bigtable will always sort data
-       based on the raw encoded value, *not* the decoded type.
+    -  Order-preserving: Does the encoded value sort consistently with
+       the original typed value? Note that Bigtable will always sort
+       data based on the raw encoded value, *not* the decoded type.
 
        -  Example: BYTES values sort in the same order as their raw
           encodings.
-       -  Counterexample: Encoding INT64 to a fixed-width STRING does
-          *not* preserve sort order when dealing with negative numbers.
-          INT64(1) > INT64(-1), but STRING("-00001") > STRING("00001).
-       -  The overall encoding chain has this property if *every* link
-          does.
+       -  Counterexample: Encoding INT64 as a fixed-width decimal string
+          does *not* preserve sort order when dealing with negative
+          numbers. ``INT64(1) > INT64(-1)``, but
+          ``STRING("-00001") > STRING("00001)``.
 
     -  Self-delimiting: If we concatenate two encoded values, can we
        always tell where the first one ends and the second one begins?
@@ -65,8 +59,6 @@ class Type(proto.Message):
           by a sign.
        -  Counterexample: If we concatenate two UTF-8 encoded STRINGs,
           we have no way to tell where the first one ends.
-       -  The overall encoding chain has this property if *any* link
-          does.
 
     -  Compatibility: Which other systems have matching encoding
        schemes? For example, does this encoding have a GoogleSQL
@@ -92,8 +84,40 @@ class Type(proto.Message):
             Int64
 
             This field is a member of `oneof`_ ``kind``.
+        float32_type (google.cloud.bigtable_admin_v2.types.Type.Float32):
+            Float32
+
+            This field is a member of `oneof`_ ``kind``.
+        float64_type (google.cloud.bigtable_admin_v2.types.Type.Float64):
+            Float64
+
+            This field is a member of `oneof`_ ``kind``.
+        bool_type (google.cloud.bigtable_admin_v2.types.Type.Bool):
+            Bool
+
+            This field is a member of `oneof`_ ``kind``.
+        timestamp_type (google.cloud.bigtable_admin_v2.types.Type.Timestamp):
+            Timestamp
+
+            This field is a member of `oneof`_ ``kind``.
+        date_type (google.cloud.bigtable_admin_v2.types.Type.Date):
+            Date
+
+            This field is a member of `oneof`_ ``kind``.
         aggregate_type (google.cloud.bigtable_admin_v2.types.Type.Aggregate):
             Aggregate
+
+            This field is a member of `oneof`_ ``kind``.
+        struct_type (google.cloud.bigtable_admin_v2.types.Type.Struct):
+            Struct
+
+            This field is a member of `oneof`_ ``kind``.
+        array_type (google.cloud.bigtable_admin_v2.types.Type.Array):
+            Array
+
+            This field is a member of `oneof`_ ``kind``.
+        map_type (google.cloud.bigtable_admin_v2.types.Type.Map):
+            Map
 
             This field is a member of `oneof`_ ``kind``.
     """
@@ -122,7 +146,7 @@ class Type(proto.Message):
             class Raw(proto.Message):
                 r"""Leaves the value "as-is"
 
-                -  Natural sort? Yes
+                -  Order-preserving? Yes
                 -  Self-delimiting? No
                 -  Compatibility? N/A
 
@@ -154,19 +178,31 @@ class Type(proto.Message):
         class Encoding(proto.Message):
             r"""Rules used to convert to/from lower level types.
 
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
             .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
             Attributes:
                 utf8_raw (google.cloud.bigtable_admin_v2.types.Type.String.Encoding.Utf8Raw):
-                    Use ``Utf8Raw`` encoding.
+                    Deprecated: if set, converts to an empty ``utf8_bytes``.
+
+                    This field is a member of `oneof`_ ``encoding``.
+                utf8_bytes (google.cloud.bigtable_admin_v2.types.Type.String.Encoding.Utf8Bytes):
+                    Use ``Utf8Bytes`` encoding.
 
                     This field is a member of `oneof`_ ``encoding``.
             """
 
             class Utf8Raw(proto.Message):
+                r"""Deprecated: prefer the equivalent ``Utf8Bytes``."""
+
+            class Utf8Bytes(proto.Message):
                 r"""UTF-8 encoding
 
-                -  Natural sort? No (ASCII characters only)
+                -  Order-preserving? Yes (code point order)
                 -  Self-delimiting? No
                 -  Compatibility?
 
@@ -181,6 +217,12 @@ class Type(proto.Message):
                 number=1,
                 oneof="encoding",
                 message="Type.String.Encoding.Utf8Raw",
+            )
+            utf8_bytes: "Type.String.Encoding.Utf8Bytes" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="encoding",
+                message="Type.String.Encoding.Utf8Bytes",
             )
 
         encoding: "Type.String.Encoding" = proto.Field(
@@ -214,7 +256,7 @@ class Type(proto.Message):
                 r"""Encodes the value as an 8-byte big endian twos complement ``Bytes``
                 value.
 
-                -  Natural sort? No (positive values only)
+                -  Order-preserving? No (positive values only)
                 -  Self-delimiting? Yes
                 -  Compatibility?
 
@@ -224,8 +266,7 @@ class Type(proto.Message):
 
                 Attributes:
                     bytes_type (google.cloud.bigtable_admin_v2.types.Type.Bytes):
-                        The underlying ``Bytes`` type, which may be able to encode
-                        further.
+                        Deprecated: ignored if set.
                 """
 
                 bytes_type: "Type.Bytes" = proto.Field(
@@ -247,6 +288,113 @@ class Type(proto.Message):
             message="Type.Int64.Encoding",
         )
 
+    class Bool(proto.Message):
+        r"""bool Values of type ``Bool`` are stored in ``Value.bool_value``."""
+
+    class Float32(proto.Message):
+        r"""Float32 Values of type ``Float32`` are stored in
+        ``Value.float_value``.
+
+        """
+
+    class Float64(proto.Message):
+        r"""Float64 Values of type ``Float64`` are stored in
+        ``Value.float_value``.
+
+        """
+
+    class Timestamp(proto.Message):
+        r"""Timestamp Values of type ``Timestamp`` are stored in
+        ``Value.timestamp_value``.
+
+        """
+
+    class Date(proto.Message):
+        r"""Date Values of type ``Date`` are stored in ``Value.date_value``."""
+
+    class Struct(proto.Message):
+        r"""A structured data value, consisting of fields which map to
+        dynamically typed values. Values of type ``Struct`` are stored in
+        ``Value.array_value`` where entries are in the same order and number
+        as ``field_types``.
+
+        Attributes:
+            fields (MutableSequence[google.cloud.bigtable_admin_v2.types.Type.Struct.Field]):
+                The names and types of the fields in this
+                struct.
+        """
+
+        class Field(proto.Message):
+            r"""A struct field and its type.
+
+            Attributes:
+                field_name (str):
+                    The field name (optional). Fields without a ``field_name``
+                    are considered anonymous and cannot be referenced by name.
+                type_ (google.cloud.bigtable_admin_v2.types.Type):
+                    The type of values in this field.
+            """
+
+            field_name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            type_: "Type" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="Type",
+            )
+
+        fields: MutableSequence["Type.Struct.Field"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Type.Struct.Field",
+        )
+
+    class Array(proto.Message):
+        r"""An ordered list of elements of a given type. Values of type
+        ``Array`` are stored in ``Value.array_value``.
+
+        Attributes:
+            element_type (google.cloud.bigtable_admin_v2.types.Type):
+                The type of the elements in the array. This must not be
+                ``Array``.
+        """
+
+        element_type: "Type" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Type",
+        )
+
+    class Map(proto.Message):
+        r"""A mapping of keys to values of a given type. Values of type ``Map``
+        are stored in a ``Value.array_value`` where each entry is another
+        ``Value.array_value`` with two elements (the key and the value, in
+        that order). Normally encoded Map values won't have repeated keys,
+        however, clients are expected to handle the case in which they do.
+        If the same key appears multiple times, the *last* value takes
+        precedence.
+
+        Attributes:
+            key_type (google.cloud.bigtable_admin_v2.types.Type):
+                The type of a map key. Only ``Bytes``, ``String``, and
+                ``Int64`` are allowed as key types.
+            value_type (google.cloud.bigtable_admin_v2.types.Type):
+                The type of the values in a map.
+        """
+
+        key_type: "Type" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Type",
+        )
+        value_type: "Type" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Type",
+        )
+
     class Aggregate(proto.Message):
         r"""A value that combines incremental updates into a summarized value.
 
@@ -254,6 +402,10 @@ class Type(proto.Message):
         Writes will provide either the ``input_type`` or ``state_type``, and
         reads will always return the ``state_type`` .
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -271,11 +423,45 @@ class Type(proto.Message):
                 Sum aggregator.
 
                 This field is a member of `oneof`_ ``aggregator``.
+            hllpp_unique_count (google.cloud.bigtable_admin_v2.types.Type.Aggregate.HyperLogLogPlusPlusUniqueCount):
+                HyperLogLogPlusPlusUniqueCount aggregator.
+
+                This field is a member of `oneof`_ ``aggregator``.
+            max_ (google.cloud.bigtable_admin_v2.types.Type.Aggregate.Max):
+                Max aggregator.
+
+                This field is a member of `oneof`_ ``aggregator``.
+            min_ (google.cloud.bigtable_admin_v2.types.Type.Aggregate.Min):
+                Min aggregator.
+
+                This field is a member of `oneof`_ ``aggregator``.
         """
 
         class Sum(proto.Message):
             r"""Computes the sum of the input values. Allowed input: ``Int64``
             State: same as input
+
+            """
+
+        class Max(proto.Message):
+            r"""Computes the max of the input values. Allowed input: ``Int64``
+            State: same as input
+
+            """
+
+        class Min(proto.Message):
+            r"""Computes the min of the input values. Allowed input: ``Int64``
+            State: same as input
+
+            """
+
+        class HyperLogLogPlusPlusUniqueCount(proto.Message):
+            r"""Computes an approximate unique count over the input values. When
+            using raw data as input, be careful to use a consistent encoding.
+            Otherwise the same value encoded differently could count more than
+            once, or two distinct values could count as identical. Input: Any,
+            or omit for Raw State: TBD Special state conversions: ``Int64`` (the
+            unique count estimate)
 
             """
 
@@ -294,6 +480,26 @@ class Type(proto.Message):
             number=4,
             oneof="aggregator",
             message="Type.Aggregate.Sum",
+        )
+        hllpp_unique_count: "Type.Aggregate.HyperLogLogPlusPlusUniqueCount" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=5,
+                oneof="aggregator",
+                message="Type.Aggregate.HyperLogLogPlusPlusUniqueCount",
+            )
+        )
+        max_: "Type.Aggregate.Max" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="aggregator",
+            message="Type.Aggregate.Max",
+        )
+        min_: "Type.Aggregate.Min" = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            oneof="aggregator",
+            message="Type.Aggregate.Min",
         )
 
     bytes_type: Bytes = proto.Field(
@@ -314,11 +520,59 @@ class Type(proto.Message):
         oneof="kind",
         message=Int64,
     )
+    float32_type: Float32 = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="kind",
+        message=Float32,
+    )
+    float64_type: Float64 = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="kind",
+        message=Float64,
+    )
+    bool_type: Bool = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="kind",
+        message=Bool,
+    )
+    timestamp_type: Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="kind",
+        message=Timestamp,
+    )
+    date_type: Date = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="kind",
+        message=Date,
+    )
     aggregate_type: Aggregate = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="kind",
         message=Aggregate,
+    )
+    struct_type: Struct = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="kind",
+        message=Struct,
+    )
+    array_type: Array = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="kind",
+        message=Array,
+    )
+    map_type: Map = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="kind",
+        message=Map,
     )
 
 

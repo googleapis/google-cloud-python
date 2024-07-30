@@ -178,14 +178,26 @@ class Type(proto.Message):
         class Encoding(proto.Message):
             r"""Rules used to convert to/from lower level types.
 
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
             .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
             Attributes:
+                utf8_raw (google.cloud.bigtable_v2.types.Type.String.Encoding.Utf8Raw):
+                    Deprecated: if set, converts to an empty ``utf8_bytes``.
+
+                    This field is a member of `oneof`_ ``encoding``.
                 utf8_bytes (google.cloud.bigtable_v2.types.Type.String.Encoding.Utf8Bytes):
                     Use ``Utf8Bytes`` encoding.
 
                     This field is a member of `oneof`_ ``encoding``.
             """
+
+            class Utf8Raw(proto.Message):
+                r"""Deprecated: prefer the equivalent ``Utf8Bytes``."""
 
             class Utf8Bytes(proto.Message):
                 r"""UTF-8 encoding
@@ -200,6 +212,12 @@ class Type(proto.Message):
 
                 """
 
+            utf8_raw: "Type.String.Encoding.Utf8Raw" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof="encoding",
+                message="Type.String.Encoding.Utf8Raw",
+            )
             utf8_bytes: "Type.String.Encoding.Utf8Bytes" = proto.Field(
                 proto.MESSAGE,
                 number=2,
