@@ -783,6 +783,7 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                 creating a new delivery vehicle, you may set the
                 following optional fields:
 
+                -  type
                 -  last_location
                 -  attributes
 
@@ -1805,6 +1806,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2043,6 +2046,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

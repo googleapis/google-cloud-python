@@ -340,6 +340,7 @@ class DeliveryServiceAsyncClient:
                 creating a new delivery vehicle, you may set the
                 following optional fields:
 
+                -  type
                 -  last_location
                 -  attributes
 
@@ -1339,6 +1340,8 @@ class DeliveryServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1571,6 +1574,8 @@ class DeliveryServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
