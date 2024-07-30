@@ -1126,6 +1126,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1760,6 +1762,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2250,6 +2254,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2625,6 +2631,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3265,6 +3273,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3750,6 +3760,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

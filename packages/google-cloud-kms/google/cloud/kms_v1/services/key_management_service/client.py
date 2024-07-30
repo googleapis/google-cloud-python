@@ -914,6 +914,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1031,6 +1033,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1149,6 +1153,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1266,6 +1272,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
