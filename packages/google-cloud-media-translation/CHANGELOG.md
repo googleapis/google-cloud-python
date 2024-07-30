@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.10...google-cloud-media-translation-v0.11.11) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([d95af77](https://github.com/googleapis/google-cloud-python/commit/d95af77248f0935a5fe3dba1fccc75124c8b1451))
+
 ## [0.11.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.9...google-cloud-media-translation-v0.11.10) (2024-07-08)
 
 
