@@ -817,6 +817,8 @@ class CaseAttachmentServiceClient(metaclass=CaseAttachmentServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

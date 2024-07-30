@@ -829,6 +829,8 @@ class TpuClient(metaclass=TpuClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1580,6 +1582,8 @@ class TpuClient(metaclass=TpuClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1795,6 +1799,8 @@ class TpuClient(metaclass=TpuClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

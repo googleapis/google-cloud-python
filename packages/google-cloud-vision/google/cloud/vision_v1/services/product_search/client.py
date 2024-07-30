@@ -1001,6 +1001,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1597,6 +1599,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2317,6 +2321,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2796,6 +2802,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
