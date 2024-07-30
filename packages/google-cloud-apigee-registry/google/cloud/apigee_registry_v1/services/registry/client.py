@@ -888,6 +888,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1441,6 +1443,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1999,6 +2003,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2823,6 +2829,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3157,6 +3165,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3822,6 +3832,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4148,6 +4160,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

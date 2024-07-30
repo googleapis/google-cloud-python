@@ -985,6 +985,8 @@ class OrderServiceClient(metaclass=OrderServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
