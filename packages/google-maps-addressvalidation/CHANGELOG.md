@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.13](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.12...google-maps-addressvalidation-v0.3.13) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([4adddf4](https://github.com/googleapis/google-cloud-python/commit/4adddf4d90634e454ee006774bfc631fc12c1700))
+
 ## [0.3.12](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.11...google-maps-addressvalidation-v0.3.12) (2024-07-08)
 
 

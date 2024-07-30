@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.9](https://github.com/googleapis/google-cloud-python/compare/google-geo-type-v0.3.8...google-geo-type-v0.3.9) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([4adddf4](https://github.com/googleapis/google-cloud-python/commit/4adddf4d90634e454ee006774bfc631fc12c1700))
+
 ## [0.3.8](https://github.com/googleapis/google-cloud-python/compare/google-geo-type-v0.3.7...google-geo-type-v0.3.8) (2024-07-08)
 
 

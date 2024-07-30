@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-promotions-v0.1.1...google-shopping-merchant-promotions-v0.1.2) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([11c0629](https://github.com/googleapis/google-cloud-python/commit/11c06293cef3391f5fb433d5de26c066943082d0))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-promotions-v0.1.0...google-shopping-merchant-promotions-v0.1.1) (2024-07-08)
 
 

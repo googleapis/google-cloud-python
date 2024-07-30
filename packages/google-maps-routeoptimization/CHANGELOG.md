@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-routeoptimization-v0.1.1...google-maps-routeoptimization-v0.1.2) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([4adddf4](https://github.com/googleapis/google-cloud-python/commit/4adddf4d90634e454ee006774bfc631fc12c1700))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-routeoptimization-v0.1.0...google-maps-routeoptimization-v0.1.1) (2024-07-08)
 
 
