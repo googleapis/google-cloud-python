@@ -29,6 +29,7 @@ import math
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -880,12 +881,16 @@ def test_list_occurrences_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_occurrences(request={})
+        pager = client.list_occurrences(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -3813,12 +3818,16 @@ def test_list_notes_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_notes(request={})
+        pager = client.list_notes(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -5944,12 +5953,16 @@ def test_list_note_occurrences_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", ""),)),
         )
-        pager = client.list_note_occurrences(request={})
+        pager = client.list_note_occurrences(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -7370,6 +7383,11 @@ def test_create_occurrence_rest(request_type):
             "last_scan_time": {},
             "archive_time": {},
             "sbom_status": {"sbom_state": 1, "error": "error_value"},
+            "vulnerability_attestation": {
+                "last_attempt_time": {},
+                "state": 1,
+                "error": "error_value",
+            },
         },
         "attestation": {
             "serialized_payload": b"serialized_payload_blob",
@@ -7408,6 +7426,11 @@ def test_create_occurrence_rest(request_type):
                 }
             ],
             "non_compliance_reason": "non_compliance_reason_value",
+            "version": {
+                "cpe_uri": "cpe_uri_value",
+                "benchmark_document": "benchmark_document_value",
+                "version": "version_value",
+            },
         },
         "dsse_attestation": {
             "envelope": {
@@ -8429,6 +8452,11 @@ def test_update_occurrence_rest(request_type):
             "last_scan_time": {},
             "archive_time": {},
             "sbom_status": {"sbom_state": 1, "error": "error_value"},
+            "vulnerability_attestation": {
+                "last_attempt_time": {},
+                "state": 1,
+                "error": "error_value",
+            },
         },
         "attestation": {
             "serialized_payload": b"serialized_payload_blob",
@@ -8467,6 +8495,11 @@ def test_update_occurrence_rest(request_type):
                 }
             ],
             "non_compliance_reason": "non_compliance_reason_value",
+            "version": {
+                "cpe_uri": "cpe_uri_value",
+                "benchmark_document": "benchmark_document_value",
+                "version": "version_value",
+            },
         },
         "dsse_attestation": {
             "envelope": {
