@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-mapsplatformdatasets-v0.4.1...google-maps-mapsplatformdatasets-v0.4.2) (2024-07-30)
+
+
+### Features
+
+* [google-maps-mapsplatformdatasets] added a new API FetchDatasetErrors ([#12905](https://github.com/googleapis/google-cloud-python/issues/12905)) ([d896a31](https://github.com/googleapis/google-cloud-python/commit/d896a3156822f08c0c19b4ad1de9f2d7dea0bb93))
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([4adddf4](https://github.com/googleapis/google-cloud-python/commit/4adddf4d90634e454ee006774bfc631fc12c1700))
+
 ## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-mapsplatformdatasets-v0.4.0...google-maps-mapsplatformdatasets-v0.4.1) (2024-07-08)
 
 

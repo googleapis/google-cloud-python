@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.6...google-shopping-css-v0.1.7) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([4adddf4](https://github.com/googleapis/google-cloud-python/commit/4adddf4d90634e454ee006774bfc631fc12c1700))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.5...google-shopping-css-v0.1.6) (2024-07-08)
 
 

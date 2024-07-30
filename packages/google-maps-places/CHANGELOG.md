@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.17](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.16...google-maps-places-v0.1.17) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([4adddf4](https://github.com/googleapis/google-cloud-python/commit/4adddf4d90634e454ee006774bfc631fc12c1700))
+
 ## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.15...google-maps-places-v0.1.16) (2024-07-08)
 
 
