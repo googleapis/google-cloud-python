@@ -243,3 +243,26 @@ def test_struct_reassignment():
     detached["bacon"] = True
     foo.value = detached
     assert foo.value == {"foo": "bar", "bacon": True}
+
+
+def test_struct_nested():
+    class Foo(proto.Message):
+        struct_field: struct_pb2.Struct = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=struct_pb2.Struct,
+        )
+
+    class Bar(proto.Message):
+        foo_field: Foo = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=Foo,
+        )
+
+    foo = Foo({"struct_field": {"foo": "bagel"}})
+    assert foo.struct_field == {"foo": "bagel"}
+
+    bar = Bar({"foo_field": {"struct_field": {"foo": "cheese"}}})
+    assert bar.foo_field == Foo({"struct_field": {"foo": "cheese"}})
+    assert bar.foo_field.struct_field == {"foo": "cheese"}

@@ -34,10 +34,14 @@ class MessageRule:
             try:
                 # Try the fast path first.
                 return self._descriptor(**value)
-            except TypeError as ex:
-                # If we have a type error,
+            except (TypeError, ValueError) as ex:
+                # If we have a TypeError or Valueerror,
                 # try the slow path in case the error
-                # was an int64/string issue
+                # was:
+                # - an int64/string issue.
+                # - a missing key issue in case a key only exists with a `_` suffix.
+                #   See related issue: https://github.com/googleapis/python-api-core/issues/227.
+                # - a missing key issue due to nested struct. See: b/321905145.
                 return self._wrapper(value)._pb
         return value
 

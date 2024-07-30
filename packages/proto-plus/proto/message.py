@@ -725,36 +725,7 @@ class Message(metaclass=MessageMeta):
                     "Unknown field for {}: {}".format(self.__class__.__name__, key)
                 )
 
-            try:
-                pb_value = marshal.to_proto(pb_type, value)
-            except ValueError:
-                # Underscores may be appended to field names
-                # that collide with python or proto-plus keywords.
-                # In case a key only exists with a `_` suffix, coerce the key
-                # to include the `_` suffix. It's not possible to
-                # natively define the same field with a trailing underscore in protobuf.
-                # See related issue
-                # https://github.com/googleapis/python-api-core/issues/227
-                if isinstance(value, dict):
-                    if _upb:
-                        # In UPB, pb_type is MessageMeta which doesn't expose attrs like it used to in Python/CPP.
-                        keys_to_update = [
-                            item
-                            for item in value
-                            if item not in pb_type.DESCRIPTOR.fields_by_name
-                            and f"{item}_" in pb_type.DESCRIPTOR.fields_by_name
-                        ]
-                    else:
-                        keys_to_update = [
-                            item
-                            for item in value
-                            if not hasattr(pb_type, item)
-                            and hasattr(pb_type, f"{item}_")
-                        ]
-                    for item in keys_to_update:
-                        value[f"{item}_"] = value.pop(item)
-
-                pb_value = marshal.to_proto(pb_type, value)
+            pb_value = marshal.to_proto(pb_type, value)
 
             if pb_value is not None:
                 params[key] = pb_value
