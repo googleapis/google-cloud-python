@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.11...google-cloud-netapp-v0.3.12) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([d95af77](https://github.com/googleapis/google-cloud-python/commit/d95af77248f0935a5fe3dba1fccc75124c8b1451))
+
 ## [0.3.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.10...google-cloud-netapp-v0.3.11) (2024-07-08)
 
 
