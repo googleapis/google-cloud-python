@@ -775,6 +775,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2313,6 +2315,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2481,6 +2485,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

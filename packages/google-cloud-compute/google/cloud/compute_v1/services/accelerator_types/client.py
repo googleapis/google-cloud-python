@@ -771,6 +771,8 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1039,6 +1041,8 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

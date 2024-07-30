@@ -763,6 +763,8 @@ class StoragePoolsClient(metaclass=StoragePoolsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1743,6 +1745,8 @@ class StoragePoolsClient(metaclass=StoragePoolsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1884,6 +1888,8 @@ class StoragePoolsClient(metaclass=StoragePoolsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

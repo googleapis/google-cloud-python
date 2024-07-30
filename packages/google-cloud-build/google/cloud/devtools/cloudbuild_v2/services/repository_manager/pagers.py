@@ -22,7 +22,21 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
+    Union,
 )
+
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
+from google.api_core import retry_async as retries_async
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+    OptionalAsyncRetry = Union[
+        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
+    ]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
 from google.cloud.devtools.cloudbuild_v2.types import repositories
 
@@ -51,6 +65,8 @@ class ListConnectionsPager:
         request: repositories.ListConnectionsRequest,
         response: repositories.ListConnectionsResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -62,12 +78,17 @@ class ListConnectionsPager:
                 The initial request object.
             response (google.cloud.devtools.cloudbuild_v2.types.ListConnectionsResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = repositories.ListConnectionsRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -78,7 +99,12 @@ class ListConnectionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[repositories.Connection]:
@@ -113,6 +139,8 @@ class ListConnectionsAsyncPager:
         request: repositories.ListConnectionsRequest,
         response: repositories.ListConnectionsResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -124,12 +152,17 @@ class ListConnectionsAsyncPager:
                 The initial request object.
             response (google.cloud.devtools.cloudbuild_v2.types.ListConnectionsResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = repositories.ListConnectionsRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -140,7 +173,12 @@ class ListConnectionsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[repositories.Connection]:
@@ -179,6 +217,8 @@ class ListRepositoriesPager:
         request: repositories.ListRepositoriesRequest,
         response: repositories.ListRepositoriesResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -190,12 +230,17 @@ class ListRepositoriesPager:
                 The initial request object.
             response (google.cloud.devtools.cloudbuild_v2.types.ListRepositoriesResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = repositories.ListRepositoriesRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -206,7 +251,12 @@ class ListRepositoriesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[repositories.Repository]:
@@ -241,6 +291,8 @@ class ListRepositoriesAsyncPager:
         request: repositories.ListRepositoriesRequest,
         response: repositories.ListRepositoriesResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -252,12 +304,17 @@ class ListRepositoriesAsyncPager:
                 The initial request object.
             response (google.cloud.devtools.cloudbuild_v2.types.ListRepositoriesResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = repositories.ListRepositoriesRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -268,7 +325,12 @@ class ListRepositoriesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[repositories.Repository]:
@@ -307,6 +369,8 @@ class FetchLinkableRepositoriesPager:
         request: repositories.FetchLinkableRepositoriesRequest,
         response: repositories.FetchLinkableRepositoriesResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -318,12 +382,17 @@ class FetchLinkableRepositoriesPager:
                 The initial request object.
             response (google.cloud.devtools.cloudbuild_v2.types.FetchLinkableRepositoriesResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = repositories.FetchLinkableRepositoriesRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -334,7 +403,12 @@ class FetchLinkableRepositoriesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[repositories.Repository]:
@@ -371,6 +445,8 @@ class FetchLinkableRepositoriesAsyncPager:
         request: repositories.FetchLinkableRepositoriesRequest,
         response: repositories.FetchLinkableRepositoriesResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -382,12 +458,17 @@ class FetchLinkableRepositoriesAsyncPager:
                 The initial request object.
             response (google.cloud.devtools.cloudbuild_v2.types.FetchLinkableRepositoriesResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
         self._method = method
         self._request = repositories.FetchLinkableRepositoriesRequest(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -400,7 +481,12 @@ class FetchLinkableRepositoriesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[repositories.Repository]:
