@@ -327,8 +327,21 @@ class Block:
             A new Block because dropping index columns can break references
             from Index classes that point to this block.
         """
-        new_index_col_id = guid.generate_guid()
-        expr = self._expr.promote_offsets(new_index_col_id)
+        expr = self._expr
+        if (
+            self.session._default_index_type
+            == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64
+        ):
+            new_index_col_id = guid.generate_guid()
+            expr = expr.promote_offsets(new_index_col_id)
+            new_index_cols = [new_index_col_id]
+        elif self.session._default_index_type == bigframes.enums.DefaultIndexKind.NULL:
+            new_index_cols = []
+        else:
+            raise ValueError(
+                f"Unrecognized default index kind: {self.session._default_index_type}"
+            )
+
         if drop:
             # Even though the index might be part of the ordering, keep that
             # ordering expression as reset_index shouldn't change the row
@@ -336,9 +349,8 @@ class Block:
             expr = expr.drop_columns(self.index_columns)
             return Block(
                 expr,
-                index_columns=[new_index_col_id],
+                index_columns=new_index_cols,
                 column_labels=self.column_labels,
-                index_labels=[None],
             )
         else:
             # Add index names to column index
@@ -362,9 +374,8 @@ class Block:
 
             return Block(
                 expr,
-                index_columns=[new_index_col_id],
+                index_columns=new_index_cols,
                 column_labels=column_labels_modified,
-                index_labels=[None],
             )
 
     def set_index(
@@ -2096,13 +2107,17 @@ class Block:
         #
         # This keeps us from generating an index if the user joins a large
         # BigQuery table against small local data, for example.
-        if len(self._index_columns) > 0 and len(other._index_columns) > 0:
+        if (
+            self.index.is_null
+            or other.index.is_null
+            or self.session._default_index_type == bigframes.enums.DefaultIndexKind.NULL
+        ):
+            expr = joined_expr
+            index_columns = []
+        else:
             offset_index_id = guid.generate_guid()
             expr = joined_expr.promote_offsets(offset_index_id)
             index_columns = [offset_index_id]
-        else:
-            expr = joined_expr
-            index_columns = []
 
         return Block(expr, index_columns=index_columns, column_labels=labels)
 
@@ -2603,6 +2618,10 @@ class BlockIndexProperties:
     def column_ids(self) -> Sequence[str]:
         """Column(s) to use as row labels."""
         return self._block._index_columns
+
+    @property
+    def is_null(self) -> bool:
+        return len(self._block._index_columns) == 0
 
     def to_pandas(self, *, ordered: Optional[bool] = None) -> pd.Index:
         """Executes deferred operations and downloads the results."""
