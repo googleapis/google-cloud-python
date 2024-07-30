@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.11...google-cloud-video-stitcher-v0.7.12) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([9cdac77](https://github.com/googleapis/google-cloud-python/commit/9cdac77b20a8c9720aa668639e3ca6d1e759a2de))
+
 ## [0.7.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.10...google-cloud-video-stitcher-v0.7.11) (2024-07-08)
 
 
