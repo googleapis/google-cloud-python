@@ -607,17 +607,47 @@ class DlpServiceTransport(abc.ABC):
             ),
             self.list_file_store_data_profiles: gapic_v1.method.wrap_method(
                 self.list_file_store_data_profiles,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
                 client_info=client_info,
             ),
             self.get_file_store_data_profile: gapic_v1.method.wrap_method(
                 self.get_file_store_data_profile,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
                 client_info=client_info,
             ),
             self.delete_file_store_data_profile: gapic_v1.method.wrap_method(
                 self.delete_file_store_data_profile,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
                 client_info=client_info,
             ),
             self.get_table_data_profile: gapic_v1.method.wrap_method(

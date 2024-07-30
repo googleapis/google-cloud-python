@@ -220,24 +220,22 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
     @staticmethod
     def connection_path(
-        project: str,
+        organization: str,
         location: str,
         connection: str,
     ) -> str:
         """Returns a fully-qualified connection string."""
-        return (
-            "projects/{project}/locations/{location}/connections/{connection}".format(
-                project=project,
-                location=location,
-                connection=connection,
-            )
+        return "organizations/{organization}/locations/{location}/connections/{connection}".format(
+            organization=organization,
+            location=location,
+            connection=connection,
         )
 
     @staticmethod
     def parse_connection_path(path: str) -> Dict[str, str]:
         """Parses a connection path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connections/(?P<connection>.+?)$",
+            r"^organizations/(?P<organization>.+?)/locations/(?P<location>.+?)/connections/(?P<connection>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1910,6 +1908,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2535,6 +2535,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3248,6 +3250,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3932,6 +3936,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4316,6 +4322,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5115,6 +5123,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5328,6 +5338,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5446,6 +5458,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5566,6 +5580,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5792,6 +5808,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6524,8 +6542,15 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             request (Union[google.cloud.dlp_v2.types.CreateConnectionRequest, dict]):
                 The request object. Request message for CreateConnection.
             parent (str):
-                Required. Parent resource name in the format:
-                ``projects/{project}/locations/{location}``.
+                Required. Parent resource name.
+
+                The format of this value varies depending on the scope
+                of the request (project or organization):
+
+                -  Projects scope:
+                   ``projects/PROJECT_ID/locations/LOCATION_ID``
+                -  Organizations scope:
+                   ``organizations/ORG_ID/locations/LOCATION_ID``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6705,7 +6730,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionsPager:
-        r"""Lists Connections in a parent.
+        r"""Lists Connections in a parent. Use SearchConnections
+        to see all connections within an organization.
 
         .. code-block:: python
 
@@ -6738,8 +6764,10 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             request (Union[google.cloud.dlp_v2.types.ListConnectionsRequest, dict]):
                 The request object. Request message for ListConnections.
             parent (str):
-                Required. Parent name, for example:
-                ``projects/project-id/locations/global``.
+                Required. Resource name of the organization or project,
+                for example,
+                ``organizations/433245324/locations/europe`` or
+                ``projects/project-id/locations/asia``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6805,6 +6833,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6854,9 +6884,10 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 The request object. Request message for
                 SearchConnections.
             parent (str):
-                Required. Parent name, typically an organization,
-                without location. For example:
-                ``organizations/12345678``.
+                Required. Resource name of the organization or project
+                with a wildcard location, for example,
+                ``organizations/433245324/locations/-`` or
+                ``projects/project-id/locations/-``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6922,6 +6953,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

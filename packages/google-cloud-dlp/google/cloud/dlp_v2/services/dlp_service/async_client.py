@@ -1307,6 +1307,8 @@ class DlpServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1941,6 +1943,8 @@ class DlpServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2668,6 +2672,8 @@ class DlpServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3369,6 +3375,8 @@ class DlpServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3762,6 +3770,8 @@ class DlpServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4581,6 +4591,8 @@ class DlpServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4798,6 +4810,8 @@ class DlpServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4919,6 +4933,8 @@ class DlpServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5040,6 +5056,8 @@ class DlpServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5270,6 +5288,8 @@ class DlpServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6016,8 +6036,15 @@ class DlpServiceAsyncClient:
             request (Optional[Union[google.cloud.dlp_v2.types.CreateConnectionRequest, dict]]):
                 The request object. Request message for CreateConnection.
             parent (:class:`str`):
-                Required. Parent resource name in the format:
-                ``projects/{project}/locations/{location}``.
+                Required. Parent resource name.
+
+                The format of this value varies depending on the scope
+                of the request (project or organization):
+
+                -  Projects scope:
+                   ``projects/PROJECT_ID/locations/LOCATION_ID``
+                -  Organizations scope:
+                   ``organizations/ORG_ID/locations/LOCATION_ID``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6203,7 +6230,8 @@ class DlpServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionsAsyncPager:
-        r"""Lists Connections in a parent.
+        r"""Lists Connections in a parent. Use SearchConnections
+        to see all connections within an organization.
 
         .. code-block:: python
 
@@ -6236,8 +6264,10 @@ class DlpServiceAsyncClient:
             request (Optional[Union[google.cloud.dlp_v2.types.ListConnectionsRequest, dict]]):
                 The request object. Request message for ListConnections.
             parent (:class:`str`):
-                Required. Parent name, for example:
-                ``projects/project-id/locations/global``.
+                Required. Resource name of the organization or project,
+                for example,
+                ``organizations/433245324/locations/europe`` or
+                ``projects/project-id/locations/asia``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6306,6 +6336,8 @@ class DlpServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6355,9 +6387,10 @@ class DlpServiceAsyncClient:
                 The request object. Request message for
                 SearchConnections.
             parent (:class:`str`):
-                Required. Parent name, typically an organization,
-                without location. For example:
-                ``organizations/12345678``.
+                Required. Resource name of the organization or project
+                with a wildcard location, for example,
+                ``organizations/433245324/locations/-`` or
+                ``projects/project-id/locations/-``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6426,6 +6459,8 @@ class DlpServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

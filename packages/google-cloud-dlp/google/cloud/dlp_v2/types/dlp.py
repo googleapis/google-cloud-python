@@ -8566,6 +8566,10 @@ class DiscoveryGenerationCadence(proto.Message):
             rules defined by the ``InspectTemplate`` change. If not set,
             changing the template will not cause a data profile to
             update.
+        refresh_frequency (google.cloud.dlp_v2.types.DataProfileUpdateFrequency):
+            Frequency at which profiles should be
+            updated, regardless of whether the underlying
+            resource has changed. Defaults to never.
     """
 
     schema_modified_cadence: "DiscoverySchemaModifiedCadence" = proto.Field(
@@ -8584,6 +8588,11 @@ class DiscoveryGenerationCadence(proto.Message):
             number=3,
             message="DiscoveryInspectTemplateModifiedCadence",
         )
+    )
+    refresh_frequency: "DataProfileUpdateFrequency" = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="DataProfileUpdateFrequency",
     )
 
 
@@ -9456,7 +9465,7 @@ class DiscoveryStartingLocation(proto.Message):
             This field is a member of `oneof`_ ``location``.
         folder_id (int):
             The ID of the folder within an organization
-            to scan.
+            to be scanned.
 
             This field is a member of `oneof`_ ``location``.
     """
@@ -12433,8 +12442,15 @@ class CreateConnectionRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent resource name in the format:
-            ``projects/{project}/locations/{location}``.
+            Required. Parent resource name.
+
+            The format of this value varies depending on the scope of
+            the request (project or organization):
+
+            -  Projects scope:
+               ``projects/PROJECT_ID/locations/LOCATION_ID``
+            -  Organizations scope:
+               ``organizations/ORG_ID/locations/LOCATION_ID``
         connection (google.cloud.dlp_v2.types.Connection):
             Required. The connection resource.
     """
@@ -12470,8 +12486,9 @@ class ListConnectionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent name, for example:
-            ``projects/project-id/locations/global``.
+            Required. Resource name of the organization or project, for
+            example, ``organizations/433245324/locations/europe`` or
+            ``projects/project-id/locations/asia``.
         page_size (int):
             Optional. Number of results per page, max
             1000.
@@ -12508,8 +12525,10 @@ class SearchConnectionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent name, typically an organization, without
-            location. For example: ``organizations/12345678``.
+            Required. Resource name of the organization or project with
+            a wildcard location, for example,
+            ``organizations/433245324/locations/-`` or
+            ``projects/project-id/locations/-``.
         page_size (int):
             Optional. Number of results per page, max
             1000.
@@ -12856,7 +12875,8 @@ class FileClusterType(proto.Message):
 
     class Cluster(proto.Enum):
         r"""Cluster type. Each cluster corresponds to a set of file
-        types. Over time new types may be added.
+        types. Over time, new types may be added and files may move
+        between clusters.
 
         Values:
             CLUSTER_UNSPECIFIED (0):

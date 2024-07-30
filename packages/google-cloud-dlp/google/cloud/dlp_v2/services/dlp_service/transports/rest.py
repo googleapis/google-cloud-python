@@ -1890,6 +1890,11 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     "uri": "/v2/{parent=projects/*/locations/*}/connections",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=organizations/*/locations/*}/connections",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_create_connection(
                 request, metadata
@@ -2315,7 +2320,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v2/{parent=organizations/*}/inspectTemplates",
+                    "uri": "/v2/{parent=projects/*/locations/*}/inspectTemplates",
                     "body": "*",
                 },
                 {
@@ -2330,7 +2335,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 },
                 {
                     "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/inspectTemplates",
+                    "uri": "/v2/{parent=organizations/*}/inspectTemplates",
                     "body": "*",
                 },
             ]
@@ -2732,6 +2737,10 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 {
                     "method": "delete",
                     "uri": "/v2/{name=projects/*/locations/*/connections/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=organizations/*/locations/*/connections/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_delete_connection(
@@ -3135,7 +3144,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
-                    "uri": "/v2/{name=organizations/*/inspectTemplates/*}",
+                    "uri": "/v2/{name=projects/*/locations/*/inspectTemplates/*}",
                 },
                 {
                     "method": "delete",
@@ -3147,7 +3156,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 },
                 {
                     "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/inspectTemplates/*}",
+                    "uri": "/v2/{name=organizations/*/inspectTemplates/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_delete_inspect_template(
@@ -3656,6 +3665,10 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     "method": "get",
                     "uri": "/v2/{name=projects/*/locations/*/connections/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=organizations/*/locations/*/connections/*}",
+                },
             ]
             request, metadata = self._interceptor.pre_get_connection(request, metadata)
             pb_request = dlp.GetConnectionRequest.pb(request)
@@ -4138,7 +4151,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v2/{name=organizations/*/inspectTemplates/*}",
+                    "uri": "/v2/{name=projects/*/locations/*/inspectTemplates/*}",
                 },
                 {
                     "method": "get",
@@ -4150,7 +4163,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/inspectTemplates/*}",
+                    "uri": "/v2/{name=organizations/*/inspectTemplates/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_inspect_template(
@@ -5002,6 +5015,10 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     "method": "get",
                     "uri": "/v2/{parent=projects/*/locations/*}/connections",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=organizations/*/locations/*}/connections",
+                },
             ]
             request, metadata = self._interceptor.pre_list_connections(
                 request, metadata
@@ -5559,7 +5576,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v2/{parent=organizations/*}/inspectTemplates",
+                    "uri": "/v2/{parent=projects/*/locations/*}/inspectTemplates",
                 },
                 {
                     "method": "get",
@@ -5571,7 +5588,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/inspectTemplates",
+                    "uri": "/v2/{parent=organizations/*}/inspectTemplates",
                 },
             ]
             request, metadata = self._interceptor.pre_list_inspect_templates(
@@ -6333,6 +6350,11 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     "uri": "/v2/{name=projects/*/locations/*/connections/*}",
                     "body": "*",
                 },
+                {
+                    "method": "patch",
+                    "uri": "/v2/{name=organizations/*/locations/*/connections/*}",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_update_connection(
                 request, metadata
@@ -6655,7 +6677,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/v2/{name=organizations/*/inspectTemplates/*}",
+                    "uri": "/v2/{name=projects/*/locations/*/inspectTemplates/*}",
                     "body": "*",
                 },
                 {
@@ -6670,7 +6692,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 },
                 {
                     "method": "patch",
-                    "uri": "/v2/{name=projects/*/locations/*/inspectTemplates/*}",
+                    "uri": "/v2/{name=organizations/*/inspectTemplates/*}",
                     "body": "*",
                 },
             ]
