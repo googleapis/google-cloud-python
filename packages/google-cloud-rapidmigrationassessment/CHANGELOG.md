@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-rapidmigrationassessment-v0.1.8...google-cloud-rapidmigrationassessment-v0.1.9) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([42c4d04](https://github.com/googleapis/google-cloud-python/commit/42c4d04ee1362ba0ed0f1b6a134ac8e409875b63))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-rapidmigrationassessment-v0.1.7...google-cloud-rapidmigrationassessment-v0.1.8) (2024-07-08)
 
 
