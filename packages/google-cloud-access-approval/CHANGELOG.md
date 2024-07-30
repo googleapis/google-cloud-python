@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-approval-v1.13.4...google-cloud-access-approval-v1.13.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([c6eeae0](https://github.com/googleapis/google-cloud-python/commit/c6eeae00de802d98badd3de879ce5e870ba60a3a))
+
 ## [1.13.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-approval-v1.13.3...google-cloud-access-approval-v1.13.4) (2024-07-08)
 
 
