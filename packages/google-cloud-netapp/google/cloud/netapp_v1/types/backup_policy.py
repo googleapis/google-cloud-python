@@ -175,10 +175,11 @@ class CreateBackupPolicyRequest(proto.Message):
         backup_policy_id (str):
             Required. The ID to use for the backup
             policy. The ID must be unique within the
-            specified location. This value must start with a
-            lowercase letter followed by up to 62 lowercase
-            letters, numbers, or hyphens, and cannot end
-            with a hyphen.
+            specified location. Must contain only letters,
+            numbers, underscore and hyphen, with the first
+            character a letter or underscore, the last a
+            letter or underscore or a number, and a 63
+            character maximum.
     """
 
     parent: str = proto.Field(

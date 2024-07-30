@@ -132,9 +132,12 @@ class CreateKmsConfigRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         kms_config_id (str):
-            Required. Id of the requesting KmsConfig If auto-generating
-            Id server-side, remove this field and id from the
-            method_signature of Create RPC
+            Required. Id of the requesting KmsConfig.
+            Must be unique within the parent resource. Must
+            contain only letters, numbers, underscore and
+            hyphen, with the first character a letter or
+            underscore, the last a letter or underscore or a
+            number, and a 63 character maximum.
         kms_config (google.cloud.netapp_v1.types.KmsConfig):
             Required. The required parameters to create a
             new KmsConfig.
