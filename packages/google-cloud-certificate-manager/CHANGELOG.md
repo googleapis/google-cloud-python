@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.7.1...google-cloud-certificate-manager-v1.7.2) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([a6f7356](https://github.com/googleapis/google-cloud-python/commit/a6f7356f1549721f9fab83d4dcfa226cec1965d0))
+
 ## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.7.0...google-cloud-certificate-manager-v1.7.1) (2024-07-08)
 
 

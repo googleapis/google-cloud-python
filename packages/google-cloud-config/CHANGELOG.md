@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.10...google-cloud-config-v0.1.11) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([a6f7356](https://github.com/googleapis/google-cloud-python/commit/a6f7356f1549721f9fab83d4dcfa226cec1965d0))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.9...google-cloud-config-v0.1.10) (2024-07-08)
 
 
