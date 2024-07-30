@@ -1652,9 +1652,22 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return bigframes.dataframe.DataFrame(block)
 
     def to_csv(
-        self, path_or_buf: str, sep=",", *, header: bool = True, index: bool = True
-    ) -> None:
-        return self.to_frame().to_csv(path_or_buf, sep=sep, header=header, index=index)
+        self,
+        path_or_buf=None,
+        sep=",",
+        *,
+        header: bool = True,
+        index: bool = True,
+    ) -> Optional[str]:
+        if utils.is_gcs_path(path_or_buf):
+            return self.to_frame().to_csv(
+                path_or_buf, sep=sep, header=header, index=index
+            )
+        else:
+            pd_series = self.to_pandas()
+            return pd_series.to_csv(
+                path_or_buf=path_or_buf, sep=sep, header=header, index=index
+            )
 
     def to_dict(self, into: type[dict] = dict) -> typing.Mapping:
         return typing.cast(dict, self.to_pandas().to_dict(into))  # type: ignore
@@ -1664,17 +1677,23 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def to_json(
         self,
-        path_or_buf: str,
-        orient: typing.Literal[
-            "split", "records", "index", "columns", "values", "table"
-        ] = "columns",
+        path_or_buf=None,
+        orient: Optional[
+            typing.Literal["split", "records", "index", "columns", "values", "table"]
+        ] = None,
         *,
         lines: bool = False,
         index: bool = True,
-    ) -> None:
-        return self.to_frame().to_json(
-            path_or_buf=path_or_buf, orient=orient, lines=lines, index=index
-        )
+    ) -> Optional[str]:
+        if utils.is_gcs_path(path_or_buf):
+            return self.to_frame().to_json(
+                path_or_buf=path_or_buf, orient=orient, lines=lines, index=index
+            )
+        else:
+            pd_series = self.to_pandas()
+            return pd_series.to_json(
+                path_or_buf=path_or_buf, orient=orient, lines=lines, index=index  # type: ignore
+            )
 
     def to_latex(
         self, buf=None, columns=None, header=True, index=True, **kwargs

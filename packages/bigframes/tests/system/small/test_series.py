@@ -2753,6 +2753,44 @@ def test_to_latex(scalars_df_index, scalars_pandas_df_index):
     assert bf_result == pd_result
 
 
+def test_series_to_json_local_str(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.int64_col.to_json()
+    pd_result = scalars_pandas_df_index.int64_col.to_json()
+
+    assert bf_result == pd_result
+
+
+@skip_legacy_pandas
+def test_series_to_json_local_file(scalars_df_index, scalars_pandas_df_index):
+    with tempfile.TemporaryFile() as bf_result_file, tempfile.TemporaryFile() as pd_result_file:
+        scalars_df_index.int64_col.to_json(bf_result_file)
+        scalars_pandas_df_index.int64_col.to_json(pd_result_file)
+
+        bf_result = bf_result_file.read()
+        pd_result = pd_result_file.read()
+
+    assert bf_result == pd_result
+
+
+def test_series_to_csv_local_str(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.int64_col.to_csv()
+    # default_handler for arrow types that have no default conversion
+    pd_result = scalars_pandas_df_index.int64_col.to_csv()
+
+    assert bf_result == pd_result
+
+
+def test_series_to_csv_local_file(scalars_df_index, scalars_pandas_df_index):
+    with tempfile.TemporaryFile() as bf_result_file, tempfile.TemporaryFile() as pd_result_file:
+        scalars_df_index.int64_col.to_csv(bf_result_file)
+        scalars_pandas_df_index.int64_col.to_csv(pd_result_file)
+
+        bf_result = bf_result_file.read()
+        pd_result = pd_result_file.read()
+
+    assert bf_result == pd_result
+
+
 def test_to_dict(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index["int64_too"].to_dict()
 

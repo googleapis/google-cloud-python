@@ -23,6 +23,10 @@ UNNAMED_COLUMN_ID = "bigframes_unnamed_column"
 UNNAMED_INDEX_ID = "bigframes_unnamed_index"
 
 
+def is_gcs_path(value) -> typing_extensions.TypeGuard[str]:
+    return isinstance(value, str) and value.startswith("gs://")
+
+
 def get_axis_number(axis: typing.Union[str, int]) -> typing.Literal[0, 1]:
     if axis in {0, "index", "rows"}:
         return 0

@@ -210,14 +210,14 @@ class NDFrame(indexing.IndexingMixin):
 
     def to_json(
         self,
-        path_or_buf: str,
-        orient: Literal[
-            "split", "records", "index", "columns", "values", "table"
-        ] = "columns",
+        path_or_buf,
+        orient: Optional[
+            Literal["split", "records", "index", "columns", "values", "table"]
+        ] = None,
         *,
         index: bool = True,
         lines: bool = False,
-    ) -> None:
+    ) -> Optional[str]:
         """Convert the object to a JSON string, written to Cloud Storage.
 
         Note NaN's and None will be converted to null and datetime objects
@@ -227,16 +227,18 @@ class NDFrame(indexing.IndexingMixin):
             Only ``orient='records'`` and ``lines=True`` is supported so far.
 
         Args:
-            path_or_buf (str):
-                A destination URI of Cloud Storage files(s) to store the extracted
+            path_or_buf (str, path object, file-like object, or None, default None):
+                String, path object (implementing os.PathLike[str]), or file-like
+                object implementing a write() function. If None, the result is
+                returned as a string.
+
+                Can be a destination URI of Cloud Storage files(s) to store the extracted
                 dataframe in format of ``gs://<bucket_name>/<object_name_or_glob>``.
                 Must contain a wildcard `*` character.
 
                 If the data size is more than 1GB, you must use a wildcard to
                 export the data into multiple files and the size of the files
                 varies.
-
-                None, file-like objects or local file paths not yet supported.
             orient ({`split`, `records`, `index`, `columns`, `values`, `table`}, default 'columns):
                 Indication of expected JSON string format.
 
@@ -271,17 +273,25 @@ class NDFrame(indexing.IndexingMixin):
                 list-like.
 
         Returns:
-            None: String output not yet supported.
+            None or str: If path_or_buf is None, returns the resulting json format as a
+            string. Otherwise returns None.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_csv(self, path_or_buf: str, *, index: bool = True) -> None:
+    def to_csv(self, path_or_buf, *, index: bool = True) -> Optional[str]:
         """Write object to a comma-separated values (csv) file on Cloud Storage.
 
         Args:
-            path_or_buf (str):
-                A destination URI of Cloud Storage files(s) to store the extracted dataframe
-                in format of ``gs://<bucket_name>/<object_name_or_glob>``.
+            path_or_buf (str, path object, file-like object, or None, default None):
+                String, path object (implementing os.PathLike[str]), or file-like
+                object implementing a write() function. If None, the result is
+                returned as a string. If a non-binary file object is passed, it should
+                be opened with `newline=''`, disabling universal newlines. If a binary
+                file object is passed, `mode` might need to contain a `'b'`.
+
+                Alternatively, a destination URI of Cloud Storage files(s) to store the
+                extracted dataframe in format of
+                ``gs://<bucket_name>/<object_name_or_glob>``.
 
                 If the data size is more than 1GB, you must use a wildcard to
                 export the data into multiple files and the size of the files
@@ -293,7 +303,8 @@ class NDFrame(indexing.IndexingMixin):
                 If True, write row names (index).
 
         Returns:
-            None: String output not yet supported.
+            None or str: If path_or_buf is None, returns the resulting json format as a
+            string. Otherwise returns None.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

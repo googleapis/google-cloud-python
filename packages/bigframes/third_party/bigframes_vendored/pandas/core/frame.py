@@ -476,11 +476,11 @@ class DataFrame(generic.NDFrame):
 
     def to_parquet(
         self,
-        path: str,
+        path: Optional[str],
         *,
         compression: Optional[Literal["snappy", "gzip"]] = "snappy",
         index: bool = True,
-    ) -> None:
+    ) -> Optional[bytes]:
         """Write a DataFrame to the binary Parquet format.
 
         This function writes the dataframe as a `parquet file
@@ -496,9 +496,13 @@ class DataFrame(generic.NDFrame):
             >>> df.to_parquet(path=gcs_bucket)
 
         Args:
-            path (str):
+            path (str, path object, file-like object, or None, default None):
+                String, path object (implementing ``os.PathLike[str]``), or file-like
+                object implementing a binary ``write()`` function. If None, the result is
+                returned as bytes. If a string or path, it will be used as Root Directory
+                path when writing a partitioned dataset.
                 Destination URI(s) of Cloud Storage files(s) to store the extracted dataframe
-                in format of ``gs://<bucket_name>/<object_name_or_glob>``.
+                should be formatted ``gs://<bucket_name>/<object_name_or_glob>``.
                 If the data size is more than 1GB, you must use a wildcard to export
                 the data into multiple files and the size of the files varies.
 
@@ -511,7 +515,7 @@ class DataFrame(generic.NDFrame):
                 If ``False``, they will not be written to the file.
 
         Returns:
-            None.
+            bytes if no path argument is provided else None
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

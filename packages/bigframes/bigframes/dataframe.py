@@ -2952,15 +2952,21 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
 
     def to_csv(
-        self, path_or_buf: str, sep=",", *, header: bool = True, index: bool = True
-    ) -> None:
+        self,
+        path_or_buf=None,
+        sep=",",
+        *,
+        header: bool = True,
+        index: bool = True,
+    ) -> Optional[str]:
         # TODO(swast): Can we support partition columns argument?
         # TODO(chelsealin): Support local file paths.
         # TODO(swast): Some warning that wildcard is recommended for large
         # query results? See:
         # https://cloud.google.com/bigquery/docs/exporting-data#limit_the_exported_file_size
-        if not path_or_buf.startswith("gs://"):
-            raise NotImplementedError(ERROR_IO_ONLY_GS_PATHS)
+        if not utils.is_gcs_path(path_or_buf):
+            pd_df = self.to_pandas()
+            return pd_df.to_csv(path_or_buf, sep=sep, header=header, index=index)
         if "*" not in path_or_buf:
             raise NotImplementedError(ERROR_IO_REQUIRES_WILDCARD)
 
@@ -2977,22 +2983,28 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             export_data_statement, api_name="dataframe-to_csv"
         )
         self._set_internal_query_job(query_job)
+        return None
 
     def to_json(
         self,
-        path_or_buf: str,
-        orient: Literal[
-            "split", "records", "index", "columns", "values", "table"
-        ] = "columns",
+        path_or_buf=None,
+        orient: Optional[
+            Literal["split", "records", "index", "columns", "values", "table"]
+        ] = None,
         *,
         lines: bool = False,
         index: bool = True,
-    ) -> None:
+    ) -> Optional[str]:
         # TODO(swast): Can we support partition columns argument?
-        # TODO(chelsealin): Support local file paths.
-        if not path_or_buf.startswith("gs://"):
-            raise NotImplementedError(ERROR_IO_ONLY_GS_PATHS)
-
+        if not utils.is_gcs_path(path_or_buf):
+            pd_df = self.to_pandas()
+            return pd_df.to_json(
+                path_or_buf,
+                orient=orient,
+                lines=lines,
+                index=index,
+                default_handler=str,
+            )
         if "*" not in path_or_buf:
             raise NotImplementedError(ERROR_IO_REQUIRES_WILDCARD)
 
@@ -3021,6 +3033,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             export_data_statement, api_name="dataframe-to_json"
         )
         self._set_internal_query_job(query_job)
+        return None
 
     def to_gbq(
         self,
@@ -3119,19 +3132,19 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     def to_parquet(
         self,
-        path: str,
+        path=None,
         *,
         compression: Optional[Literal["snappy", "gzip"]] = "snappy",
         index: bool = True,
-    ) -> None:
+    ) -> Optional[bytes]:
         # TODO(swast): Can we support partition columns argument?
         # TODO(chelsealin): Support local file paths.
         # TODO(swast): Some warning that wildcard is recommended for large
         # query results? See:
         # https://cloud.google.com/bigquery/docs/exporting-data#limit_the_exported_file_size
-        if not path.startswith("gs://"):
-            raise NotImplementedError(ERROR_IO_ONLY_GS_PATHS)
-
+        if not utils.is_gcs_path(path):
+            pd_df = self.to_pandas()
+            return pd_df.to_parquet(path, compression=compression, index=index)
         if "*" not in path:
             raise NotImplementedError(ERROR_IO_REQUIRES_WILDCARD)
 
@@ -3155,6 +3168,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             export_data_statement, api_name="dataframe-to_parquet"
         )
         self._set_internal_query_job(query_job)
+        return None
 
     def to_dict(
         self,
