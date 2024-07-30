@@ -22,7 +22,21 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
+    Union,
 )
+
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
+from google.api_core import retry_async as retries_async
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+    OptionalAsyncRetry = Union[
+        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
+    ]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
 from google.cloud.securitycentermanagement_v1.types import security_center_management
 
@@ -54,6 +68,8 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesPager:
         request: security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
         response: security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -65,6 +81,9 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -73,6 +92,8 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesPager:
             request
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -87,7 +108,12 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(
@@ -131,6 +157,8 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesAsyncPager:
         request: security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
         response: security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -142,6 +170,9 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesAsyncPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -150,6 +181,8 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesAsyncPager:
             request
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -164,7 +197,12 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(
@@ -210,6 +248,8 @@ class ListSecurityHealthAnalyticsCustomModulesPager:
         request: security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest,
         response: security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -221,6 +261,9 @@ class ListSecurityHealthAnalyticsCustomModulesPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListSecurityHealthAnalyticsCustomModulesResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -231,6 +274,8 @@ class ListSecurityHealthAnalyticsCustomModulesPager:
             )
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -245,7 +290,12 @@ class ListSecurityHealthAnalyticsCustomModulesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(
@@ -287,6 +337,8 @@ class ListSecurityHealthAnalyticsCustomModulesAsyncPager:
         request: security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest,
         response: security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -298,6 +350,9 @@ class ListSecurityHealthAnalyticsCustomModulesAsyncPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListSecurityHealthAnalyticsCustomModulesResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -308,6 +363,8 @@ class ListSecurityHealthAnalyticsCustomModulesAsyncPager:
             )
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -322,7 +379,12 @@ class ListSecurityHealthAnalyticsCustomModulesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(
@@ -366,6 +428,8 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesPager:
         request: security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
         response: security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -377,6 +441,9 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListDescendantSecurityHealthAnalyticsCustomModulesResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -385,6 +452,8 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesPager:
             request
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -399,7 +468,12 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(
@@ -441,6 +515,8 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesAsyncPager:
         request: security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
         response: security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -452,6 +528,9 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesAsyncPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListDescendantSecurityHealthAnalyticsCustomModulesResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -460,6 +539,8 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesAsyncPager:
             request
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -474,7 +555,12 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(
@@ -518,6 +604,8 @@ class ListEffectiveEventThreatDetectionCustomModulesPager:
         request: security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest,
         response: security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -529,6 +617,9 @@ class ListEffectiveEventThreatDetectionCustomModulesPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListEffectiveEventThreatDetectionCustomModulesResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -537,6 +628,8 @@ class ListEffectiveEventThreatDetectionCustomModulesPager:
             request
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -551,7 +644,12 @@ class ListEffectiveEventThreatDetectionCustomModulesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(
@@ -593,6 +691,8 @@ class ListEffectiveEventThreatDetectionCustomModulesAsyncPager:
         request: security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest,
         response: security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -604,6 +704,9 @@ class ListEffectiveEventThreatDetectionCustomModulesAsyncPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListEffectiveEventThreatDetectionCustomModulesResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -612,6 +715,8 @@ class ListEffectiveEventThreatDetectionCustomModulesAsyncPager:
             request
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -626,7 +731,12 @@ class ListEffectiveEventThreatDetectionCustomModulesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(
@@ -672,6 +782,8 @@ class ListEventThreatDetectionCustomModulesPager:
         request: security_center_management.ListEventThreatDetectionCustomModulesRequest,
         response: security_center_management.ListEventThreatDetectionCustomModulesResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -683,6 +795,9 @@ class ListEventThreatDetectionCustomModulesPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListEventThreatDetectionCustomModulesResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -693,6 +808,8 @@ class ListEventThreatDetectionCustomModulesPager:
             )
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -707,7 +824,12 @@ class ListEventThreatDetectionCustomModulesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(
@@ -749,6 +871,8 @@ class ListEventThreatDetectionCustomModulesAsyncPager:
         request: security_center_management.ListEventThreatDetectionCustomModulesRequest,
         response: security_center_management.ListEventThreatDetectionCustomModulesResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -760,6 +884,9 @@ class ListEventThreatDetectionCustomModulesAsyncPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListEventThreatDetectionCustomModulesResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -770,6 +897,8 @@ class ListEventThreatDetectionCustomModulesAsyncPager:
             )
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -784,7 +913,12 @@ class ListEventThreatDetectionCustomModulesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(
@@ -828,6 +962,8 @@ class ListDescendantEventThreatDetectionCustomModulesPager:
         request: security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest,
         response: security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -839,6 +975,9 @@ class ListDescendantEventThreatDetectionCustomModulesPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListDescendantEventThreatDetectionCustomModulesResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -847,6 +986,8 @@ class ListDescendantEventThreatDetectionCustomModulesPager:
             request
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -861,7 +1002,12 @@ class ListDescendantEventThreatDetectionCustomModulesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(
@@ -903,6 +1049,8 @@ class ListDescendantEventThreatDetectionCustomModulesAsyncPager:
         request: security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest,
         response: security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -914,6 +1062,9 @@ class ListDescendantEventThreatDetectionCustomModulesAsyncPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListDescendantEventThreatDetectionCustomModulesResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -922,6 +1073,8 @@ class ListDescendantEventThreatDetectionCustomModulesAsyncPager:
             request
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -936,7 +1089,12 @@ class ListDescendantEventThreatDetectionCustomModulesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(
@@ -979,6 +1137,8 @@ class ListSecurityCenterServicesPager:
         request: security_center_management.ListSecurityCenterServicesRequest,
         response: security_center_management.ListSecurityCenterServicesResponse,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
@@ -990,6 +1150,9 @@ class ListSecurityCenterServicesPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListSecurityCenterServicesResponse):
                 The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -998,6 +1161,8 @@ class ListSecurityCenterServicesPager:
             request
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -1010,7 +1175,12 @@ class ListSecurityCenterServicesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[security_center_management.SecurityCenterService]:
@@ -1048,6 +1218,8 @@ class ListSecurityCenterServicesAsyncPager:
         request: security_center_management.ListSecurityCenterServicesRequest,
         response: security_center_management.ListSecurityCenterServicesResponse,
         *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiates the pager.
@@ -1059,6 +1231,9 @@ class ListSecurityCenterServicesAsyncPager:
                 The initial request object.
             response (google.cloud.securitycentermanagement_v1.types.ListSecurityCenterServicesResponse):
                 The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -1067,6 +1242,8 @@ class ListSecurityCenterServicesAsyncPager:
             request
         )
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -1079,7 +1256,12 @@ class ListSecurityCenterServicesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __aiter__(

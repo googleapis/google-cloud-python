@@ -989,6 +989,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1703,6 +1705,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2202,6 +2206,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2937,6 +2943,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4123,6 +4131,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4605,6 +4615,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4827,6 +4839,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5668,6 +5682,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6284,6 +6300,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

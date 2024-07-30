@@ -1303,6 +1303,8 @@ class LineageClient(metaclass=LineageClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1886,6 +1888,8 @@ class LineageClient(metaclass=LineageClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2351,6 +2355,8 @@ class LineageClient(metaclass=LineageClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2549,6 +2555,8 @@ class LineageClient(metaclass=LineageClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2660,6 +2668,8 @@ class LineageClient(metaclass=LineageClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

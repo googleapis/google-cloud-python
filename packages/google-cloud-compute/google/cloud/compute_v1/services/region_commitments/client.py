@@ -773,6 +773,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1311,6 +1313,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

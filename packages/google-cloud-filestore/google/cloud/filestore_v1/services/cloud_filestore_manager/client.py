@@ -879,6 +879,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1718,6 +1720,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2347,6 +2351,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

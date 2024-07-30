@@ -764,6 +764,8 @@ class MessagesV1Beta3Client(metaclass=MessagesV1Beta3ClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

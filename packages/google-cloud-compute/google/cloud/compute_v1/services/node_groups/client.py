@@ -1071,6 +1071,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2397,6 +2399,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2538,6 +2542,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

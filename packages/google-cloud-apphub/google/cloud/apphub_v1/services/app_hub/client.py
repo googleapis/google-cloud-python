@@ -1038,6 +1038,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1677,6 +1679,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2021,6 +2025,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2657,6 +2663,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3005,6 +3013,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3640,6 +3650,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

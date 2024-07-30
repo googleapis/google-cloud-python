@@ -781,6 +781,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1916,6 +1918,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

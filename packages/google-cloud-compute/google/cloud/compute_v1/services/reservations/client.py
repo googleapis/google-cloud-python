@@ -765,6 +765,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1727,6 +1729,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
