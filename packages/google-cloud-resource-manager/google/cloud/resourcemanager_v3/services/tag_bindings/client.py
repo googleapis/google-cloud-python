@@ -814,6 +814,8 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1166,6 +1168,8 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
