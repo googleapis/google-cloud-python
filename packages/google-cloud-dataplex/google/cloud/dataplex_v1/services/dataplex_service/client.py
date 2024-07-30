@@ -1397,6 +1397,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1628,6 +1630,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2155,6 +2159,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2378,6 +2384,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2895,6 +2903,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3113,6 +3123,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3626,6 +3638,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3841,6 +3855,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4648,6 +4664,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4866,6 +4884,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
