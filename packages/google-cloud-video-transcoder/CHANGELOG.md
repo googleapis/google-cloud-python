@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-transcoder-v1.12.4...google-cloud-video-transcoder-v1.12.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([9cdac77](https://github.com/googleapis/google-cloud-python/commit/9cdac77b20a8c9720aa668639e3ca6d1e759a2de))
+
 ## [1.12.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-transcoder-v1.12.3...google-cloud-video-transcoder-v1.12.4) (2024-07-08)
 
 

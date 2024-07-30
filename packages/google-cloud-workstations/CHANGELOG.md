@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.5.7...google-cloud-workstations-v0.5.8) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([4adddf4](https://github.com/googleapis/google-cloud-python/commit/4adddf4d90634e454ee006774bfc631fc12c1700))
+
 ## [0.5.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.5.6...google-cloud-workstations-v0.5.7) (2024-07-08)
 
 
