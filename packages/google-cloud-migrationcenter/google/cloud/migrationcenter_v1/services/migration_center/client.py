@@ -996,6 +996,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1934,6 +1936,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2758,6 +2762,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3140,6 +3146,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4004,6 +4012,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4220,6 +4230,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -4827,6 +4839,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -5925,6 +5939,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -6403,6 +6419,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
