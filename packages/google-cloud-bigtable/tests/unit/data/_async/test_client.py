@@ -1277,7 +1277,7 @@ class TestTableAsync:
             ("read_rows_sharded", ([ReadRowsQuery()],), "read_rows"),
             ("row_exists", (b"row_key",), "read_rows"),
             ("sample_row_keys", (), "sample_row_keys"),
-            ("mutate_row", (b"row_key", [mock.Mock()]), "mutate_row"),
+            ("mutate_row", (b"row_key", [mutations.DeleteAllFromRow()]), "mutate_row"),
             (
                 "bulk_mutate_rows",
                 ([mutations.RowMutationEntry(b"key", [mutations.DeleteAllFromRow()])],),
@@ -1286,7 +1286,7 @@ class TestTableAsync:
             ("check_and_mutate_row", (b"row_key", None), "check_and_mutate_row"),
             (
                 "read_modify_write_row",
-                (b"row_key", mock.Mock()),
+                (b"row_key", IncrementRule("f", "q")),
                 "read_modify_write_row",
             ),
         ],
@@ -1298,31 +1298,34 @@ class TestTableAsync:
         from google.cloud.bigtable.data import TableAsync
 
         profile = "profile" if include_app_profile else None
-        with mock.patch(
-            f"google.cloud.bigtable_v2.BigtableAsyncClient.{gapic_fn}", mock.AsyncMock()
-        ) as gapic_mock:
-            gapic_mock.side_effect = RuntimeError("stop early")
-            async with _make_client() as client:
-                table = TableAsync(client, "instance-id", "table-id", profile)
-                try:
-                    test_fn = table.__getattribute__(fn_name)
-                    maybe_stream = await test_fn(*fn_args)
-                    [i async for i in maybe_stream]
-                except Exception:
-                    # we expect an exception from attempting to call the mock
-                    pass
-                kwargs = gapic_mock.call_args_list[0].kwargs
-                metadata = kwargs["metadata"]
-                goog_metadata = None
-                for key, value in metadata:
-                    if key == "x-goog-request-params":
-                        goog_metadata = value
-                assert goog_metadata is not None, "x-goog-request-params not found"
-                assert "table_name=" + table.table_name in goog_metadata
-                if include_app_profile:
-                    assert "app_profile_id=profile" in goog_metadata
-                else:
-                    assert "app_profile_id=" not in goog_metadata
+        client = _make_client()
+        # create mock for rpc stub
+        transport_mock = mock.MagicMock()
+        rpc_mock = mock.AsyncMock()
+        transport_mock._wrapped_methods.__getitem__.return_value = rpc_mock
+        client._gapic_client._client._transport = transport_mock
+        client._gapic_client._client._is_universe_domain_valid = True
+        table = TableAsync(client, "instance-id", "table-id", profile)
+        try:
+            test_fn = table.__getattribute__(fn_name)
+            maybe_stream = await test_fn(*fn_args)
+            [i async for i in maybe_stream]
+        except Exception:
+            # we expect an exception from attempting to call the mock
+            pass
+        assert rpc_mock.call_count == 1
+        kwargs = rpc_mock.call_args_list[0].kwargs
+        metadata = kwargs["metadata"]
+        # expect single metadata entry
+        assert len(metadata) == 1
+        # expect x-goog-request-params tag
+        assert metadata[0][0] == "x-goog-request-params"
+        routing_str = metadata[0][1]
+        assert "table_name=" + table.table_name in routing_str
+        if include_app_profile:
+            assert "app_profile_id=profile" in routing_str
+        else:
+            assert "app_profile_id=" not in routing_str
 
 
 class TestReadRows:
