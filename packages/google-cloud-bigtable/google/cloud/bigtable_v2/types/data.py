@@ -1033,6 +1033,10 @@ class Mutation(proto.Message):
             Incrementally updates an ``Aggregate`` cell.
 
             This field is a member of `oneof`_ ``mutation``.
+        merge_to_cell (google.cloud.bigtable_v2.types.Mutation.MergeToCell):
+            Merges accumulated state to an ``Aggregate`` cell.
+
+            This field is a member of `oneof`_ ``mutation``.
         delete_from_column (google.cloud.bigtable_v2.types.Mutation.DeleteFromColumn):
             Deletes cells from a column.
 
@@ -1130,6 +1134,49 @@ class Mutation(proto.Message):
             message="Value",
         )
 
+    class MergeToCell(proto.Message):
+        r"""A Mutation which merges accumulated state into a cell in an
+        ``Aggregate`` family.
+
+        Attributes:
+            family_name (str):
+                The name of the ``Aggregate`` family into which new data
+                should be added. This must be a family with a ``value_type``
+                of ``Aggregate``. Format: ``[-_.a-zA-Z0-9]+``
+            column_qualifier (google.cloud.bigtable_v2.types.Value):
+                The qualifier of the column into which new data should be
+                added. This must be a ``raw_value``.
+            timestamp (google.cloud.bigtable_v2.types.Value):
+                The timestamp of the cell to which new data should be added.
+                This must be a ``raw_timestamp_micros`` that matches the
+                table's ``granularity``.
+            input (google.cloud.bigtable_v2.types.Value):
+                The input value to be merged into the specified cell. This
+                must be compatible with the family's
+                ``value_type.state_type``. Merging ``NULL`` is allowed, but
+                has no effect.
+        """
+
+        family_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        column_qualifier: "Value" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Value",
+        )
+        timestamp: "Value" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Value",
+        )
+        input: "Value" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="Value",
+        )
+
     class DeleteFromColumn(proto.Message):
         r"""A Mutation which deletes cells from the specified column,
         optionally restricting the deletions to a given timestamp range.
@@ -1190,6 +1237,12 @@ class Mutation(proto.Message):
         number=5,
         oneof="mutation",
         message=AddToCell,
+    )
+    merge_to_cell: MergeToCell = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="mutation",
+        message=MergeToCell,
     )
     delete_from_column: DeleteFromColumn = proto.Field(
         proto.MESSAGE,
