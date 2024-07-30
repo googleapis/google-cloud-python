@@ -163,6 +163,9 @@ class ComplianceOccurrence(proto.Message):
 
         non_compliance_reason (str):
 
+        version (grafeas.grafeas_v1.types.ComplianceVersion):
+            The OS and config version the benchmark was
+            run on.
     """
 
     non_compliant_files: MutableSequence["NonCompliantFile"] = proto.RepeatedField(
@@ -173,6 +176,11 @@ class ComplianceOccurrence(proto.Message):
     non_compliance_reason: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    version: "ComplianceVersion" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ComplianceVersion",
     )
 
 

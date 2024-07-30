@@ -80,6 +80,9 @@ class DiscoveryOccurrence(proto.Message):
             discovery occurrence were archived.
         sbom_status (grafeas.grafeas_v1.types.DiscoveryOccurrence.SBOMStatus):
             The status of an SBOM generation.
+        vulnerability_attestation (grafeas.grafeas_v1.types.DiscoveryOccurrence.VulnerabilityAttestation):
+            The status of an vulnerability attestation
+            generation.
     """
 
     class ContinuousAnalysis(proto.Enum):
@@ -179,6 +182,53 @@ class DiscoveryOccurrence(proto.Message):
             number=2,
         )
 
+    class VulnerabilityAttestation(proto.Message):
+        r"""The status of an vulnerability attestation generation.
+
+        Attributes:
+            last_attempt_time (google.protobuf.timestamp_pb2.Timestamp):
+                The last time we attempted to generate an
+                attestation.
+            state (grafeas.grafeas_v1.types.DiscoveryOccurrence.VulnerabilityAttestation.VulnerabilityAttestationState):
+                The success/failure state of the latest
+                attestation attempt.
+            error (str):
+                If failure, the error reason for why the
+                attestation generation failed.
+        """
+
+        class VulnerabilityAttestationState(proto.Enum):
+            r"""An enum indicating the state of the attestation generation.
+
+            Values:
+                VULNERABILITY_ATTESTATION_STATE_UNSPECIFIED (0):
+                    Default unknown state.
+                SUCCESS (1):
+                    Attestation was successfully generated and
+                    stored.
+                FAILURE (2):
+                    Attestation was unsuccessfully generated and
+                    stored.
+            """
+            VULNERABILITY_ATTESTATION_STATE_UNSPECIFIED = 0
+            SUCCESS = 1
+            FAILURE = 2
+
+        last_attempt_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+        state: "DiscoveryOccurrence.VulnerabilityAttestation.VulnerabilityAttestationState" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="DiscoveryOccurrence.VulnerabilityAttestation.VulnerabilityAttestationState",
+        )
+        error: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
     continuous_analysis: ContinuousAnalysis = proto.Field(
         proto.ENUM,
         number=1,
@@ -222,6 +272,11 @@ class DiscoveryOccurrence(proto.Message):
         proto.MESSAGE,
         number=9,
         message=SBOMStatus,
+    )
+    vulnerability_attestation: VulnerabilityAttestation = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=VulnerabilityAttestation,
     )
 
 

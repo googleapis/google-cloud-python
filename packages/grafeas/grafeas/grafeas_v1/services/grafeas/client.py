@@ -555,6 +555,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1299,6 +1301,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1850,6 +1854,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
