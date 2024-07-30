@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.12.1...google-cloud-private-ca-v1.12.2) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([52db52e](https://github.com/googleapis/google-cloud-python/commit/52db52ea05c6883b07956d323fdd1d3029806374))
+
 ## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.12.0...google-cloud-private-ca-v1.12.1) (2024-07-08)
 
 

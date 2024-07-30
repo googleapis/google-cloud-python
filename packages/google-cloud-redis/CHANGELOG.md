@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.15.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-v2.15.4...google-cloud-redis-v2.15.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([42c4d04](https://github.com/googleapis/google-cloud-python/commit/42c4d04ee1362ba0ed0f1b6a134ac8e409875b63))
+
 ## [2.15.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-v2.15.3...google-cloud-redis-v2.15.4) (2024-07-08)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.12.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-manager-v1.12.4...google-cloud-resource-manager-v1.12.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([52db52e](https://github.com/googleapis/google-cloud-python/commit/52db52ea05c6883b07956d323fdd1d3029806374))
+
 ## [1.12.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-manager-v1.12.3...google-cloud-resource-manager-v1.12.4) (2024-07-08)
 
 
