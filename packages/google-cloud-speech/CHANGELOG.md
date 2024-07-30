@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.26.1...google-cloud-speech-v2.27.0) (2024-07-30)
+
+
+### Features
+
+* [google-cloud-speech] add locations metadata proto file ([a6b3bc7](https://github.com/googleapis/google-cloud-python/commit/a6b3bc7c1c2e25c54576b97ac12f63c630bb31ef))
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([9cdac77](https://github.com/googleapis/google-cloud-python/commit/9cdac77b20a8c9720aa668639e3ca6d1e759a2de))
+
+
+### Documentation
+
+* update the list of automatically detected encodings ([a6b3bc7](https://github.com/googleapis/google-cloud-python/commit/a6b3bc7c1c2e25c54576b97ac12f63c630bb31ef))
+* update the maximum number of files that may be included in a BatchRecognizeRequest ([a6b3bc7](https://github.com/googleapis/google-cloud-python/commit/a6b3bc7c1c2e25c54576b97ac12f63c630bb31ef))
+
 ## [2.26.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.26.0...google-cloud-speech-v2.26.1) (2024-07-08)
 
 
