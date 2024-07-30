@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-live-stream-v1.8.0...google-cloud-video-live-stream-v1.8.1) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([9cdac77](https://github.com/googleapis/google-cloud-python/commit/9cdac77b20a8c9720aa668639e3ca6d1e759a2de))
+
 ## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-live-stream-v1.7.4...google-cloud-video-live-stream-v1.8.0) (2024-07-11)
 
 

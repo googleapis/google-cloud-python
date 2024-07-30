@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.15.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.15.4...google-cloud-translate-v3.15.5) (2024-07-30)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([9cdac77](https://github.com/googleapis/google-cloud-python/commit/9cdac77b20a8c9720aa668639e3ca6d1e759a2de))
+
 ## [3.15.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.15.3...google-cloud-translate-v3.15.4) (2024-07-08)
 
 
