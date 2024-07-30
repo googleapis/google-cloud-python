@@ -42171,21 +42171,23 @@ def test_parse_column_data_profile_path():
 
 
 def test_connection_path():
-    organization = "cuttlefish"
+    project = "cuttlefish"
     location = "mussel"
     connection = "winkle"
-    expected = "organizations/{organization}/locations/{location}/connections/{connection}".format(
-        organization=organization,
-        location=location,
-        connection=connection,
+    expected = (
+        "projects/{project}/locations/{location}/connections/{connection}".format(
+            project=project,
+            location=location,
+            connection=connection,
+        )
     )
-    actual = DlpServiceClient.connection_path(organization, location, connection)
+    actual = DlpServiceClient.connection_path(project, location, connection)
     assert expected == actual
 
 
 def test_parse_connection_path():
     expected = {
-        "organization": "nautilus",
+        "project": "nautilus",
         "location": "scallop",
         "connection": "abalone",
     }

@@ -220,22 +220,24 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
     @staticmethod
     def connection_path(
-        organization: str,
+        project: str,
         location: str,
         connection: str,
     ) -> str:
         """Returns a fully-qualified connection string."""
-        return "organizations/{organization}/locations/{location}/connections/{connection}".format(
-            organization=organization,
-            location=location,
-            connection=connection,
+        return (
+            "projects/{project}/locations/{location}/connections/{connection}".format(
+                project=project,
+                location=location,
+                connection=connection,
+            )
         )
 
     @staticmethod
     def parse_connection_path(path: str) -> Dict[str, str]:
         """Parses a connection path into its component segments."""
         m = re.match(
-            r"^organizations/(?P<organization>.+?)/locations/(?P<location>.+?)/connections/(?P<connection>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connections/(?P<connection>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
