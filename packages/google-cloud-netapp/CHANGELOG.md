@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.3.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.12...google-cloud-netapp-v0.3.13) (2024-07-31)
+
+
+### Features
+
+* A new field `administrators` is added to message `.google.cloud.netapp.v1.ActiveDirectory` ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A new field `large_capacity` is added to message `.google.cloud.netapp.v1.Volume` ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A new field `multiple_endpoints` is added to message `.google.cloud.netapp.v1.Volume` ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A new field `replica_zone` is added to message `.google.cloud.netapp.v1.StoragePool` ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A new field `replica_zone` is added to message `.google.cloud.netapp.v1.Volume` ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A new field `zone` is added to message `.google.cloud.netapp.v1.StoragePool` ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A new field `zone` is added to message `.google.cloud.netapp.v1.Volume` ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+
+
+### Documentation
+
+* [google-cloud-netapp] A comment for field `active_directory_id` in message `.google.cloud.netapp.v1.CreateActiveDirectoryRequest` is changed ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A comment for enum value `TRANSFERRING` in enum `MirrorState` is changed ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A comment for field `backup_id` in message `.google.cloud.netapp.v1.CreateBackupRequest` is changed ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A comment for field `backup_policy_id` in message `.google.cloud.netapp.v1.CreateBackupPolicyRequest` is changed ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A comment for field `backup_vault_id` in message `.google.cloud.netapp.v1.CreateBackupVaultRequest` is changed ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A comment for field `kms_config_id` in message `.google.cloud.netapp.v1.CreateKmsConfigRequest` is changed ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A comment for field `replication_id` in message `.google.cloud.netapp.v1.CreateReplicationRequest` is changed ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A comment for field `snapshot_id` in message `.google.cloud.netapp.v1.CreateSnapshotRequest` is changed ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A comment for field `storage_pool_id` in message `.google.cloud.netapp.v1.CreateStoragePoolRequest` is changed ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A comment for field `total_transfer_duration` in message `.google.cloud.netapp.v1.TransferStats` is changed ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A comment for field `transfer_bytes` in message `.google.cloud.netapp.v1.TransferStats` is changed ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+* A comment for field `volume_id` in message `.google.cloud.netapp.v1.CreateVolumeRequest` is changed ([d3c6970](https://github.com/googleapis/google-cloud-python/commit/d3c6970029a98849c1a1db885fe55ca79c823c9d))
+
 ## [0.3.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.11...google-cloud-netapp-v0.3.12) (2024-07-30)
 
 
