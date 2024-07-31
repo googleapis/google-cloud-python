@@ -50,11 +50,13 @@ class TransferStats(proto.Message):
 
     Attributes:
         transfer_bytes (int):
-            bytes trasferred so far in current transfer.
+            Cumulative bytes trasferred so far for the
+            replication relatinonship.
 
             This field is a member of `oneof`_ ``_transfer_bytes``.
         total_transfer_duration (google.protobuf.duration_pb2.Duration):
-            Total time taken during transfer.
+            Cumulative time taken across all transfers
+            for the replication relationship.
 
             This field is a member of `oneof`_ ``_total_transfer_duration``.
         last_transfer_bytes (int):
@@ -273,7 +275,7 @@ class Replication(proto.Message):
                 Destination volume is not receiving
                 replication transfers.
             TRANSFERRING (4):
-                Replication is in progress.
+                Incremental replication is in progress.
         """
         MIRROR_STATE_UNSPECIFIED = 0
         PREPARING = 1
@@ -500,9 +502,11 @@ class CreateReplicationRequest(proto.Message):
             Required. A replication resource
         replication_id (str):
             Required. ID of the replication to create.
-            This value must start with a lowercase letter
-            followed by up to 62 lowercase letters, numbers,
-            or hyphens, and cannot end with a hyphen.
+            Must be unique within the parent resource. Must
+            contain only letters, numbers, underscore and
+            hyphen, with the first character a letter or
+            underscore, the last a letter or underscore or a
+            number, and a 63 character maximum.
     """
 
     parent: str = proto.Field(

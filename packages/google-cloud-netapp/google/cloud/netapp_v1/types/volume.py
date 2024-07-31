@@ -257,9 +257,12 @@ class CreateVolumeRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         volume_id (str):
-            Required. Id of the requesting volume If auto-generating Id
-            server-side, remove this field and Id from the
-            method_signature of Create RPC
+            Required. Id of the requesting volume. Must
+            be unique within the parent resource. Must
+            contain only letters, numbers, underscore and
+            hyphen, with the first character a letter or
+            underscore, the last a letter or underscore or a
+            number, and a 63 character maximum.
         volume (google.cloud.netapp_v1.types.Volume):
             Required. The volume being created.
     """
@@ -445,10 +448,24 @@ class Volume(proto.Message):
         restricted_actions (MutableSequence[google.cloud.netapp_v1.types.RestrictedAction]):
             Optional. List of actions that are restricted
             on this volume.
+        large_capacity (bool):
+            Optional. Flag indicating if the volume will
+            be a large capacity volume or a regular volume.
+        multiple_endpoints (bool):
+            Optional. Flag indicating if the volume will have an IP
+            address per node for volumes supporting multiple IP
+            endpoints. Only the volume with large_capacity will be
+            allowed to have multiple endpoints.
         tiering_policy (google.cloud.netapp_v1.types.TieringPolicy):
             Tiering policy for the volume.
 
             This field is a member of `oneof`_ ``_tiering_policy``.
+        replica_zone (str):
+            Output only. Specifies the replica zone for
+            regional volume.
+        zone (str):
+            Output only. Specifies the active zone for
+            regional volume.
     """
 
     class State(proto.Enum):
@@ -620,11 +637,27 @@ class Volume(proto.Message):
         number=31,
         enum="RestrictedAction",
     )
+    large_capacity: bool = proto.Field(
+        proto.BOOL,
+        number=32,
+    )
+    multiple_endpoints: bool = proto.Field(
+        proto.BOOL,
+        number=33,
+    )
     tiering_policy: "TieringPolicy" = proto.Field(
         proto.MESSAGE,
         number=34,
         optional=True,
         message="TieringPolicy",
+    )
+    replica_zone: str = proto.Field(
+        proto.STRING,
+        number=36,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=37,
     )
 
 
