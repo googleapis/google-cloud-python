@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.48.0](https://github.com/googleapis/python-spanner/compare/v3.47.0...v3.48.0) (2024-07-30)
+
+
+### Features
+
+* Add field lock_hint in spanner.proto ([9609ad9](https://github.com/googleapis/python-spanner/commit/9609ad96d062fbd8fa4d622bfe8da119329facc0))
+* Add field order_by in spanner.proto ([9609ad9](https://github.com/googleapis/python-spanner/commit/9609ad96d062fbd8fa4d622bfe8da119329facc0))
+* Add support for Cloud Spanner Scheduled Backups ([9609ad9](https://github.com/googleapis/python-spanner/commit/9609ad96d062fbd8fa4d622bfe8da119329facc0))
+* **spanner:** Add support for txn changstream exclusion ([#1152](https://github.com/googleapis/python-spanner/issues/1152)) ([00ccb7a](https://github.com/googleapis/python-spanner/commit/00ccb7a5c1f246b5099265058a5e9875e6627024))
+
+
+### Bug Fixes
+
+* Allow protobuf 5.x ([9609ad9](https://github.com/googleapis/python-spanner/commit/9609ad96d062fbd8fa4d622bfe8da119329facc0))
+* **spanner:** Unskip emulator tests for proto ([#1145](https://github.com/googleapis/python-spanner/issues/1145)) ([cb74679](https://github.com/googleapis/python-spanner/commit/cb74679a05960293dd03eb6b74bff0f68a46395c))
+
 ## [3.47.0](https://github.com/googleapis/python-spanner/compare/v3.46.0...v3.47.0) (2024-05-22)
 
 
