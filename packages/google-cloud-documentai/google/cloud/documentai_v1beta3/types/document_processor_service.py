@@ -293,6 +293,9 @@ class ProcessRequest(proto.Message):
             underscores, and dashes. International
             characters are allowed. Label values are
             optional. Label keys must start with a letter.
+        imageless_mode (bool):
+            Optional. Option to remove images from the
+            document.
     """
 
     inline_document: gcd_document.Document = proto.Field(
@@ -340,6 +343,10 @@ class ProcessRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=10,
+    )
+    imageless_mode: bool = proto.Field(
+        proto.BOOL,
+        number=11,
     )
 
 

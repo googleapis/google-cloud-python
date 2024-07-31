@@ -258,7 +258,12 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
     ) -> Callable[[document_service.UpdateDatasetRequest], operations_pb2.Operation]:
         r"""Return a callable for the update dataset method over gRPC.
 
-        Updates metadata associated with a dataset.
+        Updates metadata associated with a dataset. Note that this
+        method requires the
+        ``documentai.googleapis.com/datasets.update`` permission on the
+        project, which is highly privileged. A user or service account
+        with this permission can create new processors that can interact
+        with any gcs bucket in your project.
 
         Returns:
             Callable[[~.UpdateDatasetRequest],

@@ -4052,6 +4052,8 @@ def test_update_dataset_rest(request_type):
         "spanner_indexing_config": {},
         "name": "projects/sample1/locations/sample2/processors/sample3/dataset",
         "state": 1,
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
