@@ -14,6 +14,9 @@
 # limitations under the License.
 
 
+import pytest
+
+from google.cloud.storage.fileio import CHUNK_SIZE_MULTIPLE
 from .test_blob import _check_blob_hash
 
 
@@ -76,3 +79,40 @@ def test_blobwriter_and_blobreader_text_mode(
         assert text_data[:100] == reader.read(100)
         assert 0 == reader.seek(0)
         assert reader.read() == text_data
+
+
+def test_blobwriter_exit(
+    shared_bucket,
+    blobs_to_delete,
+    service_account,
+):
+    blob = shared_bucket.blob("NeverUploaded")
+
+    # no-op when nothing was uploaded yet
+    with pytest.raises(ValueError, match="SIGTERM received"):
+        with blob.open("wb") as writer:
+            writer.write(b"first chunk")  # not yet uploaded
+            raise ValueError("SIGTERM received")  # no upload to cancel in __exit__
+    # blob should not exist
+    assert not blob.exists()
+
+    # unhandled exceptions should cancel the upload
+    with pytest.raises(ValueError, match="SIGTERM received"):
+        with blob.open("wb", chunk_size=CHUNK_SIZE_MULTIPLE) as writer:
+            writer.write(b"first chunk")  # not yet uploaded
+            writer.write(bytes(CHUNK_SIZE_MULTIPLE))  # uploaded
+            raise ValueError("SIGTERM received")  # upload is cancelled in __exit__
+    # blob should not exist
+    assert not blob.exists()
+
+    # handled exceptions should not cancel the upload
+    with blob.open("wb", chunk_size=CHUNK_SIZE_MULTIPLE) as writer:
+        writer.write(b"first chunk")  # not yet uploaded
+        writer.write(bytes(CHUNK_SIZE_MULTIPLE))  # uploaded
+        try:
+            raise ValueError("This is fine")
+        except ValueError:
+            pass  # no exception context passed to __exit__
+    blobs_to_delete.append(blob)
+    # blob should have been uploaded
+    assert blob.exists()

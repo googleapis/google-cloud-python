@@ -21,6 +21,7 @@ import string
 import mock
 
 from google.api_core.exceptions import RequestRangeNotSatisfiable
+from google.cloud.storage.fileio import CHUNK_SIZE_MULTIPLE
 from google.cloud.storage.retry import DEFAULT_RETRY
 
 TEST_TEXT_DATA = string.ascii_lowercase + "\n" + string.ascii_uppercase + "\n"
@@ -377,7 +378,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         # Write under chunk_size. This should be buffered and the upload not
         # initiated.
         writer.write(TEST_BINARY_DATA[0:4])
-        blob.initiate_resumable_upload.assert_not_called()
+        blob._initiate_resumable_upload.assert_not_called()
 
         # Write over chunk_size. This should result in upload initialization
         # and multiple chunks uploaded.
@@ -426,6 +427,52 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         with self.assertRaises(ValueError):
             writer.write(TEST_BINARY_DATA)
 
+    def test_terminate_after_initiate(self):
+        blob = mock.Mock()
+
+        upload = mock.Mock(upload_url="dummy")
+        transport = mock.Mock()
+
+        blob._initiate_resumable_upload.return_value = (upload, transport)
+
+        with self.assertRaises(RuntimeError):
+            with self._make_blob_writer(blob, chunk_size=CHUNK_SIZE_MULTIPLE) as writer:
+                writer.write(bytes(CHUNK_SIZE_MULTIPLE + 1))  # initiate upload
+                raise RuntimeError  # should terminate the upload
+        blob._initiate_resumable_upload.assert_called_once()  # upload initiated
+        self.assertTrue(writer.closed)  # terminate called
+        transport.delete.assert_called_with("dummy")  # resumable upload terminated
+
+    def test_terminate_before_initiate(self):
+        blob = mock.Mock()
+
+        upload = mock.Mock()
+        transport = mock.Mock()
+
+        blob._initiate_resumable_upload.return_value = (upload, transport)
+
+        with self.assertRaises(RuntimeError):
+            with self._make_blob_writer(blob, chunk_size=CHUNK_SIZE_MULTIPLE) as writer:
+                writer.write(bytes(CHUNK_SIZE_MULTIPLE - 1))  # upload not yet initiated
+                raise RuntimeError  # there is no resumable upload to terminate
+        blob._initiate_resumable_upload.assert_not_called()  # upload not yet initiated
+        self.assertTrue(writer.closed)  # terminate called
+        transport.delete.assert_not_called()  # there's no resumable upload to terminate
+
+    def test_terminate_skipped(self):
+        blob = mock.Mock()
+
+        upload = mock.Mock()
+        transport = mock.Mock()
+
+        blob._initiate_resumable_upload.return_value = (upload, transport)
+
+        with self._make_blob_writer(blob, chunk_size=CHUNK_SIZE_MULTIPLE) as writer:
+            writer.write(bytes(CHUNK_SIZE_MULTIPLE + 1))  # upload initiated
+        blob._initiate_resumable_upload.assert_called()  # upload initiated
+        self.assertTrue(writer.closed)  # close called
+        transport.delete.assert_not_called()  # terminate not called
+
     def test_flush_fails(self):
         blob = mock.Mock(chunk_size=None)
         writer = self._make_blob_writer(blob)
@@ -468,7 +515,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         # Write under chunk_size. This should be buffered and the upload not
         # initiated.
         writer.write(TEST_BINARY_DATA[0:4])
-        blob.initiate_resumable_upload.assert_not_called()
+        blob._initiate_resumable_upload.assert_not_called()
 
         # Write over chunk_size. This should result in upload initialization
         # and multiple chunks uploaded.
@@ -520,7 +567,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         # Write under chunk_size. This should be buffered and the upload not
         # initiated.
         writer.write(TEST_BINARY_DATA[0:4])
-        blob.initiate_resumable_upload.assert_not_called()
+        blob._initiate_resumable_upload.assert_not_called()
 
         # Write over chunk_size. This should result in upload initialization
         # and multiple chunks uploaded.
@@ -573,7 +620,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         # Write under chunk_size. This should be buffered and the upload not
         # initiated.
         writer.write(TEST_BINARY_DATA[0:4])
-        blob.initiate_resumable_upload.assert_not_called()
+        blob._initiate_resumable_upload.assert_not_called()
 
         # Write over chunk_size. This should result in upload initialization
         # and multiple chunks uploaded.
@@ -619,7 +666,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         # Write under chunk_size. This should be buffered and the upload not
         # initiated.
         writer.write(TEST_BINARY_DATA[0:4])
-        blob.initiate_resumable_upload.assert_not_called()
+        blob._initiate_resumable_upload.assert_not_called()
 
         # Write over chunk_size. The mock will raise a ValueError, simulating
         # actual behavior when num_retries and retry are both specified.
@@ -673,7 +720,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         # Write under chunk_size. This should be buffered and the upload not
         # initiated.
         writer.write(TEST_BINARY_DATA[0:4])
-        blob.initiate_resumable_upload.assert_not_called()
+        blob._initiate_resumable_upload.assert_not_called()
 
         # Write over chunk_size. This should result in upload initialization
         # and multiple chunks uploaded.
@@ -965,7 +1012,7 @@ class TestBlobWriterText(unittest.TestCase, _BlobWriterBase):
         # Write under chunk_size. This should be buffered and the upload not
         # initiated.
         writer.write(TEST_MULTIBYTE_TEXT_DATA[0:2])
-        blob.initiate_resumable_upload.assert_not_called()
+        blob._initiate_resumable_upload.assert_not_called()
 
         # Write all data and close.
         writer.write(TEST_MULTIBYTE_TEXT_DATA[2:])

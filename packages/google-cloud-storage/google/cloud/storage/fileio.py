@@ -437,6 +437,19 @@ class BlobWriter(io.BufferedIOBase):
             self._upload_chunks_from_buffer(1)
         self._buffer.close()
 
+    def terminate(self):
+        """Cancel the ResumableUpload."""
+        if self._upload_and_transport:
+            upload, transport = self._upload_and_transport
+            transport.delete(upload.upload_url)
+        self._buffer.close()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is not None:
+            self.terminate()
+        else:
+            self.close()
+
     @property
     def closed(self):
         return self._buffer.closed

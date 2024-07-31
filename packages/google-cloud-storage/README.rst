@@ -72,6 +72,12 @@ setup.py file. Applications which do not import directly from
 `google-resumable-media` can safely disregard this dependency. This backwards
 compatibility feature will be removed in a future major version update.
 
+Miscellaneous
+~~~~~~~~~~~~~
+
+- The BlobWriter class now attempts to terminate an ongoing resumable upload if
+  the writer exits with an exception.
+
 Quick Start
 -----------
 
