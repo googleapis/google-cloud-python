@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.12.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.11.1...v1.12.0) (2024-07-31)
+
+
+### Features
+
+* Add bigframes-mode label to query jobs ([#832](https://github.com/googleapis/python-bigquery-dataframes/issues/832)) ([c9eaff0](https://github.com/googleapis/python-bigquery-dataframes/commit/c9eaff0a1a0731b28f4c67bca5606db12a47c8c0))
+* Add config option to set partial ordering mode ([#855](https://github.com/googleapis/python-bigquery-dataframes/issues/855)) ([823c0ce](https://github.com/googleapis/python-bigquery-dataframes/commit/823c0ce57611c0918a9e9999638d7393337fe9af))
+* Add stratify param support to ml.model_selection.train_test_split method ([#815](https://github.com/googleapis/python-bigquery-dataframes/issues/815)) ([27f8631](https://github.com/googleapis/python-bigquery-dataframes/commit/27f8631be81a3e136cfeb8904558bb4f3f5caa05))
+* Add streaming.StreamingDataFrame class ([#864](https://github.com/googleapis/python-bigquery-dataframes/issues/864)) ([a7d7197](https://github.com/googleapis/python-bigquery-dataframes/commit/a7d7197a32c55b989ae4ea8f6cf6e1c0f7184cd4))
+* Allow DataFrame.join for self-join on Null index ([#860](https://github.com/googleapis/python-bigquery-dataframes/issues/860)) ([e950533](https://github.com/googleapis/python-bigquery-dataframes/commit/e95053372c36ea5a91a2d7295c1a3a3671181670))
+* Support remote function cleanup with `session.close` ([#818](https://github.com/googleapis/python-bigquery-dataframes/issues/818)) ([ed06436](https://github.com/googleapis/python-bigquery-dataframes/commit/ed06436612c0d46f190f79721416d473bde7e2f4))
+* Support to_csv/parquet/json to local files/objects ([#858](https://github.com/googleapis/python-bigquery-dataframes/issues/858)) ([d0ab9cc](https://github.com/googleapis/python-bigquery-dataframes/commit/d0ab9cc47298bdde638299baecac9dffd7841ede))
+
+
+### Bug Fixes
+
+* Fewer relation joins from df self-operations ([#823](https://github.com/googleapis/python-bigquery-dataframes/issues/823)) ([0d24f73](https://github.com/googleapis/python-bigquery-dataframes/commit/0d24f737041c7dd70253ebb4baa8d8ef67bd4f1d))
+* Fix 'sql' property for null index ([#844](https://github.com/googleapis/python-bigquery-dataframes/issues/844)) ([1b6a556](https://github.com/googleapis/python-bigquery-dataframes/commit/1b6a556206a7a66283339d827ab12db2753521e2))
+* Fix unordered mode using ordered path to print frame ([#839](https://github.com/googleapis/python-bigquery-dataframes/issues/839)) ([93785cb](https://github.com/googleapis/python-bigquery-dataframes/commit/93785cb48be4a2eb8770129148bd0b897fed4ee7))
+* Reduce redundant `remote_function` deployments ([#856](https://github.com/googleapis/python-bigquery-dataframes/issues/856)) ([cbf2d42](https://github.com/googleapis/python-bigquery-dataframes/commit/cbf2d42e4d961a7537381a9c3b28a8b463ad8f74))
+
+
+### Documentation
+
+* Add partner attribution steps to integrations sample notebook ([#835](https://github.com/googleapis/python-bigquery-dataframes/issues/835)) ([d7b333f](https://github.com/googleapis/python-bigquery-dataframes/commit/d7b333fa26acddaeb5ccca4f81b1d624dff03ba2))
+* Make `get_global_session`/`close_session`/`reset_session` appears in the docs ([#847](https://github.com/googleapis/python-bigquery-dataframes/issues/847)) ([01d6bbb](https://github.com/googleapis/python-bigquery-dataframes/commit/01d6bbb7479da706dc62bb5e7d51dc28a4042812))
+
 ## [1.11.1](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.11.0...v1.11.1) (2024-07-08)
 
 
