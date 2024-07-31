@@ -35,6 +35,8 @@ def all_session_methods():
         if not attribute.startswith("_")
     )
     session_attributes.remove("close")
+    # streaming isn't in pandas
+    session_attributes.remove("read_gbq_table_streaming")
 
     for attribute in sorted(session_attributes):
         session_method = getattr(bigframes.session.Session, attribute)

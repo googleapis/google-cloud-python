@@ -143,6 +143,14 @@ def session() -> Generator[bigframes.Session, None, None]:
     session.close()  # close generated session at cleanup time
 
 
+@pytest.fixture(scope="session")
+def session_load() -> Generator[bigframes.Session, None, None]:
+    context = bigframes.BigQueryOptions(location="US", project="bigframes-load-testing")
+    session = bigframes.Session(context=context)
+    yield session
+    session.close()  # close generated session at cleanup time
+
+
 @pytest.fixture(scope="session", params=["ordered", "unordered"])
 def maybe_ordered_session(request) -> Generator[bigframes.Session, None, None]:
     context = bigframes.BigQueryOptions(location="US", ordering_mode="partial")

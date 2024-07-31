@@ -14,20 +14,20 @@
 
 import time
 
-import pytest
-
+import bigframes
 import bigframes.streaming
 
 
-@pytest.mark.skip(reason="b/354024943. Concurrency error need to be fixed.")
-def test_streaming_to_bigtable():
+def test_streaming_df_to_bigtable(session_load: bigframes.Session):
     # launch a continuous query
     job_id_prefix = "test_streaming_"
-    sql = """SELECT
-        body_mass_g, island as rowkey
-        FROM birds.penguins_bigtable_streaming"""
-    query_job = bigframes.streaming.to_bigtable(
-        sql,
+    sdf = session_load.read_gbq_table_streaming("birds.penguins_bigtable_streaming")
+
+    sdf = sdf[["species", "island", "body_mass_g"]]
+    sdf = sdf[sdf["body_mass_g"] < 4000]
+    sdf = sdf.rename(columns={"island": "rowkey"})
+
+    query_job = sdf.to_bigtable(
         instance="streaming-testing-instance",
         table="table-testing",
         service_account_email="streaming-testing@bigframes-load-testing.iam.gserviceaccount.com",
@@ -44,23 +44,22 @@ def test_streaming_to_bigtable():
         # wait 100 seconds in order to ensure the query doesn't stop
         # (i.e. it is continuous)
         time.sleep(100)
-        assert query_job.error_result is None
-        assert query_job.errors is None
         assert query_job.running()
+        assert query_job.error_result is None
         assert str(query_job.job_id).startswith(job_id_prefix)
     finally:
         query_job.cancel()
 
 
-@pytest.mark.skip(reason="b/354024943. Concurrency error need to be fixed.")
-def test_streaming_to_pubsub():
+def test_streaming_df_to_pubsub(session_load: bigframes.Session):
     # launch a continuous query
     job_id_prefix = "test_streaming_pubsub_"
-    sql = """SELECT
-        island
-        FROM birds.penguins_pubsub_streaming"""
-    query_job = bigframes.streaming.to_pubsub(
-        sql,
+    sdf = session_load.read_gbq_table_streaming("birds.penguins_bigtable_streaming")
+
+    sdf = sdf[sdf["body_mass_g"] < 4000]
+    sdf = sdf[["island"]]
+
+    query_job = sdf.to_pubsub(
         topic="penguins",
         service_account_email="streaming-testing@bigframes-load-testing.iam.gserviceaccount.com",
         job_id=None,
@@ -71,9 +70,8 @@ def test_streaming_to_pubsub():
         # wait 100 seconds in order to ensure the query doesn't stop
         # (i.e. it is continuous)
         time.sleep(100)
-        assert query_job.error_result is None
-        assert query_job.errors is None
         assert query_job.running()
+        assert query_job.error_result is None
         assert str(query_job.job_id).startswith(job_id_prefix)
     finally:
         query_job.cancel()

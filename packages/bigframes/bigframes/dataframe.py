@@ -105,6 +105,8 @@ def requires_index(meth):
 @log_adapter.class_logger
 class DataFrame(vendored_pandas_frame.DataFrame):
     __doc__ = vendored_pandas_frame.DataFrame.__doc__
+    # internal flag to disable cache at all
+    _disable_cache_override: bool = False
 
     def __init__(
         self,
@@ -367,7 +369,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return self._apply_unary_op(ops.AsTypeOp(to_type=dtype))
 
     def _to_sql_query(
-        self, include_index: bool
+        self, include_index: bool, enable_cache: bool = True
     ) -> Tuple[str, list[str], list[blocks.Label]]:
         """Compiles this DataFrame's expression tree to SQL, optionally
         including index columns.
@@ -381,7 +383,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 If include_index is set to False, index_column_id_list and index_column_label_list
                 return empty lists.
         """
-        return self._block.to_sql_query(include_index)
+        return self._block.to_sql_query(include_index, enable_cache=enable_cache)
 
     @property
     def sql(self) -> str:
@@ -3628,6 +3630,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         No-op if the dataframe represents a trivial transformation of an existing materialization.
         Force=True is used for BQML integration where need to copy data rather than use snapshot.
         """
+        if self._disable_cache_override:
+            return self
         self._block.cached(force=force)
         return self
 

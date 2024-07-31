@@ -107,6 +107,7 @@ if typing.TYPE_CHECKING:
     import bigframes.core.indexes
     import bigframes.dataframe as dataframe
     import bigframes.series
+    import bigframes.streaming.dataframe as streaming_dataframe
 
 _BIGFRAMES_DEFAULT_CONNECTION_ID = "bigframes-default-connection"
 
@@ -749,6 +750,38 @@ class Session(
             filters=filters,
         )
 
+    def read_gbq_table_streaming(
+        self, table: str
+    ) -> streaming_dataframe.StreamingDataFrame:
+        """Turn a BigQuery table into a StreamingDataFrame.
+
+        Note: The bigframes.streaming module is a preview feature, and subject to change.
+
+        **Examples:**
+
+            >>> import bigframes.streaming as bst
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> sdf = bst.read_gbq_table("bigquery-public-data.ml_datasets.penguins")
+        """
+        warnings.warn(
+            "The bigframes.streaming module is a preview feature, and subject to change.",
+            stacklevel=1,
+            category=bigframes.exceptions.PreviewWarning,
+        )
+
+        import bigframes.streaming.dataframe as streaming_dataframe
+
+        df = self._read_gbq_table(
+            table,
+            api_name="read_gbq_table_steaming",
+            enable_snapshot=False,
+            index_col=bigframes.enums.DefaultIndexKind.NULL,
+        )
+
+        return streaming_dataframe.StreamingDataFrame._from_table_df(df)
+
     def _read_gbq_table(
         self,
         query: str,
@@ -759,6 +792,7 @@ class Session(
         api_name: str,
         use_cache: bool = True,
         filters: third_party_pandas_gbq.FiltersType = (),
+        enable_snapshot: bool = True,
     ) -> dataframe.DataFrame:
         import bigframes.dataframe as dataframe
 
@@ -877,7 +911,7 @@ class Session(
             else (*columns, *[col for col in index_cols if col not in columns])
         )
 
-        supports_snapshot = bf_read_gbq_table.validate_table(
+        enable_snapshot = enable_snapshot and bf_read_gbq_table.validate_table(
             self.bqclient, table_ref, all_columns, time_travel_timestamp, filter_str
         )
 
@@ -905,7 +939,7 @@ class Session(
             table,
             schema=schema,
             predicate=filter_str,
-            at_time=time_travel_timestamp if supports_snapshot else None,
+            at_time=time_travel_timestamp if enable_snapshot else None,
             primary_key=index_cols if is_index_unique else (),
             session=self,
         )
@@ -2056,17 +2090,20 @@ class Session(
         offset_column: typing.Optional[str] = None,
         col_id_overrides: typing.Mapping[str, str] = {},
         ordered: bool = False,
+        enable_cache: bool = True,
     ) -> str:
         if offset_column:
             array_value = array_value.promote_offsets(offset_column)
-        node_w_cached = self._with_cached_executions(array_value.node)
+        node = (
+            self._with_cached_executions(array_value.node)
+            if enable_cache
+            else array_value.node
+        )
         if ordered:
             return self._compiler.compile_ordered(
-                node_w_cached, col_id_overrides=col_id_overrides
+                node, col_id_overrides=col_id_overrides
             )
-        return self._compiler.compile_unordered(
-            node_w_cached, col_id_overrides=col_id_overrides
-        )
+        return self._compiler.compile_unordered(node, col_id_overrides=col_id_overrides)
 
     def _get_table_size(self, destination_table):
         table = self.bqclient.get_table(destination_table)

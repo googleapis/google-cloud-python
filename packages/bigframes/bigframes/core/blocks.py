@@ -2354,7 +2354,7 @@ class Block:
         return self._is_monotonic(column_id, increasing=False)
 
     def to_sql_query(
-        self, include_index: bool
+        self, include_index: bool, enable_cache: bool = True
     ) -> typing.Tuple[str, list[str], list[Label]]:
         """
         Compiles this DataFrame's expression tree to SQL, optionally
@@ -2388,7 +2388,9 @@ class Block:
             # the BigQuery unicode column name feature?
             substitutions[old_id] = new_id
 
-        sql = self.session._to_sql(array_value, col_id_overrides=substitutions)
+        sql = self.session._to_sql(
+            array_value, col_id_overrides=substitutions, enable_cache=enable_cache
+        )
         return (
             sql,
             new_ids[: len(idx_labels)],
