@@ -1129,7 +1129,7 @@ class StorageConfig(proto.Message):
                 scanned items. Used for data sources like Datastore and
                 BigQuery.
 
-                For BigQuery
+                **For BigQuery**
 
                 If this value is not specified and the table was modified
                 between the given start and end times, the entire table will
@@ -1145,15 +1145,11 @@ class StorageConfig(proto.Message):
                 timestamp field. When used with Cloud DLP, these
                 pseudo-column names are case sensitive.
 
-                .. raw:: html
+                -  ``_PARTITIONTIME``
+                -  ``_PARTITIONDATE``
+                -  ``_PARTITION_LOAD_TIME``
 
-                    <ul>
-                    <li><code>_PARTITIONTIME</code></li>
-                    <li><code>_PARTITIONDATE</code></li>
-                    <li><code>_PARTITION_LOAD_TIME</code></li>
-                    </ul>
-
-                For Datastore
+                **For Datastore**
 
                 If this value is specified, then entities are filtered based
                 on the given start and end times. If an entity does not

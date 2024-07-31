@@ -137,7 +137,12 @@ class CreateActiveDirectoryRequest(proto.Message):
             directory.
         active_directory_id (str):
             Required. ID of the active directory to
-            create.
+            create. Must be unique within the parent
+            resource. Must contain only letters, numbers,
+            underscore and hyphen, with the first character
+            a letter or underscore, the last a letter or
+            underscore or a number, and a 63 character
+            maximum.
     """
 
     parent: str = proto.Field(
@@ -238,6 +243,9 @@ class ActiveDirectory(proto.Message):
         backup_operators (MutableSequence[str]):
             Optional. Users to be added to the Built-in
             Backup Operator active directory group.
+        administrators (MutableSequence[str]):
+            Optional. Users to be added to the Built-in
+            Admininstrators group.
         security_operators (MutableSequence[str]):
             Optional. Domain users to be given the
             SeSecurityPrivilege.
@@ -343,6 +351,10 @@ class ActiveDirectory(proto.Message):
     backup_operators: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=12,
+    )
+    administrators: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=22,
     )
     security_operators: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,

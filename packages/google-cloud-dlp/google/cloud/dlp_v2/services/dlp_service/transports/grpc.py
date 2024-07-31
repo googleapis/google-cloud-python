@@ -1725,7 +1725,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
     ) -> Callable[[dlp.ListConnectionsRequest], dlp.ListConnectionsResponse]:
         r"""Return a callable for the list connections method over gRPC.
 
-        Lists Connections in a parent.
+        Lists Connections in a parent. Use SearchConnections
+        to see all connections within an organization.
 
         Returns:
             Callable[[~.ListConnectionsRequest],

@@ -202,13 +202,13 @@ class CreateBackupVaultRequest(proto.Message):
             Required. The location to create the backup vaults, in the
             format ``projects/{project_id}/locations/{location}``
         backup_vault_id (str):
-            Required. The ID to use for the backupVault. The ID must be
-            unique within the specified location. The max supported
-            length is 63 characters. This value must start with a
-            lowercase letter followed by up to 62 lowercase letters,
-            numbers, or hyphens, and cannot end with a hyphen. Values
-            that do not match this pattern will trigger an
-            INVALID_ARGUMENT error.
+            Required. The ID to use for the backupVault.
+            The ID must be unique within the specified
+            location. Must contain only letters, numbers,
+            underscore and hyphen, with the first character
+            a letter or underscore, the last a letter or
+            underscore or a number, and a 63 character
+            maximum.
         backup_vault (google.cloud.netapp_v1.types.BackupVault):
             Required. A backupVault resource
     """

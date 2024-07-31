@@ -2124,6 +2124,8 @@ def test_get_storage_pool(request_type, transport: str = "grpc"):
             psa_range="psa_range_value",
             encryption_type=common.EncryptionType.SERVICE_MANAGED,
             global_access_allowed=True,
+            replica_zone="replica_zone_value",
+            zone="zone_value",
         )
         response = client.get_storage_pool(request)
 
@@ -2150,6 +2152,8 @@ def test_get_storage_pool(request_type, transport: str = "grpc"):
     assert response.psa_range == "psa_range_value"
     assert response.encryption_type == common.EncryptionType.SERVICE_MANAGED
     assert response.global_access_allowed is True
+    assert response.replica_zone == "replica_zone_value"
+    assert response.zone == "zone_value"
 
 
 def test_get_storage_pool_empty_call():
@@ -2265,6 +2269,8 @@ async def test_get_storage_pool_empty_call_async():
                 psa_range="psa_range_value",
                 encryption_type=common.EncryptionType.SERVICE_MANAGED,
                 global_access_allowed=True,
+                replica_zone="replica_zone_value",
+                zone="zone_value",
             )
         )
         response = await client.get_storage_pool()
@@ -2347,6 +2353,8 @@ async def test_get_storage_pool_async(
                 psa_range="psa_range_value",
                 encryption_type=common.EncryptionType.SERVICE_MANAGED,
                 global_access_allowed=True,
+                replica_zone="replica_zone_value",
+                zone="zone_value",
             )
         )
         response = await client.get_storage_pool(request)
@@ -2374,6 +2382,8 @@ async def test_get_storage_pool_async(
     assert response.psa_range == "psa_range_value"
     assert response.encryption_type == common.EncryptionType.SERVICE_MANAGED
     assert response.global_access_allowed is True
+    assert response.replica_zone == "replica_zone_value"
+    assert response.zone == "zone_value"
 
 
 @pytest.mark.asyncio
@@ -3917,6 +3927,10 @@ def test_get_volume(request_type, transport: str = "grpc"):
             encryption_type=common.EncryptionType.SERVICE_MANAGED,
             has_replication=True,
             restricted_actions=[volume.RestrictedAction.DELETE],
+            large_capacity=True,
+            multiple_endpoints=True,
+            replica_zone="replica_zone_value",
+            zone="zone_value",
         )
         response = client.get_volume(request)
 
@@ -3952,6 +3966,10 @@ def test_get_volume(request_type, transport: str = "grpc"):
     assert response.encryption_type == common.EncryptionType.SERVICE_MANAGED
     assert response.has_replication is True
     assert response.restricted_actions == [volume.RestrictedAction.DELETE]
+    assert response.large_capacity is True
+    assert response.multiple_endpoints is True
+    assert response.replica_zone == "replica_zone_value"
+    assert response.zone == "zone_value"
 
 
 def test_get_volume_empty_call():
@@ -4074,6 +4092,10 @@ async def test_get_volume_empty_call_async():
                 encryption_type=common.EncryptionType.SERVICE_MANAGED,
                 has_replication=True,
                 restricted_actions=[volume.RestrictedAction.DELETE],
+                large_capacity=True,
+                multiple_endpoints=True,
+                replica_zone="replica_zone_value",
+                zone="zone_value",
             )
         )
         response = await client.get_volume()
@@ -4163,6 +4185,10 @@ async def test_get_volume_async(
                 encryption_type=common.EncryptionType.SERVICE_MANAGED,
                 has_replication=True,
                 restricted_actions=[volume.RestrictedAction.DELETE],
+                large_capacity=True,
+                multiple_endpoints=True,
+                replica_zone="replica_zone_value",
+                zone="zone_value",
             )
         )
         response = await client.get_volume(request)
@@ -4199,6 +4225,10 @@ async def test_get_volume_async(
     assert response.encryption_type == common.EncryptionType.SERVICE_MANAGED
     assert response.has_replication is True
     assert response.restricted_actions == [volume.RestrictedAction.DELETE]
+    assert response.large_capacity is True
+    assert response.multiple_endpoints is True
+    assert response.replica_zone == "replica_zone_value"
+    assert response.zone == "zone_value"
 
 
 @pytest.mark.asyncio
@@ -8453,6 +8483,7 @@ def test_get_active_directory(request_type, transport: str = "grpc"):
             username="username_value",
             password="password_value",
             backup_operators=["backup_operators_value"],
+            administrators=["administrators_value"],
             security_operators=["security_operators_value"],
             kdc_hostname="kdc_hostname_value",
             kdc_ip="kdc_ip_value",
@@ -8483,6 +8514,7 @@ def test_get_active_directory(request_type, transport: str = "grpc"):
     assert response.username == "username_value"
     assert response.password == "password_value"
     assert response.backup_operators == ["backup_operators_value"]
+    assert response.administrators == ["administrators_value"]
     assert response.security_operators == ["security_operators_value"]
     assert response.kdc_hostname == "kdc_hostname_value"
     assert response.kdc_ip == "kdc_ip_value"
@@ -8610,6 +8642,7 @@ async def test_get_active_directory_empty_call_async():
                 username="username_value",
                 password="password_value",
                 backup_operators=["backup_operators_value"],
+                administrators=["administrators_value"],
                 security_operators=["security_operators_value"],
                 kdc_hostname="kdc_hostname_value",
                 kdc_ip="kdc_ip_value",
@@ -8699,6 +8732,7 @@ async def test_get_active_directory_async(
                 username="username_value",
                 password="password_value",
                 backup_operators=["backup_operators_value"],
+                administrators=["administrators_value"],
                 security_operators=["security_operators_value"],
                 kdc_hostname="kdc_hostname_value",
                 kdc_ip="kdc_ip_value",
@@ -8730,6 +8764,7 @@ async def test_get_active_directory_async(
     assert response.username == "username_value"
     assert response.password == "password_value"
     assert response.backup_operators == ["backup_operators_value"]
+    assert response.administrators == ["administrators_value"]
     assert response.security_operators == ["security_operators_value"]
     assert response.kdc_hostname == "kdc_hostname_value"
     assert response.kdc_ip == "kdc_ip_value"
@@ -22774,6 +22809,8 @@ def test_create_storage_pool_rest(request_type):
         "psa_range": "psa_range_value",
         "encryption_type": 1,
         "global_access_allowed": True,
+        "replica_zone": "replica_zone_value",
+        "zone": "zone_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -23193,6 +23230,8 @@ def test_get_storage_pool_rest(request_type):
             psa_range="psa_range_value",
             encryption_type=common.EncryptionType.SERVICE_MANAGED,
             global_access_allowed=True,
+            replica_zone="replica_zone_value",
+            zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -23223,6 +23262,8 @@ def test_get_storage_pool_rest(request_type):
     assert response.psa_range == "psa_range_value"
     assert response.encryption_type == common.EncryptionType.SERVICE_MANAGED
     assert response.global_access_allowed is True
+    assert response.replica_zone == "replica_zone_value"
+    assert response.zone == "zone_value"
 
 
 def test_get_storage_pool_rest_use_cached_wrapped_rpc():
@@ -23527,6 +23568,8 @@ def test_update_storage_pool_rest(request_type):
         "psa_range": "psa_range_value",
         "encryption_type": 1,
         "global_access_allowed": True,
+        "replica_zone": "replica_zone_value",
+        "zone": "zone_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -24617,6 +24660,10 @@ def test_get_volume_rest(request_type):
             encryption_type=common.EncryptionType.SERVICE_MANAGED,
             has_replication=True,
             restricted_actions=[volume.RestrictedAction.DELETE],
+            large_capacity=True,
+            multiple_endpoints=True,
+            replica_zone="replica_zone_value",
+            zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -24656,6 +24703,10 @@ def test_get_volume_rest(request_type):
     assert response.encryption_type == common.EncryptionType.SERVICE_MANAGED
     assert response.has_replication is True
     assert response.restricted_actions == [volume.RestrictedAction.DELETE]
+    assert response.large_capacity is True
+    assert response.multiple_endpoints is True
+    assert response.replica_zone == "replica_zone_value"
+    assert response.zone == "zone_value"
 
 
 def test_get_volume_rest_use_cached_wrapped_rpc():
@@ -25013,7 +25064,11 @@ def test_create_volume_rest(request_type):
             "backup_chain_bytes": 1886,
         },
         "restricted_actions": [1],
+        "large_capacity": True,
+        "multiple_endpoints": True,
         "tiering_policy": {"tier_action": 1, "cooling_threshold_days": 2343},
+        "replica_zone": "replica_zone_value",
+        "zone": "zone_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -25493,7 +25548,11 @@ def test_update_volume_rest(request_type):
             "backup_chain_bytes": 1886,
         },
         "restricted_actions": [1],
+        "large_capacity": True,
+        "multiple_endpoints": True,
         "tiering_policy": {"tier_action": 1, "cooling_threshold_days": 2343},
+        "replica_zone": "replica_zone_value",
+        "zone": "zone_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -28607,6 +28666,7 @@ def test_get_active_directory_rest(request_type):
             username="username_value",
             password="password_value",
             backup_operators=["backup_operators_value"],
+            administrators=["administrators_value"],
             security_operators=["security_operators_value"],
             kdc_hostname="kdc_hostname_value",
             kdc_ip="kdc_ip_value",
@@ -28641,6 +28701,7 @@ def test_get_active_directory_rest(request_type):
     assert response.username == "username_value"
     assert response.password == "password_value"
     assert response.backup_operators == ["backup_operators_value"]
+    assert response.administrators == ["administrators_value"]
     assert response.security_operators == ["security_operators_value"]
     assert response.kdc_hostname == "kdc_hostname_value"
     assert response.kdc_ip == "kdc_ip_value"
@@ -28948,6 +29009,7 @@ def test_create_active_directory_rest(request_type):
         "username": "username_value",
         "password": "password_value",
         "backup_operators": ["backup_operators_value1", "backup_operators_value2"],
+        "administrators": ["administrators_value1", "administrators_value2"],
         "security_operators": [
             "security_operators_value1",
             "security_operators_value2",
@@ -29379,6 +29441,7 @@ def test_update_active_directory_rest(request_type):
         "username": "username_value",
         "password": "password_value",
         "backup_operators": ["backup_operators_value1", "backup_operators_value2"],
+        "administrators": ["administrators_value1", "administrators_value2"],
         "security_operators": [
             "security_operators_value1",
             "security_operators_value2",

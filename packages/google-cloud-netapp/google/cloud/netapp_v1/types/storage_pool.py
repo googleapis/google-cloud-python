@@ -132,9 +132,12 @@ class CreateStoragePoolRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         storage_pool_id (str):
-            Required. Id of the requesting storage pool If
-            auto-generating Id server-side, remove this field and id
-            from the method_signature of Create RPC
+            Required. Id of the requesting storage pool.
+            Must be unique within the parent resource. Must
+            contain only letters, numbers, underscore and
+            hyphen, with the first character a letter or
+            underscore, the last a letter or underscore or a
+            number, and a 63 character maximum.
         storage_pool (google.cloud.netapp_v1.types.StoragePool):
             Required. The required parameters to create a
             new storage pool.
@@ -252,6 +255,12 @@ class StoragePool(proto.Message):
             AD or DNS server from other regions.
 
             This field is a member of `oneof`_ ``_global_access_allowed``.
+        replica_zone (str):
+            Optional. Specifies the replica zone for
+            regional storagePool.
+        zone (str):
+            Optional. Specifies the active zone for
+            regional storagePool.
     """
 
     class State(proto.Enum):
@@ -357,6 +366,14 @@ class StoragePool(proto.Message):
         proto.BOOL,
         number=17,
         optional=True,
+    )
+    replica_zone: str = proto.Field(
+        proto.STRING,
+        number=20,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=21,
     )
 
 

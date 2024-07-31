@@ -478,9 +478,14 @@ class NetAppAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             storage_pool_id (:class:`str`):
-                Required. Id of the requesting storage pool If
-                auto-generating Id server-side, remove this field and id
-                from the method_signature of Create RPC
+                Required. Id of the requesting
+                storage pool. Must be unique within the
+                parent resource. Must contain only
+                letters, numbers, underscore and hyphen,
+                with the first character a letter or
+                underscore, the last a letter or
+                underscore or a number, and a 63
+                character maximum.
 
                 This corresponds to the ``storage_pool_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1228,9 +1233,13 @@ class NetAppAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             volume_id (:class:`str`):
-                Required. Id of the requesting volume If auto-generating
-                Id server-side, remove this field and Id from the
-                method_signature of Create RPC
+                Required. Id of the requesting
+                volume. Must be unique within the parent
+                resource. Must contain only letters,
+                numbers, underscore and hyphen, with the
+                first character a letter or underscore,
+                the last a letter or underscore or a
+                number, and a 63 character maximum.
 
                 This corresponds to the ``volume_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1965,10 +1974,12 @@ class NetAppAsyncClient:
                 should not be set.
             snapshot_id (:class:`str`):
                 Required. ID of the snapshot to
-                create. This value must start with a
-                lowercase letter followed by up to 62
-                lowercase letters, numbers, or hyphens,
-                and cannot end with a hyphen.
+                create. Must be unique within the parent
+                resource. Must contain only letters,
+                numbers, underscore and hyphen, with the
+                first character a letter or underscore,
+                the last a letter or underscore or a
+                number, and a 63 character maximum.
 
                 This corresponds to the ``snapshot_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2611,7 +2622,13 @@ class NetAppAsyncClient:
                 should not be set.
             active_directory_id (:class:`str`):
                 Required. ID of the active directory
-                to create.
+                to create. Must be unique within the
+                parent resource. Must contain only
+                letters, numbers, underscore and hyphen,
+                with the first character a letter or
+                underscore, the last a letter or
+                underscore or a number, and a 63
+                character maximum.
 
                 This corresponds to the ``active_directory_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3151,9 +3168,14 @@ class NetAppAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             kms_config_id (:class:`str`):
-                Required. Id of the requesting KmsConfig If
-                auto-generating Id server-side, remove this field and id
-                from the method_signature of Create RPC
+                Required. Id of the requesting
+                KmsConfig. Must be unique within the
+                parent resource. Must contain only
+                letters, numbers, underscore and hyphen,
+                with the first character a letter or
+                underscore, the last a letter or
+                underscore or a number, and a 63
+                character maximum.
 
                 This corresponds to the ``kms_config_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4087,10 +4109,12 @@ class NetAppAsyncClient:
                 should not be set.
             replication_id (:class:`str`):
                 Required. ID of the replication to
-                create. This value must start with a
-                lowercase letter followed by up to 62
-                lowercase letters, numbers, or hyphens,
-                and cannot end with a hyphen.
+                create. Must be unique within the parent
+                resource. Must contain only letters,
+                numbers, underscore and hyphen, with the
+                first character a letter or underscore,
+                the last a letter or underscore or a
+                number, and a 63 character maximum.
 
                 This corresponds to the ``replication_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4799,13 +4823,14 @@ class NetAppAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             backup_vault_id (:class:`str`):
-                Required. The ID to use for the backupVault. The ID must
-                be unique within the specified location. The max
-                supported length is 63 characters. This value must start
-                with a lowercase letter followed by up to 62 lowercase
-                letters, numbers, or hyphens, and cannot end with a
-                hyphen. Values that do not match this pattern will
-                trigger an INVALID_ARGUMENT error.
+                Required. The ID to use for the
+                backupVault. The ID must be unique
+                within the specified location. Must
+                contain only letters, numbers,
+                underscore and hyphen, with the first
+                character a letter or underscore, the
+                last a letter or underscore or a number,
+                and a 63 character maximum.
 
                 This corresponds to the ``backup_vault_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5442,12 +5467,14 @@ class NetAppAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             backup_id (:class:`str`):
-                Required. The ID to use for the backup. The ID must be
-                unique within the specified backupVault. This value must
-                start with a lowercase letter followed by up to 62
-                lowercase letters, numbers, or hyphens, and cannot end
-                with a hyphen. Values that do not match this pattern
-                will trigger an INVALID_ARGUMENT error.
+                Required. The ID to use for the
+                backup. The ID must be unique within the
+                specified backupVault. Must contain only
+                letters, numbers, underscore and hyphen,
+                with the first character a letter or
+                underscore, the last a letter or
+                underscore or a number, and a 63
+                character maximum.
 
                 This corresponds to the ``backup_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6086,11 +6113,12 @@ class NetAppAsyncClient:
             backup_policy_id (:class:`str`):
                 Required. The ID to use for the
                 backup policy. The ID must be unique
-                within the specified location. This
-                value must start with a lowercase letter
-                followed by up to 62 lowercase letters,
-                numbers, or hyphens, and cannot end with
-                a hyphen.
+                within the specified location. Must
+                contain only letters, numbers,
+                underscore and hyphen, with the first
+                character a letter or underscore, the
+                last a letter or underscore or a number,
+                and a 63 character maximum.
 
                 This corresponds to the ``backup_policy_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
