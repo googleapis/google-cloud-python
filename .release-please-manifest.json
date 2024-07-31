@@ -60,7 +60,7 @@
     "packages/google-cloud-contentwarehouse": "0.7.9",
     "packages/google-cloud-data-fusion": "1.10.5",
     "packages/google-cloud-data-qna": "0.10.11",
-    "packages/google-cloud-datacatalog": "3.20.0",
+    "packages/google-cloud-datacatalog": "3.20.1",
     "packages/google-cloud-datacatalog-lineage": "0.3.8",
     "packages/google-cloud-dataflow-client": "0.8.12",
     "packages/google-cloud-dataform": "0.5.11",
