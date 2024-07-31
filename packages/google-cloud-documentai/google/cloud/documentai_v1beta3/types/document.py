@@ -2079,9 +2079,7 @@ class Document(proto.Message):
                 chunk_id (str):
                     ID of the chunk.
                 source_block_ids (MutableSequence[str]):
-                    DO NOT USE.
-                    List of all parsed documents layout source
-                    blocks used to generate the chunk.
+                    Unused.
                 content (str):
                     Text content of the chunk.
                 page_span (google.cloud.documentai_v1beta3.types.Document.ChunkedDocument.Chunk.ChunkPageSpan):

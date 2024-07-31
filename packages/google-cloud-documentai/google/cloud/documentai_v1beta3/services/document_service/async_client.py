@@ -289,7 +289,12 @@ class DocumentServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Updates metadata associated with a dataset.
+        r"""Updates metadata associated with a dataset. Note that this
+        method requires the
+        ``documentai.googleapis.com/datasets.update`` permission on the
+        project, which is highly privileged. A user or service account
+        with this permission can create new processors that can interact
+        with any gcs bucket in your project.
 
         .. code-block:: python
 
