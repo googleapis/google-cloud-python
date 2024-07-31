@@ -832,6 +832,8 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -977,6 +979,8 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
