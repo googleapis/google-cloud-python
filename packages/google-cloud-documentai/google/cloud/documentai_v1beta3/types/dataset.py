@@ -78,6 +78,10 @@ class Dataset(proto.Message):
         state (google.cloud.documentai_v1beta3.types.Dataset.State):
             Required. State of the dataset. Ignored when
             updating dataset.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
     """
 
     class State(proto.Enum):
@@ -175,6 +179,14 @@ class Dataset(proto.Message):
         proto.ENUM,
         number=2,
         enum=State,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=9,
     )
 
 

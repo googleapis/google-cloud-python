@@ -3957,6 +3957,8 @@ def test_get_processor(request_type, transport: str = "grpc"):
             default_processor_version="default_processor_version_value",
             process_endpoint="process_endpoint_value",
             kms_key_name="kms_key_name_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_processor(request)
 
@@ -3975,6 +3977,8 @@ def test_get_processor(request_type, transport: str = "grpc"):
     assert response.default_processor_version == "default_processor_version_value"
     assert response.process_endpoint == "process_endpoint_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_processor_empty_call():
@@ -4080,6 +4084,8 @@ async def test_get_processor_empty_call_async():
                 default_processor_version="default_processor_version_value",
                 process_endpoint="process_endpoint_value",
                 kms_key_name="kms_key_name_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_processor()
@@ -4155,6 +4161,8 @@ async def test_get_processor_async(
                 default_processor_version="default_processor_version_value",
                 process_endpoint="process_endpoint_value",
                 kms_key_name="kms_key_name_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_processor(request)
@@ -4174,6 +4182,8 @@ async def test_get_processor_async(
     assert response.default_processor_version == "default_processor_version_value"
     assert response.process_endpoint == "process_endpoint_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -4750,6 +4760,8 @@ def test_get_processor_version(request_type, transport: str = "grpc"):
             kms_key_version_name="kms_key_version_name_value",
             google_managed=True,
             model_type=processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_processor_version(request)
 
@@ -4771,6 +4783,8 @@ def test_get_processor_version(request_type, transport: str = "grpc"):
         response.model_type
         == processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE
     )
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_processor_version_empty_call():
@@ -4887,6 +4901,8 @@ async def test_get_processor_version_empty_call_async():
                 kms_key_version_name="kms_key_version_name_value",
                 google_managed=True,
                 model_type=processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_processor_version()
@@ -4964,6 +4980,8 @@ async def test_get_processor_version_async(
                 kms_key_version_name="kms_key_version_name_value",
                 google_managed=True,
                 model_type=processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_processor_version(request)
@@ -4986,6 +5004,8 @@ async def test_get_processor_version_async(
         response.model_type
         == processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE
     )
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -6928,6 +6948,8 @@ def test_create_processor(request_type, transport: str = "grpc"):
             default_processor_version="default_processor_version_value",
             process_endpoint="process_endpoint_value",
             kms_key_name="kms_key_name_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.create_processor(request)
 
@@ -6946,6 +6968,8 @@ def test_create_processor(request_type, transport: str = "grpc"):
     assert response.default_processor_version == "default_processor_version_value"
     assert response.process_endpoint == "process_endpoint_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_create_processor_empty_call():
@@ -7053,6 +7077,8 @@ async def test_create_processor_empty_call_async():
                 default_processor_version="default_processor_version_value",
                 process_endpoint="process_endpoint_value",
                 kms_key_name="kms_key_name_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.create_processor()
@@ -7128,6 +7154,8 @@ async def test_create_processor_async(
                 default_processor_version="default_processor_version_value",
                 process_endpoint="process_endpoint_value",
                 kms_key_name="kms_key_name_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.create_processor(request)
@@ -7147,6 +7175,8 @@ async def test_create_processor_async(
     assert response.default_processor_version == "default_processor_version_value"
     assert response.process_endpoint == "process_endpoint_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -12696,6 +12726,8 @@ def test_get_processor_rest(request_type):
             default_processor_version="default_processor_version_value",
             process_endpoint="process_endpoint_value",
             kms_key_name="kms_key_name_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -12718,6 +12750,8 @@ def test_get_processor_rest(request_type):
     assert response.default_processor_version == "default_processor_version_value"
     assert response.process_endpoint == "process_endpoint_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_processor_rest_use_cached_wrapped_rpc():
@@ -13333,6 +13367,8 @@ def test_get_processor_version_rest(request_type):
             kms_key_version_name="kms_key_version_name_value",
             google_managed=True,
             model_type=processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -13358,6 +13394,8 @@ def test_get_processor_version_rest(request_type):
         response.model_type
         == processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE
     )
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_processor_version_rest_use_cached_wrapped_rpc():
@@ -14997,6 +15035,8 @@ def test_create_processor_rest(request_type):
         "process_endpoint": "process_endpoint_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "kms_key_name": "kms_key_name_value",
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15080,6 +15120,8 @@ def test_create_processor_rest(request_type):
             default_processor_version="default_processor_version_value",
             process_endpoint="process_endpoint_value",
             kms_key_name="kms_key_name_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -15102,6 +15144,8 @@ def test_create_processor_rest(request_type):
     assert response.default_processor_version == "default_processor_version_value"
     assert response.process_endpoint == "process_endpoint_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_create_processor_rest_use_cached_wrapped_rpc():
