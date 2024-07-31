@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.19.0...google-cloud-dlp-v3.20.0) (2024-07-31)
+
+
+### Features
+
+* [google-cloud-dlp] org-level connection bindings ([871cd07](https://github.com/googleapis/google-cloud-python/commit/871cd07f6c4e88cdfeb548640f167649eabd34df))
+* add refresh frequency for data profiling ([871cd07](https://github.com/googleapis/google-cloud-python/commit/871cd07f6c4e88cdfeb548640f167649eabd34df))
+* gRPC config for get, list, and delete FileStoreDataProfiles ([871cd07](https://github.com/googleapis/google-cloud-python/commit/871cd07f6c4e88cdfeb548640f167649eabd34df))
+
+
+### Documentation
+
+* [google-cloud-dlp] replace HTML tags with CommonMark notation ([871cd07](https://github.com/googleapis/google-cloud-python/commit/871cd07f6c4e88cdfeb548640f167649eabd34df))
+* small improvements ([871cd07](https://github.com/googleapis/google-cloud-python/commit/871cd07f6c4e88cdfeb548640f167649eabd34df))
+
 ## [3.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.18.1...google-cloud-dlp-v3.19.0) (2024-07-30)
 
 
