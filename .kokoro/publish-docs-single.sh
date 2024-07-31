@@ -24,11 +24,11 @@ pwd
 nox -s docs
 
 # create metadata
-python3.9 -m docuploader create-metadata \
+python3.10 -m docuploader create-metadata \
   --name=$(jq --raw-output '.name // empty' .repo-metadata.json) \
-  --version=$(python3 setup.py --version) \
+  --version=$(python3.10 setup.py --version) \
   --language=$(jq --raw-output '.language // empty' .repo-metadata.json) \
-  --distribution-name=$(python3 setup.py --name) \
+  --distribution-name=$(python3.10 setup.py --name) \
   --product-page=$(jq --raw-output '.product_documentation // empty' .repo-metadata.json) \
   --github-repository=$(jq --raw-output '.repo // empty' .repo-metadata.json) \
   --issue-tracker=$(jq --raw-output '.issue_tracker // empty' .repo-metadata.json)
@@ -36,18 +36,18 @@ python3.9 -m docuploader create-metadata \
 cat docs.metadata
 
 # upload docs
-python3.9 -m docuploader upload docs/_build/html --metadata-file docs.metadata --staging-bucket "${STAGING_BUCKET}"
+python3.10 -m docuploader upload docs/_build/html --metadata-file docs.metadata --staging-bucket "${STAGING_BUCKET}"
 
 
 # docfx yaml files
 nox -s docfx
 
 # create metadata.
-python3.9 -m docuploader create-metadata \
+python3.10 -m docuploader create-metadata \
   --name=$(jq --raw-output '.name // empty' .repo-metadata.json) \
-  --version=$(python3 setup.py --version) \
+  --version=$(python3.10 setup.py --version) \
   --language=$(jq --raw-output '.language // empty' .repo-metadata.json) \
-  --distribution-name=$(python3 setup.py --name) \
+  --distribution-name=$(python3.10 setup.py --name) \
   --product-page=$(jq --raw-output '.product_documentation // empty' .repo-metadata.json) \
   --github-repository=$(jq --raw-output '.repo // empty' .repo-metadata.json) \
   --issue-tracker=$(jq --raw-output '.issue_tracker // empty' .repo-metadata.json)
@@ -64,4 +64,4 @@ else
 fi
 
 # upload docs
-python3.9 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${staging_v2_bucket}"
+python3.10 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${staging_v2_bucket}"
