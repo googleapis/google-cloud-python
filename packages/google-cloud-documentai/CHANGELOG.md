@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.29.3...google-cloud-documentai-v2.30.0) (2024-07-31)
+
+
+### Features
+
+* [google-cloud-documentai] A new field `imageless_mode` is added to message `.google.cloud.documentai.v1.ProcessRequest` ([#12966](https://github.com/googleapis/google-cloud-python/issues/12966)) ([60d0728](https://github.com/googleapis/google-cloud-python/commit/60d07285f7282e89612f184aa6c95d7f2f38e1c7))
+
 ## [2.29.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.29.2...google-cloud-documentai-v2.29.3) (2024-07-30)
 
 
