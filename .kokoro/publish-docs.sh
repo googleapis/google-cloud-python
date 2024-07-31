@@ -36,8 +36,8 @@ RETVAL=0
 export PROJECT_ROOT=$(realpath $(dirname "${BASH_SOURCE[0]}")/..)
 
 # Install nox
-python3.9 -m pip install --require-hashes -r "$PROJECT_ROOT/.kokoro/requirements.txt"
-python3.9 -m nox --version
+python3.10 -m pip install --require-hashes -r "$PROJECT_ROOT/.kokoro/requirements.txt"
+python3.10 -m nox --version
 
 # A file for publishing docs
 publish_docs_script="${PROJECT_ROOT}/.kokoro/publish-docs-single.sh"
@@ -45,9 +45,9 @@ publish_docs_script="${PROJECT_ROOT}/.kokoro/publish-docs-single.sh"
 for subdir in ${subdirs[@]}; do
     for d in `ls -d ${subdir}/*/`; do
         should_publish=false
-        echo "checking changes with 'git diff HEAD~.. ${d}/**/gapic_version.py'"
+        echo "checking changes with 'git diff HEAD~2 ${d}/**/gapic_version.py'"
         set +e
-        changed=$(git diff "HEAD~.." ${d}/**/gapic_version.py | wc -l)
+        changed=$(git diff "HEAD~2" ${d}/**/gapic_version.py | wc -l)
         set -e
         if [[ "${changed}" -eq 0 ]]; then
             echo "no change detected in ${d}, skipping"
