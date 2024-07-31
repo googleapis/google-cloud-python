@@ -25298,7 +25298,7 @@ def test_create_inspect_template_rest(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
+    request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -25525,7 +25525,7 @@ def test_create_inspect_template_rest_bad_request(
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
+    request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -25552,7 +25552,7 @@ def test_create_inspect_template_rest_flattened():
         return_value = dlp.InspectTemplate()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "organizations/sample1"}
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -25577,7 +25577,8 @@ def test_create_inspect_template_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{parent=organizations/*}/inspectTemplates" % client.transport._host,
+            "%s/v2/{parent=projects/*/locations/*}/inspectTemplates"
+            % client.transport._host,
             args[1],
         )
 
@@ -25618,7 +25619,9 @@ def test_update_inspect_template_rest(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/inspectTemplates/sample2"}
+    request_init = {
+        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -25837,7 +25840,9 @@ def test_update_inspect_template_rest_bad_request(
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/inspectTemplates/sample2"}
+    request_init = {
+        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -25864,7 +25869,9 @@ def test_update_inspect_template_rest_flattened():
         return_value = dlp.InspectTemplate()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "organizations/sample1/inspectTemplates/sample2"}
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+        }
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -25890,7 +25897,8 @@ def test_update_inspect_template_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{name=organizations/*/inspectTemplates/*}" % client.transport._host,
+            "%s/v2/{name=projects/*/locations/*/inspectTemplates/*}"
+            % client.transport._host,
             args[1],
         )
 
@@ -25932,7 +25940,9 @@ def test_get_inspect_template_rest(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/inspectTemplates/sample2"}
+    request_init = {
+        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -26147,7 +26157,9 @@ def test_get_inspect_template_rest_bad_request(
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/inspectTemplates/sample2"}
+    request_init = {
+        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -26174,7 +26186,9 @@ def test_get_inspect_template_rest_flattened():
         return_value = dlp.InspectTemplate()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "organizations/sample1/inspectTemplates/sample2"}
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+        }
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -26198,7 +26212,8 @@ def test_get_inspect_template_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{name=organizations/*/inspectTemplates/*}" % client.transport._host,
+            "%s/v2/{name=projects/*/locations/*/inspectTemplates/*}"
+            % client.transport._host,
             args[1],
         )
 
@@ -26238,7 +26253,7 @@ def test_list_inspect_templates_rest(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
+    request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -26473,7 +26488,7 @@ def test_list_inspect_templates_rest_bad_request(
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
+    request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -26500,7 +26515,7 @@ def test_list_inspect_templates_rest_flattened():
         return_value = dlp.ListInspectTemplatesResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "organizations/sample1"}
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -26524,7 +26539,8 @@ def test_list_inspect_templates_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{parent=organizations/*}/inspectTemplates" % client.transport._host,
+            "%s/v2/{parent=projects/*/locations/*}/inspectTemplates"
+            % client.transport._host,
             args[1],
         )
 
@@ -26592,7 +26608,7 @@ def test_list_inspect_templates_rest_pager(transport: str = "rest"):
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {"parent": "organizations/sample1"}
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_inspect_templates(request=sample_request)
 
@@ -26619,7 +26635,9 @@ def test_delete_inspect_template_rest(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/inspectTemplates/sample2"}
+    request_init = {
+        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -26819,7 +26837,9 @@ def test_delete_inspect_template_rest_bad_request(
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/inspectTemplates/sample2"}
+    request_init = {
+        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -26846,7 +26866,9 @@ def test_delete_inspect_template_rest_flattened():
         return_value = None
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "organizations/sample1/inspectTemplates/sample2"}
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+        }
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -26868,7 +26890,8 @@ def test_delete_inspect_template_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{name=organizations/*/inspectTemplates/*}" % client.transport._host,
+            "%s/v2/{name=projects/*/locations/*/inspectTemplates/*}"
+            % client.transport._host,
             args[1],
         )
 
