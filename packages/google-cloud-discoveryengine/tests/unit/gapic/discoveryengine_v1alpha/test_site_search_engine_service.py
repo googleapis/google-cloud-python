@@ -47,6 +47,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
@@ -5770,6 +5771,610 @@ async def test_fetch_domain_verification_status_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        site_search_engine_service.SetUriPatternDocumentDataRequest,
+        dict,
+    ],
+)
+def test_set_uri_pattern_document_data(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_uri_pattern_document_data), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.set_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = site_search_engine_service.SetUriPatternDocumentDataRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_set_uri_pattern_document_data_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_uri_pattern_document_data), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.set_uri_pattern_document_data()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.SetUriPatternDocumentDataRequest()
+
+
+def test_set_uri_pattern_document_data_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.SetUriPatternDocumentDataRequest(
+        site_search_engine="site_search_engine_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_uri_pattern_document_data), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.set_uri_pattern_document_data(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.SetUriPatternDocumentDataRequest(
+            site_search_engine="site_search_engine_value",
+        )
+
+
+def test_set_uri_pattern_document_data_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SiteSearchEngineServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.set_uri_pattern_document_data
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.set_uri_pattern_document_data
+        ] = mock_rpc
+        request = {}
+        client.set_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.set_uri_pattern_document_data(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_set_uri_pattern_document_data_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_uri_pattern_document_data), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.set_uri_pattern_document_data()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.SetUriPatternDocumentDataRequest()
+
+
+@pytest.mark.asyncio
+async def test_set_uri_pattern_document_data_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SiteSearchEngineServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.set_uri_pattern_document_data
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.set_uri_pattern_document_data
+        ] = mock_object
+
+        request = {}
+        await client.set_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.set_uri_pattern_document_data(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_set_uri_pattern_document_data_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.SetUriPatternDocumentDataRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_uri_pattern_document_data), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.set_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = site_search_engine_service.SetUriPatternDocumentDataRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_set_uri_pattern_document_data_async_from_dict():
+    await test_set_uri_pattern_document_data_async(request_type=dict)
+
+
+def test_set_uri_pattern_document_data_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.SetUriPatternDocumentDataRequest()
+
+    request.site_search_engine = "site_search_engine_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_uri_pattern_document_data), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.set_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "site_search_engine=site_search_engine_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_set_uri_pattern_document_data_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.SetUriPatternDocumentDataRequest()
+
+    request.site_search_engine = "site_search_engine_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_uri_pattern_document_data), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.set_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "site_search_engine=site_search_engine_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.GetUriPatternDocumentDataRequest,
+        dict,
+    ],
+)
+def test_get_uri_pattern_document_data(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_uri_pattern_document_data), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            site_search_engine_service.GetUriPatternDocumentDataResponse()
+        )
+        response = client.get_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = site_search_engine_service.GetUriPatternDocumentDataRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, site_search_engine_service.GetUriPatternDocumentDataResponse
+    )
+
+
+def test_get_uri_pattern_document_data_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_uri_pattern_document_data), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_uri_pattern_document_data()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetUriPatternDocumentDataRequest()
+
+
+def test_get_uri_pattern_document_data_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.GetUriPatternDocumentDataRequest(
+        site_search_engine="site_search_engine_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_uri_pattern_document_data), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_uri_pattern_document_data(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetUriPatternDocumentDataRequest(
+            site_search_engine="site_search_engine_value",
+        )
+
+
+def test_get_uri_pattern_document_data_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SiteSearchEngineServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_uri_pattern_document_data
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_uri_pattern_document_data
+        ] = mock_rpc
+        request = {}
+        client.get_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_uri_pattern_document_data(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_uri_pattern_document_data_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_uri_pattern_document_data), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine_service.GetUriPatternDocumentDataResponse()
+        )
+        response = await client.get_uri_pattern_document_data()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetUriPatternDocumentDataRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_uri_pattern_document_data_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SiteSearchEngineServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_uri_pattern_document_data
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_uri_pattern_document_data
+        ] = mock_object
+
+        request = {}
+        await client.get_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_uri_pattern_document_data(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_uri_pattern_document_data_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.GetUriPatternDocumentDataRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_uri_pattern_document_data), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine_service.GetUriPatternDocumentDataResponse()
+        )
+        response = await client.get_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = site_search_engine_service.GetUriPatternDocumentDataRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, site_search_engine_service.GetUriPatternDocumentDataResponse
+    )
+
+
+@pytest.mark.asyncio
+async def test_get_uri_pattern_document_data_async_from_dict():
+    await test_get_uri_pattern_document_data_async(request_type=dict)
+
+
+def test_get_uri_pattern_document_data_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.GetUriPatternDocumentDataRequest()
+
+    request.site_search_engine = "site_search_engine_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_uri_pattern_document_data), "__call__"
+    ) as call:
+        call.return_value = (
+            site_search_engine_service.GetUriPatternDocumentDataResponse()
+        )
+        client.get_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "site_search_engine=site_search_engine_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_uri_pattern_document_data_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.GetUriPatternDocumentDataRequest()
+
+    request.site_search_engine = "site_search_engine_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_uri_pattern_document_data), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine_service.GetUriPatternDocumentDataResponse()
+        )
+        await client.get_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "site_search_engine=site_search_engine_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         site_search_engine_service.GetSiteSearchEngineRequest,
         dict,
     ],
@@ -9562,6 +10167,534 @@ def test_fetch_domain_verification_status_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.SetUriPatternDocumentDataRequest,
+        dict,
+    ],
+)
+def test_set_uri_pattern_document_data_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "site_search_engine": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_uri_pattern_document_data(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_set_uri_pattern_document_data_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SiteSearchEngineServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.set_uri_pattern_document_data
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.set_uri_pattern_document_data
+        ] = mock_rpc
+
+        request = {}
+        client.set_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.set_uri_pattern_document_data(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_set_uri_pattern_document_data_rest_required_fields(
+    request_type=site_search_engine_service.SetUriPatternDocumentDataRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request_init["site_search_engine"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_uri_pattern_document_data._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["siteSearchEngine"] = "site_search_engine_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_uri_pattern_document_data._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "siteSearchEngine" in jsonified_request
+    assert jsonified_request["siteSearchEngine"] == "site_search_engine_value"
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_uri_pattern_document_data(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_uri_pattern_document_data_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_uri_pattern_document_data._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("siteSearchEngine",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_uri_pattern_document_data_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_set_uri_pattern_document_data",
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "pre_set_uri_pattern_document_data",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.SetUriPatternDocumentDataRequest.pb(
+            site_search_engine_service.SetUriPatternDocumentDataRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = site_search_engine_service.SetUriPatternDocumentDataRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.set_uri_pattern_document_data(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_uri_pattern_document_data_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.SetUriPatternDocumentDataRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "site_search_engine": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_uri_pattern_document_data(request)
+
+
+def test_set_uri_pattern_document_data_rest_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.GetUriPatternDocumentDataRequest,
+        dict,
+    ],
+)
+def test_get_uri_pattern_document_data_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "site_search_engine": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = site_search_engine_service.GetUriPatternDocumentDataResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = site_search_engine_service.GetUriPatternDocumentDataResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_uri_pattern_document_data(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, site_search_engine_service.GetUriPatternDocumentDataResponse
+    )
+
+
+def test_get_uri_pattern_document_data_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SiteSearchEngineServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_uri_pattern_document_data
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_uri_pattern_document_data
+        ] = mock_rpc
+
+        request = {}
+        client.get_uri_pattern_document_data(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_uri_pattern_document_data(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_uri_pattern_document_data_rest_required_fields(
+    request_type=site_search_engine_service.GetUriPatternDocumentDataRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request_init["site_search_engine"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_uri_pattern_document_data._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["siteSearchEngine"] = "site_search_engine_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_uri_pattern_document_data._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "siteSearchEngine" in jsonified_request
+    assert jsonified_request["siteSearchEngine"] == "site_search_engine_value"
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = site_search_engine_service.GetUriPatternDocumentDataResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                site_search_engine_service.GetUriPatternDocumentDataResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_uri_pattern_document_data(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_uri_pattern_document_data_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_uri_pattern_document_data._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("siteSearchEngine",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_uri_pattern_document_data_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_get_uri_pattern_document_data",
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "pre_get_uri_pattern_document_data",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.GetUriPatternDocumentDataRequest.pb(
+            site_search_engine_service.GetUriPatternDocumentDataRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            site_search_engine_service.GetUriPatternDocumentDataResponse.to_json(
+                site_search_engine_service.GetUriPatternDocumentDataResponse()
+            )
+        )
+
+        request = site_search_engine_service.GetUriPatternDocumentDataRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            site_search_engine_service.GetUriPatternDocumentDataResponse()
+        )
+
+        client.get_uri_pattern_document_data(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_uri_pattern_document_data_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.GetUriPatternDocumentDataRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "site_search_engine": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_uri_pattern_document_data(request)
+
+
+def test_get_uri_pattern_document_data_rest_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.SiteSearchEngineServiceGrpcTransport(
@@ -9713,6 +10846,8 @@ def test_site_search_engine_service_base_transport():
         "recrawl_uris",
         "batch_verify_target_sites",
         "fetch_domain_verification_status",
+        "set_uri_pattern_document_data",
+        "get_uri_pattern_document_data",
         "get_operation",
         "cancel_operation",
         "list_operations",
@@ -10035,6 +11170,12 @@ def test_site_search_engine_service_client_transport_session_collision(transport
     assert session1 != session2
     session1 = client1.transport.fetch_domain_verification_status._session
     session2 = client2.transport.fetch_domain_verification_status._session
+    assert session1 != session2
+    session1 = client1.transport.set_uri_pattern_document_data._session
+    session2 = client2.transport.set_uri_pattern_document_data._session
+    assert session1 != session2
+    session1 = client1.transport.get_uri_pattern_document_data._session
+    session2 = client2.transport.get_uri_pattern_document_data._session
     assert session1 != session2
 
 
