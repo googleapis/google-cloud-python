@@ -190,6 +190,24 @@ class Logical(BinaryTypeSignature):
         return left_type
 
 
+@dataclasses.dataclass
+class VectorMetric(BinaryTypeSignature):
+    """Type signature for logical operators like AND, OR and NOT."""
+
+    def output_type(
+        self, left_type: ExpressionType, right_type: ExpressionType
+    ) -> ExpressionType:
+        if not bigframes.dtypes.is_array_like(left_type):
+            raise TypeError(f"Type {left_type} is not array-like")
+        if not bigframes.dtypes.is_array_like(right_type):
+            raise TypeError(f"Type {right_type} is not array-like")
+        if left_type != right_type:
+            raise TypeError(
+                "Vector op operands {left_type} and {right_type} do not match"
+            )
+        return bigframes.dtypes.FLOAT_DTYPE
+
+
 # Common type signatures
 UNARY_NUMERIC = TypePreserving(bigframes.dtypes.is_numeric, description="numeric")
 UNARY_REAL_NUMERIC = UnaryRealNumeric()
@@ -212,3 +230,4 @@ DATELIKE_ACCESSOR = FixedOutputType(
 TIMELIKE_ACCESSOR = FixedOutputType(
     bigframes.dtypes.is_time_like, bigframes.dtypes.INT_DTYPE, description="time-like"
 )
+VECTOR_METRIC = VectorMetric()

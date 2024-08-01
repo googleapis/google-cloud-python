@@ -690,6 +690,17 @@ le_op = create_binary_op(name="le", type_signature=op_typing.COMPARISON)
 ge_op = create_binary_op(name="ge", type_signature=op_typing.COMPARISON)
 
 
+cosine_distance_op = create_binary_op(
+    name="ml_cosine_distance", type_signature=op_typing.VECTOR_METRIC
+)
+manhattan_distance_op = create_binary_op(
+    name="ml_manhattan_distance", type_signature=op_typing.VECTOR_METRIC
+)
+euclidean_distance_op = create_binary_op(
+    name="ml_euclidean_distance", type_signature=op_typing.VECTOR_METRIC
+)
+
+
 ## String Ops
 @dataclasses.dataclass(frozen=True)
 class StrConcatOp(BinaryOp):

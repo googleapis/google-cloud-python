@@ -35,6 +35,47 @@ def test_paired_cosine_distances():
     )
 
 
+def test_paired_cosine_distances_multiindex():
+    x_col = [np.array([4.1, 0.5, 1.0])]
+    y_col = [np.array([3.0, 0.0, 2.5])]
+    data = bpd.read_pandas(
+        pd.DataFrame(
+            {("DATA", "X"): x_col, ("DATA", "Y"): y_col},
+        )
+    )
+
+    result = metrics.pairwise.paired_cosine_distances(
+        data[("DATA", "X")], data[("DATA", "Y")]
+    )
+    expected_pd_df = pd.DataFrame(
+        {
+            ("DATA", "X"): x_col,
+            ("DATA", "Y"): y_col,
+            ("cosine_distance", ""): [0.108199],
+        }
+    )
+
+    pd.testing.assert_frame_equal(
+        result.to_pandas(), expected_pd_df, check_dtype=False, check_index_type=False
+    )
+
+
+def test_paired_cosine_distances_single_frame():
+    x_col = [np.array([4.1, 0.5, 1.0])]
+    y_col = [np.array([3.0, 0.0, 2.5])]
+    input = bpd.read_pandas(pd.DataFrame({"X": x_col}))
+    input["Y"] = y_col  # type: ignore
+
+    result = metrics.pairwise.paired_cosine_distances(input.X, input.Y)
+    expected_pd_df = pd.DataFrame(
+        {"X": x_col, "Y": y_col, "cosine_distance": [0.108199]}
+    )
+
+    pd.testing.assert_frame_equal(
+        result.to_pandas(), expected_pd_df, check_dtype=False, check_index_type=False
+    )
+
+
 def test_paired_manhattan_distance():
     x_col = [np.array([4.1, 0.5, 1.0])]
     y_col = [np.array([3.0, 0.0, 2.5])]

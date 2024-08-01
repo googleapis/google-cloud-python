@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import Callable, cast, Iterable, Literal, Mapping, Optional, Union
+from typing import Callable, cast, Iterable, Mapping, Optional, Union
 import uuid
 
 from google.cloud import bigquery
@@ -35,68 +35,6 @@ class BaseBqml:
         self._session = session
         self._base_sql_generator = ml_sql.BaseSqlGenerator()
 
-    def _apply_sql(
-        self,
-        input_data: bpd.DataFrame,
-        func: Callable[[bpd.DataFrame], str],
-    ) -> bpd.DataFrame:
-        """Helper to wrap a dataframe in a SQL query, keeping the index intact.
-
-        Args:
-            session (bigframes.Session):
-                the active bigframes.Session
-
-            input_data (bigframes.dataframe.DataFrame):
-                the dataframe to be wrapped
-
-            func (function):
-                a function that will accept a SQL string and produce a new SQL
-                string from which to construct the output dataframe. It must
-                include the index columns of the input SQL.
-        """
-        _, index_col_ids, index_labels = input_data._to_sql_query(include_index=True)
-
-        sql = func(input_data)
-        df = self._session.read_gbq(sql, index_col=index_col_ids)
-        df.index.names = index_labels
-
-        return df
-
-    def distance(
-        self,
-        x: bpd.DataFrame,
-        y: bpd.DataFrame,
-        type: Literal["EUCLIDEAN", "MANHATTAN", "COSINE"],
-        name: str,
-    ) -> bpd.DataFrame:
-        """Calculate ML.DISTANCE from DataFrame inputs.
-
-        Args:
-            x:
-                input DataFrame
-            y:
-                input DataFrame
-            type:
-                Distance types, accept values are  "EUCLIDEAN", "MANHATTAN", "COSINE".
-            name:
-                name of the output result column
-        """
-        assert len(x.columns) == 1 and len(y.columns) == 1
-
-        input_data = x.join(y, how="outer").cache()
-        x_column_id, y_column_id = x._block.value_columns[0], y._block.value_columns[0]
-
-        return self._apply_sql(
-            input_data,
-            lambda source_df: self._base_sql_generator.ml_distance(
-                x_column_id,
-                y_column_id,
-                type=type,
-                source_df=source_df,
-                name=name,
-            ),
-        )
-
 
 class BqmlModel(BaseBqml):
     """Represents an existing BQML model in BigQuery.
@@ -111,6 +49,45 @@ class BqmlModel(BaseBqml):
         self._model_manipulation_sql_generator = ml_sql.ModelManipulationSqlGenerator(
             self.model_name
         )
+
+    def _apply_ml_tvf(
+        self,
+        input_data: bpd.DataFrame,
+        apply_sql_tvf: Callable[[str], str],
+    ) -> bpd.DataFrame:
+        # Used for predict, transform, distance
+        """Helper to wrap a dataframe in a SQL query, keeping the index intact.
+
+        Args:
+            session (bigframes.Session):
+                the active bigframes.Session
+
+            input_data (bigframes.dataframe.DataFrame):
+                the dataframe to be wrapped
+
+            func (function):
+                Takes an input sql table value and applies a prediction tvf. The
+                resulting table value must include all input columns, with new
+                columns appended to the end.
+        """
+        # TODO: Preserve ordering information?
+        input_sql, index_col_ids, index_labels = input_data._to_sql_query(
+            include_index=True
+        )
+
+        result_sql = apply_sql_tvf(input_sql)
+        df = self._session.read_gbq(result_sql, index_col=index_col_ids)
+        df.index.names = index_labels
+        # Restore column labels
+        df.rename(
+            columns={
+                label: original_label
+                for label, original_label in zip(
+                    df.columns.values, input_data.columns.values
+                )
+            }
+        )
+        return df
 
     def _keys(self):
         return (self._session, self._model)
@@ -137,13 +114,13 @@ class BqmlModel(BaseBqml):
         return self._model
 
     def predict(self, input_data: bpd.DataFrame) -> bpd.DataFrame:
-        return self._apply_sql(
+        return self._apply_ml_tvf(
             input_data,
             self._model_manipulation_sql_generator.ml_predict,
         )
 
     def transform(self, input_data: bpd.DataFrame) -> bpd.DataFrame:
-        return self._apply_sql(
+        return self._apply_ml_tvf(
             input_data,
             self._model_manipulation_sql_generator.ml_transform,
         )
@@ -153,10 +130,10 @@ class BqmlModel(BaseBqml):
         input_data: bpd.DataFrame,
         options: Mapping[str, int | float],
     ) -> bpd.DataFrame:
-        return self._apply_sql(
+        return self._apply_ml_tvf(
             input_data,
-            lambda source_df: self._model_manipulation_sql_generator.ml_generate_text(
-                source_df=source_df,
+            lambda source_sql: self._model_manipulation_sql_generator.ml_generate_text(
+                source_sql=source_sql,
                 struct_options=options,
             ),
         )
@@ -166,10 +143,10 @@ class BqmlModel(BaseBqml):
         input_data: bpd.DataFrame,
         options: Mapping[str, int | float],
     ) -> bpd.DataFrame:
-        return self._apply_sql(
+        return self._apply_ml_tvf(
             input_data,
-            lambda source_df: self._model_manipulation_sql_generator.ml_generate_embedding(
-                source_df=source_df,
+            lambda source_sql: self._model_manipulation_sql_generator.ml_generate_embedding(
+                source_sql=source_sql,
                 struct_options=options,
             ),
         )
@@ -179,10 +156,10 @@ class BqmlModel(BaseBqml):
     ) -> bpd.DataFrame:
         assert self._model.model_type in ("PCA", "KMEANS", "ARIMA_PLUS")
 
-        return self._apply_sql(
+        return self._apply_ml_tvf(
             input_data,
-            lambda source_df: self._model_manipulation_sql_generator.ml_detect_anomalies(
-                source_df=source_df,
+            lambda source_sql: self._model_manipulation_sql_generator.ml_detect_anomalies(
+                source_sql=source_sql,
                 struct_options=options,
             ),
         )
@@ -192,7 +169,9 @@ class BqmlModel(BaseBqml):
         return self._session.read_gbq(sql, index_col="forecast_timestamp").reset_index()
 
     def evaluate(self, input_data: Optional[bpd.DataFrame] = None):
-        sql = self._model_manipulation_sql_generator.ml_evaluate(input_data)
+        sql = self._model_manipulation_sql_generator.ml_evaluate(
+            input_data.sql if (input_data is not None) else None
+        )
 
         return self._session.read_gbq(sql)
 
@@ -202,7 +181,7 @@ class BqmlModel(BaseBqml):
         task_type: Optional[str] = None,
     ):
         sql = self._model_manipulation_sql_generator.ml_llm_evaluate(
-            input_data, task_type
+            input_data.sql, task_type
         )
 
         return self._session.read_gbq(sql)
@@ -336,7 +315,7 @@ class BqmlModelFactory:
         model_ref = self._create_model_ref(session._anonymous_dataset)
 
         sql = self._model_creation_sql_generator.create_model(
-            source_df=input_data,
+            source_sql=input_data.sql,
             model_ref=model_ref,
             transforms=transforms,
             options=options,
@@ -374,7 +353,7 @@ class BqmlModelFactory:
         model_ref = self._create_model_ref(session._anonymous_dataset)
 
         sql = self._model_creation_sql_generator.create_llm_remote_model(
-            source_df=input_data,
+            source_sql=input_data.sql,
             model_ref=model_ref,
             options=options,
             connection_name=connection_name,
@@ -407,7 +386,7 @@ class BqmlModelFactory:
         model_ref = self._create_model_ref(session._anonymous_dataset)
 
         sql = self._model_creation_sql_generator.create_model(
-            source_df=input_data,
+            source_sql=input_data.sql,
             model_ref=model_ref,
             transforms=transforms,
             options=options,

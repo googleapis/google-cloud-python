@@ -1380,6 +1380,30 @@ def minimum_impl(
     return ibis.case().when(upper.isnull() | (value > upper), upper).else_(value).end()
 
 
+@scalar_op_compiler.register_binary_op(ops.cosine_distance_op)
+def cosine_distance_impl(
+    vector1: ibis_types.Value,
+    vector2: ibis_types.Value,
+):
+    return vector_distance(vector1, vector2, "COSINE")
+
+
+@scalar_op_compiler.register_binary_op(ops.euclidean_distance_op)
+def euclidean_distance_impl(
+    vector1: ibis_types.Value,
+    vector2: ibis_types.Value,
+):
+    return vector_distance(vector1, vector2, "EUCLIDEAN")
+
+
+@scalar_op_compiler.register_binary_op(ops.manhattan_distance_op)
+def manhattan_distance_impl(
+    vector1: ibis_types.Value,
+    vector2: ibis_types.Value,
+):
+    return vector_distance(vector1, vector2, "MANHATTAN")
+
+
 @scalar_op_compiler.register_binary_op(ops.BinaryRemoteFunctionOp, pass_op=True)
 def binary_remote_function_op_impl(
     x: ibis_types.Value, y: ibis_types.Value, op: ops.BinaryRemoteFunctionOp
@@ -1501,3 +1525,8 @@ def json_set(
     json_obj: ibis_dtypes.JSON, json_path: ibis_dtypes.str, json_value
 ) -> ibis_dtypes.JSON:
     """Produces a new SQL JSON value with the specified JSON data inserted or replaced."""
+
+
+@ibis.udf.scalar.builtin(name="ML.DISTANCE")
+def vector_distance(vector1, vector2, type: str) -> ibis_dtypes.Float64:
+    """Computes the distance between two vectors using specified type ("EUCLIDEAN", "MANHATTAN", or "COSINE")"""

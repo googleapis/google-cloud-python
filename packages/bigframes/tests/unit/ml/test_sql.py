@@ -152,23 +152,12 @@ def test_polynomial_expand(
     assert sql == "ML.POLYNOMIAL_EXPAND(STRUCT(col_a, col_b), 2) AS poly_exp"
 
 
-def test_distance_correct(
-    base_sql_generator: ml_sql.BaseSqlGenerator,
-    mock_df: bpd.DataFrame,
-):
-    sql = base_sql_generator.ml_distance("col_a", "col_b", "COSINE", mock_df, "cosine")
-    assert (
-        sql
-        == "SELECT *, ML.DISTANCE(col_a, col_b, 'COSINE') AS cosine FROM (input_X_sql)"
-    )
-
-
 def test_create_model_correct(
     model_creation_sql_generator: ml_sql.ModelCreationSqlGenerator,
     mock_df: bpd.DataFrame,
 ):
     sql = model_creation_sql_generator.create_model(
-        source_df=mock_df,
+        source_sql=mock_df.sql,
         model_ref=bigquery.ModelReference.from_string(
             "test-proj._anonXYZ.create_model_correct_sql"
         ),
@@ -189,7 +178,7 @@ def test_create_model_transform_correct(
     mock_df: bpd.DataFrame,
 ):
     sql = model_creation_sql_generator.create_model(
-        source_df=mock_df,
+        source_sql=mock_df.sql,
         model_ref=bigquery.ModelReference.from_string(
             "test-proj._anonXYZ.create_model_transform"
         ),
@@ -217,7 +206,7 @@ def test_create_llm_remote_model_correct(
     mock_df: bpd.DataFrame,
 ):
     sql = model_creation_sql_generator.create_llm_remote_model(
-        source_df=mock_df,
+        source_sql=mock_df.sql,
         connection_name="my_project.us.my_connection",
         model_ref=bigquery.ModelReference.from_string(
             "test-proj._anonXYZ.create_remote_model"
@@ -342,11 +331,11 @@ def test_ml_predict_correct(
     model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
     mock_df: bpd.DataFrame,
 ):
-    sql = model_manipulation_sql_generator.ml_predict(source_df=mock_df)
+    sql = model_manipulation_sql_generator.ml_predict(source_sql=mock_df.sql)
     assert (
         sql
         == """SELECT * FROM ML.PREDICT(MODEL `my_project_id.my_dataset_id.my_model_id`,
-  (input_X_sql))"""
+  (input_X_y_sql))"""
     )
 
 
@@ -355,12 +344,12 @@ def test_ml_llm_evaluate_correct(
     mock_df: bpd.DataFrame,
 ):
     sql = model_manipulation_sql_generator.ml_llm_evaluate(
-        source_df=mock_df, task_type="CLASSIFICATION"
+        source_sql=mock_df.sql, task_type="CLASSIFICATION"
     )
     assert (
         sql
         == """SELECT * FROM ML.EVALUATE(MODEL `my_project_id.my_dataset_id.my_model_id`,
-            (input_X_sql), STRUCT("CLASSIFICATION" AS task_type))"""
+            (input_X_y_sql), STRUCT("CLASSIFICATION" AS task_type))"""
     )
 
 
@@ -368,11 +357,11 @@ def test_ml_evaluate_correct(
     model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
     mock_df: bpd.DataFrame,
 ):
-    sql = model_manipulation_sql_generator.ml_evaluate(source_df=mock_df)
+    sql = model_manipulation_sql_generator.ml_evaluate(source_sql=mock_df.sql)
     assert (
         sql
         == """SELECT * FROM ML.EVALUATE(MODEL `my_project_id.my_dataset_id.my_model_id`,
-  (input_X_sql))"""
+  (input_X_y_sql))"""
     )
 
 
@@ -429,13 +418,13 @@ def test_ml_generate_text_correct(
     mock_df: bpd.DataFrame,
 ):
     sql = model_manipulation_sql_generator.ml_generate_text(
-        source_df=mock_df,
+        source_sql=mock_df.sql,
         struct_options={"option_key1": 1, "option_key2": 2.2},
     )
     assert (
         sql
         == """SELECT * FROM ML.GENERATE_TEXT(MODEL `my_project_id.my_dataset_id.my_model_id`,
-  (input_X_sql), STRUCT(
+  (input_X_y_sql), STRUCT(
   1 AS option_key1,
   2.2 AS option_key2))"""
     )
@@ -446,13 +435,13 @@ def test_ml_generate_embedding_correct(
     mock_df: bpd.DataFrame,
 ):
     sql = model_manipulation_sql_generator.ml_generate_embedding(
-        source_df=mock_df,
+        source_sql=mock_df.sql,
         struct_options={"option_key1": 1, "option_key2": 2.2},
     )
     assert (
         sql
         == """SELECT * FROM ML.GENERATE_EMBEDDING(MODEL `my_project_id.my_dataset_id.my_model_id`,
-  (input_X_sql), STRUCT(
+  (input_X_y_sql), STRUCT(
   1 AS option_key1,
   2.2 AS option_key2))"""
     )
@@ -463,7 +452,7 @@ def test_ml_detect_anomalies_correct_sql(
     mock_df: bpd.DataFrame,
 ):
     sql = model_manipulation_sql_generator.ml_detect_anomalies(
-        source_df=mock_df,
+        source_sql=mock_df.sql,
         struct_options={"option_key1": 1, "option_key2": 2.2},
     )
     assert (
@@ -471,7 +460,7 @@ def test_ml_detect_anomalies_correct_sql(
         == """SELECT * FROM ML.DETECT_ANOMALIES(MODEL `my_project_id.my_dataset_id.my_model_id`,
   STRUCT(
   1 AS option_key1,
-  2.2 AS option_key2), (input_X_sql))"""
+  2.2 AS option_key2), (input_X_y_sql))"""
     )
 
 
