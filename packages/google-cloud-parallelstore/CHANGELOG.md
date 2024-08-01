@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.2...google-cloud-parallelstore-v0.2.3) (2024-08-01)
+
+
+### Features
+
+* [google-cloud-parallelstore] add file_stripe_level and directory_stripe_level fields to Instance ([#12970](https://github.com/googleapis/google-cloud-python/issues/12970)) ([17f4b3a](https://github.com/googleapis/google-cloud-python/commit/17f4b3ade3a159c87acedc36b48f69125d670c74))
+
 ## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.1...google-cloud-parallelstore-v0.2.2) (2024-07-30)
 
 
