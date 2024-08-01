@@ -1313,8 +1313,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the create conversion event method over gRPC.
 
-        Creates a conversion event with the specified
-        attributes.
+        Deprecated: Use ``CreateKeyEvent`` instead. Creates a conversion
+        event with the specified attributes.
 
         Returns:
             Callable[[~.CreateConversionEventRequest],
@@ -1343,8 +1343,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the update conversion event method over gRPC.
 
-        Updates a conversion event with the specified
-        attributes.
+        Deprecated: Use ``UpdateKeyEvent`` instead. Updates a conversion
+        event with the specified attributes.
 
         Returns:
             Callable[[~.UpdateConversionEventRequest],
@@ -1373,7 +1373,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the get conversion event method over gRPC.
 
-        Retrieve a single conversion event.
+        Deprecated: Use ``GetKeyEvent`` instead. Retrieve a single
+        conversion event.
 
         Returns:
             Callable[[~.GetConversionEventRequest],
@@ -1401,7 +1402,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the delete conversion event method over gRPC.
 
-        Deletes a conversion event in a property.
+        Deprecated: Use ``DeleteKeyEvent`` instead. Deletes a conversion
+        event in a property.
 
         Returns:
             Callable[[~.DeleteConversionEventRequest],
@@ -1430,8 +1432,9 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the list conversion events method over gRPC.
 
-        Returns a list of conversion events in the specified
-        parent property.
+        Deprecated: Use ``ListKeyEvents`` instead. Returns a list of
+        conversion events in the specified parent property.
+
         Returns an empty list if no conversion events are found.
 
         Returns:
@@ -1451,6 +1454,145 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 response_deserializer=analytics_admin.ListConversionEventsResponse.deserialize,
             )
         return self._stubs["list_conversion_events"]
+
+    @property
+    def create_key_event(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateKeyEventRequest], Awaitable[resources.KeyEvent]
+    ]:
+        r"""Return a callable for the create key event method over gRPC.
+
+        Creates a Key Event.
+
+        Returns:
+            Callable[[~.CreateKeyEventRequest],
+                    Awaitable[~.KeyEvent]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_key_event" not in self._stubs:
+            self._stubs["create_key_event"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateKeyEvent",
+                request_serializer=analytics_admin.CreateKeyEventRequest.serialize,
+                response_deserializer=resources.KeyEvent.deserialize,
+            )
+        return self._stubs["create_key_event"]
+
+    @property
+    def update_key_event(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateKeyEventRequest], Awaitable[resources.KeyEvent]
+    ]:
+        r"""Return a callable for the update key event method over gRPC.
+
+        Updates a Key Event.
+
+        Returns:
+            Callable[[~.UpdateKeyEventRequest],
+                    Awaitable[~.KeyEvent]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_key_event" not in self._stubs:
+            self._stubs["update_key_event"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateKeyEvent",
+                request_serializer=analytics_admin.UpdateKeyEventRequest.serialize,
+                response_deserializer=resources.KeyEvent.deserialize,
+            )
+        return self._stubs["update_key_event"]
+
+    @property
+    def get_key_event(
+        self,
+    ) -> Callable[[analytics_admin.GetKeyEventRequest], Awaitable[resources.KeyEvent]]:
+        r"""Return a callable for the get key event method over gRPC.
+
+        Retrieve a single Key Event.
+
+        Returns:
+            Callable[[~.GetKeyEventRequest],
+                    Awaitable[~.KeyEvent]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_key_event" not in self._stubs:
+            self._stubs["get_key_event"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetKeyEvent",
+                request_serializer=analytics_admin.GetKeyEventRequest.serialize,
+                response_deserializer=resources.KeyEvent.deserialize,
+            )
+        return self._stubs["get_key_event"]
+
+    @property
+    def delete_key_event(
+        self,
+    ) -> Callable[[analytics_admin.DeleteKeyEventRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete key event method over gRPC.
+
+        Deletes a Key Event.
+
+        Returns:
+            Callable[[~.DeleteKeyEventRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_key_event" not in self._stubs:
+            self._stubs["delete_key_event"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteKeyEvent",
+                request_serializer=analytics_admin.DeleteKeyEventRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_key_event"]
+
+    @property
+    def list_key_events(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListKeyEventsRequest],
+        Awaitable[analytics_admin.ListKeyEventsResponse],
+    ]:
+        r"""Return a callable for the list key events method over gRPC.
+
+        Returns a list of Key Events in the specified parent
+        property. Returns an empty list if no Key Events are
+        found.
+
+        Returns:
+            Callable[[~.ListKeyEventsRequest],
+                    Awaitable[~.ListKeyEventsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_key_events" not in self._stubs:
+            self._stubs["list_key_events"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListKeyEvents",
+                request_serializer=analytics_admin.ListKeyEventsRequest.serialize,
+                response_deserializer=analytics_admin.ListKeyEventsResponse.deserialize,
+            )
+        return self._stubs["list_key_events"]
 
     @property
     def get_display_video360_advertiser_link(
@@ -3320,6 +3462,34 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["fetch_automated_ga4_configuration_opt_out"]
 
     @property
+    def create_big_query_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateBigQueryLinkRequest], Awaitable[resources.BigQueryLink]
+    ]:
+        r"""Return a callable for the create big query link method over gRPC.
+
+        Creates a BigQueryLink.
+
+        Returns:
+            Callable[[~.CreateBigQueryLinkRequest],
+                    Awaitable[~.BigQueryLink]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_big_query_link" not in self._stubs:
+            self._stubs["create_big_query_link"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateBigQueryLink",
+                request_serializer=analytics_admin.CreateBigQueryLinkRequest.serialize,
+                response_deserializer=resources.BigQueryLink.deserialize,
+            )
+        return self._stubs["create_big_query_link"]
+
+    @property
     def get_big_query_link(
         self,
     ) -> Callable[
@@ -3375,6 +3545,62 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 response_deserializer=analytics_admin.ListBigQueryLinksResponse.deserialize,
             )
         return self._stubs["list_big_query_links"]
+
+    @property
+    def delete_big_query_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteBigQueryLinkRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete big query link method over gRPC.
+
+        Deletes a BigQueryLink on a property.
+
+        Returns:
+            Callable[[~.DeleteBigQueryLinkRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_big_query_link" not in self._stubs:
+            self._stubs["delete_big_query_link"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteBigQueryLink",
+                request_serializer=analytics_admin.DeleteBigQueryLinkRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_big_query_link"]
+
+    @property
+    def update_big_query_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateBigQueryLinkRequest], Awaitable[resources.BigQueryLink]
+    ]:
+        r"""Return a callable for the update big query link method over gRPC.
+
+        Updates a BigQueryLink.
+
+        Returns:
+            Callable[[~.UpdateBigQueryLinkRequest],
+                    Awaitable[~.BigQueryLink]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_big_query_link" not in self._stubs:
+            self._stubs["update_big_query_link"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateBigQueryLink",
+                request_serializer=analytics_admin.UpdateBigQueryLinkRequest.serialize,
+                response_deserializer=resources.BigQueryLink.deserialize,
+            )
+        return self._stubs["update_big_query_link"]
 
     @property
     def get_enhanced_measurement_settings(
@@ -3827,6 +4053,179 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_event_create_rule"]
 
     @property
+    def get_event_edit_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetEventEditRuleRequest],
+        Awaitable[event_create_and_edit.EventEditRule],
+    ]:
+        r"""Return a callable for the get event edit rule method over gRPC.
+
+        Lookup for a single EventEditRule.
+
+        Returns:
+            Callable[[~.GetEventEditRuleRequest],
+                    Awaitable[~.EventEditRule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_event_edit_rule" not in self._stubs:
+            self._stubs["get_event_edit_rule"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetEventEditRule",
+                request_serializer=analytics_admin.GetEventEditRuleRequest.serialize,
+                response_deserializer=event_create_and_edit.EventEditRule.deserialize,
+            )
+        return self._stubs["get_event_edit_rule"]
+
+    @property
+    def list_event_edit_rules(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListEventEditRulesRequest],
+        Awaitable[analytics_admin.ListEventEditRulesResponse],
+    ]:
+        r"""Return a callable for the list event edit rules method over gRPC.
+
+        Lists EventEditRules on a web data stream.
+
+        Returns:
+            Callable[[~.ListEventEditRulesRequest],
+                    Awaitable[~.ListEventEditRulesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_event_edit_rules" not in self._stubs:
+            self._stubs["list_event_edit_rules"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListEventEditRules",
+                request_serializer=analytics_admin.ListEventEditRulesRequest.serialize,
+                response_deserializer=analytics_admin.ListEventEditRulesResponse.deserialize,
+            )
+        return self._stubs["list_event_edit_rules"]
+
+    @property
+    def create_event_edit_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateEventEditRuleRequest],
+        Awaitable[event_create_and_edit.EventEditRule],
+    ]:
+        r"""Return a callable for the create event edit rule method over gRPC.
+
+        Creates an EventEditRule.
+
+        Returns:
+            Callable[[~.CreateEventEditRuleRequest],
+                    Awaitable[~.EventEditRule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_event_edit_rule" not in self._stubs:
+            self._stubs["create_event_edit_rule"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateEventEditRule",
+                request_serializer=analytics_admin.CreateEventEditRuleRequest.serialize,
+                response_deserializer=event_create_and_edit.EventEditRule.deserialize,
+            )
+        return self._stubs["create_event_edit_rule"]
+
+    @property
+    def update_event_edit_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateEventEditRuleRequest],
+        Awaitable[event_create_and_edit.EventEditRule],
+    ]:
+        r"""Return a callable for the update event edit rule method over gRPC.
+
+        Updates an EventEditRule.
+
+        Returns:
+            Callable[[~.UpdateEventEditRuleRequest],
+                    Awaitable[~.EventEditRule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_event_edit_rule" not in self._stubs:
+            self._stubs["update_event_edit_rule"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateEventEditRule",
+                request_serializer=analytics_admin.UpdateEventEditRuleRequest.serialize,
+                response_deserializer=event_create_and_edit.EventEditRule.deserialize,
+            )
+        return self._stubs["update_event_edit_rule"]
+
+    @property
+    def delete_event_edit_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteEventEditRuleRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete event edit rule method over gRPC.
+
+        Deletes an EventEditRule.
+
+        Returns:
+            Callable[[~.DeleteEventEditRuleRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_event_edit_rule" not in self._stubs:
+            self._stubs["delete_event_edit_rule"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteEventEditRule",
+                request_serializer=analytics_admin.DeleteEventEditRuleRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_event_edit_rule"]
+
+    @property
+    def reorder_event_edit_rules(
+        self,
+    ) -> Callable[
+        [analytics_admin.ReorderEventEditRulesRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the reorder event edit rules method over gRPC.
+
+        Changes the processing order of event edit rules on
+        the specified stream.
+
+        Returns:
+            Callable[[~.ReorderEventEditRulesRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "reorder_event_edit_rules" not in self._stubs:
+            self._stubs["reorder_event_edit_rules"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ReorderEventEditRules",
+                request_serializer=analytics_admin.ReorderEventEditRulesRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["reorder_event_edit_rules"]
+
+    @property
     def update_data_redaction_settings(
         self,
     ) -> Callable[
@@ -4201,20 +4600,20 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_rollup_property_source_link"]
 
     @property
-    def create_subproperty(
+    def provision_subproperty(
         self,
     ) -> Callable[
-        [analytics_admin.CreateSubpropertyRequest],
-        Awaitable[analytics_admin.CreateSubpropertyResponse],
+        [analytics_admin.ProvisionSubpropertyRequest],
+        Awaitable[analytics_admin.ProvisionSubpropertyResponse],
     ]:
-        r"""Return a callable for the create subproperty method over gRPC.
+        r"""Return a callable for the provision subproperty method over gRPC.
 
         Create a subproperty and a subproperty event filter
         that applies to the created subproperty.
 
         Returns:
-            Callable[[~.CreateSubpropertyRequest],
-                    Awaitable[~.CreateSubpropertyResponse]]:
+            Callable[[~.ProvisionSubpropertyRequest],
+                    Awaitable[~.ProvisionSubpropertyResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -4222,13 +4621,13 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_subproperty" not in self._stubs:
-            self._stubs["create_subproperty"] = self.grpc_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateSubproperty",
-                request_serializer=analytics_admin.CreateSubpropertyRequest.serialize,
-                response_deserializer=analytics_admin.CreateSubpropertyResponse.deserialize,
+        if "provision_subproperty" not in self._stubs:
+            self._stubs["provision_subproperty"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ProvisionSubproperty",
+                request_serializer=analytics_admin.ProvisionSubpropertyRequest.serialize,
+                response_deserializer=analytics_admin.ProvisionSubpropertyResponse.deserialize,
             )
-        return self._stubs["create_subproperty"]
+        return self._stubs["provision_subproperty"]
 
     @property
     def create_subproperty_event_filter(
@@ -4584,6 +4983,31 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_key_event: gapic_v1.method_async.wrap_method(
+                self.create_key_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_key_event: gapic_v1.method_async.wrap_method(
+                self.update_key_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_key_event: gapic_v1.method_async.wrap_method(
+                self.get_key_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_key_event: gapic_v1.method_async.wrap_method(
+                self.delete_key_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_key_events: gapic_v1.method_async.wrap_method(
+                self.list_key_events,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_display_video360_advertiser_link: gapic_v1.method_async.wrap_method(
                 self.get_display_video360_advertiser_link,
                 default_timeout=None,
@@ -4894,6 +5318,11 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_big_query_link: gapic_v1.method_async.wrap_method(
+                self.create_big_query_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_big_query_link: gapic_v1.method_async.wrap_method(
                 self.get_big_query_link,
                 default_timeout=None,
@@ -4901,6 +5330,16 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
             ),
             self.list_big_query_links: gapic_v1.method_async.wrap_method(
                 self.list_big_query_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_big_query_link: gapic_v1.method_async.wrap_method(
+                self.delete_big_query_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_big_query_link: gapic_v1.method_async.wrap_method(
+                self.update_big_query_link,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -4979,6 +5418,36 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_event_edit_rule: gapic_v1.method_async.wrap_method(
+                self.get_event_edit_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_event_edit_rules: gapic_v1.method_async.wrap_method(
+                self.list_event_edit_rules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_event_edit_rule: gapic_v1.method_async.wrap_method(
+                self.create_event_edit_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_event_edit_rule: gapic_v1.method_async.wrap_method(
+                self.update_event_edit_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_event_edit_rule: gapic_v1.method_async.wrap_method(
+                self.delete_event_edit_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.reorder_event_edit_rules: gapic_v1.method_async.wrap_method(
+                self.reorder_event_edit_rules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_data_redaction_settings: gapic_v1.method_async.wrap_method(
                 self.update_data_redaction_settings,
                 default_timeout=None,
@@ -5039,8 +5508,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_subproperty: gapic_v1.method_async.wrap_method(
-                self.create_subproperty,
+            self.provision_subproperty: gapic_v1.method_async.wrap_method(
+                self.provision_subproperty,
                 default_timeout=None,
                 client_info=client_info,
             ),

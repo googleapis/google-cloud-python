@@ -1442,6 +1442,158 @@ class ListConversionEventsAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListKeyEventsPager:
+    """A pager for iterating through ``list_key_events`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListKeyEventsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``key_events`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListKeyEvents`` requests and continue to iterate
+    through the ``key_events`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListKeyEventsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_admin.ListKeyEventsResponse],
+        request: analytics_admin.ListKeyEventsRequest,
+        response: analytics_admin.ListKeyEventsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListKeyEventsRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListKeyEventsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListKeyEventsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[analytics_admin.ListKeyEventsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[resources.KeyEvent]:
+        for page in self.pages:
+            yield from page.key_events
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListKeyEventsAsyncPager:
+    """A pager for iterating through ``list_key_events`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListKeyEventsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``key_events`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListKeyEvents`` requests and continue to iterate
+    through the ``key_events`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListKeyEventsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[analytics_admin.ListKeyEventsResponse]],
+        request: analytics_admin.ListKeyEventsRequest,
+        response: analytics_admin.ListKeyEventsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListKeyEventsRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListKeyEventsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListKeyEventsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[analytics_admin.ListKeyEventsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resources.KeyEvent]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.key_events:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListDisplayVideo360AdvertiserLinksPager:
     """A pager for iterating through ``list_display_video360_advertiser_links`` requests.
 
@@ -3449,6 +3601,158 @@ class ListEventCreateRulesAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.event_create_rules:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListEventEditRulesPager:
+    """A pager for iterating through ``list_event_edit_rules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListEventEditRulesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``event_edit_rules`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListEventEditRules`` requests and continue to iterate
+    through the ``event_edit_rules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListEventEditRulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_admin.ListEventEditRulesResponse],
+        request: analytics_admin.ListEventEditRulesRequest,
+        response: analytics_admin.ListEventEditRulesResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListEventEditRulesRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListEventEditRulesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListEventEditRulesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[analytics_admin.ListEventEditRulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[event_create_and_edit.EventEditRule]:
+        for page in self.pages:
+            yield from page.event_edit_rules
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListEventEditRulesAsyncPager:
+    """A pager for iterating through ``list_event_edit_rules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListEventEditRulesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``event_edit_rules`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListEventEditRules`` requests and continue to iterate
+    through the ``event_edit_rules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListEventEditRulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[analytics_admin.ListEventEditRulesResponse]],
+        request: analytics_admin.ListEventEditRulesRequest,
+        response: analytics_admin.ListEventEditRulesResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListEventEditRulesRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListEventEditRulesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListEventEditRulesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[analytics_admin.ListEventEditRulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[event_create_and_edit.EventEditRule]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.event_edit_rules:
                     yield response
 
         return async_generator()
