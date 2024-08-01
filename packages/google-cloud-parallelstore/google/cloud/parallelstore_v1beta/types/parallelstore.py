@@ -25,6 +25,8 @@ __protobuf__ = proto.module(
     package="google.cloud.parallelstore.v1beta",
     manifest={
         "TransferType",
+        "FileStripeLevel",
+        "DirectoryStripeLevel",
         "Instance",
         "ListInstancesRequest",
         "ListInstancesResponse",
@@ -63,6 +65,44 @@ class TransferType(proto.Enum):
     TRANSFER_TYPE_UNSPECIFIED = 0
     IMPORT = 1
     EXPORT = 2
+
+
+class FileStripeLevel(proto.Enum):
+    r"""Represents the striping options for files.
+
+    Values:
+        FILE_STRIPE_LEVEL_UNSPECIFIED (0):
+            Default file striping
+        FILE_STRIPE_LEVEL_MIN (1):
+            Minimum file striping
+        FILE_STRIPE_LEVEL_BALANCED (2):
+            Medium file striping
+        FILE_STRIPE_LEVEL_MAX (3):
+            Maximum file striping
+    """
+    FILE_STRIPE_LEVEL_UNSPECIFIED = 0
+    FILE_STRIPE_LEVEL_MIN = 1
+    FILE_STRIPE_LEVEL_BALANCED = 2
+    FILE_STRIPE_LEVEL_MAX = 3
+
+
+class DirectoryStripeLevel(proto.Enum):
+    r"""Represents the striping options for directories.
+
+    Values:
+        DIRECTORY_STRIPE_LEVEL_UNSPECIFIED (0):
+            Default directory striping
+        DIRECTORY_STRIPE_LEVEL_MIN (1):
+            Minimum directory striping
+        DIRECTORY_STRIPE_LEVEL_BALANCED (2):
+            Medium directory striping
+        DIRECTORY_STRIPE_LEVEL_MAX (3):
+            Maximum directory striping
+    """
+    DIRECTORY_STRIPE_LEVEL_UNSPECIFIED = 0
+    DIRECTORY_STRIPE_LEVEL_MIN = 1
+    DIRECTORY_STRIPE_LEVEL_BALANCED = 2
+    DIRECTORY_STRIPE_LEVEL_MAX = 3
 
 
 class Instance(proto.Message):
@@ -141,6 +181,15 @@ class Instance(proto.Message):
             10.0.0.0/29. This field is populated by the
             service and and contains the value currently
             used by the service.
+        file_stripe_level (google.cloud.parallelstore_v1beta.types.FileStripeLevel):
+            Optional. Stripe level for files.
+            MIN better suited for small size files.
+            MAX higher throughput performance for larger
+            files.
+        directory_stripe_level (google.cloud.parallelstore_v1beta.types.DirectoryStripeLevel):
+            Optional. Stripe level for directories.
+            MIN when directory has a small number of files.
+            MAX when directory has a large number of files.
     """
 
     class State(proto.Enum):
@@ -215,6 +264,16 @@ class Instance(proto.Message):
     effective_reserved_ip_range: str = proto.Field(
         proto.STRING,
         number=14,
+    )
+    file_stripe_level: "FileStripeLevel" = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum="FileStripeLevel",
+    )
+    directory_stripe_level: "DirectoryStripeLevel" = proto.Field(
+        proto.ENUM,
+        number=16,
+        enum="DirectoryStripeLevel",
     )
 
 

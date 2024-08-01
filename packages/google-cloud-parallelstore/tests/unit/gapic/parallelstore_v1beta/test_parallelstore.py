@@ -1726,6 +1726,8 @@ def test_get_instance(request_type, transport: str = "grpc"):
             network="network_value",
             reserved_ip_range="reserved_ip_range_value",
             effective_reserved_ip_range="effective_reserved_ip_range_value",
+            file_stripe_level=parallelstore.FileStripeLevel.FILE_STRIPE_LEVEL_MIN,
+            directory_stripe_level=parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN,
         )
         response = client.get_instance(request)
 
@@ -1746,6 +1748,14 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.network == "network_value"
     assert response.reserved_ip_range == "reserved_ip_range_value"
     assert response.effective_reserved_ip_range == "effective_reserved_ip_range_value"
+    assert (
+        response.file_stripe_level
+        == parallelstore.FileStripeLevel.FILE_STRIPE_LEVEL_MIN
+    )
+    assert (
+        response.directory_stripe_level
+        == parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN
+    )
 
 
 def test_get_instance_empty_call():
@@ -1853,6 +1863,8 @@ async def test_get_instance_empty_call_async():
                 network="network_value",
                 reserved_ip_range="reserved_ip_range_value",
                 effective_reserved_ip_range="effective_reserved_ip_range_value",
+                file_stripe_level=parallelstore.FileStripeLevel.FILE_STRIPE_LEVEL_MIN,
+                directory_stripe_level=parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN,
             )
         )
         response = await client.get_instance()
@@ -1929,6 +1941,8 @@ async def test_get_instance_async(
                 network="network_value",
                 reserved_ip_range="reserved_ip_range_value",
                 effective_reserved_ip_range="effective_reserved_ip_range_value",
+                file_stripe_level=parallelstore.FileStripeLevel.FILE_STRIPE_LEVEL_MIN,
+                directory_stripe_level=parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN,
             )
         )
         response = await client.get_instance(request)
@@ -1950,6 +1964,14 @@ async def test_get_instance_async(
     assert response.network == "network_value"
     assert response.reserved_ip_range == "reserved_ip_range_value"
     assert response.effective_reserved_ip_range == "effective_reserved_ip_range_value"
+    assert (
+        response.file_stripe_level
+        == parallelstore.FileStripeLevel.FILE_STRIPE_LEVEL_MIN
+    )
+    assert (
+        response.directory_stripe_level
+        == parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN
+    )
 
 
 @pytest.mark.asyncio
@@ -4207,6 +4229,8 @@ def test_get_instance_rest(request_type):
             network="network_value",
             reserved_ip_range="reserved_ip_range_value",
             effective_reserved_ip_range="effective_reserved_ip_range_value",
+            file_stripe_level=parallelstore.FileStripeLevel.FILE_STRIPE_LEVEL_MIN,
+            directory_stripe_level=parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN,
         )
 
         # Wrap the value into a proper Response obj
@@ -4231,6 +4255,14 @@ def test_get_instance_rest(request_type):
     assert response.network == "network_value"
     assert response.reserved_ip_range == "reserved_ip_range_value"
     assert response.effective_reserved_ip_range == "effective_reserved_ip_range_value"
+    assert (
+        response.file_stripe_level
+        == parallelstore.FileStripeLevel.FILE_STRIPE_LEVEL_MIN
+    )
+    assert (
+        response.directory_stripe_level
+        == parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN
+    )
 
 
 def test_get_instance_rest_use_cached_wrapped_rpc():
@@ -4526,6 +4558,8 @@ def test_create_instance_rest(request_type):
         "network": "network_value",
         "reserved_ip_range": "reserved_ip_range_value",
         "effective_reserved_ip_range": "effective_reserved_ip_range_value",
+        "file_stripe_level": 1,
+        "directory_stripe_level": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4947,6 +4981,8 @@ def test_update_instance_rest(request_type):
         "network": "network_value",
         "reserved_ip_range": "reserved_ip_range_value",
         "effective_reserved_ip_range": "effective_reserved_ip_range_value",
+        "file_stripe_level": 1,
+        "directory_stripe_level": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
