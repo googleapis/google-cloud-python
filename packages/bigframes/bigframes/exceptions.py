@@ -57,3 +57,7 @@ class QueryComplexityError(RuntimeError):
 
 class TimeTravelDisabledWarning(Warning):
     """A query was reattempted without time travel."""
+
+
+class UnknownDataTypeWarning(Warning):
+    """Data type is unknown."""

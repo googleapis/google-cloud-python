@@ -28,6 +28,9 @@ import pytest
 import test_utils.prefixer
 
 import bigframes
+import bigframes.dataframe
+import bigframes.dtypes
+import bigframes.exceptions
 import bigframes.functions.remote_function as bigframes_rf
 import bigframes.pandas as bpd
 import bigframes.series
@@ -363,7 +366,8 @@ def test_remote_function_input_types(session, scalars_dfs, input_types):
         def add_one(x):
             return x + 1
 
-        remote_add_one = session.remote_function(input_types, int)(add_one)
+        remote_add_one = session.remote_function(input_types, int, reuse=False)(add_one)
+        assert remote_add_one.input_dtypes == (bigframes.dtypes.INT_DTYPE,)
 
         scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -1589,6 +1593,8 @@ def test_df_apply_axis_1(session, scalars_dfs):
             bigframes.series.Series, str, reuse=False
         )(serialize_row)
 
+        assert getattr(serialize_row_remote, "is_row_processor")
+
         bf_result = scalars_df[columns].apply(serialize_row_remote, axis=1).to_pandas()
         pd_result = scalars_pandas_df[columns].apply(serialize_row, axis=1)
 
@@ -1622,7 +1628,11 @@ def test_df_apply_axis_1_aggregates(session, scalars_dfs):
                 }
             )
 
-        analyze_remote = session.remote_function(bigframes.series.Series, str)(analyze)
+        analyze_remote = session.remote_function(
+            bigframes.series.Series, str, reuse=False
+        )(analyze)
+
+        assert getattr(analyze_remote, "is_row_processor")
 
         bf_result = (
             scalars_df[columns].dropna().apply(analyze_remote, axis=1).to_pandas()
@@ -1727,6 +1737,8 @@ def test_df_apply_axis_1_complex(session, pd_df):
             bigframes.series.Series, str, reuse=False
         )(serialize_row)
 
+        assert getattr(serialize_row_remote, "is_row_processor")
+
         bf_result = bf_df.apply(serialize_row_remote, axis=1).to_pandas()
         pd_result = pd_df.apply(serialize_row, axis=1)
 
@@ -1786,6 +1798,8 @@ SELECT "pandas na" AS text, NULL AS num
         float_parser_remote = session.remote_function(
             bigframes.series.Series, float, reuse=False
         )(float_parser)
+
+        assert getattr(float_parser_remote, "is_row_processor")
 
         pd_result = pd_df.apply(float_parser, axis=1)
         bf_result = bf_df.apply(float_parser_remote, axis=1).to_pandas()
@@ -1913,7 +1927,7 @@ def test_remote_function_named_perists_w_session_cleanup():
         name = test_utils.prefixer.Prefixer("bigframes", "").create_prefix()
 
         # create an unnamed remote function in the session
-        @session.remote_function(name=name)
+        @session.remote_function(reuse=False, name=name)
         def foo(x: int) -> int:
             return x + 1
 
@@ -2003,4 +2017,138 @@ def test_remote_function_clean_up_by_session_id():
         # clean up the gcp assets created for the remote function
         cleanup_remote_function_assets(
             session.bqclient, session.cloudfunctionsclient, foo_named
+        )
+
+
+def test_df_apply_axis_1_multiple_params(session):
+    bf_df = bigframes.dataframe.DataFrame(
+        {
+            "Id": [1, 2, 3],
+            "Age": [22.5, 23, 23.5],
+            "Name": ["alpha", "beta", "gamma"],
+        }
+    )
+
+    expected_dtypes = (
+        bigframes.dtypes.INT_DTYPE,
+        bigframes.dtypes.FLOAT_DTYPE,
+        bigframes.dtypes.STRING_DTYPE,
+    )
+
+    # Assert the dataframe dtypes
+    assert tuple(bf_df.dtypes) == expected_dtypes
+
+    try:
+
+        @session.remote_function([int, float, str], str, reuse=False)
+        def foo(x, y, z):
+            return f"I got {x}, {y} and {z}"
+
+        assert getattr(foo, "is_row_processor") is False
+        assert getattr(foo, "input_dtypes") == expected_dtypes
+
+        # Fails to apply on dataframe with incompatible number of columns
+        with pytest.raises(
+            ValueError,
+            match="^Remote function takes 3 arguments but DataFrame has 2 columns\\.$",
+        ):
+            bf_df[["Id", "Age"]].apply(foo, axis=1)
+        with pytest.raises(
+            ValueError,
+            match="^Remote function takes 3 arguments but DataFrame has 4 columns\\.$",
+        ):
+            bf_df.assign(Country="lalaland").apply(foo, axis=1)
+
+        # Fails to apply on dataframe with incompatible column datatypes
+        with pytest.raises(
+            ValueError,
+            match="^Remote function takes arguments of types .* but DataFrame dtypes are .*",
+        ):
+            bf_df.assign(Age=bf_df["Age"].astype("Int64")).apply(foo, axis=1)
+
+        # Successfully applies to dataframe with matching number of columns
+        # and their datatypes
+        bf_result = bf_df.apply(foo, axis=1).to_pandas()
+
+        # Since this scenario is not pandas-like, let's handcraft the
+        # expected result
+        expected_result = pandas.Series(
+            [
+                "I got 1, 22.5 and alpha",
+                "I got 2, 23 and beta",
+                "I got 3, 23.5 and gamma",
+            ]
+        )
+
+        pandas.testing.assert_series_equal(
+            expected_result, bf_result, check_dtype=False, check_index_type=False
+        )
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, foo
+        )
+
+
+def test_df_apply_axis_1_single_param_non_series(session):
+    bf_df = bigframes.dataframe.DataFrame(
+        {
+            "Id": [1, 2, 3],
+        }
+    )
+
+    expected_dtypes = (bigframes.dtypes.INT_DTYPE,)
+
+    # Assert the dataframe dtypes
+    assert tuple(bf_df.dtypes) == expected_dtypes
+
+    try:
+
+        @session.remote_function([int], str, reuse=False)
+        def foo(x):
+            return f"I got {x}"
+
+        assert getattr(foo, "is_row_processor") is False
+        assert getattr(foo, "input_dtypes") == expected_dtypes
+
+        # Fails to apply on dataframe with incompatible number of columns
+        with pytest.raises(
+            ValueError,
+            match="^Remote function takes 1 arguments but DataFrame has 0 columns\\.$",
+        ):
+            bf_df[[]].apply(foo, axis=1)
+        with pytest.raises(
+            ValueError,
+            match="^Remote function takes 1 arguments but DataFrame has 2 columns\\.$",
+        ):
+            bf_df.assign(Country="lalaland").apply(foo, axis=1)
+
+        # Fails to apply on dataframe with incompatible column datatypes
+        with pytest.raises(
+            ValueError,
+            match="^Remote function takes arguments of types .* but DataFrame dtypes are .*",
+        ):
+            bf_df.assign(Id=bf_df["Id"].astype("Float64")).apply(foo, axis=1)
+
+        # Successfully applies to dataframe with matching number of columns
+        # and their datatypes
+        bf_result = bf_df.apply(foo, axis=1).to_pandas()
+
+        # Since this scenario is not pandas-like, let's handcraft the
+        # expected result
+        expected_result = pandas.Series(
+            [
+                "I got 1",
+                "I got 2",
+                "I got 3",
+            ]
+        )
+
+        pandas.testing.assert_series_equal(
+            expected_result, bf_result, check_dtype=False, check_index_type=False
+        )
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, foo
         )

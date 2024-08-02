@@ -1661,8 +1661,8 @@ class Session(
             reuse (bool, Optional):
                 Reuse the remote function if already exists.
                 `True` by default, which will result in reusing an existing remote
-                function and corresponding cloud function (if any) that was
-                previously created for the same udf.
+                function and corresponding cloud function that was previously
+                created (if any) for the same udf.
                 Please note that for an unnamed (i.e. created without an explicit
                 `name` argument) remote function, the BigQuery DataFrames
                 session id is attached in the cloud artifacts names. So for the

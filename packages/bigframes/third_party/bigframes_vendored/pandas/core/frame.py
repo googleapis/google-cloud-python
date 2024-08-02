@@ -4361,9 +4361,50 @@ class DataFrame(generic.NDFrame):
             1    19
             dtype: Int64
 
+        You could also apply a remote function which accepts multiple parameters
+        to every row of a DataFrame by using it with `axis=1` if the DataFrame
+        has matching number of columns and data types. Note: This feature is
+        currently in **preview**.
+
+            >>> df = bpd.DataFrame({
+            ...     'col1': [1, 2],
+            ...     'col2': [3, 4],
+            ...     'col3': [5, 5]
+            ... })
+            >>> df
+               col1  col2  col3
+            0     1     3     5
+            1     2     4     5
+            <BLANKLINE>
+            [2 rows x 3 columns]
+
+            >>> @bpd.remote_function(reuse=False)
+            ... def foo(x: int, y: int, z: int) -> float:
+            ...     result = 1
+            ...     result += x
+            ...     result += y/z
+            ...     return result
+
+            >>> df.apply(foo, axis=1)
+            0    2.6
+            1    3.8
+            dtype: Float64
+
         Args:
             func (function):
-                Function to apply to each column or row.
+                Function to apply to each column or row. To apply to each row
+                (i.e. when `axis=1` is specified) the function can be of one of
+                the two types:
+
+                (1). It accepts a single input parameter of type `Series`, in
+                     which case each row is delivered to the function as a pandas
+                     Series.
+
+                (2). It accept one or more parameters, in which case column values
+                     are delivered to the function as separate arguments (mapping
+                     to those parameters) for each row. For this to work the
+                     `DataFrame` must have same number of columns and matching
+                     data types.
             axis ({index (0), columns (1)}):
                 Axis along which the function is applied. Specify 0 or 'index'
                 to apply function to each column. Specify 1 or 'columns' to

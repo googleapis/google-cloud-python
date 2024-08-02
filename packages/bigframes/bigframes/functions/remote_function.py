@@ -66,6 +66,7 @@ from ibis.expr.datatypes.core import DataType as IbisDataType
 from bigframes import clients
 import bigframes.constants as constants
 import bigframes.core.compile.ibis_types
+import bigframes.dtypes
 import bigframes.functions.remote_function_template
 
 logger = logging.getLogger(__name__)
@@ -895,8 +896,8 @@ class _RemoteFunctionSession:
             reuse (bool, Optional):
                 Reuse the remote function if already exists.
                 `True` by default, which will result in reusing an existing remote
-                function and corresponding cloud function (if any) that was
-                previously created for the same udf.
+                function and corresponding cloud function that was previously
+                created (if any) for the same udf.
                 Please note that for an unnamed (i.e. created without an explicit
                 `name` argument) remote function, the BigQuery DataFrames
                 session id is attached in the cloud artifacts names. So for the
@@ -1174,7 +1175,9 @@ class _RemoteFunctionSession:
 
             try_delattr("bigframes_cloud_function")
             try_delattr("bigframes_remote_function")
+            try_delattr("input_dtypes")
             try_delattr("output_dtype")
+            try_delattr("is_row_processor")
             try_delattr("ibis_node")
 
             (
@@ -1216,12 +1219,20 @@ class _RemoteFunctionSession:
                     rf_name
                 )
             )
-
+            func.input_dtypes = tuple(
+                [
+                    bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
+                        input_type
+                    )
+                    for input_type in ibis_signature.input_types
+                ]
+            )
             func.output_dtype = (
                 bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
                     ibis_signature.output_type
                 )
             )
+            func.is_row_processor = is_row_processor
             func.ibis_node = node
 
             # If a new remote function was created, update the cloud artifacts
@@ -1305,6 +1316,29 @@ def read_gbq_function(
         signature=(ibis_signature.input_types, ibis_signature.output_type),
     )
     func.bigframes_remote_function = str(routine_ref)  # type: ignore
+
+    # set input bigframes data types
+    has_unknown_dtypes = False
+    function_input_dtypes = []
+    for ibis_type in ibis_signature.input_types:
+        input_dtype = cast(bigframes.dtypes.Dtype, bigframes.dtypes.DEFAULT_DTYPE)
+        if ibis_type is None:
+            has_unknown_dtypes = True
+        else:
+            input_dtype = (
+                bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
+                    ibis_type
+                )
+            )
+        function_input_dtypes.append(input_dtype)
+    if has_unknown_dtypes:
+        warnings.warn(
+            "The function has one or more missing input data types."
+            f" BigQuery DataFrames will assume default data type {bigframes.dtypes.DEFAULT_DTYPE} for them.",
+            category=bigframes.exceptions.UnknownDataTypeWarning,
+        )
+    func.input_dtypes = tuple(function_input_dtypes)  # type: ignore
+
     func.output_dtype = bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(  # type: ignore
         ibis_signature.output_type
     )

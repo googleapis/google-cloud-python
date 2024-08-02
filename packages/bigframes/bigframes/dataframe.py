@@ -3433,9 +3433,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise ValueError(f"na_action={na_action} not supported")
 
         # TODO(shobs): Support **kwargs
-        # Reproject as workaround to applying filter too late. This forces the filter
-        # to be applied before passing data to remote function, protecting from bad
-        # inputs causing errors.
+        # Reproject as workaround to applying filter too late. This forces the
+        # filter to be applied before passing data to remote function,
+        # protecting from bad inputs causing errors.
         reprojected_df = DataFrame(self._block._force_reproject())
         return reprojected_df._apply_unary_op(
             ops.RemoteFunctionOp(func=func, apply_on_null=(na_action is None))
@@ -3448,65 +3448,99 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 category=bigframes.exceptions.PreviewWarning,
             )
 
-            # Early check whether the dataframe dtypes are currently supported
-            # in the remote function
-            # NOTE: Keep in sync with the value converters used in the gcf code
-            # generated in remote_function_template.py
-            remote_function_supported_dtypes = (
-                bigframes.dtypes.INT_DTYPE,
-                bigframes.dtypes.FLOAT_DTYPE,
-                bigframes.dtypes.BOOL_DTYPE,
-                bigframes.dtypes.BYTES_DTYPE,
-                bigframes.dtypes.STRING_DTYPE,
-            )
-            supported_dtypes_types = tuple(
-                type(dtype)
-                for dtype in remote_function_supported_dtypes
-                if not isinstance(dtype, pandas.ArrowDtype)
-            )
-            # Check ArrowDtype separately since multiple BigQuery types map to
-            # ArrowDtype, including BYTES and TIMESTAMP.
-            supported_arrow_types = tuple(
-                dtype.pyarrow_dtype
-                for dtype in remote_function_supported_dtypes
-                if isinstance(dtype, pandas.ArrowDtype)
-            )
-            supported_dtypes_hints = tuple(
-                str(dtype) for dtype in remote_function_supported_dtypes
-            )
-
-            for dtype in self.dtypes:
-                if (
-                    # Not one of the pandas/numpy types.
-                    not isinstance(dtype, supported_dtypes_types)
-                    # And not one of the arrow types.
-                    and not (
-                        isinstance(dtype, pandas.ArrowDtype)
-                        and any(
-                            dtype.pyarrow_dtype.equals(arrow_type)
-                            for arrow_type in supported_arrow_types
-                        )
-                    )
-                ):
-                    raise NotImplementedError(
-                        f"DataFrame has a column of dtype '{dtype}' which is not supported with axis=1."
-                        f" Supported dtypes are {supported_dtypes_hints}."
-                    )
-
             # Check if the function is a remote function
             if not hasattr(func, "bigframes_remote_function"):
                 raise ValueError("For axis=1 a remote function must be used.")
 
-            # Serialize the rows as json values
-            block = self._get_block()
-            rows_as_json_series = bigframes.series.Series(
-                block._get_rows_as_json_values()
-            )
+            is_row_processor = getattr(func, "is_row_processor")
+            if is_row_processor:
+                # Early check whether the dataframe dtypes are currently supported
+                # in the remote function
+                # NOTE: Keep in sync with the value converters used in the gcf code
+                # generated in remote_function_template.py
+                remote_function_supported_dtypes = (
+                    bigframes.dtypes.INT_DTYPE,
+                    bigframes.dtypes.FLOAT_DTYPE,
+                    bigframes.dtypes.BOOL_DTYPE,
+                    bigframes.dtypes.BYTES_DTYPE,
+                    bigframes.dtypes.STRING_DTYPE,
+                )
+                supported_dtypes_types = tuple(
+                    type(dtype)
+                    for dtype in remote_function_supported_dtypes
+                    if not isinstance(dtype, pandas.ArrowDtype)
+                )
+                # Check ArrowDtype separately since multiple BigQuery types map to
+                # ArrowDtype, including BYTES and TIMESTAMP.
+                supported_arrow_types = tuple(
+                    dtype.pyarrow_dtype
+                    for dtype in remote_function_supported_dtypes
+                    if isinstance(dtype, pandas.ArrowDtype)
+                )
+                supported_dtypes_hints = tuple(
+                    str(dtype) for dtype in remote_function_supported_dtypes
+                )
 
-            # Apply the function
-            result_series = rows_as_json_series._apply_unary_op(
-                ops.RemoteFunctionOp(func=func, apply_on_null=True)
-            )
+                for dtype in self.dtypes:
+                    if (
+                        # Not one of the pandas/numpy types.
+                        not isinstance(dtype, supported_dtypes_types)
+                        # And not one of the arrow types.
+                        and not (
+                            isinstance(dtype, pandas.ArrowDtype)
+                            and any(
+                                dtype.pyarrow_dtype.equals(arrow_type)
+                                for arrow_type in supported_arrow_types
+                            )
+                        )
+                    ):
+                        raise NotImplementedError(
+                            f"DataFrame has a column of dtype '{dtype}' which is not supported with axis=1."
+                            f" Supported dtypes are {supported_dtypes_hints}."
+                        )
+
+                # Serialize the rows as json values
+                block = self._get_block()
+                rows_as_json_series = bigframes.series.Series(
+                    block._get_rows_as_json_values()
+                )
+
+                # Apply the function
+                result_series = rows_as_json_series._apply_unary_op(
+                    ops.RemoteFunctionOp(func=func, apply_on_null=True)
+                )
+            else:
+                # This is a special case where we are providing not-pandas-like
+                # extension. If the remote function can take one or more params
+                # then we assume that here the user intention is to use the
+                # column values of the dataframe as arguments to the function.
+                # For this to work the following condition must be true:
+                #   1. The number or input params in the function must be same
+                #      as the number of columns in the dataframe
+                #   2. The dtypes of the columns in the dataframe must be
+                #      compatible with the data types of the input params
+                #   3. The order of the columns in the dataframe must correspond
+                #      to the order of the input params in the function
+                udf_input_dtypes = getattr(func, "input_dtypes")
+                if len(udf_input_dtypes) != len(self.columns):
+                    raise ValueError(
+                        f"Remote function takes {len(udf_input_dtypes)} arguments but DataFrame has {len(self.columns)} columns."
+                    )
+                if udf_input_dtypes != tuple(self.dtypes.to_list()):
+                    raise ValueError(
+                        f"Remote function takes arguments of types {udf_input_dtypes} but DataFrame dtypes are {tuple(self.dtypes)}."
+                    )
+
+                series_list = [self[col] for col in self.columns]
+                # Reproject as workaround to applying filter too late. This forces the
+                # filter to be applied before passing data to remote function,
+                # protecting from bad inputs causing errors.
+                reprojected_series = bigframes.series.Series(
+                    series_list[0]._block._force_reproject()
+                )
+                result_series = reprojected_series._apply_nary_op(
+                    ops.NaryRemoteFunctionOp(func=func), series_list[1:]
+                )
             result_series.name = None
 
             # Return Series with materialized result so that any error in the remote

@@ -1442,9 +1442,6 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     ) -> Series:
         # TODO(shobs, b/274645634): Support convert_dtype, args, **kwargs
         # is actually a ternary op
-        # Reproject as workaround to applying filter too late. This forces the filter
-        # to be applied before passing data to remote function, protecting from bad
-        # inputs causing errors.
 
         if by_row not in ["compat", False]:
             raise ValueError("Param by_row must be one of 'compat' or False")
@@ -1474,7 +1471,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                     ex.message += f"\n{_remote_function_recommendation_message}"
                 raise
 
-        # We are working with remote function at this point
+        # We are working with remote function at this point.
+        # Reproject as workaround to applying filter too late. This forces the
+        # filter to be applied before passing data to remote function,
+        # protecting from bad inputs causing errors.
         reprojected_series = Series(self._block._force_reproject())
         result_series = reprojected_series._apply_unary_op(
             ops.RemoteFunctionOp(func=func, apply_on_null=True)
@@ -1507,6 +1507,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                     ex.message += f"\n{_remote_function_recommendation_message}"
                 raise
 
+        # Reproject as workaround to applying filter too late. This forces the
+        # filter to be applied before passing data to remote function,
+        # protecting from bad inputs causing errors.
         reprojected_series = Series(self._block._force_reproject())
         result_series = reprojected_series._apply_binary_op(
             other, ops.BinaryRemoteFunctionOp(func=func)

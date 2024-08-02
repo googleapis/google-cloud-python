@@ -659,6 +659,19 @@ class BinaryRemoteFunctionOp(BinaryOp):
             raise AttributeError("output_dtype not defined")
 
 
+@dataclasses.dataclass(frozen=True)
+class NaryRemoteFunctionOp(NaryOp):
+    name: typing.ClassVar[str] = "nary_remote_function"
+    func: typing.Callable
+
+    def output_type(self, *input_types):
+        # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method
+        if hasattr(self.func, "output_dtype"):
+            return self.func.output_dtype
+        else:
+            raise AttributeError("output_dtype not defined")
+
+
 add_op = AddOp()
 sub_op = SubOp()
 mul_op = create_binary_op(name="mul", type_signature=op_typing.BINARY_NUMERIC)

@@ -21,6 +21,7 @@ import pyarrow
 import pytest
 
 import bigframes
+import bigframes.dtypes
 import bigframes.exceptions
 from bigframes.functions import remote_function as rf
 from tests.system.utils import assert_pandas_df_equal
@@ -708,6 +709,8 @@ def test_read_gbq_function_reads_udfs(session, bigquery_client, dataset_id):
 
         # It should point to the named routine and yield the expected results.
         assert square.bigframes_remote_function == str(routine.reference)
+        assert square.input_dtypes == (bigframes.dtypes.INT_DTYPE,)
+        assert square.output_dtype == bigframes.dtypes.INT_DTYPE
 
         src = {"x": [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]}
 
@@ -776,10 +779,14 @@ def test_read_gbq_function_enforces_explicit_types(
         str(both_types_specified.reference),
         session=session,
     )
-    rf.read_gbq_function(
-        str(only_return_type_specified.reference),
-        session=session,
-    )
+    with pytest.warns(
+        bigframes.exceptions.UnknownDataTypeWarning,
+        match="missing input data types.*assume default data type",
+    ):
+        rf.read_gbq_function(
+            str(only_return_type_specified.reference),
+            session=session,
+        )
     with pytest.raises(ValueError):
         rf.read_gbq_function(
             str(only_arg_type_specified.reference),
@@ -919,36 +926,41 @@ def test_df_apply_axis_1_unsupported_callable(scalars_dfs):
         scalars_df[columns].apply(add_ints, axis=1)
 
 
-@pytest.mark.parametrize(
-    ("column"),
-    [
-        pytest.param("date_col"),
-        pytest.param("datetime_col"),
-        pytest.param("geography_col"),
-        pytest.param("numeric_col"),
-        pytest.param("time_col"),
-        pytest.param("timestamp_col"),
-    ],
-)
-def test_df_apply_axis_1_unsupported_dtype(scalars_dfs, column):
+@pytest.mark.flaky(retries=2, delay=120)
+def test_df_apply_axis_1_unsupported_dtype(session, scalars_dfs, dataset_id_permanent):
+    columns_with_not_supported_dtypes = [
+        "date_col",
+        "datetime_col",
+        "geography_col",
+        "numeric_col",
+        "time_col",
+        "timestamp_col",
+    ]
+
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    # It doesn't matter if it is a remote function or not, the dtype check
-    # is done even before the function type check with axis=1
-    def echo(row):
-        return row[column]
+    def echo_len(row):
+        return len(row)
 
-    # pandas works
-    scalars_pandas_df[[column]].apply(echo, axis=1)
+    echo_len_remote = session.remote_function(
+        bigframes.series.Series,
+        float,
+        dataset_id_permanent,
+        name=get_rf_name(echo_len, is_row_processor=True),
+    )(echo_len)
 
-    dtype = scalars_df[column].dtype
+    for column in columns_with_not_supported_dtypes:
+        # pandas works
+        scalars_pandas_df[[column]].apply(echo_len, axis=1)
 
-    with pytest.raises(
-        NotImplementedError,
-        match=re.escape(
-            f"DataFrame has a column of dtype '{dtype}' which is not supported with axis=1. Supported dtypes are ("
-        ),
-    ), pytest.warns(
-        bigframes.exceptions.PreviewWarning, match="axis=1 scenario is in preview."
-    ):
-        scalars_df[[column]].apply(echo, axis=1)
+        dtype = scalars_df[column].dtype
+
+        with pytest.raises(
+            NotImplementedError,
+            match=re.escape(
+                f"DataFrame has a column of dtype '{dtype}' which is not supported with axis=1. Supported dtypes are ("
+            ),
+        ), pytest.warns(
+            bigframes.exceptions.PreviewWarning, match="axis=1 scenario is in preview."
+        ):
+            scalars_df[[column]].apply(echo_len_remote, axis=1)
