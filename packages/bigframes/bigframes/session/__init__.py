@@ -302,7 +302,7 @@ class Session(
         if not self._strictly_ordered:
             warnings.warn(
                 "Partial ordering mode is a preview feature and is subject to change.",
-                bigframes.exceptions.PreviewWarning,
+                bigframes.exceptions.OrderingModePartialPreviewWarning,
             )
 
         # Sequential index needs total ordering to generate, so use null index with unstrict ordering.

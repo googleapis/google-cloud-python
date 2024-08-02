@@ -47,6 +47,10 @@ class NullIndexError(ValueError):
     """Object has no index."""
 
 
+class OrderingModePartialPreviewWarning(PreviewWarning):
+    """Ordering mode 'partial' is in preview."""
+
+
 class OrderRequiredError(ValueError):
     """Operation requires total row ordering to be enabled."""
 
