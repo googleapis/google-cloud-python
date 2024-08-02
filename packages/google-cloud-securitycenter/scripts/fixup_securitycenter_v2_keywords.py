@@ -40,7 +40,7 @@ class securitycenterCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'batch_create_resource_value_configs': ('parent', 'requests', ),
-        'bulk_mute_findings': ('parent', 'filter', ),
+        'bulk_mute_findings': ('parent', 'filter', 'mute_state', ),
         'create_big_query_export': ('parent', 'big_query_export', 'big_query_export_id', ),
         'create_finding': ('parent', 'finding_id', 'finding', ),
         'create_mute_config': ('parent', 'mute_config', 'mute_config_id', ),

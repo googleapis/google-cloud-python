@@ -36,8 +36,7 @@ class Simulation(proto.Message):
     Attributes:
         name (str):
             Full resource name of the Simulation:
-
-            organizations/123/simulations/456
+            ``organizations/123/simulations/456``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time simulation was created
         resource_value_configs_metadata (MutableSequence[google.cloud.securitycenter_v2.types.ResourceValueConfigMetadata]):

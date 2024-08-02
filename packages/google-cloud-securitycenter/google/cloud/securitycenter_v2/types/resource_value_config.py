@@ -61,34 +61,34 @@ class ResourceValueConfig(proto.Message):
 
     Attributes:
         name (str):
-            Name for the resource value configuration
+            Identifier. Name for the resource value
+            configuration
         resource_value (google.cloud.securitycenter_v2.types.ResourceValue):
             Resource value level this expression
-            represents Only required when there is no SDP
-            mapping in the request
+            represents Only required when there is no
+            Sensitive Data Protection mapping in the request
         tag_values (MutableSequence[str]):
-            Required. Tag values combined with AND to check against.
-            Values in the form "tagValues/123" Example: [
-            "tagValues/123", "tagValues/456", "tagValues/789" ]
+            Tag values combined with ``AND`` to check against. Values in
+            the form "tagValues/123" Example:
+            ``[ "tagValues/123", "tagValues/456", "tagValues/789" ]``
             https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing
         resource_type (str):
             Apply resource_value only to resources that match
-            resource_type. resource_type will be checked with AND of
+            resource_type. resource_type will be checked with ``AND`` of
             other resources. For example,
             "storage.googleapis.com/Bucket" with resource_value "HIGH"
             will apply "HIGH" value only to
             "storage.googleapis.com/Bucket" resources.
         scope (str):
-            Project or folder to scope this configuration
-            to. For example, "project/456" would apply this
-            configuration only to resources in "project/456"
-            scope will be checked with <code>AND</code> of
-            other resources.
+            Project or folder to scope this configuration to. For
+            example, "project/456" would apply this configuration only
+            to resources in "project/456" scope and will be checked with
+            ``AND`` of other resources.
         resource_labels_selector (MutableMapping[str, str]):
-            List of resource labels to search for, evaluated with AND.
-            For example, "resource_labels_selector": {"key": "value",
-            "env": "prod"} will match resources with labels "key":
-            "value" AND "env": "prod"
+            List of resource labels to search for, evaluated with
+            ``AND``. For example, "resource_labels_selector": {"key":
+            "value", "env": "prod"} will match resources with labels
+            "key": "value" ``AND`` "env": "prod"
             https://cloud.google.com/resource-manager/docs/creating-managing-labels
         description (str):
             Description of the resource value

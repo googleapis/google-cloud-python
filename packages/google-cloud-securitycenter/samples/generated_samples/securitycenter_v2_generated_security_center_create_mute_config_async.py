@@ -41,7 +41,7 @@ async def sample_create_mute_config():
     # Initialize request argument(s)
     mute_config = securitycenter_v2.MuteConfig()
     mute_config.filter = "filter_value"
-    mute_config.type_ = "STATIC"
+    mute_config.type_ = "DYNAMIC"
 
     request = securitycenter_v2.CreateMuteConfigRequest(
         parent="parent_value",

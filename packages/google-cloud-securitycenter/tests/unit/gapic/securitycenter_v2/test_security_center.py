@@ -20250,6 +20250,12 @@ def test_create_finding_rest(request_type):
         "create_time": {},
         "severity": 1,
         "mute": 1,
+        "mute_info": {
+            "static_mute": {"state": 1, "apply_time": {}},
+            "dynamic_mute_records": [
+                {"mute_config": "mute_config_value", "match_time": {}}
+            ],
+        },
         "finding_class": 1,
         "indicator": {
             "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
@@ -20288,6 +20294,7 @@ def test_create_finding_rest(request_type):
                 "exploitation_activity": 1,
                 "observed_in_the_wild": True,
                 "zero_day": True,
+                "exploit_release_date": {},
             },
             "offending_package": {
                 "package_name": "package_name_value",
@@ -20980,6 +20987,7 @@ def test_create_mute_config_rest(request_type):
         "update_time": {},
         "most_recent_editor": "most_recent_editor_value",
         "type_": 1,
+        "expiry_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -31515,6 +31523,12 @@ def test_update_finding_rest(request_type):
         "create_time": {},
         "severity": 1,
         "mute": 1,
+        "mute_info": {
+            "static_mute": {"state": 1, "apply_time": {}},
+            "dynamic_mute_records": [
+                {"mute_config": "mute_config_value", "match_time": {}}
+            ],
+        },
         "finding_class": 1,
         "indicator": {
             "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
@@ -31553,6 +31567,7 @@ def test_update_finding_rest(request_type):
                 "exploitation_activity": 1,
                 "observed_in_the_wild": True,
                 "zero_day": True,
+                "exploit_release_date": {},
             },
             "offending_package": {
                 "package_name": "package_name_value",
@@ -32222,6 +32237,7 @@ def test_update_mute_config_rest(request_type):
         "update_time": {},
         "most_recent_editor": "most_recent_editor_value",
         "type_": 1,
+        "expiry_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

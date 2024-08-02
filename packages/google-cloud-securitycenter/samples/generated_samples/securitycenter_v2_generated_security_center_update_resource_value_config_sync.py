@@ -39,11 +39,7 @@ def sample_update_resource_value_config():
     client = securitycenter_v2.SecurityCenterClient()
 
     # Initialize request argument(s)
-    resource_value_config = securitycenter_v2.ResourceValueConfig()
-    resource_value_config.tag_values = ['tag_values_value1', 'tag_values_value2']
-
     request = securitycenter_v2.UpdateResourceValueConfigRequest(
-        resource_value_config=resource_value_config,
     )
 
     # Make the request

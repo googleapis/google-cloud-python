@@ -403,7 +403,6 @@ class SecurityCenterAsyncClient:
                 # Initialize request argument(s)
                 requests = securitycenter_v2.CreateResourceValueConfigRequest()
                 requests.parent = "parent_value"
-                requests.resource_value_config.tag_values = ['tag_values_value1', 'tag_values_value2']
 
                 request = securitycenter_v2.BatchCreateResourceValueConfigsRequest(
                     parent="parent_value",
@@ -696,9 +695,9 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. The name of the parent resource of the new
                 BigQuery export. Its format is
-                "organizations/[organization_id]/locations/[location_id]",
-                "folders/[folder_id]/locations/[location_id]", or
-                "projects/[project_id]/locations/[location_id]".
+                ``organizations/[organization_id]/locations/[location_id]``,
+                ``folders/[folder_id]/locations/[location_id]``, or
+                ``projects/[project_id]/locations/[location_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -962,7 +961,7 @@ class SecurityCenterAsyncClient:
                 # Initialize request argument(s)
                 mute_config = securitycenter_v2.MuteConfig()
                 mute_config.filter = "filter_value"
-                mute_config.type_ = "STATIC"
+                mute_config.type_ = "DYNAMIC"
 
                 request = securitycenter_v2.CreateMuteConfigRequest(
                     parent="parent_value",
@@ -983,9 +982,9 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. Resource name of the new mute configs's
                 parent. Its format is
-                "organizations/[organization_id]/locations/[location_id]",
-                "folders/[folder_id]/locations/[location_id]", or
-                "projects/[project_id]/locations/[location_id]".
+                ``organizations/[organization_id]/locations/[location_id]``,
+                ``folders/[folder_id]/locations/[location_id]``, or
+                ``projects/[project_id]/locations/[location_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1123,9 +1122,9 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. Resource name of the new notification config's
                 parent. Its format is
-                "organizations/[organization_id]/locations/[location_id]",
-                "folders/[folder_id]/locations/[location_id]", or
-                "projects/[project_id]/locations/[location_id]".
+                ``organizations/[organization_id]/locations/[location_id]``,
+                ``folders/[folder_id]/locations/[location_id]``, or
+                ``projects/[project_id]/locations/[location_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1264,7 +1263,7 @@ class SecurityCenterAsyncClient:
                 source.
             parent (:class:`str`):
                 Required. Resource name of the new source's parent. Its
-                format should be "organizations/[organization_id]".
+                format should be ``organizations/[organization_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1919,12 +1918,12 @@ class SecurityCenterAsyncClient:
                 simulation For example,
                 "organizations/123/simulations/latest".
             name (:class:`str`):
-                Required. The organization name or
-                simulation name of this simulation
-                Valid format:
+                Required. The organization name or simulation name of
+                this simulation
 
-                "organizations/{organization}/simulations/latest"
-                "organizations/{organization}/simulations/{simulation}"
+                Valid format:
+                ``organizations/{organization}/simulations/latest``
+                ``organizations/{organization}/simulations/{simulation}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2032,7 +2031,7 @@ class SecurityCenterAsyncClient:
                 Required. The name of this valued resource
 
                 Valid format:
-                "organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}"
+                ``organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2626,7 +2625,7 @@ class SecurityCenterAsyncClient:
             name (:class:`str`):
                 Required. Relative resource name of the source. Its
                 format is
-                "organizations/[organization_id]/source/[source_id]".
+                ``organizations/[organization_id]/source/[source_id]``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2914,10 +2913,10 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. Name of parent to list attack paths.
 
-                Valid formats: "organizations/{organization}",
-                "organizations/{organization}/simulations/{simulation}"
-                "organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}"
-                "organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}"
+                Valid formats: ``organizations/{organization}``,
+                ``organizations/{organization}/simulations/{simulation}``
+                ``organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}``
+                ``organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3049,9 +3048,9 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. The parent, which owns the collection of
                 BigQuery exports. Its format is
-                "organizations/[organization_id]/locations/[location_id]",
-                "folders/[folder_id]/locations/[location_id]", or
-                "projects/[project_id]/locations/[location_id]".
+                ``organizations/[organization_id]/locations/[location_id]``,
+                ``folders/[folder_id]/locations/[location_id]``, or
+                ``projects/[project_id]/locations/[location_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3331,11 +3330,11 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. The parent, which owns the collection of mute
                 configs. Its format is
-                "organizations/[organization_id]",
-                "folders/[folder_id]", "projects/[project_id]",
-                "organizations/[organization_id]/locations/[location_id]",
-                "folders/[folder_id]/locations/[location_id]",
-                "projects/[project_id]/locations/[location_id]".
+                ``organizations/[organization_id]", "folders/[folder_id]``,
+                ``projects/[project_id]``,
+                ``organizations/[organization_id]/locations/[location_id]``,
+                ``folders/[folder_id]/locations/[location_id]``,
+                ``projects/[project_id]/locations/[location_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3587,7 +3586,7 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. The parent, which owns the collection of
                 resource value configs. Its format is
-                "organizations/[organization_id]"
+                ``organizations/[organization_id]``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3712,8 +3711,8 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. Resource name of the parent of sources to
                 list. Its format should be
-                "organizations/[organization_id]",
-                "folders/[folder_id]", or "projects/[project_id]".
+                ``organizations/[organization_id]``,
+                ``folders/[folder_id]``, or ``projects/[project_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3838,9 +3837,9 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. Name of parent to list exposed resources.
 
-                Valid formats: "organizations/{organization}",
-                "organizations/{organization}/simulations/{simulation}"
-                "organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}"
+                Valid formats: ``organizations/{organization}``,
+                ``organizations/{organization}/simulations/{simulation}``
+                ``organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4876,7 +4875,7 @@ class SecurityCenterAsyncClient:
                 # Initialize request argument(s)
                 mute_config = securitycenter_v2.MuteConfig()
                 mute_config.filter = "filter_value"
-                mute_config.type_ = "STATIC"
+                mute_config.type_ = "DYNAMIC"
 
                 request = securitycenter_v2.UpdateMuteConfigRequest(
                     mute_config=mute_config,
@@ -5133,11 +5132,7 @@ class SecurityCenterAsyncClient:
                 client = securitycenter_v2.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
-                resource_value_config = securitycenter_v2.ResourceValueConfig()
-                resource_value_config.tag_values = ['tag_values_value1', 'tag_values_value2']
-
                 request = securitycenter_v2.UpdateResourceValueConfigRequest(
-                    resource_value_config=resource_value_config,
                 )
 
                 # Make the request

@@ -99,13 +99,13 @@ class Resource(proto.Message):
         resource_path_string (str):
             A string representation of the resource path. For Google
             Cloud, it has the format of
-            organizations/{organization_id}/folders/{folder_id}/folders/{folder_id}/projects/{project_id}
+            ``organizations/{organization_id}/folders/{folder_id}/folders/{folder_id}/projects/{project_id}``
             where there can be any number of folders. For AWS, it has
             the format of
-            org/{organization_id}/ou/{organizational_unit_id}/ou/{organizational_unit_id}/account/{account_id}
+            ``org/{organization_id}/ou/{organizational_unit_id}/ou/{organizational_unit_id}/account/{account_id}``
             where there can be any number of organizational units. For
             Azure, it has the format of
-            mg/{management_group_id}/mg/{management_group_id}/subscription/{subscription_id}/rg/{resource_group_name}
+            ``mg/{management_group_id}/mg/{management_group_id}/subscription/{subscription_id}/rg/{resource_group_name}``
             where there can be any number of management groups.
     """
 
@@ -338,8 +338,8 @@ class AzureMetadata(proto.Message):
 
         Attributes:
             id (str):
-                The UUID of the Azure management group, for
-                example, "20000000-0001-0000-0000-000000000000".
+                The UUID of the Azure management group, for example,
+                ``20000000-0001-0000-0000-000000000000``.
             display_name (str):
                 The display name of the Azure management
                 group.
@@ -359,8 +359,8 @@ class AzureMetadata(proto.Message):
 
         Attributes:
             id (str):
-                The UUID of the Azure subscription, for
-                example, "291bba3f-e0a5-47bc-a099-3bdcb2a50a05".
+                The UUID of the Azure subscription, for example,
+                ``291bba3f-e0a5-47bc-a099-3bdcb2a50a05``.
             display_name (str):
                 The display name of the Azure subscription.
         """
