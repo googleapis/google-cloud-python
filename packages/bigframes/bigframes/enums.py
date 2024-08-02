@@ -20,6 +20,16 @@
 import enum
 
 
+class OrderingMode(enum.Enum):
+    """[Preview] Values used to determine the ordering mode.
+
+    Default is 'strict'.
+    """
+
+    STRICT = "strict"
+    PARTIAL = "partial"
+
+
 class DefaultIndexKind(enum.Enum):
     """Sentinel values used to override default indexing behavior."""
 

@@ -16,7 +16,6 @@
 
 from __future__ import annotations
 
-from enum import Enum
 from typing import Literal, Optional
 import warnings
 
@@ -25,13 +24,8 @@ import google.auth.credentials
 import jellyfish
 
 import bigframes.constants
+import bigframes.enums
 import bigframes.exceptions
-
-
-class OrderingMode(Enum):
-    STRICT = "strict"
-    PARTIAL = "partial"
-
 
 SESSION_STARTED_MESSAGE = (
     "Cannot change '{attribute}' once a session has started. "
@@ -64,11 +58,11 @@ def _validate_location(value: Optional[str]):
         )
 
 
-def _validate_ordering_mode(value: str) -> OrderingMode:
-    if value.casefold() == OrderingMode.STRICT.value.casefold():
-        return OrderingMode.STRICT
-    if value.casefold() == OrderingMode.PARTIAL.value.casefold():
-        return OrderingMode.PARTIAL
+def _validate_ordering_mode(value: str) -> bigframes.enums.OrderingMode:
+    if value.casefold() == bigframes.enums.OrderingMode.STRICT.value.casefold():
+        return bigframes.enums.OrderingMode.STRICT
+    if value.casefold() == bigframes.enums.OrderingMode.PARTIAL.value.casefold():
+        return bigframes.enums.OrderingMode.PARTIAL
     raise ValueError("Ordering mode must be one of 'strict' or 'partial'.")
 
 
