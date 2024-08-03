@@ -25,18 +25,19 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2 import gapic_version as package_version
-from google.cloud.dialogflow_v2.types import participant
-from google.cloud.dialogflow_v2.types import participant as gcd_participant
+from google.cloud.dialogflow_v2.types import generator
+from google.cloud.dialogflow_v2.types import generator as gcd_generator
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
 
-class ParticipantsTransport(abc.ABC):
-    """Abstract transport class for Participants."""
+class GeneratorsTransport(abc.ABC):
+    """Abstract transport class for Generators."""
 
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/cloud-platform",
@@ -134,62 +135,28 @@ class ParticipantsTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.create_participant: gapic_v1.method.wrap_method(
-                self.create_participant,
+            self.create_generator: gapic_v1.method.wrap_method(
+                self.create_generator,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_participant: gapic_v1.method.wrap_method(
-                self.get_participant,
+            self.get_generator: gapic_v1.method.wrap_method(
+                self.get_generator,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_participants: gapic_v1.method.wrap_method(
-                self.list_participants,
+            self.list_generators: gapic_v1.method.wrap_method(
+                self.list_generators,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_participant: gapic_v1.method.wrap_method(
-                self.update_participant,
+            self.delete_generator: gapic_v1.method.wrap_method(
+                self.delete_generator,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.analyze_content: gapic_v1.method.wrap_method(
-                self.analyze_content,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=220.0,
-                ),
-                default_timeout=220.0,
-                client_info=client_info,
-            ),
-            self.streaming_analyze_content: gapic_v1.method.wrap_method(
-                self.streaming_analyze_content,
-                default_timeout=220.0,
-                client_info=client_info,
-            ),
-            self.suggest_articles: gapic_v1.method.wrap_method(
-                self.suggest_articles,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.suggest_faq_answers: gapic_v1.method.wrap_method(
-                self.suggest_faq_answers,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.suggest_smart_replies: gapic_v1.method.wrap_method(
-                self.suggest_smart_replies,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.suggest_knowledge_assist: gapic_v1.method.wrap_method(
-                self.suggest_knowledge_assist,
+            self.update_generator: gapic_v1.method.wrap_method(
+                self.update_generator,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -205,113 +172,50 @@ class ParticipantsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_participant(
+    def create_generator(
         self,
     ) -> Callable[
-        [gcd_participant.CreateParticipantRequest],
-        Union[gcd_participant.Participant, Awaitable[gcd_participant.Participant]],
+        [gcd_generator.CreateGeneratorRequest],
+        Union[gcd_generator.Generator, Awaitable[gcd_generator.Generator]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_participant(
+    def get_generator(
         self,
     ) -> Callable[
-        [participant.GetParticipantRequest],
-        Union[participant.Participant, Awaitable[participant.Participant]],
+        [generator.GetGeneratorRequest],
+        Union[generator.Generator, Awaitable[generator.Generator]],
     ]:
         raise NotImplementedError()
 
     @property
-    def list_participants(
+    def list_generators(
         self,
     ) -> Callable[
-        [participant.ListParticipantsRequest],
+        [generator.ListGeneratorsRequest],
         Union[
-            participant.ListParticipantsResponse,
-            Awaitable[participant.ListParticipantsResponse],
+            generator.ListGeneratorsResponse,
+            Awaitable[generator.ListGeneratorsResponse],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def update_participant(
+    def delete_generator(
         self,
     ) -> Callable[
-        [gcd_participant.UpdateParticipantRequest],
-        Union[gcd_participant.Participant, Awaitable[gcd_participant.Participant]],
+        [generator.DeleteGeneratorRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 
     @property
-    def analyze_content(
+    def update_generator(
         self,
     ) -> Callable[
-        [gcd_participant.AnalyzeContentRequest],
-        Union[
-            gcd_participant.AnalyzeContentResponse,
-            Awaitable[gcd_participant.AnalyzeContentResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def streaming_analyze_content(
-        self,
-    ) -> Callable[
-        [participant.StreamingAnalyzeContentRequest],
-        Union[
-            participant.StreamingAnalyzeContentResponse,
-            Awaitable[participant.StreamingAnalyzeContentResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def suggest_articles(
-        self,
-    ) -> Callable[
-        [participant.SuggestArticlesRequest],
-        Union[
-            participant.SuggestArticlesResponse,
-            Awaitable[participant.SuggestArticlesResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def suggest_faq_answers(
-        self,
-    ) -> Callable[
-        [participant.SuggestFaqAnswersRequest],
-        Union[
-            participant.SuggestFaqAnswersResponse,
-            Awaitable[participant.SuggestFaqAnswersResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def suggest_smart_replies(
-        self,
-    ) -> Callable[
-        [participant.SuggestSmartRepliesRequest],
-        Union[
-            participant.SuggestSmartRepliesResponse,
-            Awaitable[participant.SuggestSmartRepliesResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def suggest_knowledge_assist(
-        self,
-    ) -> Callable[
-        [participant.SuggestKnowledgeAssistRequest],
-        Union[
-            participant.SuggestKnowledgeAssistResponse,
-            Awaitable[participant.SuggestKnowledgeAssistResponse],
-        ],
+        [gcd_generator.UpdateGeneratorRequest],
+        Union[gcd_generator.Generator, Awaitable[gcd_generator.Generator]],
     ]:
         raise NotImplementedError()
 
@@ -368,4 +272,4 @@ class ParticipantsTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("ParticipantsTransport",)
+__all__ = ("GeneratorsTransport",)

@@ -26,9 +26,18 @@ from collections.abc import Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
 from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
@@ -36,10 +45,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -48,15 +54,13 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.cloud.dialogflow_v2.services.answer_records import (
-    AnswerRecordsAsyncClient,
-    AnswerRecordsClient,
-    pagers,
+from google.cloud.dialogflow_v2.services.encryption_spec_service import (
+    EncryptionSpecServiceAsyncClient,
+    EncryptionSpecServiceClient,
     transports,
 )
-from google.cloud.dialogflow_v2.types import context, intent, participant, session
-from google.cloud.dialogflow_v2.types import answer_record
-from google.cloud.dialogflow_v2.types import answer_record as gcd_answer_record
+from google.cloud.dialogflow_v2.types import encryption_spec as gcd_encryption_spec
+from google.cloud.dialogflow_v2.types import encryption_spec
 
 
 def client_cert_source_callback():
@@ -92,36 +96,45 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert AnswerRecordsClient._get_default_mtls_endpoint(None) is None
+    assert EncryptionSpecServiceClient._get_default_mtls_endpoint(None) is None
     assert (
-        AnswerRecordsClient._get_default_mtls_endpoint(api_endpoint)
+        EncryptionSpecServiceClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        AnswerRecordsClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        EncryptionSpecServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        AnswerRecordsClient._get_default_mtls_endpoint(sandbox_endpoint)
+        EncryptionSpecServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        AnswerRecordsClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        EncryptionSpecServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        AnswerRecordsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+        EncryptionSpecServiceClient._get_default_mtls_endpoint(non_googleapi)
+        == non_googleapi
     )
 
 
 def test__read_environment_variables():
-    assert AnswerRecordsClient._read_environment_variables() == (False, "auto", None)
+    assert EncryptionSpecServiceClient._read_environment_variables() == (
+        False,
+        "auto",
+        None,
+    )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert AnswerRecordsClient._read_environment_variables() == (True, "auto", None)
+        assert EncryptionSpecServiceClient._read_environment_variables() == (
+            True,
+            "auto",
+            None,
+        )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert AnswerRecordsClient._read_environment_variables() == (
+        assert EncryptionSpecServiceClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -131,28 +144,28 @@ def test__read_environment_variables():
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError) as excinfo:
-            AnswerRecordsClient._read_environment_variables()
+            EncryptionSpecServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert AnswerRecordsClient._read_environment_variables() == (
+        assert EncryptionSpecServiceClient._read_environment_variables() == (
             False,
             "never",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert AnswerRecordsClient._read_environment_variables() == (
+        assert EncryptionSpecServiceClient._read_environment_variables() == (
             False,
             "always",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert AnswerRecordsClient._read_environment_variables() == (
+        assert EncryptionSpecServiceClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -160,14 +173,14 @@ def test__read_environment_variables():
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
-            AnswerRecordsClient._read_environment_variables()
+            EncryptionSpecServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert AnswerRecordsClient._read_environment_variables() == (
+        assert EncryptionSpecServiceClient._read_environment_variables() == (
             False,
             "auto",
             "foo.com",
@@ -178,13 +191,17 @@ def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
 
-    assert AnswerRecordsClient._get_client_cert_source(None, False) is None
+    assert EncryptionSpecServiceClient._get_client_cert_source(None, False) is None
     assert (
-        AnswerRecordsClient._get_client_cert_source(mock_provided_cert_source, False)
+        EncryptionSpecServiceClient._get_client_cert_source(
+            mock_provided_cert_source, False
+        )
         is None
     )
     assert (
-        AnswerRecordsClient._get_client_cert_source(mock_provided_cert_source, True)
+        EncryptionSpecServiceClient._get_client_cert_source(
+            mock_provided_cert_source, True
+        )
         == mock_provided_cert_source
     )
 
@@ -196,11 +213,11 @@ def test__get_client_cert_source():
             return_value=mock_default_cert_source,
         ):
             assert (
-                AnswerRecordsClient._get_client_cert_source(None, True)
+                EncryptionSpecServiceClient._get_client_cert_source(None, True)
                 is mock_default_cert_source
             )
             assert (
-                AnswerRecordsClient._get_client_cert_source(
+                EncryptionSpecServiceClient._get_client_cert_source(
                     mock_provided_cert_source, "true"
                 )
                 is mock_provided_cert_source
@@ -208,64 +225,72 @@ def test__get_client_cert_source():
 
 
 @mock.patch.object(
-    AnswerRecordsClient,
+    EncryptionSpecServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AnswerRecordsClient),
+    modify_default_endpoint_template(EncryptionSpecServiceClient),
 )
 @mock.patch.object(
-    AnswerRecordsAsyncClient,
+    EncryptionSpecServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AnswerRecordsAsyncClient),
+    modify_default_endpoint_template(EncryptionSpecServiceAsyncClient),
 )
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
-    default_universe = AnswerRecordsClient._DEFAULT_UNIVERSE
-    default_endpoint = AnswerRecordsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = EncryptionSpecServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = EncryptionSpecServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = AnswerRecordsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = EncryptionSpecServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
     assert (
-        AnswerRecordsClient._get_api_endpoint(
+        EncryptionSpecServiceClient._get_api_endpoint(
             api_override, mock_client_cert_source, default_universe, "always"
         )
         == api_override
     )
     assert (
-        AnswerRecordsClient._get_api_endpoint(
+        EncryptionSpecServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "auto"
         )
-        == AnswerRecordsClient.DEFAULT_MTLS_ENDPOINT
+        == EncryptionSpecServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        AnswerRecordsClient._get_api_endpoint(None, None, default_universe, "auto")
+        EncryptionSpecServiceClient._get_api_endpoint(
+            None, None, default_universe, "auto"
+        )
         == default_endpoint
     )
     assert (
-        AnswerRecordsClient._get_api_endpoint(None, None, default_universe, "always")
-        == AnswerRecordsClient.DEFAULT_MTLS_ENDPOINT
+        EncryptionSpecServiceClient._get_api_endpoint(
+            None, None, default_universe, "always"
+        )
+        == EncryptionSpecServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        AnswerRecordsClient._get_api_endpoint(
+        EncryptionSpecServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "always"
         )
-        == AnswerRecordsClient.DEFAULT_MTLS_ENDPOINT
+        == EncryptionSpecServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        AnswerRecordsClient._get_api_endpoint(None, None, mock_universe, "never")
+        EncryptionSpecServiceClient._get_api_endpoint(
+            None, None, mock_universe, "never"
+        )
         == mock_endpoint
     )
     assert (
-        AnswerRecordsClient._get_api_endpoint(None, None, default_universe, "never")
+        EncryptionSpecServiceClient._get_api_endpoint(
+            None, None, default_universe, "never"
+        )
         == default_endpoint
     )
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        AnswerRecordsClient._get_api_endpoint(
+        EncryptionSpecServiceClient._get_api_endpoint(
             None, mock_client_cert_source, mock_universe, "auto"
         )
     assert (
@@ -279,30 +304,38 @@ def test__get_universe_domain():
     universe_domain_env = "bar.com"
 
     assert (
-        AnswerRecordsClient._get_universe_domain(
+        EncryptionSpecServiceClient._get_universe_domain(
             client_universe_domain, universe_domain_env
         )
         == client_universe_domain
     )
     assert (
-        AnswerRecordsClient._get_universe_domain(None, universe_domain_env)
+        EncryptionSpecServiceClient._get_universe_domain(None, universe_domain_env)
         == universe_domain_env
     )
     assert (
-        AnswerRecordsClient._get_universe_domain(None, None)
-        == AnswerRecordsClient._DEFAULT_UNIVERSE
+        EncryptionSpecServiceClient._get_universe_domain(None, None)
+        == EncryptionSpecServiceClient._DEFAULT_UNIVERSE
     )
 
     with pytest.raises(ValueError) as excinfo:
-        AnswerRecordsClient._get_universe_domain("", None)
+        EncryptionSpecServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (AnswerRecordsClient, transports.AnswerRecordsGrpcTransport, "grpc"),
-        (AnswerRecordsClient, transports.AnswerRecordsRestTransport, "rest"),
+        (
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
@@ -381,12 +414,14 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (AnswerRecordsClient, "grpc"),
-        (AnswerRecordsAsyncClient, "grpc_asyncio"),
-        (AnswerRecordsClient, "rest"),
+        (EncryptionSpecServiceClient, "grpc"),
+        (EncryptionSpecServiceAsyncClient, "grpc_asyncio"),
+        (EncryptionSpecServiceClient, "rest"),
     ],
 )
-def test_answer_records_client_from_service_account_info(client_class, transport_name):
+def test_encryption_spec_service_client_from_service_account_info(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
@@ -407,12 +442,12 @@ def test_answer_records_client_from_service_account_info(client_class, transport
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.AnswerRecordsGrpcTransport, "grpc"),
-        (transports.AnswerRecordsGrpcAsyncIOTransport, "grpc_asyncio"),
-        (transports.AnswerRecordsRestTransport, "rest"),
+        (transports.EncryptionSpecServiceGrpcTransport, "grpc"),
+        (transports.EncryptionSpecServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.EncryptionSpecServiceRestTransport, "rest"),
     ],
 )
-def test_answer_records_client_service_account_always_use_jwt(
+def test_encryption_spec_service_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -433,12 +468,14 @@ def test_answer_records_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (AnswerRecordsClient, "grpc"),
-        (AnswerRecordsAsyncClient, "grpc_asyncio"),
-        (AnswerRecordsClient, "rest"),
+        (EncryptionSpecServiceClient, "grpc"),
+        (EncryptionSpecServiceAsyncClient, "grpc_asyncio"),
+        (EncryptionSpecServiceClient, "rest"),
     ],
 )
-def test_answer_records_client_from_service_account_file(client_class, transport_name):
+def test_encryption_spec_service_client_from_service_account_file(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
@@ -463,51 +500,59 @@ def test_answer_records_client_from_service_account_file(client_class, transport
         )
 
 
-def test_answer_records_client_get_transport_class():
-    transport = AnswerRecordsClient.get_transport_class()
+def test_encryption_spec_service_client_get_transport_class():
+    transport = EncryptionSpecServiceClient.get_transport_class()
     available_transports = [
-        transports.AnswerRecordsGrpcTransport,
-        transports.AnswerRecordsRestTransport,
+        transports.EncryptionSpecServiceGrpcTransport,
+        transports.EncryptionSpecServiceRestTransport,
     ]
     assert transport in available_transports
 
-    transport = AnswerRecordsClient.get_transport_class("grpc")
-    assert transport == transports.AnswerRecordsGrpcTransport
+    transport = EncryptionSpecServiceClient.get_transport_class("grpc")
+    assert transport == transports.EncryptionSpecServiceGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (AnswerRecordsClient, transports.AnswerRecordsGrpcTransport, "grpc"),
         (
-            AnswerRecordsAsyncClient,
-            transports.AnswerRecordsGrpcAsyncIOTransport,
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            EncryptionSpecServiceAsyncClient,
+            transports.EncryptionSpecServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (AnswerRecordsClient, transports.AnswerRecordsRestTransport, "rest"),
+        (
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 @mock.patch.object(
-    AnswerRecordsClient,
+    EncryptionSpecServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AnswerRecordsClient),
+    modify_default_endpoint_template(EncryptionSpecServiceClient),
 )
 @mock.patch.object(
-    AnswerRecordsAsyncClient,
+    EncryptionSpecServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AnswerRecordsAsyncClient),
+    modify_default_endpoint_template(EncryptionSpecServiceAsyncClient),
 )
-def test_answer_records_client_client_options(
+def test_encryption_spec_service_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(AnswerRecordsClient, "get_transport_class") as gtc:
+    with mock.patch.object(EncryptionSpecServiceClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(AnswerRecordsClient, "get_transport_class") as gtc:
+    with mock.patch.object(EncryptionSpecServiceClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -630,36 +675,56 @@ def test_answer_records_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (AnswerRecordsClient, transports.AnswerRecordsGrpcTransport, "grpc", "true"),
         (
-            AnswerRecordsAsyncClient,
-            transports.AnswerRecordsGrpcAsyncIOTransport,
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceGrpcTransport,
+            "grpc",
+            "true",
+        ),
+        (
+            EncryptionSpecServiceAsyncClient,
+            transports.EncryptionSpecServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
-        (AnswerRecordsClient, transports.AnswerRecordsGrpcTransport, "grpc", "false"),
         (
-            AnswerRecordsAsyncClient,
-            transports.AnswerRecordsGrpcAsyncIOTransport,
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceGrpcTransport,
+            "grpc",
+            "false",
+        ),
+        (
+            EncryptionSpecServiceAsyncClient,
+            transports.EncryptionSpecServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
-        (AnswerRecordsClient, transports.AnswerRecordsRestTransport, "rest", "true"),
-        (AnswerRecordsClient, transports.AnswerRecordsRestTransport, "rest", "false"),
+        (
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceRestTransport,
+            "rest",
+            "false",
+        ),
     ],
 )
 @mock.patch.object(
-    AnswerRecordsClient,
+    EncryptionSpecServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AnswerRecordsClient),
+    modify_default_endpoint_template(EncryptionSpecServiceClient),
 )
 @mock.patch.object(
-    AnswerRecordsAsyncClient,
+    EncryptionSpecServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AnswerRecordsAsyncClient),
+    modify_default_endpoint_template(EncryptionSpecServiceAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_answer_records_client_mtls_env_auto(
+def test_encryption_spec_service_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -762,19 +827,19 @@ def test_answer_records_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize(
-    "client_class", [AnswerRecordsClient, AnswerRecordsAsyncClient]
+    "client_class", [EncryptionSpecServiceClient, EncryptionSpecServiceAsyncClient]
 )
 @mock.patch.object(
-    AnswerRecordsClient,
+    EncryptionSpecServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(AnswerRecordsClient),
+    modify_default_endpoint(EncryptionSpecServiceClient),
 )
 @mock.patch.object(
-    AnswerRecordsAsyncClient,
+    EncryptionSpecServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(AnswerRecordsAsyncClient),
+    modify_default_endpoint(EncryptionSpecServiceAsyncClient),
 )
-def test_answer_records_client_get_mtls_endpoint_and_cert_source(client_class):
+def test_encryption_spec_service_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -866,27 +931,27 @@ def test_answer_records_client_get_mtls_endpoint_and_cert_source(client_class):
 
 
 @pytest.mark.parametrize(
-    "client_class", [AnswerRecordsClient, AnswerRecordsAsyncClient]
+    "client_class", [EncryptionSpecServiceClient, EncryptionSpecServiceAsyncClient]
 )
 @mock.patch.object(
-    AnswerRecordsClient,
+    EncryptionSpecServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AnswerRecordsClient),
+    modify_default_endpoint_template(EncryptionSpecServiceClient),
 )
 @mock.patch.object(
-    AnswerRecordsAsyncClient,
+    EncryptionSpecServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AnswerRecordsAsyncClient),
+    modify_default_endpoint_template(EncryptionSpecServiceAsyncClient),
 )
-def test_answer_records_client_client_api_endpoint(client_class):
+def test_encryption_spec_service_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
-    default_universe = AnswerRecordsClient._DEFAULT_UNIVERSE
-    default_endpoint = AnswerRecordsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = EncryptionSpecServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = EncryptionSpecServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = AnswerRecordsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = EncryptionSpecServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
@@ -954,16 +1019,24 @@ def test_answer_records_client_client_api_endpoint(client_class):
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (AnswerRecordsClient, transports.AnswerRecordsGrpcTransport, "grpc"),
         (
-            AnswerRecordsAsyncClient,
-            transports.AnswerRecordsGrpcAsyncIOTransport,
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            EncryptionSpecServiceAsyncClient,
+            transports.EncryptionSpecServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (AnswerRecordsClient, transports.AnswerRecordsRestTransport, "rest"),
+        (
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceRestTransport,
+            "rest",
+        ),
     ],
 )
-def test_answer_records_client_client_options_scopes(
+def test_encryption_spec_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -992,21 +1065,26 @@ def test_answer_records_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            AnswerRecordsClient,
-            transports.AnswerRecordsGrpcTransport,
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            AnswerRecordsAsyncClient,
-            transports.AnswerRecordsGrpcAsyncIOTransport,
+            EncryptionSpecServiceAsyncClient,
+            transports.EncryptionSpecServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
-        (AnswerRecordsClient, transports.AnswerRecordsRestTransport, "rest", None),
+        (
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceRestTransport,
+            "rest",
+            None,
+        ),
     ],
 )
-def test_answer_records_client_client_options_credentials_file(
+def test_encryption_spec_service_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1030,12 +1108,12 @@ def test_answer_records_client_client_options_credentials_file(
         )
 
 
-def test_answer_records_client_client_options_from_dict():
+def test_encryption_spec_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.dialogflow_v2.services.answer_records.transports.AnswerRecordsGrpcTransport.__init__"
+        "google.cloud.dialogflow_v2.services.encryption_spec_service.transports.EncryptionSpecServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = AnswerRecordsClient(
+        client = EncryptionSpecServiceClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
@@ -1055,20 +1133,20 @@ def test_answer_records_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            AnswerRecordsClient,
-            transports.AnswerRecordsGrpcTransport,
+            EncryptionSpecServiceClient,
+            transports.EncryptionSpecServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            AnswerRecordsAsyncClient,
-            transports.AnswerRecordsGrpcAsyncIOTransport,
+            EncryptionSpecServiceAsyncClient,
+            transports.EncryptionSpecServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_answer_records_client_create_channel_credentials_file(
+def test_encryption_spec_service_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1126,12 +1204,12 @@ def test_answer_records_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        answer_record.ListAnswerRecordsRequest,
+        encryption_spec.GetEncryptionSpecRequest,
         dict,
     ],
 )
-def test_list_answer_records(request_type, transport: str = "grpc"):
-    client = AnswerRecordsClient(
+def test_get_encryption_spec(request_type, transport: str = "grpc"):
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1142,50 +1220,52 @@ def test_list_answer_records(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_answer_records), "__call__"
+        type(client.transport.get_encryption_spec), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = answer_record.ListAnswerRecordsResponse(
-            next_page_token="next_page_token_value",
+        call.return_value = encryption_spec.EncryptionSpec(
+            name="name_value",
+            kms_key="kms_key_value",
         )
-        response = client.list_answer_records(request)
+        response = client.get_encryption_spec(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = answer_record.ListAnswerRecordsRequest()
+        request = encryption_spec.GetEncryptionSpecRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAnswerRecordsPager)
-    assert response.next_page_token == "next_page_token_value"
+    assert isinstance(response, encryption_spec.EncryptionSpec)
+    assert response.name == "name_value"
+    assert response.kms_key == "kms_key_value"
 
 
-def test_list_answer_records_empty_call():
+def test_get_encryption_spec_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_answer_records), "__call__"
+        type(client.transport.get_encryption_spec), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.list_answer_records()
+        client.get_encryption_spec()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == answer_record.ListAnswerRecordsRequest()
+        assert args[0] == encryption_spec.GetEncryptionSpecRequest()
 
 
-def test_list_answer_records_non_empty_request_with_auto_populated_field():
+def test_get_encryption_spec_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1193,618 +1273,30 @@ def test_list_answer_records_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = answer_record.ListAnswerRecordsRequest(
-        parent="parent_value",
-        filter="filter_value",
-        page_token="page_token_value",
+    request = encryption_spec.GetEncryptionSpecRequest(
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_answer_records), "__call__"
+        type(client.transport.get_encryption_spec), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.list_answer_records(request=request)
+        client.get_encryption_spec(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == answer_record.ListAnswerRecordsRequest(
-            parent="parent_value",
-            filter="filter_value",
-            page_token="page_token_value",
-        )
-
-
-def test_list_answer_records_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = AnswerRecordsClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.list_answer_records in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_answer_records
-        ] = mock_rpc
-        request = {}
-        client.list_answer_records(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_answer_records(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_list_answer_records_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnswerRecordsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_answer_records), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            answer_record.ListAnswerRecordsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_answer_records()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == answer_record.ListAnswerRecordsRequest()
-
-
-@pytest.mark.asyncio
-async def test_list_answer_records_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = AnswerRecordsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.list_answer_records
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_answer_records
-        ] = mock_object
-
-        request = {}
-        await client.list_answer_records(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
-
-        await client.list_answer_records(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_list_answer_records_async(
-    transport: str = "grpc_asyncio", request_type=answer_record.ListAnswerRecordsRequest
-):
-    client = AnswerRecordsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_answer_records), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            answer_record.ListAnswerRecordsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_answer_records(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = answer_record.ListAnswerRecordsRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAnswerRecordsAsyncPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_answer_records_async_from_dict():
-    await test_list_answer_records_async(request_type=dict)
-
-
-def test_list_answer_records_field_headers():
-    client = AnswerRecordsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = answer_record.ListAnswerRecordsRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_answer_records), "__call__"
-    ) as call:
-        call.return_value = answer_record.ListAnswerRecordsResponse()
-        client.list_answer_records(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_list_answer_records_field_headers_async():
-    client = AnswerRecordsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = answer_record.ListAnswerRecordsRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_answer_records), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            answer_record.ListAnswerRecordsResponse()
-        )
-        await client.list_answer_records(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_list_answer_records_flattened():
-    client = AnswerRecordsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_answer_records), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = answer_record.ListAnswerRecordsResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list_answer_records(
-            parent="parent_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-def test_list_answer_records_flattened_error():
-    client = AnswerRecordsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_answer_records(
-            answer_record.ListAnswerRecordsRequest(),
-            parent="parent_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_list_answer_records_flattened_async():
-    client = AnswerRecordsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_answer_records), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = answer_record.ListAnswerRecordsResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            answer_record.ListAnswerRecordsResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.list_answer_records(
-            parent="parent_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_list_answer_records_flattened_error_async():
-    client = AnswerRecordsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.list_answer_records(
-            answer_record.ListAnswerRecordsRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_answer_records_pager(transport_name: str = "grpc"):
-    client = AnswerRecordsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_answer_records), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                ],
-                next_page_token="abc",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[],
-                next_page_token="def",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                ],
-                next_page_token="ghi",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                ],
-            ),
-            RuntimeError,
-        )
-
-        expected_metadata = ()
-        retry = retries.Retry()
-        timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_answer_records(request={}, retry=retry, timeout=timeout)
-
-        assert pager._metadata == expected_metadata
-        assert pager._retry == retry
-        assert pager._timeout == timeout
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, answer_record.AnswerRecord) for i in results)
-
-
-def test_list_answer_records_pages(transport_name: str = "grpc"):
-    client = AnswerRecordsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_answer_records), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                ],
-                next_page_token="abc",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[],
-                next_page_token="def",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                ],
-                next_page_token="ghi",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.list_answer_records(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_list_answer_records_async_pager():
-    client = AnswerRecordsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_answer_records),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                ],
-                next_page_token="abc",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[],
-                next_page_token="def",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                ],
-                next_page_token="ghi",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                ],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.list_answer_records(
-            request={},
-        )
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:  # pragma: no branch
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(isinstance(i, answer_record.AnswerRecord) for i in responses)
-
-
-@pytest.mark.asyncio
-async def test_list_answer_records_async_pages():
-    client = AnswerRecordsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_answer_records),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                ],
-                next_page_token="abc",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[],
-                next_page_token="def",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                ],
-                next_page_token="ghi",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_answer_records(request={})
-        ).pages:
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcd_answer_record.UpdateAnswerRecordRequest,
-        dict,
-    ],
-)
-def test_update_answer_record(request_type, transport: str = "grpc"):
-    client = AnswerRecordsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_answer_record), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = gcd_answer_record.AnswerRecord(
+        assert args[0] == encryption_spec.GetEncryptionSpecRequest(
             name="name_value",
         )
-        response = client.update_answer_record(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = gcd_answer_record.UpdateAnswerRecordRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gcd_answer_record.AnswerRecord)
-    assert response.name == "name_value"
 
 
-def test_update_answer_record_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnswerRecordsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_answer_record), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_answer_record()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_answer_record.UpdateAnswerRecordRequest()
-
-
-def test_update_answer_record_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = AnswerRecordsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = gcd_answer_record.UpdateAnswerRecordRequest()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_answer_record), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_answer_record(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_answer_record.UpdateAnswerRecordRequest()
-
-
-def test_update_answer_record_use_cached_wrapped_rpc():
+def test_get_encryption_spec_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = AnswerRecordsClient(
+        client = EncryptionSpecServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1815,7 +1307,7 @@ def test_update_answer_record_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.update_answer_record in client._transport._wrapped_methods
+            client._transport.get_encryption_spec in client._transport._wrapped_methods
         )
 
         # Replace cached wrapped function with mock
@@ -1824,15 +1316,15 @@ def test_update_answer_record_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.update_answer_record
+            client._transport.get_encryption_spec
         ] = mock_rpc
         request = {}
-        client.update_answer_record(request)
+        client.get_encryption_spec(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.update_answer_record(request)
+        client.get_encryption_spec(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1840,38 +1332,39 @@ def test_update_answer_record_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_answer_record_empty_call_async():
+async def test_get_encryption_spec_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_answer_record), "__call__"
+        type(client.transport.get_encryption_spec), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcd_answer_record.AnswerRecord(
+            encryption_spec.EncryptionSpec(
                 name="name_value",
+                kms_key="kms_key_value",
             )
         )
-        response = await client.update_answer_record()
+        response = await client.get_encryption_spec()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_answer_record.UpdateAnswerRecordRequest()
+        assert args[0] == encryption_spec.GetEncryptionSpecRequest()
 
 
 @pytest.mark.asyncio
-async def test_update_answer_record_async_use_cached_wrapped_rpc(
+async def test_get_encryption_spec_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = AnswerRecordsAsyncClient(
+        client = EncryptionSpecServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -1882,23 +1375,23 @@ async def test_update_answer_record_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.update_answer_record
+            client._client._transport.get_encryption_spec
             in client._client._transport._wrapped_methods
         )
 
         # Replace cached wrapped function with mock
         mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
-            client._client._transport.update_answer_record
+            client._client._transport.get_encryption_spec
         ] = mock_object
 
         request = {}
-        await client.update_answer_record(request)
+        await client.get_encryption_spec(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_object.call_count == 1
 
-        await client.update_answer_record(request)
+        await client.get_encryption_spec(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1906,11 +1399,11 @@ async def test_update_answer_record_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_answer_record_async(
+async def test_get_encryption_spec_async(
     transport: str = "grpc_asyncio",
-    request_type=gcd_answer_record.UpdateAnswerRecordRequest,
+    request_type=encryption_spec.GetEncryptionSpecRequest,
 ):
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1921,49 +1414,51 @@ async def test_update_answer_record_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_answer_record), "__call__"
+        type(client.transport.get_encryption_spec), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcd_answer_record.AnswerRecord(
+            encryption_spec.EncryptionSpec(
                 name="name_value",
+                kms_key="kms_key_value",
             )
         )
-        response = await client.update_answer_record(request)
+        response = await client.get_encryption_spec(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcd_answer_record.UpdateAnswerRecordRequest()
+        request = encryption_spec.GetEncryptionSpecRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcd_answer_record.AnswerRecord)
+    assert isinstance(response, encryption_spec.EncryptionSpec)
     assert response.name == "name_value"
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.asyncio
-async def test_update_answer_record_async_from_dict():
-    await test_update_answer_record_async(request_type=dict)
+async def test_get_encryption_spec_async_from_dict():
+    await test_get_encryption_spec_async(request_type=dict)
 
 
-def test_update_answer_record_field_headers():
-    client = AnswerRecordsClient(
+def test_get_encryption_spec_field_headers():
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcd_answer_record.UpdateAnswerRecordRequest()
+    request = encryption_spec.GetEncryptionSpecRequest()
 
-    request.answer_record.name = "name_value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_answer_record), "__call__"
+        type(client.transport.get_encryption_spec), "__call__"
     ) as call:
-        call.return_value = gcd_answer_record.AnswerRecord()
-        client.update_answer_record(request)
+        call.return_value = encryption_spec.EncryptionSpec()
+        client.get_encryption_spec(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -1974,30 +1469,30 @@ def test_update_answer_record_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "answer_record.name=name_value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_update_answer_record_field_headers_async():
-    client = AnswerRecordsAsyncClient(
+async def test_get_encryption_spec_field_headers_async():
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcd_answer_record.UpdateAnswerRecordRequest()
+    request = encryption_spec.GetEncryptionSpecRequest()
 
-    request.answer_record.name = "name_value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_answer_record), "__call__"
+        type(client.transport.get_encryption_spec), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcd_answer_record.AnswerRecord()
+            encryption_spec.EncryptionSpec()
         )
-        await client.update_answer_record(request)
+        await client.get_encryption_spec(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -2008,151 +1503,527 @@ async def test_update_answer_record_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "answer_record.name=name_value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
-def test_update_answer_record_flattened():
-    client = AnswerRecordsClient(
+def test_get_encryption_spec_flattened():
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_answer_record), "__call__"
+        type(client.transport.get_encryption_spec), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcd_answer_record.AnswerRecord()
+        call.return_value = encryption_spec.EncryptionSpec()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.update_answer_record(
-            answer_record=gcd_answer_record.AnswerRecord(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        client.get_encryption_spec(
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        arg = args[0].answer_record
-        mock_val = gcd_answer_record.AnswerRecord(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].name
+        mock_val = "name_value"
         assert arg == mock_val
 
 
-def test_update_answer_record_flattened_error():
-    client = AnswerRecordsClient(
+def test_get_encryption_spec_flattened_error():
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.update_answer_record(
-            gcd_answer_record.UpdateAnswerRecordRequest(),
-            answer_record=gcd_answer_record.AnswerRecord(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        client.get_encryption_spec(
+            encryption_spec.GetEncryptionSpecRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_update_answer_record_flattened_async():
-    client = AnswerRecordsAsyncClient(
+async def test_get_encryption_spec_flattened_async():
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.update_answer_record), "__call__"
+        type(client.transport.get_encryption_spec), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcd_answer_record.AnswerRecord()
+        call.return_value = encryption_spec.EncryptionSpec()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcd_answer_record.AnswerRecord()
+            encryption_spec.EncryptionSpec()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.update_answer_record(
-            answer_record=gcd_answer_record.AnswerRecord(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        response = await client.get_encryption_spec(
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        arg = args[0].answer_record
-        mock_val = gcd_answer_record.AnswerRecord(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].name
+        mock_val = "name_value"
         assert arg == mock_val
 
 
 @pytest.mark.asyncio
-async def test_update_answer_record_flattened_error_async():
-    client = AnswerRecordsAsyncClient(
+async def test_get_encryption_spec_flattened_error_async():
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.update_answer_record(
-            gcd_answer_record.UpdateAnswerRecordRequest(),
-            answer_record=gcd_answer_record.AnswerRecord(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        await client.get_encryption_spec(
+            encryption_spec.GetEncryptionSpecRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        answer_record.ListAnswerRecordsRequest,
+        gcd_encryption_spec.InitializeEncryptionSpecRequest,
         dict,
     ],
 )
-def test_list_answer_records_rest(request_type):
-    client = AnswerRecordsClient(
+def test_initialize_encryption_spec(request_type, transport: str = "grpc"):
+    client = EncryptionSpecServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = gcd_encryption_spec.InitializeEncryptionSpecRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_initialize_encryption_spec_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EncryptionSpecServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.initialize_encryption_spec()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_encryption_spec.InitializeEncryptionSpecRequest()
+
+
+def test_initialize_encryption_spec_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EncryptionSpecServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcd_encryption_spec.InitializeEncryptionSpecRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.initialize_encryption_spec(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_encryption_spec.InitializeEncryptionSpecRequest()
+
+
+def test_initialize_encryption_spec_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EncryptionSpecServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.initialize_encryption_spec
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.initialize_encryption_spec
+        ] = mock_rpc
+        request = {}
+        client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.initialize_encryption_spec(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EncryptionSpecServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.initialize_encryption_spec()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_encryption_spec.InitializeEncryptionSpecRequest()
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EncryptionSpecServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.initialize_encryption_spec
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.initialize_encryption_spec
+        ] = mock_object
+
+        request = {}
+        await client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.initialize_encryption_spec(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_async(
+    transport: str = "grpc_asyncio",
+    request_type=gcd_encryption_spec.InitializeEncryptionSpecRequest,
+):
+    client = EncryptionSpecServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = gcd_encryption_spec.InitializeEncryptionSpecRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_async_from_dict():
+    await test_initialize_encryption_spec_async(request_type=dict)
+
+
+def test_initialize_encryption_spec_field_headers():
+    client = EncryptionSpecServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcd_encryption_spec.InitializeEncryptionSpecRequest()
+
+    request.encryption_spec.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "encryption_spec.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_field_headers_async():
+    client = EncryptionSpecServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcd_encryption_spec.InitializeEncryptionSpecRequest()
+
+    request.encryption_spec.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "encryption_spec.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_initialize_encryption_spec_flattened():
+    client = EncryptionSpecServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.initialize_encryption_spec(
+            encryption_spec=gcd_encryption_spec.EncryptionSpec(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].encryption_spec
+        mock_val = gcd_encryption_spec.EncryptionSpec(name="name_value")
+        assert arg == mock_val
+
+
+def test_initialize_encryption_spec_flattened_error():
+    client = EncryptionSpecServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.initialize_encryption_spec(
+            gcd_encryption_spec.InitializeEncryptionSpecRequest(),
+            encryption_spec=gcd_encryption_spec.EncryptionSpec(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_flattened_async():
+    client = EncryptionSpecServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.initialize_encryption_spec(
+            encryption_spec=gcd_encryption_spec.EncryptionSpec(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].encryption_spec
+        mock_val = gcd_encryption_spec.EncryptionSpec(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_flattened_error_async():
+    client = EncryptionSpecServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.initialize_encryption_spec(
+            gcd_encryption_spec.InitializeEncryptionSpecRequest(),
+            encryption_spec=gcd_encryption_spec.EncryptionSpec(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        encryption_spec.GetEncryptionSpecRequest,
+        dict,
+    ],
+)
+def test_get_encryption_spec_rest(request_type):
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
+    request_init = {"name": "projects/sample1/locations/sample2/encryptionSpec"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = answer_record.ListAnswerRecordsResponse(
-            next_page_token="next_page_token_value",
+        return_value = encryption_spec.EncryptionSpec(
+            name="name_value",
+            kms_key="kms_key_value",
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = answer_record.ListAnswerRecordsResponse.pb(return_value)
+        return_value = encryption_spec.EncryptionSpec.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.list_answer_records(request)
+        response = client.get_encryption_spec(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAnswerRecordsPager)
-    assert response.next_page_token == "next_page_token_value"
+    assert isinstance(response, encryption_spec.EncryptionSpec)
+    assert response.name == "name_value"
+    assert response.kms_key == "kms_key_value"
 
 
-def test_list_answer_records_rest_use_cached_wrapped_rpc():
+def test_get_encryption_spec_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = AnswerRecordsClient(
+        client = EncryptionSpecServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -2163,7 +2034,7 @@ def test_list_answer_records_rest_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.list_answer_records in client._transport._wrapped_methods
+            client._transport.get_encryption_spec in client._transport._wrapped_methods
         )
 
         # Replace cached wrapped function with mock
@@ -2172,29 +2043,29 @@ def test_list_answer_records_rest_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.list_answer_records
+            client._transport.get_encryption_spec
         ] = mock_rpc
 
         request = {}
-        client.list_answer_records(request)
+        client.get_encryption_spec(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.list_answer_records(request)
+        client.get_encryption_spec(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_list_answer_records_rest_required_fields(
-    request_type=answer_record.ListAnswerRecordsRequest,
+def test_get_encryption_spec_rest_required_fields(
+    request_type=encryption_spec.GetEncryptionSpecRequest,
 ):
-    transport_class = transports.AnswerRecordsRestTransport
+    transport_class = transports.EncryptionSpecServiceRestTransport
 
     request_init = {}
-    request_init["parent"] = ""
+    request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -2205,38 +2076,30 @@ def test_list_answer_records_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).list_answer_records._get_unset_required_fields(jsonified_request)
+    ).get_encryption_spec._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = "parent_value"
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).list_answer_records._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "filter",
-            "page_size",
-            "page_token",
-        )
-    )
+    ).get_encryption_spec._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
 
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = answer_record.ListAnswerRecordsResponse()
+    return_value = encryption_spec.EncryptionSpec()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -2257,59 +2120,50 @@ def test_list_answer_records_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = answer_record.ListAnswerRecordsResponse.pb(return_value)
+            return_value = encryption_spec.EncryptionSpec.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.list_answer_records(request)
+            response = client.get_encryption_spec(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_list_answer_records_rest_unset_required_fields():
-    transport = transports.AnswerRecordsRestTransport(
+def test_get_encryption_spec_rest_unset_required_fields():
+    transport = transports.EncryptionSpecServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.list_answer_records._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
+    unset_fields = transport.get_encryption_spec._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_answer_records_rest_interceptors(null_interceptor):
-    transport = transports.AnswerRecordsRestTransport(
+def test_get_encryption_spec_rest_interceptors(null_interceptor):
+    transport = transports.EncryptionSpecServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.AnswerRecordsRestInterceptor(),
+        else transports.EncryptionSpecServiceRestInterceptor(),
     )
-    client = AnswerRecordsClient(transport=transport)
+    client = EncryptionSpecServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.AnswerRecordsRestInterceptor, "post_list_answer_records"
+        transports.EncryptionSpecServiceRestInterceptor, "post_get_encryption_spec"
     ) as post, mock.patch.object(
-        transports.AnswerRecordsRestInterceptor, "pre_list_answer_records"
+        transports.EncryptionSpecServiceRestInterceptor, "pre_get_encryption_spec"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = answer_record.ListAnswerRecordsRequest.pb(
-            answer_record.ListAnswerRecordsRequest()
+        pb_message = encryption_spec.GetEncryptionSpecRequest.pb(
+            encryption_spec.GetEncryptionSpecRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -2321,19 +2175,19 @@ def test_list_answer_records_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = answer_record.ListAnswerRecordsResponse.to_json(
-            answer_record.ListAnswerRecordsResponse()
+        req.return_value._content = encryption_spec.EncryptionSpec.to_json(
+            encryption_spec.EncryptionSpec()
         )
 
-        request = answer_record.ListAnswerRecordsRequest()
+        request = encryption_spec.GetEncryptionSpecRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = answer_record.ListAnswerRecordsResponse()
+        post.return_value = encryption_spec.EncryptionSpec()
 
-        client.list_answer_records(
+        client.get_encryption_spec(
             request,
             metadata=[
                 ("key", "val"),
@@ -2345,16 +2199,16 @@ def test_list_answer_records_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_list_answer_records_rest_bad_request(
-    transport: str = "rest", request_type=answer_record.ListAnswerRecordsRequest
+def test_get_encryption_spec_rest_bad_request(
+    transport: str = "rest", request_type=encryption_spec.GetEncryptionSpecRequest
 ):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
+    request_init = {"name": "projects/sample1/locations/sample2/encryptionSpec"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2366,11 +2220,11 @@ def test_list_answer_records_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.list_answer_records(request)
+        client.get_encryption_spec(request)
 
 
-def test_list_answer_records_rest_flattened():
-    client = AnswerRecordsClient(
+def test_get_encryption_spec_rest_flattened():
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2378,14 +2232,14 @@ def test_list_answer_records_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = answer_record.ListAnswerRecordsResponse()
+        return_value = encryption_spec.EncryptionSpec()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "projects/sample1"}
+        sample_request = {"name": "projects/sample1/locations/sample2/encryptionSpec"}
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent="parent_value",
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -2393,24 +2247,26 @@ def test_list_answer_records_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = answer_record.ListAnswerRecordsResponse.pb(return_value)
+        return_value = encryption_spec.EncryptionSpec.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.list_answer_records(**mock_args)
+        client.get_encryption_spec(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{parent=projects/*}/answerRecords" % client.transport._host, args[1]
+            "%s/v2/{name=projects/*/locations/*/encryptionSpec}"
+            % client.transport._host,
+            args[1],
         )
 
 
-def test_list_answer_records_rest_flattened_error(transport: str = "rest"):
-    client = AnswerRecordsClient(
+def test_get_encryption_spec_rest_flattened_error(transport: str = "rest"):
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2418,447 +2274,60 @@ def test_list_answer_records_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.list_answer_records(
-            answer_record.ListAnswerRecordsRequest(),
-            parent="parent_value",
+        client.get_encryption_spec(
+            encryption_spec.GetEncryptionSpecRequest(),
+            name="name_value",
         )
 
 
-def test_list_answer_records_rest_pager(transport: str = "rest"):
-    client = AnswerRecordsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+def test_get_encryption_spec_rest_error():
+    client = EncryptionSpecServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                ],
-                next_page_token="abc",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[],
-                next_page_token="def",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                ],
-                next_page_token="ghi",
-            ),
-            answer_record.ListAnswerRecordsResponse(
-                answer_records=[
-                    answer_record.AnswerRecord(),
-                    answer_record.AnswerRecord(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(
-            answer_record.ListAnswerRecordsResponse.to_json(x) for x in response
-        )
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {"parent": "projects/sample1"}
-
-        pager = client.list_answer_records(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, answer_record.AnswerRecord) for i in results)
-
-        pages = list(client.list_answer_records(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_answer_record.UpdateAnswerRecordRequest,
+        gcd_encryption_spec.InitializeEncryptionSpecRequest,
         dict,
     ],
 )
-def test_update_answer_record_rest(request_type):
-    client = AnswerRecordsClient(
+def test_initialize_encryption_spec_rest(request_type):
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"answer_record": {"name": "projects/sample1/answerRecords/sample2"}}
-    request_init["answer_record"] = {
-        "name": "projects/sample1/answerRecords/sample2",
-        "answer_feedback": {
-            "correctness_level": 1,
-            "agent_assistant_detail_feedback": {
-                "answer_relevance": 1,
-                "document_correctness": 1,
-                "document_efficiency": 1,
-                "summarization_feedback": {
-                    "start_time": {"seconds": 751, "nanos": 543},
-                    "submit_time": {},
-                    "summary_text": "summary_text_value",
-                    "text_sections": {},
-                },
-                "knowledge_search_feedback": {
-                    "answer_copied": True,
-                    "clicked_uris": ["clicked_uris_value1", "clicked_uris_value2"],
-                },
-                "knowledge_assist_feedback": {
-                    "answer_copied": True,
-                    "clicked_uris": ["clicked_uris_value1", "clicked_uris_value2"],
-                },
-            },
-            "clicked": True,
-            "click_time": {},
-            "displayed": True,
-            "display_time": {},
-        },
-        "agent_assistant_record": {
-            "article_suggestion_answer": {
-                "title": "title_value",
-                "uri": "uri_value",
-                "snippets": ["snippets_value1", "snippets_value2"],
-                "confidence": 0.1038,
-                "metadata": {},
-                "answer_record": "answer_record_value",
-            },
-            "faq_answer": {
-                "answer": "answer_value",
-                "confidence": 0.1038,
-                "question": "question_value",
-                "source": "source_value",
-                "metadata": {},
-                "answer_record": "answer_record_value",
-            },
-            "dialogflow_assist_answer": {
-                "query_result": {
-                    "query_text": "query_text_value",
-                    "language_code": "language_code_value",
-                    "speech_recognition_confidence": 0.3045,
-                    "action": "action_value",
-                    "parameters": {"fields": {}},
-                    "all_required_params_present": True,
-                    "cancels_slot_filling": True,
-                    "fulfillment_text": "fulfillment_text_value",
-                    "fulfillment_messages": [
-                        {
-                            "text": {"text": ["text_value1", "text_value2"]},
-                            "image": {
-                                "image_uri": "image_uri_value",
-                                "accessibility_text": "accessibility_text_value",
-                            },
-                            "quick_replies": {
-                                "title": "title_value",
-                                "quick_replies": [
-                                    "quick_replies_value1",
-                                    "quick_replies_value2",
-                                ],
-                            },
-                            "card": {
-                                "title": "title_value",
-                                "subtitle": "subtitle_value",
-                                "image_uri": "image_uri_value",
-                                "buttons": [
-                                    {"text": "text_value", "postback": "postback_value"}
-                                ],
-                            },
-                            "payload": {},
-                            "simple_responses": {
-                                "simple_responses": [
-                                    {
-                                        "text_to_speech": "text_to_speech_value",
-                                        "ssml": "ssml_value",
-                                        "display_text": "display_text_value",
-                                    }
-                                ]
-                            },
-                            "basic_card": {
-                                "title": "title_value",
-                                "subtitle": "subtitle_value",
-                                "formatted_text": "formatted_text_value",
-                                "image": {},
-                                "buttons": [
-                                    {
-                                        "title": "title_value",
-                                        "open_uri_action": {"uri": "uri_value"},
-                                    }
-                                ],
-                            },
-                            "suggestions": {"suggestions": [{"title": "title_value"}]},
-                            "link_out_suggestion": {
-                                "destination_name": "destination_name_value",
-                                "uri": "uri_value",
-                            },
-                            "list_select": {
-                                "title": "title_value",
-                                "items": [
-                                    {
-                                        "info": {
-                                            "key": "key_value",
-                                            "synonyms": [
-                                                "synonyms_value1",
-                                                "synonyms_value2",
-                                            ],
-                                        },
-                                        "title": "title_value",
-                                        "description": "description_value",
-                                        "image": {},
-                                    }
-                                ],
-                                "subtitle": "subtitle_value",
-                            },
-                            "carousel_select": {
-                                "items": [
-                                    {
-                                        "info": {},
-                                        "title": "title_value",
-                                        "description": "description_value",
-                                        "image": {},
-                                    }
-                                ]
-                            },
-                            "browse_carousel_card": {
-                                "items": [
-                                    {
-                                        "open_uri_action": {
-                                            "url": "url_value",
-                                            "url_type_hint": 1,
-                                        },
-                                        "title": "title_value",
-                                        "description": "description_value",
-                                        "image": {},
-                                        "footer": "footer_value",
-                                    }
-                                ],
-                                "image_display_options": 1,
-                            },
-                            "table_card": {
-                                "title": "title_value",
-                                "subtitle": "subtitle_value",
-                                "image": {},
-                                "column_properties": [
-                                    {
-                                        "header": "header_value",
-                                        "horizontal_alignment": 1,
-                                    }
-                                ],
-                                "rows": [
-                                    {
-                                        "cells": [{"text": "text_value"}],
-                                        "divider_after": True,
-                                    }
-                                ],
-                                "buttons": {},
-                            },
-                            "media_content": {
-                                "media_type": 1,
-                                "media_objects": [
-                                    {
-                                        "name": "name_value",
-                                        "description": "description_value",
-                                        "large_image": {},
-                                        "icon": {},
-                                        "content_url": "content_url_value",
-                                    }
-                                ],
-                            },
-                            "platform": 1,
-                        }
-                    ],
-                    "webhook_source": "webhook_source_value",
-                    "webhook_payload": {},
-                    "output_contexts": [
-                        {"name": "name_value", "lifespan_count": 1498, "parameters": {}}
-                    ],
-                    "intent": {
-                        "name": "name_value",
-                        "display_name": "display_name_value",
-                        "webhook_state": 1,
-                        "priority": 898,
-                        "is_fallback": True,
-                        "ml_disabled": True,
-                        "live_agent_handoff": True,
-                        "end_interaction": True,
-                        "input_context_names": [
-                            "input_context_names_value1",
-                            "input_context_names_value2",
-                        ],
-                        "events": ["events_value1", "events_value2"],
-                        "training_phrases": [
-                            {
-                                "name": "name_value",
-                                "type_": 1,
-                                "parts": [
-                                    {
-                                        "text": "text_value",
-                                        "entity_type": "entity_type_value",
-                                        "alias": "alias_value",
-                                        "user_defined": True,
-                                    }
-                                ],
-                                "times_added_count": 1787,
-                            }
-                        ],
-                        "action": "action_value",
-                        "output_contexts": {},
-                        "reset_contexts": True,
-                        "parameters": [
-                            {
-                                "name": "name_value",
-                                "display_name": "display_name_value",
-                                "value": "value_value",
-                                "default_value": "default_value_value",
-                                "entity_type_display_name": "entity_type_display_name_value",
-                                "mandatory": True,
-                                "prompts": ["prompts_value1", "prompts_value2"],
-                                "is_list": True,
-                            }
-                        ],
-                        "messages": {},
-                        "default_response_platforms": [1],
-                        "root_followup_intent_name": "root_followup_intent_name_value",
-                        "parent_followup_intent_name": "parent_followup_intent_name_value",
-                        "followup_intent_info": [
-                            {
-                                "followup_intent_name": "followup_intent_name_value",
-                                "parent_followup_intent_name": "parent_followup_intent_name_value",
-                            }
-                        ],
-                    },
-                    "intent_detection_confidence": 0.28450000000000003,
-                    "diagnostic_info": {},
-                    "sentiment_analysis_result": {
-                        "query_text_sentiment": {
-                            "score": 0.54,
-                            "magnitude": 0.9580000000000001,
-                        }
-                    },
-                },
-                "intent_suggestion": {
-                    "display_name": "display_name_value",
-                    "intent_v2": "intent_v2_value",
-                    "description": "description_value",
-                },
-                "answer_record": "answer_record_value",
-            },
-        },
+    request_init = {
+        "encryption_spec": {"name": "projects/sample1/locations/sample2/encryptionSpec"}
     }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gcd_answer_record.UpdateAnswerRecordRequest.meta.fields[
-        "answer_record"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["answer_record"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["answer_record"][field])):
-                    del request_init["answer_record"][field][i][subfield]
-            else:
-                del request_init["answer_record"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcd_answer_record.AnswerRecord(
-            name="name_value",
-        )
+        return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gcd_answer_record.AnswerRecord.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.update_answer_record(request)
+        response = client.initialize_encryption_spec(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcd_answer_record.AnswerRecord)
-    assert response.name == "name_value"
+    assert response.operation.name == "operations/spam"
 
 
-def test_update_answer_record_rest_use_cached_wrapped_rpc():
+def test_initialize_encryption_spec_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = AnswerRecordsClient(
+        client = EncryptionSpecServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -2869,7 +2338,8 @@ def test_update_answer_record_rest_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.update_answer_record in client._transport._wrapped_methods
+            client._transport.initialize_encryption_spec
+            in client._transport._wrapped_methods
         )
 
         # Replace cached wrapped function with mock
@@ -2878,26 +2348,30 @@ def test_update_answer_record_rest_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.update_answer_record
+            client._transport.initialize_encryption_spec
         ] = mock_rpc
 
         request = {}
-        client.update_answer_record(request)
+        client.initialize_encryption_spec(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.update_answer_record(request)
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.initialize_encryption_spec(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_update_answer_record_rest_required_fields(
-    request_type=gcd_answer_record.UpdateAnswerRecordRequest,
+def test_initialize_encryption_spec_rest_required_fields(
+    request_type=gcd_encryption_spec.InitializeEncryptionSpecRequest,
 ):
-    transport_class = transports.AnswerRecordsRestTransport
+    transport_class = transports.EncryptionSpecServiceRestTransport
 
     request_init = {}
     request = request_type(**request_init)
@@ -2910,28 +2384,26 @@ def test_update_answer_record_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).update_answer_record._get_unset_required_fields(jsonified_request)
+    ).initialize_encryption_spec._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).update_answer_record._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
+    ).initialize_encryption_spec._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcd_answer_record.AnswerRecord()
+    return_value = operations_pb2.Operation(name="operations/spam")
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -2943,7 +2415,7 @@ def test_update_answer_record_rest_required_fields(
             pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
-                "method": "patch",
+                "method": "post",
                 "query_params": pb_request,
             }
             transcode_result["body"] = pb_request
@@ -2951,60 +2423,53 @@ def test_update_answer_record_rest_required_fields(
 
             response_value = Response()
             response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = gcd_answer_record.AnswerRecord.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.update_answer_record(request)
+            response = client.initialize_encryption_spec(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_update_answer_record_rest_unset_required_fields():
-    transport = transports.AnswerRecordsRestTransport(
+def test_initialize_encryption_spec_rest_unset_required_fields():
+    transport = transports.EncryptionSpecServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.update_answer_record._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "answerRecord",
-                "updateMask",
-            )
-        )
-    )
+    unset_fields = transport.initialize_encryption_spec._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("encryptionSpec",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_answer_record_rest_interceptors(null_interceptor):
-    transport = transports.AnswerRecordsRestTransport(
+def test_initialize_encryption_spec_rest_interceptors(null_interceptor):
+    transport = transports.EncryptionSpecServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.AnswerRecordsRestInterceptor(),
+        else transports.EncryptionSpecServiceRestInterceptor(),
     )
-    client = AnswerRecordsClient(transport=transport)
+    client = EncryptionSpecServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.AnswerRecordsRestInterceptor, "post_update_answer_record"
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EncryptionSpecServiceRestInterceptor,
+        "post_initialize_encryption_spec",
     ) as post, mock.patch.object(
-        transports.AnswerRecordsRestInterceptor, "pre_update_answer_record"
+        transports.EncryptionSpecServiceRestInterceptor,
+        "pre_initialize_encryption_spec",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = gcd_answer_record.UpdateAnswerRecordRequest.pb(
-            gcd_answer_record.UpdateAnswerRecordRequest()
+        pb_message = gcd_encryption_spec.InitializeEncryptionSpecRequest.pb(
+            gcd_encryption_spec.InitializeEncryptionSpecRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -3016,19 +2481,19 @@ def test_update_answer_record_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = gcd_answer_record.AnswerRecord.to_json(
-            gcd_answer_record.AnswerRecord()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
         )
 
-        request = gcd_answer_record.UpdateAnswerRecordRequest()
+        request = gcd_encryption_spec.InitializeEncryptionSpecRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcd_answer_record.AnswerRecord()
+        post.return_value = operations_pb2.Operation()
 
-        client.update_answer_record(
+        client.initialize_encryption_spec(
             request,
             metadata=[
                 ("key", "val"),
@@ -3040,16 +2505,19 @@ def test_update_answer_record_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_update_answer_record_rest_bad_request(
-    transport: str = "rest", request_type=gcd_answer_record.UpdateAnswerRecordRequest
+def test_initialize_encryption_spec_rest_bad_request(
+    transport: str = "rest",
+    request_type=gcd_encryption_spec.InitializeEncryptionSpecRequest,
 ):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"answer_record": {"name": "projects/sample1/answerRecords/sample2"}}
+    request_init = {
+        "encryption_spec": {"name": "projects/sample1/locations/sample2/encryptionSpec"}
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3061,11 +2529,11 @@ def test_update_answer_record_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.update_answer_record(request)
+        client.initialize_encryption_spec(request)
 
 
-def test_update_answer_record_rest_flattened():
-    client = AnswerRecordsClient(
+def test_initialize_encryption_spec_rest_flattened():
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -3073,44 +2541,43 @@ def test_update_answer_record_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcd_answer_record.AnswerRecord()
+        return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
-            "answer_record": {"name": "projects/sample1/answerRecords/sample2"}
+            "encryption_spec": {
+                "name": "projects/sample1/locations/sample2/encryptionSpec"
+            }
         }
 
         # get truthy value for each flattened field
         mock_args = dict(
-            answer_record=gcd_answer_record.AnswerRecord(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+            encryption_spec=gcd_encryption_spec.EncryptionSpec(name="name_value"),
         )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gcd_answer_record.AnswerRecord.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.update_answer_record(**mock_args)
+        client.initialize_encryption_spec(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{answer_record.name=projects/*/answerRecords/*}"
+            "%s/v2/{encryption_spec.name=projects/*/locations/*/encryptionSpec}:initialize"
             % client.transport._host,
             args[1],
         )
 
 
-def test_update_answer_record_rest_flattened_error(transport: str = "rest"):
-    client = AnswerRecordsClient(
+def test_initialize_encryption_spec_rest_flattened_error(transport: str = "rest"):
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3118,48 +2585,47 @@ def test_update_answer_record_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.update_answer_record(
-            gcd_answer_record.UpdateAnswerRecordRequest(),
-            answer_record=gcd_answer_record.AnswerRecord(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        client.initialize_encryption_spec(
+            gcd_encryption_spec.InitializeEncryptionSpecRequest(),
+            encryption_spec=gcd_encryption_spec.EncryptionSpec(name="name_value"),
         )
 
 
-def test_update_answer_record_rest_error():
-    client = AnswerRecordsClient(
+def test_initialize_encryption_spec_rest_error():
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.AnswerRecordsGrpcTransport(
+    transport = transports.EncryptionSpecServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = AnswerRecordsClient(
+        client = EncryptionSpecServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.AnswerRecordsGrpcTransport(
+    transport = transports.EncryptionSpecServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = AnswerRecordsClient(
+        client = EncryptionSpecServiceClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.AnswerRecordsGrpcTransport(
+    transport = transports.EncryptionSpecServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = AnswerRecordsClient(
+        client = EncryptionSpecServiceClient(
             client_options=options,
             transport=transport,
         )
@@ -3168,16 +2634,16 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = AnswerRecordsClient(
+        client = EncryptionSpecServiceClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.AnswerRecordsGrpcTransport(
+    transport = transports.EncryptionSpecServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = AnswerRecordsClient(
+        client = EncryptionSpecServiceClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -3185,22 +2651,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.AnswerRecordsGrpcTransport(
+    transport = transports.EncryptionSpecServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = AnswerRecordsClient(transport=transport)
+    client = EncryptionSpecServiceClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.AnswerRecordsGrpcTransport(
+    transport = transports.EncryptionSpecServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.AnswerRecordsGrpcAsyncIOTransport(
+    transport = transports.EncryptionSpecServiceGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -3210,9 +2676,9 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.AnswerRecordsGrpcTransport,
-        transports.AnswerRecordsGrpcAsyncIOTransport,
-        transports.AnswerRecordsRestTransport,
+        transports.EncryptionSpecServiceGrpcTransport,
+        transports.EncryptionSpecServiceGrpcAsyncIOTransport,
+        transports.EncryptionSpecServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3231,7 +2697,7 @@ def test_transport_adc(transport_class):
     ],
 )
 def test_transport_kind(transport_name):
-    transport = AnswerRecordsClient.get_transport_class(transport_name)(
+    transport = EncryptionSpecServiceClient.get_transport_class(transport_name)(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
@@ -3239,39 +2705,39 @@ def test_transport_kind(transport_name):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.AnswerRecordsGrpcTransport,
+        transports.EncryptionSpecServiceGrpcTransport,
     )
 
 
-def test_answer_records_base_transport_error():
+def test_encryption_spec_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.AnswerRecordsTransport(
+        transport = transports.EncryptionSpecServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_answer_records_base_transport():
+def test_encryption_spec_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.dialogflow_v2.services.answer_records.transports.AnswerRecordsTransport.__init__"
+        "google.cloud.dialogflow_v2.services.encryption_spec_service.transports.EncryptionSpecServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.AnswerRecordsTransport(
+        transport = transports.EncryptionSpecServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "list_answer_records",
-        "update_answer_record",
+        "get_encryption_spec",
+        "initialize_encryption_spec",
         "get_location",
         "list_locations",
         "get_operation",
@@ -3285,6 +2751,11 @@ def test_answer_records_base_transport():
     with pytest.raises(NotImplementedError):
         transport.close()
 
+    # Additionally, the LRO client (a property) should
+    # also raise NotImplementedError
+    with pytest.raises(NotImplementedError):
+        transport.operations_client
+
     # Catch all for all remaining methods and properties
     remainder = [
         "kind",
@@ -3294,16 +2765,16 @@ def test_answer_records_base_transport():
             getattr(transport, r)()
 
 
-def test_answer_records_base_transport_with_credentials_file():
+def test_encryption_spec_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.dialogflow_v2.services.answer_records.transports.AnswerRecordsTransport._prep_wrapped_messages"
+        "google.cloud.dialogflow_v2.services.encryption_spec_service.transports.EncryptionSpecServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.AnswerRecordsTransport(
+        transport = transports.EncryptionSpecServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -3318,22 +2789,22 @@ def test_answer_records_base_transport_with_credentials_file():
         )
 
 
-def test_answer_records_base_transport_with_adc():
+def test_encryption_spec_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.dialogflow_v2.services.answer_records.transports.AnswerRecordsTransport._prep_wrapped_messages"
+        "google.cloud.dialogflow_v2.services.encryption_spec_service.transports.EncryptionSpecServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.AnswerRecordsTransport()
+        transport = transports.EncryptionSpecServiceTransport()
         adc.assert_called_once()
 
 
-def test_answer_records_auth_adc():
+def test_encryption_spec_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        AnswerRecordsClient()
+        EncryptionSpecServiceClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=(
@@ -3347,11 +2818,11 @@ def test_answer_records_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.AnswerRecordsGrpcTransport,
-        transports.AnswerRecordsGrpcAsyncIOTransport,
+        transports.EncryptionSpecServiceGrpcTransport,
+        transports.EncryptionSpecServiceGrpcAsyncIOTransport,
     ],
 )
-def test_answer_records_transport_auth_adc(transport_class):
+def test_encryption_spec_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -3370,12 +2841,12 @@ def test_answer_records_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.AnswerRecordsGrpcTransport,
-        transports.AnswerRecordsGrpcAsyncIOTransport,
-        transports.AnswerRecordsRestTransport,
+        transports.EncryptionSpecServiceGrpcTransport,
+        transports.EncryptionSpecServiceGrpcAsyncIOTransport,
+        transports.EncryptionSpecServiceRestTransport,
     ],
 )
-def test_answer_records_transport_auth_gdch_credentials(transport_class):
+def test_encryption_spec_service_transport_auth_gdch_credentials(transport_class):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -3393,11 +2864,13 @@ def test_answer_records_transport_auth_gdch_credentials(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.AnswerRecordsGrpcTransport, grpc_helpers),
-        (transports.AnswerRecordsGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.EncryptionSpecServiceGrpcTransport, grpc_helpers),
+        (transports.EncryptionSpecServiceGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_answer_records_transport_create_channel(transport_class, grpc_helpers):
+def test_encryption_spec_service_transport_create_channel(
+    transport_class, grpc_helpers
+):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -3431,11 +2904,13 @@ def test_answer_records_transport_create_channel(transport_class, grpc_helpers):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.AnswerRecordsGrpcTransport,
-        transports.AnswerRecordsGrpcAsyncIOTransport,
+        transports.EncryptionSpecServiceGrpcTransport,
+        transports.EncryptionSpecServiceGrpcAsyncIOTransport,
     ],
 )
-def test_answer_records_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_encryption_spec_service_grpc_transport_client_cert_source_for_mtls(
+    transport_class,
+):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -3473,15 +2948,32 @@ def test_answer_records_grpc_transport_client_cert_source_for_mtls(transport_cla
             )
 
 
-def test_answer_records_http_transport_client_cert_source_for_mtls():
+def test_encryption_spec_service_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
-        transports.AnswerRecordsRestTransport(
+        transports.EncryptionSpecServiceRestTransport(
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_encryption_spec_service_rest_lro_client():
+    client = EncryptionSpecServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -3492,8 +2984,8 @@ def test_answer_records_http_transport_client_cert_source_for_mtls():
         "rest",
     ],
 )
-def test_answer_records_host_no_port(transport_name):
-    client = AnswerRecordsClient(
+def test_encryption_spec_service_host_no_port(transport_name):
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="dialogflow.googleapis.com"
@@ -3515,8 +3007,8 @@ def test_answer_records_host_no_port(transport_name):
         "rest",
     ],
 )
-def test_answer_records_host_with_port(transport_name):
-    client = AnswerRecordsClient(
+def test_encryption_spec_service_host_with_port(transport_name):
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="dialogflow.googleapis.com:8000"
@@ -3536,30 +3028,30 @@ def test_answer_records_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_answer_records_client_transport_session_collision(transport_name):
+def test_encryption_spec_service_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
-    client1 = AnswerRecordsClient(
+    client1 = EncryptionSpecServiceClient(
         credentials=creds1,
         transport=transport_name,
     )
-    client2 = AnswerRecordsClient(
+    client2 = EncryptionSpecServiceClient(
         credentials=creds2,
         transport=transport_name,
     )
-    session1 = client1.transport.list_answer_records._session
-    session2 = client2.transport.list_answer_records._session
+    session1 = client1.transport.get_encryption_spec._session
+    session2 = client2.transport.get_encryption_spec._session
     assert session1 != session2
-    session1 = client1.transport.update_answer_record._session
-    session2 = client2.transport.update_answer_record._session
+    session1 = client1.transport.initialize_encryption_spec._session
+    session2 = client2.transport.initialize_encryption_spec._session
     assert session1 != session2
 
 
-def test_answer_records_grpc_transport_channel():
+def test_encryption_spec_service_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.AnswerRecordsGrpcTransport(
+    transport = transports.EncryptionSpecServiceGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -3568,11 +3060,11 @@ def test_answer_records_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_answer_records_grpc_asyncio_transport_channel():
+def test_encryption_spec_service_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.AnswerRecordsGrpcAsyncIOTransport(
+    transport = transports.EncryptionSpecServiceGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -3586,11 +3078,13 @@ def test_answer_records_grpc_asyncio_transport_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.AnswerRecordsGrpcTransport,
-        transports.AnswerRecordsGrpcAsyncIOTransport,
+        transports.EncryptionSpecServiceGrpcTransport,
+        transports.EncryptionSpecServiceGrpcAsyncIOTransport,
     ],
 )
-def test_answer_records_transport_channel_mtls_with_client_cert_source(transport_class):
+def test_encryption_spec_service_transport_channel_mtls_with_client_cert_source(
+    transport_class,
+):
     with mock.patch(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
@@ -3638,11 +3132,11 @@ def test_answer_records_transport_channel_mtls_with_client_cert_source(transport
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.AnswerRecordsGrpcTransport,
-        transports.AnswerRecordsGrpcAsyncIOTransport,
+        transports.EncryptionSpecServiceGrpcTransport,
+        transports.EncryptionSpecServiceGrpcAsyncIOTransport,
     ],
 )
-def test_answer_records_transport_channel_mtls_with_adc(transport_class):
+def test_encryption_spec_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -3679,178 +3173,163 @@ def test_answer_records_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_answer_record_path():
-    project = "squid"
-    answer_record = "clam"
-    expected = "projects/{project}/answerRecords/{answer_record}".format(
-        project=project,
-        answer_record=answer_record,
+def test_encryption_spec_service_grpc_lro_client():
+    client = EncryptionSpecServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
-    actual = AnswerRecordsClient.answer_record_path(project, answer_record)
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
+def test_encryption_spec_service_grpc_lro_async_client():
+    client = EncryptionSpecServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
+def test_encryption_spec_path():
+    project = "squid"
+    location = "clam"
+    expected = "projects/{project}/locations/{location}/encryptionSpec".format(
+        project=project,
+        location=location,
+    )
+    actual = EncryptionSpecServiceClient.encryption_spec_path(project, location)
     assert expected == actual
 
 
-def test_parse_answer_record_path():
+def test_parse_encryption_spec_path():
     expected = {
         "project": "whelk",
-        "answer_record": "octopus",
+        "location": "octopus",
     }
-    path = AnswerRecordsClient.answer_record_path(**expected)
+    path = EncryptionSpecServiceClient.encryption_spec_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AnswerRecordsClient.parse_answer_record_path(path)
-    assert expected == actual
-
-
-def test_context_path():
-    project = "oyster"
-    session = "nudibranch"
-    context = "cuttlefish"
-    expected = "projects/{project}/agent/sessions/{session}/contexts/{context}".format(
-        project=project,
-        session=session,
-        context=context,
-    )
-    actual = AnswerRecordsClient.context_path(project, session, context)
-    assert expected == actual
-
-
-def test_parse_context_path():
-    expected = {
-        "project": "mussel",
-        "session": "winkle",
-        "context": "nautilus",
-    }
-    path = AnswerRecordsClient.context_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = AnswerRecordsClient.parse_context_path(path)
-    assert expected == actual
-
-
-def test_intent_path():
-    project = "scallop"
-    intent = "abalone"
-    expected = "projects/{project}/agent/intents/{intent}".format(
-        project=project,
-        intent=intent,
-    )
-    actual = AnswerRecordsClient.intent_path(project, intent)
-    assert expected == actual
-
-
-def test_parse_intent_path():
-    expected = {
-        "project": "squid",
-        "intent": "clam",
-    }
-    path = AnswerRecordsClient.intent_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = AnswerRecordsClient.parse_intent_path(path)
+    actual = EncryptionSpecServiceClient.parse_encryption_spec_path(path)
     assert expected == actual
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = AnswerRecordsClient.common_billing_account_path(billing_account)
+    actual = EncryptionSpecServiceClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nudibranch",
     }
-    path = AnswerRecordsClient.common_billing_account_path(**expected)
+    path = EncryptionSpecServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AnswerRecordsClient.parse_common_billing_account_path(path)
+    actual = EncryptionSpecServiceClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = AnswerRecordsClient.common_folder_path(folder)
+    actual = EncryptionSpecServiceClient.common_folder_path(folder)
     assert expected == actual
 
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "mussel",
     }
-    path = AnswerRecordsClient.common_folder_path(**expected)
+    path = EncryptionSpecServiceClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AnswerRecordsClient.parse_common_folder_path(path)
+    actual = EncryptionSpecServiceClient.parse_common_folder_path(path)
     assert expected == actual
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = AnswerRecordsClient.common_organization_path(organization)
+    actual = EncryptionSpecServiceClient.common_organization_path(organization)
     assert expected == actual
 
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "nautilus",
     }
-    path = AnswerRecordsClient.common_organization_path(**expected)
+    path = EncryptionSpecServiceClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AnswerRecordsClient.parse_common_organization_path(path)
+    actual = EncryptionSpecServiceClient.parse_common_organization_path(path)
     assert expected == actual
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = AnswerRecordsClient.common_project_path(project)
+    actual = EncryptionSpecServiceClient.common_project_path(project)
     assert expected == actual
 
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "abalone",
     }
-    path = AnswerRecordsClient.common_project_path(**expected)
+    path = EncryptionSpecServiceClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AnswerRecordsClient.parse_common_project_path(path)
+    actual = EncryptionSpecServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
     )
-    actual = AnswerRecordsClient.common_location_path(project, location)
+    actual = EncryptionSpecServiceClient.common_location_path(project, location)
     assert expected == actual
 
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "whelk",
+        "location": "octopus",
     }
-    path = AnswerRecordsClient.common_location_path(**expected)
+    path = EncryptionSpecServiceClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AnswerRecordsClient.parse_common_location_path(path)
+    actual = EncryptionSpecServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -3858,18 +3337,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.AnswerRecordsTransport, "_prep_wrapped_messages"
+        transports.EncryptionSpecServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = AnswerRecordsClient(
+        client = EncryptionSpecServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.AnswerRecordsTransport, "_prep_wrapped_messages"
+        transports.EncryptionSpecServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = AnswerRecordsClient.get_transport_class()
+        transport_class = EncryptionSpecServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -3879,7 +3358,7 @@ def test_client_with_default_client_info():
 
 @pytest.mark.asyncio
 async def test_transport_close_async():
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -3894,7 +3373,7 @@ async def test_transport_close_async():
 def test_get_location_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.GetLocationRequest
 ):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3924,7 +3403,7 @@ def test_get_location_rest_bad_request(
     ],
 )
 def test_get_location_rest(request_type):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -3952,7 +3431,7 @@ def test_get_location_rest(request_type):
 def test_list_locations_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
 ):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3980,7 +3459,7 @@ def test_list_locations_rest_bad_request(
     ],
 )
 def test_list_locations_rest(request_type):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4008,7 +3487,7 @@ def test_list_locations_rest(request_type):
 def test_cancel_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
 ):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4038,7 +3517,7 @@ def test_cancel_operation_rest_bad_request(
     ],
 )
 def test_cancel_operation_rest(request_type):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4066,7 +3545,7 @@ def test_cancel_operation_rest(request_type):
 def test_get_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.GetOperationRequest
 ):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4096,7 +3575,7 @@ def test_get_operation_rest_bad_request(
     ],
 )
 def test_get_operation_rest(request_type):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4124,7 +3603,7 @@ def test_get_operation_rest(request_type):
 def test_list_operations_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
 ):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4152,7 +3631,7 @@ def test_list_operations_rest_bad_request(
     ],
 )
 def test_list_operations_rest(request_type):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4178,7 +3657,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_cancel_operation(transport: str = "grpc"):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4203,7 +3682,7 @@ def test_cancel_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4227,7 +3706,7 @@ async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
 
 
 def test_cancel_operation_field_headers():
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4256,7 +3735,7 @@ def test_cancel_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4283,7 +3762,7 @@ async def test_cancel_operation_field_headers_async():
 
 
 def test_cancel_operation_from_dict():
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4301,7 +3780,7 @@ def test_cancel_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4317,7 +3796,7 @@ async def test_cancel_operation_from_dict_async():
 
 
 def test_get_operation(transport: str = "grpc"):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4342,7 +3821,7 @@ def test_get_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4368,7 +3847,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_operation_field_headers():
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4397,7 +3876,7 @@ def test_get_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4426,7 +3905,7 @@ async def test_get_operation_field_headers_async():
 
 
 def test_get_operation_from_dict():
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4444,7 +3923,7 @@ def test_get_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4462,7 +3941,7 @@ async def test_get_operation_from_dict_async():
 
 
 def test_list_operations(transport: str = "grpc"):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4487,7 +3966,7 @@ def test_list_operations(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4513,7 +3992,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
 
 
 def test_list_operations_field_headers():
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4542,7 +4021,7 @@ def test_list_operations_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4571,7 +4050,7 @@ async def test_list_operations_field_headers_async():
 
 
 def test_list_operations_from_dict():
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4589,7 +4068,7 @@ def test_list_operations_from_dict():
 
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4607,7 +4086,7 @@ async def test_list_operations_from_dict_async():
 
 
 def test_list_locations(transport: str = "grpc"):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4632,7 +4111,7 @@ def test_list_locations(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4658,7 +4137,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
 
 
 def test_list_locations_field_headers():
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4687,7 +4166,7 @@ def test_list_locations_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4716,7 +4195,7 @@ async def test_list_locations_field_headers_async():
 
 
 def test_list_locations_from_dict():
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4734,7 +4213,7 @@ def test_list_locations_from_dict():
 
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4752,7 +4231,7 @@ async def test_list_locations_from_dict_async():
 
 
 def test_get_location(transport: str = "grpc"):
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4777,7 +4256,7 @@ def test_get_location(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4803,7 +4282,9 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_location_field_headers():
-    client = AnswerRecordsClient(credentials=ga_credentials.AnonymousCredentials())
+    client = EncryptionSpecServiceClient(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4830,7 +4311,9 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = AnswerRecordsAsyncClient(credentials=ga_credentials.AnonymousCredentials())
+    client = EncryptionSpecServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4857,7 +4340,7 @@ async def test_get_location_field_headers_async():
 
 
 def test_get_location_from_dict():
-    client = AnswerRecordsClient(
+    client = EncryptionSpecServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4875,7 +4358,7 @@ def test_get_location_from_dict():
 
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
-    client = AnswerRecordsAsyncClient(
+    client = EncryptionSpecServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4899,7 +4382,7 @@ def test_transport_close():
     }
 
     for transport, close_name in transports.items():
-        client = AnswerRecordsClient(
+        client = EncryptionSpecServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
@@ -4916,7 +4399,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = AnswerRecordsClient(
+        client = EncryptionSpecServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -4930,8 +4413,11 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (AnswerRecordsClient, transports.AnswerRecordsGrpcTransport),
-        (AnswerRecordsAsyncClient, transports.AnswerRecordsGrpcAsyncIOTransport),
+        (EncryptionSpecServiceClient, transports.EncryptionSpecServiceGrpcTransport),
+        (
+            EncryptionSpecServiceAsyncClient,
+            transports.EncryptionSpecServiceGrpcAsyncIOTransport,
+        ),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):

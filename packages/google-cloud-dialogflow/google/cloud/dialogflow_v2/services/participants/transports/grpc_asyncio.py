@@ -526,6 +526,36 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
             )
         return self._stubs["suggest_smart_replies"]
 
+    @property
+    def suggest_knowledge_assist(
+        self,
+    ) -> Callable[
+        [participant.SuggestKnowledgeAssistRequest],
+        Awaitable[participant.SuggestKnowledgeAssistResponse],
+    ]:
+        r"""Return a callable for the suggest knowledge assist method over gRPC.
+
+        Gets knowledge assist suggestions based on historical
+        messages.
+
+        Returns:
+            Callable[[~.SuggestKnowledgeAssistRequest],
+                    Awaitable[~.SuggestKnowledgeAssistResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "suggest_knowledge_assist" not in self._stubs:
+            self._stubs["suggest_knowledge_assist"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2.Participants/SuggestKnowledgeAssist",
+                request_serializer=participant.SuggestKnowledgeAssistRequest.serialize,
+                response_deserializer=participant.SuggestKnowledgeAssistResponse.deserialize,
+            )
+        return self._stubs["suggest_knowledge_assist"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -580,6 +610,11 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
             ),
             self.suggest_smart_replies: gapic_v1.method_async.wrap_method(
                 self.suggest_smart_replies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.suggest_knowledge_assist: gapic_v1.method_async.wrap_method(
+                self.suggest_knowledge_assist,
                 default_timeout=None,
                 client_info=client_info,
             ),

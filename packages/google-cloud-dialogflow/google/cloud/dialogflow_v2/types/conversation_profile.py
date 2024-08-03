@@ -431,9 +431,16 @@ class HumanAgentAssistantConfig(proto.Message):
                 at answer records.
 
                 Supported features: KNOWLEDGE_SEARCH.
+            enable_query_suggestion_when_no_answer (bool):
+                Optional. Enable query suggestion even if we can't find its
+                answer. By default, queries are suggested only if we find
+                its answer. Supported features: KNOWLEDGE_ASSIST
             enable_conversation_augmented_query (bool):
                 Optional. Enable including conversation context during query
                 answer generation. Supported features: KNOWLEDGE_SEARCH.
+            enable_query_suggestion_only (bool):
+                Optional. Enable query suggestion only. Supported features:
+                KNOWLEDGE_ASSIST
             suggestion_trigger_settings (google.cloud.dialogflow_v2.types.HumanAgentAssistantConfig.SuggestionTriggerSettings):
                 Settings of suggestion trigger.
 
@@ -460,9 +467,17 @@ class HumanAgentAssistantConfig(proto.Message):
             proto.BOOL,
             number=14,
         )
+        enable_query_suggestion_when_no_answer: bool = proto.Field(
+            proto.BOOL,
+            number=15,
+        )
         enable_conversation_augmented_query: bool = proto.Field(
             proto.BOOL,
             number=16,
+        )
+        enable_query_suggestion_only: bool = proto.Field(
+            proto.BOOL,
+            number=17,
         )
         suggestion_trigger_settings: "HumanAgentAssistantConfig.SuggestionTriggerSettings" = proto.Field(
             proto.MESSAGE,
@@ -505,6 +520,18 @@ class HumanAgentAssistantConfig(proto.Message):
                 suggestions to the same participant based on the same
                 context will be grouped into a single Pub/Sub event or
                 StreamingAnalyzeContentResponse.
+            generators (MutableSequence[str]):
+                Optional. List of various generator resource
+                names used in the conversation profile.
+            disable_high_latency_features_sync_delivery (bool):
+                Optional. When disable_high_latency_features_sync_delivery
+                is true and using the AnalyzeContent API, we will not
+                deliver the responses from high latency features in the API
+                response. The
+                human_agent_assistant_config.notification_config must be
+                configured and enable_event_based_suggestion must be set to
+                true to receive the responses from high latency features in
+                Pub/Sub. High latency feature(s): KNOWLEDGE_ASSIST
         """
 
         feature_configs: MutableSequence[
@@ -517,6 +544,14 @@ class HumanAgentAssistantConfig(proto.Message):
         group_suggestion_responses: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        generators: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=4,
+        )
+        disable_high_latency_features_sync_delivery: bool = proto.Field(
+            proto.BOOL,
+            number=5,
         )
 
     class SuggestionQueryConfig(proto.Message):
@@ -921,7 +956,7 @@ class HumanAgentHandoffConfig(proto.Message):
 
     Attributes:
         live_person_config (google.cloud.dialogflow_v2.types.HumanAgentHandoffConfig.LivePersonConfig):
-            Uses LivePerson (https://www.liveperson.com).
+            Uses `LivePerson <https://www.liveperson.com>`__.
 
             This field is a member of `oneof`_ ``agent_service``.
         salesforce_live_agent_config (google.cloud.dialogflow_v2.types.HumanAgentHandoffConfig.SalesforceLiveAgentConfig):
@@ -931,8 +966,8 @@ class HumanAgentHandoffConfig(proto.Message):
     """
 
     class LivePersonConfig(proto.Message):
-        r"""Configuration specific to LivePerson
-        (https://www.liveperson.com).
+        r"""Configuration specific to
+        `LivePerson <https://www.liveperson.com>`__.
 
         Attributes:
             account_number (str):
@@ -1094,12 +1129,16 @@ class SuggestionFeature(proto.Message):
             KNOWLEDGE_SEARCH (14):
                 Run knowledge search with text input from
                 agent or text generated query.
+            KNOWLEDGE_ASSIST (15):
+                Run knowledge assist with automatic query
+                generation.
         """
         TYPE_UNSPECIFIED = 0
         ARTICLE_SUGGESTION = 1
         FAQ = 2
         SMART_REPLY = 3
         KNOWLEDGE_SEARCH = 14
+        KNOWLEDGE_ASSIST = 15
 
     type_: Type = proto.Field(
         proto.ENUM,

@@ -38,12 +38,13 @@ except AttributeError:  # pragma: NO COVER
 
 
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.dialogflow_v2.types import participant
-from google.cloud.dialogflow_v2.types import participant as gcd_participant
+from google.cloud.dialogflow_v2.types import generator
+from google.cloud.dialogflow_v2.types import generator as gcd_generator
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import ParticipantsTransport
+from .base import GeneratorsTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -52,8 +53,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class ParticipantsRestInterceptor:
-    """Interceptor for Participants.
+class GeneratorsRestInterceptor:
+    """Interceptor for Generators.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -63,291 +64,150 @@ class ParticipantsRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the ParticipantsRestTransport.
+    instance of a custom subclass when constructing the GeneratorsRestTransport.
 
     .. code-block:: python
-        class MyCustomParticipantsInterceptor(ParticipantsRestInterceptor):
-            def pre_analyze_content(self, request, metadata):
+        class MyCustomGeneratorsInterceptor(GeneratorsRestInterceptor):
+            def pre_create_generator(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_analyze_content(self, response):
+            def post_create_generator(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_create_participant(self, request, metadata):
+            def pre_delete_generator(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_participant(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_get_participant(self, request, metadata):
+            def pre_get_generator(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_participant(self, response):
+            def post_get_generator(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_list_participants(self, request, metadata):
+            def pre_list_generators(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_participants(self, response):
+            def post_list_generators(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_suggest_articles(self, request, metadata):
+            def pre_update_generator(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_suggest_articles(self, response):
+            def post_update_generator(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_suggest_faq_answers(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_suggest_faq_answers(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_suggest_knowledge_assist(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_suggest_knowledge_assist(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_suggest_smart_replies(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_suggest_smart_replies(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_update_participant(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_update_participant(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-        transport = ParticipantsRestTransport(interceptor=MyCustomParticipantsInterceptor())
-        client = ParticipantsClient(transport=transport)
+        transport = GeneratorsRestTransport(interceptor=MyCustomGeneratorsInterceptor())
+        client = GeneratorsClient(transport=transport)
 
 
     """
 
-    def pre_analyze_content(
+    def pre_create_generator(
         self,
-        request: gcd_participant.AnalyzeContentRequest,
+        request: gcd_generator.CreateGeneratorRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcd_participant.AnalyzeContentRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for analyze_content
+    ) -> Tuple[gcd_generator.CreateGeneratorRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_generator
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
+        before they are sent to the Generators server.
         """
         return request, metadata
 
-    def post_analyze_content(
-        self, response: gcd_participant.AnalyzeContentResponse
-    ) -> gcd_participant.AnalyzeContentResponse:
-        """Post-rpc interceptor for analyze_content
+    def post_create_generator(
+        self, response: gcd_generator.Generator
+    ) -> gcd_generator.Generator:
+        """Post-rpc interceptor for create_generator
 
         Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
+        after it is returned by the Generators server but before
         it is returned to user code.
         """
         return response
 
-    def pre_create_participant(
+    def pre_delete_generator(
         self,
-        request: gcd_participant.CreateParticipantRequest,
+        request: generator.DeleteGeneratorRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcd_participant.CreateParticipantRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for create_participant
+    ) -> Tuple[generator.DeleteGeneratorRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_generator
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
+        before they are sent to the Generators server.
         """
         return request, metadata
 
-    def post_create_participant(
-        self, response: gcd_participant.Participant
-    ) -> gcd_participant.Participant:
-        """Post-rpc interceptor for create_participant
+    def pre_get_generator(
+        self,
+        request: generator.GetGeneratorRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[generator.GetGeneratorRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_generator
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Generators server.
+        """
+        return request, metadata
+
+    def post_get_generator(self, response: generator.Generator) -> generator.Generator:
+        """Post-rpc interceptor for get_generator
 
         Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
+        after it is returned by the Generators server but before
         it is returned to user code.
         """
         return response
 
-    def pre_get_participant(
+    def pre_list_generators(
         self,
-        request: participant.GetParticipantRequest,
+        request: generator.ListGeneratorsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[participant.GetParticipantRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for get_participant
+    ) -> Tuple[generator.ListGeneratorsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_generators
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
+        before they are sent to the Generators server.
         """
         return request, metadata
 
-    def post_get_participant(
-        self, response: participant.Participant
-    ) -> participant.Participant:
-        """Post-rpc interceptor for get_participant
+    def post_list_generators(
+        self, response: generator.ListGeneratorsResponse
+    ) -> generator.ListGeneratorsResponse:
+        """Post-rpc interceptor for list_generators
 
         Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
+        after it is returned by the Generators server but before
         it is returned to user code.
         """
         return response
 
-    def pre_list_participants(
+    def pre_update_generator(
         self,
-        request: participant.ListParticipantsRequest,
+        request: gcd_generator.UpdateGeneratorRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[participant.ListParticipantsRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for list_participants
+    ) -> Tuple[gcd_generator.UpdateGeneratorRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_generator
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
+        before they are sent to the Generators server.
         """
         return request, metadata
 
-    def post_list_participants(
-        self, response: participant.ListParticipantsResponse
-    ) -> participant.ListParticipantsResponse:
-        """Post-rpc interceptor for list_participants
+    def post_update_generator(
+        self, response: gcd_generator.Generator
+    ) -> gcd_generator.Generator:
+        """Post-rpc interceptor for update_generator
 
         Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_suggest_articles(
-        self,
-        request: participant.SuggestArticlesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[participant.SuggestArticlesRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for suggest_articles
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
-        """
-        return request, metadata
-
-    def post_suggest_articles(
-        self, response: participant.SuggestArticlesResponse
-    ) -> participant.SuggestArticlesResponse:
-        """Post-rpc interceptor for suggest_articles
-
-        Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_suggest_faq_answers(
-        self,
-        request: participant.SuggestFaqAnswersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[participant.SuggestFaqAnswersRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for suggest_faq_answers
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
-        """
-        return request, metadata
-
-    def post_suggest_faq_answers(
-        self, response: participant.SuggestFaqAnswersResponse
-    ) -> participant.SuggestFaqAnswersResponse:
-        """Post-rpc interceptor for suggest_faq_answers
-
-        Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_suggest_knowledge_assist(
-        self,
-        request: participant.SuggestKnowledgeAssistRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[participant.SuggestKnowledgeAssistRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for suggest_knowledge_assist
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
-        """
-        return request, metadata
-
-    def post_suggest_knowledge_assist(
-        self, response: participant.SuggestKnowledgeAssistResponse
-    ) -> participant.SuggestKnowledgeAssistResponse:
-        """Post-rpc interceptor for suggest_knowledge_assist
-
-        Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_suggest_smart_replies(
-        self,
-        request: participant.SuggestSmartRepliesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[participant.SuggestSmartRepliesRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for suggest_smart_replies
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
-        """
-        return request, metadata
-
-    def post_suggest_smart_replies(
-        self, response: participant.SuggestSmartRepliesResponse
-    ) -> participant.SuggestSmartRepliesResponse:
-        """Post-rpc interceptor for suggest_smart_replies
-
-        Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_update_participant(
-        self,
-        request: gcd_participant.UpdateParticipantRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcd_participant.UpdateParticipantRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for update_participant
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
-        """
-        return request, metadata
-
-    def post_update_participant(
-        self, response: gcd_participant.Participant
-    ) -> gcd_participant.Participant:
-        """Post-rpc interceptor for update_participant
-
-        Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
+        after it is returned by the Generators server but before
         it is returned to user code.
         """
         return response
@@ -360,7 +220,7 @@ class ParticipantsRestInterceptor:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
+        before they are sent to the Generators server.
         """
         return request, metadata
 
@@ -370,7 +230,7 @@ class ParticipantsRestInterceptor:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
+        after it is returned by the Generators server but before
         it is returned to user code.
         """
         return response
@@ -383,7 +243,7 @@ class ParticipantsRestInterceptor:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
+        before they are sent to the Generators server.
         """
         return request, metadata
 
@@ -393,7 +253,7 @@ class ParticipantsRestInterceptor:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
+        after it is returned by the Generators server but before
         it is returned to user code.
         """
         return response
@@ -406,7 +266,7 @@ class ParticipantsRestInterceptor:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
+        before they are sent to the Generators server.
         """
         return request, metadata
 
@@ -414,7 +274,7 @@ class ParticipantsRestInterceptor:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
+        after it is returned by the Generators server but before
         it is returned to user code.
         """
         return response
@@ -427,7 +287,7 @@ class ParticipantsRestInterceptor:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
+        before they are sent to the Generators server.
         """
         return request, metadata
 
@@ -437,7 +297,7 @@ class ParticipantsRestInterceptor:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
+        after it is returned by the Generators server but before
         it is returned to user code.
         """
         return response
@@ -450,7 +310,7 @@ class ParticipantsRestInterceptor:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Participants server.
+        before they are sent to the Generators server.
         """
         return request, metadata
 
@@ -460,24 +320,27 @@ class ParticipantsRestInterceptor:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
-        after it is returned by the Participants server but before
+        after it is returned by the Generators server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class ParticipantsRestStub:
+class GeneratorsRestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: ParticipantsRestInterceptor
+    _interceptor: GeneratorsRestInterceptor
 
 
-class ParticipantsRestTransport(ParticipantsTransport):
-    """REST backend transport for Participants.
+class GeneratorsRestTransport(GeneratorsTransport):
+    """REST backend transport for Generators.
 
-    Service for managing
-    [Participants][google.cloud.dialogflow.v2.Participant].
+    Generator Service for LLM powered Agent Assist. This service
+    manages the configurations of user owned Generators, such as
+    description, context and instruction, input/output format, etc.
+    The generator resources will be used inside a conversation and
+    will be triggered by TriggerEvent to query LLM for answers.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -499,7 +362,7 @@ class ParticipantsRestTransport(ParticipantsTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[ParticipantsRestInterceptor] = None,
+        interceptor: Optional[GeneratorsRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -560,12 +423,12 @@ class ParticipantsRestTransport(ParticipantsTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or ParticipantsRestInterceptor()
+        self._interceptor = interceptor or GeneratorsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AnalyzeContent(ParticipantsRestStub):
+    class _CreateGenerator(GeneratorsRestStub):
         def __hash__(self):
-            return hash("AnalyzeContent")
+            return hash("CreateGenerator")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -579,18 +442,17 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
         def __call__(
             self,
-            request: gcd_participant.AnalyzeContentRequest,
+            request: gcd_generator.CreateGeneratorRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> gcd_participant.AnalyzeContentResponse:
-            r"""Call the analyze content method over HTTP.
+        ) -> gcd_generator.Generator:
+            r"""Call the create generator method over HTTP.
 
             Args:
-                request (~.gcd_participant.AnalyzeContentRequest):
-                    The request object. The request message for
-                [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent].
+                request (~.gcd_generator.CreateGeneratorRequest):
+                    The request object. Request message of CreateGenerator.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -598,128 +460,26 @@ class ParticipantsRestTransport(ParticipantsTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.gcd_participant.AnalyzeContentResponse:
-                    The response message for
-                [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent].
-
+                ~.gcd_generator.Generator:
+                    LLM generator.
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v2/{participant=projects/*/conversations/*/participants/*}:analyzeContent",
-                    "body": "*",
+                    "uri": "/v2/{parent=projects/*/locations/*}/generators",
+                    "body": "generator",
                 },
                 {
                     "method": "post",
-                    "uri": "/v2/{participant=projects/*/locations/*/conversations/*/participants/*}:analyzeContent",
-                    "body": "*",
+                    "uri": "/v2/{parent=projects/*}/generators",
+                    "body": "generator",
                 },
             ]
-            request, metadata = self._interceptor.pre_analyze_content(request, metadata)
-            pb_request = gcd_participant.AnalyzeContentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = gcd_participant.AnalyzeContentResponse()
-            pb_resp = gcd_participant.AnalyzeContentResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_analyze_content(resp)
-            return resp
-
-    class _CreateParticipant(ParticipantsRestStub):
-        def __hash__(self):
-            return hash("CreateParticipant")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: gcd_participant.CreateParticipantRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> gcd_participant.Participant:
-            r"""Call the create participant method over HTTP.
-
-            Args:
-                request (~.gcd_participant.CreateParticipantRequest):
-                    The request object. The request message for
-                [Participants.CreateParticipant][google.cloud.dialogflow.v2.Participants.CreateParticipant].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.gcd_participant.Participant:
-                    Represents a conversation participant
-                (human agent, virtual agent, end-user).
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/conversations/*}/participants",
-                    "body": "participant",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*/conversations/*}/participants",
-                    "body": "participant",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_participant(
+            request, metadata = self._interceptor.pre_create_generator(
                 request, metadata
             )
-            pb_request = gcd_participant.CreateParticipantRequest.pb(request)
+            pb_request = gcd_generator.CreateGeneratorRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -758,16 +518,16 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcd_participant.Participant()
-            pb_resp = gcd_participant.Participant.pb(resp)
+            resp = gcd_generator.Generator()
+            pb_resp = gcd_generator.Generator.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_create_participant(resp)
+            resp = self._interceptor.post_create_generator(resp)
             return resp
 
-    class _GetParticipant(ParticipantsRestStub):
+    class _DeleteGenerator(GeneratorsRestStub):
         def __hash__(self):
-            return hash("GetParticipant")
+            return hash("DeleteGenerator")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -781,18 +541,92 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
         def __call__(
             self,
-            request: participant.GetParticipantRequest,
+            request: generator.DeleteGeneratorRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> participant.Participant:
-            r"""Call the get participant method over HTTP.
+        ):
+            r"""Call the delete generator method over HTTP.
 
             Args:
-                request (~.participant.GetParticipantRequest):
-                    The request object. The request message for
-                [Participants.GetParticipant][google.cloud.dialogflow.v2.Participants.GetParticipant].
+                request (~.generator.DeleteGeneratorRequest):
+                    The request object. Request of DeleteGenerator.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=projects/*/locations/*/generators/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_generator(
+                request, metadata
+            )
+            pb_request = generator.DeleteGeneratorRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _GetGenerator(GeneratorsRestStub):
+        def __hash__(self):
+            return hash("GetGenerator")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: generator.GetGeneratorRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> generator.Generator:
+            r"""Call the get generator method over HTTP.
+
+            Args:
+                request (~.generator.GetGeneratorRequest):
+                    The request object. Request message of GetGenerator.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -800,24 +634,18 @@ class ParticipantsRestTransport(ParticipantsTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.participant.Participant:
-                    Represents a conversation participant
-                (human agent, virtual agent, end-user).
-
+                ~.generator.Generator:
+                    LLM generator.
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v2/{name=projects/*/conversations/*/participants/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/conversations/*/participants/*}",
+                    "uri": "/v2/{name=projects/*/locations/*/generators/*}",
                 },
             ]
-            request, metadata = self._interceptor.pre_get_participant(request, metadata)
-            pb_request = participant.GetParticipantRequest.pb(request)
+            request, metadata = self._interceptor.pre_get_generator(request, metadata)
+            pb_request = generator.GetGeneratorRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -850,16 +678,16 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = participant.Participant()
-            pb_resp = participant.Participant.pb(resp)
+            resp = generator.Generator()
+            pb_resp = generator.Generator.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_get_participant(resp)
+            resp = self._interceptor.post_get_generator(resp)
             return resp
 
-    class _ListParticipants(ParticipantsRestStub):
+    class _ListGenerators(GeneratorsRestStub):
         def __hash__(self):
-            return hash("ListParticipants")
+            return hash("ListGenerators")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -873,18 +701,17 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
         def __call__(
             self,
-            request: participant.ListParticipantsRequest,
+            request: generator.ListGeneratorsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> participant.ListParticipantsResponse:
-            r"""Call the list participants method over HTTP.
+        ) -> generator.ListGeneratorsResponse:
+            r"""Call the list generators method over HTTP.
 
             Args:
-                request (~.participant.ListParticipantsRequest):
-                    The request object. The request message for
-                [Participants.ListParticipants][google.cloud.dialogflow.v2.Participants.ListParticipants].
+                request (~.generator.ListGeneratorsRequest):
+                    The request object. Request message of ListGenerators.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -892,26 +719,22 @@ class ParticipantsRestTransport(ParticipantsTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.participant.ListParticipantsResponse:
-                    The response message for
-                [Participants.ListParticipants][google.cloud.dialogflow.v2.Participants.ListParticipants].
-
+                ~.generator.ListGeneratorsResponse:
+                    Response of ListGenerators.
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v2/{parent=projects/*/conversations/*}/participants",
+                    "uri": "/v2/{parent=projects/*/locations/*}/generators",
                 },
                 {
                     "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*/conversations/*}/participants",
+                    "uri": "/v2/{parent=projects/*}/generators",
                 },
             ]
-            request, metadata = self._interceptor.pre_list_participants(
-                request, metadata
-            )
-            pb_request = participant.ListParticipantsRequest.pb(request)
+            request, metadata = self._interceptor.pre_list_generators(request, metadata)
+            pb_request = generator.ListGeneratorsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -944,32 +767,16 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = participant.ListParticipantsResponse()
-            pb_resp = participant.ListParticipantsResponse.pb(resp)
+            resp = generator.ListGeneratorsResponse()
+            pb_resp = generator.ListGeneratorsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_list_participants(resp)
+            resp = self._interceptor.post_list_generators(resp)
             return resp
 
-    class _StreamingAnalyzeContent(ParticipantsRestStub):
+    class _UpdateGenerator(GeneratorsRestStub):
         def __hash__(self):
-            return hash("StreamingAnalyzeContent")
-
-        def __call__(
-            self,
-            request: participant.StreamingAnalyzeContentRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> rest_streaming.ResponseIterator:
-            raise NotImplementedError(
-                "Method StreamingAnalyzeContent is not available over REST transport"
-            )
-
-    class _SuggestArticles(ParticipantsRestStub):
-        def __hash__(self):
-            return hash("SuggestArticles")
+            return hash("UpdateGenerator")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -983,18 +790,17 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
         def __call__(
             self,
-            request: participant.SuggestArticlesRequest,
+            request: gcd_generator.UpdateGeneratorRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> participant.SuggestArticlesResponse:
-            r"""Call the suggest articles method over HTTP.
+        ) -> gcd_generator.Generator:
+            r"""Call the update generator method over HTTP.
 
             Args:
-                request (~.participant.SuggestArticlesRequest):
-                    The request object. The request message for
-                [Participants.SuggestArticles][google.cloud.dialogflow.v2.Participants.SuggestArticles].
+                request (~.gcd_generator.UpdateGeneratorRequest):
+                    The request object. Request of UpdateGenerator.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1002,438 +808,21 @@ class ParticipantsRestTransport(ParticipantsTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.participant.SuggestArticlesResponse:
-                    The response message for
-                [Participants.SuggestArticles][google.cloud.dialogflow.v2.Participants.SuggestArticles].
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/conversations/*/participants/*}/suggestions:suggestArticles",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*/conversations/*/participants/*}/suggestions:suggestArticles",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_suggest_articles(
-                request, metadata
-            )
-            pb_request = participant.SuggestArticlesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = participant.SuggestArticlesResponse()
-            pb_resp = participant.SuggestArticlesResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_suggest_articles(resp)
-            return resp
-
-    class _SuggestFaqAnswers(ParticipantsRestStub):
-        def __hash__(self):
-            return hash("SuggestFaqAnswers")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: participant.SuggestFaqAnswersRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> participant.SuggestFaqAnswersResponse:
-            r"""Call the suggest faq answers method over HTTP.
-
-            Args:
-                request (~.participant.SuggestFaqAnswersRequest):
-                    The request object. The request message for
-                [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2.Participants.SuggestFaqAnswers].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.participant.SuggestFaqAnswersResponse:
-                    The request message for
-                [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2.Participants.SuggestFaqAnswers].
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/conversations/*/participants/*}/suggestions:suggestFaqAnswers",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*/conversations/*/participants/*}/suggestions:suggestFaqAnswers",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_suggest_faq_answers(
-                request, metadata
-            )
-            pb_request = participant.SuggestFaqAnswersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = participant.SuggestFaqAnswersResponse()
-            pb_resp = participant.SuggestFaqAnswersResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_suggest_faq_answers(resp)
-            return resp
-
-    class _SuggestKnowledgeAssist(ParticipantsRestStub):
-        def __hash__(self):
-            return hash("SuggestKnowledgeAssist")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: participant.SuggestKnowledgeAssistRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> participant.SuggestKnowledgeAssistResponse:
-            r"""Call the suggest knowledge assist method over HTTP.
-
-            Args:
-                request (~.participant.SuggestKnowledgeAssistRequest):
-                    The request object. The request message for
-                [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2.Participants.SuggestKnowledgeAssist].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.participant.SuggestKnowledgeAssistResponse:
-                    The response message for
-                [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2.Participants.SuggestKnowledgeAssist].
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/conversations/*/participants/*}/suggestions:suggestKnowledgeAssist",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*/conversations/*/participants/*}/suggestions:suggestKnowledgeAssist",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_suggest_knowledge_assist(
-                request, metadata
-            )
-            pb_request = participant.SuggestKnowledgeAssistRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = participant.SuggestKnowledgeAssistResponse()
-            pb_resp = participant.SuggestKnowledgeAssistResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_suggest_knowledge_assist(resp)
-            return resp
-
-    class _SuggestSmartReplies(ParticipantsRestStub):
-        def __hash__(self):
-            return hash("SuggestSmartReplies")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: participant.SuggestSmartRepliesRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> participant.SuggestSmartRepliesResponse:
-            r"""Call the suggest smart replies method over HTTP.
-
-            Args:
-                request (~.participant.SuggestSmartRepliesRequest):
-                    The request object. The request message for
-                [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.participant.SuggestSmartRepliesResponse:
-                    The response message for
-                [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/conversations/*/participants/*}/suggestions:suggestSmartReplies",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*/conversations/*/participants/*}/suggestions:suggestSmartReplies",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_suggest_smart_replies(
-                request, metadata
-            )
-            pb_request = participant.SuggestSmartRepliesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = participant.SuggestSmartRepliesResponse()
-            pb_resp = participant.SuggestSmartRepliesResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_suggest_smart_replies(resp)
-            return resp
-
-    class _UpdateParticipant(ParticipantsRestStub):
-        def __hash__(self):
-            return hash("UpdateParticipant")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: gcd_participant.UpdateParticipantRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> gcd_participant.Participant:
-            r"""Call the update participant method over HTTP.
-
-            Args:
-                request (~.gcd_participant.UpdateParticipantRequest):
-                    The request object. The request message for
-                [Participants.UpdateParticipant][google.cloud.dialogflow.v2.Participants.UpdateParticipant].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.gcd_participant.Participant:
-                    Represents a conversation participant
-                (human agent, virtual agent, end-user).
-
+                ~.gcd_generator.Generator:
+                    LLM generator.
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/v2/{participant.name=projects/*/conversations/*/participants/*}",
-                    "body": "participant",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{participant.name=projects/*/locations/*/conversations/*/participants/*}",
-                    "body": "participant",
+                    "uri": "/v2/{generator.name=projects/*/locations/*/generators/*}",
+                    "body": "generator",
                 },
             ]
-            request, metadata = self._interceptor.pre_update_participant(
+            request, metadata = self._interceptor.pre_update_generator(
                 request, metadata
             )
-            pb_request = gcd_participant.UpdateParticipantRequest.pb(request)
+            pb_request = gcd_generator.UpdateGeneratorRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -1472,119 +861,58 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcd_participant.Participant()
-            pb_resp = gcd_participant.Participant.pb(resp)
+            resp = gcd_generator.Generator()
+            pb_resp = gcd_generator.Generator.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_update_participant(resp)
+            resp = self._interceptor.post_update_generator(resp)
             return resp
 
     @property
-    def analyze_content(
+    def create_generator(
         self,
-    ) -> Callable[
-        [gcd_participant.AnalyzeContentRequest], gcd_participant.AnalyzeContentResponse
-    ]:
+    ) -> Callable[[gcd_generator.CreateGeneratorRequest], gcd_generator.Generator]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AnalyzeContent(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateGenerator(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_participant(
+    def delete_generator(
         self,
-    ) -> Callable[
-        [gcd_participant.CreateParticipantRequest], gcd_participant.Participant
-    ]:
+    ) -> Callable[[generator.DeleteGeneratorRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateParticipant(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteGenerator(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_participant(
+    def get_generator(
         self,
-    ) -> Callable[[participant.GetParticipantRequest], participant.Participant]:
+    ) -> Callable[[generator.GetGeneratorRequest], generator.Generator]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetParticipant(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetGenerator(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_participants(
+    def list_generators(
         self,
-    ) -> Callable[
-        [participant.ListParticipantsRequest], participant.ListParticipantsResponse
-    ]:
+    ) -> Callable[[generator.ListGeneratorsRequest], generator.ListGeneratorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListParticipants(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListGenerators(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def streaming_analyze_content(
+    def update_generator(
         self,
-    ) -> Callable[
-        [participant.StreamingAnalyzeContentRequest],
-        participant.StreamingAnalyzeContentResponse,
-    ]:
+    ) -> Callable[[gcd_generator.UpdateGeneratorRequest], gcd_generator.Generator]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._StreamingAnalyzeContent(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def suggest_articles(
-        self,
-    ) -> Callable[
-        [participant.SuggestArticlesRequest], participant.SuggestArticlesResponse
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._SuggestArticles(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def suggest_faq_answers(
-        self,
-    ) -> Callable[
-        [participant.SuggestFaqAnswersRequest], participant.SuggestFaqAnswersResponse
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._SuggestFaqAnswers(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def suggest_knowledge_assist(
-        self,
-    ) -> Callable[
-        [participant.SuggestKnowledgeAssistRequest],
-        participant.SuggestKnowledgeAssistResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._SuggestKnowledgeAssist(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def suggest_smart_replies(
-        self,
-    ) -> Callable[
-        [participant.SuggestSmartRepliesRequest],
-        participant.SuggestSmartRepliesResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._SuggestSmartReplies(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def update_participant(
-        self,
-    ) -> Callable[
-        [gcd_participant.UpdateParticipantRequest], gcd_participant.Participant
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._UpdateParticipant(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateGenerator(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(ParticipantsRestStub):
+    class _GetLocation(GeneratorsRestStub):
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -1650,7 +978,7 @@ class ParticipantsRestTransport(ParticipantsTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(ParticipantsRestStub):
+    class _ListLocations(GeneratorsRestStub):
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -1716,7 +1044,7 @@ class ParticipantsRestTransport(ParticipantsTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(ParticipantsRestStub):
+    class _CancelOperation(GeneratorsRestStub):
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -1782,7 +1110,7 @@ class ParticipantsRestTransport(ParticipantsTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(ParticipantsRestStub):
+    class _GetOperation(GeneratorsRestStub):
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -1852,7 +1180,7 @@ class ParticipantsRestTransport(ParticipantsTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(ParticipantsRestStub):
+    class _ListOperations(GeneratorsRestStub):
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -1926,4 +1254,4 @@ class ParticipantsRestTransport(ParticipantsTransport):
         self._session.close()
 
 
-__all__ = ("ParticipantsRestTransport",)
+__all__ = ("GeneratorsRestTransport",)

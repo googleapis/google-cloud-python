@@ -679,6 +679,29 @@ class SpeechToTextConfig(proto.Message):
             Leave this field unspecified to use `Agent Speech
             settings <https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech>`__
             for model selection.
+        audio_encoding (google.cloud.dialogflow_v2.types.AudioEncoding):
+            Audio encoding of the audio content to
+            process.
+        sample_rate_hertz (int):
+            Sample rate (in Hertz) of the audio content sent in the
+            query. Refer to `Cloud Speech API
+            documentation <https://cloud.google.com/speech-to-text/docs/basics>`__
+            for more details.
+        language_code (str):
+            The language of the supplied audio. Dialogflow does not do
+            translations. See `Language
+            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            for a list of the currently supported language codes. Note
+            that queries in the same session do not necessarily need to
+            specify the same language.
+        enable_word_info (bool):
+            If ``true``, Dialogflow returns
+            [SpeechWordInfo][google.cloud.dialogflow.v2.SpeechWordInfo]
+            in
+            [StreamingRecognitionResult][google.cloud.dialogflow.v2.StreamingRecognitionResult]
+            with information about the recognized speech words, e.g.
+            start and end time offsets. If false or unspecified, Speech
+            doesn't return any word-level information.
         use_timeout_based_endpointing (bool):
             Use timeout based endpointing, interpreting
             endpointer sensitivy as seconds of timeout
@@ -693,6 +716,23 @@ class SpeechToTextConfig(proto.Message):
     model: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    audio_encoding: "AudioEncoding" = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="AudioEncoding",
+    )
+    sample_rate_hertz: int = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    enable_word_info: bool = proto.Field(
+        proto.BOOL,
+        number=9,
     )
     use_timeout_based_endpointing: bool = proto.Field(
         proto.BOOL,

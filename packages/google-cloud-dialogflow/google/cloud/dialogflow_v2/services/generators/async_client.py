@@ -45,89 +45,54 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.dialogflow_v2.services.conversations import pagers
-from google.cloud.dialogflow_v2.types import conversation
-from google.cloud.dialogflow_v2.types import conversation as gcd_conversation
-from google.cloud.dialogflow_v2.types import generator, participant
+from google.cloud.dialogflow_v2.services.generators import pagers
+from google.cloud.dialogflow_v2.types import generator
+from google.cloud.dialogflow_v2.types import generator as gcd_generator
 
-from .client import ConversationsClient
-from .transports.base import DEFAULT_CLIENT_INFO, ConversationsTransport
-from .transports.grpc_asyncio import ConversationsGrpcAsyncIOTransport
+from .client import GeneratorsClient
+from .transports.base import DEFAULT_CLIENT_INFO, GeneratorsTransport
+from .transports.grpc_asyncio import GeneratorsGrpcAsyncIOTransport
 
 
-class ConversationsAsyncClient:
-    """Service for managing
-    [Conversations][google.cloud.dialogflow.v2.Conversation].
+class GeneratorsAsyncClient:
+    """Generator Service for LLM powered Agent Assist. This service
+    manages the configurations of user owned Generators, such as
+    description, context and instruction, input/output format, etc.
+    The generator resources will be used inside a conversation and
+    will be triggered by TriggerEvent to query LLM for answers.
     """
 
-    _client: ConversationsClient
+    _client: GeneratorsClient
 
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = ConversationsClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = ConversationsClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = ConversationsClient._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = ConversationsClient._DEFAULT_UNIVERSE
+    DEFAULT_ENDPOINT = GeneratorsClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = GeneratorsClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = GeneratorsClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = GeneratorsClient._DEFAULT_UNIVERSE
 
-    agent_path = staticmethod(ConversationsClient.agent_path)
-    parse_agent_path = staticmethod(ConversationsClient.parse_agent_path)
-    answer_record_path = staticmethod(ConversationsClient.answer_record_path)
-    parse_answer_record_path = staticmethod(
-        ConversationsClient.parse_answer_record_path
-    )
-    conversation_path = staticmethod(ConversationsClient.conversation_path)
-    parse_conversation_path = staticmethod(ConversationsClient.parse_conversation_path)
-    conversation_model_path = staticmethod(ConversationsClient.conversation_model_path)
-    parse_conversation_model_path = staticmethod(
-        ConversationsClient.parse_conversation_model_path
-    )
-    conversation_profile_path = staticmethod(
-        ConversationsClient.conversation_profile_path
-    )
-    parse_conversation_profile_path = staticmethod(
-        ConversationsClient.parse_conversation_profile_path
-    )
-    cx_security_settings_path = staticmethod(
-        ConversationsClient.cx_security_settings_path
-    )
-    parse_cx_security_settings_path = staticmethod(
-        ConversationsClient.parse_cx_security_settings_path
-    )
-    document_path = staticmethod(ConversationsClient.document_path)
-    parse_document_path = staticmethod(ConversationsClient.parse_document_path)
-    generator_path = staticmethod(ConversationsClient.generator_path)
-    parse_generator_path = staticmethod(ConversationsClient.parse_generator_path)
-    knowledge_base_path = staticmethod(ConversationsClient.knowledge_base_path)
-    parse_knowledge_base_path = staticmethod(
-        ConversationsClient.parse_knowledge_base_path
-    )
-    message_path = staticmethod(ConversationsClient.message_path)
-    parse_message_path = staticmethod(ConversationsClient.parse_message_path)
+    generator_path = staticmethod(GeneratorsClient.generator_path)
+    parse_generator_path = staticmethod(GeneratorsClient.parse_generator_path)
     common_billing_account_path = staticmethod(
-        ConversationsClient.common_billing_account_path
+        GeneratorsClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        ConversationsClient.parse_common_billing_account_path
+        GeneratorsClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(ConversationsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ConversationsClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ConversationsClient.common_organization_path
-    )
+    common_folder_path = staticmethod(GeneratorsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(GeneratorsClient.parse_common_folder_path)
+    common_organization_path = staticmethod(GeneratorsClient.common_organization_path)
     parse_common_organization_path = staticmethod(
-        ConversationsClient.parse_common_organization_path
+        GeneratorsClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(ConversationsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ConversationsClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(ConversationsClient.common_location_path)
+    common_project_path = staticmethod(GeneratorsClient.common_project_path)
+    parse_common_project_path = staticmethod(GeneratorsClient.parse_common_project_path)
+    common_location_path = staticmethod(GeneratorsClient.common_location_path)
     parse_common_location_path = staticmethod(
-        ConversationsClient.parse_common_location_path
+        GeneratorsClient.parse_common_location_path
     )
 
     @classmethod
@@ -141,9 +106,9 @@ class ConversationsAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ConversationsAsyncClient: The constructed client.
+            GeneratorsAsyncClient: The constructed client.
         """
-        return ConversationsClient.from_service_account_info.__func__(ConversationsAsyncClient, info, *args, **kwargs)  # type: ignore
+        return GeneratorsClient.from_service_account_info.__func__(GeneratorsAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -157,9 +122,9 @@ class ConversationsAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ConversationsAsyncClient: The constructed client.
+            GeneratorsAsyncClient: The constructed client.
         """
-        return ConversationsClient.from_service_account_file.__func__(ConversationsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return GeneratorsClient.from_service_account_file.__func__(GeneratorsAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -197,14 +162,14 @@ class ConversationsAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return ConversationsClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return GeneratorsClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
-    def transport(self) -> ConversationsTransport:
+    def transport(self) -> GeneratorsTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            ConversationsTransport: The transport used by the client instance.
+            GeneratorsTransport: The transport used by the client instance.
         """
         return self._client.transport
 
@@ -228,7 +193,7 @@ class ConversationsAsyncClient:
         return self._client._universe_domain
 
     get_transport_class = functools.partial(
-        type(ConversationsClient).get_transport_class, type(ConversationsClient)
+        type(GeneratorsClient).get_transport_class, type(GeneratorsClient)
     )
 
     def __init__(
@@ -236,12 +201,12 @@ class ConversationsAsyncClient:
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[str, ConversationsTransport, Callable[..., ConversationsTransport]]
+            Union[str, GeneratorsTransport, Callable[..., GeneratorsTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the conversations async client.
+        """Instantiates the generators async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -249,10 +214,10 @@ class ConversationsAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,ConversationsTransport,Callable[..., ConversationsTransport]]]):
+            transport (Optional[Union[str,GeneratorsTransport,Callable[..., GeneratorsTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the ConversationsTransport constructor.
+                arguments as used in the GeneratorsTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -290,46 +255,25 @@ class ConversationsAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = ConversationsClient(
+        self._client = GeneratorsClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
             client_info=client_info,
         )
 
-    async def create_conversation(
+    async def create_generator(
         self,
-        request: Optional[
-            Union[gcd_conversation.CreateConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[gcd_generator.CreateGeneratorRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        conversation: Optional[gcd_conversation.Conversation] = None,
+        generator: Optional[gcd_generator.Generator] = None,
+        generator_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcd_conversation.Conversation:
-        r"""Creates a new conversation. Conversations are auto-completed
-        after 24 hours.
-
-        Conversation Lifecycle: There are two stages during a
-        conversation: Automated Agent Stage and Assist Stage.
-
-        For Automated Agent Stage, there will be a dialogflow agent
-        responding to user queries.
-
-        For Assist Stage, there's no dialogflow agent responding to user
-        queries. But we will provide suggestions which are generated
-        from conversation.
-
-        If
-        [Conversation.conversation_profile][google.cloud.dialogflow.v2.Conversation.conversation_profile]
-        is configured for a dialogflow agent, conversation will start
-        from ``Automated Agent Stage``, otherwise, it will start from
-        ``Assist Stage``. And during ``Automated Agent Stage``, once an
-        [Intent][google.cloud.dialogflow.v2.Intent] with
-        [Intent.live_agent_handoff][google.cloud.dialogflow.v2.Intent.live_agent_handoff]
-        is triggered, conversation will transfer to Assist Stage.
+    ) -> gcd_generator.Generator:
+        r"""Creates a generator.
 
         .. code-block:: python
 
@@ -342,632 +286,54 @@ class ConversationsAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2
 
-            async def sample_create_conversation():
+            async def sample_create_generator():
                 # Create a client
-                client = dialogflow_v2.ConversationsAsyncClient()
+                client = dialogflow_v2.GeneratorsAsyncClient()
 
                 # Initialize request argument(s)
-                conversation = dialogflow_v2.Conversation()
-                conversation.conversation_profile = "conversation_profile_value"
-
-                request = dialogflow_v2.CreateConversationRequest(
-                    parent="parent_value",
-                    conversation=conversation,
-                )
-
-                # Make the request
-                response = await client.create_conversation(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.dialogflow_v2.types.CreateConversationRequest, dict]]):
-                The request object. The request message for
-                [Conversations.CreateConversation][google.cloud.dialogflow.v2.Conversations.CreateConversation].
-            parent (:class:`str`):
-                Required. Resource identifier of the project creating
-                the conversation. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            conversation (:class:`google.cloud.dialogflow_v2.types.Conversation`):
-                Required. The conversation to create.
-                This corresponds to the ``conversation`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.dialogflow_v2.types.Conversation:
-                Represents a conversation.
-                A conversation is an interaction between
-                an agent, including live agents and
-                Dialogflow agents, and a support
-                customer. Conversations can include
-                phone calls and text-based chat
-                sessions.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, conversation])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, gcd_conversation.CreateConversationRequest):
-            request = gcd_conversation.CreateConversationRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-        if conversation is not None:
-            request.conversation = conversation
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_conversation
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def list_conversations(
-        self,
-        request: Optional[Union[conversation.ListConversationsRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListConversationsAsyncPager:
-        r"""Returns the list of all conversations in the
-        specified project.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dialogflow_v2
-
-            async def sample_list_conversations():
-                # Create a client
-                client = dialogflow_v2.ConversationsAsyncClient()
-
-                # Initialize request argument(s)
-                request = dialogflow_v2.ListConversationsRequest(
+                request = dialogflow_v2.CreateGeneratorRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_conversations(request=request)
+                response = await client.create_generator(request=request)
 
                 # Handle the response
-                async for response in page_result:
-                    print(response)
+                print(response)
 
         Args:
-            request (Optional[Union[google.cloud.dialogflow_v2.types.ListConversationsRequest, dict]]):
-                The request object. The request message for
-                [Conversations.ListConversations][google.cloud.dialogflow.v2.Conversations.ListConversations].
+            request (Optional[Union[google.cloud.dialogflow_v2.types.CreateGeneratorRequest, dict]]):
+                The request object. Request message of CreateGenerator.
             parent (:class:`str`):
-                Required. The project from which to list all
-                conversation. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.dialogflow_v2.services.conversations.pagers.ListConversationsAsyncPager:
-                The response message for
-                   [Conversations.ListConversations][google.cloud.dialogflow.v2.Conversations.ListConversations].
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, conversation.ListConversationsRequest):
-            request = conversation.ListConversationsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_conversations
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListConversationsAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_conversation(
-        self,
-        request: Optional[Union[conversation.GetConversationRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> conversation.Conversation:
-        r"""Retrieves the specific conversation.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dialogflow_v2
-
-            async def sample_get_conversation():
-                # Create a client
-                client = dialogflow_v2.ConversationsAsyncClient()
-
-                # Initialize request argument(s)
-                request = dialogflow_v2.GetConversationRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_conversation(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.dialogflow_v2.types.GetConversationRequest, dict]]):
-                The request object. The request message for
-                [Conversations.GetConversation][google.cloud.dialogflow.v2.Conversations.GetConversation].
-            name (:class:`str`):
-                Required. The name of the conversation. Format:
-                ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.dialogflow_v2.types.Conversation:
-                Represents a conversation.
-                A conversation is an interaction between
-                an agent, including live agents and
-                Dialogflow agents, and a support
-                customer. Conversations can include
-                phone calls and text-based chat
-                sessions.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, conversation.GetConversationRequest):
-            request = conversation.GetConversationRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_conversation
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def complete_conversation(
-        self,
-        request: Optional[Union[conversation.CompleteConversationRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> conversation.Conversation:
-        r"""Completes the specified conversation. Finished
-        conversations are purged from the database after 30
-        days.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dialogflow_v2
-
-            async def sample_complete_conversation():
-                # Create a client
-                client = dialogflow_v2.ConversationsAsyncClient()
-
-                # Initialize request argument(s)
-                request = dialogflow_v2.CompleteConversationRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.complete_conversation(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.dialogflow_v2.types.CompleteConversationRequest, dict]]):
-                The request object. The request message for
-                [Conversations.CompleteConversation][google.cloud.dialogflow.v2.Conversations.CompleteConversation].
-            name (:class:`str`):
-                Required. Resource identifier of the conversation to
-                close. Format:
-                ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.dialogflow_v2.types.Conversation:
-                Represents a conversation.
-                A conversation is an interaction between
-                an agent, including live agents and
-                Dialogflow agents, and a support
-                customer. Conversations can include
-                phone calls and text-based chat
-                sessions.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, conversation.CompleteConversationRequest):
-            request = conversation.CompleteConversationRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.complete_conversation
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def list_messages(
-        self,
-        request: Optional[Union[conversation.ListMessagesRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListMessagesAsyncPager:
-        r"""Lists messages that belong to a given conversation. ``messages``
-        are ordered by ``create_time`` in descending order. To fetch
-        updates without duplication, send request with filter
-        ``create_time_epoch_microseconds > [first item's create_time of previous request]``
-        and empty page_token.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dialogflow_v2
-
-            async def sample_list_messages():
-                # Create a client
-                client = dialogflow_v2.ConversationsAsyncClient()
-
-                # Initialize request argument(s)
-                request = dialogflow_v2.ListMessagesRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_messages(request=request)
-
-                # Handle the response
-                async for response in page_result:
-                    print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.dialogflow_v2.types.ListMessagesRequest, dict]]):
-                The request object. The request message for
-                [Conversations.ListMessages][google.cloud.dialogflow.v2.Conversations.ListMessages].
-            parent (:class:`str`):
-                Required. The name of the conversation to list messages
-                for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.dialogflow_v2.services.conversations.pagers.ListMessagesAsyncPager:
-                The response message for
-                   [Conversations.ListMessages][google.cloud.dialogflow.v2.Conversations.ListMessages].
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, conversation.ListMessagesRequest):
-            request = conversation.ListMessagesRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_messages
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListMessagesAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def suggest_conversation_summary(
-        self,
-        request: Optional[
-            Union[gcd_conversation.SuggestConversationSummaryRequest, dict]
-        ] = None,
-        *,
-        conversation: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcd_conversation.SuggestConversationSummaryResponse:
-        r"""Suggests summary for a conversation based on specific
-        historical messages. The range of the messages to be
-        used for summary can be specified in the request.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dialogflow_v2
-
-            async def sample_suggest_conversation_summary():
-                # Create a client
-                client = dialogflow_v2.ConversationsAsyncClient()
-
-                # Initialize request argument(s)
-                request = dialogflow_v2.SuggestConversationSummaryRequest(
-                    conversation="conversation_value",
-                )
-
-                # Make the request
-                response = await client.suggest_conversation_summary(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.dialogflow_v2.types.SuggestConversationSummaryRequest, dict]]):
-                The request object. The request message for
-                [Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2.Conversations.SuggestConversationSummary].
-            conversation (:class:`str`):
-                Required. The conversation to fetch suggestion for.
+                Required. The project/location to create generator for.
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
+                ``projects/<Project ID>/locations/<Location ID>``
 
-                This corresponds to the ``conversation`` field
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            generator (:class:`google.cloud.dialogflow_v2.types.Generator`):
+                Required. The generator to create.
+                This corresponds to the ``generator`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            generator_id (:class:`str`):
+                Optional. The ID to use for the generator, which will
+                become the final component of the generator's resource
+                name.
+
+                The generator ID must be compliant with the regression
+                fomula ``[a-zA-Z][a-zA-Z0-9_-]*`` with the characters
+                length in range of [3,64]. If the field is not provided,
+                an Id will be auto-generated. If the field is provided,
+                the caller is resposible for
+
+                1. the uniqueness of the ID, otherwise the request will
+                   be rejected.
+                2. the consistency for whether to use custom ID or not
+                   under a project to better ensure uniqueness.
+
+                This corresponds to the ``generator_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -977,15 +343,13 @@ class ConversationsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.dialogflow_v2.types.SuggestConversationSummaryResponse:
-                The response message for
-                   [Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2.Conversations.SuggestConversationSummary].
-
+            google.cloud.dialogflow_v2.types.Generator:
+                LLM generator.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([conversation])
+        has_flattened_params = any([parent, generator, generator_id])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -994,209 +358,22 @@ class ConversationsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcd_conversation.SuggestConversationSummaryRequest):
-            request = gcd_conversation.SuggestConversationSummaryRequest(request)
+        if not isinstance(request, gcd_generator.CreateGeneratorRequest):
+            request = gcd_generator.CreateGeneratorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-        if conversation is not None:
-            request.conversation = conversation
+        if parent is not None:
+            request.parent = parent
+        if generator is not None:
+            request.generator = generator
+        if generator_id is not None:
+            request.generator_id = generator_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.suggest_conversation_summary
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("conversation", request.conversation),)
-            ),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def generate_stateless_summary(
-        self,
-        request: Optional[
-            Union[conversation.GenerateStatelessSummaryRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> conversation.GenerateStatelessSummaryResponse:
-        r"""Generates and returns a summary for a conversation
-        that does not have a resource created for it.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dialogflow_v2
-
-            async def sample_generate_stateless_summary():
-                # Create a client
-                client = dialogflow_v2.ConversationsAsyncClient()
-
-                # Initialize request argument(s)
-                stateless_conversation = dialogflow_v2.MinimalConversation()
-                stateless_conversation.messages.content = "content_value"
-                stateless_conversation.parent = "parent_value"
-
-                conversation_profile = dialogflow_v2.ConversationProfile()
-                conversation_profile.display_name = "display_name_value"
-
-                request = dialogflow_v2.GenerateStatelessSummaryRequest(
-                    stateless_conversation=stateless_conversation,
-                    conversation_profile=conversation_profile,
-                )
-
-                # Make the request
-                response = await client.generate_stateless_summary(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.dialogflow_v2.types.GenerateStatelessSummaryRequest, dict]]):
-                The request object. The request message for
-                [Conversations.GenerateStatelessSummary][google.cloud.dialogflow.v2.Conversations.GenerateStatelessSummary].
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.dialogflow_v2.types.GenerateStatelessSummaryResponse:
-                The response message for
-                   [Conversations.GenerateStatelessSummary][google.cloud.dialogflow.v2.Conversations.GenerateStatelessSummary].
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, conversation.GenerateStatelessSummaryRequest):
-            request = conversation.GenerateStatelessSummaryRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.generate_stateless_summary
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "stateless_conversation.parent",
-                        request.stateless_conversation.parent,
-                    ),
-                )
-            ),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def generate_stateless_suggestion(
-        self,
-        request: Optional[
-            Union[conversation.GenerateStatelessSuggestionRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> conversation.GenerateStatelessSuggestionResponse:
-        r"""Generates and returns a suggestion for a conversation
-        that does not have a resource created for it.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dialogflow_v2
-
-            async def sample_generate_stateless_suggestion():
-                # Create a client
-                client = dialogflow_v2.ConversationsAsyncClient()
-
-                # Initialize request argument(s)
-                request = dialogflow_v2.GenerateStatelessSuggestionRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = await client.generate_stateless_suggestion(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.dialogflow_v2.types.GenerateStatelessSuggestionRequest, dict]]):
-                The request object. The request message for
-                [Conversations.GenerateStatelessSuggestion][google.cloud.dialogflow.v2.Conversations.GenerateStatelessSuggestion].
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.dialogflow_v2.types.GenerateStatelessSuggestionResponse:
-                The response message for
-                   [Conversations.GenerateStatelessSuggestion][google.cloud.dialogflow.v2.Conversations.GenerateStatelessSuggestion].
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, conversation.GenerateStatelessSuggestionRequest):
-            request = conversation.GenerateStatelessSuggestionRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.generate_stateless_suggestion
+            self._client._transport.create_generator
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -1219,16 +396,16 @@ class ConversationsAsyncClient:
         # Done; return the response.
         return response
 
-    async def search_knowledge(
+    async def get_generator(
         self,
-        request: Optional[Union[conversation.SearchKnowledgeRequest, dict]] = None,
+        request: Optional[Union[generator.GetGeneratorRequest, dict]] = None,
         *,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> conversation.SearchKnowledgeResponse:
-        r"""Get answers for the given query based on knowledge
-        documents.
+    ) -> generator.Generator:
+        r"""Retrieves a generator.
 
         .. code-block:: python
 
@@ -1241,32 +418,32 @@ class ConversationsAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2
 
-            async def sample_search_knowledge():
+            async def sample_get_generator():
                 # Create a client
-                client = dialogflow_v2.ConversationsAsyncClient()
+                client = dialogflow_v2.GeneratorsAsyncClient()
 
                 # Initialize request argument(s)
-                query = dialogflow_v2.TextInput()
-                query.text = "text_value"
-                query.language_code = "language_code_value"
-
-                request = dialogflow_v2.SearchKnowledgeRequest(
-                    parent="parent_value",
-                    query=query,
-                    conversation_profile="conversation_profile_value",
-                    session_id="session_id_value",
+                request = dialogflow_v2.GetGeneratorRequest(
+                    name="name_value",
                 )
 
                 # Make the request
-                response = await client.search_knowledge(request=request)
+                response = await client.get_generator(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.dialogflow_v2.types.SearchKnowledgeRequest, dict]]):
-                The request object. The request message for
-                [Conversations.SearchKnowledge][google.cloud.dialogflow.v2.Conversations.SearchKnowledge].
+            request (Optional[Union[google.cloud.dialogflow_v2.types.GetGeneratorRequest, dict]]):
+                The request object. Request message of GetGenerator.
+            name (:class:`str`):
+                Required. The generator resource name to retrieve.
+                Format:
+                ``projects/<Project ID>/locations/<Location ID>``/generators/\`
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1274,27 +451,368 @@ class ConversationsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.dialogflow_v2.types.SearchKnowledgeResponse:
-                The response message for
-                   [Conversations.SearchKnowledge][google.cloud.dialogflow.v2.Conversations.SearchKnowledge].
-
+            google.cloud.dialogflow_v2.types.Generator:
+                LLM generator.
         """
         # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, conversation.SearchKnowledgeRequest):
-            request = conversation.SearchKnowledgeRequest(request)
+        if not isinstance(request, generator.GetGeneratorRequest):
+            request = generator.GetGeneratorRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.search_knowledge
+            self._client._transport.get_generator
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_generators(
+        self,
+        request: Optional[Union[generator.ListGeneratorsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListGeneratorsAsyncPager:
+        r"""Lists generators.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2
+
+            async def sample_list_generators():
+                # Create a client
+                client = dialogflow_v2.GeneratorsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.ListGeneratorsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_generators(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflow_v2.types.ListGeneratorsRequest, dict]]):
+                The request object. Request message of ListGenerators.
+            parent (:class:`str`):
+                Required. The project/location to list generators for.
+                Format:
+                ``projects/<Project ID>/locations/<Location ID>``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2.services.generators.pagers.ListGeneratorsAsyncPager:
+                Response of ListGenerators.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, generator.ListGeneratorsRequest):
+            request = generator.ListGeneratorsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_generators
         ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListGeneratorsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_generator(
+        self,
+        request: Optional[Union[generator.DeleteGeneratorRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a generator.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2
+
+            async def sample_delete_generator():
+                # Create a client
+                client = dialogflow_v2.GeneratorsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.DeleteGeneratorRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_generator(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflow_v2.types.DeleteGeneratorRequest, dict]]):
+                The request object. Request of DeleteGenerator.
+            name (:class:`str`):
+                Required. The generator resource name to delete. Format:
+                ``projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, generator.DeleteGeneratorRequest):
+            request = generator.DeleteGeneratorRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_generator
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def update_generator(
+        self,
+        request: Optional[Union[gcd_generator.UpdateGeneratorRequest, dict]] = None,
+        *,
+        generator: Optional[gcd_generator.Generator] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcd_generator.Generator:
+        r"""Updates a generator.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2
+
+            async def sample_update_generator():
+                # Create a client
+                client = dialogflow_v2.GeneratorsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.UpdateGeneratorRequest(
+                )
+
+                # Make the request
+                response = await client.update_generator(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflow_v2.types.UpdateGeneratorRequest, dict]]):
+                The request object. Request of UpdateGenerator.
+            generator (:class:`google.cloud.dialogflow_v2.types.Generator`):
+                Required. The generator to update.
+                The name field of generator is to
+                identify the generator to update.
+
+                This corresponds to the ``generator`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. The list of fields to
+                update.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2.types.Generator:
+                LLM generator.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([generator, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcd_generator.UpdateGeneratorRequest):
+            request = gcd_generator.UpdateGeneratorRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if generator is not None:
+            request.generator = generator
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_generator
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("generator.name", request.generator.name),)
+            ),
         )
 
         # Validate the universe domain.
@@ -1596,7 +1114,7 @@ class ConversationsAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self) -> "ConversationsAsyncClient":
+    async def __aenter__(self) -> "GeneratorsAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -1608,4 +1126,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("ConversationsAsyncClient",)
+__all__ = ("GeneratorsAsyncClient",)

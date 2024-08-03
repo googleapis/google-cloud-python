@@ -18,7 +18,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -27,16 +27,16 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.dialogflow_v2 import gapic_version as package_version
-from google.cloud.dialogflow_v2.types import participant
-from google.cloud.dialogflow_v2.types import participant as gcd_participant
+from google.cloud.dialogflow_v2.types import encryption_spec as gcd_encryption_spec
+from google.cloud.dialogflow_v2.types import encryption_spec
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
 
-class ParticipantsTransport(abc.ABC):
-    """Abstract transport class for Participants."""
+class EncryptionSpecServiceTransport(abc.ABC):
+    """Abstract transport class for EncryptionSpecService."""
 
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/cloud-platform",
@@ -134,62 +134,13 @@ class ParticipantsTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.create_participant: gapic_v1.method.wrap_method(
-                self.create_participant,
+            self.get_encryption_spec: gapic_v1.method.wrap_method(
+                self.get_encryption_spec,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_participant: gapic_v1.method.wrap_method(
-                self.get_participant,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.list_participants: gapic_v1.method.wrap_method(
-                self.list_participants,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.update_participant: gapic_v1.method.wrap_method(
-                self.update_participant,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.analyze_content: gapic_v1.method.wrap_method(
-                self.analyze_content,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=220.0,
-                ),
-                default_timeout=220.0,
-                client_info=client_info,
-            ),
-            self.streaming_analyze_content: gapic_v1.method.wrap_method(
-                self.streaming_analyze_content,
-                default_timeout=220.0,
-                client_info=client_info,
-            ),
-            self.suggest_articles: gapic_v1.method.wrap_method(
-                self.suggest_articles,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.suggest_faq_answers: gapic_v1.method.wrap_method(
-                self.suggest_faq_answers,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.suggest_smart_replies: gapic_v1.method.wrap_method(
-                self.suggest_smart_replies,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.suggest_knowledge_assist: gapic_v1.method.wrap_method(
-                self.suggest_knowledge_assist,
+            self.initialize_encryption_spec: gapic_v1.method.wrap_method(
+                self.initialize_encryption_spec,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -205,113 +156,27 @@ class ParticipantsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_participant(
-        self,
-    ) -> Callable[
-        [gcd_participant.CreateParticipantRequest],
-        Union[gcd_participant.Participant, Awaitable[gcd_participant.Participant]],
-    ]:
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 
     @property
-    def get_participant(
+    def get_encryption_spec(
         self,
     ) -> Callable[
-        [participant.GetParticipantRequest],
-        Union[participant.Participant, Awaitable[participant.Participant]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_participants(
-        self,
-    ) -> Callable[
-        [participant.ListParticipantsRequest],
+        [encryption_spec.GetEncryptionSpecRequest],
         Union[
-            participant.ListParticipantsResponse,
-            Awaitable[participant.ListParticipantsResponse],
+            encryption_spec.EncryptionSpec, Awaitable[encryption_spec.EncryptionSpec]
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def update_participant(
+    def initialize_encryption_spec(
         self,
     ) -> Callable[
-        [gcd_participant.UpdateParticipantRequest],
-        Union[gcd_participant.Participant, Awaitable[gcd_participant.Participant]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def analyze_content(
-        self,
-    ) -> Callable[
-        [gcd_participant.AnalyzeContentRequest],
-        Union[
-            gcd_participant.AnalyzeContentResponse,
-            Awaitable[gcd_participant.AnalyzeContentResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def streaming_analyze_content(
-        self,
-    ) -> Callable[
-        [participant.StreamingAnalyzeContentRequest],
-        Union[
-            participant.StreamingAnalyzeContentResponse,
-            Awaitable[participant.StreamingAnalyzeContentResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def suggest_articles(
-        self,
-    ) -> Callable[
-        [participant.SuggestArticlesRequest],
-        Union[
-            participant.SuggestArticlesResponse,
-            Awaitable[participant.SuggestArticlesResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def suggest_faq_answers(
-        self,
-    ) -> Callable[
-        [participant.SuggestFaqAnswersRequest],
-        Union[
-            participant.SuggestFaqAnswersResponse,
-            Awaitable[participant.SuggestFaqAnswersResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def suggest_smart_replies(
-        self,
-    ) -> Callable[
-        [participant.SuggestSmartRepliesRequest],
-        Union[
-            participant.SuggestSmartRepliesResponse,
-            Awaitable[participant.SuggestSmartRepliesResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def suggest_knowledge_assist(
-        self,
-    ) -> Callable[
-        [participant.SuggestKnowledgeAssistRequest],
-        Union[
-            participant.SuggestKnowledgeAssistResponse,
-            Awaitable[participant.SuggestKnowledgeAssistResponse],
-        ],
+        [gcd_encryption_spec.InitializeEncryptionSpecRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -368,4 +233,4 @@ class ParticipantsTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("ParticipantsTransport",)
+__all__ = ("EncryptionSpecServiceTransport",)

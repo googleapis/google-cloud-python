@@ -56,6 +56,12 @@ from google.cloud.dialogflow_v2.services.documents.async_client import (
     DocumentsAsyncClient,
 )
 from google.cloud.dialogflow_v2.services.documents.client import DocumentsClient
+from google.cloud.dialogflow_v2.services.encryption_spec_service.async_client import (
+    EncryptionSpecServiceAsyncClient,
+)
+from google.cloud.dialogflow_v2.services.encryption_spec_service.client import (
+    EncryptionSpecServiceClient,
+)
 from google.cloud.dialogflow_v2.services.entity_types.async_client import (
     EntityTypesAsyncClient,
 )
@@ -68,6 +74,10 @@ from google.cloud.dialogflow_v2.services.fulfillments.async_client import (
     FulfillmentsAsyncClient,
 )
 from google.cloud.dialogflow_v2.services.fulfillments.client import FulfillmentsClient
+from google.cloud.dialogflow_v2.services.generators.async_client import (
+    GeneratorsAsyncClient,
+)
+from google.cloud.dialogflow_v2.services.generators.client import GeneratorsClient
 from google.cloud.dialogflow_v2.services.intents.async_client import IntentsAsyncClient
 from google.cloud.dialogflow_v2.services.intents.client import IntentsClient
 from google.cloud.dialogflow_v2.services.knowledge_bases.async_client import (
@@ -147,6 +157,8 @@ from google.cloud.dialogflow_v2.types.conversation import (
     Conversation,
     ConversationPhoneNumber,
     CreateConversationRequest,
+    GenerateStatelessSuggestionRequest,
+    GenerateStatelessSuggestionResponse,
     GenerateStatelessSummaryRequest,
     GenerateStatelessSummaryResponse,
     GetConversationRequest,
@@ -236,6 +248,13 @@ from google.cloud.dialogflow_v2.types.document import (
     ReloadDocumentRequest,
     UpdateDocumentRequest,
 )
+from google.cloud.dialogflow_v2.types.encryption_spec import (
+    EncryptionSpec,
+    GetEncryptionSpecRequest,
+    InitializeEncryptionSpecMetadata,
+    InitializeEncryptionSpecRequest,
+    InitializeEncryptionSpecResponse,
+)
 from google.cloud.dialogflow_v2.types.entity_type import (
     BatchCreateEntitiesRequest,
     BatchDeleteEntitiesRequest,
@@ -270,6 +289,25 @@ from google.cloud.dialogflow_v2.types.fulfillment import (
     UpdateFulfillmentRequest,
 )
 from google.cloud.dialogflow_v2.types.gcs import GcsDestination, GcsSources
+from google.cloud.dialogflow_v2.types.generator import (
+    ConversationContext,
+    CreateGeneratorRequest,
+    DeleteGeneratorRequest,
+    FewShotExample,
+    Generator,
+    GeneratorSuggestion,
+    GetGeneratorRequest,
+    InferenceParameter,
+    ListGeneratorsRequest,
+    ListGeneratorsResponse,
+    MessageEntry,
+    SummarizationContext,
+    SummarizationSection,
+    SummarizationSectionList,
+    SummarySuggestion,
+    TriggerEvent,
+    UpdateGeneratorRequest,
+)
 from google.cloud.dialogflow_v2.types.human_agent_assistant_event import (
     HumanAgentAssistantEvent,
 )
@@ -310,6 +348,7 @@ from google.cloud.dialogflow_v2.types.participant import (
     GetParticipantRequest,
     InputTextConfig,
     IntentSuggestion,
+    KnowledgeAssistAnswer,
     ListParticipantsRequest,
     ListParticipantsResponse,
     Message,
@@ -325,6 +364,8 @@ from google.cloud.dialogflow_v2.types.participant import (
     SuggestFaqAnswersResponse,
     SuggestionInput,
     SuggestionResult,
+    SuggestKnowledgeAssistRequest,
+    SuggestKnowledgeAssistResponse,
     SuggestSmartRepliesRequest,
     SuggestSmartRepliesResponse,
     UpdateParticipantRequest,
@@ -390,12 +431,16 @@ __all__ = (
     "ConversationsAsyncClient",
     "DocumentsClient",
     "DocumentsAsyncClient",
+    "EncryptionSpecServiceClient",
+    "EncryptionSpecServiceAsyncClient",
     "EntityTypesClient",
     "EntityTypesAsyncClient",
     "EnvironmentsClient",
     "EnvironmentsAsyncClient",
     "FulfillmentsClient",
     "FulfillmentsAsyncClient",
+    "GeneratorsClient",
+    "GeneratorsAsyncClient",
     "IntentsClient",
     "IntentsAsyncClient",
     "KnowledgeBasesClient",
@@ -452,6 +497,8 @@ __all__ = (
     "Conversation",
     "ConversationPhoneNumber",
     "CreateConversationRequest",
+    "GenerateStatelessSuggestionRequest",
+    "GenerateStatelessSuggestionResponse",
     "GenerateStatelessSummaryRequest",
     "GenerateStatelessSummaryResponse",
     "GetConversationRequest",
@@ -532,6 +579,11 @@ __all__ = (
     "ListDocumentsResponse",
     "ReloadDocumentRequest",
     "UpdateDocumentRequest",
+    "EncryptionSpec",
+    "GetEncryptionSpecRequest",
+    "InitializeEncryptionSpecMetadata",
+    "InitializeEncryptionSpecRequest",
+    "InitializeEncryptionSpecResponse",
     "BatchCreateEntitiesRequest",
     "BatchDeleteEntitiesRequest",
     "BatchDeleteEntityTypesRequest",
@@ -561,6 +613,23 @@ __all__ = (
     "UpdateFulfillmentRequest",
     "GcsDestination",
     "GcsSources",
+    "ConversationContext",
+    "CreateGeneratorRequest",
+    "DeleteGeneratorRequest",
+    "FewShotExample",
+    "Generator",
+    "GeneratorSuggestion",
+    "GetGeneratorRequest",
+    "InferenceParameter",
+    "ListGeneratorsRequest",
+    "ListGeneratorsResponse",
+    "MessageEntry",
+    "SummarizationContext",
+    "SummarizationSection",
+    "SummarizationSectionList",
+    "SummarySuggestion",
+    "UpdateGeneratorRequest",
+    "TriggerEvent",
     "HumanAgentAssistantEvent",
     "BatchDeleteIntentsRequest",
     "BatchUpdateIntentsRequest",
@@ -594,6 +663,7 @@ __all__ = (
     "GetParticipantRequest",
     "InputTextConfig",
     "IntentSuggestion",
+    "KnowledgeAssistAnswer",
     "ListParticipantsRequest",
     "ListParticipantsResponse",
     "Message",
@@ -609,6 +679,8 @@ __all__ = (
     "SuggestFaqAnswersResponse",
     "SuggestionInput",
     "SuggestionResult",
+    "SuggestKnowledgeAssistRequest",
+    "SuggestKnowledgeAssistResponse",
     "SuggestSmartRepliesRequest",
     "SuggestSmartRepliesResponse",
     "UpdateParticipantRequest",

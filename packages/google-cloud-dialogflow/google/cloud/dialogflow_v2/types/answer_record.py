@@ -323,6 +323,8 @@ class AgentAssistantFeedback(proto.Message):
             summarization.
         knowledge_search_feedback (google.cloud.dialogflow_v2.types.AgentAssistantFeedback.KnowledgeSearchFeedback):
             Optional. Feedback for knowledge search.
+        knowledge_assist_feedback (google.cloud.dialogflow_v2.types.AgentAssistantFeedback.KnowledgeAssistFeedback):
+            Optional. Feedback for knowledge assist.
     """
 
     class AnswerRelevance(proto.Enum):
@@ -433,6 +435,32 @@ class AgentAssistantFeedback(proto.Message):
             number=2,
         )
 
+    class KnowledgeAssistFeedback(proto.Message):
+        r"""Feedback for knowledge assist.
+
+        Attributes:
+            answer_copied (bool):
+                Whether the suggested answer was copied by the human agent.
+                If the value is set to be true,
+                [AnswerFeedback.clicked][google.cloud.dialogflow.v2.AnswerFeedback.clicked]
+                will be updated to be true.
+            clicked_uris (MutableSequence[str]):
+                The URIs clicked by the human agent. The value is appended
+                for each UpdateAnswerRecordRequest. If the value is not
+                empty,
+                [AnswerFeedback.clicked][google.cloud.dialogflow.v2.AnswerFeedback.clicked]
+                will be updated to be true.
+        """
+
+        answer_copied: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        clicked_uris: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+
     answer_relevance: AnswerRelevance = proto.Field(
         proto.ENUM,
         number=1,
@@ -457,6 +485,11 @@ class AgentAssistantFeedback(proto.Message):
         proto.MESSAGE,
         number=5,
         message=KnowledgeSearchFeedback,
+    )
+    knowledge_assist_feedback: KnowledgeAssistFeedback = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=KnowledgeAssistFeedback,
     )
 
 
