@@ -16,7 +16,7 @@
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -24,17 +24,17 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.types import conversation as gcd_conversation
-from google.cloud.dialogflow_v2beta1.types import conversation
+from google.cloud.dialogflow_v2beta1.types import encryption_spec as gcd_encryption_spec
+from google.cloud.dialogflow_v2beta1.types import encryption_spec
 
-from .base import DEFAULT_CLIENT_INFO, ConversationsTransport
+from .base import DEFAULT_CLIENT_INFO, EncryptionSpecServiceTransport
 
 
-class ConversationsGrpcTransport(ConversationsTransport):
-    """gRPC backend transport for Conversations.
+class EncryptionSpecServiceGrpcTransport(EncryptionSpecServiceTransport):
+    """gRPC backend transport for EncryptionSpecService.
 
-    Service for managing
-    [Conversations][google.cloud.dialogflow.v2beta1.Conversation].
+    Manages encryption spec settings for Dialogflow and Agent
+    Assist.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -117,6 +117,7 @@ class ConversationsGrpcTransport(ConversationsTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -239,67 +240,32 @@ class ConversationsGrpcTransport(ConversationsTransport):
         return self._grpc_channel
 
     @property
-    def create_conversation(
-        self,
-    ) -> Callable[
-        [gcd_conversation.CreateConversationRequest], gcd_conversation.Conversation
-    ]:
-        r"""Return a callable for the create conversation method over gRPC.
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
 
-        Creates a new conversation. Conversations are auto-completed
-        after 24 hours.
-
-        Conversation Lifecycle: There are two stages during a
-        conversation: Automated Agent Stage and Assist Stage.
-
-        For Automated Agent Stage, there will be a dialogflow agent
-        responding to user queries.
-
-        For Assist Stage, there's no dialogflow agent responding to user
-        queries. But we will provide suggestions which are generated
-        from conversation.
-
-        If
-        [Conversation.conversation_profile][google.cloud.dialogflow.v2beta1.Conversation.conversation_profile]
-        is configured for a dialogflow agent, conversation will start
-        from ``Automated Agent Stage``, otherwise, it will start from
-        ``Assist Stage``. And during ``Automated Agent Stage``, once an
-        [Intent][google.cloud.dialogflow.v2beta1.Intent] with
-        [Intent.live_agent_handoff][google.cloud.dialogflow.v2beta1.Intent.live_agent_handoff]
-        is triggered, conversation will transfer to Assist Stage.
-
-        Returns:
-            Callable[[~.CreateConversationRequest],
-                    ~.Conversation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
+        This property caches on the instance; repeated calls return the same
+        client.
         """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_conversation" not in self._stubs:
-            self._stubs["create_conversation"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/CreateConversation",
-                request_serializer=gcd_conversation.CreateConversationRequest.serialize,
-                response_deserializer=gcd_conversation.Conversation.deserialize,
-            )
-        return self._stubs["create_conversation"]
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
-    def list_conversations(
+    def get_encryption_spec(
         self,
     ) -> Callable[
-        [conversation.ListConversationsRequest], conversation.ListConversationsResponse
+        [encryption_spec.GetEncryptionSpecRequest], encryption_spec.EncryptionSpec
     ]:
-        r"""Return a callable for the list conversations method over gRPC.
+        r"""Return a callable for the get encryption spec method over gRPC.
 
-        Returns the list of all conversations in the
-        specified project.
+        Gets location-level encryption key specification.
 
         Returns:
-            Callable[[~.ListConversationsRequest],
-                    ~.ListConversationsResponse]:
+            Callable[[~.GetEncryptionSpecRequest],
+                    ~.EncryptionSpec]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -307,55 +273,33 @@ class ConversationsGrpcTransport(ConversationsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_conversations" not in self._stubs:
-            self._stubs["list_conversations"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/ListConversations",
-                request_serializer=conversation.ListConversationsRequest.serialize,
-                response_deserializer=conversation.ListConversationsResponse.deserialize,
+        if "get_encryption_spec" not in self._stubs:
+            self._stubs["get_encryption_spec"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.EncryptionSpecService/GetEncryptionSpec",
+                request_serializer=encryption_spec.GetEncryptionSpecRequest.serialize,
+                response_deserializer=encryption_spec.EncryptionSpec.deserialize,
             )
-        return self._stubs["list_conversations"]
+        return self._stubs["get_encryption_spec"]
 
     @property
-    def get_conversation(
-        self,
-    ) -> Callable[[conversation.GetConversationRequest], conversation.Conversation]:
-        r"""Return a callable for the get conversation method over gRPC.
-
-        Retrieves the specific conversation.
-
-        Returns:
-            Callable[[~.GetConversationRequest],
-                    ~.Conversation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_conversation" not in self._stubs:
-            self._stubs["get_conversation"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/GetConversation",
-                request_serializer=conversation.GetConversationRequest.serialize,
-                response_deserializer=conversation.Conversation.deserialize,
-            )
-        return self._stubs["get_conversation"]
-
-    @property
-    def complete_conversation(
+    def initialize_encryption_spec(
         self,
     ) -> Callable[
-        [conversation.CompleteConversationRequest], conversation.Conversation
+        [gcd_encryption_spec.InitializeEncryptionSpecRequest], operations_pb2.Operation
     ]:
-        r"""Return a callable for the complete conversation method over gRPC.
+        r"""Return a callable for the initialize encryption spec method over gRPC.
 
-        Completes the specified conversation. Finished
-        conversations are purged from the database after 30
-        days.
+        Initializes a location-level encryption key
+        specification.  An error will be thrown if the location
+        has resources already created before the initialization.
+        Once the encryption specification is initialized at a
+        location, it is immutable and all newly created
+        resources under the location will be encrypted with the
+        existing specification.
 
         Returns:
-            Callable[[~.CompleteConversationRequest],
-                    ~.Conversation]:
+            Callable[[~.InitializeEncryptionSpecRequest],
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -363,198 +307,13 @@ class ConversationsGrpcTransport(ConversationsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "complete_conversation" not in self._stubs:
-            self._stubs["complete_conversation"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/CompleteConversation",
-                request_serializer=conversation.CompleteConversationRequest.serialize,
-                response_deserializer=conversation.Conversation.deserialize,
+        if "initialize_encryption_spec" not in self._stubs:
+            self._stubs["initialize_encryption_spec"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.EncryptionSpecService/InitializeEncryptionSpec",
+                request_serializer=gcd_encryption_spec.InitializeEncryptionSpecRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["complete_conversation"]
-
-    @property
-    def batch_create_messages(
-        self,
-    ) -> Callable[
-        [conversation.BatchCreateMessagesRequest],
-        conversation.BatchCreateMessagesResponse,
-    ]:
-        r"""Return a callable for the batch create messages method over gRPC.
-
-        Batch ingests messages to conversation. Customers can
-        use this RPC to ingest historical messages to
-        conversation.
-
-        Returns:
-            Callable[[~.BatchCreateMessagesRequest],
-                    ~.BatchCreateMessagesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "batch_create_messages" not in self._stubs:
-            self._stubs["batch_create_messages"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/BatchCreateMessages",
-                request_serializer=conversation.BatchCreateMessagesRequest.serialize,
-                response_deserializer=conversation.BatchCreateMessagesResponse.deserialize,
-            )
-        return self._stubs["batch_create_messages"]
-
-    @property
-    def list_messages(
-        self,
-    ) -> Callable[
-        [conversation.ListMessagesRequest], conversation.ListMessagesResponse
-    ]:
-        r"""Return a callable for the list messages method over gRPC.
-
-        Lists messages that belong to a given conversation. ``messages``
-        are ordered by ``create_time`` in descending order. To fetch
-        updates without duplication, send request with filter
-        ``create_time_epoch_microseconds > [first item's create_time of previous request]``
-        and empty page_token.
-
-        Returns:
-            Callable[[~.ListMessagesRequest],
-                    ~.ListMessagesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_messages" not in self._stubs:
-            self._stubs["list_messages"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/ListMessages",
-                request_serializer=conversation.ListMessagesRequest.serialize,
-                response_deserializer=conversation.ListMessagesResponse.deserialize,
-            )
-        return self._stubs["list_messages"]
-
-    @property
-    def suggest_conversation_summary(
-        self,
-    ) -> Callable[
-        [gcd_conversation.SuggestConversationSummaryRequest],
-        gcd_conversation.SuggestConversationSummaryResponse,
-    ]:
-        r"""Return a callable for the suggest conversation summary method over gRPC.
-
-        Suggest summary for a conversation based on specific
-        historical messages. The range of the messages to be
-        used for summary can be specified in the request.
-
-        Returns:
-            Callable[[~.SuggestConversationSummaryRequest],
-                    ~.SuggestConversationSummaryResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "suggest_conversation_summary" not in self._stubs:
-            self._stubs["suggest_conversation_summary"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/SuggestConversationSummary",
-                request_serializer=gcd_conversation.SuggestConversationSummaryRequest.serialize,
-                response_deserializer=gcd_conversation.SuggestConversationSummaryResponse.deserialize,
-            )
-        return self._stubs["suggest_conversation_summary"]
-
-    @property
-    def generate_stateless_summary(
-        self,
-    ) -> Callable[
-        [conversation.GenerateStatelessSummaryRequest],
-        conversation.GenerateStatelessSummaryResponse,
-    ]:
-        r"""Return a callable for the generate stateless summary method over gRPC.
-
-        Generates and returns a summary for a conversation
-        that does not have a resource created for it.
-
-        Returns:
-            Callable[[~.GenerateStatelessSummaryRequest],
-                    ~.GenerateStatelessSummaryResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "generate_stateless_summary" not in self._stubs:
-            self._stubs["generate_stateless_summary"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/GenerateStatelessSummary",
-                request_serializer=conversation.GenerateStatelessSummaryRequest.serialize,
-                response_deserializer=conversation.GenerateStatelessSummaryResponse.deserialize,
-            )
-        return self._stubs["generate_stateless_summary"]
-
-    @property
-    def generate_stateless_suggestion(
-        self,
-    ) -> Callable[
-        [conversation.GenerateStatelessSuggestionRequest],
-        conversation.GenerateStatelessSuggestionResponse,
-    ]:
-        r"""Return a callable for the generate stateless suggestion method over gRPC.
-
-        Generates and returns a suggestion for a conversation
-        that does not have a resource created for it.
-
-        Returns:
-            Callable[[~.GenerateStatelessSuggestionRequest],
-                    ~.GenerateStatelessSuggestionResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "generate_stateless_suggestion" not in self._stubs:
-            self._stubs[
-                "generate_stateless_suggestion"
-            ] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/GenerateStatelessSuggestion",
-                request_serializer=conversation.GenerateStatelessSuggestionRequest.serialize,
-                response_deserializer=conversation.GenerateStatelessSuggestionResponse.deserialize,
-            )
-        return self._stubs["generate_stateless_suggestion"]
-
-    @property
-    def search_knowledge(
-        self,
-    ) -> Callable[
-        [conversation.SearchKnowledgeRequest], conversation.SearchKnowledgeResponse
-    ]:
-        r"""Return a callable for the search knowledge method over gRPC.
-
-        Get answers for the given query based on knowledge
-        documents.
-
-        Returns:
-            Callable[[~.SearchKnowledgeRequest],
-                    ~.SearchKnowledgeResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "search_knowledge" not in self._stubs:
-            self._stubs["search_knowledge"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/SearchKnowledge",
-                request_serializer=conversation.SearchKnowledgeRequest.serialize,
-                response_deserializer=conversation.SearchKnowledgeResponse.deserialize,
-            )
-        return self._stubs["search_knowledge"]
+        return self._stubs["initialize_encryption_spec"]
 
     def close(self):
         self.grpc_channel.close()
@@ -653,4 +412,4 @@ class ConversationsGrpcTransport(ConversationsTransport):
         return "grpc"
 
 
-__all__ = ("ConversationsGrpcTransport",)
+__all__ = ("EncryptionSpecServiceGrpcTransport",)

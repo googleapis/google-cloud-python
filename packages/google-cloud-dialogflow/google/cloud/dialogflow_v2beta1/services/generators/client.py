@@ -48,46 +48,38 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.services.conversation_profiles import pagers
-from google.cloud.dialogflow_v2beta1.types import (
-    conversation_profile as gcd_conversation_profile,
-)
-from google.cloud.dialogflow_v2beta1.types import audio_config
-from google.cloud.dialogflow_v2beta1.types import conversation_profile
-from google.cloud.dialogflow_v2beta1.types import participant
+from google.cloud.dialogflow_v2beta1.services.generators import pagers
+from google.cloud.dialogflow_v2beta1.types import generator
+from google.cloud.dialogflow_v2beta1.types import generator as gcd_generator
 
-from .transports.base import DEFAULT_CLIENT_INFO, ConversationProfilesTransport
-from .transports.grpc import ConversationProfilesGrpcTransport
-from .transports.grpc_asyncio import ConversationProfilesGrpcAsyncIOTransport
-from .transports.rest import ConversationProfilesRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, GeneratorsTransport
+from .transports.grpc import GeneratorsGrpcTransport
+from .transports.grpc_asyncio import GeneratorsGrpcAsyncIOTransport
+from .transports.rest import GeneratorsRestTransport
 
 
-class ConversationProfilesClientMeta(type):
-    """Metaclass for the ConversationProfiles client.
+class GeneratorsClientMeta(type):
+    """Metaclass for the Generators client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ConversationProfilesTransport]]
-    _transport_registry["grpc"] = ConversationProfilesGrpcTransport
-    _transport_registry["grpc_asyncio"] = ConversationProfilesGrpcAsyncIOTransport
-    _transport_registry["rest"] = ConversationProfilesRestTransport
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[GeneratorsTransport]]
+    _transport_registry["grpc"] = GeneratorsGrpcTransport
+    _transport_registry["grpc_asyncio"] = GeneratorsGrpcAsyncIOTransport
+    _transport_registry["rest"] = GeneratorsRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[ConversationProfilesTransport]:
+    ) -> Type[GeneratorsTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -106,9 +98,12 @@ class ConversationProfilesClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
-    """Service for managing
-    [ConversationProfiles][google.cloud.dialogflow.v2beta1.ConversationProfile].
+class GeneratorsClient(metaclass=GeneratorsClientMeta):
+    """Generator Service for LLM powered Agent Assist. This service
+    manages the configurations of user owned Generators, such as
+    description, context and instruction, input/output format, etc.
+    The generator resources will be used inside a conversation and
+    will be triggered by TriggerEvent to query LLM for answers.
     """
 
     @staticmethod
@@ -161,7 +156,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ConversationProfilesClient: The constructed client.
+            GeneratorsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -179,7 +174,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ConversationProfilesClient: The constructed client.
+            GeneratorsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -188,115 +183,14 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> ConversationProfilesTransport:
+    def transport(self) -> GeneratorsTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            ConversationProfilesTransport: The transport used by the client
+            GeneratorsTransport: The transport used by the client
                 instance.
         """
         return self._transport
-
-    @staticmethod
-    def agent_path(
-        project: str,
-    ) -> str:
-        """Returns a fully-qualified agent string."""
-        return "projects/{project}/agent".format(
-            project=project,
-        )
-
-    @staticmethod
-    def parse_agent_path(path: str) -> Dict[str, str]:
-        """Parses a agent path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/agent$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def conversation_model_path(
-        project: str,
-        location: str,
-        conversation_model: str,
-    ) -> str:
-        """Returns a fully-qualified conversation_model string."""
-        return "projects/{project}/locations/{location}/conversationModels/{conversation_model}".format(
-            project=project,
-            location=location,
-            conversation_model=conversation_model,
-        )
-
-    @staticmethod
-    def parse_conversation_model_path(path: str) -> Dict[str, str]:
-        """Parses a conversation_model path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/conversationModels/(?P<conversation_model>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def conversation_profile_path(
-        project: str,
-        conversation_profile: str,
-    ) -> str:
-        """Returns a fully-qualified conversation_profile string."""
-        return "projects/{project}/conversationProfiles/{conversation_profile}".format(
-            project=project,
-            conversation_profile=conversation_profile,
-        )
-
-    @staticmethod
-    def parse_conversation_profile_path(path: str) -> Dict[str, str]:
-        """Parses a conversation_profile path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/conversationProfiles/(?P<conversation_profile>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def cx_security_settings_path(
-        project: str,
-        location: str,
-        security_settings: str,
-    ) -> str:
-        """Returns a fully-qualified cx_security_settings string."""
-        return "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
-            project=project,
-            location=location,
-            security_settings=security_settings,
-        )
-
-    @staticmethod
-    def parse_cx_security_settings_path(path: str) -> Dict[str, str]:
-        """Parses a cx_security_settings path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/securitySettings/(?P<security_settings>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def document_path(
-        project: str,
-        knowledge_base: str,
-        document: str,
-    ) -> str:
-        """Returns a fully-qualified document string."""
-        return "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
-            project=project,
-            knowledge_base=knowledge_base,
-            document=document,
-        )
-
-    @staticmethod
-    def parse_document_path(path: str) -> Dict[str, str]:
-        """Parses a document path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/knowledgeBases/(?P<knowledge_base>.+?)/documents/(?P<document>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
 
     @staticmethod
     def generator_path(
@@ -317,25 +211,6 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/generators/(?P<generator>.+?)$",
             path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def knowledge_base_path(
-        project: str,
-        knowledge_base: str,
-    ) -> str:
-        """Returns a fully-qualified knowledge_base string."""
-        return "projects/{project}/knowledgeBases/{knowledge_base}".format(
-            project=project,
-            knowledge_base=knowledge_base,
-        )
-
-    @staticmethod
-    def parse_knowledge_base_path(path: str) -> Dict[str, str]:
-        """Parses a knowledge_base path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/knowledgeBases/(?P<knowledge_base>.+?)$", path
         )
         return m.groupdict() if m else {}
 
@@ -558,14 +433,14 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = ConversationProfilesClient._DEFAULT_UNIVERSE
+            _default_universe = GeneratorsClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = ConversationProfilesClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = GeneratorsClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = ConversationProfilesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            api_endpoint = GeneratorsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
                 UNIVERSE_DOMAIN=universe_domain
             )
         return api_endpoint
@@ -586,7 +461,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = ConversationProfilesClient._DEFAULT_UNIVERSE
+        universe_domain = GeneratorsClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -612,7 +487,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
             ValueError: when client_universe does not match the universe in credentials.
         """
 
-        default_universe = ConversationProfilesClient._DEFAULT_UNIVERSE
+        default_universe = GeneratorsClient._DEFAULT_UNIVERSE
         credentials_universe = getattr(credentials, "universe_domain", default_universe)
 
         if client_universe != credentials_universe:
@@ -636,7 +511,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         """
         self._is_universe_domain_valid = (
             self._is_universe_domain_valid
-            or ConversationProfilesClient._compare_universes(
+            or GeneratorsClient._compare_universes(
                 self.universe_domain, self.transport._credentials
             )
         )
@@ -665,16 +540,12 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                ConversationProfilesTransport,
-                Callable[..., ConversationProfilesTransport],
-            ]
+            Union[str, GeneratorsTransport, Callable[..., GeneratorsTransport]]
         ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the conversation profiles client.
+        """Instantiates the generators client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -682,10 +553,10 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,ConversationProfilesTransport,Callable[..., ConversationProfilesTransport]]]):
+            transport (Optional[Union[str,GeneratorsTransport,Callable[..., GeneratorsTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the ConversationProfilesTransport constructor.
+                arguments as used in the GeneratorsTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -738,11 +609,11 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = ConversationProfilesClient._read_environment_variables()
-        self._client_cert_source = ConversationProfilesClient._get_client_cert_source(
+        ) = GeneratorsClient._read_environment_variables()
+        self._client_cert_source = GeneratorsClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = ConversationProfilesClient._get_universe_domain(
+        self._universe_domain = GeneratorsClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -759,9 +630,9 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, ConversationProfilesTransport)
+        transport_provided = isinstance(transport, GeneratorsTransport)
         if transport_provided:
-            # transport is a ConversationProfilesTransport instance.
+            # transport is a GeneratorsTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -772,17 +643,14 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(ConversationProfilesTransport, transport)
+            self._transport = cast(GeneratorsTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (
-            self._api_endpoint
-            or ConversationProfilesClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint,
-            )
+        self._api_endpoint = self._api_endpoint or GeneratorsClient._get_api_endpoint(
+            self._client_options.api_endpoint,
+            self._client_cert_source,
+            self._universe_domain,
+            self._use_mtls_endpoint,
         )
 
         if not transport_provided:
@@ -796,12 +664,11 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
                 )
 
             transport_init: Union[
-                Type[ConversationProfilesTransport],
-                Callable[..., ConversationProfilesTransport],
+                Type[GeneratorsTransport], Callable[..., GeneratorsTransport]
             ] = (
                 type(self).get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(Callable[..., ConversationProfilesTransport], transport)
+                else cast(Callable[..., GeneratorsTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -816,19 +683,18 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
                 api_audience=self._client_options.api_audience,
             )
 
-    def list_conversation_profiles(
+    def create_generator(
         self,
-        request: Optional[
-            Union[conversation_profile.ListConversationProfilesRequest, dict]
-        ] = None,
+        request: Optional[Union[gcd_generator.CreateGeneratorRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
+        generator: Optional[gcd_generator.Generator] = None,
+        generator_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListConversationProfilesPager:
-        r"""Returns the list of all conversation profiles in the
-        specified project.
+    ) -> gcd_generator.Generator:
+        r"""Creates a generator.
 
         .. code-block:: python
 
@@ -841,30 +707,259 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
-            def sample_list_conversation_profiles():
+            def sample_create_generator():
                 # Create a client
-                client = dialogflow_v2beta1.ConversationProfilesClient()
+                client = dialogflow_v2beta1.GeneratorsClient()
 
                 # Initialize request argument(s)
-                request = dialogflow_v2beta1.ListConversationProfilesRequest(
+                request = dialogflow_v2beta1.CreateGeneratorRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_conversation_profiles(request=request)
+                response = client.create_generator(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dialogflow_v2beta1.types.CreateGeneratorRequest, dict]):
+                The request object. Request message of CreateGenerator.
+            parent (str):
+                Required. The project/location to create generator for.
+                Format:
+                ``projects/<Project ID>/locations/<Location ID>``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            generator (google.cloud.dialogflow_v2beta1.types.Generator):
+                Required. The generator to create.
+                This corresponds to the ``generator`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            generator_id (str):
+                Optional. The ID to use for the generator, which will
+                become the final component of the generator's resource
+                name.
+
+                The generator ID must be compliant with the regression
+                fomula ``[a-zA-Z][a-zA-Z0-9_-]*`` with the characters
+                length in range of [3,64]. If the field is not provided,
+                an Id will be auto-generated. If the field is provided,
+                the caller is resposible for
+
+                1. the uniqueness of the ID, otherwise the request will
+                   be rejected.
+                2. the consistency for whether to use custom ID or not
+                   under a project to better ensure uniqueness.
+
+                This corresponds to the ``generator_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2beta1.types.Generator:
+                LLM generator.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, generator, generator_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcd_generator.CreateGeneratorRequest):
+            request = gcd_generator.CreateGeneratorRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if generator is not None:
+                request.generator = generator
+            if generator_id is not None:
+                request.generator_id = generator_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_generator]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_generator(
+        self,
+        request: Optional[Union[generator.GetGeneratorRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> generator.Generator:
+        r"""Retrieves a generator.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_generator():
+                # Create a client
+                client = dialogflow_v2beta1.GeneratorsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetGeneratorRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_generator(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetGeneratorRequest, dict]):
+                The request object. Request message of GetGenerator.
+            name (str):
+                Required. The generator resource name to retrieve.
+                Format:
+                ``projects/<Project ID>/locations/<Location ID>``/generators/\`
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2beta1.types.Generator:
+                LLM generator.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, generator.GetGeneratorRequest):
+            request = generator.GetGeneratorRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_generator]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_generators(
+        self,
+        request: Optional[Union[generator.ListGeneratorsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListGeneratorsPager:
+        r"""Lists generators.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_generators():
+                # Create a client
+                client = dialogflow_v2beta1.GeneratorsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListGeneratorsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_generators(request=request)
 
                 # Handle the response
                 for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.ListConversationProfilesRequest, dict]):
-                The request object. The request message for
-                [ConversationProfiles.ListConversationProfiles][google.cloud.dialogflow.v2beta1.ConversationProfiles.ListConversationProfiles].
+            request (Union[google.cloud.dialogflow_v2beta1.types.ListGeneratorsRequest, dict]):
+                The request object. Request message of ListGenerators.
             parent (str):
-                Required. The project to list all conversation profiles
-                from. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                Required. The project/location to list generators for.
+                Format:
+                ``projects/<Project ID>/locations/<Location ID>``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -876,12 +971,12 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.dialogflow_v2beta1.services.conversation_profiles.pagers.ListConversationProfilesPager:
-                The response message for
-                   [ConversationProfiles.ListConversationProfiles][google.cloud.dialogflow.v2beta1.ConversationProfiles.ListConversationProfiles].
+            google.cloud.dialogflow_v2beta1.services.generators.pagers.ListGeneratorsPager:
+                Response of ListGenerators.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -896,10 +991,8 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, conversation_profile.ListConversationProfilesRequest
-        ):
-            request = conversation_profile.ListConversationProfilesRequest(request)
+        if not isinstance(request, generator.ListGeneratorsRequest):
+            request = generator.ListGeneratorsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -907,9 +1000,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_conversation_profiles
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_generators]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -930,7 +1021,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers.ListConversationProfilesPager(
+        response = pagers.ListGeneratorsPager(
             method=rpc,
             request=request,
             response=response,
@@ -942,388 +1033,16 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         # Done; return the response.
         return response
 
-    def get_conversation_profile(
+    def delete_generator(
         self,
-        request: Optional[
-            Union[conversation_profile.GetConversationProfileRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> conversation_profile.ConversationProfile:
-        r"""Retrieves the specified conversation profile.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dialogflow_v2beta1
-
-            def sample_get_conversation_profile():
-                # Create a client
-                client = dialogflow_v2beta1.ConversationProfilesClient()
-
-                # Initialize request argument(s)
-                request = dialogflow_v2beta1.GetConversationProfileRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_conversation_profile(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.GetConversationProfileRequest, dict]):
-                The request object. The request message for
-                [ConversationProfiles.GetConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.GetConversationProfile].
-            name (str):
-                Required. The resource name of the conversation profile.
-                Format:
-                ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.dialogflow_v2beta1.types.ConversationProfile:
-                Defines the services to connect to
-                incoming Dialogflow conversations.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, conversation_profile.GetConversationProfileRequest):
-            request = conversation_profile.GetConversationProfileRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_conversation_profile]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def create_conversation_profile(
-        self,
-        request: Optional[
-            Union[gcd_conversation_profile.CreateConversationProfileRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        conversation_profile: Optional[
-            gcd_conversation_profile.ConversationProfile
-        ] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcd_conversation_profile.ConversationProfile:
-        r"""Creates a conversation profile in the specified project.
-
-        [ConversationProfile.CreateTime][] and
-        [ConversationProfile.UpdateTime][] aren't populated in the
-        response. You can retrieve them via
-        [GetConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.GetConversationProfile]
-        API.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dialogflow_v2beta1
-
-            def sample_create_conversation_profile():
-                # Create a client
-                client = dialogflow_v2beta1.ConversationProfilesClient()
-
-                # Initialize request argument(s)
-                conversation_profile = dialogflow_v2beta1.ConversationProfile()
-                conversation_profile.display_name = "display_name_value"
-
-                request = dialogflow_v2beta1.CreateConversationProfileRequest(
-                    parent="parent_value",
-                    conversation_profile=conversation_profile,
-                )
-
-                # Make the request
-                response = client.create_conversation_profile(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.CreateConversationProfileRequest, dict]):
-                The request object. The request message for
-                [ConversationProfiles.CreateConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.CreateConversationProfile].
-            parent (str):
-                Required. The project to create a conversation profile
-                for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            conversation_profile (google.cloud.dialogflow_v2beta1.types.ConversationProfile):
-                Required. The conversation profile to
-                create.
-
-                This corresponds to the ``conversation_profile`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.dialogflow_v2beta1.types.ConversationProfile:
-                Defines the services to connect to
-                incoming Dialogflow conversations.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, conversation_profile])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcd_conversation_profile.CreateConversationProfileRequest
-        ):
-            request = gcd_conversation_profile.CreateConversationProfileRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if conversation_profile is not None:
-                request.conversation_profile = conversation_profile
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_conversation_profile
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def update_conversation_profile(
-        self,
-        request: Optional[
-            Union[gcd_conversation_profile.UpdateConversationProfileRequest, dict]
-        ] = None,
-        *,
-        conversation_profile: Optional[
-            gcd_conversation_profile.ConversationProfile
-        ] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcd_conversation_profile.ConversationProfile:
-        r"""Updates the specified conversation profile.
-
-        [ConversationProfile.CreateTime][] and
-        [ConversationProfile.UpdateTime][] aren't populated in the
-        response. You can retrieve them via
-        [GetConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.GetConversationProfile]
-        API.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dialogflow_v2beta1
-
-            def sample_update_conversation_profile():
-                # Create a client
-                client = dialogflow_v2beta1.ConversationProfilesClient()
-
-                # Initialize request argument(s)
-                conversation_profile = dialogflow_v2beta1.ConversationProfile()
-                conversation_profile.display_name = "display_name_value"
-
-                request = dialogflow_v2beta1.UpdateConversationProfileRequest(
-                    conversation_profile=conversation_profile,
-                )
-
-                # Make the request
-                response = client.update_conversation_profile(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateConversationProfileRequest, dict]):
-                The request object. The request message for
-                [ConversationProfiles.UpdateConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.UpdateConversationProfile].
-            conversation_profile (google.cloud.dialogflow_v2beta1.types.ConversationProfile):
-                Required. The conversation profile to
-                update.
-
-                This corresponds to the ``conversation_profile`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. The mask to control which
-                fields to update.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.dialogflow_v2beta1.types.ConversationProfile:
-                Defines the services to connect to
-                incoming Dialogflow conversations.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([conversation_profile, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcd_conversation_profile.UpdateConversationProfileRequest
-        ):
-            request = gcd_conversation_profile.UpdateConversationProfileRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if conversation_profile is not None:
-                request.conversation_profile = conversation_profile
-            if update_mask is not None:
-                request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_conversation_profile
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("conversation_profile.name", request.conversation_profile.name),)
-            ),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def delete_conversation_profile(
-        self,
-        request: Optional[
-            Union[conversation_profile.DeleteConversationProfileRequest, dict]
-        ] = None,
+        request: Optional[Union[generator.DeleteGeneratorRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes the specified conversation profile.
+        r"""Deletes a generator.
 
         .. code-block:: python
 
@@ -1336,29 +1055,24 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
-            def sample_delete_conversation_profile():
+            def sample_delete_generator():
                 # Create a client
-                client = dialogflow_v2beta1.ConversationProfilesClient()
+                client = dialogflow_v2beta1.GeneratorsClient()
 
                 # Initialize request argument(s)
-                request = dialogflow_v2beta1.DeleteConversationProfileRequest(
+                request = dialogflow_v2beta1.DeleteGeneratorRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                client.delete_conversation_profile(request=request)
+                client.delete_generator(request=request)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.DeleteConversationProfileRequest, dict]):
-                The request object. The request message for
-                [ConversationProfiles.DeleteConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.DeleteConversationProfile].
-
-                This operation fails if the conversation profile is
-                still referenced from a phone number.
+            request (Union[google.cloud.dialogflow_v2beta1.types.DeleteGeneratorRequest, dict]):
+                The request object. Request of DeleteGenerator.
             name (str):
-                Required. The name of the conversation profile to
-                delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``.
+                Required. The generator resource name to delete. Format:
+                ``projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1381,10 +1095,8 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, conversation_profile.DeleteConversationProfileRequest
-        ):
-            request = conversation_profile.DeleteConversationProfileRequest(request)
+        if not isinstance(request, generator.DeleteGeneratorRequest):
+            request = generator.DeleteGeneratorRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -1392,9 +1104,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_conversation_profile
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.delete_generator]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1413,41 +1123,17 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
             metadata=metadata,
         )
 
-    def set_suggestion_feature_config(
+    def update_generator(
         self,
-        request: Optional[
-            Union[gcd_conversation_profile.SetSuggestionFeatureConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[gcd_generator.UpdateGeneratorRequest, dict]] = None,
         *,
-        conversation_profile: Optional[str] = None,
-        participant_role: Optional[participant.Participant.Role] = None,
-        suggestion_feature_config: Optional[
-            gcd_conversation_profile.HumanAgentAssistantConfig.SuggestionFeatureConfig
-        ] = None,
+        generator: Optional[gcd_generator.Generator] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Adds or updates a suggestion feature in a conversation profile.
-        If the conversation profile contains the type of suggestion
-        feature for the participant role, it will update it. Otherwise
-        it will insert the suggestion feature.
-
-        This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
-        The returned ``Operation`` type has the following
-        method-specific fields:
-
-        -  ``metadata``:
-           [SetSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.SetSuggestionFeatureConfigOperationMetadata]
-        -  ``response``:
-           [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
-
-        If a long running operation to add or update suggestion feature
-        config for the same conversation profile, participant role and
-        suggestion feature type exists, please cancel the existing long
-        running operation before sending such request, otherwise the
-        request will be rejected.
+    ) -> gcd_generator.Generator:
+        r"""Updates a generator.
 
         .. code-block:: python
 
@@ -1460,51 +1146,36 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
-            def sample_set_suggestion_feature_config():
+            def sample_update_generator():
                 # Create a client
-                client = dialogflow_v2beta1.ConversationProfilesClient()
+                client = dialogflow_v2beta1.GeneratorsClient()
 
                 # Initialize request argument(s)
-                request = dialogflow_v2beta1.SetSuggestionFeatureConfigRequest(
-                    conversation_profile="conversation_profile_value",
-                    participant_role="END_USER",
+                request = dialogflow_v2beta1.UpdateGeneratorRequest(
                 )
 
                 # Make the request
-                operation = client.set_suggestion_feature_config(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
+                response = client.update_generator(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.SetSuggestionFeatureConfigRequest, dict]):
-                The request object. The request message for
-                [ConversationProfiles.SetSuggestionFeature][].
-            conversation_profile (str):
-                Required. The Conversation Profile to add or update the
-                suggestion feature config. Format:
-                ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``.
+            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateGeneratorRequest, dict]):
+                The request object. Request of UpdateGenerator.
+            generator (google.cloud.dialogflow_v2beta1.types.Generator):
+                Required. The generator to update.
+                The name field of generator is to
+                identify the generator to update.
 
-                This corresponds to the ``conversation_profile`` field
+                This corresponds to the ``generator`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            participant_role (google.cloud.dialogflow_v2beta1.types.Participant.Role):
-                Required. The participant role to add or update the
-                suggestion feature config. Only HUMAN_AGENT or END_USER
-                can be used.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. The list of fields to
+                update.
 
-                This corresponds to the ``participant_role`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            suggestion_feature_config (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionFeatureConfig):
-                Required. The suggestion feature
-                config to add or update.
-
-                This corresponds to the ``suggestion_feature_config`` field
+                This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1514,21 +1185,13 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2beta1.types.ConversationProfile`
-                Defines the services to connect to incoming Dialogflow
-                conversations.
-
+            google.cloud.dialogflow_v2beta1.types.Generator:
+                LLM generator.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [conversation_profile, participant_role, suggestion_feature_config]
-        )
+        has_flattened_params = any([generator, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1537,32 +1200,24 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcd_conversation_profile.SetSuggestionFeatureConfigRequest
-        ):
-            request = gcd_conversation_profile.SetSuggestionFeatureConfigRequest(
-                request
-            )
+        if not isinstance(request, gcd_generator.UpdateGeneratorRequest):
+            request = gcd_generator.UpdateGeneratorRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if conversation_profile is not None:
-                request.conversation_profile = conversation_profile
-            if participant_role is not None:
-                request.participant_role = participant_role
-            if suggestion_feature_config is not None:
-                request.suggestion_feature_config = suggestion_feature_config
+            if generator is not None:
+                request.generator = generator
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.set_suggestion_feature_config
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_generator]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("conversation_profile", request.conversation_profile),)
+                (("generator.name", request.generator.name),)
             ),
         )
 
@@ -1577,184 +1232,10 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
             metadata=metadata,
         )
 
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            gcd_conversation_profile.ConversationProfile,
-            metadata_type=gcd_conversation_profile.SetSuggestionFeatureConfigOperationMetadata,
-        )
-
         # Done; return the response.
         return response
 
-    def clear_suggestion_feature_config(
-        self,
-        request: Optional[
-            Union[gcd_conversation_profile.ClearSuggestionFeatureConfigRequest, dict]
-        ] = None,
-        *,
-        conversation_profile: Optional[str] = None,
-        participant_role: Optional[participant.Participant.Role] = None,
-        suggestion_feature_type: Optional[participant.SuggestionFeature.Type] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Clears a suggestion feature from a conversation profile for the
-        given participant role.
-
-        This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
-        The returned ``Operation`` type has the following
-        method-specific fields:
-
-        -  ``metadata``:
-           [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.ClearSuggestionFeatureConfigOperationMetadata]
-        -  ``response``:
-           [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dialogflow_v2beta1
-
-            def sample_clear_suggestion_feature_config():
-                # Create a client
-                client = dialogflow_v2beta1.ConversationProfilesClient()
-
-                # Initialize request argument(s)
-                request = dialogflow_v2beta1.ClearSuggestionFeatureConfigRequest(
-                    conversation_profile="conversation_profile_value",
-                    participant_role="END_USER",
-                    suggestion_feature_type="KNOWLEDGE_ASSIST",
-                )
-
-                # Make the request
-                operation = client.clear_suggestion_feature_config(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.ClearSuggestionFeatureConfigRequest, dict]):
-                The request object. The request message for
-                [ConversationProfiles.ClearFeature][].
-            conversation_profile (str):
-                Required. The Conversation Profile to add or update the
-                suggestion feature config. Format:
-                ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``.
-
-                This corresponds to the ``conversation_profile`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            participant_role (google.cloud.dialogflow_v2beta1.types.Participant.Role):
-                Required. The participant role to remove the suggestion
-                feature config. Only HUMAN_AGENT or END_USER can be
-                used.
-
-                This corresponds to the ``participant_role`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            suggestion_feature_type (google.cloud.dialogflow_v2beta1.types.SuggestionFeature.Type):
-                Required. The type of the suggestion
-                feature to remove.
-
-                This corresponds to the ``suggestion_feature_type`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.dialogflow_v2beta1.types.ConversationProfile`
-                Defines the services to connect to incoming Dialogflow
-                conversations.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [conversation_profile, participant_role, suggestion_feature_type]
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcd_conversation_profile.ClearSuggestionFeatureConfigRequest
-        ):
-            request = gcd_conversation_profile.ClearSuggestionFeatureConfigRequest(
-                request
-            )
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if conversation_profile is not None:
-                request.conversation_profile = conversation_profile
-            if participant_role is not None:
-                request.participant_role = participant_role
-            if suggestion_feature_type is not None:
-                request.suggestion_feature_type = suggestion_feature_type
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.clear_suggestion_feature_config
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("conversation_profile", request.conversation_profile),)
-            ),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            gcd_conversation_profile.ConversationProfile,
-            metadata_type=gcd_conversation_profile.ClearSuggestionFeatureConfigOperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def __enter__(self) -> "ConversationProfilesClient":
+    def __enter__(self) -> "GeneratorsClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -2058,4 +1539,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("ConversationProfilesClient",)
+__all__ = ("GeneratorsClient",)

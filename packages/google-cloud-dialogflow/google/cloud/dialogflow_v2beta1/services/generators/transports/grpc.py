@@ -22,19 +22,23 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
-from google.cloud.dialogflow_v2beta1.types import participant
+from google.cloud.dialogflow_v2beta1.types import generator
+from google.cloud.dialogflow_v2beta1.types import generator as gcd_generator
 
-from .base import DEFAULT_CLIENT_INFO, ParticipantsTransport
+from .base import DEFAULT_CLIENT_INFO, GeneratorsTransport
 
 
-class ParticipantsGrpcTransport(ParticipantsTransport):
-    """gRPC backend transport for Participants.
+class GeneratorsGrpcTransport(GeneratorsTransport):
+    """gRPC backend transport for Generators.
 
-    Service for managing
-    [Participants][google.cloud.dialogflow.v2beta1.Participant].
+    Generator Service for LLM powered Agent Assist. This service
+    manages the configurations of user owned Generators, such as
+    description, context and instruction, input/output format, etc.
+    The generator resources will be used inside a conversation and
+    will be triggered by TriggerEvent to query LLM for answers.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -239,18 +243,16 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
         return self._grpc_channel
 
     @property
-    def create_participant(
+    def create_generator(
         self,
-    ) -> Callable[
-        [gcd_participant.CreateParticipantRequest], gcd_participant.Participant
-    ]:
-        r"""Return a callable for the create participant method over gRPC.
+    ) -> Callable[[gcd_generator.CreateGeneratorRequest], gcd_generator.Generator]:
+        r"""Return a callable for the create generator method over gRPC.
 
-        Creates a new participant in a conversation.
+        Creates a generator.
 
         Returns:
-            Callable[[~.CreateParticipantRequest],
-                    ~.Participant]:
+            Callable[[~.CreateGeneratorRequest],
+                    ~.Generator]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -258,25 +260,25 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_participant" not in self._stubs:
-            self._stubs["create_participant"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Participants/CreateParticipant",
-                request_serializer=gcd_participant.CreateParticipantRequest.serialize,
-                response_deserializer=gcd_participant.Participant.deserialize,
+        if "create_generator" not in self._stubs:
+            self._stubs["create_generator"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Generators/CreateGenerator",
+                request_serializer=gcd_generator.CreateGeneratorRequest.serialize,
+                response_deserializer=gcd_generator.Generator.deserialize,
             )
-        return self._stubs["create_participant"]
+        return self._stubs["create_generator"]
 
     @property
-    def get_participant(
+    def get_generator(
         self,
-    ) -> Callable[[participant.GetParticipantRequest], participant.Participant]:
-        r"""Return a callable for the get participant method over gRPC.
+    ) -> Callable[[generator.GetGeneratorRequest], generator.Generator]:
+        r"""Return a callable for the get generator method over gRPC.
 
-        Retrieves a conversation participant.
+        Retrieves a generator.
 
         Returns:
-            Callable[[~.GetParticipantRequest],
-                    ~.Participant]:
+            Callable[[~.GetGeneratorRequest],
+                    ~.Generator]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -284,28 +286,25 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_participant" not in self._stubs:
-            self._stubs["get_participant"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Participants/GetParticipant",
-                request_serializer=participant.GetParticipantRequest.serialize,
-                response_deserializer=participant.Participant.deserialize,
+        if "get_generator" not in self._stubs:
+            self._stubs["get_generator"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Generators/GetGenerator",
+                request_serializer=generator.GetGeneratorRequest.serialize,
+                response_deserializer=generator.Generator.deserialize,
             )
-        return self._stubs["get_participant"]
+        return self._stubs["get_generator"]
 
     @property
-    def list_participants(
+    def list_generators(
         self,
-    ) -> Callable[
-        [participant.ListParticipantsRequest], participant.ListParticipantsResponse
-    ]:
-        r"""Return a callable for the list participants method over gRPC.
+    ) -> Callable[[generator.ListGeneratorsRequest], generator.ListGeneratorsResponse]:
+        r"""Return a callable for the list generators method over gRPC.
 
-        Returns the list of all participants in the specified
-        conversation.
+        Lists generators.
 
         Returns:
-            Callable[[~.ListParticipantsRequest],
-                    ~.ListParticipantsResponse]:
+            Callable[[~.ListGeneratorsRequest],
+                    ~.ListGeneratorsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -313,27 +312,25 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_participants" not in self._stubs:
-            self._stubs["list_participants"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Participants/ListParticipants",
-                request_serializer=participant.ListParticipantsRequest.serialize,
-                response_deserializer=participant.ListParticipantsResponse.deserialize,
+        if "list_generators" not in self._stubs:
+            self._stubs["list_generators"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Generators/ListGenerators",
+                request_serializer=generator.ListGeneratorsRequest.serialize,
+                response_deserializer=generator.ListGeneratorsResponse.deserialize,
             )
-        return self._stubs["list_participants"]
+        return self._stubs["list_generators"]
 
     @property
-    def update_participant(
+    def delete_generator(
         self,
-    ) -> Callable[
-        [gcd_participant.UpdateParticipantRequest], gcd_participant.Participant
-    ]:
-        r"""Return a callable for the update participant method over gRPC.
+    ) -> Callable[[generator.DeleteGeneratorRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete generator method over gRPC.
 
-        Updates the specified participant.
+        Deletes a generator.
 
         Returns:
-            Callable[[~.UpdateParticipantRequest],
-                    ~.Participant]:
+            Callable[[~.DeleteGeneratorRequest],
+                    ~.Empty]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -341,32 +338,25 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_participant" not in self._stubs:
-            self._stubs["update_participant"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Participants/UpdateParticipant",
-                request_serializer=gcd_participant.UpdateParticipantRequest.serialize,
-                response_deserializer=gcd_participant.Participant.deserialize,
+        if "delete_generator" not in self._stubs:
+            self._stubs["delete_generator"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Generators/DeleteGenerator",
+                request_serializer=generator.DeleteGeneratorRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["update_participant"]
+        return self._stubs["delete_generator"]
 
     @property
-    def analyze_content(
+    def update_generator(
         self,
-    ) -> Callable[
-        [gcd_participant.AnalyzeContentRequest], gcd_participant.AnalyzeContentResponse
-    ]:
-        r"""Return a callable for the analyze content method over gRPC.
+    ) -> Callable[[gcd_generator.UpdateGeneratorRequest], gcd_generator.Generator]:
+        r"""Return a callable for the update generator method over gRPC.
 
-        Adds a text (chat, for example), or audio (phone recording, for
-        example) message from a participant into the conversation.
-
-        Note: Always use agent versions for production traffic sent to
-        virtual agents. See `Versions and
-        environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
+        Updates a generator.
 
         Returns:
-            Callable[[~.AnalyzeContentRequest],
-                    ~.AnalyzeContentResponse]:
+            Callable[[~.UpdateGeneratorRequest],
+                    ~.Generator]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -374,270 +364,13 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "analyze_content" not in self._stubs:
-            self._stubs["analyze_content"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Participants/AnalyzeContent",
-                request_serializer=gcd_participant.AnalyzeContentRequest.serialize,
-                response_deserializer=gcd_participant.AnalyzeContentResponse.deserialize,
+        if "update_generator" not in self._stubs:
+            self._stubs["update_generator"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Generators/UpdateGenerator",
+                request_serializer=gcd_generator.UpdateGeneratorRequest.serialize,
+                response_deserializer=gcd_generator.Generator.deserialize,
             )
-        return self._stubs["analyze_content"]
-
-    @property
-    def streaming_analyze_content(
-        self,
-    ) -> Callable[
-        [participant.StreamingAnalyzeContentRequest],
-        participant.StreamingAnalyzeContentResponse,
-    ]:
-        r"""Return a callable for the streaming analyze content method over gRPC.
-
-        Adds a text (e.g., chat) or audio (e.g., phone recording)
-        message from a participant into the conversation. Note: This
-        method is only available through the gRPC API (not REST).
-
-        The top-level message sent to the client by the server is
-        ``StreamingAnalyzeContentResponse``. Multiple response messages
-        can be returned in order. The first one or more messages contain
-        the ``recognition_result`` field. Each result represents a more
-        complete transcript of what the user said. The next message
-        contains the ``reply_text`` field, and potentially the
-        ``reply_audio`` and/or the ``automated_agent_reply`` fields.
-
-        Note: Always use agent versions for production traffic sent to
-        virtual agents. See `Versions and
-        environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
-
-        Returns:
-            Callable[[~.StreamingAnalyzeContentRequest],
-                    ~.StreamingAnalyzeContentResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "streaming_analyze_content" not in self._stubs:
-            self._stubs["streaming_analyze_content"] = self.grpc_channel.stream_stream(
-                "/google.cloud.dialogflow.v2beta1.Participants/StreamingAnalyzeContent",
-                request_serializer=participant.StreamingAnalyzeContentRequest.serialize,
-                response_deserializer=participant.StreamingAnalyzeContentResponse.deserialize,
-            )
-        return self._stubs["streaming_analyze_content"]
-
-    @property
-    def suggest_articles(
-        self,
-    ) -> Callable[
-        [participant.SuggestArticlesRequest], participant.SuggestArticlesResponse
-    ]:
-        r"""Return a callable for the suggest articles method over gRPC.
-
-        Gets suggested articles for a participant based on specific
-        historical messages.
-
-        Note that
-        [ListSuggestions][google.cloud.dialogflow.v2beta1.Participants.ListSuggestions]
-        will only list the auto-generated suggestions, while
-        [CompileSuggestion][google.cloud.dialogflow.v2beta1.Participants.CompileSuggestion]
-        will try to compile suggestion based on the provided
-        conversation context in the real time.
-
-        Returns:
-            Callable[[~.SuggestArticlesRequest],
-                    ~.SuggestArticlesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "suggest_articles" not in self._stubs:
-            self._stubs["suggest_articles"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Participants/SuggestArticles",
-                request_serializer=participant.SuggestArticlesRequest.serialize,
-                response_deserializer=participant.SuggestArticlesResponse.deserialize,
-            )
-        return self._stubs["suggest_articles"]
-
-    @property
-    def suggest_faq_answers(
-        self,
-    ) -> Callable[
-        [participant.SuggestFaqAnswersRequest], participant.SuggestFaqAnswersResponse
-    ]:
-        r"""Return a callable for the suggest faq answers method over gRPC.
-
-        Gets suggested faq answers for a participant based on
-        specific historical messages.
-
-        Returns:
-            Callable[[~.SuggestFaqAnswersRequest],
-                    ~.SuggestFaqAnswersResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "suggest_faq_answers" not in self._stubs:
-            self._stubs["suggest_faq_answers"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Participants/SuggestFaqAnswers",
-                request_serializer=participant.SuggestFaqAnswersRequest.serialize,
-                response_deserializer=participant.SuggestFaqAnswersResponse.deserialize,
-            )
-        return self._stubs["suggest_faq_answers"]
-
-    @property
-    def suggest_smart_replies(
-        self,
-    ) -> Callable[
-        [participant.SuggestSmartRepliesRequest],
-        participant.SuggestSmartRepliesResponse,
-    ]:
-        r"""Return a callable for the suggest smart replies method over gRPC.
-
-        Gets smart replies for a participant based on
-        specific historical messages.
-
-        Returns:
-            Callable[[~.SuggestSmartRepliesRequest],
-                    ~.SuggestSmartRepliesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "suggest_smart_replies" not in self._stubs:
-            self._stubs["suggest_smart_replies"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Participants/SuggestSmartReplies",
-                request_serializer=participant.SuggestSmartRepliesRequest.serialize,
-                response_deserializer=participant.SuggestSmartRepliesResponse.deserialize,
-            )
-        return self._stubs["suggest_smart_replies"]
-
-    @property
-    def suggest_knowledge_assist(
-        self,
-    ) -> Callable[
-        [participant.SuggestKnowledgeAssistRequest],
-        participant.SuggestKnowledgeAssistResponse,
-    ]:
-        r"""Return a callable for the suggest knowledge assist method over gRPC.
-
-        Gets knowledge assist suggestions based on historical
-        messages.
-
-        Returns:
-            Callable[[~.SuggestKnowledgeAssistRequest],
-                    ~.SuggestKnowledgeAssistResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "suggest_knowledge_assist" not in self._stubs:
-            self._stubs["suggest_knowledge_assist"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Participants/SuggestKnowledgeAssist",
-                request_serializer=participant.SuggestKnowledgeAssistRequest.serialize,
-                response_deserializer=participant.SuggestKnowledgeAssistResponse.deserialize,
-            )
-        return self._stubs["suggest_knowledge_assist"]
-
-    @property
-    def list_suggestions(
-        self,
-    ) -> Callable[
-        [participant.ListSuggestionsRequest], participant.ListSuggestionsResponse
-    ]:
-        r"""Return a callable for the list suggestions method over gRPC.
-
-        Deprecated: Use inline suggestion, event based suggestion or
-        Suggestion\* API instead. See
-        [HumanAgentAssistantConfig.name][google.cloud.dialogflow.v2beta1.HumanAgentAssistantConfig.name]
-        for more details. Removal Date: 2020-09-01.
-
-        Retrieves suggestions for live agents.
-
-        This method should be used by human agent client software to
-        fetch auto generated suggestions in real-time, while the
-        conversation with an end user is in progress. The functionality
-        is implemented in terms of the `list
-        pagination <https://cloud.google.com/apis/design/design_patterns#list_pagination>`__
-        design pattern. The client app should use the
-        ``next_page_token`` field to fetch the next batch of
-        suggestions. ``suggestions`` are sorted by ``create_time`` in
-        descending order. To fetch latest suggestion, just set
-        ``page_size`` to 1. To fetch new suggestions without
-        duplication, send request with filter
-        ``create_time_epoch_microseconds > [first item's create_time of previous request]``
-        and empty page_token.
-
-        Returns:
-            Callable[[~.ListSuggestionsRequest],
-                    ~.ListSuggestionsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_suggestions" not in self._stubs:
-            self._stubs["list_suggestions"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Participants/ListSuggestions",
-                request_serializer=participant.ListSuggestionsRequest.serialize,
-                response_deserializer=participant.ListSuggestionsResponse.deserialize,
-            )
-        return self._stubs["list_suggestions"]
-
-    @property
-    def compile_suggestion(
-        self,
-    ) -> Callable[
-        [participant.CompileSuggestionRequest], participant.CompileSuggestionResponse
-    ]:
-        r"""Return a callable for the compile suggestion method over gRPC.
-
-        Deprecated. use
-        [SuggestArticles][google.cloud.dialogflow.v2beta1.Participants.SuggestArticles]
-        and
-        [SuggestFaqAnswers][google.cloud.dialogflow.v2beta1.Participants.SuggestFaqAnswers]
-        instead.
-
-        Gets suggestions for a participant based on specific historical
-        messages.
-
-        Note that
-        [ListSuggestions][google.cloud.dialogflow.v2beta1.Participants.ListSuggestions]
-        will only list the auto-generated suggestions, while
-        [CompileSuggestion][google.cloud.dialogflow.v2beta1.Participants.CompileSuggestion]
-        will try to compile suggestion based on the provided
-        conversation context in the real time.
-
-        Returns:
-            Callable[[~.CompileSuggestionRequest],
-                    ~.CompileSuggestionResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "compile_suggestion" not in self._stubs:
-            self._stubs["compile_suggestion"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Participants/CompileSuggestion",
-                request_serializer=participant.CompileSuggestionRequest.serialize,
-                response_deserializer=participant.CompileSuggestionResponse.deserialize,
-            )
-        return self._stubs["compile_suggestion"]
+        return self._stubs["update_generator"]
 
     def close(self):
         self.grpc_channel.close()
@@ -736,4 +469,4 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
         return "grpc"
 
 
-__all__ = ("ParticipantsGrpcTransport",)
+__all__ = ("GeneratorsGrpcTransport",)

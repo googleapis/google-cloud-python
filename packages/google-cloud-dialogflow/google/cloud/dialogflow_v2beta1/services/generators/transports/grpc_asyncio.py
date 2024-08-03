@@ -23,21 +23,25 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.types import conversation as gcd_conversation
-from google.cloud.dialogflow_v2beta1.types import conversation
+from google.cloud.dialogflow_v2beta1.types import generator
+from google.cloud.dialogflow_v2beta1.types import generator as gcd_generator
 
-from .base import DEFAULT_CLIENT_INFO, ConversationsTransport
-from .grpc import ConversationsGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, GeneratorsTransport
+from .grpc import GeneratorsGrpcTransport
 
 
-class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
-    """gRPC AsyncIO backend transport for Conversations.
+class GeneratorsGrpcAsyncIOTransport(GeneratorsTransport):
+    """gRPC AsyncIO backend transport for Generators.
 
-    Service for managing
-    [Conversations][google.cloud.dialogflow.v2beta1.Conversation].
+    Generator Service for LLM powered Agent Assist. This service
+    manages the configurations of user owned Generators, such as
+    description, context and instruction, input/output format, etc.
+    The generator resources will be used inside a conversation and
+    will be triggered by TriggerEvent to query LLM for answers.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -243,39 +247,18 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         return self._grpc_channel
 
     @property
-    def create_conversation(
+    def create_generator(
         self,
     ) -> Callable[
-        [gcd_conversation.CreateConversationRequest],
-        Awaitable[gcd_conversation.Conversation],
+        [gcd_generator.CreateGeneratorRequest], Awaitable[gcd_generator.Generator]
     ]:
-        r"""Return a callable for the create conversation method over gRPC.
+        r"""Return a callable for the create generator method over gRPC.
 
-        Creates a new conversation. Conversations are auto-completed
-        after 24 hours.
-
-        Conversation Lifecycle: There are two stages during a
-        conversation: Automated Agent Stage and Assist Stage.
-
-        For Automated Agent Stage, there will be a dialogflow agent
-        responding to user queries.
-
-        For Assist Stage, there's no dialogflow agent responding to user
-        queries. But we will provide suggestions which are generated
-        from conversation.
-
-        If
-        [Conversation.conversation_profile][google.cloud.dialogflow.v2beta1.Conversation.conversation_profile]
-        is configured for a dialogflow agent, conversation will start
-        from ``Automated Agent Stage``, otherwise, it will start from
-        ``Assist Stage``. And during ``Automated Agent Stage``, once an
-        [Intent][google.cloud.dialogflow.v2beta1.Intent] with
-        [Intent.live_agent_handoff][google.cloud.dialogflow.v2beta1.Intent.live_agent_handoff]
-        is triggered, conversation will transfer to Assist Stage.
+        Creates a generator.
 
         Returns:
-            Callable[[~.CreateConversationRequest],
-                    Awaitable[~.Conversation]]:
+            Callable[[~.CreateGeneratorRequest],
+                    Awaitable[~.Generator]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -283,29 +266,25 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_conversation" not in self._stubs:
-            self._stubs["create_conversation"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/CreateConversation",
-                request_serializer=gcd_conversation.CreateConversationRequest.serialize,
-                response_deserializer=gcd_conversation.Conversation.deserialize,
+        if "create_generator" not in self._stubs:
+            self._stubs["create_generator"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Generators/CreateGenerator",
+                request_serializer=gcd_generator.CreateGeneratorRequest.serialize,
+                response_deserializer=gcd_generator.Generator.deserialize,
             )
-        return self._stubs["create_conversation"]
+        return self._stubs["create_generator"]
 
     @property
-    def list_conversations(
+    def get_generator(
         self,
-    ) -> Callable[
-        [conversation.ListConversationsRequest],
-        Awaitable[conversation.ListConversationsResponse],
-    ]:
-        r"""Return a callable for the list conversations method over gRPC.
+    ) -> Callable[[generator.GetGeneratorRequest], Awaitable[generator.Generator]]:
+        r"""Return a callable for the get generator method over gRPC.
 
-        Returns the list of all conversations in the
-        specified project.
+        Retrieves a generator.
 
         Returns:
-            Callable[[~.ListConversationsRequest],
-                    Awaitable[~.ListConversationsResponse]]:
+            Callable[[~.GetGeneratorRequest],
+                    Awaitable[~.Generator]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -313,27 +292,27 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_conversations" not in self._stubs:
-            self._stubs["list_conversations"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/ListConversations",
-                request_serializer=conversation.ListConversationsRequest.serialize,
-                response_deserializer=conversation.ListConversationsResponse.deserialize,
+        if "get_generator" not in self._stubs:
+            self._stubs["get_generator"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Generators/GetGenerator",
+                request_serializer=generator.GetGeneratorRequest.serialize,
+                response_deserializer=generator.Generator.deserialize,
             )
-        return self._stubs["list_conversations"]
+        return self._stubs["get_generator"]
 
     @property
-    def get_conversation(
+    def list_generators(
         self,
     ) -> Callable[
-        [conversation.GetConversationRequest], Awaitable[conversation.Conversation]
+        [generator.ListGeneratorsRequest], Awaitable[generator.ListGeneratorsResponse]
     ]:
-        r"""Return a callable for the get conversation method over gRPC.
+        r"""Return a callable for the list generators method over gRPC.
 
-        Retrieves the specific conversation.
+        Lists generators.
 
         Returns:
-            Callable[[~.GetConversationRequest],
-                    Awaitable[~.Conversation]]:
+            Callable[[~.ListGeneratorsRequest],
+                    Awaitable[~.ListGeneratorsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -341,29 +320,25 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_conversation" not in self._stubs:
-            self._stubs["get_conversation"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/GetConversation",
-                request_serializer=conversation.GetConversationRequest.serialize,
-                response_deserializer=conversation.Conversation.deserialize,
+        if "list_generators" not in self._stubs:
+            self._stubs["list_generators"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Generators/ListGenerators",
+                request_serializer=generator.ListGeneratorsRequest.serialize,
+                response_deserializer=generator.ListGeneratorsResponse.deserialize,
             )
-        return self._stubs["get_conversation"]
+        return self._stubs["list_generators"]
 
     @property
-    def complete_conversation(
+    def delete_generator(
         self,
-    ) -> Callable[
-        [conversation.CompleteConversationRequest], Awaitable[conversation.Conversation]
-    ]:
-        r"""Return a callable for the complete conversation method over gRPC.
+    ) -> Callable[[generator.DeleteGeneratorRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete generator method over gRPC.
 
-        Completes the specified conversation. Finished
-        conversations are purged from the database after 30
-        days.
+        Deletes a generator.
 
         Returns:
-            Callable[[~.CompleteConversationRequest],
-                    Awaitable[~.Conversation]]:
+            Callable[[~.DeleteGeneratorRequest],
+                    Awaitable[~.Empty]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -371,30 +346,27 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "complete_conversation" not in self._stubs:
-            self._stubs["complete_conversation"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/CompleteConversation",
-                request_serializer=conversation.CompleteConversationRequest.serialize,
-                response_deserializer=conversation.Conversation.deserialize,
+        if "delete_generator" not in self._stubs:
+            self._stubs["delete_generator"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Generators/DeleteGenerator",
+                request_serializer=generator.DeleteGeneratorRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["complete_conversation"]
+        return self._stubs["delete_generator"]
 
     @property
-    def batch_create_messages(
+    def update_generator(
         self,
     ) -> Callable[
-        [conversation.BatchCreateMessagesRequest],
-        Awaitable[conversation.BatchCreateMessagesResponse],
+        [gcd_generator.UpdateGeneratorRequest], Awaitable[gcd_generator.Generator]
     ]:
-        r"""Return a callable for the batch create messages method over gRPC.
+        r"""Return a callable for the update generator method over gRPC.
 
-        Batch ingests messages to conversation. Customers can
-        use this RPC to ingest historical messages to
-        conversation.
+        Updates a generator.
 
         Returns:
-            Callable[[~.BatchCreateMessagesRequest],
-                    Awaitable[~.BatchCreateMessagesResponse]]:
+            Callable[[~.UpdateGeneratorRequest],
+                    Awaitable[~.Generator]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -402,219 +374,39 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "batch_create_messages" not in self._stubs:
-            self._stubs["batch_create_messages"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/BatchCreateMessages",
-                request_serializer=conversation.BatchCreateMessagesRequest.serialize,
-                response_deserializer=conversation.BatchCreateMessagesResponse.deserialize,
+        if "update_generator" not in self._stubs:
+            self._stubs["update_generator"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Generators/UpdateGenerator",
+                request_serializer=gcd_generator.UpdateGeneratorRequest.serialize,
+                response_deserializer=gcd_generator.Generator.deserialize,
             )
-        return self._stubs["batch_create_messages"]
-
-    @property
-    def list_messages(
-        self,
-    ) -> Callable[
-        [conversation.ListMessagesRequest], Awaitable[conversation.ListMessagesResponse]
-    ]:
-        r"""Return a callable for the list messages method over gRPC.
-
-        Lists messages that belong to a given conversation. ``messages``
-        are ordered by ``create_time`` in descending order. To fetch
-        updates without duplication, send request with filter
-        ``create_time_epoch_microseconds > [first item's create_time of previous request]``
-        and empty page_token.
-
-        Returns:
-            Callable[[~.ListMessagesRequest],
-                    Awaitable[~.ListMessagesResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_messages" not in self._stubs:
-            self._stubs["list_messages"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/ListMessages",
-                request_serializer=conversation.ListMessagesRequest.serialize,
-                response_deserializer=conversation.ListMessagesResponse.deserialize,
-            )
-        return self._stubs["list_messages"]
-
-    @property
-    def suggest_conversation_summary(
-        self,
-    ) -> Callable[
-        [gcd_conversation.SuggestConversationSummaryRequest],
-        Awaitable[gcd_conversation.SuggestConversationSummaryResponse],
-    ]:
-        r"""Return a callable for the suggest conversation summary method over gRPC.
-
-        Suggest summary for a conversation based on specific
-        historical messages. The range of the messages to be
-        used for summary can be specified in the request.
-
-        Returns:
-            Callable[[~.SuggestConversationSummaryRequest],
-                    Awaitable[~.SuggestConversationSummaryResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "suggest_conversation_summary" not in self._stubs:
-            self._stubs["suggest_conversation_summary"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/SuggestConversationSummary",
-                request_serializer=gcd_conversation.SuggestConversationSummaryRequest.serialize,
-                response_deserializer=gcd_conversation.SuggestConversationSummaryResponse.deserialize,
-            )
-        return self._stubs["suggest_conversation_summary"]
-
-    @property
-    def generate_stateless_summary(
-        self,
-    ) -> Callable[
-        [conversation.GenerateStatelessSummaryRequest],
-        Awaitable[conversation.GenerateStatelessSummaryResponse],
-    ]:
-        r"""Return a callable for the generate stateless summary method over gRPC.
-
-        Generates and returns a summary for a conversation
-        that does not have a resource created for it.
-
-        Returns:
-            Callable[[~.GenerateStatelessSummaryRequest],
-                    Awaitable[~.GenerateStatelessSummaryResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "generate_stateless_summary" not in self._stubs:
-            self._stubs["generate_stateless_summary"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/GenerateStatelessSummary",
-                request_serializer=conversation.GenerateStatelessSummaryRequest.serialize,
-                response_deserializer=conversation.GenerateStatelessSummaryResponse.deserialize,
-            )
-        return self._stubs["generate_stateless_summary"]
-
-    @property
-    def generate_stateless_suggestion(
-        self,
-    ) -> Callable[
-        [conversation.GenerateStatelessSuggestionRequest],
-        Awaitable[conversation.GenerateStatelessSuggestionResponse],
-    ]:
-        r"""Return a callable for the generate stateless suggestion method over gRPC.
-
-        Generates and returns a suggestion for a conversation
-        that does not have a resource created for it.
-
-        Returns:
-            Callable[[~.GenerateStatelessSuggestionRequest],
-                    Awaitable[~.GenerateStatelessSuggestionResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "generate_stateless_suggestion" not in self._stubs:
-            self._stubs[
-                "generate_stateless_suggestion"
-            ] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/GenerateStatelessSuggestion",
-                request_serializer=conversation.GenerateStatelessSuggestionRequest.serialize,
-                response_deserializer=conversation.GenerateStatelessSuggestionResponse.deserialize,
-            )
-        return self._stubs["generate_stateless_suggestion"]
-
-    @property
-    def search_knowledge(
-        self,
-    ) -> Callable[
-        [conversation.SearchKnowledgeRequest],
-        Awaitable[conversation.SearchKnowledgeResponse],
-    ]:
-        r"""Return a callable for the search knowledge method over gRPC.
-
-        Get answers for the given query based on knowledge
-        documents.
-
-        Returns:
-            Callable[[~.SearchKnowledgeRequest],
-                    Awaitable[~.SearchKnowledgeResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "search_knowledge" not in self._stubs:
-            self._stubs["search_knowledge"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/SearchKnowledge",
-                request_serializer=conversation.SearchKnowledgeRequest.serialize,
-                response_deserializer=conversation.SearchKnowledgeResponse.deserialize,
-            )
-        return self._stubs["search_knowledge"]
+        return self._stubs["update_generator"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_conversation: gapic_v1.method_async.wrap_method(
-                self.create_conversation,
+            self.create_generator: gapic_v1.method_async.wrap_method(
+                self.create_generator,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_conversations: gapic_v1.method_async.wrap_method(
-                self.list_conversations,
+            self.get_generator: gapic_v1.method_async.wrap_method(
+                self.get_generator,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_conversation: gapic_v1.method_async.wrap_method(
-                self.get_conversation,
+            self.list_generators: gapic_v1.method_async.wrap_method(
+                self.list_generators,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.complete_conversation: gapic_v1.method_async.wrap_method(
-                self.complete_conversation,
+            self.delete_generator: gapic_v1.method_async.wrap_method(
+                self.delete_generator,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.batch_create_messages: gapic_v1.method_async.wrap_method(
-                self.batch_create_messages,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.list_messages: gapic_v1.method_async.wrap_method(
-                self.list_messages,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.suggest_conversation_summary: gapic_v1.method_async.wrap_method(
-                self.suggest_conversation_summary,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.generate_stateless_summary: gapic_v1.method_async.wrap_method(
-                self.generate_stateless_summary,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.generate_stateless_suggestion: gapic_v1.method_async.wrap_method(
-                self.generate_stateless_suggestion,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.search_knowledge: gapic_v1.method_async.wrap_method(
-                self.search_knowledge,
+            self.update_generator: gapic_v1.method_async.wrap_method(
+                self.update_generator,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -713,4 +505,4 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         return self._stubs["get_location"]
 
 
-__all__ = ("ConversationsGrpcAsyncIOTransport",)
+__all__ = ("GeneratorsGrpcAsyncIOTransport",)

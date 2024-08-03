@@ -25,18 +25,19 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
-from google.cloud.dialogflow_v2beta1.types import conversation as gcd_conversation
-from google.cloud.dialogflow_v2beta1.types import conversation
+from google.cloud.dialogflow_v2beta1.types import generator
+from google.cloud.dialogflow_v2beta1.types import generator as gcd_generator
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
 
-class ConversationsTransport(abc.ABC):
-    """Abstract transport class for Conversations."""
+class GeneratorsTransport(abc.ABC):
+    """Abstract transport class for Generators."""
 
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/cloud-platform",
@@ -134,53 +135,28 @@ class ConversationsTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.create_conversation: gapic_v1.method.wrap_method(
-                self.create_conversation,
+            self.create_generator: gapic_v1.method.wrap_method(
+                self.create_generator,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_conversations: gapic_v1.method.wrap_method(
-                self.list_conversations,
+            self.get_generator: gapic_v1.method.wrap_method(
+                self.get_generator,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_conversation: gapic_v1.method.wrap_method(
-                self.get_conversation,
+            self.list_generators: gapic_v1.method.wrap_method(
+                self.list_generators,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.complete_conversation: gapic_v1.method.wrap_method(
-                self.complete_conversation,
+            self.delete_generator: gapic_v1.method.wrap_method(
+                self.delete_generator,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.batch_create_messages: gapic_v1.method.wrap_method(
-                self.batch_create_messages,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.list_messages: gapic_v1.method.wrap_method(
-                self.list_messages,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.suggest_conversation_summary: gapic_v1.method.wrap_method(
-                self.suggest_conversation_summary,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.generate_stateless_summary: gapic_v1.method.wrap_method(
-                self.generate_stateless_summary,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.generate_stateless_suggestion: gapic_v1.method.wrap_method(
-                self.generate_stateless_suggestion,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.search_knowledge: gapic_v1.method.wrap_method(
-                self.search_knowledge,
+            self.update_generator: gapic_v1.method.wrap_method(
+                self.update_generator,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -196,113 +172,50 @@ class ConversationsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_conversation(
+    def create_generator(
         self,
     ) -> Callable[
-        [gcd_conversation.CreateConversationRequest],
-        Union[gcd_conversation.Conversation, Awaitable[gcd_conversation.Conversation]],
+        [gcd_generator.CreateGeneratorRequest],
+        Union[gcd_generator.Generator, Awaitable[gcd_generator.Generator]],
     ]:
         raise NotImplementedError()
 
     @property
-    def list_conversations(
+    def get_generator(
         self,
     ) -> Callable[
-        [conversation.ListConversationsRequest],
+        [generator.GetGeneratorRequest],
+        Union[generator.Generator, Awaitable[generator.Generator]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_generators(
+        self,
+    ) -> Callable[
+        [generator.ListGeneratorsRequest],
         Union[
-            conversation.ListConversationsResponse,
-            Awaitable[conversation.ListConversationsResponse],
+            generator.ListGeneratorsResponse,
+            Awaitable[generator.ListGeneratorsResponse],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_conversation(
+    def delete_generator(
         self,
     ) -> Callable[
-        [conversation.GetConversationRequest],
-        Union[conversation.Conversation, Awaitable[conversation.Conversation]],
+        [generator.DeleteGeneratorRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 
     @property
-    def complete_conversation(
+    def update_generator(
         self,
     ) -> Callable[
-        [conversation.CompleteConversationRequest],
-        Union[conversation.Conversation, Awaitable[conversation.Conversation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def batch_create_messages(
-        self,
-    ) -> Callable[
-        [conversation.BatchCreateMessagesRequest],
-        Union[
-            conversation.BatchCreateMessagesResponse,
-            Awaitable[conversation.BatchCreateMessagesResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_messages(
-        self,
-    ) -> Callable[
-        [conversation.ListMessagesRequest],
-        Union[
-            conversation.ListMessagesResponse,
-            Awaitable[conversation.ListMessagesResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def suggest_conversation_summary(
-        self,
-    ) -> Callable[
-        [gcd_conversation.SuggestConversationSummaryRequest],
-        Union[
-            gcd_conversation.SuggestConversationSummaryResponse,
-            Awaitable[gcd_conversation.SuggestConversationSummaryResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def generate_stateless_summary(
-        self,
-    ) -> Callable[
-        [conversation.GenerateStatelessSummaryRequest],
-        Union[
-            conversation.GenerateStatelessSummaryResponse,
-            Awaitable[conversation.GenerateStatelessSummaryResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def generate_stateless_suggestion(
-        self,
-    ) -> Callable[
-        [conversation.GenerateStatelessSuggestionRequest],
-        Union[
-            conversation.GenerateStatelessSuggestionResponse,
-            Awaitable[conversation.GenerateStatelessSuggestionResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def search_knowledge(
-        self,
-    ) -> Callable[
-        [conversation.SearchKnowledgeRequest],
-        Union[
-            conversation.SearchKnowledgeResponse,
-            Awaitable[conversation.SearchKnowledgeResponse],
-        ],
+        [gcd_generator.UpdateGeneratorRequest],
+        Union[gcd_generator.Generator, Awaitable[gcd_generator.Generator]],
     ]:
         raise NotImplementedError()
 
@@ -359,4 +272,4 @@ class ConversationsTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("ConversationsTransport",)
+__all__ = ("GeneratorsTransport",)

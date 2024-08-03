@@ -18,7 +18,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -27,16 +27,16 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
-from google.cloud.dialogflow_v2beta1.types import conversation as gcd_conversation
-from google.cloud.dialogflow_v2beta1.types import conversation
+from google.cloud.dialogflow_v2beta1.types import encryption_spec as gcd_encryption_spec
+from google.cloud.dialogflow_v2beta1.types import encryption_spec
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
 
-class ConversationsTransport(abc.ABC):
-    """Abstract transport class for Conversations."""
+class EncryptionSpecServiceTransport(abc.ABC):
+    """Abstract transport class for EncryptionSpecService."""
 
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/cloud-platform",
@@ -134,53 +134,13 @@ class ConversationsTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.create_conversation: gapic_v1.method.wrap_method(
-                self.create_conversation,
+            self.get_encryption_spec: gapic_v1.method.wrap_method(
+                self.get_encryption_spec,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_conversations: gapic_v1.method.wrap_method(
-                self.list_conversations,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.get_conversation: gapic_v1.method.wrap_method(
-                self.get_conversation,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.complete_conversation: gapic_v1.method.wrap_method(
-                self.complete_conversation,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.batch_create_messages: gapic_v1.method.wrap_method(
-                self.batch_create_messages,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.list_messages: gapic_v1.method.wrap_method(
-                self.list_messages,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.suggest_conversation_summary: gapic_v1.method.wrap_method(
-                self.suggest_conversation_summary,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.generate_stateless_summary: gapic_v1.method.wrap_method(
-                self.generate_stateless_summary,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.generate_stateless_suggestion: gapic_v1.method.wrap_method(
-                self.generate_stateless_suggestion,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.search_knowledge: gapic_v1.method.wrap_method(
-                self.search_knowledge,
+            self.initialize_encryption_spec: gapic_v1.method.wrap_method(
+                self.initialize_encryption_spec,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -196,113 +156,27 @@ class ConversationsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_conversation(
-        self,
-    ) -> Callable[
-        [gcd_conversation.CreateConversationRequest],
-        Union[gcd_conversation.Conversation, Awaitable[gcd_conversation.Conversation]],
-    ]:
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 
     @property
-    def list_conversations(
+    def get_encryption_spec(
         self,
     ) -> Callable[
-        [conversation.ListConversationsRequest],
+        [encryption_spec.GetEncryptionSpecRequest],
         Union[
-            conversation.ListConversationsResponse,
-            Awaitable[conversation.ListConversationsResponse],
+            encryption_spec.EncryptionSpec, Awaitable[encryption_spec.EncryptionSpec]
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_conversation(
+    def initialize_encryption_spec(
         self,
     ) -> Callable[
-        [conversation.GetConversationRequest],
-        Union[conversation.Conversation, Awaitable[conversation.Conversation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def complete_conversation(
-        self,
-    ) -> Callable[
-        [conversation.CompleteConversationRequest],
-        Union[conversation.Conversation, Awaitable[conversation.Conversation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def batch_create_messages(
-        self,
-    ) -> Callable[
-        [conversation.BatchCreateMessagesRequest],
-        Union[
-            conversation.BatchCreateMessagesResponse,
-            Awaitable[conversation.BatchCreateMessagesResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_messages(
-        self,
-    ) -> Callable[
-        [conversation.ListMessagesRequest],
-        Union[
-            conversation.ListMessagesResponse,
-            Awaitable[conversation.ListMessagesResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def suggest_conversation_summary(
-        self,
-    ) -> Callable[
-        [gcd_conversation.SuggestConversationSummaryRequest],
-        Union[
-            gcd_conversation.SuggestConversationSummaryResponse,
-            Awaitable[gcd_conversation.SuggestConversationSummaryResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def generate_stateless_summary(
-        self,
-    ) -> Callable[
-        [conversation.GenerateStatelessSummaryRequest],
-        Union[
-            conversation.GenerateStatelessSummaryResponse,
-            Awaitable[conversation.GenerateStatelessSummaryResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def generate_stateless_suggestion(
-        self,
-    ) -> Callable[
-        [conversation.GenerateStatelessSuggestionRequest],
-        Union[
-            conversation.GenerateStatelessSuggestionResponse,
-            Awaitable[conversation.GenerateStatelessSuggestionResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def search_knowledge(
-        self,
-    ) -> Callable[
-        [conversation.SearchKnowledgeRequest],
-        Union[
-            conversation.SearchKnowledgeResponse,
-            Awaitable[conversation.SearchKnowledgeResponse],
-        ],
+        [gcd_encryption_spec.InitializeEncryptionSpecRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -359,4 +233,4 @@ class ConversationsTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("ConversationsTransport",)
+__all__ = ("EncryptionSpecServiceTransport",)
