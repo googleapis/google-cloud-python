@@ -794,6 +794,57 @@ def test_upload_chunks_concurrently():
         part_mock.upload.assert_called_with(transport)
 
 
+def test_upload_chunks_concurrently_quotes_urls():
+    bucket = mock.Mock()
+    bucket.name = "bucket"
+    bucket.client = _PickleableMockClient(identify_as_client=True)
+    transport = bucket.client._http
+    bucket.user_project = None
+
+    blob = Blob(b"../wrongbucket/blob", bucket)
+    blob.content_type = FAKE_CONTENT_TYPE
+    quoted_url = "https://example.com/bucket/..%2Fwrongbucket%2Fblob"
+
+    FILENAME = "file_a.txt"
+    SIZE = 2048
+
+    container_mock = mock.Mock()
+    container_mock.upload_id = "abcd"
+    part_mock = mock.Mock()
+    ETAG = "efgh"
+    part_mock.etag = ETAG
+    container_cls_mock = mock.Mock(return_value=container_mock)
+
+    with mock.patch("os.path.getsize", return_value=SIZE), mock.patch(
+        "google.cloud.storage.transfer_manager.XMLMPUContainer", new=container_cls_mock
+    ), mock.patch(
+        "google.cloud.storage.transfer_manager.XMLMPUPart", return_value=part_mock
+    ):
+        transfer_manager.upload_chunks_concurrently(
+            FILENAME,
+            blob,
+            chunk_size=SIZE // 2,
+            worker_type=transfer_manager.THREAD,
+        )
+
+        container_mock.initiate.assert_called_once_with(
+            transport=transport, content_type=blob.content_type
+        )
+        container_mock.register_part.assert_any_call(1, ETAG)
+        container_mock.register_part.assert_any_call(2, ETAG)
+        container_mock.finalize.assert_called_once_with(bucket.client._http)
+
+        assert container_mock._retry_strategy.max_sleep == 60.0
+        assert container_mock._retry_strategy.max_cumulative_retry == 120.0
+        assert container_mock._retry_strategy.max_retries is None
+
+        container_cls_mock.assert_called_once_with(
+            quoted_url, FILENAME, headers=mock.ANY
+        )
+
+        part_mock.upload.assert_called_with(transport)
+
+
 def test_upload_chunks_concurrently_passes_concurrency_options():
     bucket = mock.Mock()
     bucket.name = "bucket"

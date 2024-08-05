@@ -245,6 +245,8 @@ def test_upload_chunks_concurrently(shared_bucket, file_data, blobs_to_delete):
     chunk_size = 5 * 1024 * 1024  # Minimum supported by XML MPU API
     assert os.path.getsize(filename) > chunk_size  # Won't make a good test otherwise
 
+    blobs_to_delete.append(upload_blob)
+
     transfer_manager.upload_chunks_concurrently(
         filename,
         upload_blob,
@@ -412,6 +414,61 @@ def test_upload_chunks_concurrently_with_kms(
 
     with tempfile.NamedTemporaryFile() as tmp:
         blob.download_to_file(tmp)
+        tmp.seek(0)
+
+        with open(source_file["path"], "rb") as sf:
+            source_contents = sf.read()
+            temp_contents = tmp.read()
+            assert source_contents == temp_contents
+
+
+def test_upload_chunks_concurrently_with_quoted_blob_names(
+    shared_bucket, file_data, blobs_to_delete
+):
+    source_file = file_data["big"]
+    filename = source_file["path"]
+    blob_name = "../example_bucket/mpu_file"
+    upload_blob = shared_bucket.blob(blob_name)
+    chunk_size = 5 * 1024 * 1024  # Minimum supported by XML MPU API
+    assert os.path.getsize(filename) > chunk_size  # Won't make a good test otherwise
+
+    blobs_to_delete.append(upload_blob)
+
+    # If the blob name is not quoted/encoded at all, this will result in a 403.
+    transfer_manager.upload_chunks_concurrently(
+        filename, upload_blob, chunk_size=chunk_size, deadline=DEADLINE
+    )
+
+    with tempfile.NamedTemporaryFile() as tmp:
+        # If the blob name is not quoted correctly, this will result in a 404.
+        download_blob = shared_bucket.blob(blob_name)
+        download_blob.download_to_file(tmp)
+        tmp.seek(0)
+
+        with open(source_file["path"], "rb") as sf:
+            source_contents = sf.read()
+            temp_contents = tmp.read()
+            assert source_contents == temp_contents
+
+    # Test emoji names are not mangled.
+    blob_name = "\U0001f681"  # Helicopter emoji
+    upload_blob = shared_bucket.blob(blob_name)
+    chunk_size = 5 * 1024 * 1024  # Minimum supported by XML MPU API
+    assert os.path.getsize(filename) > chunk_size  # Won't make a good test otherwise
+
+    blobs_to_delete.append(upload_blob)
+
+    transfer_manager.upload_chunks_concurrently(
+        filename,
+        upload_blob,
+        chunk_size=chunk_size,
+        deadline=DEADLINE,
+        worker_type=transfer_manager.THREAD,
+    )
+
+    with tempfile.NamedTemporaryFile() as tmp:
+        download_blob = shared_bucket.blob(blob_name)
+        download_blob.download_to_file(tmp)
         tmp.seek(0)
 
         with open(source_file["path"], "rb") as sf:

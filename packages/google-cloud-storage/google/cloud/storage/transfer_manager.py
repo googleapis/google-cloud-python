@@ -30,6 +30,7 @@ from google.api_core import exceptions
 from google.cloud.storage import Client
 from google.cloud.storage import Blob
 from google.cloud.storage.blob import _get_host_name
+from google.cloud.storage.blob import _quote
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage._helpers import _api_core_retry_to_resumable_media_retry
 from google.cloud.storage.retry import DEFAULT_RETRY
@@ -1083,7 +1084,7 @@ def upload_chunks_concurrently(
 
     hostname = _get_host_name(client._connection)
     url = "{hostname}/{bucket}/{blob}".format(
-        hostname=hostname, bucket=bucket.name, blob=blob.name
+        hostname=hostname, bucket=bucket.name, blob=_quote(blob.name)
     )
 
     base_headers, object_metadata, content_type = blob._get_upload_arguments(
