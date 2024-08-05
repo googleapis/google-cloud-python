@@ -12,6 +12,7 @@ import google.auth
 import google.auth.credentials
 import pytest
 from google.oauth2 import service_account
+from sqlalchemy_bigquery import _helpers
 
 
 class AnonymousCredentialsWithProject(google.auth.credentials.AnonymousCredentials):
@@ -244,3 +245,15 @@ def test_substitute_re_func_self(module_under_test):
         Replacer("hah").foo_to_bar("some foo and FOO is good")
         == "some hah and FOO is good"
     )
+
+
+@pytest.mark.parametrize(
+    "user_agent, expected_user_agent",
+    [
+        (None, f"sqlalchemy/{_helpers.sqlalchemy.__version__}"),
+        ("my-user-agent", "my-user-agent"),
+    ],
+)
+def test_google_client_info(user_agent, expected_user_agent):
+    client_info = _helpers.google_client_info(user_agent=user_agent)
+    assert client_info.to_user_agent().startswith(expected_user_agent)

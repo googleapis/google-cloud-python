@@ -104,3 +104,11 @@ def test_create_bigquery_client_with_credentials_base64_respects_project(
         project_id="connection-url-project",
     )
     assert bqclient.project == "connection-url-project"
+
+
+def test_create_bigquery_client_with_user_agent(module_under_test):
+    user_agent = "test_user_agent"
+
+    bqclient = module_under_test.create_bigquery_client(user_agent=user_agent)
+
+    assert bqclient._connection._client_info.user_agent == user_agent

@@ -6,6 +6,7 @@
 
 import functools
 import re
+from typing import Optional
 
 from google.api_core import client_info
 import google.auth
@@ -24,19 +25,48 @@ SCOPES = (
 )
 
 
-def google_client_info():
-    user_agent = USER_AGENT_TEMPLATE.format(sqlalchemy.__version__)
+def google_client_info(
+    user_agent: Optional[str] = None,
+) -> google.api_core.client_info.ClientInfo:
+    """
+    Return a client_info object, with an optional user agent
+    string.  If user_agent is None, use a default value.
+    """
+
+    if user_agent is None:
+        user_agent = USER_AGENT_TEMPLATE.format(sqlalchemy.__version__)
     return client_info.ClientInfo(user_agent=user_agent)
 
 
 def create_bigquery_client(
-    credentials_info=None,
-    credentials_path=None,
-    credentials_base64=None,
-    default_query_job_config=None,
-    location=None,
-    project_id=None,
-):
+    credentials_info: Optional[dict] = None,
+    credentials_path: Optional[str] = None,
+    credentials_base64: Optional[str] = None,
+    default_query_job_config: Optional[google.cloud.bigquery.job.QueryJobConfig] = None,
+    location: Optional[str] = None,
+    project_id: Optional[str] = None,
+    user_agent: Optional[google.api_core.client_info.ClientInfo] = None,
+) -> google.cloud.bigquery.Client:
+    """Construct a BigQuery client object.
+
+    Args:
+        credentials_info Optional[dict]:
+        credentials_path Optional[str]:
+        credentials_base64 Optional[str]:
+        default_query_job_config (Optional[google.cloud.bigquery.job.QueryJobConfig]):
+            Default ``QueryJobConfig``.
+            Will be merged into job configs passed into the ``query`` method.
+        location (Optional[str]):
+            Default location for jobs / datasets / tables.
+        project_id (Optional[str]):
+            Project ID for the project which the client acts on behalf of.
+        user_agent (Optional[google.api_core.client_info.ClientInfo]):
+            The client info used to send a user-agent string along with API
+            requests. If ``None``, then default info will be used. Generally,
+            you only need to set this if you're developing your own library
+            or partner tool.
+    """
+
     default_project = None
 
     if credentials_base64:
@@ -60,8 +90,10 @@ def create_bigquery_client(
     if project_id is None:
         project_id = default_project
 
+    client_info = google_client_info(user_agent=user_agent)
+
     return bigquery.Client(
-        client_info=google_client_info(),
+        client_info=client_info,
         project=project_id,
         credentials=credentials,
         location=location,
