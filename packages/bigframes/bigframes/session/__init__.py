@@ -1997,8 +1997,10 @@ class Session(
         )
         if len(cluster_cols) > 0:
             self._cache_with_cluster_cols(core.ArrayValue(target), cluster_cols)
-        else:
+        elif self._strictly_ordered:
             self._cache_with_offsets(core.ArrayValue(target))
+        else:
+            self._cache_with_cluster_cols(core.ArrayValue(target), [])
 
     def _simplify_with_caching(self, array_value: core.ArrayValue):
         """Attempts to handle the complexity by caching duplicated subtrees and breaking the query into pieces."""

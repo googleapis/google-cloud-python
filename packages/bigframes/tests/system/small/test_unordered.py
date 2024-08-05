@@ -19,7 +19,11 @@ import pytest
 
 import bigframes.exceptions
 import bigframes.pandas as bpd
-from tests.system.utils import assert_pandas_df_equal, skip_legacy_pandas
+from tests.system.utils import (
+    assert_pandas_df_equal,
+    assert_series_equal,
+    skip_legacy_pandas,
+)
 
 
 def test_unordered_mode_sql_no_hash(unordered_session):
@@ -49,6 +53,15 @@ def test_unordered_mode_cache_aggregate(unordered_session):
     pd_result = pd_df - pd_df.mean()
 
     assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
+
+
+def test_unordered_mode_series_peek(unordered_session):
+    pd_series = pd.Series([1, 2, 3, 4, 5, 6], dtype=pd.Int64Dtype())
+    bf_series = bpd.Series(pd_series, session=unordered_session)
+    pd_result = pd_series.groupby(pd_series % 4).sum()
+    bf_peek = bf_series.groupby(bf_series % 4).sum().peek(2)
+
+    assert_series_equal(bf_peek, pd_result.reindex(bf_peek.index))
 
 
 def test_unordered_mode_single_aggregate(unordered_session):

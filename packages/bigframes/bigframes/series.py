@@ -641,7 +641,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def tail(self, n: int = 5) -> Series:
         return typing.cast(Series, self.iloc[-n:])
 
-    def peek(self, n: int = 5, *, force: bool = True) -> pandas.DataFrame:
+    def peek(self, n: int = 5, *, force: bool = True) -> pandas.Series:
         """
         Preview n arbitrary elements from the series without guarantees about row selection or ordering.
 
