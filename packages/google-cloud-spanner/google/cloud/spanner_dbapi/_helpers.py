@@ -18,6 +18,14 @@ from google.cloud.spanner_v1 import param_types
 SQL_LIST_TABLES = """
 SELECT table_name
 FROM information_schema.tables
+WHERE table_catalog = ''
+AND table_schema = @table_schema
+AND table_type = 'BASE TABLE'
+"""
+
+SQL_LIST_TABLES_AND_VIEWS = """
+SELECT table_name
+FROM information_schema.tables
 WHERE table_catalog = '' AND table_schema = @table_schema
 """
 

@@ -522,14 +522,16 @@ class Cursor(object):
             raise ProgrammingError("no results to return")
         return self._itr
 
-    def list_tables(self, schema_name=""):
+    def list_tables(self, schema_name="", include_views=True):
         """List the tables of the linked Database.
 
         :rtype: list
         :returns: The list of tables within the Database.
         """
         return self.run_sql_in_snapshot(
-            sql=_helpers.SQL_LIST_TABLES,
+            sql=_helpers.SQL_LIST_TABLES_AND_VIEWS
+            if include_views
+            else _helpers.SQL_LIST_TABLES,
             params={"table_schema": schema_name},
             param_types={"table_schema": spanner.param_types.STRING},
         )

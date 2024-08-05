@@ -39,15 +39,20 @@ COMMIT_METHOD = SPANNER_RPC_PREFIX + "Commit"
 EXECUTE_SQL_METHOD = SPANNER_RPC_PREFIX + "ExecuteSql"
 EXECUTE_STREAMING_SQL_METHOD = SPANNER_RPC_PREFIX + "ExecuteStreamingSql"
 
-DDL_STATEMENTS = (
-    """CREATE TABLE contacts (
+DDL = """CREATE TABLE contacts (
         contact_id INT64,
         first_name STRING(1024),
         last_name STRING(1024),
         email STRING(1024)
     )
-    PRIMARY KEY (contact_id)""",
-)
+    PRIMARY KEY (contact_id);
+    CREATE VIEW contacts_emails
+    SQL SECURITY INVOKER
+    AS
+    SELECT c.email
+    FROM contacts AS c;"""
+
+DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(";") if stmt.strip()]
 
 
 @pytest.fixture(scope="session")
@@ -1581,3 +1586,15 @@ class TestDbApi:
         assert self._cursor.fetchone() == (1, "first-name")
         assert self._cursor.rowcount == 1
         self._conn.commit()
+
+    @pytest.mark.parametrize("include_views", [True, False])
+    def test_list_tables(self, include_views):
+        tables = self._cursor.list_tables(include_views=include_views)
+        table_names = set(table[0] for table in tables)
+
+        assert "contacts" in table_names
+
+        if include_views:
+            assert "contacts_emails" in table_names
+        else:  # if not include_views:
+            assert "contacts_emails" not in table_names
