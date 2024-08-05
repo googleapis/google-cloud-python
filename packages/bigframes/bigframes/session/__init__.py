@@ -314,6 +314,7 @@ class Session(
         self._compiler = bigframes.core.compile.SQLCompiler(
             strict=self._strictly_ordered
         )
+        self._allow_ambiguity = not self._strictly_ordered
 
         self._remote_function_session = bigframes_rf._RemoteFunctionSession()
 
@@ -377,6 +378,10 @@ class Session(
     def slot_millis_sum(self):
         """The sum of all slot time used by bigquery jobs in this session."""
         return self._slot_millis_sum
+
+    @property
+    def _allows_ambiguity(self) -> bool:
+        return self._allow_ambiguity
 
     def _add_bytes_processed(self, amount: int):
         """Increment bytes_processed_sum by amount."""

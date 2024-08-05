@@ -63,5 +63,9 @@ class TimeTravelDisabledWarning(Warning):
     """A query was reattempted without time travel."""
 
 
+class AmbiguousWindowWarning(Warning):
+    """A query may produce nondeterministic results as the window may be ambiguously ordered."""
+
+
 class UnknownDataTypeWarning(Warning):
     """Data type is unknown."""

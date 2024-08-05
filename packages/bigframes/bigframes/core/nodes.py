@@ -135,6 +135,14 @@ class BigFrameNode:
         """
         ...
 
+    @property
+    @abc.abstractmethod
+    def explicitly_ordered(self) -> bool:
+        """
+        Whether row ordering is potentially ambiguous. For example, ReadTable (without a primary key) could be ordered in different ways.
+        """
+        ...
+
     @functools.cached_property
     def total_variables(self) -> int:
         return self.variables_introduced + sum(
@@ -180,6 +188,10 @@ class UnaryNode(BigFrameNode):
     def schema(self) -> schemata.ArraySchema:
         return self.child.schema
 
+    @property
+    def explicitly_ordered(self) -> bool:
+        return self.child.explicitly_ordered
+
     def transform_children(
         self, t: Callable[[BigFrameNode], BigFrameNode]
     ) -> BigFrameNode:
@@ -211,6 +223,10 @@ class JoinNode(BigFrameNode):
     @property
     def order_ambiguous(self) -> bool:
         return True
+
+    @property
+    def explicitly_ordered(self) -> bool:
+        return False
 
     def __hash__(self):
         return self._node_hash
@@ -267,6 +283,10 @@ class ConcatNode(BigFrameNode):
     def order_ambiguous(self) -> bool:
         return any(child.order_ambiguous for child in self.children)
 
+    @property
+    def explicitly_ordered(self) -> bool:
+        return all(child.explicitly_ordered for child in self.children)
+
     def __hash__(self):
         return self._node_hash
 
@@ -316,6 +336,10 @@ class ReadLocalNode(BigFrameNode):
     @property
     def order_ambiguous(self) -> bool:
         return False
+
+    @property
+    def explicitly_ordered(self) -> bool:
+        return True
 
     def transform_children(
         self, t: Callable[[BigFrameNode], BigFrameNode]
@@ -377,6 +401,10 @@ class ReadTableNode(BigFrameNode):
     @property
     def order_ambiguous(self) -> bool:
         return len(self.total_order_cols) == 0
+
+    @property
+    def explicitly_ordered(self) -> bool:
+        return len(self.total_order_cols) > 0
 
     @functools.cached_property
     def variables_introduced(self) -> int:
@@ -448,6 +476,12 @@ class CachedTableNode(BigFrameNode):
     @property
     def order_ambiguous(self) -> bool:
         return not isinstance(self.ordering, orderings.TotalOrdering)
+
+    @property
+    def explicitly_ordered(self) -> bool:
+        return (self.ordering is not None) and len(
+            self.ordering.all_ordering_columns
+        ) > 0
 
     def transform_children(
         self, t: Callable[[BigFrameNode], BigFrameNode]
@@ -522,6 +556,10 @@ class OrderByNode(UnaryNode):
     def relation_ops_created(self) -> int:
         # Doesnt directly create any relational operations
         return 0
+
+    @property
+    def explicitly_ordered(self) -> bool:
+        return True
 
 
 @dataclass(frozen=True)
@@ -635,6 +673,10 @@ class AggregateNode(UnaryNode):
     @property
     def order_ambiguous(self) -> bool:
         return False
+
+    @property
+    def explicitly_ordered(self) -> bool:
+        return True
 
 
 @dataclass(frozen=True)

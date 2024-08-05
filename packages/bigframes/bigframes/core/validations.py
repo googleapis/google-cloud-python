@@ -24,6 +24,7 @@ import bigframes.exceptions
 
 if TYPE_CHECKING:
     from bigframes import Session
+    from bigframes.core.blocks import Block
 
 
 class HasSession(Protocol):
@@ -31,8 +32,12 @@ class HasSession(Protocol):
     def _session(self) -> Session:
         ...
 
+    @property
+    def _block(self) -> Block:
+        ...
 
-def requires_strict_ordering(suggestion: Optional[str] = None):
+
+def requires_ordering(suggestion: Optional[str] = None):
     def decorator(meth):
         @functools.wraps(meth)
         def guarded_meth(object: HasSession, *args, **kwargs):
@@ -47,8 +52,16 @@ def requires_strict_ordering(suggestion: Optional[str] = None):
 def enforce_ordered(
     object: HasSession, opname: str, suggestion: Optional[str] = None
 ) -> None:
-    if not object._session._strictly_ordered:
+    session = object._session
+    if session._strictly_ordered or not object._block.expr.node.order_ambiguous:
+        # No ambiguity for how to calculate ordering, so no error or warning
+        return None
+    if not session._allows_ambiguity:
         suggestion_substr = suggestion + " " if suggestion else ""
         raise bigframes.exceptions.OrderRequiredError(
             f"Op {opname} not supported when strict ordering is disabled. {suggestion_substr}{bigframes.constants.FEEDBACK_LINK}"
+        )
+    if not object._block.explicitly_ordered:
+        raise bigframes.exceptions.OrderRequiredError(
+            f"Op {opname} requires an ordering. Use .sort_values or .sort_index to provide an ordering. {bigframes.constants.FEEDBACK_LINK}"
         )

@@ -263,7 +263,7 @@ class UnorderedIR(BaseIbisIR):
         ordered: bool = False,
     ) -> str:
         if offset_column or ordered:
-            raise ValueError("Cannot produce sorted sql in unordered mode")
+            raise ValueError("Cannot produce sorted sql in partial ordering mode")
         sql = ibis_bigquery.Backend().compile(
             self._to_ibis_expr(
                 col_id_overrides=col_id_overrides,

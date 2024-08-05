@@ -280,6 +280,10 @@ class Block:
             mapping[label] = (*mapping.get(label, ()), id)
         return mapping
 
+    @property
+    def explicitly_ordered(self) -> bool:
+        return self.expr.node.explicitly_ordered
+
     def cols_matching_label(self, partial_label: Label) -> typing.Sequence[str]:
         """
         Unlike label_to_col_id, this works with partial labels for multi-index.
