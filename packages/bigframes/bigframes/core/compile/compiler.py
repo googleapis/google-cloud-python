@@ -304,7 +304,6 @@ class Compiler:
             node.window_spec,
             node.output_name,
             never_skip_nulls=node.never_skip_nulls,
-            skip_reproject_unsafe=node.skip_reproject_unsafe,
         )
         return result if ordered else result.to_unordered()
 

@@ -246,7 +246,8 @@ def test_default_index_warning_not_raised_by_read_gbq_index_col_sequential_int64
             index_col=bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64,
         )
 
-    # We expect a window operation because we specificaly requested a sequential index.
+    # We expect a window operation because we specificaly requested a sequential index and named it.
+    df.index.name = "named_index"
     generated_sql = df.sql.casefold()
     assert "OVER".casefold() in generated_sql
     assert "ROW_NUMBER()".casefold() in generated_sql
