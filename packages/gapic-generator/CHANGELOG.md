@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.18.5](https://github.com/googleapis/gapic-generator-python/compare/v1.18.4...v1.18.5) (2024-08-06)
+
+
+### Bug Fixes
+
+* Mypy types in get_transport ([#2088](https://github.com/googleapis/gapic-generator-python/issues/2088)) ([f76fdaf](https://github.com/googleapis/gapic-generator-python/commit/f76fdaf1f717e99caef4c0ce217eef3322df9a30))
+* Require google.shopping.type &gt;= 0.1.6 ([#2083](https://github.com/googleapis/gapic-generator-python/issues/2083)) ([1b63310](https://github.com/googleapis/gapic-generator-python/commit/1b63310378692f478ef29734b3cb5fde3d436b22))
+
 ## [1.18.4](https://github.com/googleapis/gapic-generator-python/compare/v1.18.3...v1.18.4) (2024-07-26)
 
 
