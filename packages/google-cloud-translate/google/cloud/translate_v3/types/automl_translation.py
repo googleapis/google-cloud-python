@@ -17,42 +17,41 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.translate_v3.types import common
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
-    package='google.cloud.translation.v3',
+    package="google.cloud.translation.v3",
     manifest={
-        'ImportDataRequest',
-        'DatasetInputConfig',
-        'ImportDataMetadata',
-        'ExportDataRequest',
-        'DatasetOutputConfig',
-        'ExportDataMetadata',
-        'DeleteDatasetRequest',
-        'DeleteDatasetMetadata',
-        'GetDatasetRequest',
-        'ListDatasetsRequest',
-        'ListDatasetsResponse',
-        'CreateDatasetRequest',
-        'CreateDatasetMetadata',
-        'ListExamplesRequest',
-        'ListExamplesResponse',
-        'Example',
-        'BatchTransferResourcesResponse',
-        'Dataset',
-        'CreateModelRequest',
-        'CreateModelMetadata',
-        'ListModelsRequest',
-        'ListModelsResponse',
-        'GetModelRequest',
-        'DeleteModelRequest',
-        'DeleteModelMetadata',
-        'Model',
+        "ImportDataRequest",
+        "DatasetInputConfig",
+        "ImportDataMetadata",
+        "ExportDataRequest",
+        "DatasetOutputConfig",
+        "ExportDataMetadata",
+        "DeleteDatasetRequest",
+        "DeleteDatasetMetadata",
+        "GetDatasetRequest",
+        "ListDatasetsRequest",
+        "ListDatasetsResponse",
+        "CreateDatasetRequest",
+        "CreateDatasetMetadata",
+        "ListExamplesRequest",
+        "ListExamplesResponse",
+        "Example",
+        "BatchTransferResourcesResponse",
+        "Dataset",
+        "CreateModelRequest",
+        "CreateModelMetadata",
+        "ListModelsRequest",
+        "ListModelsResponse",
+        "GetModelRequest",
+        "DeleteModelRequest",
+        "DeleteModelMetadata",
+        "Model",
     },
 )
 
@@ -72,10 +71,10 @@ class ImportDataRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    input_config: 'DatasetInputConfig' = proto.Field(
+    input_config: "DatasetInputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='DatasetInputConfig',
+        message="DatasetInputConfig",
     )
 
 
@@ -111,7 +110,7 @@ class DatasetInputConfig(proto.Message):
         gcs_source: common.GcsInputSource = proto.Field(
             proto.MESSAGE,
             number=3,
-            oneof='source',
+            oneof="source",
             message=common.GcsInputSource,
         )
 
@@ -174,10 +173,10 @@ class ExportDataRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    output_config: 'DatasetOutputConfig' = proto.Field(
+    output_config: "DatasetOutputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='DatasetOutputConfig',
+        message="DatasetOutputConfig",
     )
 
 
@@ -197,7 +196,7 @@ class DatasetOutputConfig(proto.Message):
     gcs_destination: common.GcsOutputDestination = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof='destination',
+        oneof="destination",
         message=common.GcsOutputDestination,
     )
 
@@ -351,10 +350,10 @@ class ListDatasetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    datasets: MutableSequence['Dataset'] = proto.RepeatedField(
+    datasets: MutableSequence["Dataset"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='Dataset',
+        message="Dataset",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -376,10 +375,10 @@ class CreateDatasetRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    dataset: 'Dataset' = proto.Field(
+    dataset: "Dataset" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='Dataset',
+        message="Dataset",
     )
 
 
@@ -475,10 +474,10 @@ class ListExamplesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    examples: MutableSequence['Example'] = proto.RepeatedField(
+    examples: MutableSequence["Example"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='Example',
+        message="Example",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -664,10 +663,10 @@ class CreateModelRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    model: 'Model' = proto.Field(
+    model: "Model" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='Model',
+        message="Model",
     )
 
 
@@ -761,10 +760,10 @@ class ListModelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    models: MutableSequence['Model'] = proto.RepeatedField(
+    models: MutableSequence["Model"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='Model',
+        message="Model",
     )
     next_page_token: str = proto.Field(
         proto.STRING,

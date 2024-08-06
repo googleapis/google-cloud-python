@@ -30,9 +30,24 @@
                 "create_adaptive_mt_dataset"
               ]
             },
+            "CreateDataset": {
+              "methods": [
+                "create_dataset"
+              ]
+            },
             "CreateGlossary": {
               "methods": [
                 "create_glossary"
+              ]
+            },
+            "CreateGlossaryEntry": {
+              "methods": [
+                "create_glossary_entry"
+              ]
+            },
+            "CreateModel": {
+              "methods": [
+                "create_model"
               ]
             },
             "DeleteAdaptiveMtDataset": {
@@ -45,14 +60,34 @@
                 "delete_adaptive_mt_file"
               ]
             },
+            "DeleteDataset": {
+              "methods": [
+                "delete_dataset"
+              ]
+            },
             "DeleteGlossary": {
               "methods": [
                 "delete_glossary"
               ]
             },
+            "DeleteGlossaryEntry": {
+              "methods": [
+                "delete_glossary_entry"
+              ]
+            },
+            "DeleteModel": {
+              "methods": [
+                "delete_model"
+              ]
+            },
             "DetectLanguage": {
               "methods": [
                 "detect_language"
+              ]
+            },
+            "ExportData": {
+              "methods": [
+                "export_data"
               ]
             },
             "GetAdaptiveMtDataset": {
@@ -65,9 +100,24 @@
                 "get_adaptive_mt_file"
               ]
             },
+            "GetDataset": {
+              "methods": [
+                "get_dataset"
+              ]
+            },
             "GetGlossary": {
               "methods": [
                 "get_glossary"
+              ]
+            },
+            "GetGlossaryEntry": {
+              "methods": [
+                "get_glossary_entry"
+              ]
+            },
+            "GetModel": {
+              "methods": [
+                "get_model"
               ]
             },
             "GetSupportedLanguages": {
@@ -78,6 +128,11 @@
             "ImportAdaptiveMtFile": {
               "methods": [
                 "import_adaptive_mt_file"
+              ]
+            },
+            "ImportData": {
+              "methods": [
+                "import_data"
               ]
             },
             "ListAdaptiveMtDatasets": {
@@ -95,9 +150,34 @@
                 "list_adaptive_mt_sentences"
               ]
             },
+            "ListDatasets": {
+              "methods": [
+                "list_datasets"
+              ]
+            },
+            "ListExamples": {
+              "methods": [
+                "list_examples"
+              ]
+            },
             "ListGlossaries": {
               "methods": [
                 "list_glossaries"
+              ]
+            },
+            "ListGlossaryEntries": {
+              "methods": [
+                "list_glossary_entries"
+              ]
+            },
+            "ListModels": {
+              "methods": [
+                "list_models"
+              ]
+            },
+            "RomanizeText": {
+              "methods": [
+                "romanize_text"
               ]
             },
             "TranslateDocument": {
@@ -108,6 +188,16 @@
             "TranslateText": {
               "methods": [
                 "translate_text"
+              ]
+            },
+            "UpdateGlossary": {
+              "methods": [
+                "update_glossary"
+              ]
+            },
+            "UpdateGlossaryEntry": {
+              "methods": [
+                "update_glossary_entry"
               ]
             }
           }
@@ -135,9 +225,24 @@
                 "create_adaptive_mt_dataset"
               ]
             },
+            "CreateDataset": {
+              "methods": [
+                "create_dataset"
+              ]
+            },
             "CreateGlossary": {
               "methods": [
                 "create_glossary"
+              ]
+            },
+            "CreateGlossaryEntry": {
+              "methods": [
+                "create_glossary_entry"
+              ]
+            },
+            "CreateModel": {
+              "methods": [
+                "create_model"
               ]
             },
             "DeleteAdaptiveMtDataset": {
@@ -150,14 +255,34 @@
                 "delete_adaptive_mt_file"
               ]
             },
+            "DeleteDataset": {
+              "methods": [
+                "delete_dataset"
+              ]
+            },
             "DeleteGlossary": {
               "methods": [
                 "delete_glossary"
               ]
             },
+            "DeleteGlossaryEntry": {
+              "methods": [
+                "delete_glossary_entry"
+              ]
+            },
+            "DeleteModel": {
+              "methods": [
+                "delete_model"
+              ]
+            },
             "DetectLanguage": {
               "methods": [
                 "detect_language"
+              ]
+            },
+            "ExportData": {
+              "methods": [
+                "export_data"
               ]
             },
             "GetAdaptiveMtDataset": {
@@ -170,9 +295,24 @@
                 "get_adaptive_mt_file"
               ]
             },
+            "GetDataset": {
+              "methods": [
+                "get_dataset"
+              ]
+            },
             "GetGlossary": {
               "methods": [
                 "get_glossary"
+              ]
+            },
+            "GetGlossaryEntry": {
+              "methods": [
+                "get_glossary_entry"
+              ]
+            },
+            "GetModel": {
+              "methods": [
+                "get_model"
               ]
             },
             "GetSupportedLanguages": {
@@ -183,6 +323,11 @@
             "ImportAdaptiveMtFile": {
               "methods": [
                 "import_adaptive_mt_file"
+              ]
+            },
+            "ImportData": {
+              "methods": [
+                "import_data"
               ]
             },
             "ListAdaptiveMtDatasets": {
@@ -200,9 +345,34 @@
                 "list_adaptive_mt_sentences"
               ]
             },
+            "ListDatasets": {
+              "methods": [
+                "list_datasets"
+              ]
+            },
+            "ListExamples": {
+              "methods": [
+                "list_examples"
+              ]
+            },
             "ListGlossaries": {
               "methods": [
                 "list_glossaries"
+              ]
+            },
+            "ListGlossaryEntries": {
+              "methods": [
+                "list_glossary_entries"
+              ]
+            },
+            "ListModels": {
+              "methods": [
+                "list_models"
+              ]
+            },
+            "RomanizeText": {
+              "methods": [
+                "romanize_text"
               ]
             },
             "TranslateDocument": {
@@ -213,6 +383,16 @@
             "TranslateText": {
               "methods": [
                 "translate_text"
+              ]
+            },
+            "UpdateGlossary": {
+              "methods": [
+                "update_glossary"
+              ]
+            },
+            "UpdateGlossaryEntry": {
+              "methods": [
+                "update_glossary_entry"
               ]
             }
           }
@@ -240,9 +420,24 @@
                 "create_adaptive_mt_dataset"
               ]
             },
+            "CreateDataset": {
+              "methods": [
+                "create_dataset"
+              ]
+            },
             "CreateGlossary": {
               "methods": [
                 "create_glossary"
+              ]
+            },
+            "CreateGlossaryEntry": {
+              "methods": [
+                "create_glossary_entry"
+              ]
+            },
+            "CreateModel": {
+              "methods": [
+                "create_model"
               ]
             },
             "DeleteAdaptiveMtDataset": {
@@ -255,14 +450,34 @@
                 "delete_adaptive_mt_file"
               ]
             },
+            "DeleteDataset": {
+              "methods": [
+                "delete_dataset"
+              ]
+            },
             "DeleteGlossary": {
               "methods": [
                 "delete_glossary"
               ]
             },
+            "DeleteGlossaryEntry": {
+              "methods": [
+                "delete_glossary_entry"
+              ]
+            },
+            "DeleteModel": {
+              "methods": [
+                "delete_model"
+              ]
+            },
             "DetectLanguage": {
               "methods": [
                 "detect_language"
+              ]
+            },
+            "ExportData": {
+              "methods": [
+                "export_data"
               ]
             },
             "GetAdaptiveMtDataset": {
@@ -275,9 +490,24 @@
                 "get_adaptive_mt_file"
               ]
             },
+            "GetDataset": {
+              "methods": [
+                "get_dataset"
+              ]
+            },
             "GetGlossary": {
               "methods": [
                 "get_glossary"
+              ]
+            },
+            "GetGlossaryEntry": {
+              "methods": [
+                "get_glossary_entry"
+              ]
+            },
+            "GetModel": {
+              "methods": [
+                "get_model"
               ]
             },
             "GetSupportedLanguages": {
@@ -288,6 +518,11 @@
             "ImportAdaptiveMtFile": {
               "methods": [
                 "import_adaptive_mt_file"
+              ]
+            },
+            "ImportData": {
+              "methods": [
+                "import_data"
               ]
             },
             "ListAdaptiveMtDatasets": {
@@ -305,9 +540,34 @@
                 "list_adaptive_mt_sentences"
               ]
             },
+            "ListDatasets": {
+              "methods": [
+                "list_datasets"
+              ]
+            },
+            "ListExamples": {
+              "methods": [
+                "list_examples"
+              ]
+            },
             "ListGlossaries": {
               "methods": [
                 "list_glossaries"
+              ]
+            },
+            "ListGlossaryEntries": {
+              "methods": [
+                "list_glossary_entries"
+              ]
+            },
+            "ListModels": {
+              "methods": [
+                "list_models"
+              ]
+            },
+            "RomanizeText": {
+              "methods": [
+                "romanize_text"
               ]
             },
             "TranslateDocument": {
@@ -318,6 +578,16 @@
             "TranslateText": {
               "methods": [
                 "translate_text"
+              ]
+            },
+            "UpdateGlossary": {
+              "methods": [
+                "update_glossary"
+              ]
+            },
+            "UpdateGlossaryEntry": {
+              "methods": [
+                "update_glossary_entry"
               ]
             }
           }
