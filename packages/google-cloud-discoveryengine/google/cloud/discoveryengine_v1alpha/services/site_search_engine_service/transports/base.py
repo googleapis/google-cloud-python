@@ -193,6 +193,16 @@ class SiteSearchEngineServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.set_uri_pattern_document_data: gapic_v1.method.wrap_method(
+                self.set_uri_pattern_document_data,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_uri_pattern_document_data: gapic_v1.method.wrap_method(
+                self.get_uri_pattern_document_data,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -322,6 +332,27 @@ class SiteSearchEngineServiceTransport(abc.ABC):
         Union[
             site_search_engine_service.FetchDomainVerificationStatusResponse,
             Awaitable[site_search_engine_service.FetchDomainVerificationStatusResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_uri_pattern_document_data(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.SetUriPatternDocumentDataRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_uri_pattern_document_data(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.GetUriPatternDocumentDataRequest],
+        Union[
+            site_search_engine_service.GetUriPatternDocumentDataResponse,
+            Awaitable[site_search_engine_service.GetUriPatternDocumentDataResponse],
         ],
     ]:
         raise NotImplementedError()

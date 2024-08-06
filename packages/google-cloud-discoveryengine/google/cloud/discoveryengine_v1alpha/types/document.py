@@ -124,7 +124,7 @@ class Document(proto.Message):
             uri (str):
                 The URI of the content. Only Cloud Storage URIs (e.g.
                 ``gs://bucket-name/path/to/file``) are supported. The
-                maximum file size is 2.5 MB for text-based formats, 100 MB
+                maximum file size is 2.5 MB for text-based formats, 200 MB
                 for other formats.
 
                 This field is a member of `oneof`_ ``content``.
@@ -189,12 +189,18 @@ class Document(proto.Message):
             Attributes:
                 principals (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Principal]):
                     List of principals.
+                idp_wide (bool):
+                    All users within the Identity Provider.
             """
 
             principals: MutableSequence[common.Principal] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message=common.Principal,
+            )
+            idp_wide: bool = proto.Field(
+                proto.BOOL,
+                number=2,
             )
 
         readers: MutableSequence[

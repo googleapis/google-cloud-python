@@ -311,8 +311,8 @@ class GetProcessedDocumentRequest(proto.Message):
                 Only available if ChunkingConfig is enabled
                 on the data store.
             PNG_CONVERTED_DOCUMENT (3):
-                Returns the converted PNG Image bytes if
-                available.
+                Returns the converted Image bytes (as JPEG or
+                PNG) if available.
         """
         PROCESSED_DOCUMENT_TYPE_UNSPECIFIED = 0
         PARSED_DOCUMENT = 1
