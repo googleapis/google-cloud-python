@@ -17,4 +17,4 @@ grpcio
 pytest-asyncio; python_version > '3.0'
 aioresponses; python_version > '3.0'
 asynctest; python_version > '3.0'
-aiohttp; python_version > '3.0'
+aiohttp < 3.10.0; python_version > '3.0'
