@@ -109,7 +109,7 @@ class ComputeResource(proto.Message):
 
 
 class StatusEvent(proto.Message):
-    r"""Status event
+    r"""Status event.
 
     Attributes:
         type_ (str):
@@ -119,9 +119,13 @@ class StatusEvent(proto.Message):
         event_time (google.protobuf.timestamp_pb2.Timestamp):
             The time this event occurred.
         task_execution (google.cloud.batch_v1.types.TaskExecution):
-            Task Execution
+            Task Execution.
+            This field is only defined for task-level status
+            events where the task fails.
         task_state (google.cloud.batch_v1.types.TaskStatus.State):
-            Task State
+            Task State.
+            This field is only defined for task-level status
+            events.
     """
 
     type_: str = proto.Field(
@@ -179,11 +183,11 @@ class TaskExecution(proto.Message):
 
 
 class TaskStatus(proto.Message):
-    r"""Status of a task
+    r"""Status of a task.
 
     Attributes:
         state (google.cloud.batch_v1.types.TaskStatus.State):
-            Task state
+            Task state.
         status_events (MutableSequence[google.cloud.batch_v1.types.StatusEvent]):
             Detailed info about why the state is reached.
     """
