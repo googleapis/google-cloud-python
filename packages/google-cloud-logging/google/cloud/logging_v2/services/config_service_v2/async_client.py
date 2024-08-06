@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -36,6 +37,7 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -215,7 +217,11 @@ class ConfigServiceV2AsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ConfigServiceV2Transport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str, ConfigServiceV2Transport, Callable[..., ConfigServiceV2Transport]
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -227,9 +233,11 @@ class ConfigServiceV2AsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ConfigServiceV2Transport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ConfigServiceV2Transport,Callable[..., ConfigServiceV2Transport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ConfigServiceV2Transport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -348,8 +356,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -357,7 +365,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.ListBucketsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.ListBucketsRequest):
+            request = logging_config.ListBucketsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -366,11 +377,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_buckets,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_buckets
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -395,6 +404,8 @@ class ConfigServiceV2AsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -453,15 +464,16 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.GetBucketRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.GetBucketRequest):
+            request = logging_config.GetBucketRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_bucket,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_bucket
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -546,15 +558,16 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.CreateBucketRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.CreateBucketRequest):
+            request = logging_config.CreateBucketRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_bucket_async,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_bucket_async
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -649,15 +662,16 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.UpdateBucketRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.UpdateBucketRequest):
+            request = logging_config.UpdateBucketRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_bucket_async,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_bucket_async
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -742,15 +756,16 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.CreateBucketRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.CreateBucketRequest):
+            request = logging_config.CreateBucketRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_bucket,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_bucket
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -830,15 +845,16 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.UpdateBucketRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.UpdateBucketRequest):
+            request = logging_config.UpdateBucketRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_bucket,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_bucket
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -908,15 +924,16 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.DeleteBucketRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.DeleteBucketRequest):
+            request = logging_config.DeleteBucketRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_bucket,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_bucket
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -980,15 +997,16 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.UndeleteBucketRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.UndeleteBucketRequest):
+            request = logging_config.UndeleteBucketRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.undelete_bucket,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.undelete_bucket
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1074,8 +1092,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1083,7 +1101,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.ListViewsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.ListViewsRequest):
+            request = logging_config.ListViewsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1092,11 +1113,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_views,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_views
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1121,6 +1140,8 @@ class ConfigServiceV2AsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1179,15 +1200,14 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.GetViewRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.GetViewRequest):
+            request = logging_config.GetViewRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_view,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1263,15 +1283,16 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.CreateViewRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.CreateViewRequest):
+            request = logging_config.CreateViewRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_view,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_view
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1349,15 +1370,16 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.UpdateViewRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.UpdateViewRequest):
+            request = logging_config.UpdateViewRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_view,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_view
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1425,15 +1447,16 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.DeleteViewRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.DeleteViewRequest):
+            request = logging_config.DeleteViewRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_view,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_view
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1522,8 +1545,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1531,7 +1554,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.ListSinksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.ListSinksRequest):
+            request = logging_config.ListSinksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1540,22 +1566,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_sinks,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_sinks
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1580,6 +1593,8 @@ class ConfigServiceV2AsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1663,8 +1678,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([sink_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1672,7 +1687,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.GetSinkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.GetSinkRequest):
+            request = logging_config.GetSinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1681,22 +1699,7 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_sink,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1814,8 +1817,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, sink])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1823,7 +1826,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.CreateSinkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.CreateSinkRequest):
+            request = logging_config.CreateSinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1834,11 +1840,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_sink,
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_sink
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1979,8 +1983,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([sink_name, sink, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1988,7 +1992,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.UpdateSinkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.UpdateSinkRequest):
+            request = logging_config.UpdateSinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2001,22 +2008,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_sink,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_sink
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2103,8 +2097,8 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([sink_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2112,7 +2106,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.DeleteSinkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.DeleteSinkRequest):
+            request = logging_config.DeleteSinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2121,22 +2118,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_sink,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_sink
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2250,8 +2234,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, link, link_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2259,7 +2243,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.CreateLinkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.CreateLinkRequest):
+            request = logging_config.CreateLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2272,11 +2259,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_link,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_link
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2385,8 +2370,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2394,7 +2379,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.DeleteLinkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.DeleteLinkRequest):
+            request = logging_config.DeleteLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2403,11 +2391,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_link,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_link
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2506,8 +2492,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2515,7 +2501,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.ListLinksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.ListLinksRequest):
+            request = logging_config.ListLinksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2524,11 +2513,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_links,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_links
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2553,6 +2540,8 @@ class ConfigServiceV2AsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2623,8 +2612,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2632,7 +2621,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.GetLinkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.GetLinkRequest):
+            request = logging_config.GetLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2641,11 +2633,7 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_link,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2738,8 +2726,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2747,7 +2735,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.ListExclusionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.ListExclusionsRequest):
+            request = logging_config.ListExclusionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2756,22 +2747,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_exclusions,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_exclusions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2796,6 +2774,8 @@ class ConfigServiceV2AsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2877,8 +2857,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2886,7 +2866,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.GetExclusionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.GetExclusionRequest):
+            request = logging_config.GetExclusionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2895,22 +2878,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_exclusion,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_exclusion
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3025,8 +2995,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, exclusion])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3034,7 +3004,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.CreateExclusionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.CreateExclusionRequest):
+            request = logging_config.CreateExclusionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3045,11 +3018,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_exclusion,
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_exclusion
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3176,8 +3147,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, exclusion, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3185,7 +3156,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.UpdateExclusionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.UpdateExclusionRequest):
+            request = logging_config.UpdateExclusionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3198,11 +3172,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_exclusion,
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_exclusion
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3286,8 +3258,8 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3295,7 +3267,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.DeleteExclusionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.DeleteExclusionRequest):
+            request = logging_config.DeleteExclusionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3304,22 +3279,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_exclusion,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_exclusion
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3414,15 +3376,16 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.GetCmekSettingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.GetCmekSettingsRequest):
+            request = logging_config.GetCmekSettingsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_cmek_settings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_cmek_settings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3525,15 +3488,16 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.UpdateCmekSettingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.UpdateCmekSettingsRequest):
+            request = logging_config.UpdateCmekSettingsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_cmek_settings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_cmek_settings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3648,8 +3612,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3657,7 +3621,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.GetSettingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.GetSettingsRequest):
+            request = logging_config.GetSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3666,11 +3633,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_settings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_settings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3793,8 +3758,8 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3802,7 +3767,10 @@ class ConfigServiceV2AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = logging_config.UpdateSettingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.UpdateSettingsRequest):
+            request = logging_config.UpdateSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3813,11 +3781,9 @@ class ConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_settings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_settings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3901,15 +3867,16 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = logging_config.CopyLogEntriesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, logging_config.CopyLogEntriesRequest):
+            request = logging_config.CopyLogEntriesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.copy_log_entries,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.copy_log_entries
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
