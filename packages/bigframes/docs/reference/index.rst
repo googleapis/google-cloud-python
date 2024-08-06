@@ -11,3 +11,4 @@ packages.
     bigframes.pandas/index
     bigframes.ml/index
     bigframes.bigquery/index
+    bigframes.streaming/index

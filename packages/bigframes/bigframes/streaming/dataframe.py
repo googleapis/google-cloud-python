@@ -191,7 +191,16 @@ class StreamingBase:
 
 @log_adapter.class_logger
 class StreamingDataFrame(StreamingBase):
-    __doc__ = _curate_df_doc(dataframe.DataFrame.__doc__)
+    __doc__ = (
+        _curate_df_doc(dataframe.DataFrame.__doc__)
+        + """
+    .. note::
+
+        The bigframes.streaming module is a preview feature, and subject to change.
+
+    Currently only supports basic projection, filtering and preview operations.
+    """
+    )
 
     # Private constructor
     _create_key = object()

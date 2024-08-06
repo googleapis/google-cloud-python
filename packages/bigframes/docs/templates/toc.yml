@@ -203,4 +203,11 @@
     - name: BigQuery built-in functions
       uid: bigframes.bigquery
     name: bigframes.bigquery
+  - items:
+    - name: Overview
+      uid: bigframes.streaming
+    - name: StreamingDataFrame
+      uid: bigframes.streaming.dataframe.StreamingDataFrame
+    name: bigframes.streaming
+    status: beta
   name: BigQuery DataFrames

@@ -760,7 +760,9 @@ class Session(
     ) -> streaming_dataframe.StreamingDataFrame:
         """Turn a BigQuery table into a StreamingDataFrame.
 
-        Note: The bigframes.streaming module is a preview feature, and subject to change.
+        .. note::
+
+            The bigframes.streaming module is a preview feature, and subject to change.
 
         **Examples:**
 
