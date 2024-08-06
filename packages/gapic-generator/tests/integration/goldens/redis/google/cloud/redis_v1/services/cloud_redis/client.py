@@ -582,7 +582,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
             transport_init: Union[Type[CloudRedisTransport], Callable[..., CloudRedisTransport]] = (
-                type(self).get_transport_class(transport)
+                CloudRedisClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudRedisTransport], transport)
             )

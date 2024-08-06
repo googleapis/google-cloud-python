@@ -621,7 +621,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
             transport_init: Union[Type[ConfigServiceV2Transport], Callable[..., ConfigServiceV2Transport]] = (
-                type(self).get_transport_class(transport)
+                ConfigServiceV2Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ConfigServiceV2Transport], transport)
             )

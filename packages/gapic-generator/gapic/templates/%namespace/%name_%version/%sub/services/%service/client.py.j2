@@ -548,7 +548,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
             transport_init: Union[Type[{{ service.name  }}Transport], Callable[..., {{ service.name }}Transport]] = (
-                type(self).get_transport_class(transport)
+                {{ service.client_name  }}.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., {{ service.name }}Transport], transport)
             )

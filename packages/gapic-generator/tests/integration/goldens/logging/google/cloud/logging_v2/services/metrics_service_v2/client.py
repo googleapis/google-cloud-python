@@ -553,7 +553,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
             transport_init: Union[Type[MetricsServiceV2Transport], Callable[..., MetricsServiceV2Transport]] = (
-                type(self).get_transport_class(transport)
+                MetricsServiceV2Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., MetricsServiceV2Transport], transport)
             )

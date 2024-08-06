@@ -5,7 +5,6 @@
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 from collections import OrderedDict
-import functools
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
 {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
@@ -172,7 +171,7 @@ class {{ service.async_client_name }}:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(type({{ service.client_name }}).get_transport_class, type({{ service.client_name }}))
+    get_transport_class = {{ service.client_name }}.get_transport_class
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,

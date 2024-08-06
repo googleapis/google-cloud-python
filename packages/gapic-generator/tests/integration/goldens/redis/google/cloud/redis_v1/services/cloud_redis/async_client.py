@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
@@ -188,7 +187,7 @@ class CloudRedisAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(type(CloudRedisClient).get_transport_class, type(CloudRedisClient))
+    get_transport_class = CloudRedisClient.get_transport_class
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,

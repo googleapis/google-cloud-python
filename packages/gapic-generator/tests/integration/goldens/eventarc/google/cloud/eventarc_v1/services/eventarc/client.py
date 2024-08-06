@@ -673,7 +673,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
                 credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
             transport_init: Union[Type[EventarcTransport], Callable[..., EventarcTransport]] = (
-                type(self).get_transport_class(transport)
+                EventarcClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., EventarcTransport], transport)
             )
