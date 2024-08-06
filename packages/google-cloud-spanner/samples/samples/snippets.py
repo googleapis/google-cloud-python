@@ -158,6 +158,36 @@ def list_instance_config():
 # [END spanner_list_instance_configs]
 
 
+# [START spanner_create_instance_partition]
+def create_instance_partition(instance_id, instance_partition_id):
+    """Creates an instance partition."""
+    from google.cloud.spanner_admin_instance_v1.types import \
+        spanner_instance_admin
+
+    spanner_client = spanner.Client()
+    instance_admin_api = spanner_client.instance_admin_api
+
+    config_name = "{}/instanceConfigs/nam3".format(spanner_client.project_name)
+
+    operation = spanner_client.instance_admin_api.create_instance_partition(
+        parent=instance_admin_api.instance_path(spanner_client.project, instance_id),
+        instance_partition_id=instance_partition_id,
+        instance_partition=spanner_instance_admin.InstancePartition(
+            config=config_name,
+            display_name="Test instance partition",
+            node_count=1,
+        ),
+    )
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print("Created instance partition {}".format(instance_partition_id))
+
+
+# [END spanner_create_instance_partition]
+
+
 # [START spanner_list_databases]
 def list_databases(instance_id):
     """Lists databases and their leader options."""

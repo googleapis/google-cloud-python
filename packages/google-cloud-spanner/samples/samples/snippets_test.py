@@ -83,6 +83,12 @@ def lci_instance_id():
 
 
 @pytest.fixture(scope="module")
+def instance_partition_instance_id():
+    """Id for the instance that tests instance partitions."""
+    return f"instance-partition-test-{uuid.uuid4().hex[:10]}"
+
+
+@pytest.fixture(scope="module")
 def database_id():
     return f"test-db-{uuid.uuid4().hex[:10]}"
 
@@ -185,6 +191,18 @@ def test_create_instance_with_autoscaling_config(capsys, lci_instance_id):
     assert "autoscaling config" in out
     spanner_client = spanner.Client()
     instance = spanner_client.instance(lci_instance_id)
+    retry_429(instance.delete)()
+
+
+def test_create_instance_partition(capsys, instance_partition_instance_id):
+    snippets.create_instance(instance_partition_instance_id)
+    retry_429(snippets.create_instance_partition)(
+        instance_partition_instance_id, "my-instance-partition"
+    )
+    out, _ = capsys.readouterr()
+    assert "Created instance partition my-instance-partition" in out
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_partition_instance_id)
     retry_429(instance.delete)()
 
 
