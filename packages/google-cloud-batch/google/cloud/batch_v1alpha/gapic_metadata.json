@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "BatchServiceClient",
           "rpcs": {
+            "CancelJob": {
+              "methods": [
+                "cancel_job"
+              ]
+            },
             "CreateJob": {
               "methods": [
                 "create_job"
@@ -75,6 +80,11 @@
         "grpc-async": {
           "libraryClient": "BatchServiceAsyncClient",
           "rpcs": {
+            "CancelJob": {
+              "methods": [
+                "cancel_job"
+              ]
+            },
             "CreateJob": {
               "methods": [
                 "create_job"
@@ -140,6 +150,11 @@
         "rest": {
           "libraryClient": "BatchServiceClient",
           "rpcs": {
+            "CancelJob": {
+              "methods": [
+                "cancel_job"
+              ]
+            },
             "CreateJob": {
               "methods": [
                 "create_job"

@@ -39,6 +39,7 @@ def partition(
 class batchCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'cancel_job': ('name', 'request_id', ),
         'create_job': ('parent', 'job', 'job_id', 'request_id', ),
         'create_resource_allowance': ('parent', 'resource_allowance', 'resource_allowance_id', 'request_id', ),
         'delete_job': ('name', 'reason', 'request_id', ),
