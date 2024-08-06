@@ -88,6 +88,12 @@ __protobuf__ = proto.module(
         "DeleteConversionEventRequest",
         "ListConversionEventsRequest",
         "ListConversionEventsResponse",
+        "CreateKeyEventRequest",
+        "UpdateKeyEventRequest",
+        "GetKeyEventRequest",
+        "DeleteKeyEventRequest",
+        "ListKeyEventsRequest",
+        "ListKeyEventsResponse",
         "GetDisplayVideo360AdvertiserLinkRequest",
         "ListDisplayVideo360AdvertiserLinksRequest",
         "ListDisplayVideo360AdvertiserLinksResponse",
@@ -171,9 +177,12 @@ __protobuf__ = proto.module(
         "SetAutomatedGa4ConfigurationOptOutResponse",
         "FetchAutomatedGa4ConfigurationOptOutRequest",
         "FetchAutomatedGa4ConfigurationOptOutResponse",
+        "CreateBigQueryLinkRequest",
         "GetBigQueryLinkRequest",
         "ListBigQueryLinksRequest",
         "ListBigQueryLinksResponse",
+        "UpdateBigQueryLinkRequest",
+        "DeleteBigQueryLinkRequest",
         "GetEnhancedMeasurementSettingsRequest",
         "UpdateEnhancedMeasurementSettingsRequest",
         "GetDataRedactionSettingsRequest",
@@ -196,6 +205,13 @@ __protobuf__ = proto.module(
         "GetEventCreateRuleRequest",
         "ListEventCreateRulesRequest",
         "ListEventCreateRulesResponse",
+        "CreateEventEditRuleRequest",
+        "UpdateEventEditRuleRequest",
+        "DeleteEventEditRuleRequest",
+        "GetEventEditRuleRequest",
+        "ListEventEditRulesRequest",
+        "ListEventEditRulesResponse",
+        "ReorderEventEditRulesRequest",
         "CreateRollupPropertyRequest",
         "CreateRollupPropertyResponse",
         "GetRollupPropertySourceLinkRequest",
@@ -203,8 +219,8 @@ __protobuf__ = proto.module(
         "ListRollupPropertySourceLinksResponse",
         "CreateRollupPropertySourceLinkRequest",
         "DeleteRollupPropertySourceLinkRequest",
-        "CreateSubpropertyRequest",
-        "CreateSubpropertyResponse",
+        "ProvisionSubpropertyRequest",
+        "ProvisionSubpropertyResponse",
         "CreateSubpropertyEventFilterRequest",
         "GetSubpropertyEventFilterRequest",
         "ListSubpropertyEventFiltersRequest",
@@ -768,8 +784,9 @@ class CreateFirebaseLinkRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Format: properties/{property_id} Example:
-            properties/1234
+            Required. Format: properties/{property_id}
+
+            Example: ``properties/1234``
         firebase_link (google.analytics.admin_v1alpha.types.FirebaseLink):
             Required. The Firebase link to create.
     """
@@ -792,7 +809,8 @@ class DeleteFirebaseLinkRequest(proto.Message):
         name (str):
             Required. Format:
             properties/{property_id}/firebaseLinks/{firebase_link_id}
-            Example: properties/1234/firebaseLinks/5678
+
+            Example: ``properties/1234/firebaseLinks/5678``
     """
 
     name: str = proto.Field(
@@ -806,8 +824,9 @@ class ListFirebaseLinksRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Format: properties/{property_id} Example:
-            properties/1234
+            Required. Format: properties/{property_id}
+
+            Example: ``properties/1234``
         page_size (int):
             The maximum number of resources to return.
             The service may return fewer than this value,
@@ -874,7 +893,8 @@ class GetGlobalSiteTagRequest(proto.Message):
             Required. The name of the site tag to lookup. Note that site
             tags are singletons and do not have unique IDs. Format:
             properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
-            Example: "properties/123/dataStreams/456/globalSiteTag".
+
+            Example: ``properties/123/dataStreams/456/globalSiteTag``
     """
 
     name: str = proto.Field(
@@ -1011,9 +1031,10 @@ class GetDataSharingSettingsRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the settings to lookup.
-            Format: accounts/{account}/dataSharingSettings
-            Example: "accounts/1000/dataSharingSettings".
+            Required. The name of the settings to lookup. Format:
+            accounts/{account}/dataSharingSettings
+
+            Example: ``accounts/1000/dataSharingSettings``
     """
 
     name: str = proto.Field(
@@ -1121,15 +1142,16 @@ class SearchChangeHistoryEventsRequest(proto.Message):
 
     Attributes:
         account (str):
-            Required. The account resource for which to
-            return change history resources. Format:
-            accounts/{account} Example: "accounts/100".
+            Required. The account resource for which to return change
+            history resources. Format: accounts/{account}
+
+            Example: ``accounts/100``
         property (str):
-            Optional. Resource name for a child property.
-            If set, only return changes made to this
-            property or its child resources. Format:
-            properties/{propertyId}
-            Example: "properties/100".
+            Optional. Resource name for a child property. If set, only
+            return changes made to this property or its child resources.
+            Format: properties/{propertyId}
+
+            Example: ``properties/100``
         resource_type (MutableSequence[google.analytics.admin_v1alpha.types.ChangeHistoryResourceType]):
             Optional. If set, only return changes if they
             are for a resource that matches at least one of
@@ -1719,6 +1741,148 @@ class ListConversionEventsResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=resources.ConversionEvent,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateKeyEventRequest(proto.Message):
+    r"""Request message for CreateKeyEvent RPC
+
+    Attributes:
+        key_event (google.analytics.admin_v1alpha.types.KeyEvent):
+            Required. The Key Event to create.
+        parent (str):
+            Required. The resource name of the parent
+            property where this Key Event will be created.
+            Format: properties/123
+    """
+
+    key_event: resources.KeyEvent = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.KeyEvent,
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateKeyEventRequest(proto.Message):
+    r"""Request message for UpdateKeyEvent RPC
+
+    Attributes:
+        key_event (google.analytics.admin_v1alpha.types.KeyEvent):
+            Required. The Key Event to update. The ``name`` field is
+            used to identify the settings to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    key_event: resources.KeyEvent = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.KeyEvent,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class GetKeyEventRequest(proto.Message):
+    r"""Request message for GetKeyEvent RPC
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Key Event to retrieve.
+            Format: properties/{property}/keyEvents/{key_event} Example:
+            "properties/123/keyEvents/456".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteKeyEventRequest(proto.Message):
+    r"""Request message for DeleteKeyEvent RPC
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Key Event to delete.
+            Format: properties/{property}/keyEvents/{key_event} Example:
+            "properties/123/keyEvents/456".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListKeyEventsRequest(proto.Message):
+    r"""Request message for ListKeyEvents RPC
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the parent
+            property. Example: 'properties/123'
+        page_size (int):
+            The maximum number of resources to return.
+            If unspecified, at most 50 resources will be
+            returned. The maximum value is 200; (higher
+            values will be coerced to the maximum)
+        page_token (str):
+            A page token, received from a previous ``ListKeyEvents``
+            call. Provide this to retrieve the subsequent page. When
+            paginating, all other parameters provided to
+            ``ListKeyEvents`` must match the call that provided the page
+            token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListKeyEventsResponse(proto.Message):
+    r"""Response message for ListKeyEvents RPC.
+
+    Attributes:
+        key_events (MutableSequence[google.analytics.admin_v1alpha.types.KeyEvent]):
+            The requested Key Events
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    key_events: MutableSequence[resources.KeyEvent] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.KeyEvent,
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -2486,7 +2650,7 @@ class CreateCalculatedMetricRequest(proto.Message):
             resource name.
 
             This value should be 1-80 characters and valid characters
-            are `[a-zA-Z0-9_]`, no spaces allowed. calculated_metric_id
+            are /[a-zA-Z0-9_]/, no spaces allowed. calculated_metric_id
             must be unique between all calculated metrics under a
             property. The calculated_metric_id is used when referencing
             this calculated metric from external APIs, for example,
@@ -3660,6 +3824,27 @@ class FetchAutomatedGa4ConfigurationOptOutResponse(proto.Message):
     )
 
 
+class CreateBigQueryLinkRequest(proto.Message):
+    r"""Request message for CreateBigQueryLink RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        bigquery_link (google.analytics.admin_v1alpha.types.BigQueryLink):
+            Required. The BigQueryLink to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    bigquery_link: resources.BigQueryLink = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.BigQueryLink,
+    )
+
+
 class GetBigQueryLinkRequest(proto.Message):
     r"""Request message for GetBigQueryLink RPC.
 
@@ -3737,6 +3922,48 @@ class ListBigQueryLinksResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class UpdateBigQueryLinkRequest(proto.Message):
+    r"""Request message for UpdateBigQueryLink RPC.
+
+    Attributes:
+        bigquery_link (google.analytics.admin_v1alpha.types.BigQueryLink):
+            Required. The settings to update. The ``name`` field is used
+            to identify the settings to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    bigquery_link: resources.BigQueryLink = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.BigQueryLink,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteBigQueryLinkRequest(proto.Message):
+    r"""Request message for DeleteBigQueryLink RPC.
+
+    Attributes:
+        name (str):
+            Required. The BigQueryLink to delete.
+            Example format:
+            properties/1234/bigQueryLinks/5678
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -4221,6 +4448,176 @@ class ListEventCreateRulesResponse(proto.Message):
     )
 
 
+class CreateEventEditRuleRequest(proto.Message):
+    r"""Request message for CreateEventEditRule RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format:
+            properties/123/dataStreams/456
+        event_edit_rule (google.analytics.admin_v1alpha.types.EventEditRule):
+            Required. The EventEditRule to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event_edit_rule: event_create_and_edit.EventEditRule = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=event_create_and_edit.EventEditRule,
+    )
+
+
+class UpdateEventEditRuleRequest(proto.Message):
+    r"""Request message for UpdateEventEditRule RPC.
+
+    Attributes:
+        event_edit_rule (google.analytics.admin_v1alpha.types.EventEditRule):
+            Required. The EventEditRule to update. The resource's
+            ``name`` field is used to identify the EventEditRule to be
+            updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    event_edit_rule: event_create_and_edit.EventEditRule = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=event_create_and_edit.EventEditRule,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteEventEditRuleRequest(proto.Message):
+    r"""Request message for DeleteEventEditRule RPC.
+
+    Attributes:
+        name (str):
+            Required. Example format:
+            properties/123/dataStreams/456/eventEditRules/789
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetEventEditRuleRequest(proto.Message):
+    r"""Request message for GetEventEditRule RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the EventEditRule to
+            get. Example format:
+            properties/123/dataStreams/456/eventEditRules/789
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListEventEditRulesRequest(proto.Message):
+    r"""Request message for ListEventEditRules RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format:
+            properties/123/dataStreams/456
+        page_size (int):
+            Optional. The maximum number of resources to
+            return. If unspecified, at most 50 resources
+            will be returned. The maximum value is 200
+            (higher values will be coerced to the maximum).
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListEventEditRules`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListEventEditRules`` must match the call that provided the
+            page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListEventEditRulesResponse(proto.Message):
+    r"""Response message for ListEventEditRules RPC.
+
+    Attributes:
+        event_edit_rules (MutableSequence[google.analytics.admin_v1alpha.types.EventEditRule]):
+            List of EventEditRules. These will be ordered
+            stably, but in an arbitrary order.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    event_edit_rules: MutableSequence[
+        event_create_and_edit.EventEditRule
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=event_create_and_edit.EventEditRule,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ReorderEventEditRulesRequest(proto.Message):
+    r"""Request message for ReorderEventEditRules RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format:
+            properties/123/dataStreams/456
+        event_edit_rules (MutableSequence[str]):
+            Required. EventEditRule resource names for
+            the specified data stream, in the needed
+            processing order. All EventEditRules for the
+            stream must be present in the list.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event_edit_rules: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
 class CreateRollupPropertyRequest(proto.Message):
     r"""Request message for CreateRollupProperty RPC.
 
@@ -4390,14 +4787,10 @@ class DeleteRollupPropertySourceLinkRequest(proto.Message):
     )
 
 
-class CreateSubpropertyRequest(proto.Message):
+class ProvisionSubpropertyRequest(proto.Message):
     r"""Request message for CreateSubproperty RPC.
 
     Attributes:
-        parent (str):
-            Required. The ordinary property for which to create a
-            subproperty. Format: properties/property_id Example:
-            properties/123
         subproperty (google.analytics.admin_v1alpha.types.Property):
             Required. The subproperty to create.
         subproperty_event_filter (google.analytics.admin_v1alpha.types.SubpropertyEventFilter):
@@ -4405,10 +4798,6 @@ class CreateSubpropertyRequest(proto.Message):
             create on an ordinary property.
     """
 
-    parent: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
     subproperty: resources.Property = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -4423,8 +4812,8 @@ class CreateSubpropertyRequest(proto.Message):
     )
 
 
-class CreateSubpropertyResponse(proto.Message):
-    r"""Response message for CreateSubproperty RPC.
+class ProvisionSubpropertyResponse(proto.Message):
+    r"""Response message for ProvisionSubproperty RPC.
 
     Attributes:
         subproperty (google.analytics.admin_v1alpha.types.Property):
