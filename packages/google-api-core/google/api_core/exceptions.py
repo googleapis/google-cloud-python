@@ -28,16 +28,21 @@ import warnings
 
 from google.rpc import error_details_pb2
 
+
+def _warn_could_not_import_grpcio_status():
+    warnings.warn(
+        "Please install grpcio-status to obtain helpful grpc error messages.",
+        ImportWarning,
+    )  # pragma: NO COVER
+
+
 try:
     import grpc
 
     try:
         from grpc_status import rpc_status
     except ImportError:  # pragma: NO COVER
-        warnings.warn(
-            "Please install grpcio-status to obtain helpful grpc error messages.",
-            ImportWarning,
-        )
+        _warn_could_not_import_grpcio_status()
         rpc_status = None
 except ImportError:  # pragma: NO COVER
     grpc = None
@@ -560,6 +565,9 @@ def _is_informative_grpc_error(rpc_exc):
 
 
 def _parse_grpc_error_details(rpc_exc):
+    if not rpc_status:  # pragma: NO COVER
+        _warn_could_not_import_grpcio_status()
+        return [], None
     try:
         status = rpc_status.from_call(rpc_exc)
     except NotImplementedError:  # workaround
