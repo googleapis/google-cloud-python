@@ -110,3 +110,30 @@ def test_json_set_w_invalid_value_type():
 def test_json_set_w_invalid_series_type():
     with pytest.raises(TypeError):
         bbq.json_set(bpd.Series([1, 2]), json_path_value_pairs=[("$.a", 1)])
+
+
+def test_json_extract_from_json():
+    s = _get_series_from_json([{"a": {"b": [1, 2]}}, {"a": {"c": 1}}, {"a": {"b": 0}}])
+    actual = bbq.json_extract(s, "$.a.b")
+    # After the introduction of the JSON type, the output should be a JSON-formatted series.
+    expected = _get_series_from_json(["[1,2]", None, "0"])
+    pd.testing.assert_series_equal(
+        actual.to_pandas(),
+        expected.to_pandas(),
+    )
+
+
+def test_json_extract_from_string():
+    s = bpd.Series(['{"a": {"b": [1, 2]}}', '{"a": {"c": 1}}', '{"a": {"b": 0}}'])
+    actual = bbq.json_extract(s, "$.a.b")
+    expected = _get_series_from_json(["[1,2]", None, "0"])
+    pd.testing.assert_series_equal(
+        actual.to_pandas(),
+        expected.to_pandas(),
+        check_names=False,
+    )
+
+
+def test_json_extract_w_invalid_series_type():
+    with pytest.raises(TypeError):
+        bbq.json_extract(bpd.Series([1, 2]), "$.a")
