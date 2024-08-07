@@ -28,6 +28,7 @@ from google.auth import _helpers
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import metrics
+from google.auth import transport
 from google.auth._exponential_backoff import ExponentialBackoff
 
 _LOGGER = logging.getLogger(__name__)
@@ -204,7 +205,17 @@ def get(
     for attempt in backoff:
         try:
             response = request(url=url, method="GET", headers=headers_to_use)
-            break
+            if response.status in transport.DEFAULT_RETRYABLE_STATUS_CODES:
+                _LOGGER.warning(
+                    "Compute Engine Metadata server unavailable on "
+                    "attempt %s of %s. Response status: %s",
+                    attempt,
+                    retry_count,
+                    response.status,
+                )
+                continue
+            else:
+                break
 
         except exceptions.TransportError as e:
             _LOGGER.warning(
