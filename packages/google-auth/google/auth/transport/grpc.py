@@ -302,7 +302,7 @@ class SslCredentials:
             self._is_mtls = False
         else:
             # Load client SSL credentials.
-            metadata_path = _mtls_helper._check_dca_metadata_path(
+            metadata_path = _mtls_helper._check_config_path(
                 _mtls_helper.CONTEXT_AWARE_METADATA_PATH
             )
             self._is_mtls = metadata_path is not None

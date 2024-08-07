@@ -16,17 +16,30 @@ import mock
 import pytest  # type: ignore
 
 from google.auth import exceptions
+from google.auth.transport import _mtls_helper
 from google.auth.transport import mtls
 
 
-@mock.patch(
-    "google.auth.transport._mtls_helper._check_dca_metadata_path", autospec=True
-)
-def test_has_default_client_cert_source(check_dca_metadata_path):
-    check_dca_metadata_path.return_value = mock.Mock()
+@mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
+def test_has_default_client_cert_source(check_config_path):
+    def return_path_for_metadata(path):
+        return mock.Mock() if path == _mtls_helper.CONTEXT_AWARE_METADATA_PATH else None
+
+    check_config_path.side_effect = return_path_for_metadata
     assert mtls.has_default_client_cert_source()
 
-    check_dca_metadata_path.return_value = None
+    def return_path_for_cert_config(path):
+        return (
+            mock.Mock()
+            if path == _mtls_helper.CERTIFICATE_CONFIGURATION_DEFAULT_PATH
+            else None
+        )
+
+    check_config_path.side_effect = return_path_for_cert_config
+    assert mtls.has_default_client_cert_source()
+
+    check_config_path.side_effect = None
+    check_config_path.return_value = None
     assert not mtls.has_default_client_cert_source()
 
 
