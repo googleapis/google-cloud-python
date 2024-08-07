@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.7.2](https://github.com/googleapis/google-resumable-media-python/compare/v2.7.1...v2.7.2) (2024-08-07)
+
+
+### Bug Fixes
+
+* Correctly calculate starting offset for retries of ranged reads ([#450](https://github.com/googleapis/google-resumable-media-python/issues/450)) ([34302b4](https://github.com/googleapis/google-resumable-media-python/commit/34302b4eb984330cc057ddebe3e9ff55a2745b01))
+
 ## [2.7.1](https://github.com/googleapis/google-resumable-media-python/compare/v2.7.0...v2.7.1) (2024-05-31)
 
 
