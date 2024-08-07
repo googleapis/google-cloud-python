@@ -455,6 +455,42 @@ class TestDownload(object):
         range_bytes = "bytes={:d}-{:d}".format(offset, end)
         assert download._headers["range"] == range_bytes
 
+    def test_consume_w_bytes_downloaded_range_read(self):
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+        start = 1024
+        end = 65536
+
+        download = download_mod.Download(
+            EXAMPLE_URL,
+            stream=stream,
+            start=start,
+            end=end,
+            headers=None,
+            checksum="md5",
+        )
+        transport = mock.Mock(spec=["request"])
+        transport.request.return_value = _mock_response(chunks=chunks, headers=None)
+
+        assert download._bytes_downloaded == 0
+
+        # Mock a retry operation with bytes already downloaded in the stream and checksum stored
+        offset = 256
+        download._bytes_downloaded = offset
+        download._expected_checksum = None
+        download._checksum_object = _helpers._DoNothingHash()
+        download.consume(transport)
+
+        called_kwargs = {
+            "data": None,
+            "headers": download._headers,
+            "timeout": EXPECTED_TIMEOUT,
+            "stream": True,
+        }
+        transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
+        range_bytes = "bytes={:d}-{:d}".format(offset + start, end)
+        assert download._headers["range"] == range_bytes
+
     def test_consume_gzip_reset_stream_w_bytes_downloaded(self):
         stream = io.BytesIO()
         chunks = (b"up down ", b"charlie ", b"brown")
@@ -902,6 +938,42 @@ class TestRawDownload(object):
         }
         transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
         range_bytes = "bytes={:d}-{:d}".format(offset, end)
+        assert download._headers["range"] == range_bytes
+
+    def test_consume_w_bytes_downloaded_range_read(self):
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+        start = 1024
+        end = 65536
+
+        download = download_mod.RawDownload(
+            EXAMPLE_URL,
+            stream=stream,
+            start=start,
+            end=end,
+            headers=None,
+            checksum="md5",
+        )
+        transport = mock.Mock(spec=["request"])
+        transport.request.return_value = _mock_raw_response(chunks=chunks, headers=None)
+
+        assert download._bytes_downloaded == 0
+
+        # Mock a retry operation with bytes already downloaded in the stream and checksum stored
+        offset = 256
+        download._bytes_downloaded = offset
+        download._expected_checksum = None
+        download._checksum_object = _helpers._DoNothingHash()
+        download.consume(transport)
+
+        called_kwargs = {
+            "data": None,
+            "headers": download._headers,
+            "timeout": EXPECTED_TIMEOUT,
+            "stream": True,
+        }
+        transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
+        range_bytes = "bytes={:d}-{:d}".format(start + offset, end)
         assert download._headers["range"] == range_bytes
 
     def test_consume_gzip_reset_stream_w_bytes_downloaded(self):

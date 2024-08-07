@@ -221,7 +221,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             # received using a range request, and set object generation query param.
             if self._bytes_downloaded > 0:
                 _download.add_bytes_range(
-                    self._bytes_downloaded, self.end, self._headers
+                    (self.start or 0) + self._bytes_downloaded, self.end, self._headers
                 )
                 request_kwargs["headers"] = self._headers
 
@@ -426,7 +426,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             # received using a range request, and set object generation query param.
             if self._bytes_downloaded > 0:
                 _download.add_bytes_range(
-                    self._bytes_downloaded, self.end, self._headers
+                    (self.start or 0) + self._bytes_downloaded, self.end, self._headers
                 )
                 request_kwargs["headers"] = self._headers
 
