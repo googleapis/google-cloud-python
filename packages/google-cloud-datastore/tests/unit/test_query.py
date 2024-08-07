@@ -1072,6 +1072,159 @@ def test_iterator__next_page_w_skipped_lt_offset(skipped_cursor_1, database_id):
     assert ds_api.run_query.call_args_list == expected_calls
 
 
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+@pytest.mark.parametrize("analyze", [True, False])
+def test_iterator_sends_explain_options_w_request(database_id, analyze):
+    """
+    When query has explain_options set, all requests should include
+    the explain_options field.
+    """
+    from google.cloud.datastore.query_profile import ExplainOptions
+
+    response_pb = _make_query_response([], b"", 0, 0)
+    ds_api = _make_datastore_api(response_pb)
+    client = _Client(None, datastore_api=ds_api)
+    explain_options = ExplainOptions(analyze=analyze)
+    query = Query(client, explain_options=explain_options)
+    iterator = _make_iterator(query, client)
+    iterator._next_page()
+    # ensure explain_options is set in request
+    assert ds_api.run_query.call_count == 1
+    found_explain_options = ds_api.run_query.call_args[1]["request"]["explain_options"]
+    assert found_explain_options == explain_options._to_dict()
+    assert found_explain_options["analyze"] == analyze
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator_explain_metrics(database_id):
+    """
+    If explain_metrics is recieved from backend, it should be set on the iterator
+    """
+    from google.cloud.datastore.query_profile import ExplainMetrics
+    from google.cloud.datastore_v1.types import query_profile as query_profile_pb2
+    from google.protobuf import duration_pb2
+
+    expected_metrics = query_profile_pb2.ExplainMetrics(
+        plan_summary=query_profile_pb2.PlanSummary(),
+        execution_stats=query_profile_pb2.ExecutionStats(
+            results_returned=100,
+            execution_duration=duration_pb2.Duration(seconds=1),
+            read_operations=10,
+            debug_stats={},
+        ),
+    )
+    response_pb = _make_query_response([], b"", 0, 0)
+    response_pb.explain_metrics = expected_metrics
+    ds_api = _make_datastore_api(response_pb)
+    client = _Client(None, datastore_api=ds_api)
+    query = Query(client)
+    iterator = _make_iterator(query, client)
+    assert iterator._explain_metrics is None
+    iterator._next_page()
+    assert isinstance(iterator._explain_metrics, ExplainMetrics)
+    assert iterator._explain_metrics == ExplainMetrics._from_pb(expected_metrics)
+    assert iterator.explain_metrics == ExplainMetrics._from_pb(expected_metrics)
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator_explain_metrics_no_explain(database_id):
+    """
+    If query has no explain_options set, iterator.explain_metrics should raise
+    an exception.
+    """
+    from google.cloud.datastore.query_profile import QueryExplainError
+
+    ds_api = _make_datastore_api()
+    client = _Client(None, datastore_api=ds_api)
+    query = Query(client, explain_options=None)
+    iterator = _make_iterator(query, client)
+    assert iterator._explain_metrics is None
+    with pytest.raises(QueryExplainError) as exc:
+        iterator.explain_metrics
+    assert "explain_options not set on query" in str(exc.value)
+    # should not raise error if field is set
+    expected_metrics = object()
+    iterator._explain_metrics = expected_metrics
+    assert iterator.explain_metrics is expected_metrics
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator_explain_metrics_no_analyze_make_call(database_id):
+    """
+    If query.explain_options(analyze=False), accessing iterator.explain_metrics
+    should make a network call to get the data.
+    """
+    from google.cloud.datastore.query_profile import ExplainOptions
+    from google.cloud.datastore.query_profile import ExplainMetrics
+    from google.cloud.datastore_v1.types import query_profile as query_profile_pb2
+    from google.protobuf import duration_pb2
+
+    response_pb = _make_query_response([], b"", 0, 0)
+    expected_metrics = query_profile_pb2.ExplainMetrics(
+        plan_summary=query_profile_pb2.PlanSummary(),
+        execution_stats=query_profile_pb2.ExecutionStats(
+            results_returned=100,
+            execution_duration=duration_pb2.Duration(seconds=1),
+            read_operations=10,
+            debug_stats={},
+        ),
+    )
+    response_pb.explain_metrics = expected_metrics
+    ds_api = _make_datastore_api(response_pb)
+    client = _Client(None, datastore_api=ds_api)
+    explain_options = ExplainOptions(analyze=False)
+    query = Query(client, explain_options=explain_options)
+    iterator = _make_iterator(query, client)
+    assert ds_api.run_query.call_count == 0
+    metrics = iterator.explain_metrics
+    # ensure explain_options is set in request
+    assert ds_api.run_query.call_count == 1
+    assert isinstance(metrics, ExplainMetrics)
+    assert metrics == ExplainMetrics._from_pb(expected_metrics)
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator_explain_metrics_no_analyze_make_call_failed(database_id):
+    """
+    If query.explain_options(analyze=False), accessing iterator.explain_metrics
+    should make a network call to get the data.
+    If the call does not result in explain_metrics data, it should raise a QueryExplainError.
+    """
+    from google.cloud.datastore.query_profile import ExplainOptions
+    from google.cloud.datastore.query_profile import QueryExplainError
+
+    # mocked response does not return explain_metrics
+    response_pb = _make_query_response([], b"", 0, 0)
+    ds_api = _make_datastore_api(response_pb)
+    client = _Client(None, datastore_api=ds_api)
+    explain_options = ExplainOptions(analyze=False)
+    query = Query(client, explain_options=explain_options)
+    iterator = _make_iterator(query, client)
+    assert ds_api.run_query.call_count == 0
+    with pytest.raises(QueryExplainError):
+        iterator.explain_metrics
+    assert ds_api.run_query.call_count == 1
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator_explain_analyze_access_before_complete(database_id):
+    """
+    If query.explain_options(analyze=True), accessing iterator.explain_metrics
+    before the query is complete should raise an exception.
+    """
+    from google.cloud.datastore.query_profile import ExplainOptions
+    from google.cloud.datastore.query_profile import QueryExplainError
+
+    ds_api = _make_datastore_api()
+    client = _Client(None, datastore_api=ds_api)
+    query = _make_query(client, explain_options=ExplainOptions(analyze=True))
+    iterator = _make_iterator(query, client)
+    expected_error = "explain_metrics not available until query is complete"
+    with pytest.raises(QueryExplainError) as exc:
+        iterator.explain_metrics
+    assert expected_error in str(exc.value)
+
+
 def test__item_to_entity():
     from google.cloud.datastore.query import _item_to_entity
 

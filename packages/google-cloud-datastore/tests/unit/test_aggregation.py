@@ -278,10 +278,25 @@ def test_query_fetch_w_explicit_client_w_limit(client, database_id):
     assert iterator._limit == limit
 
 
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_aggregation_uses_nested_query_explain_options(client, database_id):
+    """
+    If explain_options is set on the nested query but not the aggregation,
+    use the nested query's explain_options.
+    """
+    expected_explain_options = mock.Mock()
+    query = _make_query(client, explain_options=expected_explain_options)
+    aggregation_query = _make_aggregation_query(
+        client=client, query=query, explain_options=None
+    )
+    assert aggregation_query._explain_options is expected_explain_options
+
+
 def test_iterator_constructor_defaults():
-    query = object()
+    query = mock.Mock()
     client = object()
     aggregation_query = AggregationQuery(client=client, query=query)
+    assert aggregation_query._explain_options == query._explain_options
     iterator = _make_aggregation_iterator(aggregation_query, client)
 
     assert not iterator._started
@@ -292,12 +307,17 @@ def test_iterator_constructor_defaults():
     assert iterator._more_results
     assert iterator._retry is None
     assert iterator._timeout is None
+    assert iterator._explain_metrics is None
 
 
 def test_iterator_constructor_explicit():
     query = object()
     client = object()
-    aggregation_query = AggregationQuery(client=client, query=query)
+    explain_options = object()
+    aggregation_query = AggregationQuery(
+        client=client, query=query, explain_options=explain_options
+    )
+    assert aggregation_query._explain_options is explain_options
     retry = mock.Mock()
     timeout = 100000
     limit = 2
@@ -315,6 +335,7 @@ def test_iterator_constructor_explicit():
     assert iterator._retry == retry
     assert iterator._timeout == timeout
     assert iterator._limit == limit
+    assert iterator._explain_metrics is None
 
 
 def test_iterator__build_protobuf_empty():
@@ -404,16 +425,13 @@ def test_iterator__process_query_results_finished_result():
 
 
 def test_iterator__process_query_results_unexpected_result():
-    from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.aggregation import AggregationResult
 
     iterator = _make_aggregation_iterator(None, None)
 
     aggregation_pbs = [AggregationResult(alias="total", value=1)]
 
-    more_results_enum = (
-        query_pb2.QueryResultBatch.MoreResultsType.MORE_RESULTS_TYPE_UNSPECIFIED
-    )
+    more_results_enum = 999
     response_pb = _make_aggregation_query_response(aggregation_pbs, more_results_enum)
     with pytest.raises(ValueError):
         iterator._process_query_results(response_pb)
@@ -449,6 +467,169 @@ def test_iterator__next_page_no_more():
     page = iterator._next_page()
     assert page is None
     ds_api.run_aggregation_query.assert_not_called()
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+@pytest.mark.parametrize("analyze", [True, False])
+def test_iterator_sends_explain_options_w_request(database_id, analyze):
+    """
+    When query has explain_options set, all requests should include
+    the explain_options field.
+    """
+    from google.cloud.datastore.query_profile import ExplainOptions
+
+    response_pb = _make_aggregation_query_response([], 0)
+    ds_api = _make_datastore_api_for_aggregation(response_pb)
+    client = _Client(None, datastore_api=ds_api)
+    explain_options = ExplainOptions(analyze=analyze)
+    query = _make_aggregation_query(
+        client, _make_query(client), explain_options=explain_options
+    )
+    iterator = _make_aggregation_iterator(query, client)
+    iterator._next_page()
+    # ensure explain_options is set in request
+    assert ds_api.run_aggregation_query.call_count == 1
+    found_explain_options = ds_api.run_aggregation_query.call_args[1]["request"][
+        "explain_options"
+    ]
+    assert found_explain_options == explain_options._to_dict()
+    assert found_explain_options["analyze"] == analyze
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator_explain_metrics(database_id):
+    """
+    If explain_metrics is recieved from backend, it should be set on the iterator
+    """
+    from google.cloud.datastore.query_profile import ExplainMetrics
+    from google.cloud.datastore_v1.types import query_profile as query_profile_pb2
+    from google.protobuf import duration_pb2
+
+    expected_metrics = query_profile_pb2.ExplainMetrics(
+        plan_summary=query_profile_pb2.PlanSummary(),
+        execution_stats=query_profile_pb2.ExecutionStats(
+            results_returned=100,
+            execution_duration=duration_pb2.Duration(seconds=1),
+            read_operations=10,
+            debug_stats={},
+        ),
+    )
+    response_pb = _make_aggregation_query_response([], 0)
+    response_pb.explain_metrics = expected_metrics
+    ds_api = _make_datastore_api_for_aggregation(response_pb)
+    client = _Client(None, datastore_api=ds_api)
+    query = _make_aggregation_query(client=client, query=_make_query(client))
+    iterator = _make_aggregation_iterator(query, client)
+    assert iterator._explain_metrics is None
+    iterator._next_page()
+    assert isinstance(iterator._explain_metrics, ExplainMetrics)
+    assert iterator._explain_metrics == ExplainMetrics._from_pb(expected_metrics)
+    assert iterator.explain_metrics == ExplainMetrics._from_pb(expected_metrics)
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator_explain_metrics_no_explain(database_id):
+    """
+    If query has no explain_options set, iterator.explain_metrics should raise
+    an exception.
+    """
+    from google.cloud.datastore.query_profile import QueryExplainError
+
+    ds_api = _make_datastore_api_for_aggregation()
+    client = _Client(None, datastore_api=ds_api)
+    query = _make_aggregation_query(client, _make_query(client), explain_options=None)
+    iterator = _make_aggregation_iterator(query, client)
+    assert iterator._explain_metrics is None
+    with pytest.raises(QueryExplainError) as exc:
+        iterator.explain_metrics
+    assert "explain_options not set on query" in str(exc.value)
+    # should not raise error if field is set
+    iterator._explain_metrics = object()
+    assert iterator.explain_metrics is iterator._explain_metrics
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator_explain_metrics_no_analyze_make_call(database_id):
+    """
+    If query.explain_options(analyze=False), accessing iterator.explain_metrics
+    should make a network call to get the data.
+    """
+    from google.cloud.datastore.query_profile import ExplainOptions
+    from google.cloud.datastore.query_profile import ExplainMetrics
+    from google.cloud.datastore_v1.types import query_profile as query_profile_pb2
+    from google.protobuf import duration_pb2
+
+    response_pb = _make_aggregation_query_response([], 0)
+    expected_metrics = query_profile_pb2.ExplainMetrics(
+        plan_summary=query_profile_pb2.PlanSummary(),
+        execution_stats=query_profile_pb2.ExecutionStats(
+            results_returned=100,
+            execution_duration=duration_pb2.Duration(seconds=1),
+            read_operations=10,
+            debug_stats={},
+        ),
+    )
+    response_pb.explain_metrics = expected_metrics
+    ds_api = _make_datastore_api_for_aggregation(response_pb)
+    client = _Client(None, datastore_api=ds_api)
+    explain_options = ExplainOptions(analyze=False)
+    query = _make_aggregation_query(
+        client, _make_query(client), explain_options=explain_options
+    )
+    iterator = _make_aggregation_iterator(query, client)
+    assert ds_api.run_aggregation_query.call_count == 0
+    metrics = iterator.explain_metrics
+    # ensure explain_options is set in request
+    assert ds_api.run_aggregation_query.call_count == 1
+    assert isinstance(metrics, ExplainMetrics)
+    assert metrics == ExplainMetrics._from_pb(expected_metrics)
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator_explain_metrics_no_analyze_make_call_failed(database_id):
+    """
+    If query.explain_options(analyze=False), accessing iterator.explain_metrics
+    should make a network call to get the data.
+    If the call does not result in explain_metrics data, it should raise a QueryExplainError.
+    """
+    from google.cloud.datastore.query_profile import ExplainOptions
+    from google.cloud.datastore.query_profile import QueryExplainError
+
+    # mocked response does not return explain_metrics
+    response_pb = _make_aggregation_query_response([], 0)
+    ds_api = _make_datastore_api_for_aggregation(response_pb)
+    client = _Client(None, datastore_api=ds_api)
+    explain_options = ExplainOptions(analyze=False)
+    query = _make_aggregation_query(
+        client, _make_query(client), explain_options=explain_options
+    )
+    iterator = _make_aggregation_iterator(query, client)
+    assert ds_api.run_aggregation_query.call_count == 0
+    with pytest.raises(QueryExplainError):
+        iterator.explain_metrics
+    assert ds_api.run_aggregation_query.call_count == 1
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator_explain_analyze_access_before_complete(database_id):
+    """
+    If query.explain_options(analyze=True), accessing iterator.explain_metrics
+    before the query is complete should raise an exception.
+    """
+    from google.cloud.datastore.query_profile import ExplainOptions
+    from google.cloud.datastore.query_profile import QueryExplainError
+
+    ds_api = _make_datastore_api_for_aggregation()
+    client = _Client(None, datastore_api=ds_api)
+    explain_options = ExplainOptions(analyze=True)
+    query = _make_aggregation_query(
+        client, _make_query(client), explain_options=explain_options
+    )
+    iterator = _make_aggregation_iterator(query, client)
+    expected_error = "explain_metrics not available until query is complete"
+    with pytest.raises(QueryExplainError) as exc:
+        iterator.explain_metrics
+    assert expected_error in str(exc.value)
 
 
 def _next_page_helper(txn_id=None, retry=None, timeout=None, database_id=None):

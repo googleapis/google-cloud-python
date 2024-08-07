@@ -23,15 +23,11 @@ from google.cloud.datastore_v1.types import query as query_pb2
 from google.cloud.datastore import helpers
 from google.cloud.datastore.query import _pb_from_query
 
+from google.cloud.datastore.query_profile import ExplainMetrics
+from google.cloud.datastore.query_profile import QueryExplainError
 
-_NOT_FINISHED = query_pb2.QueryResultBatch.MoreResultsType.NOT_FINISHED
-_NO_MORE_RESULTS = query_pb2.QueryResultBatch.MoreResultsType.NO_MORE_RESULTS
-
-_FINISHED = (
-    _NO_MORE_RESULTS,
-    query_pb2.QueryResultBatch.MoreResultsType.MORE_RESULTS_AFTER_LIMIT,
-    query_pb2.QueryResultBatch.MoreResultsType.MORE_RESULTS_AFTER_CURSOR,
-)
+from google.cloud.datastore.query import _NOT_FINISHED
+from google.cloud.datastore.query import _FINISHED
 
 
 class BaseAggregation(ABC):
@@ -159,16 +155,25 @@ class AggregationQuery(object):
 
     :type query: :class:`google.cloud.datastore.query.Query`
     :param query: The query used for aggregations.
+
+    :type explain_options: :class:`~google.cloud.datastore.ExplainOptions`
+    :param explain_options: (Optional) Options to enable query profiling for
+        this query. When set, explain_metrics will be available on the iterator
+        returned by query.fetch().
+        If not passed, will use value from given query.
     """
 
     def __init__(
         self,
         client,
         query,
+        explain_options=None,
     ):
         self._client = client
         self._nested_query = query
         self._aggregations = []
+        # fallback to query._explain_options if not set
+        self._explain_options = explain_options or query._explain_options
 
     @property
     def project(self):
@@ -391,6 +396,7 @@ class AggregationResultIterator(page_iterator.Iterator):
         self._read_time = read_time
         self._limit = limit
         # The attributes below will change over the life of the iterator.
+        self._explain_metrics = None
         self._more_results = True
 
     def _build_protobuf(self):
@@ -441,7 +447,6 @@ class AggregationResultIterator(page_iterator.Iterator):
         if not self._more_results:
             return None
 
-        query_pb = self._build_protobuf()
         transaction_id, new_transaction_options = helpers.get_transaction_options(
             self.client.current_transaction
         )
@@ -466,37 +471,67 @@ class AggregationResultIterator(page_iterator.Iterator):
             "project_id": self._aggregation_query.project,
             "partition_id": partition_id,
             "read_options": read_options,
-            "aggregation_query": query_pb,
+            "aggregation_query": self._build_protobuf(),
         }
+        if self._aggregation_query._explain_options:
+            request[
+                "explain_options"
+            ] = self._aggregation_query._explain_options._to_dict()
         helpers.set_database_id_to_request(request, self.client.database)
-        response_pb = self.client._datastore_api.run_aggregation_query(
-            request=request,
-            **kwargs,
-        )
 
-        while response_pb.batch.more_results == _NOT_FINISHED:
-            # We haven't finished processing. A likely reason is we haven't
-            # skipped all of the results yet. Don't return any results.
-            # Instead, rerun query, adjusting offsets. Datastore doesn't process
-            # more than 1000 skipped results in a query.
-            old_query_pb = query_pb
-            query_pb = query_pb2.AggregationQuery()
-            query_pb._pb.CopyFrom(old_query_pb._pb)  # copy for testability
+        response_pb = None
 
-            request = {
-                "project_id": self._aggregation_query.project,
-                "partition_id": partition_id,
-                "read_options": read_options,
-                "aggregation_query": query_pb,
-            }
-            helpers.set_database_id_to_request(request, self.client.database)
+        while response_pb is None or response_pb.batch.more_results == _NOT_FINISHED:
+            if response_pb is not None:
+                # We haven't finished processing. A likely reason is we haven't
+                # skipped all of the results yet. Don't return any results.
+                # Instead, rerun query, adjusting offsets. Datastore doesn't process
+                # more than 1000 skipped results in a query.
+                new_query_pb = query_pb2.AggregationQuery()
+                new_query_pb._pb.CopyFrom(
+                    request["aggregation_query"]._pb
+                )  # copy for testability
+                request["aggregation_query"] = new_query_pb
+
             response_pb = self.client._datastore_api.run_aggregation_query(
-                request=request,
-                **kwargs,
+                request=request.copy(), **kwargs
             )
+            # capture explain metrics if present in response
+            # should only be present in last response, and only if explain_options was set
+            if response_pb.explain_metrics:
+                self._explain_metrics = ExplainMetrics._from_pb(
+                    response_pb.explain_metrics
+                )
 
         item_pbs = self._process_query_results(response_pb)
         return page_iterator.Page(self, item_pbs, self.item_to_value)
+
+    @property
+    def explain_metrics(self) -> ExplainMetrics:
+        """
+        Get the metrics associated with the query execution.
+        Metrics are only available when explain_options is set on the query. If
+        ExplainOptions.analyze is False, only plan_summary is available. If it is
+        True, execution_stats is also available.
+
+        :rtype: :class:`~google.cloud.datastore.query_profile.ExplainMetrics`
+        :returns: The metrics associated with the query execution.
+        :raises: :class:`~google.cloud.datastore.query_profile.QueryExplainError`
+            if explain_metrics is not available on the query.
+        """
+        if self._explain_metrics is not None:
+            return self._explain_metrics
+        elif self._aggregation_query._explain_options is None:
+            raise QueryExplainError("explain_options not set on query.")
+        elif self._aggregation_query._explain_options.analyze is False:
+            # we need to run the query to get the explain_metrics
+            # analyze=False only returns explain_metrics, no results
+            self._next_page()
+            if self._explain_metrics is not None:
+                return self._explain_metrics
+        raise QueryExplainError(
+            "explain_metrics not available until query is complete."
+        )
 
 
 # pylint: disable=unused-argument

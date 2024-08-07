@@ -875,7 +875,7 @@ class Client(ClientWithProject):
             kwargs["namespace"] = self.namespace
         return Query(self, **kwargs)
 
-    def aggregation_query(self, query):
+    def aggregation_query(self, query, **kwargs):
         """Proxy to :class:`google.cloud.datastore.aggregation.AggregationQuery`.
 
         Using aggregation_query to count over a query:
@@ -953,7 +953,7 @@ class Client(ClientWithProject):
         :rtype: :class:`~google.cloud.datastore.aggregation.AggregationQuery`
         :returns: An AggregationQuery object.
         """
-        return AggregationQuery(self, query)
+        return AggregationQuery(self, query, **kwargs)
 
     def reserve_ids_sequential(self, complete_key, num_ids, retry=None, timeout=None):
         """Reserve a list of IDs sequentially from a complete key.
