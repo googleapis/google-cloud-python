@@ -58,5 +58,8 @@ python3.10 -m docuploader create-metadata \
 
 cat docs.metadata
 
+# Replace toc.yml template file
+mv docs/templates/toc.yml docs/_build/html/docfx_yaml/toc.yml
+
 # upload docs
 python3.10 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"

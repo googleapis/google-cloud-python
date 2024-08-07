@@ -112,14 +112,14 @@ s.replace(
         re.escape("# upload docs")
         + "\n"
         + re.escape(
-            'python3 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"'
+            'python3.10 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"'
         )
     ),
     (
         "# Replace toc.yml template file\n"
         + "mv docs/templates/toc.yml docs/_build/html/docfx_yaml/toc.yml\n\n"
         + "# upload docs\n"
-        + 'python3 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"'
+        + 'python3.10 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"'
     ),
 )
 
