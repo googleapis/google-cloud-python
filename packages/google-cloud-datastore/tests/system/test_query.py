@@ -337,12 +337,32 @@ def large_query_client(datastore_client):
     return large_query_client
 
 
+@pytest.fixture(scope="session")
+def mergejoin_query_client(datastore_client):
+    mergejoin_query_client = _helpers.clone_client(
+        datastore_client,
+        namespace=populate_datastore.MERGEJOIN_DATASET_NAMESPACE,
+    )
+    populate_datastore.add_mergejoin_dataset_entities(client=mergejoin_query_client)
+
+    return mergejoin_query_client
+
+
 @pytest.fixture(scope="function")
 def large_query(large_query_client):
     # Use the client for this test instead of the global.
     return large_query_client.query(
         kind=populate_datastore.LARGE_CHARACTER_KIND,
         namespace=populate_datastore.LARGE_CHARACTER_NAMESPACE,
+    )
+
+
+@pytest.fixture(scope="function")
+def mergejoin_query(mergejoin_query_client):
+    # Use the client for this test instead of the global.
+    return mergejoin_query_client.query(
+        kind=populate_datastore.MERGEJOIN_DATASET_KIND,
+        namespace=populate_datastore.MERGEJOIN_DATASET_NAMESPACE,
     )
 
 
@@ -383,6 +403,20 @@ def test_large_query(large_query, limit, offset, expected, database_id):
 
     entities = [e for e in iterator]
     assert len(entities) == expected
+
+
+@pytest.mark.parametrize("database_id", [_helpers.TEST_DATABASE], indirect=True)
+def test_mergejoin_query(mergejoin_query, database_id):
+    query = mergejoin_query
+    query.add_filter(filter=PropertyFilter("a", "=", 1))
+    query.add_filter(filter=PropertyFilter("b", "=", 1))
+
+    # There should be 2 * MERGEJOIN_QUERY_NUM_RESULTS results total
+    expected_total = 2 * populate_datastore.MERGEJOIN_QUERY_NUM_RESULTS
+    for offset in range(0, expected_total + 1):
+        iterator = query.fetch(offset=offset)
+        num_entities = len([e for e in iterator])
+        assert num_entities == expected_total - offset
 
 
 @pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
