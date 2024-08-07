@@ -18,7 +18,7 @@ import collections
 import json
 import logging
 
-from typing import Optional, IO
+from typing import Optional, IO, Type
 
 from google.cloud.logging_v2.handlers.transports import (
     BackgroundThreadTransport,
@@ -157,7 +157,7 @@ class CloudLoggingHandler(logging.StreamHandler):
         client,
         *,
         name: str = DEFAULT_LOGGER_NAME,
-        transport: Transport = BackgroundThreadTransport,
+        transport: Type[Transport] = BackgroundThreadTransport,
         resource: Resource = None,
         labels: Optional[dict] = None,
         stream: Optional[IO] = None,
