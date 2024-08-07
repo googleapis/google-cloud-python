@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.20.0](https://github.com/googleapis/python-datastore/compare/v2.19.0...v2.20.0) (2024-08-07)
+
+
+### Features
+
+* Add new types ExplainOptions, ExplainMetrics, PlanSummary, ExecutionStats ([#521](https://github.com/googleapis/python-datastore/issues/521)) ([dfbee2d](https://github.com/googleapis/python-datastore/commit/dfbee2db800a3ca99e65a5d386ea907db1c46598))
+* Add new_transaction support ([#499](https://github.com/googleapis/python-datastore/issues/499)) ([43855dd](https://github.com/googleapis/python-datastore/commit/43855dd1762f51771bb1a3924c6a234641950fb6))
+* Implement query profiling ([#542](https://github.com/googleapis/python-datastore/issues/542)) ([1500f70](https://github.com/googleapis/python-datastore/commit/1500f7007f251256ce2923e1168439d40d41cc4d))
+* New PropertyMask field which allows partial commits, lookups, and query results ([7fd218b](https://github.com/googleapis/python-datastore/commit/7fd218b2afc0282d8fea21992e8d10c5eec72ac7))
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([#555](https://github.com/googleapis/python-datastore/issues/555)) ([5e773cb](https://github.com/googleapis/python-datastore/commit/5e773cb8c766303fef53965dd100b3c4c93b98be))
+* Using end_cursor instead of skipped_cursor in Iterator to fix rare bug. ([#552](https://github.com/googleapis/python-datastore/issues/552)) ([4982f9a](https://github.com/googleapis/python-datastore/commit/4982f9a6cbbe2de449535295a363a2dd49538c86))
+
 ## [2.19.0](https://github.com/googleapis/python-datastore/compare/v2.18.0...v2.19.0) (2023-12-10)
 
 
