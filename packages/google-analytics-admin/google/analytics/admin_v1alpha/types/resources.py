@@ -63,6 +63,7 @@ __protobuf__ = proto.module(
         "SearchAds360Link",
         "LinkProposalStatusDetails",
         "ConversionEvent",
+        "KeyEvent",
         "GoogleSignalsSettings",
         "CustomDimension",
         "CustomMetric",
@@ -268,6 +269,8 @@ class ChangeHistoryResourceType(proto.Enum):
             ExpandedDataSet resource
         CHANNEL_GROUP (22):
             ChannelGroup resource
+        BIGQUERY_LINK (23):
+            BigQuery link resource
         ENHANCED_MEASUREMENT_SETTINGS (24):
             EnhancedMeasurementSettings resource
         DATA_REDACTION_SETTINGS (25):
@@ -301,6 +304,7 @@ class ChangeHistoryResourceType(proto.Enum):
     ATTRIBUTION_SETTINGS = 20
     EXPANDED_DATA_SET = 21
     CHANNEL_GROUP = 22
+    BIGQUERY_LINK = 23
     ENHANCED_MEASUREMENT_SETTINGS = 24
     DATA_REDACTION_SETTINGS = 25
     SKADNETWORK_CONVERSION_VALUE_SCHEMA = 26
@@ -474,6 +478,11 @@ class Account(proto.Message):
             is soft-deleted or not. Deleted accounts are
             excluded from List results unless specifically
             requested.
+        gmp_organization (str):
+            Output only. The URI for a Google Marketing Platform
+            organization resource. Only set when this account is
+            connected to a GMP organization. Format:
+            marketingplatformadmin.googleapis.com/organizations/{org_id}
     """
 
     name: str = proto.Field(
@@ -501,6 +510,10 @@ class Account(proto.Message):
     deleted: bool = proto.Field(
         proto.BOOL,
         number=6,
+    )
+    gmp_organization: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -2147,6 +2160,119 @@ class ConversionEvent(proto.Message):
     )
 
 
+class KeyEvent(proto.Message):
+    r"""A key event in a Google Analytics property.
+
+    Attributes:
+        name (str):
+            Output only. Resource name of this key event. Format:
+            properties/{property}/keyEvents/{key_event}
+        event_name (str):
+            Immutable. The event name for this key event.
+            Examples: 'click', 'purchase'
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time when this key event was
+            created in the property.
+        deletable (bool):
+            Output only. If set to true, this event can
+            be deleted.
+        custom (bool):
+            Output only. If set to true, this key event
+            refers to a custom event.  If set to false, this
+            key event refers to a default event in GA.
+            Default events typically have special meaning in
+            GA. Default events are usually created for you
+            by the GA system, but in some cases can be
+            created by property admins. Custom events count
+            towards the maximum number of custom key events
+            that may be created per property.
+        counting_method (google.analytics.admin_v1alpha.types.KeyEvent.CountingMethod):
+            Required. The method by which Key Events will
+            be counted across multiple events within a
+            session.
+        default_value (google.analytics.admin_v1alpha.types.KeyEvent.DefaultValue):
+            Optional. Defines a default value/currency
+            for a key event.
+    """
+
+    class CountingMethod(proto.Enum):
+        r"""The method by which Key Events will be counted across
+        multiple events within a session.
+
+        Values:
+            COUNTING_METHOD_UNSPECIFIED (0):
+                Counting method not specified.
+            ONCE_PER_EVENT (1):
+                Each Event instance is considered a Key
+                Event.
+            ONCE_PER_SESSION (2):
+                An Event instance is considered a Key Event
+                at most once per session per user.
+        """
+        COUNTING_METHOD_UNSPECIFIED = 0
+        ONCE_PER_EVENT = 1
+        ONCE_PER_SESSION = 2
+
+    class DefaultValue(proto.Message):
+        r"""Defines a default value/currency for a key event.
+
+        Attributes:
+            numeric_value (float):
+                Required. This will be used to populate the "value"
+                parameter for all occurrences of this Key Event (specified
+                by event_name) where that parameter is unset.
+            currency_code (str):
+                Required. When an occurrence of this Key Event (specified by
+                event_name) has no set currency this currency will be
+                applied as the default. Must be in ISO 4217 currency code
+                format.
+
+                See https://en.wikipedia.org/wiki/ISO_4217 for more
+                information.
+        """
+
+        numeric_value: float = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
+        currency_code: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    deletable: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    custom: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    counting_method: CountingMethod = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=CountingMethod,
+    )
+    default_value: DefaultValue = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=DefaultValue,
+    )
+
+
 class GoogleSignalsSettings(proto.Message):
     r"""Settings values for Google Signals.  This is a singleton
     resource.
@@ -2852,6 +2978,12 @@ class BigQueryLink(proto.Message):
         excluded_events (MutableSequence[str]):
             The list of event names that will be excluded
             from exports.
+        dataset_location (str):
+            Required. Immutable. The geographic location
+            where the created BigQuery dataset should
+            reside. See
+            https://cloud.google.com/bigquery/docs/locations
+            for supported locations.
     """
 
     name: str = proto.Field(
@@ -2890,6 +3022,10 @@ class BigQueryLink(proto.Message):
     excluded_events: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
+    )
+    dataset_location: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 

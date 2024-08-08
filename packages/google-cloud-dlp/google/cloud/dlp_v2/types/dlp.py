@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
         "TransformationResultStatusType",
         "TransformationContainerType",
         "TransformationType",
+        "ProfileGeneration",
         "BigQueryTableTypeCollection",
         "BigQueryTableType",
         "DataProfileUpdateFrequency",
@@ -388,6 +389,25 @@ class TransformationType(proto.Enum):
     DATE_SHIFT = 12
     CRYPTO_DETERMINISTIC_CONFIG = 13
     REDACT_IMAGE = 14
+
+
+class ProfileGeneration(proto.Enum):
+    r"""Whether a profile being created is the first generation or an
+    update.
+
+    Values:
+        PROFILE_GENERATION_UNSPECIFIED (0):
+            Unused.
+        PROFILE_GENERATION_NEW (1):
+            The profile is the first profile for the
+            resource.
+        PROFILE_GENERATION_UPDATE (2):
+            The profile is an update to a previous
+            profile.
+    """
+    PROFILE_GENERATION_UNSPECIFIED = 0
+    PROFILE_GENERATION_NEW = 1
+    PROFILE_GENERATION_UPDATE = 2
 
 
 class BigQueryTableTypeCollection(proto.Enum):
@@ -7808,6 +7828,11 @@ class DataProfileAction(proto.Message):
             Publish a message into the Pub/Sub topic.
 
             This field is a member of `oneof`_ ``action``.
+        tag_resources (google.cloud.dlp_v2.types.DataProfileAction.TagResources):
+            Tags the profiled resources with the
+            specified tag values.
+
+            This field is a member of `oneof`_ ``action``.
     """
 
     class EventType(proto.Enum):
@@ -7922,6 +7947,109 @@ class DataProfileAction(proto.Message):
             )
         )
 
+    class TagResources(proto.Message):
+        r"""If set, attaches the [tags]
+        (https://cloud.google.com/resource-manager/docs/tags/tags-overview)
+        provided to profiled resources. Tags support `access
+        control <https://cloud.google.com/iam/docs/tags-access-control>`__.
+        You can conditionally grant or deny access to a resource based on
+        whether the resource has a specific tag.
+
+        Attributes:
+            tag_conditions (MutableSequence[google.cloud.dlp_v2.types.DataProfileAction.TagResources.TagCondition]):
+                The tags to associate with different
+                conditions.
+            profile_generations_to_tag (MutableSequence[google.cloud.dlp_v2.types.ProfileGeneration]):
+                The profile generations for which the tag should be attached
+                to resources. If you attach a tag to only new profiles, then
+                if the sensitivity score of a profile subsequently changes,
+                its tag doesn't change. By default, this field includes only
+                new profiles. To include both new and updated profiles for
+                tagging, this field should explicitly include both
+                ``PROFILE_GENERATION_NEW`` and
+                ``PROFILE_GENERATION_UPDATE``.
+            lower_data_risk_to_low (bool):
+                Whether applying a tag to a resource should lower the risk
+                of the profile for that resource. For example, in
+                conjunction with an `IAM deny
+                policy <https://cloud.google.com/iam/docs/deny-overview>`__,
+                you can deny all principals a permission if a tag value is
+                present, mitigating the risk of the resource. This also
+                lowers the data risk of resources at the lower levels of the
+                resource hierarchy. For example, reducing the data risk of a
+                table data profile also reduces the data risk of the
+                constituent column data profiles.
+        """
+
+        class TagCondition(proto.Message):
+            r"""The tag to attach to profiles matching the condition. At most one
+            ``TagCondition`` can be specified per sensitivity level.
+
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                tag (google.cloud.dlp_v2.types.DataProfileAction.TagResources.TagValue):
+                    The tag value to attach to resources.
+                sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
+                    Conditions attaching the tag to a resource on
+                    its profile having this sensitivity score.
+
+                    This field is a member of `oneof`_ ``type``.
+            """
+
+            tag: "DataProfileAction.TagResources.TagValue" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="DataProfileAction.TagResources.TagValue",
+            )
+            sensitivity_score: storage.SensitivityScore = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="type",
+                message=storage.SensitivityScore,
+            )
+
+        class TagValue(proto.Message):
+            r"""A value of a tag.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                namespaced_value (str):
+                    The namespaced name for the tag value to attach to
+                    resources. Must be in the format
+                    ``{parent_id}/{tag_key_short_name}/{short_name}``, for
+                    example, "123456/environment/prod".
+
+                    This field is a member of `oneof`_ ``format``.
+            """
+
+            namespaced_value: str = proto.Field(
+                proto.STRING,
+                number=1,
+                oneof="format",
+            )
+
+        tag_conditions: MutableSequence[
+            "DataProfileAction.TagResources.TagCondition"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="DataProfileAction.TagResources.TagCondition",
+        )
+        profile_generations_to_tag: MutableSequence[
+            "ProfileGeneration"
+        ] = proto.RepeatedField(
+            proto.ENUM,
+            number=2,
+            enum="ProfileGeneration",
+        )
+        lower_data_risk_to_low: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+
     export_data: Export = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -7933,6 +8061,12 @@ class DataProfileAction(proto.Message):
         number=2,
         oneof="action",
         message=PubSubNotification,
+    )
+    tag_resources: TagResources = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="action",
+        message=TagResources,
     )
 
 

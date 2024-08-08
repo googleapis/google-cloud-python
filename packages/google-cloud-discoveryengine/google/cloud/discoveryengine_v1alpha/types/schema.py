@@ -423,12 +423,17 @@ class FieldConfig(proto.Message):
                 Retrieve value from meta tag.
             PAGEMAP (2):
                 Retrieve value from page map.
+            URI_PATTERN_MAPPING (3):
+                Retrieve value from the attributes set by
+                [SiteSearchEngineService.SetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData]
+                API.
             SCHEMA_ORG (4):
                 Retrieve value from schema.org data.
         """
         ADVANCED_SITE_SEARCH_DATA_SOURCE_UNSPECIFIED = 0
         METATAGS = 1
         PAGEMAP = 2
+        URI_PATTERN_MAPPING = 3
         SCHEMA_ORG = 4
 
     field_path: str = proto.Field(

@@ -22,11 +22,43 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.translation.v3",
     manifest={
+        "OperationState",
         "GcsInputSource",
         "FileInputSource",
         "GcsOutputDestination",
+        "GlossaryEntry",
+        "GlossaryTerm",
     },
 )
+
+
+class OperationState(proto.Enum):
+    r"""Possible states of long running operations.
+
+    Values:
+        OPERATION_STATE_UNSPECIFIED (0):
+            Invalid.
+        OPERATION_STATE_RUNNING (1):
+            Request is being processed.
+        OPERATION_STATE_SUCCEEDED (2):
+            The operation was successful.
+        OPERATION_STATE_FAILED (3):
+            Failed to process operation.
+        OPERATION_STATE_CANCELLING (4):
+            Request is in the process of being canceled
+            after caller invoked
+            longrunning.Operations.CancelOperation on the
+            request id.
+        OPERATION_STATE_CANCELLED (5):
+            The operation request was successfully
+            canceled.
+    """
+    OPERATION_STATE_UNSPECIFIED = 0
+    OPERATION_STATE_RUNNING = 1
+    OPERATION_STATE_SUCCEEDED = 2
+    OPERATION_STATE_FAILED = 3
+    OPERATION_STATE_CANCELLING = 4
+    OPERATION_STATE_CANCELLED = 5
 
 
 class GcsInputSource(proto.Message):
@@ -84,6 +116,114 @@ class GcsOutputDestination(proto.Message):
     output_uri_prefix: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class GlossaryEntry(proto.Message):
+    r"""Represents a single entry in a glossary.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Identifier. The resource name of the entry. Format:
+            ``projects/*/locations/*/glossaries/*/glossaryEntries/*``
+        terms_pair (google.cloud.translate_v3.types.GlossaryEntry.GlossaryTermsPair):
+            Used for an unidirectional glossary.
+
+            This field is a member of `oneof`_ ``data``.
+        terms_set (google.cloud.translate_v3.types.GlossaryEntry.GlossaryTermsSet):
+            Used for an equivalent term sets glossary.
+
+            This field is a member of `oneof`_ ``data``.
+        description (str):
+            Describes the glossary entry.
+    """
+
+    class GlossaryTermsPair(proto.Message):
+        r"""Represents a single entry for an unidirectional glossary.
+
+        Attributes:
+            source_term (google.cloud.translate_v3.types.GlossaryTerm):
+                The source term is the term that will get
+                match in the text,
+            target_term (google.cloud.translate_v3.types.GlossaryTerm):
+                The term that will replace the match source
+                term.
+        """
+
+        source_term: "GlossaryTerm" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="GlossaryTerm",
+        )
+        target_term: "GlossaryTerm" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="GlossaryTerm",
+        )
+
+    class GlossaryTermsSet(proto.Message):
+        r"""Represents a single entry for an equivalent term set
+        glossary. This is used for equivalent term sets where each term
+        can be replaced by the other terms in the set.
+
+        Attributes:
+            terms (MutableSequence[google.cloud.translate_v3.types.GlossaryTerm]):
+                Each term in the set represents a term that
+                can be replaced by the other terms.
+        """
+
+        terms: MutableSequence["GlossaryTerm"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="GlossaryTerm",
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    terms_pair: GlossaryTermsPair = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="data",
+        message=GlossaryTermsPair,
+    )
+    terms_set: GlossaryTermsSet = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="data",
+        message=GlossaryTermsSet,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class GlossaryTerm(proto.Message):
+    r"""Represents a single glossary term
+
+    Attributes:
+        language_code (str):
+            The language for this glossary term.
+        text (str):
+            The text for the glossary term.
+    """
+
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    text: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

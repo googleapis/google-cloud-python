@@ -18,6 +18,21 @@
 # or zero if all commands in the pipeline exit successfully.
 set -eo pipefail
 
+python3 -m pip install --require-hashes -r github/google-cloud-python/.kokoro/requirements-aoss.txt
+python3 -m keyring --list-backends
+
+echo "[distutils]
+index-servers =
+    aoss-1p-python
+[aoss-1p-python]
+repository: https://us-python.pkg.dev/cloud-aoss-1p/cloud-aoss-1p-python/" >> $HOME/.pypirc
+
+echo "[install]
+index-url = https://us-python.pkg.dev/cloud-aoss-1p/cloud-aoss-1p-python/simple/
+trusted-host = us-python.pkg.dev" >> $HOME/pip.conf
+
+export PIP_CONFIG_FILE=$HOME/pip.conf
+
 # Start the releasetool reporter
 python3 -m pip install --require-hashes -r github/google-cloud-python/.kokoro/requirements.txt
 python3 -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script

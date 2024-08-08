@@ -147,6 +147,14 @@ class SiteSearchEngineServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_uri_pattern_document_data(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_uri_pattern_document_data(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_target_sites(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -160,6 +168,14 @@ class SiteSearchEngineServiceRestInterceptor:
                 return request, metadata
 
             def post_recrawl_uris(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_set_uri_pattern_document_data(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_uri_pattern_document_data(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -407,6 +423,32 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
+    def pre_get_uri_pattern_document_data(
+        self,
+        request: site_search_engine_service.GetUriPatternDocumentDataRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.GetUriPatternDocumentDataRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for get_uri_pattern_document_data
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_get_uri_pattern_document_data(
+        self, response: site_search_engine_service.GetUriPatternDocumentDataResponse
+    ) -> site_search_engine_service.GetUriPatternDocumentDataResponse:
+        """Post-rpc interceptor for get_uri_pattern_document_data
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_target_sites(
         self,
         request: site_search_engine_service.ListTargetSitesRequest,
@@ -450,6 +492,32 @@ class SiteSearchEngineServiceRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for recrawl_uris
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_uri_pattern_document_data(
+        self,
+        request: site_search_engine_service.SetUriPatternDocumentDataRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.SetUriPatternDocumentDataRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for set_uri_pattern_document_data
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_set_uri_pattern_document_data(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for set_uri_pattern_document_data
 
         Override in a subclass to manipulate the response
         after it is returned by the SiteSearchEngineService server but before
@@ -724,6 +792,10 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
                     },
                     {
@@ -783,6 +855,10 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
                     {
                         "method": "get",
                         "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                     },
                     {
                         "method": "get",
@@ -1713,6 +1789,103 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
             resp = self._interceptor.post_get_target_site(resp)
             return resp
 
+    class _GetUriPatternDocumentData(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("GetUriPatternDocumentData")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.GetUriPatternDocumentDataRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> site_search_engine_service.GetUriPatternDocumentDataResponse:
+            r"""Call the get uri pattern document
+            data method over HTTP.
+
+                Args:
+                    request (~.site_search_engine_service.GetUriPatternDocumentDataRequest):
+                        The request object. Request message for
+                    [SiteSearchEngineService.GetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData]
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.site_search_engine_service.GetUriPatternDocumentDataResponse:
+                        Response message for
+                    [SiteSearchEngineService.GetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData]
+                    method.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{site_search_engine=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}:getUriPatternDocumentData",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_uri_pattern_document_data(
+                request, metadata
+            )
+            pb_request = site_search_engine_service.GetUriPatternDocumentDataRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = site_search_engine_service.GetUriPatternDocumentDataResponse()
+            pb_resp = site_search_engine_service.GetUriPatternDocumentDataResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_uri_pattern_document_data(resp)
+            return resp
+
     class _ListTargetSites(SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("ListTargetSites")
@@ -1907,6 +2080,106 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_recrawl_uris(resp)
+            return resp
+
+    class _SetUriPatternDocumentData(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("SetUriPatternDocumentData")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.SetUriPatternDocumentDataRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the set uri pattern document
+            data method over HTTP.
+
+                Args:
+                    request (~.site_search_engine_service.SetUriPatternDocumentDataRequest):
+                        The request object. Request message for
+                    [SiteSearchEngineService.SetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData]
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{site_search_engine=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}:setUriPatternDocumentData",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_set_uri_pattern_document_data(
+                request, metadata
+            )
+            pb_request = site_search_engine_service.SetUriPatternDocumentDataRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_set_uri_pattern_document_data(resp)
             return resp
 
     class _UpdateTargetSite(SiteSearchEngineServiceRestStub):
@@ -2108,6 +2381,17 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
         return self._GetTargetSite(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_uri_pattern_document_data(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.GetUriPatternDocumentDataRequest],
+        site_search_engine_service.GetUriPatternDocumentDataResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetUriPatternDocumentData(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_target_sites(
         self,
     ) -> Callable[
@@ -2127,6 +2411,17 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RecrawlUris(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def set_uri_pattern_document_data(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.SetUriPatternDocumentDataRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SetUriPatternDocumentData(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_target_site(
@@ -2291,6 +2586,10 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
                 },
                 {
@@ -2410,6 +2709,10 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                 },
                 {
                     "method": "get",
