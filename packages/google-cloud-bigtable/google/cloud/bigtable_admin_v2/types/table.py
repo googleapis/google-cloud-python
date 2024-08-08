@@ -781,13 +781,18 @@ class Backup(proto.Message):
             this backup was copied. If a backup is not
             created by copying a backup, this field will be
             empty. Values are of the form:
-            projects/<project>/instances/<instance>/backups/<backup>.
+
+            projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
-            Required. The expiration time of the backup, with
-            microseconds granularity that must be at least 6 hours and
-            at most 90 days from the time the request is received. Once
-            the ``expire_time`` has passed, Cloud Bigtable will delete
-            the backup and free the resources used by the backup.
+            Required. The expiration time of the backup. When creating a
+            backup or updating its ``expire_time``, the value must be
+            greater than the backup creation time by:
+
+            -  At least 6 hours
+            -  At most 90 days
+
+            Once the ``expire_time`` has passed, Cloud Bigtable will
+            delete the backup.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. ``start_time`` is the time that the backup was
             started (i.e. approximately the time the
@@ -805,6 +810,20 @@ class Backup(proto.Message):
         encryption_info (google.cloud.bigtable_admin_v2.types.EncryptionInfo):
             Output only. The encryption information for
             the backup.
+        backup_type (google.cloud.bigtable_admin_v2.types.Backup.BackupType):
+            Indicates the backup type of the backup.
+        hot_to_standard_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the hot backup will be converted to a
+            standard backup. Once the ``hot_to_standard_time`` has
+            passed, Cloud Bigtable will convert the hot backup to a
+            standard backup. This value must be greater than the backup
+            creation time by:
+
+            -  At least 24 hours
+
+            This field only applies for hot backups. When creating or
+            updating a standard backup, attempting to set this field
+            will fail the request.
     """
 
     class State(proto.Enum):
@@ -822,6 +841,28 @@ class Backup(proto.Message):
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
+
+    class BackupType(proto.Enum):
+        r"""The type of the backup.
+
+        Values:
+            BACKUP_TYPE_UNSPECIFIED (0):
+                Not specified.
+            STANDARD (1):
+                The default type for Cloud Bigtable managed
+                backups. Supported for backups created in both
+                HDD and SSD instances. Requires optimization
+                when restored to a table in an SSD instance.
+            HOT (2):
+                A backup type with faster restore to SSD
+                performance. Only supported for backups created
+                in SSD instances. A new SSD table restored from
+                a hot backup reaches production performance more
+                quickly than a standard backup.
+        """
+        BACKUP_TYPE_UNSPECIFIED = 0
+        STANDARD = 1
+        HOT = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -864,6 +905,16 @@ class Backup(proto.Message):
         number=9,
         message="EncryptionInfo",
     )
+    backup_type: BackupType = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=BackupType,
+    )
+    hot_to_standard_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class BackupInfo(proto.Message):
@@ -888,7 +939,8 @@ class BackupInfo(proto.Message):
             this backup was copied. If a backup is not
             created by copying a backup, this field will be
             empty. Values are of the form:
-            projects/<project>/instances/<instance>/backups/<backup>.
+
+            projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>
     """
 
     backup: str = proto.Field(

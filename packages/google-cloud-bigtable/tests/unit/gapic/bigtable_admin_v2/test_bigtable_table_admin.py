@@ -9753,6 +9753,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
             source_backup="source_backup_value",
             size_bytes=1089,
             state=table.Backup.State.CREATING,
+            backup_type=table.Backup.BackupType.STANDARD,
         )
         response = client.get_backup(request)
 
@@ -9769,6 +9770,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert response.source_backup == "source_backup_value"
     assert response.size_bytes == 1089
     assert response.state == table.Backup.State.CREATING
+    assert response.backup_type == table.Backup.BackupType.STANDARD
 
 
 def test_get_backup_empty_call():
@@ -9872,6 +9874,7 @@ async def test_get_backup_empty_call_async():
                 source_backup="source_backup_value",
                 size_bytes=1089,
                 state=table.Backup.State.CREATING,
+                backup_type=table.Backup.BackupType.STANDARD,
             )
         )
         response = await client.get_backup()
@@ -9942,6 +9945,7 @@ async def test_get_backup_async(
                 source_backup="source_backup_value",
                 size_bytes=1089,
                 state=table.Backup.State.CREATING,
+                backup_type=table.Backup.BackupType.STANDARD,
             )
         )
         response = await client.get_backup(request)
@@ -9959,6 +9963,7 @@ async def test_get_backup_async(
     assert response.source_backup == "source_backup_value"
     assert response.size_bytes == 1089
     assert response.state == table.Backup.State.CREATING
+    assert response.backup_type == table.Backup.BackupType.STANDARD
 
 
 @pytest.mark.asyncio
@@ -10131,6 +10136,7 @@ def test_update_backup(request_type, transport: str = "grpc"):
             source_backup="source_backup_value",
             size_bytes=1089,
             state=table.Backup.State.CREATING,
+            backup_type=table.Backup.BackupType.STANDARD,
         )
         response = client.update_backup(request)
 
@@ -10147,6 +10153,7 @@ def test_update_backup(request_type, transport: str = "grpc"):
     assert response.source_backup == "source_backup_value"
     assert response.size_bytes == 1089
     assert response.state == table.Backup.State.CREATING
+    assert response.backup_type == table.Backup.BackupType.STANDARD
 
 
 def test_update_backup_empty_call():
@@ -10246,6 +10253,7 @@ async def test_update_backup_empty_call_async():
                 source_backup="source_backup_value",
                 size_bytes=1089,
                 state=table.Backup.State.CREATING,
+                backup_type=table.Backup.BackupType.STANDARD,
             )
         )
         response = await client.update_backup()
@@ -10319,6 +10327,7 @@ async def test_update_backup_async(
                 source_backup="source_backup_value",
                 size_bytes=1089,
                 state=table.Backup.State.CREATING,
+                backup_type=table.Backup.BackupType.STANDARD,
             )
         )
         response = await client.update_backup(request)
@@ -10336,6 +10345,7 @@ async def test_update_backup_async(
     assert response.source_backup == "source_backup_value"
     assert response.size_bytes == 1089
     assert response.state == table.Backup.State.CREATING
+    assert response.backup_type == table.Backup.BackupType.STANDARD
 
 
 @pytest.mark.asyncio
@@ -19957,6 +19967,8 @@ def test_create_backup_rest(request_type):
             },
             "kms_key_version": "kms_key_version_value",
         },
+        "backup_type": 1,
+        "hot_to_standard_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -20368,6 +20380,7 @@ def test_get_backup_rest(request_type):
             source_backup="source_backup_value",
             size_bytes=1089,
             state=table.Backup.State.CREATING,
+            backup_type=table.Backup.BackupType.STANDARD,
         )
 
         # Wrap the value into a proper Response obj
@@ -20388,6 +20401,7 @@ def test_get_backup_rest(request_type):
     assert response.source_backup == "source_backup_value"
     assert response.size_bytes == 1089
     assert response.state == table.Backup.State.CREATING
+    assert response.backup_type == table.Backup.BackupType.STANDARD
 
 
 def test_get_backup_rest_use_cached_wrapped_rpc():
@@ -20697,6 +20711,8 @@ def test_update_backup_rest(request_type):
             },
             "kms_key_version": "kms_key_version_value",
         },
+        "backup_type": 1,
+        "hot_to_standard_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -20776,6 +20792,7 @@ def test_update_backup_rest(request_type):
             source_backup="source_backup_value",
             size_bytes=1089,
             state=table.Backup.State.CREATING,
+            backup_type=table.Backup.BackupType.STANDARD,
         )
 
         # Wrap the value into a proper Response obj
@@ -20796,6 +20813,7 @@ def test_update_backup_rest(request_type):
     assert response.source_backup == "source_backup_value"
     assert response.size_bytes == 1089
     assert response.state == table.Backup.State.CREATING
+    assert response.backup_type == table.Backup.BackupType.STANDARD
 
 
 def test_update_backup_rest_use_cached_wrapped_rpc():
