@@ -20,11 +20,13 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.functions.v2",
     manifest={
+        "OperationType",
         "Environment",
         "Function",
         "StateMessage",
@@ -50,11 +52,32 @@ __protobuf__ = proto.module(
         "GenerateDownloadUrlResponse",
         "ListRuntimesRequest",
         "ListRuntimesResponse",
+        "AutomaticUpdatePolicy",
+        "OnDeployUpdatePolicy",
         "OperationMetadata",
         "LocationMetadata",
         "Stage",
     },
 )
+
+
+class OperationType(proto.Enum):
+    r"""The type of the long running operation.
+
+    Values:
+        OPERATIONTYPE_UNSPECIFIED (0):
+            Unspecified
+        CREATE_FUNCTION (1):
+            CreateFunction
+        UPDATE_FUNCTION (2):
+            UpdateFunction
+        DELETE_FUNCTION (3):
+            DeleteFunction
+    """
+    OPERATIONTYPE_UNSPECIFIED = 0
+    CREATE_FUNCTION = 1
+    UPDATE_FUNCTION = 2
+    DELETE_FUNCTION = 3
 
 
 class Environment(proto.Enum):
@@ -118,6 +141,12 @@ class Function(proto.Message):
 
             It must match the pattern
             ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The create timestamp of a Cloud
+            Function. This is only applicable to 2nd Gen
+            functions.
     """
 
     class State(proto.Enum):
@@ -205,6 +234,15 @@ class Function(proto.Message):
         proto.STRING,
         number=25,
     )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=27,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class StateMessage(proto.Message):
@@ -271,6 +309,11 @@ class StorageSource(proto.Message):
             Google Cloud Storage generation for the
             object. If the generation is omitted, the latest
             generation will be used.
+        source_upload_url (str):
+            When the specified storage bucket is a 1st
+            gen function uploard url bucket, this field
+            should be set as the generated upload url for
+            1st gen deployment.
     """
 
     bucket: str = proto.Field(
@@ -284,6 +327,10 @@ class StorageSource(proto.Message):
     generation: int = proto.Field(
         proto.INT64,
         number=3,
+    )
+    source_upload_url: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -391,6 +438,13 @@ class Source(proto.Message):
             location in a Cloud Source Repository.
 
             This field is a member of `oneof`_ ``source``.
+        git_uri (str):
+            If provided, get the source from GitHub
+            repository. This option is valid only for GCF
+            1st Gen function. Example:
+            https://github.com/<user>/<repo>/blob/<commit>/<path-to-code>
+
+            This field is a member of `oneof`_ ``source``.
     """
 
     storage_source: "StorageSource" = proto.Field(
@@ -405,6 +459,11 @@ class Source(proto.Message):
         oneof="source",
         message="RepoSource",
     )
+    git_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="source",
+    )
 
 
 class SourceProvenance(proto.Message):
@@ -418,6 +477,9 @@ class SourceProvenance(proto.Message):
         resolved_repo_source (google.cloud.functions_v2.types.RepoSource):
             A copy of the build's ``source.repo_source``, if exists,
             with any revisions resolved.
+        git_uri (str):
+            A copy of the build's ``source.git_uri``, if exists, with
+            any commits resolved.
     """
 
     resolved_storage_source: "StorageSource" = proto.Field(
@@ -430,13 +492,30 @@ class SourceProvenance(proto.Message):
         number=2,
         message="RepoSource",
     )
+    git_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class BuildConfig(proto.Message):
     r"""Describes the Build step of the function that builds a
     container from the given source.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        automatic_update_policy (google.cloud.functions_v2.types.AutomaticUpdatePolicy):
+
+            This field is a member of `oneof`_ ``runtime_update_policy``.
+        on_deploy_update_policy (google.cloud.functions_v2.types.OnDeployUpdatePolicy):
+
+            This field is a member of `oneof`_ ``runtime_update_policy``.
         build (str):
             Output only. The Cloud Build name of the
             latest successful deployment of the function.
@@ -480,18 +559,16 @@ class BuildConfig(proto.Message):
             configuration is only applicable to 1st Gen functions, 2nd
             Gen functions can only use Artifact Registry.
 
-            If ``docker_repository`` field is specified, this field will
-            be automatically set as ``ARTIFACT_REGISTRY``. If
-            unspecified, it currently defaults to
-            ``CONTAINER_REGISTRY``. This field may be overridden by the
-            backend for eligible deployments.
+            If unspecified, it defaults to ``ARTIFACT_REGISTRY``. If
+            ``docker_repository`` field is specified, this field should
+            either be left unspecified or set to ``ARTIFACT_REGISTRY``.
         docker_repository (str):
-            User managed repository created in Artifact Registry
-            optionally with a customer managed encryption key. This is
-            the repository to which the function docker image will be
-            pushed after it is built by Cloud Build. If unspecified, GCF
-            will create and use a repository named 'gcf-artifacts' for
-            every deployed region.
+            Repository in Artifact Registry to which the function docker
+            image will be pushed after it is built by Cloud Build. If
+            specified by user, it is created and managed by user with a
+            customer managed encryption key. Otherwise, GCF will create
+            and use a repository named 'gcf-artifacts' for every
+            deployed region.
 
             It must match the pattern
             ``projects/{project}/locations/{location}/repositories/{repository}``.
@@ -499,6 +576,10 @@ class BuildConfig(proto.Message):
             Cross-project repositories are not supported. Cross-location
             repositories are not supported. Repository format must be
             'DOCKER'.
+        service_account (str):
+            Service account to be used for building the container. The
+            format of this field is
+            ``projects/{projectId}/serviceAccounts/{serviceAccountEmail}``.
     """
 
     class DockerRegistry(proto.Enum):
@@ -522,6 +603,18 @@ class BuildConfig(proto.Message):
         CONTAINER_REGISTRY = 1
         ARTIFACT_REGISTRY = 2
 
+    automatic_update_policy: "AutomaticUpdatePolicy" = proto.Field(
+        proto.MESSAGE,
+        number=40,
+        oneof="runtime_update_policy",
+        message="AutomaticUpdatePolicy",
+    )
+    on_deploy_update_policy: "OnDeployUpdatePolicy" = proto.Field(
+        proto.MESSAGE,
+        number=41,
+        oneof="runtime_update_policy",
+        message="OnDeployUpdatePolicy",
+    )
     build: str = proto.Field(
         proto.STRING,
         number=1,
@@ -562,6 +655,10 @@ class BuildConfig(proto.Message):
         proto.STRING,
         number=7,
     )
+    service_account: str = proto.Field(
+        proto.STRING,
+        number=27,
+    )
 
 
 class ServiceConfig(proto.Message):
@@ -587,9 +684,10 @@ class ServiceConfig(proto.Message):
             https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go
             a full description.
         available_cpu (str):
-            [Preview] The number of CPUs used in a single container
-            instance. Default value is calculated from available memory.
-            Supports the same values as Cloud Run, see
+            The number of CPUs used in a single container
+            instance. Default value is calculated from
+            available memory. Supports the same values as
+            Cloud Run, see
             https://cloud.google.com/run/docs/reference/rest/v1/Container#resourcerequirements
             Example: "1" indicates 1 vCPU
         environment_variables (MutableMapping[str, str]):
@@ -653,14 +751,18 @@ class ServiceConfig(proto.Message):
         revision (str):
             Output only. The name of service revision.
         max_instance_request_concurrency (int):
-            [Preview] Sets the maximum number of concurrent requests
-            that each instance can receive. Defaults to 1.
+            Sets the maximum number of concurrent
+            requests that each instance can receive.
+            Defaults to 1.
         security_level (google.cloud.functions_v2.types.ServiceConfig.SecurityLevel):
             Security level configure whether the function
             only accepts https. This configuration is only
             applicable to 1st Gen functions with Http
             trigger. By default https is optional for 1st
             Gen functions; 2nd Gen functions are https ONLY.
+        binary_authorization_policy (str):
+            Optional. The binary authorization policy to
+            be checked when deploying the Cloud Run service.
     """
 
     class VpcConnectorEgressSettings(proto.Enum):
@@ -812,6 +914,10 @@ class ServiceConfig(proto.Message):
         proto.ENUM,
         number=21,
         enum=SecurityLevel,
+    )
+    binary_authorization_policy: str = proto.Field(
+        proto.STRING,
+        number=23,
     )
 
 
@@ -977,6 +1083,16 @@ class EventTrigger(proto.Message):
             ``projects/{project}/locations/{location}/channels/{channel}``
             format. You must provide a channel to receive events from
             Eventarc SaaS partners.
+        service (str):
+            Optional. The hostname of the service that 1st Gen function
+            should be observed.
+
+            If no string is provided, the default service implementing
+            the API will be used. For example,
+            ``storage.googleapis.com`` is the default for all event
+            types in the ``google.storage`` namespace.
+
+            The field is only applicable to 1st Gen functions.
     """
 
     class RetryPolicy(proto.Enum):
@@ -1030,6 +1146,10 @@ class EventTrigger(proto.Message):
         proto.STRING,
         number=8,
     )
+    service: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
 
 
 class EventFilter(proto.Message):
@@ -1070,11 +1190,24 @@ class GetFunctionRequest(proto.Message):
         name (str):
             Required. The name of the function which
             details should be obtained.
+        revision (str):
+            Optional. The version of the 1st gen function
+            whose details should be obtained. The version of
+            a 1st gen function is an integer that starts
+            from 1 and gets incremented on redeployments.
+            GCF may keep historical configs for old versions
+            of 1st gen function. This field can be specified
+            to fetch the historical configs. This field is
+            valid only for GCF 1st gen function.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    revision: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1211,8 +1344,8 @@ class UpdateFunctionRequest(proto.Message):
             Required. New version of the function.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated.
-            If no field mask is provided, all provided
-            fields in the request will be updated.
+            If no field mask is provided, all fields will be
+            updated.
     """
 
     function: "Function" = proto.Field(
@@ -1268,6 +1401,12 @@ class GenerateUploadUrlRequest(proto.Message):
             Encrypter/Decrypter
             (roles/cloudkms.cryptoKeyEncrypterDecrypter)' on the
             Key/KeyRing/Project/Organization (least access preferred).
+        environment (google.cloud.functions_v2.types.Environment):
+            The function environment the generated upload
+            url will be used for. The upload url for 2nd Gen
+            functions can also be used for 1st gen
+            functions, but not vice versa. If not specified,
+            2nd generation-style upload URLs are generated.
     """
 
     parent: str = proto.Field(
@@ -1277,6 +1416,11 @@ class GenerateUploadUrlRequest(proto.Message):
     kms_key_name: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    environment: "Environment" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="Environment",
     )
 
 
@@ -1423,6 +1567,10 @@ class ListRuntimesResponse(proto.Message):
                 warning.
             environment (google.cloud.functions_v2.types.Environment):
                 The environment for the runtime.
+            deprecation_date (google.type.date_pb2.Date):
+                Deprecation date for the runtime.
+            decommission_date (google.type.date_pb2.Date):
+                Decommission date for the runtime.
         """
 
         name: str = proto.Field(
@@ -1447,11 +1595,45 @@ class ListRuntimesResponse(proto.Message):
             number=4,
             enum="Environment",
         )
+        deprecation_date: date_pb2.Date = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=date_pb2.Date,
+        )
+        decommission_date: date_pb2.Date = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message=date_pb2.Date,
+        )
 
     runtimes: MutableSequence[Runtime] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Runtime,
+    )
+
+
+class AutomaticUpdatePolicy(proto.Message):
+    r"""Security patches are applied automatically to the runtime
+    without requiring the function to be redeployed.
+
+    """
+
+
+class OnDeployUpdatePolicy(proto.Message):
+    r"""Security patches are only applied when a function is
+    redeployed.
+
+    Attributes:
+        runtime_version (str):
+            Output only. contains the runtime version
+            which was used during latest function
+            deployment.
+    """
+
+    runtime_version: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -1474,7 +1656,9 @@ class OperationMetadata(proto.Message):
         cancel_requested (bool):
             Identifies whether the user has requested cancellation of
             the operation. Operations that have successfully been
-            cancelled have [Operation.error][] value with a
+            cancelled have
+            [google.longrunning.Operation.error][google.longrunning.Operation.error]
+            value with a
             [google.rpc.Status.code][google.rpc.Status.code] of 1,
             corresponding to ``Code.CANCELLED``.
         api_version (str):
@@ -1484,6 +1668,15 @@ class OperationMetadata(proto.Message):
             operation.
         stages (MutableSequence[google.cloud.functions_v2.types.Stage]):
             Mechanism for reporting in-progress stages
+        source_token (str):
+            An identifier for Firebase function sources.
+            Disclaimer: This field is only supported for
+            Firebase function deployments.
+        build_name (str):
+            The build name of the function for create and
+            update operations.
+        operation_type (google.cloud.functions_v2.types.OperationType):
+            The operation type.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -1525,6 +1718,19 @@ class OperationMetadata(proto.Message):
         proto.MESSAGE,
         number=9,
         message="Stage",
+    )
+    source_token: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    build_name: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    operation_type: "OperationType" = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum="OperationType",
     )
 
 

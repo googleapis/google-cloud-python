@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .functions import (
+    AutomaticUpdatePolicy,
     BuildConfig,
     CreateFunctionRequest,
     DeleteFunctionRequest,
@@ -31,7 +32,9 @@ from .functions import (
     ListRuntimesRequest,
     ListRuntimesResponse,
     LocationMetadata,
+    OnDeployUpdatePolicy,
     OperationMetadata,
+    OperationType,
     RepoSource,
     SecretEnvVar,
     SecretVolume,
@@ -45,6 +48,7 @@ from .functions import (
 )
 
 __all__ = (
+    "AutomaticUpdatePolicy",
     "BuildConfig",
     "CreateFunctionRequest",
     "DeleteFunctionRequest",
@@ -61,6 +65,7 @@ __all__ = (
     "ListRuntimesRequest",
     "ListRuntimesResponse",
     "LocationMetadata",
+    "OnDeployUpdatePolicy",
     "OperationMetadata",
     "RepoSource",
     "SecretEnvVar",
@@ -73,4 +78,5 @@ __all__ = (
     "StorageSource",
     "UpdateFunctionRequest",
     "Environment",
+    "OperationType",
 )

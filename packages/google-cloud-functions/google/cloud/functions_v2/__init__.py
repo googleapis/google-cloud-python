@@ -20,6 +20,7 @@ __version__ = package_version.__version__
 
 from .services.function_service import FunctionServiceAsyncClient, FunctionServiceClient
 from .types.functions import (
+    AutomaticUpdatePolicy,
     BuildConfig,
     CreateFunctionRequest,
     DeleteFunctionRequest,
@@ -37,7 +38,9 @@ from .types.functions import (
     ListRuntimesRequest,
     ListRuntimesResponse,
     LocationMetadata,
+    OnDeployUpdatePolicy,
     OperationMetadata,
+    OperationType,
     RepoSource,
     SecretEnvVar,
     SecretVolume,
@@ -52,6 +55,7 @@ from .types.functions import (
 
 __all__ = (
     "FunctionServiceAsyncClient",
+    "AutomaticUpdatePolicy",
     "BuildConfig",
     "CreateFunctionRequest",
     "DeleteFunctionRequest",
@@ -70,7 +74,9 @@ __all__ = (
     "ListRuntimesRequest",
     "ListRuntimesResponse",
     "LocationMetadata",
+    "OnDeployUpdatePolicy",
     "OperationMetadata",
+    "OperationType",
     "RepoSource",
     "SecretEnvVar",
     "SecretVolume",
