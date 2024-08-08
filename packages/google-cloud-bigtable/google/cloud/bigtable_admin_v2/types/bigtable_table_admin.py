@@ -1356,7 +1356,7 @@ class CopyBackupRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The name of the destination cluster that will
-            contain the backup copy. The cluster must already exists.
+            contain the backup copy. The cluster must already exist.
             Values are of the form:
             ``projects/{project}/instances/{instance}/clusters/{cluster}``.
         backup_id (str):

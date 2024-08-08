@@ -2777,7 +2777,7 @@ class BigtableTableAdminAsyncClient:
         operation][google.longrunning.Operation] can be used to track
         the progress of the operation, and to cancel it. The
         [metadata][google.longrunning.Operation.metadata] field type is
-        [RestoreTableMetadata][google.bigtable.admin.RestoreTableMetadata].
+        [RestoreTableMetadata][google.bigtable.admin.v2.RestoreTableMetadata].
         The [response][google.longrunning.Operation.response] type is
         [Table][google.bigtable.admin.v2.Table], if successful.
 
@@ -2862,8 +2862,8 @@ class BigtableTableAdminAsyncClient:
                 [CopyBackup][google.bigtable.admin.v2.BigtableTableAdmin.CopyBackup].
             parent (:class:`str`):
                 Required. The name of the destination cluster that will
-                contain the backup copy. The cluster must already
-                exists. Values are of the form:
+                contain the backup copy. The cluster must already exist.
+                Values are of the form:
                 ``projects/{project}/instances/{instance}/clusters/{cluster}``.
 
                 This corresponds to the ``parent`` field
