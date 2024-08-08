@@ -115,6 +115,17 @@ def blob_download_to_filename_chunked(client, _preconditions, **resources):
     assert stored_contents == data
 
 
+def blob_download_to_filename_range(client, _preconditions, **resources):
+    bucket = resources.get("bucket")
+    file, data = resources.get("file_data")
+    blob = client.bucket(bucket.name).blob(file.name)
+    with tempfile.NamedTemporaryFile() as temp_f:
+        blob.download_to_filename(temp_f.name, start=1024, end=512 * 1024)
+        with open(temp_f.name, "r") as file_obj:
+            stored_contents = file_obj.read()
+    assert stored_contents == data[1024 : 512 * 1024 + 1]
+
+
 def client_download_blob_to_file(client, _preconditions, **resources):
     bucket = resources.get("bucket")
     file, data = resources.get("file_data")
@@ -748,6 +759,7 @@ method_mapping = {
         client_download_blob_to_file,
         blob_download_to_filename,
         blob_download_to_filename_chunked,
+        blob_download_to_filename_range,
         blob_download_as_bytes,
         blob_download_as_text,
         blobreader_read,
@@ -756,6 +768,7 @@ method_mapping = {
         client_download_blob_to_file,
         blob_download_to_filename,
         blob_download_to_filename_chunked,
+        blob_download_to_filename_range,
         blob_download_as_bytes,
         blob_download_as_text,
         blobreader_read,
