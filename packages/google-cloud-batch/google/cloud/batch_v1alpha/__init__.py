@@ -20,6 +20,8 @@ __version__ = package_version.__version__
 
 from .services.batch_service import BatchServiceAsyncClient, BatchServiceClient
 from .types.batch import (
+    CancelJobRequest,
+    CancelJobResponse,
     CreateJobRequest,
     CreateResourceAllowanceRequest,
     DeleteJobRequest,
@@ -76,6 +78,8 @@ __all__ = (
     "AllocationPolicy",
     "BatchServiceClient",
     "CalendarPeriod",
+    "CancelJobRequest",
+    "CancelJobResponse",
     "ComputeResource",
     "CreateJobRequest",
     "CreateResourceAllowanceRequest",

@@ -79,6 +79,14 @@ class BatchServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomBatchServiceInterceptor(BatchServiceRestInterceptor):
+            def pre_cancel_job(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_cancel_job(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -180,6 +188,27 @@ class BatchServiceRestInterceptor:
 
 
     """
+
+    def pre_cancel_job(
+        self, request: batch.CancelJobRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[batch.CancelJobRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for cancel_job
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BatchService server.
+        """
+        return request, metadata
+
+    def post_cancel_job(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for cancel_job
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BatchService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_create_job(
         self, request: batch.CreateJobRequest, metadata: Sequence[Tuple[str, str]]
@@ -721,6 +750,99 @@ class BatchServiceRestTransport(BatchServiceTransport):
 
         # Return the client from cache.
         return self._operations_client
+
+    class _CancelJob(BatchServiceRestStub):
+        def __hash__(self):
+            return hash("CancelJob")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: batch.CancelJobRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the cancel job method over HTTP.
+
+            Args:
+                request (~.batch.CancelJobRequest):
+                    The request object. CancelJob Request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/jobs/*}:cancel",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_cancel_job(request, metadata)
+            pb_request = batch.CancelJobRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_cancel_job(resp)
+            return resp
 
     class _CreateJob(BatchServiceRestStub):
         def __hash__(self):
@@ -1775,6 +1897,14 @@ class BatchServiceRestTransport(BatchServiceTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_resource_allowance(resp)
             return resp
+
+    @property
+    def cancel_job(
+        self,
+    ) -> Callable[[batch.CancelJobRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CancelJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_job(self) -> Callable[[batch.CreateJobRequest], gcb_job.Job]:
