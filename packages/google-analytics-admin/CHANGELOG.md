@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.23.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.9...google-analytics-admin-v0.23.0) (2024-08-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* Rename custom method `CreateSubpropertyRequest` to `ProvisionSubpropertyRequest`
+
+### Features
+
+* add `CreateBigQueryLink`, `UpdateBigQueryLink`, and `DeleteBigQueryLink` methods ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+* add `GetEventEditRule`, `CreateEventEditRule`, `ListEventEditRules`, `UpdateEventEditRule`, `DeleteEventEditRule`, and `ReorderEventEditRules` methods to the Admin API v1 alpha ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+* add `GetKeyEvent`, `CreateKeyEvent`, `ListKeyEvents`, `UpdateKeyEvent`, and `DeleteKeyEvent` methods ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+* add the `BIGQUERY_LINK` option to the `ChangeHistoryResourceType` enum ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+* add the `create_time` field to the `Audience` resource ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+* add the `dataset_location` field to the `BigQueryLink` resource ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+* add the `gmp_organization` field to the `Account` resource ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+* add the `primary` field to the `ChannelGroup` resource ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+* mark `GetConversionEvent`, `CreateConversionEvent`, `ListConversionEvents`, `UpdateConversionEvent`, and `DeleteConversionEvent` methods as deprecated ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+
+
+### Bug Fixes
+
+* Rename custom method `CreateSubpropertyRequest` to `ProvisionSubpropertyRequest` ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+
+
+### Documentation
+
+* add deprecation comment to `GetConversionEvent`, `CreateConversionEvent`, `ListConversionEvents`, `UpdateConversionEvent`, and `DeleteConversionEvent` methods ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+* improve comment formatting of `account` and `property` fields in `SearchChangeHistoryEventsRequest` ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+* improve comment formatting of the `name` field in `DeleteFirebaseLinkRequest`, `GetGlobalSiteTagRequest`, and `GetDataSharingSettingsRequest` ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+* improve comment formatting of the `parent` field in `CreateFirebaseLinkRequest` and `ListFirebaseLinksRequest` ([9033800](https://github.com/googleapis/google-cloud-python/commit/9033800e464f15be0e4c418710c158591a84439d))
+
 ## [0.22.9](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.8...google-analytics-admin-v0.22.9) (2024-07-30)
 
 

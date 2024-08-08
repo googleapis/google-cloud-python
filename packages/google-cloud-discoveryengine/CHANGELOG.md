@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.12.0...google-cloud-discoveryengine-v0.12.1) (2024-08-08)
+
+
+### Features
+
+* add requirement service ([e4e3acc](https://github.com/googleapis/google-cloud-python/commit/e4e3accb615c4cb06b6bd3e1593c6120b40b0728))
+* allow providing language info in data stores ([e4e3acc](https://github.com/googleapis/google-cloud-python/commit/e4e3accb615c4cb06b6bd3e1593c6120b40b0728))
+* allow set relevance threshold on search ([e4e3acc](https://github.com/googleapis/google-cloud-python/commit/e4e3accb615c4cb06b6bd3e1593c6120b40b0728))
+* populate more metadata in answer services ([e4e3acc](https://github.com/googleapis/google-cloud-python/commit/e4e3accb615c4cb06b6bd3e1593c6120b40b0728))
+* support add metadata for website uris ([e4e3acc](https://github.com/googleapis/google-cloud-python/commit/e4e3accb615c4cb06b6bd3e1593c6120b40b0728))
+* support import and purge autocomplete data ([e4e3acc](https://github.com/googleapis/google-cloud-python/commit/e4e3accb615c4cb06b6bd3e1593c6120b40b0728))
+* support import data from AlloyDB ([e4e3acc](https://github.com/googleapis/google-cloud-python/commit/e4e3accb615c4cb06b6bd3e1593c6120b40b0728))
+* support natural language understanding in search ([e4e3acc](https://github.com/googleapis/google-cloud-python/commit/e4e3accb615c4cb06b6bd3e1593c6120b40b0728))
+* support search as you type feature ([e4e3acc](https://github.com/googleapis/google-cloud-python/commit/e4e3accb615c4cb06b6bd3e1593c6120b40b0728))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([e4e3acc](https://github.com/googleapis/google-cloud-python/commit/e4e3accb615c4cb06b6bd3e1593c6120b40b0728))
+
 ## [0.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.14...google-cloud-discoveryengine-v0.12.0) (2024-07-30)
 
 

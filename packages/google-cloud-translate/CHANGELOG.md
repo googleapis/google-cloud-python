@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.15.5...google-cloud-translate-v3.16.0) (2024-08-08)
+
+
+### Features
+
+* Adds AdaptiveMt HTML/Glossary support ([edebf70](https://github.com/googleapis/google-cloud-python/commit/edebf70203f9973ef4b05d6b8bf2af31ee0fd0b7))
+* Adds protos for Custom Translation API (AutoML) ([edebf70](https://github.com/googleapis/google-cloud-python/commit/edebf70203f9973ef4b05d6b8bf2af31ee0fd0b7))
+* Adds protos for Romanization APIs ([edebf70](https://github.com/googleapis/google-cloud-python/commit/edebf70203f9973ef4b05d6b8bf2af31ee0fd0b7))
+* Adds protos for Transliteration in V3 Advanced translate text ([edebf70](https://github.com/googleapis/google-cloud-python/commit/edebf70203f9973ef4b05d6b8bf2af31ee0fd0b7))
+
+
+### Documentation
+
+* Fixes typos in docs ([edebf70](https://github.com/googleapis/google-cloud-python/commit/edebf70203f9973ef4b05d6b8bf2af31ee0fd0b7))
+
 ## [3.15.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.15.4...google-cloud-translate-v3.15.5) (2024-07-30)
 
 

@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.18.11](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.10...google-analytics-data-v0.18.11) (2024-08-08)
+
+
+### Features
+
+* add the `Comparison` type ([2c4e4d1](https://github.com/googleapis/google-cloud-python/commit/2c4e4d12ea70dbdf1af813f114d6df7d33d8e6d3))
+* add the `ComparisonMetadata` type ([2c4e4d1](https://github.com/googleapis/google-cloud-python/commit/2c4e4d12ea70dbdf1af813f114d6df7d33d8e6d3))
+* add the `comparisons` field to the `Metadata` resource ([2c4e4d1](https://github.com/googleapis/google-cloud-python/commit/2c4e4d12ea70dbdf1af813f114d6df7d33d8e6d3))
+* add the `comparisons` field to the `RunReportRequest`, `RunPivotReportRequest` resources ([2c4e4d1](https://github.com/googleapis/google-cloud-python/commit/2c4e4d12ea70dbdf1af813f114d6df7d33d8e6d3))
+
+
+### Documentation
+
+* a comment for field `custom_definition` in message `DimensionMetadata` is changed ([2c4e4d1](https://github.com/googleapis/google-cloud-python/commit/2c4e4d12ea70dbdf1af813f114d6df7d33d8e6d3))
+
 ## [0.18.10](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.9...google-analytics-data-v0.18.10) (2024-07-30)
 
 

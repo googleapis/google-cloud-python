@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.20.0...google-cloud-dlp-v3.21.0) (2024-08-08)
+
+
+### Features
+
+* [google-cloud-dlp] add the TagResources API ([#12983](https://github.com/googleapis/google-cloud-python/issues/12983)) ([fe3f78f](https://github.com/googleapis/google-cloud-python/commit/fe3f78f468e58c3d1e02cc4873b35912afae3166))
+
 ## [3.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.19.0...google-cloud-dlp-v3.20.0) (2024-07-31)
 
 
