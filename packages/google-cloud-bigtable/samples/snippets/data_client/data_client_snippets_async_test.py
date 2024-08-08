@@ -101,3 +101,8 @@ async def test_read_with_prefix(table):
 @pytest.mark.asyncio
 async def test_read_with_filter(table):
     await data_snippets.read_with_filter(table)
+
+
+@pytest.mark.asyncio
+async def test_execute_query(table):
+    await data_snippets.execute_query(table)

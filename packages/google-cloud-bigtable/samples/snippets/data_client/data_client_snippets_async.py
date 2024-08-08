@@ -69,7 +69,10 @@ async def write_batch(table):
                     for sub_exception in e.exceptions:
                         failed_entry: RowMutationEntry = sub_exception.entry
                         cause: Exception = sub_exception.__cause__
-                        print(f"Failed mutation: {failed_entry.row_key} with error: {cause!r}")
+                        print(
+                            f"Failed mutation: {failed_entry.row_key} with error: {cause!r}"
+                        )
+
     # [END bigtable_async_writes_batch]
     await write_batch(table.client.project, table.instance_id, table.table_id)
 
@@ -94,6 +97,7 @@ async def write_increment(table):
                 # check result
                 cell = result_row[0]
                 print(f"{cell.row_key} value: {int(cell)}")
+
     # [END bigtable_async_write_increment]
     await write_increment(table.client.project, table.instance_id, table.table_id)
 
@@ -127,6 +131,7 @@ async def write_conditional(table):
                 )
                 if result is True:
                     print("The row os_name was set to android")
+
     # [END bigtable_async_writes_conditional]
     await write_conditional(table.client.project, table.instance_id, table.table_id)
 
@@ -141,6 +146,7 @@ async def read_row(table):
                 row_key = "phone#4c410523#20190501"
                 row = await table.read_row(row_key)
                 print(row)
+
     # [END bigtable_async_reads_row]
     await read_row(table.client.project, table.instance_id, table.table_id)
 
@@ -158,6 +164,7 @@ async def read_row_partial(table):
 
                 row = await table.read_row(row_key, row_filter=col_filter)
                 print(row)
+
     # [END bigtable_async_reads_row_partial]
     await read_row_partial(table.client.project, table.instance_id, table.table_id)
 
@@ -171,10 +178,9 @@ async def read_rows_multiple(table):
         async with BigtableDataClientAsync(project=project_id) as client:
             async with client.get_table(instance_id, table_id) as table:
 
-                query = ReadRowsQuery(row_keys=[
-                    b"phone#4c410523#20190501",
-                    b"phone#4c410523#20190502"
-                ])
+                query = ReadRowsQuery(
+                    row_keys=[b"phone#4c410523#20190501", b"phone#4c410523#20190502"]
+                )
                 async for row in await table.read_rows_stream(query):
                     print(row)
 
@@ -194,12 +200,13 @@ async def read_row_range(table):
 
                 row_range = RowRange(
                     start_key=b"phone#4c410523#20190501",
-                    end_key=b"phone#4c410523#201906201"
+                    end_key=b"phone#4c410523#201906201",
                 )
                 query = ReadRowsQuery(row_ranges=[row_range])
 
                 async for row in await table.read_rows_stream(query):
                     print(row)
+
     # [END bigtable_async_reads_row_range]
     await read_row_range(table.client.project, table.instance_id, table.table_id)
 
@@ -221,6 +228,7 @@ async def read_with_prefix(table):
 
                 async for row in await table.read_rows_stream(query):
                     print(row)
+
     # [END bigtable_async_reads_prefix]
     await read_prefix(table.client.project, table.instance_id, table.table_id)
 
@@ -240,5 +248,30 @@ async def read_with_filter(table):
 
                 async for row in await table.read_rows_stream(query):
                     print(row)
+
     # [END bigtable_async_reads_filter]
     await read_with_filter(table.client.project, table.instance_id, table.table_id)
+
+
+async def execute_query(table):
+    # [START bigtable_async_execute_query]
+    from google.cloud.bigtable.data import BigtableDataClientAsync
+
+    async def execute_query(project_id, instance_id, table_id):
+        async with BigtableDataClientAsync(project=project_id) as client:
+            query = (
+                "SELECT _key, stats_summary['os_build'], "
+                "stats_summary['connected_cell'], "
+                "stats_summary['connected_wifi'] "
+                f"from `{table_id}` WHERE _key=@row_key"
+            )
+            result = await client.execute_query(
+                query,
+                instance_id,
+                parameters={"row_key": b"phone#4c410523#20190501"},
+            )
+            results = [r async for r in result]
+            print(results)
+
+    # [END bigtable_async_execute_query]
+    await execute_query(table.client.project, table.instance_id, table.table_id)

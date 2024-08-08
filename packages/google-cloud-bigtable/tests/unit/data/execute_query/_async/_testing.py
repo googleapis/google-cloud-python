@@ -1,4 +1,4 @@
-# Copyright 2015 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,29 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Mocks used to emulate gRPC generated objects."""
-
-
-import mock
-
 # flake8: noqa
 from .._testing import TYPE_INT, split_bytes_into_chunks, proto_rows_bytes
 
 
-class _FakeStub(object):
-    """Acts as a gPRC stub."""
+try:
+    # async mock for python3.7-10
+    from unittest.mock import Mock
+    from asyncio import coroutine
 
-    def __init__(self, *results):
-        self.results = results
-        self.method_calls = []
+    def async_mock(return_value=None):
+        coro = Mock(name="CoroutineResult")
+        corofunc = Mock(name="CoroutineFunction", side_effect=coroutine(coro))
+        corofunc.coro = coro
+        corofunc.coro.return_value = return_value
+        return corofunc
 
+except ImportError:
+    # async mock for python3.11 or later
+    from unittest.mock import AsyncMock
 
-def _make_credentials():
-    import google.auth.credentials
-
-    class _CredentialsWithScopes(
-        google.auth.credentials.Credentials, google.auth.credentials.Scoped
-    ):
-        pass
-
-    return mock.Mock(spec=_CredentialsWithScopes)
+    def async_mock(return_value=None):
+        return AsyncMock(return_value=return_value)

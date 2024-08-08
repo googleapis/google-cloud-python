@@ -19,6 +19,7 @@ import pytest
 from ._testing import _make_credentials
 from google.cloud.bigtable.cluster import Cluster
 
+
 PROJECT = "project"
 INSTANCE_ID = "instance-id"
 INSTANCE_NAME = "projects/" + PROJECT + "/instances/" + INSTANCE_ID
@@ -943,3 +944,28 @@ def test_instance_list_app_profiles():
 
     assert isinstance(app_profile_2, AppProfile)
     assert app_profile_2.name == app_profile_name2
+
+
+@pytest.fixture()
+def data_api():
+    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+
+    data_api_mock = mock.create_autospec(BigtableClient)
+    data_api_mock.instance_path.return_value = (
+        f"projects/{PROJECT}/instances/{INSTANCE_ID}"
+    )
+    return data_api_mock
+
+
+@pytest.fixture()
+def client(data_api):
+    result = _make_client(
+        project="project-id", credentials=_make_credentials(), admin=True
+    )
+    result._table_data_client = data_api
+    return result
+
+
+@pytest.fixture()
+def instance(client):
+    return client.instance(instance_id=INSTANCE_ID)
