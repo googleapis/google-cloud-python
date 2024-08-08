@@ -2149,6 +2149,210 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         # Done; return the response.
         return response
 
+    def set_uri_pattern_document_data(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.SetUriPatternDocumentDataRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Sets the URI Pattern to Document data mapping for an
+        Advanced Site Search DataStore.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            def sample_set_uri_pattern_document_data():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.SetUriPatternDocumentDataRequest(
+                    site_search_engine="site_search_engine_value",
+                )
+
+                # Make the request
+                operation = client.set_uri_pattern_document_data(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1alpha.types.SetUriPatternDocumentDataRequest, dict]):
+                The request object. Request message for
+                [SiteSearchEngineService.SetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.SetUriPatternDocumentDataResponse` Response message for
+                   [SiteSearchEngineService.SetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, site_search_engine_service.SetUriPatternDocumentDataRequest
+        ):
+            request = site_search_engine_service.SetUriPatternDocumentDataRequest(
+                request
+            )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.set_uri_pattern_document_data
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("site_search_engine", request.site_search_engine),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            site_search_engine_service.SetUriPatternDocumentDataResponse,
+            metadata_type=site_search_engine_service.SetUriPatternDocumentDataMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_uri_pattern_document_data(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.GetUriPatternDocumentDataRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> site_search_engine_service.GetUriPatternDocumentDataResponse:
+        r"""Gets the URI Pattern to Document data mapping for an
+        Advanced Site Search DataStore.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            def sample_get_uri_pattern_document_data():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.GetUriPatternDocumentDataRequest(
+                    site_search_engine="site_search_engine_value",
+                )
+
+                # Make the request
+                response = client.get_uri_pattern_document_data(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1alpha.types.GetUriPatternDocumentDataRequest, dict]):
+                The request object. Request message for
+                [SiteSearchEngineService.GetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.types.GetUriPatternDocumentDataResponse:
+                Response message for
+                   [SiteSearchEngineService.GetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, site_search_engine_service.GetUriPatternDocumentDataRequest
+        ):
+            request = site_search_engine_service.GetUriPatternDocumentDataRequest(
+                request
+            )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_uri_pattern_document_data
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("site_search_engine", request.site_search_engine),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "SiteSearchEngineServiceClient":
         return self
 

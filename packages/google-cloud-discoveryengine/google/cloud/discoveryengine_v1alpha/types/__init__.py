@@ -34,7 +34,7 @@ from .common import (
     SolutionType,
     UserInfo,
 )
-from .completion import SuggestionDenyListEntry
+from .completion import CompletionSuggestion, SuggestionDenyListEntry
 from .completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .control import Condition, Control
 from .control_service import (
@@ -72,7 +72,7 @@ from .conversational_search_service import (
     UpdateSessionRequest,
 )
 from .custom_tuning_model import CustomTuningModel
-from .data_store import DataStore
+from .data_store import DataStore, LanguageInfo
 from .data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -134,6 +134,7 @@ from .grounded_generation_service import (
 )
 from .grounding import FactChunk, GroundingFact
 from .import_config import (
+    AlloyDbSource,
     BigQuerySource,
     BigtableOptions,
     BigtableSource,
@@ -141,6 +142,9 @@ from .import_config import (
     FhirStoreSource,
     FirestoreSource,
     GcsSource,
+    ImportCompletionSuggestionsMetadata,
+    ImportCompletionSuggestionsRequest,
+    ImportCompletionSuggestionsResponse,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
     ImportDocumentsResponse,
@@ -164,6 +168,9 @@ from .project_service import (
     ReportConsentChangeRequest,
 )
 from .purge_config import (
+    PurgeCompletionSuggestionsMetadata,
+    PurgeCompletionSuggestionsRequest,
+    PurgeCompletionSuggestionsResponse,
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
     PurgeDocumentsResponse,
@@ -245,11 +252,16 @@ from .site_search_engine_service import (
     FetchDomainVerificationStatusResponse,
     GetSiteSearchEngineRequest,
     GetTargetSiteRequest,
+    GetUriPatternDocumentDataRequest,
+    GetUriPatternDocumentDataResponse,
     ListTargetSitesRequest,
     ListTargetSitesResponse,
     RecrawlUrisMetadata,
     RecrawlUrisRequest,
     RecrawlUrisResponse,
+    SetUriPatternDocumentDataMetadata,
+    SetUriPatternDocumentDataRequest,
+    SetUriPatternDocumentDataResponse,
     UpdateTargetSiteMetadata,
     UpdateTargetSiteRequest,
 )
@@ -288,6 +300,7 @@ __all__ = (
     "SearchTier",
     "SearchUseCase",
     "SolutionType",
+    "CompletionSuggestion",
     "SuggestionDenyListEntry",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
@@ -323,6 +336,7 @@ __all__ = (
     "UpdateSessionRequest",
     "CustomTuningModel",
     "DataStore",
+    "LanguageInfo",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
     "DeleteDataStoreMetadata",
@@ -374,6 +388,7 @@ __all__ = (
     "CheckGroundingSpec",
     "FactChunk",
     "GroundingFact",
+    "AlloyDbSource",
     "BigQuerySource",
     "BigtableOptions",
     "BigtableSource",
@@ -381,6 +396,9 @@ __all__ = (
     "FhirStoreSource",
     "FirestoreSource",
     "GcsSource",
+    "ImportCompletionSuggestionsMetadata",
+    "ImportCompletionSuggestionsRequest",
+    "ImportCompletionSuggestionsResponse",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
@@ -400,6 +418,9 @@ __all__ = (
     "ProvisionProjectMetadata",
     "ProvisionProjectRequest",
     "ReportConsentChangeRequest",
+    "PurgeCompletionSuggestionsMetadata",
+    "PurgeCompletionSuggestionsRequest",
+    "PurgeCompletionSuggestionsResponse",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
@@ -477,11 +498,16 @@ __all__ = (
     "FetchDomainVerificationStatusResponse",
     "GetSiteSearchEngineRequest",
     "GetTargetSiteRequest",
+    "GetUriPatternDocumentDataRequest",
+    "GetUriPatternDocumentDataResponse",
     "ListTargetSitesRequest",
     "ListTargetSitesResponse",
     "RecrawlUrisMetadata",
     "RecrawlUrisRequest",
     "RecrawlUrisResponse",
+    "SetUriPatternDocumentDataMetadata",
+    "SetUriPatternDocumentDataRequest",
+    "SetUriPatternDocumentDataResponse",
     "UpdateTargetSiteMetadata",
     "UpdateTargetSiteRequest",
     "CompletionInfo",

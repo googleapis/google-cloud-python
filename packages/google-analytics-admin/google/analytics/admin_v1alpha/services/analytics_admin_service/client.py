@@ -574,6 +574,28 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def event_edit_rule_path(
+        property: str,
+        data_stream: str,
+        event_edit_rule: str,
+    ) -> str:
+        """Returns a fully-qualified event_edit_rule string."""
+        return "properties/{property}/dataStreams/{data_stream}/eventEditRules/{event_edit_rule}".format(
+            property=property,
+            data_stream=data_stream,
+            event_edit_rule=event_edit_rule,
+        )
+
+    @staticmethod
+    def parse_event_edit_rule_path(path: str) -> Dict[str, str]:
+        """Parses a event_edit_rule path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/dataStreams/(?P<data_stream>.+?)/eventEditRules/(?P<event_edit_rule>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def expanded_data_set_path(
         property: str,
         expanded_data_set: str,
@@ -668,6 +690,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def key_event_path(
+        property: str,
+        key_event: str,
+    ) -> str:
+        """Returns a fully-qualified key_event string."""
+        return "properties/{property}/keyEvents/{key_event}".format(
+            property=property,
+            key_event=key_event,
+        )
+
+    @staticmethod
+    def parse_key_event_path(path: str) -> Dict[str, str]:
+        """Parses a key_event path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/keyEvents/(?P<key_event>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def measurement_protocol_secret_path(
         property: str,
         data_stream: str,
@@ -687,6 +728,21 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             r"^properties/(?P<property>.+?)/dataStreams/(?P<data_stream>.+?)/measurementProtocolSecrets/(?P<measurement_protocol_secret>.+?)$",
             path,
         )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def organization_path(
+        organization: str,
+    ) -> str:
+        """Returns a fully-qualified organization string."""
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
+
+    @staticmethod
+    def parse_organization_path(path: str) -> Dict[str, str]:
+        """Parses a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -2126,8 +2182,9 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 The request object. Request message for
                 CreateFirebaseLink RPC
             parent (str):
-                Required. Format: properties/{property_id} Example:
-                properties/1234
+                Required. Format: properties/{property_id}
+
+                Example: ``properties/1234``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2216,7 +2273,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             name (str):
                 Required. Format:
                 properties/{property_id}/firebaseLinks/{firebase_link_id}
-                Example: properties/1234/firebaseLinks/5678
+
+                Example: ``properties/1234/firebaseLinks/5678``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2284,8 +2342,9 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 The request object. Request message for ListFirebaseLinks
                 RPC
             parent (str):
-                Required. Format: properties/{property_id} Example:
-                properties/1234
+                Required. Format: properties/{property_id}
+
+                Example: ``properties/1234``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2380,7 +2439,9 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 site tags are singletons and do not have unique IDs.
                 Format:
                 properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
-                Example: "properties/123/dataStreams/456/globalSiteTag"
+
+                Example:
+                ``properties/123/dataStreams/456/globalSiteTag``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2805,11 +2866,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 The request object. Request message for
                 GetDataSharingSettings RPC.
             name (str):
-                Required. The name of the settings to
-                lookup. Format:
+                Required. The name of the settings to lookup. Format:
                 accounts/{account}/dataSharingSettings
-                Example:
-                "accounts/1000/dataSharingSettings"
+
+                Example: ``accounts/1000/dataSharingSettings``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4144,8 +4204,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.ConversionEvent:
-        r"""Creates a conversion event with the specified
-        attributes.
+        r"""Deprecated: Use ``CreateKeyEvent`` instead. Creates a conversion
+        event with the specified attributes.
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateConversionEventRequest, dict]):
@@ -4179,6 +4239,11 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 Analytics property.
 
         """
+        warnings.warn(
+            "AnalyticsAdminServiceClient.create_conversion_event is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4236,8 +4301,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.ConversionEvent:
-        r"""Updates a conversion event with the specified
-        attributes.
+        r"""Deprecated: Use ``UpdateKeyEvent`` instead. Updates a conversion
+        event with the specified attributes.
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateConversionEventRequest, dict]):
@@ -4272,6 +4337,11 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 Analytics property.
 
         """
+        warnings.warn(
+            "AnalyticsAdminServiceClient.update_conversion_event is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4330,7 +4400,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.ConversionEvent:
-        r"""Retrieve a single conversion event.
+        r"""Deprecated: Use ``GetKeyEvent`` instead. Retrieve a single
+        conversion event.
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetConversionEventRequest, dict]):
@@ -4357,6 +4428,11 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 Analytics property.
 
         """
+        warnings.warn(
+            "AnalyticsAdminServiceClient.get_conversion_event is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4411,7 +4487,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes a conversion event in a property.
+        r"""Deprecated: Use ``DeleteKeyEvent`` instead. Deletes a conversion
+        event in a property.
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteConversionEventRequest, dict]):
@@ -4432,6 +4509,11 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
+        warnings.warn(
+            "AnalyticsAdminServiceClient.delete_conversion_event is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4483,8 +4565,9 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConversionEventsPager:
-        r"""Returns a list of conversion events in the specified
-        parent property.
+        r"""Deprecated: Use ``ListKeyEvents`` instead. Returns a list of
+        conversion events in the specified parent property.
+
         Returns an empty list if no conversion events are found.
 
         Args:
@@ -4514,6 +4597,11 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 automatically.
 
         """
+        warnings.warn(
+            "AnalyticsAdminServiceClient.list_conversion_events is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4557,6 +4645,424 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListConversionEventsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_key_event(
+        self,
+        request: Optional[Union[analytics_admin.CreateKeyEventRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        key_event: Optional[resources.KeyEvent] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.KeyEvent:
+        r"""Creates a Key Event.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateKeyEventRequest, dict]):
+                The request object. Request message for CreateKeyEvent
+                RPC
+            parent (str):
+                Required. The resource name of the
+                parent property where this Key Event
+                will be created. Format: properties/123
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            key_event (google.analytics.admin_v1alpha.types.KeyEvent):
+                Required. The Key Event to create.
+                This corresponds to the ``key_event`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.KeyEvent:
+                A key event in a Google Analytics
+                property.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, key_event])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.CreateKeyEventRequest):
+            request = analytics_admin.CreateKeyEventRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if key_event is not None:
+                request.key_event = key_event
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_key_event]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_key_event(
+        self,
+        request: Optional[Union[analytics_admin.UpdateKeyEventRequest, dict]] = None,
+        *,
+        key_event: Optional[resources.KeyEvent] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.KeyEvent:
+        r"""Updates a Key Event.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.UpdateKeyEventRequest, dict]):
+                The request object. Request message for UpdateKeyEvent
+                RPC
+            key_event (google.analytics.admin_v1alpha.types.KeyEvent):
+                Required. The Key Event to update. The ``name`` field is
+                used to identify the settings to be updated.
+
+                This corresponds to the ``key_event`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.KeyEvent:
+                A key event in a Google Analytics
+                property.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([key_event, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.UpdateKeyEventRequest):
+            request = analytics_admin.UpdateKeyEventRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if key_event is not None:
+                request.key_event = key_event
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_key_event]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("key_event.name", request.key_event.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_key_event(
+        self,
+        request: Optional[Union[analytics_admin.GetKeyEventRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.KeyEvent:
+        r"""Retrieve a single Key Event.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.GetKeyEventRequest, dict]):
+                The request object. Request message for GetKeyEvent RPC
+            name (str):
+                Required. The resource name of the Key Event to
+                retrieve. Format:
+                properties/{property}/keyEvents/{key_event} Example:
+                "properties/123/keyEvents/456"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.KeyEvent:
+                A key event in a Google Analytics
+                property.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.GetKeyEventRequest):
+            request = analytics_admin.GetKeyEventRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_key_event]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_key_event(
+        self,
+        request: Optional[Union[analytics_admin.DeleteKeyEventRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a Key Event.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.DeleteKeyEventRequest, dict]):
+                The request object. Request message for DeleteKeyEvent
+                RPC
+            name (str):
+                Required. The resource name of the Key Event to delete.
+                Format: properties/{property}/keyEvents/{key_event}
+                Example: "properties/123/keyEvents/456"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.DeleteKeyEventRequest):
+            request = analytics_admin.DeleteKeyEventRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_key_event]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def list_key_events(
+        self,
+        request: Optional[Union[analytics_admin.ListKeyEventsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListKeyEventsPager:
+        r"""Returns a list of Key Events in the specified parent
+        property. Returns an empty list if no Key Events are
+        found.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.ListKeyEventsRequest, dict]):
+                The request object. Request message for ListKeyEvents RPC
+            parent (str):
+                Required. The resource name of the
+                parent property. Example:
+                'properties/123'
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListKeyEventsPager:
+                Response message for ListKeyEvents
+                RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.ListKeyEventsRequest):
+            request = analytics_admin.ListKeyEventsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_key_events]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListKeyEventsPager(
             method=rpc,
             request=request,
             response=response,
@@ -9742,6 +10248,93 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         # Done; return the response.
         return response
 
+    def create_big_query_link(
+        self,
+        request: Optional[
+            Union[analytics_admin.CreateBigQueryLinkRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        bigquery_link: Optional[resources.BigQueryLink] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.BigQueryLink:
+        r"""Creates a BigQueryLink.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateBigQueryLinkRequest, dict]):
+                The request object. Request message for
+                CreateBigQueryLink RPC.
+            parent (str):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            bigquery_link (google.analytics.admin_v1alpha.types.BigQueryLink):
+                Required. The BigQueryLink to create.
+                This corresponds to the ``bigquery_link`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.BigQueryLink:
+                A link between a GA4 Property and
+                BigQuery project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, bigquery_link])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.CreateBigQueryLinkRequest):
+            request = analytics_admin.CreateBigQueryLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if bigquery_link is not None:
+                request.bigquery_link = bigquery_link
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_big_query_link]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def get_big_query_link(
         self,
         request: Optional[Union[analytics_admin.GetBigQueryLinkRequest, dict]] = None,
@@ -9905,6 +10498,171 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_big_query_link(
+        self,
+        request: Optional[
+            Union[analytics_admin.DeleteBigQueryLinkRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a BigQueryLink on a property.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.DeleteBigQueryLinkRequest, dict]):
+                The request object. Request message for
+                DeleteBigQueryLink RPC.
+            name (str):
+                Required. The BigQueryLink to delete.
+                Example format:
+                properties/1234/bigQueryLinks/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.DeleteBigQueryLinkRequest):
+            request = analytics_admin.DeleteBigQueryLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_big_query_link]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def update_big_query_link(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateBigQueryLinkRequest, dict]
+        ] = None,
+        *,
+        bigquery_link: Optional[resources.BigQueryLink] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.BigQueryLink:
+        r"""Updates a BigQueryLink.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.UpdateBigQueryLinkRequest, dict]):
+                The request object. Request message for
+                UpdateBigQueryLink RPC.
+            bigquery_link (google.analytics.admin_v1alpha.types.BigQueryLink):
+                Required. The settings to update. The ``name`` field is
+                used to identify the settings to be updated.
+
+                This corresponds to the ``bigquery_link`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.BigQueryLink:
+                A link between a GA4 Property and
+                BigQuery project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([bigquery_link, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.UpdateBigQueryLinkRequest):
+            request = analytics_admin.UpdateBigQueryLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if bigquery_link is not None:
+                request.bigquery_link = bigquery_link
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_big_query_link]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("bigquery_link.name", request.bigquery_link.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -11121,6 +11879,517 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             metadata=metadata,
         )
 
+    def get_event_edit_rule(
+        self,
+        request: Optional[Union[analytics_admin.GetEventEditRuleRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> event_create_and_edit.EventEditRule:
+        r"""Lookup for a single EventEditRule.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.GetEventEditRuleRequest, dict]):
+                The request object. Request message for GetEventEditRule
+                RPC.
+            name (str):
+                Required. The name of the
+                EventEditRule to get. Example format:
+                properties/123/dataStreams/456/eventEditRules/789
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.EventEditRule:
+                An Event Edit Rule defines conditions
+                that will trigger the creation of an
+                entirely new event based upon matched
+                criteria of a source event. Additional
+                mutations of the parameters from the
+                source event can be defined.
+
+                Unlike Event Create rules, Event Edit
+                Rules are applied in their defined
+                order.
+
+                Event Edit rules can't be used to modify
+                an event created from an Event Create
+                rule.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.GetEventEditRuleRequest):
+            request = analytics_admin.GetEventEditRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_event_edit_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_event_edit_rules(
+        self,
+        request: Optional[
+            Union[analytics_admin.ListEventEditRulesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListEventEditRulesPager:
+        r"""Lists EventEditRules on a web data stream.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.ListEventEditRulesRequest, dict]):
+                The request object. Request message for
+                ListEventEditRules RPC.
+            parent (str):
+                Required. Example format:
+                properties/123/dataStreams/456
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListEventEditRulesPager:
+                Response message for
+                ListEventEditRules RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.ListEventEditRulesRequest):
+            request = analytics_admin.ListEventEditRulesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_event_edit_rules]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListEventEditRulesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_event_edit_rule(
+        self,
+        request: Optional[
+            Union[analytics_admin.CreateEventEditRuleRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        event_edit_rule: Optional[event_create_and_edit.EventEditRule] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> event_create_and_edit.EventEditRule:
+        r"""Creates an EventEditRule.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateEventEditRuleRequest, dict]):
+                The request object. Request message for
+                CreateEventEditRule RPC.
+            parent (str):
+                Required. Example format:
+                properties/123/dataStreams/456
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            event_edit_rule (google.analytics.admin_v1alpha.types.EventEditRule):
+                Required. The EventEditRule to
+                create.
+
+                This corresponds to the ``event_edit_rule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.EventEditRule:
+                An Event Edit Rule defines conditions
+                that will trigger the creation of an
+                entirely new event based upon matched
+                criteria of a source event. Additional
+                mutations of the parameters from the
+                source event can be defined.
+
+                Unlike Event Create rules, Event Edit
+                Rules are applied in their defined
+                order.
+
+                Event Edit rules can't be used to modify
+                an event created from an Event Create
+                rule.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, event_edit_rule])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.CreateEventEditRuleRequest):
+            request = analytics_admin.CreateEventEditRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if event_edit_rule is not None:
+                request.event_edit_rule = event_edit_rule
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_event_edit_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_event_edit_rule(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateEventEditRuleRequest, dict]
+        ] = None,
+        *,
+        event_edit_rule: Optional[event_create_and_edit.EventEditRule] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> event_create_and_edit.EventEditRule:
+        r"""Updates an EventEditRule.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.UpdateEventEditRuleRequest, dict]):
+                The request object. Request message for
+                UpdateEventEditRule RPC.
+            event_edit_rule (google.analytics.admin_v1alpha.types.EventEditRule):
+                Required. The EventEditRule to update. The resource's
+                ``name`` field is used to identify the EventEditRule to
+                be updated.
+
+                This corresponds to the ``event_edit_rule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.EventEditRule:
+                An Event Edit Rule defines conditions
+                that will trigger the creation of an
+                entirely new event based upon matched
+                criteria of a source event. Additional
+                mutations of the parameters from the
+                source event can be defined.
+
+                Unlike Event Create rules, Event Edit
+                Rules are applied in their defined
+                order.
+
+                Event Edit rules can't be used to modify
+                an event created from an Event Create
+                rule.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([event_edit_rule, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.UpdateEventEditRuleRequest):
+            request = analytics_admin.UpdateEventEditRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if event_edit_rule is not None:
+                request.event_edit_rule = event_edit_rule
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_event_edit_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("event_edit_rule.name", request.event_edit_rule.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_event_edit_rule(
+        self,
+        request: Optional[
+            Union[analytics_admin.DeleteEventEditRuleRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes an EventEditRule.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.DeleteEventEditRuleRequest, dict]):
+                The request object. Request message for
+                DeleteEventEditRule RPC.
+            name (str):
+                Required. Example format:
+                properties/123/dataStreams/456/eventEditRules/789
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.DeleteEventEditRuleRequest):
+            request = analytics_admin.DeleteEventEditRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_event_edit_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def reorder_event_edit_rules(
+        self,
+        request: Optional[
+            Union[analytics_admin.ReorderEventEditRulesRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Changes the processing order of event edit rules on
+        the specified stream.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.ReorderEventEditRulesRequest, dict]):
+                The request object. Request message for
+                ReorderEventEditRules RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.ReorderEventEditRulesRequest):
+            request = analytics_admin.ReorderEventEditRulesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.reorder_event_edit_rules]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
     def update_data_redaction_settings(
         self,
         request: Optional[
@@ -11425,7 +12694,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 metric's resource name.
 
                 This value should be 1-80 characters and valid
-                characters are `[a-zA-Z0-9_]`, no spaces allowed.
+                characters are /[a-zA-Z0-9_]/, no spaces allowed.
                 calculated_metric_id must be unique between all
                 calculated metrics under a property. The
                 calculated_metric_id is used when referencing this
@@ -12166,19 +13435,21 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             metadata=metadata,
         )
 
-    def create_subproperty(
+    def provision_subproperty(
         self,
-        request: Optional[Union[analytics_admin.CreateSubpropertyRequest, dict]] = None,
+        request: Optional[
+            Union[analytics_admin.ProvisionSubpropertyRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_admin.CreateSubpropertyResponse:
+    ) -> analytics_admin.ProvisionSubpropertyResponse:
         r"""Create a subproperty and a subproperty event filter
         that applies to the created subproperty.
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateSubpropertyRequest, dict]):
+            request (Union[google.analytics.admin_v1alpha.types.ProvisionSubpropertyRequest, dict]):
                 The request object. Request message for CreateSubproperty
                 RPC.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -12188,20 +13459,20 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.CreateSubpropertyResponse:
+            google.analytics.admin_v1alpha.types.ProvisionSubpropertyResponse:
                 Response message for
-                CreateSubproperty RPC.
+                ProvisionSubproperty RPC.
 
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, analytics_admin.CreateSubpropertyRequest):
-            request = analytics_admin.CreateSubpropertyRequest(request)
+        if not isinstance(request, analytics_admin.ProvisionSubpropertyRequest):
+            request = analytics_admin.ProvisionSubpropertyRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_subproperty]
+        rpc = self._transport._wrapped_methods[self._transport.provision_subproperty]
 
         # Validate the universe domain.
         self._validate_universe_domain()

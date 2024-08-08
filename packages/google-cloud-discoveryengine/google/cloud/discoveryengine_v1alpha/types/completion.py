@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
     manifest={
         "SuggestionDenyListEntry",
+        "CompletionSuggestion",
     },
 )
 
@@ -65,6 +66,77 @@ class SuggestionDenyListEntry(proto.Message):
         proto.ENUM,
         number=2,
         enum=MatchOperator,
+    )
+
+
+class CompletionSuggestion(proto.Message):
+    r"""Autocomplete suggestions that are imported from Customer.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        global_score (float):
+            Global score of this suggestion. Control how
+            this suggestion would be scored / ranked.
+
+            This field is a member of `oneof`_ ``ranking_info``.
+        frequency (int):
+            Frequency of this suggestion. Will be used to
+            rank suggestions when score is not available.
+
+            This field is a member of `oneof`_ ``ranking_info``.
+        suggestion (str):
+            Required. The suggestion text.
+        language_code (str):
+            BCP-47 language code of this suggestion.
+        group_id (str):
+            If two suggestions have the same groupId,
+            they will not be returned together. Instead the
+            one ranked higher will be returned. This can be
+            used to deduplicate semantically identical
+            suggestions.
+        group_score (float):
+            The score of this suggestion within its
+            group.
+        alternative_phrases (MutableSequence[str]):
+            Alternative matching phrases for this
+            suggestion.
+    """
+
+    global_score: float = proto.Field(
+        proto.DOUBLE,
+        number=2,
+        oneof="ranking_info",
+    )
+    frequency: int = proto.Field(
+        proto.INT64,
+        number=3,
+        oneof="ranking_info",
+    )
+    suggestion: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    group_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    group_score: float = proto.Field(
+        proto.DOUBLE,
+        number=6,
+    )
+    alternative_phrases: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
     )
 
 

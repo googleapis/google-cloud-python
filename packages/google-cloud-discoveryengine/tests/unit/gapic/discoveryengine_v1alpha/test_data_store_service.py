@@ -4159,6 +4159,12 @@ def test_create_data_store_rest(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "language_info": {
+            "language_code": "language_code_value",
+            "normalized_language_code": "normalized_language_code_value",
+            "language": "language_value",
+            "region": "region_value",
+        },
         "idp_config": {
             "idp_type": 1,
             "external_idp_config": {"workforce_pool_name": "workforce_pool_name_value"},
@@ -4375,6 +4381,7 @@ def test_create_data_store_rest_required_fields(
         (
             "create_advanced_site_search",
             "data_store_id",
+            "skip_default_schema_creation",
         )
     )
     jsonified_request.update(unset_fields)
@@ -4441,6 +4448,7 @@ def test_create_data_store_rest_unset_required_fields():
             (
                 "createAdvancedSiteSearch",
                 "dataStoreId",
+                "skipDefaultSchemaCreation",
             )
         )
         & set(
@@ -5623,6 +5631,12 @@ def test_update_data_store_rest(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "language_info": {
+            "language_code": "language_code_value",
+            "normalized_language_code": "normalized_language_code_value",
+            "language": "language_value",
+            "region": "region_value",
+        },
         "idp_config": {
             "idp_type": 1,
             "external_idp_config": {"workforce_pool_name": "workforce_pool_name_value"},

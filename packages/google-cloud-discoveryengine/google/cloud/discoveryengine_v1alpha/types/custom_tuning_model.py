@@ -50,6 +50,8 @@ class CustomTuningModel(proto.Message):
             Timestamp the Model was created at.
         training_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp the model training was initiated.
+        metrics (MutableMapping[str, float]):
+            The metrics of the trained model.
     """
 
     class ModelState(proto.Enum):
@@ -69,6 +71,9 @@ class CustomTuningModel(proto.Message):
                 The model is ready for serving.
             TRAINING_FAILED (5):
                 The model training failed.
+            NO_IMPROVEMENT (6):
+                The model training finished successfully but
+                metrics did not improve.
         """
         MODEL_STATE_UNSPECIFIED = 0
         TRAINING_PAUSED = 1
@@ -76,6 +81,7 @@ class CustomTuningModel(proto.Message):
         TRAINING_COMPLETE = 3
         READY_FOR_SERVING = 4
         TRAINING_FAILED = 5
+        NO_IMPROVEMENT = 6
 
     name: str = proto.Field(
         proto.STRING,
@@ -103,6 +109,11 @@ class CustomTuningModel(proto.Message):
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
+    )
+    metrics: MutableMapping[str, float] = proto.MapField(
+        proto.STRING,
+        proto.DOUBLE,
+        number=7,
     )
 
 
