@@ -7,8 +7,7 @@ branchProtectionRules:
   requiresCodeOwnerReviews: true
   requiresStrictStatusChecks: false
   requiredStatusCheckContexts:
-# TODO(b/347075426): Restore owlbot as required check
-#    - 'OwlBot Post Processor'
+    - 'OwlBot Post Processor'
     - 'conventionalcommits.org'
     - 'cla/google'
     - 'docs'
@@ -19,6 +18,7 @@ branchProtectionRules:
     - 'unit (3.12)'
     - 'cover'
     - 'Kokoro presubmit'
+    - 'Kokoro windows'
 permissionRules:
   - team: actools-python
     permission: admin
