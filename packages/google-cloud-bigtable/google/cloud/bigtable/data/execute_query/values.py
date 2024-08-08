@@ -100,6 +100,9 @@ ExecuteQueryValueType = Union[
     bool,
     bytes,
     str,
+    # Note that Bigtable SQL does not currently support nanosecond precision,
+    # only microseconds. We use this for compatibility with potential future
+    # support
     DatetimeWithNanoseconds,
     date_pb2.Date,
     "Struct",
