@@ -214,6 +214,12 @@ class SqlType:
         type_field_name = "bool_type"
 
     class Timestamp(Type):
+        """
+        Timestamp supports :class:`DatetimeWithNanoseconds` but Bigtable SQL does
+        not currently support nanoseconds precision. We support this for potential
+        compatibility in the future. Nanoseconds are currently ignored.
+        """
+
         type_field_name = "timestamp_type"
         expected_types = (
             datetime.datetime,
