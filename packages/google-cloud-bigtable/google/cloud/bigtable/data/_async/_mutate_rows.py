@@ -84,7 +84,9 @@ class _MutateRowsOperationAsync:
                 f"all entries. Found {total_mutations}."
             )
         # create partial function to pass to trigger rpc call
-        metadata = _make_metadata(table.table_name, table.app_profile_id)
+        metadata = _make_metadata(
+            table.table_name, table.app_profile_id, instance_name=None
+        )
         self._gapic_fn = functools.partial(
             gapic_client.mutate_rows,
             table_name=table.table_name,

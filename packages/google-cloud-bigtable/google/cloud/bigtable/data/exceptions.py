@@ -311,3 +311,11 @@ class FailedQueryShardError(Exception):
         self.__cause__ = cause
         self.index = failed_index
         self.query = failed_query
+
+
+class InvalidExecuteQueryResponse(core_exceptions.GoogleAPICallError):
+    """Exception raised to invalid query response data from back-end."""
+
+
+class ParameterTypeInferenceFailed(ValueError):
+    """Exception raised when query parameter types were not provided and cannot be inferred."""

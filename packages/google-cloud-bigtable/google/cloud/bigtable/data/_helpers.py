@@ -16,7 +16,7 @@ Helper functions used in various places in the library.
 """
 from __future__ import annotations
 
-from typing import Sequence, List, Tuple, TYPE_CHECKING
+from typing import Sequence, List, Tuple, TYPE_CHECKING, Union
 import time
 import enum
 from collections import namedtuple
@@ -60,15 +60,26 @@ class TABLE_DEFAULT(enum.Enum):
 
 
 def _make_metadata(
-    table_name: str, app_profile_id: str | None
+    table_name: str | None, app_profile_id: str | None, instance_name: str | None
 ) -> list[tuple[str, str]]:
     """
     Create properly formatted gRPC metadata for requests.
     """
     params = []
-    params.append(f"table_name={table_name}")
+
+    if table_name is not None and instance_name is not None:
+        raise ValueError("metadata can't contain both instance_name and table_name")
+
+    if table_name is not None:
+        params.append(f"table_name={table_name}")
+    if instance_name is not None:
+        params.append(f"name={instance_name}")
     if app_profile_id is not None:
         params.append(f"app_profile_id={app_profile_id}")
+    if len(params) == 0:
+        raise ValueError(
+            "At least one of table_name and app_profile_id should be not None."
+        )
     params_str = "&".join(params)
     return [("x-goog-request-params", params_str)]
 
@@ -203,6 +214,22 @@ def _validate_timeouts(
             raise ValueError("attempt_timeout must be greater than 0")
 
 
+def _get_error_type(
+    call_code: Union["grpc.StatusCode", int, type[Exception]]
+) -> type[Exception]:
+    """Helper function for ensuring the object is an exception type.
+    If it is not, the proper GoogleAPICallError type is infered from the status
+    code.
+
+    Args:
+      - call_code: Exception type or gRPC status code.
+    """
+    if isinstance(call_code, type):
+        return call_code
+    else:
+        return type(core_exceptions.from_grpc_status(call_code, ""))
+
+
 def _get_retryable_errors(
     call_codes: Sequence["grpc.StatusCode" | int | type[Exception]] | TABLE_DEFAULT,
     table: "TableAsync",
@@ -225,7 +252,4 @@ def _get_retryable_errors(
     elif call_codes == TABLE_DEFAULT.MUTATE_ROWS:
         call_codes = table.default_mutate_rows_retryable_errors
 
-    return [
-        e if isinstance(e, type) else type(core_exceptions.from_grpc_status(e, ""))
-        for e in call_codes
-    ]
+    return [_get_error_type(e) for e in call_codes]

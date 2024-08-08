@@ -1,4 +1,4 @@
-# Copyright 2015 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,29 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Mocks used to emulate gRPC generated objects."""
-
-
-import mock
-
 # flake8: noqa
 from .._testing import TYPE_INT, split_bytes_into_chunks, proto_rows_bytes
-
-
-class _FakeStub(object):
-    """Acts as a gPRC stub."""
-
-    def __init__(self, *results):
-        self.results = results
-        self.method_calls = []
-
-
-def _make_credentials():
-    import google.auth.credentials
-
-    class _CredentialsWithScopes(
-        google.auth.credentials.Credentials, google.auth.credentials.Scoped
-    ):
-        pass
-
-    return mock.Mock(spec=_CredentialsWithScopes)

@@ -102,8 +102,7 @@ class _ReadRowsOperationAsync:
         self.table = table
         self._predicate = retries.if_exception_type(*retryable_exceptions)
         self._metadata = _make_metadata(
-            table.table_name,
-            table.app_profile_id,
+            table.table_name, table.app_profile_id, instance_name=None
         )
         self._last_yielded_row_key: bytes | None = None
         self._remaining_count: int | None = self.request.rows_limit or None

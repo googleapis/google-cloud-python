@@ -23,15 +23,30 @@ import mock
 
 class TestMakeMetadata:
     @pytest.mark.parametrize(
-        "table,profile,expected",
+        "table,profile,instance,expected",
         [
-            ("table", "profile", "table_name=table&app_profile_id=profile"),
-            ("table", None, "table_name=table"),
+            ("table", "profile", None, "table_name=table&app_profile_id=profile"),
+            ("table", None, None, "table_name=table"),
+            (None, None, "instance", "name=instance"),
+            (None, "profile", None, "app_profile_id=profile"),
+            (None, "profile", "instance", "name=instance&app_profile_id=profile"),
         ],
     )
-    def test__make_metadata(self, table, profile, expected):
-        metadata = _helpers._make_metadata(table, profile)
+    def test__make_metadata(self, table, profile, instance, expected):
+        metadata = _helpers._make_metadata(table, profile, instance)
         assert metadata == [("x-goog-request-params", expected)]
+
+    @pytest.mark.parametrize(
+        "table,profile,instance",
+        [
+            ("table", None, "instance"),
+            ("table", "profile", "instance"),
+            (None, None, None),
+        ],
+    )
+    def test__make_metadata_invalid_params(self, table, profile, instance):
+        with pytest.raises(ValueError):
+            _helpers._make_metadata(table, profile, instance)
 
 
 class TestAttemptTimeoutGenerator:
