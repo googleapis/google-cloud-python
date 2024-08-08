@@ -17,16 +17,22 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.cloud.translate_v3.types import common
 
 __protobuf__ = proto.module(
     package="google.cloud.translation.v3",
     manifest={
-        "TranslateTextGlossaryConfig",
+        "TransliterationConfig",
         "TranslateTextRequest",
         "TranslateTextResponse",
         "Translation",
+        "RomanizeTextRequest",
+        "Romanization",
+        "RomanizeTextResponse",
         "DetectLanguageRequest",
         "DetectedLanguage",
         "DetectLanguageResponse",
@@ -48,11 +54,19 @@ __protobuf__ = proto.module(
         "GlossaryInputConfig",
         "Glossary",
         "CreateGlossaryRequest",
+        "UpdateGlossaryRequest",
         "GetGlossaryRequest",
         "DeleteGlossaryRequest",
         "ListGlossariesRequest",
         "ListGlossariesResponse",
+        "GetGlossaryEntryRequest",
+        "DeleteGlossaryEntryRequest",
+        "ListGlossaryEntriesRequest",
+        "ListGlossaryEntriesResponse",
+        "CreateGlossaryEntryRequest",
+        "UpdateGlossaryEntryRequest",
         "CreateGlossaryMetadata",
+        "UpdateGlossaryMetadata",
         "DeleteGlossaryMetadata",
         "DeleteGlossaryResponse",
         "BatchTranslateDocumentRequest",
@@ -60,35 +74,23 @@ __protobuf__ = proto.module(
         "BatchDocumentOutputConfig",
         "BatchTranslateDocumentResponse",
         "BatchTranslateDocumentMetadata",
+        "TranslateTextGlossaryConfig",
     },
 )
 
 
-class TranslateTextGlossaryConfig(proto.Message):
-    r"""Configures which glossary is used for a specific target
-    language and defines options for applying that glossary.
+class TransliterationConfig(proto.Message):
+    r"""Configures transliteration feature on top of translation.
 
     Attributes:
-        glossary (str):
-            Required. The ``glossary`` to be applied for this
-            translation.
-
-            The format depends on the glossary:
-
-            -  User-provided custom glossary:
-               ``projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}``
-        ignore_case (bool):
-            Optional. Indicates match is case insensitive. The default
-            value is ``false`` if missing.
+        enable_transliteration (bool):
+            If true, source text in romanized form can be
+            translated to the target language.
     """
 
-    glossary: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    ignore_case: bool = proto.Field(
+    enable_transliteration: bool = proto.Field(
         proto.BOOL,
-        number=2,
+        number=1,
     )
 
 
@@ -146,6 +148,9 @@ class TranslateTextRequest(proto.Message):
             -  General (built-in) models:
                ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
 
+            -  Translation LLM models:
+               ``projects/{project-number-or-id}/locations/{location-id}/models/general/translation-llm``,
+
             For global (non-regionalized) requests, use ``location-id``
             ``global``. For example,
             ``projects/{project-number-or-id}/locations/global/models/general/nmt``.
@@ -156,6 +161,8 @@ class TranslateTextRequest(proto.Message):
             within the same region (have the same location-id) as the
             model, otherwise an INVALID_ARGUMENT (400) error is
             returned.
+        transliteration_config (google.cloud.translate_v3.types.TransliterationConfig):
+            Optional. Transliteration to be applied.
         labels (MutableMapping[str, str]):
             Optional. The labels with user-defined
             metadata for the request.
@@ -199,6 +206,11 @@ class TranslateTextRequest(proto.Message):
         proto.MESSAGE,
         number=7,
         message="TranslateTextGlossaryConfig",
+    )
+    transliteration_config: "TransliterationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="TransliterationConfig",
     )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -279,6 +291,91 @@ class Translation(proto.Message):
         proto.MESSAGE,
         number=3,
         message="TranslateTextGlossaryConfig",
+    )
+
+
+class RomanizeTextRequest(proto.Message):
+    r"""The request message for synchronous romanization.
+
+    Attributes:
+        parent (str):
+            Required. Project or location to make a call. Must refer to
+            a caller's project.
+
+            Format:
+            ``projects/{project-number-or-id}/locations/{location-id}``
+            or ``projects/{project-number-or-id}``.
+
+            For global calls, use
+            ``projects/{project-number-or-id}/locations/global`` or
+            ``projects/{project-number-or-id}``.
+        contents (MutableSequence[str]):
+            Required. The content of the input in string
+            format.
+        source_language_code (str):
+            Optional. The ISO-639 language code of the
+            input text if known, for example, "hi" or "zh".
+            If the source language isn't specified, the API
+            attempts to identify the source language
+            automatically and returns the source language
+            for each content in the response.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    contents: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    source_language_code: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class Romanization(proto.Message):
+    r"""A single romanization response.
+
+    Attributes:
+        romanized_text (str):
+            Romanized text.
+            If an error occurs during romanization, this
+            field might be excluded from the response.
+        detected_language_code (str):
+            The ISO-639 language code of source text in
+            the initial request, detected automatically, if
+            no source language was passed within the initial
+            request. If the source language was passed,
+            auto-detection of the language does not occur
+            and this field is empty.
+    """
+
+    romanized_text: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    detected_language_code: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class RomanizeTextResponse(proto.Message):
+    r"""The response message for synchronous romanization.
+
+    Attributes:
+        romanizations (MutableSequence[google.cloud.translate_v3.types.Romanization]):
+            Text romanization responses. This field has the same length
+            as
+            [``contents``][google.cloud.translation.v3.RomanizeTextRequest.contents].
+    """
+
+    romanizations: MutableSequence["Romanization"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Romanization",
     )
 
 
@@ -1467,6 +1564,29 @@ class CreateGlossaryRequest(proto.Message):
     )
 
 
+class UpdateGlossaryRequest(proto.Message):
+    r"""Request message for the update glossary flow
+
+    Attributes:
+        glossary (google.cloud.translate_v3.types.Glossary):
+            Required. The glossary entry to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated. Currently only
+            ``display_name`` and 'input_config'
+    """
+
+    glossary: "Glossary" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Glossary",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
 class GetGlossaryRequest(proto.Message):
     r"""Request message for GetGlossary.
 
@@ -1587,6 +1707,134 @@ class ListGlossariesResponse(proto.Message):
     )
 
 
+class GetGlossaryEntryRequest(proto.Message):
+    r"""Request message for the Get Glossary Entry Api
+
+    Attributes:
+        name (str):
+            Required. The resource name of the glossary
+            entry to get
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteGlossaryEntryRequest(proto.Message):
+    r"""Request message for Delete Glossary Entry
+
+    Attributes:
+        name (str):
+            Required. The resource name of the glossary
+            entry to delete
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListGlossaryEntriesRequest(proto.Message):
+    r"""Request message for ListGlossaryEntries
+
+    Attributes:
+        parent (str):
+            Required. The parent glossary resource name
+            for listing the glossary's entries.
+        page_size (int):
+            Optional. Requested page size. The server may
+            return fewer glossary entries than requested. If
+            unspecified, the server picks an appropriate
+            default.
+        page_token (str):
+            Optional. A token identifying a page of results the server
+            should return. Typically, this is the value of
+            [ListGlossaryEntriesResponse.next_page_token] returned from
+            the previous call. The first page is returned if
+            ``page_token``\ is empty or missing.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListGlossaryEntriesResponse(proto.Message):
+    r"""Response message for ListGlossaryEntries
+
+    Attributes:
+        glossary_entries (MutableSequence[google.cloud.translate_v3.types.GlossaryEntry]):
+            Optional. The Glossary Entries
+        next_page_token (str):
+            Optional. A token to retrieve a page of results. Pass this
+            value in the [ListGLossaryEntriesRequest.page_token] field
+            in the subsequent calls.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    glossary_entries: MutableSequence[common.GlossaryEntry] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=common.GlossaryEntry,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateGlossaryEntryRequest(proto.Message):
+    r"""Request message for CreateGlossaryEntry
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the glossary
+            to create the entry under.
+        glossary_entry (google.cloud.translate_v3.types.GlossaryEntry):
+            Required. The glossary entry to create
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    glossary_entry: common.GlossaryEntry = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.GlossaryEntry,
+    )
+
+
+class UpdateGlossaryEntryRequest(proto.Message):
+    r"""Request message for UpdateGlossaryEntry
+
+    Attributes:
+        glossary_entry (google.cloud.translate_v3.types.GlossaryEntry):
+            Required. The glossary entry to update.
+    """
+
+    glossary_entry: common.GlossaryEntry = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.GlossaryEntry,
+    )
+
+
 class CreateGlossaryMetadata(proto.Message):
     r"""Stored in the
     [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata]
@@ -1636,6 +1884,69 @@ class CreateGlossaryMetadata(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
+    submit_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class UpdateGlossaryMetadata(proto.Message):
+    r"""Stored in the
+    [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata]
+    field returned by UpdateGlossary.
+
+    Attributes:
+        glossary (google.cloud.translate_v3.types.Glossary):
+            The updated glossary object.
+        state (google.cloud.translate_v3.types.UpdateGlossaryMetadata.State):
+            The current state of the glossary update
+            operation. If the glossary input file was not
+            updated this will be completed immediately
+        submit_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the operation was submitted to
+            the server.
+    """
+
+    class State(proto.Enum):
+        r"""Enumerates the possible states that the update request can be
+        in.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Invalid.
+            RUNNING (1):
+                Request is being processed.
+            SUCCEEDED (2):
+                The glossary was successfully updated.
+            FAILED (3):
+                Failed to update the glossary.
+            CANCELLING (4):
+                Request is in the process of being canceled
+                after caller invoked
+                longrunning.Operations.CancelOperation on the
+                request id.
+            CANCELLED (5):
+                The glossary update request was successfully
+                canceled.
+        """
+        STATE_UNSPECIFIED = 0
+        RUNNING = 1
+        SUCCEEDED = 2
+        FAILED = 3
+        CANCELLING = 4
+        CANCELLED = 5
+
+    glossary: "Glossary" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Glossary",
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -2190,6 +2501,34 @@ class BatchTranslateDocumentMetadata(proto.Message):
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class TranslateTextGlossaryConfig(proto.Message):
+    r"""Configures which glossary is used for a specific target
+    language and defines options for applying that glossary.
+
+    Attributes:
+        glossary (str):
+            Required. The ``glossary`` to be applied for this
+            translation.
+
+            The format depends on the glossary:
+
+            -  User-provided custom glossary:
+               ``projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}``
+        ignore_case (bool):
+            Optional. Indicates match is case insensitive. The default
+            value is ``false`` if missing.
+    """
+
+    glossary: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ignore_case: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 

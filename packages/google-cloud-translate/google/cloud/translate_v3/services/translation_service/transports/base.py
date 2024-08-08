@@ -22,12 +22,20 @@ from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.translate_v3 import gapic_version as package_version
-from google.cloud.translate_v3.types import adaptive_mt, translation_service
+from google.cloud.translate_v3.types import (
+    adaptive_mt,
+    automl_translation,
+    common,
+    translation_service,
+)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -138,6 +146,11 @@ class TranslationServiceTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.romanize_text: gapic_v1.method.wrap_method(
+                self.romanize_text,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.detect_language: gapic_v1.method.wrap_method(
                 self.detect_language,
                 default_timeout=600.0,
@@ -176,6 +189,11 @@ class TranslationServiceTransport(abc.ABC):
             self.create_glossary: gapic_v1.method.wrap_method(
                 self.create_glossary,
                 default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.update_glossary: gapic_v1.method.wrap_method(
+                self.update_glossary,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_glossaries: gapic_v1.method.wrap_method(
@@ -221,6 +239,51 @@ class TranslationServiceTransport(abc.ABC):
                     deadline=600.0,
                 ),
                 default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_glossary_entry: gapic_v1.method.wrap_method(
+                self.get_glossary_entry,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_glossary_entries: gapic_v1.method.wrap_method(
+                self.list_glossary_entries,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_glossary_entry: gapic_v1.method.wrap_method(
+                self.create_glossary_entry,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_glossary_entry: gapic_v1.method.wrap_method(
+                self.update_glossary_entry,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_glossary_entry: gapic_v1.method.wrap_method(
+                self.delete_glossary_entry,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_dataset: gapic_v1.method.wrap_method(
+                self.create_dataset,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_dataset: gapic_v1.method.wrap_method(
+                self.get_dataset,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_datasets: gapic_v1.method.wrap_method(
+                self.list_datasets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_dataset: gapic_v1.method.wrap_method(
+                self.delete_dataset,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_adaptive_mt_dataset: gapic_v1.method.wrap_method(
@@ -273,6 +336,41 @@ class TranslationServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.import_data: gapic_v1.method.wrap_method(
+                self.import_data,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_data: gapic_v1.method.wrap_method(
+                self.export_data,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_examples: gapic_v1.method.wrap_method(
+                self.list_examples,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_model: gapic_v1.method.wrap_method(
+                self.create_model,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_models: gapic_v1.method.wrap_method(
+                self.list_models,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_model: gapic_v1.method.wrap_method(
+                self.get_model,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_model: gapic_v1.method.wrap_method(
+                self.delete_model,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -297,6 +395,18 @@ class TranslationServiceTransport(abc.ABC):
         Union[
             translation_service.TranslateTextResponse,
             Awaitable[translation_service.TranslateTextResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def romanize_text(
+        self,
+    ) -> Callable[
+        [translation_service.RomanizeTextRequest],
+        Union[
+            translation_service.RomanizeTextResponse,
+            Awaitable[translation_service.RomanizeTextResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -365,6 +475,15 @@ class TranslationServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def update_glossary(
+        self,
+    ) -> Callable[
+        [translation_service.UpdateGlossaryRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_glossaries(
         self,
     ) -> Callable[
@@ -390,6 +509,93 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.DeleteGlossaryRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_glossary_entry(
+        self,
+    ) -> Callable[
+        [translation_service.GetGlossaryEntryRequest],
+        Union[common.GlossaryEntry, Awaitable[common.GlossaryEntry]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_glossary_entries(
+        self,
+    ) -> Callable[
+        [translation_service.ListGlossaryEntriesRequest],
+        Union[
+            translation_service.ListGlossaryEntriesResponse,
+            Awaitable[translation_service.ListGlossaryEntriesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_glossary_entry(
+        self,
+    ) -> Callable[
+        [translation_service.CreateGlossaryEntryRequest],
+        Union[common.GlossaryEntry, Awaitable[common.GlossaryEntry]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_glossary_entry(
+        self,
+    ) -> Callable[
+        [translation_service.UpdateGlossaryEntryRequest],
+        Union[common.GlossaryEntry, Awaitable[common.GlossaryEntry]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_glossary_entry(
+        self,
+    ) -> Callable[
+        [translation_service.DeleteGlossaryEntryRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_dataset(
+        self,
+    ) -> Callable[
+        [automl_translation.CreateDatasetRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_dataset(
+        self,
+    ) -> Callable[
+        [automl_translation.GetDatasetRequest],
+        Union[automl_translation.Dataset, Awaitable[automl_translation.Dataset]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_datasets(
+        self,
+    ) -> Callable[
+        [automl_translation.ListDatasetsRequest],
+        Union[
+            automl_translation.ListDatasetsResponse,
+            Awaitable[automl_translation.ListDatasetsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_dataset(
+        self,
+    ) -> Callable[
+        [automl_translation.DeleteDatasetRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -495,6 +701,138 @@ class TranslationServiceTransport(abc.ABC):
         Union[
             adaptive_mt.ListAdaptiveMtSentencesResponse,
             Awaitable[adaptive_mt.ListAdaptiveMtSentencesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_data(
+        self,
+    ) -> Callable[
+        [automl_translation.ImportDataRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_data(
+        self,
+    ) -> Callable[
+        [automl_translation.ExportDataRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_examples(
+        self,
+    ) -> Callable[
+        [automl_translation.ListExamplesRequest],
+        Union[
+            automl_translation.ListExamplesResponse,
+            Awaitable[automl_translation.ListExamplesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_model(
+        self,
+    ) -> Callable[
+        [automl_translation.CreateModelRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_models(
+        self,
+    ) -> Callable[
+        [automl_translation.ListModelsRequest],
+        Union[
+            automl_translation.ListModelsResponse,
+            Awaitable[automl_translation.ListModelsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_model(
+        self,
+    ) -> Callable[
+        [automl_translation.GetModelRequest],
+        Union[automl_translation.Model, Awaitable[automl_translation.Model]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_model(
+        self,
+    ) -> Callable[
+        [automl_translation.DeleteModelRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def wait_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.WaitOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
         ],
     ]:
         raise NotImplementedError()
