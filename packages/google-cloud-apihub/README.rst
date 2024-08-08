@@ -15,7 +15,7 @@ Python Client for
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-apihub.svg
    :target: https://pypi.org/project/google-cloud-apihub/
 .. _: https://cloud.google.com/apigee/docs/apihub/what-is-api-hub
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-apihub/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-apihub/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/apigee/docs/apihub/what-is-api-hub
 
 Quick Start
