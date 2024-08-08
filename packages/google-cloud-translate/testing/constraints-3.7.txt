@@ -9,3 +9,4 @@ google-auth==2.14.1
 proto-plus==1.22.3
 google-cloud-core==1.4.4
 protobuf==3.20.2
+grpc-google-iam-v1==0.12.4

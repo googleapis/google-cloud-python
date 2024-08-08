@@ -4603,6 +4603,317 @@ async def test_suggest_smart_replies_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        participant.SuggestKnowledgeAssistRequest,
+        dict,
+    ],
+)
+def test_suggest_knowledge_assist(request_type, transport: str = "grpc"):
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_knowledge_assist), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = participant.SuggestKnowledgeAssistResponse(
+            latest_message="latest_message_value",
+            context_size=1311,
+        )
+        response = client.suggest_knowledge_assist(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = participant.SuggestKnowledgeAssistRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, participant.SuggestKnowledgeAssistResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+def test_suggest_knowledge_assist_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_knowledge_assist), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.suggest_knowledge_assist()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == participant.SuggestKnowledgeAssistRequest()
+
+
+def test_suggest_knowledge_assist_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = participant.SuggestKnowledgeAssistRequest(
+        parent="parent_value",
+        latest_message="latest_message_value",
+        previous_suggested_query="previous_suggested_query_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_knowledge_assist), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.suggest_knowledge_assist(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == participant.SuggestKnowledgeAssistRequest(
+            parent="parent_value",
+            latest_message="latest_message_value",
+            previous_suggested_query="previous_suggested_query_value",
+        )
+
+
+def test_suggest_knowledge_assist_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ParticipantsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.suggest_knowledge_assist
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.suggest_knowledge_assist
+        ] = mock_rpc
+        request = {}
+        client.suggest_knowledge_assist(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.suggest_knowledge_assist(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_suggest_knowledge_assist_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ParticipantsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_knowledge_assist), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            participant.SuggestKnowledgeAssistResponse(
+                latest_message="latest_message_value",
+                context_size=1311,
+            )
+        )
+        response = await client.suggest_knowledge_assist()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == participant.SuggestKnowledgeAssistRequest()
+
+
+@pytest.mark.asyncio
+async def test_suggest_knowledge_assist_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ParticipantsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.suggest_knowledge_assist
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.suggest_knowledge_assist
+        ] = mock_object
+
+        request = {}
+        await client.suggest_knowledge_assist(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.suggest_knowledge_assist(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_suggest_knowledge_assist_async(
+    transport: str = "grpc_asyncio",
+    request_type=participant.SuggestKnowledgeAssistRequest,
+):
+    client = ParticipantsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_knowledge_assist), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            participant.SuggestKnowledgeAssistResponse(
+                latest_message="latest_message_value",
+                context_size=1311,
+            )
+        )
+        response = await client.suggest_knowledge_assist(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = participant.SuggestKnowledgeAssistRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, participant.SuggestKnowledgeAssistResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+@pytest.mark.asyncio
+async def test_suggest_knowledge_assist_async_from_dict():
+    await test_suggest_knowledge_assist_async(request_type=dict)
+
+
+def test_suggest_knowledge_assist_field_headers():
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = participant.SuggestKnowledgeAssistRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_knowledge_assist), "__call__"
+    ) as call:
+        call.return_value = participant.SuggestKnowledgeAssistResponse()
+        client.suggest_knowledge_assist(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_suggest_knowledge_assist_field_headers_async():
+    client = ParticipantsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = participant.SuggestKnowledgeAssistRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_knowledge_assist), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            participant.SuggestKnowledgeAssistResponse()
+        )
+        await client.suggest_knowledge_assist(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         participant.ListSuggestionsRequest,
         dict,
     ],
@@ -8156,6 +8467,264 @@ def test_suggest_smart_replies_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        participant.SuggestKnowledgeAssistRequest,
+        dict,
+    ],
+)
+def test_suggest_knowledge_assist_rest(request_type):
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/conversations/sample2/participants/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = participant.SuggestKnowledgeAssistResponse(
+            latest_message="latest_message_value",
+            context_size=1311,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = participant.SuggestKnowledgeAssistResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.suggest_knowledge_assist(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, participant.SuggestKnowledgeAssistResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+def test_suggest_knowledge_assist_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ParticipantsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.suggest_knowledge_assist
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.suggest_knowledge_assist
+        ] = mock_rpc
+
+        request = {}
+        client.suggest_knowledge_assist(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.suggest_knowledge_assist(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_suggest_knowledge_assist_rest_required_fields(
+    request_type=participant.SuggestKnowledgeAssistRequest,
+):
+    transport_class = transports.ParticipantsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).suggest_knowledge_assist._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).suggest_knowledge_assist._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = participant.SuggestKnowledgeAssistResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = participant.SuggestKnowledgeAssistResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.suggest_knowledge_assist(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_suggest_knowledge_assist_rest_unset_required_fields():
+    transport = transports.ParticipantsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.suggest_knowledge_assist._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_suggest_knowledge_assist_rest_interceptors(null_interceptor):
+    transport = transports.ParticipantsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ParticipantsRestInterceptor(),
+    )
+    client = ParticipantsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ParticipantsRestInterceptor, "post_suggest_knowledge_assist"
+    ) as post, mock.patch.object(
+        transports.ParticipantsRestInterceptor, "pre_suggest_knowledge_assist"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = participant.SuggestKnowledgeAssistRequest.pb(
+            participant.SuggestKnowledgeAssistRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = participant.SuggestKnowledgeAssistResponse.to_json(
+            participant.SuggestKnowledgeAssistResponse()
+        )
+
+        request = participant.SuggestKnowledgeAssistRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = participant.SuggestKnowledgeAssistResponse()
+
+        client.suggest_knowledge_assist(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_suggest_knowledge_assist_rest_bad_request(
+    transport: str = "rest", request_type=participant.SuggestKnowledgeAssistRequest
+):
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/conversations/sample2/participants/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.suggest_knowledge_assist(request)
+
+
+def test_suggest_knowledge_assist_rest_error():
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         participant.ListSuggestionsRequest,
         dict,
     ],
@@ -8715,6 +9284,7 @@ def test_participants_base_transport():
         "suggest_articles",
         "suggest_faq_answers",
         "suggest_smart_replies",
+        "suggest_knowledge_assist",
         "list_suggestions",
         "compile_suggestion",
         "get_location",
@@ -9015,6 +9585,9 @@ def test_participants_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.suggest_smart_replies._session
     session2 = client2.transport.suggest_smart_replies._session
+    assert session1 != session2
+    session1 = client1.transport.suggest_knowledge_assist._session
+    session2 = client2.transport.suggest_knowledge_assist._session
     assert session1 != session2
     session1 = client1.transport.list_suggestions._session
     session2 = client2.transport.list_suggestions._session

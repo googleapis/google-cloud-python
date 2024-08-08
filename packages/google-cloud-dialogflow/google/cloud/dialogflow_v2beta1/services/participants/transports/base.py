@@ -188,6 +188,11 @@ class ParticipantsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.suggest_knowledge_assist: gapic_v1.method.wrap_method(
+                self.suggest_knowledge_assist,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_suggestions: gapic_v1.method.wrap_method(
                 self.list_suggestions,
                 default_timeout=None,
@@ -304,6 +309,18 @@ class ParticipantsTransport(abc.ABC):
         Union[
             participant.SuggestSmartRepliesResponse,
             Awaitable[participant.SuggestSmartRepliesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def suggest_knowledge_assist(
+        self,
+    ) -> Callable[
+        [participant.SuggestKnowledgeAssistRequest],
+        Union[
+            participant.SuggestKnowledgeAssistResponse,
+            Awaitable[participant.SuggestKnowledgeAssistResponse],
         ],
     ]:
         raise NotImplementedError()

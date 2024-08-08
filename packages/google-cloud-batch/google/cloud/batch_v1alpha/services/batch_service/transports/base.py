@@ -161,6 +161,11 @@ class BatchServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.cancel_job: gapic_v1.method.wrap_method(
+                self.cancel_job,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.update_job: gapic_v1.method.wrap_method(
                 self.update_job,
                 default_timeout=60.0,
@@ -284,6 +289,15 @@ class BatchServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [batch.DeleteJobRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_job(
+        self,
+    ) -> Callable[
+        [batch.CancelJobRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

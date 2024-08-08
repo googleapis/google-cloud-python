@@ -40,7 +40,9 @@ async def sample_search_knowledge():
 
     # Initialize request argument(s)
     request = dialogflow_v2beta1.SearchKnowledgeRequest(
+        parent="parent_value",
         conversation_profile="conversation_profile_value",
+        session_id="session_id_value",
     )
 
     # Make the request

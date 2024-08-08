@@ -1384,6 +1384,93 @@ class ParticipantsAsyncClient:
         # Done; return the response.
         return response
 
+    async def suggest_knowledge_assist(
+        self,
+        request: Optional[
+            Union[participant.SuggestKnowledgeAssistRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> participant.SuggestKnowledgeAssistResponse:
+        r"""Gets knowledge assist suggestions based on historical
+        messages.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2beta1
+
+            async def sample_suggest_knowledge_assist():
+                # Create a client
+                client = dialogflow_v2beta1.ParticipantsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.SuggestKnowledgeAssistRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.suggest_knowledge_assist(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.SuggestKnowledgeAssistRequest, dict]]):
+                The request object. The request message for
+                [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2beta1.Participants.SuggestKnowledgeAssist].
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2beta1.types.SuggestKnowledgeAssistResponse:
+                The response message for
+                   [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2beta1.Participants.SuggestKnowledgeAssist].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, participant.SuggestKnowledgeAssistRequest):
+            request = participant.SuggestKnowledgeAssistRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.suggest_knowledge_assist
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_suggestions(
         self,
         request: Optional[Union[participant.ListSuggestionsRequest, dict]] = None,
