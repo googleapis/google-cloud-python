@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.0.0...google-cloud-deploy-v2.0.1) (2024-08-08)
+
+
+### Documentation
+
+* very minor documentation updates ([477c8e4](https://github.com/googleapis/google-cloud-python/commit/477c8e4438b5ca2f05095955fd03cb5a6f189292))
+
 ## [2.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.19.1...google-cloud-deploy-v2.0.0) (2024-07-30)
 
 

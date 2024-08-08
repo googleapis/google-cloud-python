@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.33.1...google-cloud-securitycenter-v1.34.0) (2024-08-08)
+
+
+### Features
+
+* enable Dynamic Mute ([6f4d816](https://github.com/googleapis/google-cloud-python/commit/6f4d816276500d9f5fc650f8148ac43e480ed665))
+* enable Dynamic Mute ([6f4d816](https://github.com/googleapis/google-cloud-python/commit/6f4d816276500d9f5fc650f8148ac43e480ed665))
+* New values `EXPLOITATION_FOR_PRIVILEGE_ESCALATION` corresponding to T1068 and `INDICATOR_REMOVAL_FILE_DELETION` corresponding to T1070.004 are added to enum `Technique` ([6f4d816](https://github.com/googleapis/google-cloud-python/commit/6f4d816276500d9f5fc650f8148ac43e480ed665))
+* New values `EXPLOITATION_FOR_PRIVILEGE_ESCALATION` corresponding to T1068 and `INDICATOR_REMOVAL_FILE_DELETION` corresponding to T1070.004 are added to enum `Technique` ([6f4d816](https://github.com/googleapis/google-cloud-python/commit/6f4d816276500d9f5fc650f8148ac43e480ed665))
+
+
+### Documentation
+
+* T1068 is added for value `EXPLOITATION_FOR_PRIVILEGE_ESCALATION` and T1070.004 is added for value `INDICATOR_REMOVAL_FILE_DELETION` for enum `Technique ([6f4d816](https://github.com/googleapis/google-cloud-python/commit/6f4d816276500d9f5fc650f8148ac43e480ed665))
+* T1068 is added for value `EXPLOITATION_FOR_PRIVILEGE_ESCALATION` and T1070.004 is added for value `INDICATOR_REMOVAL_FILE_DELETION` for enum `Technique ([6f4d816](https://github.com/googleapis/google-cloud-python/commit/6f4d816276500d9f5fc650f8148ac43e480ed665))
+
 ## [1.33.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.33.0...google-cloud-securitycenter-v1.33.1) (2024-07-30)
 
 

@@ -4,6 +4,41 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.30.2...google-cloud-dialogflow-v2.31.0) (2024-08-08)
+
+
+### Features
+
+* Add GenerateStatelessSuggestion related endpoints and types ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* Add Generator related services and types ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* Add Proactive Generative Knowledge Assist endpoints and types ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+
+
+### Bug Fixes
+
+* An existing method_signature `parent` is fixed for method `BatchCreateMessages` in service `Conversations` ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* Changed field behavior for an existing field `parent` in message `.google.cloud.dialogflow.v2beta1.SearchKnowledgeRequest` ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* Changed field behavior for an existing field `session_id` in message `.google.cloud.dialogflow.v2beta1.SearchKnowledgeRequest` ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+
+
+### Documentation
+
+* A comment for field `assist_query_params` in message `.google.cloud.dialogflow.v2beta1.SuggestConversationSummaryRequest` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `audio` in message `.google.cloud.dialogflow.v2beta1.AudioInput` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `context_size` in message `.google.cloud.dialogflow.v2beta1.SuggestConversationSummaryRequest` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `conversation_stage` in message `.google.cloud.dialogflow.v2beta1.Conversation` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `conversation` in message `.google.cloud.dialogflow.v2beta1.SearchKnowledgeRequest` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `filter` in message `.google.cloud.dialogflow.v2beta1.ListConversationsRequest` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `latest_message` in message `.google.cloud.dialogflow.v2beta1.GenerateStatelessSummaryRequest` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `latest_message` in message `.google.cloud.dialogflow.v2beta1.SearchKnowledgeRequest` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `latest_message` in message `.google.cloud.dialogflow.v2beta1.SuggestConversationSummaryRequest` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `live_person_config` in message `.google.cloud.dialogflow.v2beta1.HumanAgentHandoffConfig` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `max_context_size` in message `.google.cloud.dialogflow.v2beta1.GenerateStatelessSummaryRequest` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `name` in message `.google.cloud.dialogflow.v2beta1.Conversation` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `parent` in message `.google.cloud.dialogflow.v2beta1.SearchKnowledgeRequest` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for field `session_id` in message `.google.cloud.dialogflow.v2beta1.SearchKnowledgeRequest` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+* A comment for message `HumanAgentHandoffConfig` is changed ([de0df45](https://github.com/googleapis/google-cloud-python/commit/de0df45e938ba89f2c533aa08f88242ffc9000ab))
+
 ## [2.30.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.30.1...google-cloud-dialogflow-v2.30.2) (2024-07-30)
 
 

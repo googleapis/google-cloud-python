@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-functions-v1.16.5...google-cloud-functions-v1.17.0) (2024-08-08)
+
+
+### Features
+
+* Added `build_service_account` field to CloudFunction ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* additional field on the output that specified whether the deployment supports Physical Zone Separation. ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* Generate upload URL now supports for specifying the GCF generation that the generated upload url will be used for. ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* ListRuntimes response now includes deprecation and decommissioning dates. ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* optional field for binary authorization policy. ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* optional field for deploying a source from a GitHub repository. ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* optional field for specifying a revision on GetFunction. ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* optional field for specifying a service account to use for the build. This helps navigate the change of historical default on new projects. For more details, see https://cloud.google.com/build/docs/cloud-build-service-account-updates ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* optional fields for setting up automatic base image updates. ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+
+
+### Documentation
+
+* A comment for field `automatic_update_policy` in message `.google.cloud.functions.v1.CloudFunction` is changed ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* A comment for field `docker_repository` in message `.google.cloud.functions.v1.CloudFunction` is changed ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* A comment for field `on_deploy_update_policy` in message `.google.cloud.functions.v1.CloudFunction` is changed ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* A comment for field `runtime_version` in message `.google.cloud.functions.v1.CloudFunction` is changed ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* A comment for field `url` in message `.google.cloud.functions.v1.HttpsTrigger` is changed ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* A comment for field `url` in message `.google.cloud.functions.v1.SourceRepository` is changed ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+* Refined description in several fields. ([68e105d](https://github.com/googleapis/google-cloud-python/commit/68e105d404f53e8e08bf75704b6a031f178cf96b))
+
 ## [1.16.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-functions-v1.16.4...google-cloud-functions-v1.16.5) (2024-07-30)
 
 

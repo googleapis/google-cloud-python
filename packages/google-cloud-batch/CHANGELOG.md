@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.17.24](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.23...google-cloud-batch-v0.17.24) (2024-08-08)
+
+
+### Features
+
+* add block_project_ssh_keys field to the v1alpha job API to block project level ssh keys access to Batch created VMs ([56ec4fc](https://github.com/googleapis/google-cloud-python/commit/56ec4fcfa50454522f40561d82c700946fc2a7d1))
+* remove visibility restriction of cancel job api, allow in v1alpha ([56ec4fc](https://github.com/googleapis/google-cloud-python/commit/56ec4fcfa50454522f40561d82c700946fc2a7d1))
+
+
+### Documentation
+
+* Refine usage scope for field `task_execution` and `task_state` in `status_events` ([56ec4fc](https://github.com/googleapis/google-cloud-python/commit/56ec4fcfa50454522f40561d82c700946fc2a7d1))
+
 ## [0.17.23](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.22...google-cloud-batch-v0.17.23) (2024-07-30)
 
 

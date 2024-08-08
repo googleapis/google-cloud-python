@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.30.0...google-cloud-documentai-v2.31.0) (2024-08-08)
+
+
+### Features
+
+* A new field `gen_ai_model_info` is added to message `.google.cloud.documentai.v1.ProcessorVersion` ([f16067b](https://github.com/googleapis/google-cloud-python/commit/f16067b585fcc1f0862ce15ed00789caf0ca25bb))
+* A new field `imageless_mode` is added to message `.google.cloud.documentai.v1.ProcessRequest` ([f16067b](https://github.com/googleapis/google-cloud-python/commit/f16067b585fcc1f0862ce15ed00789caf0ca25bb))
+
 ## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.29.3...google-cloud-documentai-v2.30.0) (2024-07-31)
 
 
