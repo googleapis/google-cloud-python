@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -712,6 +713,9 @@ class Audience(proto.Message):
             Required. Immutable. Unordered list. Filter
             clauses that define the Audience. All clauses
             will be AND’ed together.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time when the Audience was
+            created.
     """
 
     class AudienceExclusionDurationMode(proto.Enum):
@@ -766,6 +770,11 @@ class Audience(proto.Message):
         proto.MESSAGE,
         number=8,
         message="AudienceFilterClause",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
     )
 
 

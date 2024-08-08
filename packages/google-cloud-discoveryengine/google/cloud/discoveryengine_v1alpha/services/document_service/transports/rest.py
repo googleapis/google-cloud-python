@@ -560,6 +560,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
                     },
                     {
@@ -619,6 +623,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     {
                         "method": "get",
                         "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                     },
                     {
                         "method": "get",
@@ -1639,6 +1647,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
                 },
                 {
@@ -1758,6 +1770,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                 },
                 {
                     "method": "get",

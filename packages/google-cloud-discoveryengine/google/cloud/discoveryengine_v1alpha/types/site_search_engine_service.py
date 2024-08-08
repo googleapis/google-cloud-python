@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -54,6 +55,11 @@ __protobuf__ = proto.module(
         "BatchVerifyTargetSitesMetadata",
         "FetchDomainVerificationStatusRequest",
         "FetchDomainVerificationStatusResponse",
+        "SetUriPatternDocumentDataRequest",
+        "SetUriPatternDocumentDataResponse",
+        "SetUriPatternDocumentDataMetadata",
+        "GetUriPatternDocumentDataRequest",
+        "GetUriPatternDocumentDataResponse",
     },
 )
 
@@ -845,6 +851,137 @@ class FetchDomainVerificationStatusResponse(proto.Message):
     total_size: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+
+
+class SetUriPatternDocumentDataRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.SetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData]
+    method.
+
+    Attributes:
+        site_search_engine (str):
+            Required. Full resource name of the
+            [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine],
+            such as
+            ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine``.
+        document_data_map (MutableMapping[str, google.protobuf.struct_pb2.Struct]):
+            Document data keyed by URI pattern. Each entry must be
+            consistent with the
+            [Schema][google.cloud.discoveryengine.v1alpha.Schema]. For
+            example:
+            [Schema][google.cloud.discoveryengine.v1alpha.Schema] = {
+            "type": "object", "properties": { "Categories": { "type":
+            "array", "items": { "retrievable": true, "type": "string" }
+            } }
+
+            document_data_map = { "www.url1.com/*": { "Categories":
+            ["category1", "category2"] }, "www.url2.com/*": {
+            "Categories": ["category3"] } }
+        empty_document_data_map (bool):
+            If true, clears the document data map. If true,
+            [SetUriPatternDocumentDataRequest.document_data_map][google.cloud.discoveryengine.v1alpha.SetUriPatternDocumentDataRequest.document_data_map]
+            must be empty.
+        schema (google.protobuf.struct_pb2.Struct):
+            Optional. If not provided, the current
+            [Schema][google.cloud.discoveryengine.v1alpha.Schema] is
+            used. If provided, validates and updates the
+            [Schema][google.cloud.discoveryengine.v1alpha.Schema]. If
+            validation fails, an error is returned.
+    """
+
+    site_search_engine: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    document_data_map: MutableMapping[str, struct_pb2.Struct] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message=struct_pb2.Struct,
+    )
+    empty_document_data_map: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    schema: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=struct_pb2.Struct,
+    )
+
+
+class SetUriPatternDocumentDataResponse(proto.Message):
+    r"""Response message for
+    [SiteSearchEngineService.SetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData]
+    method.
+
+    """
+
+
+class SetUriPatternDocumentDataMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    [SiteSearchEngineService.SetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData]
+    operation. This will be returned by the
+    google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class GetUriPatternDocumentDataRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.GetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData]
+    method.
+
+    Attributes:
+        site_search_engine (str):
+            Required. Full resource name of the
+            [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine],
+            such as
+            ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine``.
+    """
+
+    site_search_engine: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetUriPatternDocumentDataResponse(proto.Message):
+    r"""Response message for
+    [SiteSearchEngineService.GetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData]
+    method.
+
+    Attributes:
+        document_data_map (MutableMapping[str, google.protobuf.struct_pb2.Struct]):
+            Document data keyed by URI pattern. For example:
+            document_data_map = { "www.url1.com/*": { "Categories":
+            ["category1", "category2"] }, "www.url2.com/*": {
+            "Categories": ["category3"] } }
+    """
+
+    document_data_map: MutableMapping[str, struct_pb2.Struct] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message=struct_pb2.Struct,
     )
 
 

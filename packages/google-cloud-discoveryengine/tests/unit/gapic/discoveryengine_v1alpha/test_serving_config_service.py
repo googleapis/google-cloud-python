@@ -2758,6 +2758,7 @@ def test_update_serving_config_rest(request_type):
                     "include_citations": True,
                     "ignore_adversarial_query": True,
                     "ignore_non_summary_seeking_query": True,
+                    "ignore_low_relevant_content": True,
                     "model_prompt_spec": {"preamble": "preamble_value"},
                     "language_code": "language_code_value",
                     "model_spec": {"version": "version_value"},

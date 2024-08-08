@@ -47,9 +47,9 @@ class dataCallTransformer(cst.CSTTransformer):
         'get_metadata': ('name', ),
         'list_audience_exports': ('parent', 'page_size', 'page_token', ),
         'query_audience_export': ('name', 'offset', 'limit', ),
-        'run_pivot_report': ('property', 'dimensions', 'metrics', 'date_ranges', 'pivots', 'dimension_filter', 'metric_filter', 'currency_code', 'cohort_spec', 'keep_empty_rows', 'return_property_quota', ),
+        'run_pivot_report': ('property', 'dimensions', 'metrics', 'date_ranges', 'pivots', 'dimension_filter', 'metric_filter', 'currency_code', 'cohort_spec', 'keep_empty_rows', 'return_property_quota', 'comparisons', ),
         'run_realtime_report': ('property', 'dimensions', 'metrics', 'dimension_filter', 'metric_filter', 'limit', 'metric_aggregations', 'order_bys', 'return_property_quota', 'minute_ranges', ),
-        'run_report': ('property', 'dimensions', 'metrics', 'date_ranges', 'dimension_filter', 'metric_filter', 'offset', 'limit', 'metric_aggregations', 'order_bys', 'currency_code', 'cohort_spec', 'keep_empty_rows', 'return_property_quota', ),
+        'run_report': ('property', 'dimensions', 'metrics', 'date_ranges', 'dimension_filter', 'metric_filter', 'offset', 'limit', 'metric_aggregations', 'order_bys', 'currency_code', 'cohort_spec', 'keep_empty_rows', 'return_property_quota', 'comparisons', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
