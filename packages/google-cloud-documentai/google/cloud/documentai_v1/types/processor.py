@@ -76,6 +76,9 @@ class ProcessorVersion(proto.Message):
             Output only. Reserved for future use.
         satisfies_pzi (bool):
             Output only. Reserved for future use.
+        gen_ai_model_info (google.cloud.documentai_v1.types.ProcessorVersion.GenAiModelInfo):
+            Output only. Information about Generative AI
+            model-based processor versions.
     """
 
     class State(proto.Enum):
@@ -155,6 +158,102 @@ class ProcessorVersion(proto.Message):
             number=2,
         )
 
+    class GenAiModelInfo(proto.Message):
+        r"""Information about Generative AI model-based processor
+        versions.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            foundation_gen_ai_model_info (google.cloud.documentai_v1.types.ProcessorVersion.GenAiModelInfo.FoundationGenAiModelInfo):
+                Information for a pretrained Google-managed
+                foundation model.
+
+                This field is a member of `oneof`_ ``model_info``.
+            custom_gen_ai_model_info (google.cloud.documentai_v1.types.ProcessorVersion.GenAiModelInfo.CustomGenAiModelInfo):
+                Information for a custom Generative AI model
+                created by the user.
+
+                This field is a member of `oneof`_ ``model_info``.
+        """
+
+        class FoundationGenAiModelInfo(proto.Message):
+            r"""Information for a pretrained Google-managed foundation model.
+
+            Attributes:
+                finetuning_allowed (bool):
+                    Whether finetuning is allowed for this base
+                    processor version.
+                min_train_labeled_documents (int):
+                    The minimum number of labeled documents in
+                    the training dataset required for finetuning.
+            """
+
+            finetuning_allowed: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+            )
+            min_train_labeled_documents: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+
+        class CustomGenAiModelInfo(proto.Message):
+            r"""Information for a custom Generative AI model created by the user.
+            These are created with ``Create New Version`` in either the
+            ``Call foundation model`` or ``Fine tuning`` tabs.
+
+            Attributes:
+                custom_model_type (google.cloud.documentai_v1.types.ProcessorVersion.GenAiModelInfo.CustomGenAiModelInfo.CustomModelType):
+                    The type of custom model created by the user.
+                base_processor_version_id (str):
+                    The base processor version ID for the custom
+                    model.
+            """
+
+            class CustomModelType(proto.Enum):
+                r"""The type of custom model created by the user.
+
+                Values:
+                    CUSTOM_MODEL_TYPE_UNSPECIFIED (0):
+                        The model type is unspecified.
+                    VERSIONED_FOUNDATION (1):
+                        The model is a versioned foundation model.
+                    FINE_TUNED (2):
+                        The model is a finetuned foundation model.
+                """
+                CUSTOM_MODEL_TYPE_UNSPECIFIED = 0
+                VERSIONED_FOUNDATION = 1
+                FINE_TUNED = 2
+
+            custom_model_type: "ProcessorVersion.GenAiModelInfo.CustomGenAiModelInfo.CustomModelType" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="ProcessorVersion.GenAiModelInfo.CustomGenAiModelInfo.CustomModelType",
+            )
+            base_processor_version_id: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        foundation_gen_ai_model_info: "ProcessorVersion.GenAiModelInfo.FoundationGenAiModelInfo" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="model_info",
+            message="ProcessorVersion.GenAiModelInfo.FoundationGenAiModelInfo",
+        )
+        custom_gen_ai_model_info: "ProcessorVersion.GenAiModelInfo.CustomGenAiModelInfo" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="model_info",
+            message="ProcessorVersion.GenAiModelInfo.CustomGenAiModelInfo",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -212,6 +311,11 @@ class ProcessorVersion(proto.Message):
     satisfies_pzi: bool = proto.Field(
         proto.BOOL,
         number=17,
+    )
+    gen_ai_model_info: GenAiModelInfo = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=GenAiModelInfo,
     )
 
 

@@ -504,6 +504,10 @@ class SampleQueryServiceRestTransport(SampleQueryServiceTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
                     },
                     {
@@ -563,6 +567,10 @@ class SampleQueryServiceRestTransport(SampleQueryServiceTransport):
                     {
                         "method": "get",
                         "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                     },
                     {
                         "method": "get",
@@ -1356,6 +1364,10 @@ class SampleQueryServiceRestTransport(SampleQueryServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
                 },
                 {
@@ -1475,6 +1487,10 @@ class SampleQueryServiceRestTransport(SampleQueryServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                 },
                 {
                     "method": "get",

@@ -78,6 +78,8 @@ class SearchServiceAsyncClient:
     parse_serving_config_path = staticmethod(
         SearchServiceClient.parse_serving_config_path
     )
+    session_path = staticmethod(SearchServiceClient.session_path)
+    parse_session_path = staticmethod(SearchServiceClient.parse_session_path)
     common_billing_account_path = staticmethod(
         SearchServiceClient.common_billing_account_path
     )

@@ -451,6 +451,10 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
                     },
                     {
@@ -510,6 +514,10 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                     {
                         "method": "get",
                         "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                     },
                     {
                         "method": "get",
@@ -636,6 +644,10 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/userEvents:collect",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=projects/*/locations/*}/userEvents:collect",
                 },
             ]
             request, metadata = self._interceptor.pre_collect_user_event(
@@ -1177,6 +1189,10 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
                 },
                 {
@@ -1296,6 +1312,10 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                 },
                 {
                     "method": "get",

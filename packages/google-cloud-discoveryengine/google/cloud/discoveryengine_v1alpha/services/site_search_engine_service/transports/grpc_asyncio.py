@@ -625,6 +625,70 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
             )
         return self._stubs["fetch_domain_verification_status"]
 
+    @property
+    def set_uri_pattern_document_data(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.SetUriPatternDocumentDataRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the set uri pattern document data method over gRPC.
+
+        Sets the URI Pattern to Document data mapping for an
+        Advanced Site Search DataStore.
+
+        Returns:
+            Callable[[~.SetUriPatternDocumentDataRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_uri_pattern_document_data" not in self._stubs:
+            self._stubs[
+                "set_uri_pattern_document_data"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/SetUriPatternDocumentData",
+                request_serializer=site_search_engine_service.SetUriPatternDocumentDataRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["set_uri_pattern_document_data"]
+
+    @property
+    def get_uri_pattern_document_data(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.GetUriPatternDocumentDataRequest],
+        Awaitable[site_search_engine_service.GetUriPatternDocumentDataResponse],
+    ]:
+        r"""Return a callable for the get uri pattern document data method over gRPC.
+
+        Gets the URI Pattern to Document data mapping for an
+        Advanced Site Search DataStore.
+
+        Returns:
+            Callable[[~.GetUriPatternDocumentDataRequest],
+                    Awaitable[~.GetUriPatternDocumentDataResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_uri_pattern_document_data" not in self._stubs:
+            self._stubs[
+                "get_uri_pattern_document_data"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/GetUriPatternDocumentData",
+                request_serializer=site_search_engine_service.GetUriPatternDocumentDataRequest.serialize,
+                response_deserializer=site_search_engine_service.GetUriPatternDocumentDataResponse.deserialize,
+            )
+        return self._stubs["get_uri_pattern_document_data"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -685,6 +749,16 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
             ),
             self.fetch_domain_verification_status: gapic_v1.method_async.wrap_method(
                 self.fetch_domain_verification_status,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_uri_pattern_document_data: gapic_v1.method_async.wrap_method(
+                self.set_uri_pattern_document_data,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_uri_pattern_document_data: gapic_v1.method_async.wrap_method(
+                self.get_uri_pattern_document_data,
                 default_timeout=None,
                 client_info=client_info,
             ),
