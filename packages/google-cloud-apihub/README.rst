@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for API Hub API
+=============================
 
 |preview| |pypi| |versions|
 
-``_: 
+`API Hub API`_: API hub lets you consolidate and organize information about all of the APIs of interest to your organization. API hub lets you capture critical information about APIs that allows developers to discover and evaluate them easily and leverage the work of other teams wherever possible. API platform teams can use API hub to have visibility into and manage their portfolio of APIs.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-cloud-apihub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-apihub.svg
    :target: https://pypi.org/project/google-cloud-apihub/
-.. _: 
+.. _API Hub API: https://cloud.google.com/apigee/docs/apihub/what-is-api-hub
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-apihub/latest/summary_overview
-.. _Product Documentation:  
+.. _Product Documentation:  https://cloud.google.com/apigee/docs/apihub/what-is-api-hub
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the API Hub API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the API Hub API.:  https://cloud.google.com/apigee/docs/apihub/what-is-api-hub
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for API Hub API
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `API Hub API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _API Hub API Product documentation:  https://cloud.google.com/apigee/docs/apihub/what-is-api-hub
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
