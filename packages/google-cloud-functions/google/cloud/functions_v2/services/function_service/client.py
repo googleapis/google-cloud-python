@@ -1316,9 +1316,8 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The list of fields to be updated.
-                If no field mask is provided, all
-                provided fields in the request will be
-                updated.
+                If no field mask is provided, all fields
+                will be updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1546,12 +1545,11 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
            credentials would be used, but that identity does not have
            permissions to upload files to the URL.
 
-        When making a HTTP PUT request, these two headers need to be
-        specified:
+        When making a HTTP PUT request, specify this header:
 
         -  ``content-type: application/zip``
 
-        And this header SHOULD NOT be specified:
+        Do not specify this header:
 
         -  ``Authorization: Bearer YOUR_TOKEN``
 

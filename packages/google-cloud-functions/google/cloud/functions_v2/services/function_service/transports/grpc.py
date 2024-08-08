@@ -421,12 +421,11 @@ class FunctionServiceGrpcTransport(FunctionServiceTransport):
            credentials would be used, but that identity does not have
            permissions to upload files to the URL.
 
-        When making a HTTP PUT request, these two headers need to be
-        specified:
+        When making a HTTP PUT request, specify this header:
 
         -  ``content-type: application/zip``
 
-        And this header SHOULD NOT be specified:
+        Do not specify this header:
 
         -  ``Authorization: Bearer YOUR_TOKEN``
 

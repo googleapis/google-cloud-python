@@ -1185,6 +1185,7 @@ def test_get_function(request_type, transport: str = "grpc"):
             environment=functions.Environment.GEN_1,
             url="url_value",
             kms_key_name="kms_key_name_value",
+            satisfies_pzs=True,
         )
         response = client.get_function(request)
 
@@ -1202,6 +1203,7 @@ def test_get_function(request_type, transport: str = "grpc"):
     assert response.environment == functions.Environment.GEN_1
     assert response.url == "url_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.satisfies_pzs is True
 
 
 def test_get_function_empty_call():
@@ -1236,6 +1238,7 @@ def test_get_function_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = functions.GetFunctionRequest(
         name="name_value",
+        revision="revision_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1248,6 +1251,7 @@ def test_get_function_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == functions.GetFunctionRequest(
             name="name_value",
+            revision="revision_value",
         )
 
 
@@ -1306,6 +1310,7 @@ async def test_get_function_empty_call_async():
                 environment=functions.Environment.GEN_1,
                 url="url_value",
                 kms_key_name="kms_key_name_value",
+                satisfies_pzs=True,
             )
         )
         response = await client.get_function()
@@ -1379,6 +1384,7 @@ async def test_get_function_async(
                 environment=functions.Environment.GEN_1,
                 url="url_value",
                 kms_key_name="kms_key_name_value",
+                satisfies_pzs=True,
             )
         )
         response = await client.get_function(request)
@@ -1397,6 +1403,7 @@ async def test_get_function_async(
     assert response.environment == functions.Environment.GEN_1
     assert response.url == "url_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.asyncio
@@ -4220,6 +4227,7 @@ def test_get_function_rest(request_type):
             environment=functions.Environment.GEN_1,
             url="url_value",
             kms_key_name="kms_key_name_value",
+            satisfies_pzs=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -4241,6 +4249,7 @@ def test_get_function_rest(request_type):
     assert response.environment == functions.Environment.GEN_1
     assert response.url == "url_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.satisfies_pzs is True
 
 
 def test_get_function_rest_use_cached_wrapped_rpc():
@@ -4304,6 +4313,8 @@ def test_get_function_rest_required_fields(request_type=functions.GetFunctionReq
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get_function._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("revision",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4357,7 +4368,7 @@ def test_get_function_rest_unset_required_fields():
     )
 
     unset_fields = transport.get_function._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("revision",)) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4896,6 +4907,8 @@ def test_create_function_rest(request_type):
         "name": "name_value",
         "description": "description_value",
         "build_config": {
+            "automatic_update_policy": {},
+            "on_deploy_update_policy": {"runtime_version": "runtime_version_value"},
             "build": "build_value",
             "runtime": "runtime_value",
             "entry_point": "entry_point_value",
@@ -4904,6 +4917,7 @@ def test_create_function_rest(request_type):
                     "bucket": "bucket_value",
                     "object_": "object__value",
                     "generation": 1068,
+                    "source_upload_url": "source_upload_url_value",
                 },
                 "repo_source": {
                     "branch_name": "branch_name_value",
@@ -4914,15 +4928,18 @@ def test_create_function_rest(request_type):
                     "dir_": "dir__value",
                     "invert_regex": True,
                 },
+                "git_uri": "git_uri_value",
             },
             "source_provenance": {
                 "resolved_storage_source": {},
                 "resolved_repo_source": {},
+                "git_uri": "git_uri_value",
             },
             "worker_pool": "worker_pool_value",
             "environment_variables": {},
             "docker_registry": 1,
             "docker_repository": "docker_repository_value",
+            "service_account": "service_account_value",
         },
         "service_config": {
             "service": "service_value",
@@ -4957,6 +4974,7 @@ def test_create_function_rest(request_type):
             "revision": "revision_value",
             "max_instance_request_concurrency": 3436,
             "security_level": 1,
+            "binary_authorization_policy": "binary_authorization_policy_value",
         },
         "event_trigger": {
             "trigger": "trigger_value",
@@ -4973,6 +4991,7 @@ def test_create_function_rest(request_type):
             "service_account_email": "service_account_email_value",
             "retry_policy": 1,
             "channel": "channel_value",
+            "service": "service_value",
         },
         "state": 1,
         "update_time": {"seconds": 751, "nanos": 543},
@@ -4983,6 +5002,8 @@ def test_create_function_rest(request_type):
         "environment": 1,
         "url": "url_value",
         "kms_key_name": "kms_key_name_value",
+        "satisfies_pzs": True,
+        "create_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5370,6 +5391,8 @@ def test_update_function_rest(request_type):
         "name": "projects/sample1/locations/sample2/functions/sample3",
         "description": "description_value",
         "build_config": {
+            "automatic_update_policy": {},
+            "on_deploy_update_policy": {"runtime_version": "runtime_version_value"},
             "build": "build_value",
             "runtime": "runtime_value",
             "entry_point": "entry_point_value",
@@ -5378,6 +5401,7 @@ def test_update_function_rest(request_type):
                     "bucket": "bucket_value",
                     "object_": "object__value",
                     "generation": 1068,
+                    "source_upload_url": "source_upload_url_value",
                 },
                 "repo_source": {
                     "branch_name": "branch_name_value",
@@ -5388,15 +5412,18 @@ def test_update_function_rest(request_type):
                     "dir_": "dir__value",
                     "invert_regex": True,
                 },
+                "git_uri": "git_uri_value",
             },
             "source_provenance": {
                 "resolved_storage_source": {},
                 "resolved_repo_source": {},
+                "git_uri": "git_uri_value",
             },
             "worker_pool": "worker_pool_value",
             "environment_variables": {},
             "docker_registry": 1,
             "docker_repository": "docker_repository_value",
+            "service_account": "service_account_value",
         },
         "service_config": {
             "service": "service_value",
@@ -5431,6 +5458,7 @@ def test_update_function_rest(request_type):
             "revision": "revision_value",
             "max_instance_request_concurrency": 3436,
             "security_level": 1,
+            "binary_authorization_policy": "binary_authorization_policy_value",
         },
         "event_trigger": {
             "trigger": "trigger_value",
@@ -5447,6 +5475,7 @@ def test_update_function_rest(request_type):
             "service_account_email": "service_account_email_value",
             "retry_policy": 1,
             "channel": "channel_value",
+            "service": "service_value",
         },
         "state": 1,
         "update_time": {"seconds": 751, "nanos": 543},
@@ -5457,6 +5486,8 @@ def test_update_function_rest(request_type):
         "environment": 1,
         "url": "url_value",
         "kms_key_name": "kms_key_name_value",
+        "satisfies_pzs": True,
+        "create_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
