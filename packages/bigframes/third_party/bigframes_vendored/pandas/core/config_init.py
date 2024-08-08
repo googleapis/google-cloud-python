@@ -18,6 +18,7 @@ Encapsulates the configuration for displaying objects.
 **Examples:**
 
 Define Repr mode to "deferred" will prevent job execution in repr.
+
     >>> import bigframes.pandas as bpd
     >>> df = bpd.read_gbq("bigquery-public-data.ml_datasets.penguins")
 
@@ -26,25 +27,32 @@ Define Repr mode to "deferred" will prevent job execution in repr.
     Computation deferred. Computation will process 28.9 kB
 
 Users can also get a dry run of the job by accessing the query_job property before they've run the job. This will return a dry run instance of the job they can inspect.
+
     >>> df.query_job.total_bytes_processed
     28947
 
 User can execute the job by calling .to_pandas()
+
     >>> # df.to_pandas()
 
 Reset repr_mode option
+
     >>> bpd.options.display.repr_mode = "head"
 
 Can also set the progress_bar option to see the progress bar in terminal,
+
     >>> bpd.options.display.progress_bar = "terminal"
 
 notebook,
+
     >>> bpd.options.display.progress_bar = "notebook"
 
 or just remove it.
+
     >>> bpd.options.display.progress_bar = None
 
 Setting to default value "auto" will detect and show progress bar automatically.
+
     >>> bpd.options.display.progress_bar = "auto"
 
 Attributes:
