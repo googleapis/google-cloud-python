@@ -39,7 +39,8 @@ class NotificationConfig(proto.Message):
 
     Attributes:
         name (str):
-            The relative resource name of this notification config. See:
+            Identifier. The relative resource name of this notification
+            config. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             The following list shows some examples: +
             ``organizations/{organization_id}/locations/{location_id}/notificationConfigs/notify_public_bucket``

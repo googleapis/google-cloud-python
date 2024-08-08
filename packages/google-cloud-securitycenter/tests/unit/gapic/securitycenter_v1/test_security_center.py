@@ -2945,6 +2945,7 @@ def test_create_mute_config(request_type, transport: str = "grpc"):
             description="description_value",
             filter="filter_value",
             most_recent_editor="most_recent_editor_value",
+            type_=gcs_mute_config.MuteConfig.MuteConfigType.STATIC,
         )
         response = client.create_mute_config(request)
 
@@ -2961,6 +2962,7 @@ def test_create_mute_config(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.filter == "filter_value"
     assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.type_ == gcs_mute_config.MuteConfig.MuteConfigType.STATIC
 
 
 def test_create_mute_config_empty_call():
@@ -3076,6 +3078,7 @@ async def test_create_mute_config_empty_call_async():
                 description="description_value",
                 filter="filter_value",
                 most_recent_editor="most_recent_editor_value",
+                type_=gcs_mute_config.MuteConfig.MuteConfigType.STATIC,
             )
         )
         response = await client.create_mute_config()
@@ -3151,6 +3154,7 @@ async def test_create_mute_config_async(
                 description="description_value",
                 filter="filter_value",
                 most_recent_editor="most_recent_editor_value",
+                type_=gcs_mute_config.MuteConfig.MuteConfigType.STATIC,
             )
         )
         response = await client.create_mute_config(request)
@@ -3168,6 +3172,7 @@ async def test_create_mute_config_async(
     assert response.description == "description_value"
     assert response.filter == "filter_value"
     assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.type_ == gcs_mute_config.MuteConfig.MuteConfigType.STATIC
 
 
 @pytest.mark.asyncio
@@ -6525,6 +6530,7 @@ def test_get_mute_config(request_type, transport: str = "grpc"):
             description="description_value",
             filter="filter_value",
             most_recent_editor="most_recent_editor_value",
+            type_=mute_config.MuteConfig.MuteConfigType.STATIC,
         )
         response = client.get_mute_config(request)
 
@@ -6541,6 +6547,7 @@ def test_get_mute_config(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.filter == "filter_value"
     assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.type_ == mute_config.MuteConfig.MuteConfigType.STATIC
 
 
 def test_get_mute_config_empty_call():
@@ -6644,6 +6651,7 @@ async def test_get_mute_config_empty_call_async():
                 description="description_value",
                 filter="filter_value",
                 most_recent_editor="most_recent_editor_value",
+                type_=mute_config.MuteConfig.MuteConfigType.STATIC,
             )
         )
         response = await client.get_mute_config()
@@ -6717,6 +6725,7 @@ async def test_get_mute_config_async(
                 description="description_value",
                 filter="filter_value",
                 most_recent_editor="most_recent_editor_value",
+                type_=mute_config.MuteConfig.MuteConfigType.STATIC,
             )
         )
         response = await client.get_mute_config(request)
@@ -6734,6 +6743,7 @@ async def test_get_mute_config_async(
     assert response.description == "description_value"
     assert response.filter == "filter_value"
     assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.type_ == mute_config.MuteConfig.MuteConfigType.STATIC
 
 
 @pytest.mark.asyncio
@@ -18155,6 +18165,7 @@ def test_update_mute_config(request_type, transport: str = "grpc"):
             description="description_value",
             filter="filter_value",
             most_recent_editor="most_recent_editor_value",
+            type_=gcs_mute_config.MuteConfig.MuteConfigType.STATIC,
         )
         response = client.update_mute_config(request)
 
@@ -18171,6 +18182,7 @@ def test_update_mute_config(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.filter == "filter_value"
     assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.type_ == gcs_mute_config.MuteConfig.MuteConfigType.STATIC
 
 
 def test_update_mute_config_empty_call():
@@ -18280,6 +18292,7 @@ async def test_update_mute_config_empty_call_async():
                 description="description_value",
                 filter="filter_value",
                 most_recent_editor="most_recent_editor_value",
+                type_=gcs_mute_config.MuteConfig.MuteConfigType.STATIC,
             )
         )
         response = await client.update_mute_config()
@@ -18355,6 +18368,7 @@ async def test_update_mute_config_async(
                 description="description_value",
                 filter="filter_value",
                 most_recent_editor="most_recent_editor_value",
+                type_=gcs_mute_config.MuteConfig.MuteConfigType.STATIC,
             )
         )
         response = await client.update_mute_config(request)
@@ -18372,6 +18386,7 @@ async def test_update_mute_config_async(
     assert response.description == "description_value"
     assert response.filter == "filter_value"
     assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.type_ == gcs_mute_config.MuteConfig.MuteConfigType.STATIC
 
 
 @pytest.mark.asyncio
@@ -31569,6 +31584,7 @@ def test_create_finding_rest(request_type):
                 "exploitation_activity": 1,
                 "observed_in_the_wild": True,
                 "zero_day": True,
+                "exploit_release_date": {},
             },
             "offending_package": {
                 "package_name": "package_name_value",
@@ -31620,6 +31636,12 @@ def test_create_finding_rest(request_type):
             }
         ],
         "mute_initiator": "mute_initiator_value",
+        "mute_info": {
+            "static_mute": {"state": 1, "apply_time": {}},
+            "dynamic_mute_records": [
+                {"mute_config": "mute_config_value", "match_time": {}}
+            ],
+        },
         "processes": [
             {
                 "name": "name_value",
@@ -32259,6 +32281,8 @@ def test_create_mute_config_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "most_recent_editor": "most_recent_editor_value",
+        "type_": 1,
+        "expiry_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -32340,6 +32364,7 @@ def test_create_mute_config_rest(request_type):
             description="description_value",
             filter="filter_value",
             most_recent_editor="most_recent_editor_value",
+            type_=gcs_mute_config.MuteConfig.MuteConfigType.STATIC,
         )
 
         # Wrap the value into a proper Response obj
@@ -32360,6 +32385,7 @@ def test_create_mute_config_rest(request_type):
     assert response.description == "description_value"
     assert response.filter == "filter_value"
     assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.type_ == gcs_mute_config.MuteConfig.MuteConfigType.STATIC
 
 
 def test_create_mute_config_rest_use_cached_wrapped_rpc():
@@ -35240,6 +35266,7 @@ def test_get_mute_config_rest(request_type):
             description="description_value",
             filter="filter_value",
             most_recent_editor="most_recent_editor_value",
+            type_=mute_config.MuteConfig.MuteConfigType.STATIC,
         )
 
         # Wrap the value into a proper Response obj
@@ -35260,6 +35287,7 @@ def test_get_mute_config_rest(request_type):
     assert response.description == "description_value"
     assert response.filter == "filter_value"
     assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.type_ == mute_config.MuteConfig.MuteConfigType.STATIC
 
 
 def test_get_mute_config_rest_use_cached_wrapped_rpc():
@@ -43443,6 +43471,7 @@ def test_update_finding_rest(request_type):
                 "exploitation_activity": 1,
                 "observed_in_the_wild": True,
                 "zero_day": True,
+                "exploit_release_date": {},
             },
             "offending_package": {
                 "package_name": "package_name_value",
@@ -43494,6 +43523,12 @@ def test_update_finding_rest(request_type):
             }
         ],
         "mute_initiator": "mute_initiator_value",
+        "mute_info": {
+            "static_mute": {"state": 1, "apply_time": {}},
+            "dynamic_mute_records": [
+                {"mute_config": "mute_config_value", "match_time": {}}
+            ],
+        },
         "processes": [
             {
                 "name": "name_value",
@@ -44110,6 +44145,8 @@ def test_update_mute_config_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "most_recent_editor": "most_recent_editor_value",
+        "type_": 1,
+        "expiry_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -44191,6 +44228,7 @@ def test_update_mute_config_rest(request_type):
             description="description_value",
             filter="filter_value",
             most_recent_editor="most_recent_editor_value",
+            type_=gcs_mute_config.MuteConfig.MuteConfigType.STATIC,
         )
 
         # Wrap the value into a proper Response obj
@@ -44211,6 +44249,7 @@ def test_update_mute_config_rest(request_type):
     assert response.description == "description_value"
     assert response.filter == "filter_value"
     assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.type_ == gcs_mute_config.MuteConfig.MuteConfigType.STATIC
 
 
 def test_update_mute_config_rest_use_cached_wrapped_rpc():

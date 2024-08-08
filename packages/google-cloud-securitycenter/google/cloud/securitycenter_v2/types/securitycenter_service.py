@@ -179,7 +179,28 @@ class BulkMuteFindingsRequest(proto.Message):
             -  string literals in quotes.
             -  integer literals without quotes.
             -  boolean literals ``true`` and ``false`` without quotes.
+        mute_state (google.cloud.securitycenter_v2.types.BulkMuteFindingsRequest.MuteState):
+            Optional. All findings matching the given filter will have
+            their mute state set to this value. The default value is
+            ``MUTED``. Setting this to ``UNDEFINED`` will clear the mute
+            state on all matching findings.
     """
+
+    class MuteState(proto.Enum):
+        r"""The mute state.
+
+        Values:
+            MUTE_STATE_UNSPECIFIED (0):
+                Unused.
+            MUTED (1):
+                Matching findings will be muted (default).
+            UNDEFINED (2):
+                Matching findings will have their mute state
+                cleared.
+        """
+        MUTE_STATE_UNSPECIFIED = 0
+        MUTED = 1
+        UNDEFINED = 2
 
     parent: str = proto.Field(
         proto.STRING,
@@ -188,6 +209,11 @@ class BulkMuteFindingsRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    mute_state: MuteState = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=MuteState,
     )
 
 
@@ -205,9 +231,9 @@ class CreateBigQueryExportRequest(proto.Message):
         parent (str):
             Required. The name of the parent resource of the new
             BigQuery export. Its format is
-            "organizations/[organization_id]/locations/[location_id]",
-            "folders/[folder_id]/locations/[location_id]", or
-            "projects/[project_id]/locations/[location_id]".
+            ``organizations/[organization_id]/locations/[location_id]``,
+            ``folders/[folder_id]/locations/[location_id]``, or
+            ``projects/[project_id]/locations/[location_id]``.
         big_query_export (google.cloud.securitycenter_v2.types.BigQueryExport):
             Required. The BigQuery export being created.
         big_query_export_id (str):
@@ -277,9 +303,9 @@ class CreateMuteConfigRequest(proto.Message):
         parent (str):
             Required. Resource name of the new mute configs's parent.
             Its format is
-            "organizations/[organization_id]/locations/[location_id]",
-            "folders/[folder_id]/locations/[location_id]", or
-            "projects/[project_id]/locations/[location_id]".
+            ``organizations/[organization_id]/locations/[location_id]``,
+            ``folders/[folder_id]/locations/[location_id]``, or
+            ``projects/[project_id]/locations/[location_id]``.
         mute_config (google.cloud.securitycenter_v2.types.MuteConfig):
             Required. The mute config being created.
         mute_config_id (str):
@@ -313,9 +339,9 @@ class CreateNotificationConfigRequest(proto.Message):
         parent (str):
             Required. Resource name of the new notification config's
             parent. Its format is
-            "organizations/[organization_id]/locations/[location_id]",
-            "folders/[folder_id]/locations/[location_id]", or
-            "projects/[project_id]/locations/[location_id]".
+            ``organizations/[organization_id]/locations/[location_id]``,
+            ``folders/[folder_id]/locations/[location_id]``, or
+            ``projects/[project_id]/locations/[location_id]``.
         config_id (str):
             Required.
             Unique identifier provided by the client within
@@ -373,7 +399,7 @@ class CreateSourceRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Resource name of the new source's parent. Its
-            format should be "organizations/[organization_id]".
+            format should be ``organizations/[organization_id]``.
         source (google.cloud.securitycenter_v2.types.Source):
             Required. The Source being created, only the display_name
             and description will be used. All other fields will be
@@ -570,7 +596,7 @@ class GetSourceRequest(proto.Message):
     Attributes:
         name (str):
             Required. Relative resource name of the source. Its format
-            is "organizations/[organization_id]/source/[source_id]".
+            is ``organizations/[organization_id]/source/[source_id]``.
     """
 
     name: str = proto.Field(
@@ -774,10 +800,10 @@ class ListAttackPathsRequest(proto.Message):
         parent (str):
             Required. Name of parent to list attack paths.
 
-            Valid formats: "organizations/{organization}",
-            "organizations/{organization}/simulations/{simulation}"
-            "organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}"
-            "organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}".
+            Valid formats: ``organizations/{organization}``,
+            ``organizations/{organization}/simulations/{simulation}``
+            ``organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}``
+            ``organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}``
         filter (str):
             The filter expression that filters the attack path in the
             response. Supported fields:
@@ -847,12 +873,12 @@ class GetSimulationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The organization name or simulation
-            name of this simulation
-            Valid format:
+            Required. The organization name or simulation name of this
+            simulation
 
-            "organizations/{organization}/simulations/latest"
-            "organizations/{organization}/simulations/{simulation}".
+            Valid format:
+            ``organizations/{organization}/simulations/latest``
+            ``organizations/{organization}/simulations/{simulation}``
     """
 
     name: str = proto.Field(
@@ -869,7 +895,7 @@ class GetValuedResourceRequest(proto.Message):
             Required. The name of this valued resource
 
             Valid format:
-            "organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}".
+            ``organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}``
     """
 
     name: str = proto.Field(
@@ -886,9 +912,9 @@ class ListBigQueryExportsRequest(proto.Message):
         parent (str):
             Required. The parent, which owns the collection of BigQuery
             exports. Its format is
-            "organizations/[organization_id]/locations/[location_id]",
-            "folders/[folder_id]/locations/[location_id]", or
-            "projects/[project_id]/locations/[location_id]".
+            ``organizations/[organization_id]/locations/[location_id]``,
+            ``folders/[folder_id]/locations/[location_id]``, or
+            ``projects/[project_id]/locations/[location_id]``.
         page_size (int):
             The maximum number of configs to return. The
             service may return fewer than this value.
@@ -1162,13 +1188,13 @@ class ListFindingsResponse(proto.Message):
                 resource_path_string (str):
                     A string representation of the resource path. For Google
                     Cloud, it has the format of
-                    organizations/{organization_id}/folders/{folder_id}/folders/{folder_id}/projects/{project_id}
+                    ``organizations/{organization_id}/folders/{folder_id}/folders/{folder_id}/projects/{project_id}``
                     where there can be any number of folders. For AWS, it has
                     the format of
-                    org/{organization_id}/ou/{organizational_unit_id}/ou/{organizational_unit_id}/account/{account_id}
+                    ``org/{organization_id}/ou/{organizational_unit_id}/ou/{organizational_unit_id}/account/{account_id}``
                     where there can be any number of organizational units. For
                     Azure, it has the format of
-                    mg/{management_group_id}/mg/{management_group_id}/subscription/{subscription_id}/rg/{resource_group_name}
+                    ``mg/{management_group_id}/mg/{management_group_id}/subscription/{subscription_id}/rg/{resource_group_name}``
                     where there can be any number of management groups.
             """
 
@@ -1263,11 +1289,12 @@ class ListMuteConfigsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, which owns the collection of mute
-            configs. Its format is "organizations/[organization_id]",
-            "folders/[folder_id]", "projects/[project_id]",
-            "organizations/[organization_id]/locations/[location_id]",
-            "folders/[folder_id]/locations/[location_id]",
-            "projects/[project_id]/locations/[location_id]".
+            configs. Its format is
+            ``organizations/[organization_id]", "folders/[folder_id]``,
+            ``projects/[project_id]``,
+            ``organizations/[organization_id]/locations/[location_id]``,
+            ``folders/[folder_id]/locations/[location_id]``,
+            ``projects/[project_id]/locations/[location_id]``.
         page_size (int):
             The maximum number of configs to return. The
             service may return fewer than this value.
@@ -1395,7 +1422,7 @@ class ListResourceValueConfigsRequest(proto.Message):
         parent (str):
             Required. The parent, which owns the collection of resource
             value configs. Its format is
-            "organizations/[organization_id]".
+            ``organizations/[organization_id]``
         page_size (int):
             The maximum number of configs to return. The
             service may return fewer than this value.
@@ -1465,8 +1492,8 @@ class ListSourcesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Resource name of the parent of sources to list.
-            Its format should be "organizations/[organization_id]",
-            "folders/[folder_id]", or "projects/[project_id]".
+            Its format should be ``organizations/[organization_id]``,
+            ``folders/[folder_id]``, or ``projects/[project_id]``.
         page_token (str):
             The value returned by the last ``ListSourcesResponse``;
             indicates that this is a continuation of a prior
@@ -1526,9 +1553,9 @@ class ListValuedResourcesRequest(proto.Message):
         parent (str):
             Required. Name of parent to list exposed resources.
 
-            Valid formats: "organizations/{organization}",
-            "organizations/{organization}/simulations/{simulation}"
-            "organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}".
+            Valid formats: ``organizations/{organization}``,
+            ``organizations/{organization}/simulations/{simulation}``
+            ``organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}``
         filter (str):
             The filter expression that filters the valued resources in
             the response. Supported fields:

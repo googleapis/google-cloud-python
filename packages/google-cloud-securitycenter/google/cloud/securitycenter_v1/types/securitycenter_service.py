@@ -192,7 +192,28 @@ class BulkMuteFindingsRequest(proto.Message):
             This can be a mute configuration name or any
             identifier for mute/unmute of findings based on
             the filter.
+        mute_state (google.cloud.securitycenter_v1.types.BulkMuteFindingsRequest.MuteState):
+            Optional. All findings matching the given filter will have
+            their mute state set to this value. The default value is
+            ``MUTED``. Setting this to ``UNDEFINED`` will clear the mute
+            state on all matching findings.
     """
+
+    class MuteState(proto.Enum):
+        r"""The mute state.
+
+        Values:
+            MUTE_STATE_UNSPECIFIED (0):
+                Unused.
+            MUTED (1):
+                Matching findings will be muted (default).
+            UNDEFINED (2):
+                Matching findings will have their mute state
+                cleared.
+        """
+        MUTE_STATE_UNSPECIFIED = 0
+        MUTED = 1
+        UNDEFINED = 2
 
     parent: str = proto.Field(
         proto.STRING,
@@ -205,6 +226,11 @@ class BulkMuteFindingsRequest(proto.Message):
     mute_annotation: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    mute_state: MuteState = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=MuteState,
     )
 
 
@@ -3235,9 +3261,9 @@ class DeleteEventThreatDetectionCustomModuleRequest(proto.Message):
 
             Its format is:
 
-            -  "organizations/{organization}/eventThreatDetectionSettings/customModules/{module}".
-            -  "folders/{folder}/eventThreatDetectionSettings/customModules/{module}".
-            -  "projects/{project}/eventThreatDetectionSettings/customModules/{module}".
+            -  ``organizations/{organization}/eventThreatDetectionSettings/customModules/{module}``.
+            -  ``folders/{folder}/eventThreatDetectionSettings/customModules/{module}``.
+            -  ``projects/{project}/eventThreatDetectionSettings/customModules/{module}``.
     """
 
     name: str = proto.Field(

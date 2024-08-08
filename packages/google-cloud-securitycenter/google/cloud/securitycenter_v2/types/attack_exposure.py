@@ -42,10 +42,10 @@ class AttackExposure(proto.Message):
             The most recent time the attack exposure was
             updated on this finding.
         attack_exposure_result (str):
-            The resource name of the attack path
-            simulation result that contains the details
-            regarding this attack exposure score. Example:
-            organizations/123/simulations/456/attackExposureResults/789
+            The resource name of the attack path simulation result that
+            contains the details regarding this attack exposure score.
+            Example:
+            ``organizations/123/simulations/456/attackExposureResults/789``
         state (google.cloud.securitycenter_v2.types.AttackExposure.State):
             Output only. What state this AttackExposure
             is in. This captures whether or not an attack

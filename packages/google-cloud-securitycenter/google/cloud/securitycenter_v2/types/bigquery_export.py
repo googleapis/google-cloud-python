@@ -33,7 +33,7 @@ class BigQueryExport(proto.Message):
 
     Attributes:
         name (str):
-            The relative resource name of this export. See:
+            Identifier. The relative resource name of this export. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name.
             The following list shows some examples:
 
@@ -77,7 +77,7 @@ class BigQueryExport(proto.Message):
         dataset (str):
             The dataset to write findings' updates to. Its format is
             "projects/[project_id]/datasets/[bigquery_dataset_id]".
-            BigQuery Dataset unique ID must contain only letters (a-z,
+            BigQuery dataset unique ID must contain only letters (a-z,
             A-Z), numbers (0-9), or underscores (_).
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the BigQuery
