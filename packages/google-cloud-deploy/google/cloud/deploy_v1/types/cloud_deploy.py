@@ -2398,7 +2398,7 @@ class SkaffoldModules(proto.Message):
         Attributes:
             source (str):
                 Required. Cloud Storage source paths to copy recursively.
-                For example, providing `gs://my-bucket/dir/configs/*` will
+                For example, providing "gs://my-bucket/dir/configs/*" will
                 result in Skaffold copying all files within the
                 "dir/configs" directory in the bucket "my-bucket".
             path (str):
@@ -2769,9 +2769,8 @@ class TargetAttribute(proto.Message):
             ID of the ``Target``. The value of this field could be one
             of the following:
 
-            -  The last segment of a target name. It only needs the ID
-               to determine which target is being referred to
-            -  "*", all targets in a location.
+            -  The last segment of a target name
+            -  "*", all targets in a location
         labels (MutableMapping[str, str]):
             Target labels.
     """
@@ -5626,10 +5625,8 @@ class PromoteReleaseRule(proto.Message):
             next stage in the promotion flow. The value of this field
             could be one of the following:
 
-            -  The last segment of a target name. It only needs the ID
-               to determine if the target is one of the stages in the
-               promotion sequence defined in the pipeline.
-            -  "@next", the next target in the promotion sequence.
+            -  The last segment of a target name
+            -  "@next", the next target in the promotion sequence
         condition (google.cloud.deploy_v1.types.AutomationRuleCondition):
             Output only. Information around the state of
             the Automation rule.
