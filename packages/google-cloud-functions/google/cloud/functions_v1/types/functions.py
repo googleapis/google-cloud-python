@@ -267,14 +267,14 @@ class CloudFunction(proto.Message):
             function sources. Disclaimer: This field is only
             supported for Firebase function deployments.
         docker_repository (str):
-            User managed repository created in Artifact Registry
-            optionally with a customer managed encryption key. If
-            specified, deployments will use Artifact Registry. If
-            unspecified and the deployment is eligible to use Artifact
-            Registry, GCF will create and use a repository named
-            'gcf-artifacts' for every deployed region. This is the
-            repository to which the function docker image will be pushed
-            after it is built by Cloud Build.
+            User-managed repository created in Artifact Registry to
+            which the function's Docker image will be pushed after it is
+            built by Cloud Build. May optionally be encrypted with a
+            customer-managed encryption key (CMEK). If unspecified and
+            ``docker_registry`` is not explicitly set to
+            ``CONTAINER_REGISTRY``, GCF will create and use a default
+            Artifact Registry repository named 'gcf-artifacts' in the
+            region.
 
             It must match the pattern
             ``projects/{project}/locations/{location}/repositories/{repository}``.
@@ -289,15 +289,15 @@ class CloudFunction(proto.Message):
             ``docker_repository`` field is specified, this field should
             either be left unspecified or set to ``ARTIFACT_REGISTRY``.
         automatic_update_policy (google.cloud.functions_v1.types.CloudFunction.AutomaticUpdatePolicy):
-            See the comment next to this message for more
-            details.
 
             This field is a member of `oneof`_ ``runtime_update_policy``.
         on_deploy_update_policy (google.cloud.functions_v1.types.CloudFunction.OnDeployUpdatePolicy):
-            See the comment next to this message for more
-            details.
 
             This field is a member of `oneof`_ ``runtime_update_policy``.
+        build_service_account (str):
+            A service account the user provides for use with Cloud
+            Build. The format of this field is
+            ``projects/{projectId}/serviceAccounts/{serviceAccountEmail}``.
     """
 
     class VpcConnectorEgressSettings(proto.Enum):
@@ -378,7 +378,7 @@ class CloudFunction(proto.Message):
 
         Attributes:
             runtime_version (str):
-                Output only. contains the runtime version
+                Output only. Contains the runtime version
                 which was used during latest function
                 deployment.
         """
@@ -551,6 +551,10 @@ class CloudFunction(proto.Message):
         oneof="runtime_update_policy",
         message=OnDeployUpdatePolicy,
     )
+    build_service_account: str = proto.Field(
+        proto.STRING,
+        number=43,
+    )
 
 
 class SourceRepository(proto.Message):
@@ -572,7 +576,8 @@ class SourceRepository(proto.Message):
             ``https://source.developers.google.com/projects/*/repos/*/fixed-aliases/*/paths/*``
 
             You may omit ``paths/*`` if you want to use the main
-            directory.
+            directory. The function response may add an empty
+            ``/paths/`` to the URL.
         deployed_url (str):
             Output only. The URL pointing to the hosted
             repository where the function were defined at
@@ -596,7 +601,7 @@ class HttpsTrigger(proto.Message):
 
     Attributes:
         url (str):
-            Output only. The deployed URL for the
+            Output only. The deployed url for the
             function.
         security_level (google.cloud.functions_v1.types.HttpsTrigger.SecurityLevel):
             The security level for the function.
