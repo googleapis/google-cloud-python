@@ -111,7 +111,7 @@ class MitreAttack(proto.Message):
     class Technique(proto.Enum):
         r"""MITRE ATT&CK techniques that can be referenced by SCC
         findings. See: https://attack.mitre.org/techniques/enterprise/
-        Next ID: 63
+        Next ID: 65
 
         Values:
             TECHNIQUE_UNSPECIFIED (0):
@@ -134,10 +134,14 @@ class MitreAttack(proto.Message):
                 T1059.004
             PYTHON (59):
                 T1059.006
+            EXPLOITATION_FOR_PRIVILEGE_ESCALATION (63):
+                T1068
             PERMISSION_GROUPS_DISCOVERY (18):
                 T1069
             CLOUD_GROUPS (19):
                 T1069.003
+            INDICATOR_REMOVAL_FILE_DELETION (64):
+                T1070.004
             APPLICATION_LAYER_PROTOCOL (45):
                 T1071
             DNS (46):
@@ -251,8 +255,10 @@ class MitreAttack(proto.Message):
         COMMAND_AND_SCRIPTING_INTERPRETER = 6
         UNIX_SHELL = 7
         PYTHON = 59
+        EXPLOITATION_FOR_PRIVILEGE_ESCALATION = 63
         PERMISSION_GROUPS_DISCOVERY = 18
         CLOUD_GROUPS = 19
+        INDICATOR_REMOVAL_FILE_DELETION = 64
         APPLICATION_LAYER_PROTOCOL = 45
         DNS = 46
         SOFTWARE_DEPLOYMENT_TOOLS = 47

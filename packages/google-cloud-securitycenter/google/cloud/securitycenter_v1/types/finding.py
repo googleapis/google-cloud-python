@@ -191,6 +191,9 @@ class Finding(proto.Message):
             example, the `mute
             configuration </security-command-center/docs/how-to-mute-findings>`__
             that muted the finding and the user who muted the finding.
+        mute_info (google.cloud.securitycenter_v1.types.Finding.MuteInfo):
+            Output only. The mute information regarding
+            this finding.
         processes (MutableSequence[google.cloud.securitycenter_v1.types.Process]):
             Represents operating system processes
             associated with the Finding.
@@ -461,6 +464,83 @@ class Finding(proto.Message):
         POSTURE_VIOLATION = 6
         TOXIC_COMBINATION = 7
 
+    class MuteInfo(proto.Message):
+        r"""Mute information about the finding, including whether the
+        finding has a static mute or any matching dynamic mute rules.
+
+        Attributes:
+            static_mute (google.cloud.securitycenter_v1.types.Finding.MuteInfo.StaticMute):
+                If set, the static mute applied to this
+                finding. Static mutes override dynamic mutes. If
+                unset, there is no static mute.
+            dynamic_mute_records (MutableSequence[google.cloud.securitycenter_v1.types.Finding.MuteInfo.DynamicMuteRecord]):
+                The list of dynamic mute rules that currently
+                match the finding.
+        """
+
+        class StaticMute(proto.Message):
+            r"""Information about the static mute state. A static mute state
+            overrides any dynamic mute rules that apply to this finding. The
+            static mute state can be set by a static mute rule or by muting
+            the finding directly.
+
+            Attributes:
+                state (google.cloud.securitycenter_v1.types.Finding.Mute):
+                    The static mute state. If the value is ``MUTED`` or
+                    ``UNMUTED``, then the finding's overall mute state will have
+                    the same value.
+                apply_time (google.protobuf.timestamp_pb2.Timestamp):
+                    When the static mute was applied.
+            """
+
+            state: "Finding.Mute" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="Finding.Mute",
+            )
+            apply_time: timestamp_pb2.Timestamp = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message=timestamp_pb2.Timestamp,
+            )
+
+        class DynamicMuteRecord(proto.Message):
+            r"""The record of a dynamic mute rule that matches the finding.
+
+            Attributes:
+                mute_config (str):
+                    The relative resource name of the mute rule, represented by
+                    a mute config, that created this record, for example
+                    ``organizations/123/muteConfigs/mymuteconfig`` or
+                    ``organizations/123/locations/global/muteConfigs/mymuteconfig``.
+                match_time (google.protobuf.timestamp_pb2.Timestamp):
+                    When the dynamic mute rule first matched the
+                    finding.
+            """
+
+            mute_config: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            match_time: timestamp_pb2.Timestamp = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message=timestamp_pb2.Timestamp,
+            )
+
+        static_mute: "Finding.MuteInfo.StaticMute" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Finding.MuteInfo.StaticMute",
+        )
+        dynamic_mute_records: MutableSequence[
+            "Finding.MuteInfo.DynamicMuteRecord"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Finding.MuteInfo.DynamicMuteRecord",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -567,6 +647,11 @@ class Finding(proto.Message):
     mute_initiator: str = proto.Field(
         proto.STRING,
         number=28,
+    )
+    mute_info: MuteInfo = proto.Field(
+        proto.MESSAGE,
+        number=61,
+        message=MuteInfo,
     )
     processes: MutableSequence[process.Process] = proto.RepeatedField(
         proto.MESSAGE,
