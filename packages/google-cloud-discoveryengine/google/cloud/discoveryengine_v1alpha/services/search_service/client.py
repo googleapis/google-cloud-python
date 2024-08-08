@@ -309,6 +309,30 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def session_path(
+        project: str,
+        location: str,
+        data_store: str,
+        session: str,
+    ) -> str:
+        """Returns a fully-qualified session string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/sessions/{session}".format(
+            project=project,
+            location=location,
+            data_store=data_store,
+            session=session,
+        )
+
+    @staticmethod
+    def parse_session_path(path: str) -> Dict[str, str]:
+        """Parses a session path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/sessions/(?P<session>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:

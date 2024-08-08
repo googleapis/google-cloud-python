@@ -5022,7 +5022,8 @@ def test_create_document_rest(request_type):
                 {
                     "principals": [
                         {"user_id": "user_id_value", "group_id": "group_id_value"}
-                    ]
+                    ],
+                    "idp_wide": True,
                 }
             ]
         },
@@ -5476,7 +5477,8 @@ def test_update_document_rest(request_type):
                 {
                     "principals": [
                         {"user_id": "user_id_value", "group_id": "group_id_value"}
-                    ]
+                    ],
+                    "idp_wide": True,
                 }
             ]
         },
