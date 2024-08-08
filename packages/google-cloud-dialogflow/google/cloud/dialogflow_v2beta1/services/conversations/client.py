@@ -55,7 +55,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.cloud.dialogflow_v2beta1.services.conversations import pagers
 from google.cloud.dialogflow_v2beta1.types import conversation as gcd_conversation
 from google.cloud.dialogflow_v2beta1.types import conversation
-from google.cloud.dialogflow_v2beta1.types import participant
+from google.cloud.dialogflow_v2beta1.types import generator, participant
 
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationsTransport
 from .transports.grpc import ConversationsGrpcTransport
@@ -324,6 +324,28 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         """Parses a document path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/knowledgeBases/(?P<knowledge_base>.+?)/documents/(?P<document>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def generator_path(
+        project: str,
+        location: str,
+        generator: str,
+    ) -> str:
+        """Returns a fully-qualified generator string."""
+        return "projects/{project}/locations/{location}/generators/{generator}".format(
+            project=project,
+            location=location,
+            generator=generator,
+        )
+
+    @staticmethod
+    def parse_generator_path(path: str) -> Dict[str, str]:
+        """Parses a generator path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/generators/(?P<generator>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1330,6 +1352,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         request: Optional[Union[conversation.BatchCreateMessagesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
+        requests: Optional[MutableSequence[conversation.CreateMessageRequest]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1381,6 +1404,15 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
+            requests (MutableSequence[google.cloud.dialogflow_v2beta1.types.CreateMessageRequest]):
+                Required. A maximum of 300 messages can be created in a
+                batch. [CreateMessageRequest.message.send_time][] is
+                required. All created messages will have identical
+                [Message.create_time][google.cloud.dialogflow.v2beta1.Message.create_time].
+
+                This corresponds to the ``requests`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1396,7 +1428,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        has_flattened_params = any([parent, requests])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1411,6 +1443,8 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
             # request, apply these.
             if parent is not None:
                 request.parent = parent
+            if requests is not None:
+                request.requests = requests
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1773,6 +1807,93 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         # Done; return the response.
         return response
 
+    def generate_stateless_suggestion(
+        self,
+        request: Optional[
+            Union[conversation.GenerateStatelessSuggestionRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> conversation.GenerateStatelessSuggestionResponse:
+        r"""Generates and returns a suggestion for a conversation
+        that does not have a resource created for it.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_generate_stateless_suggestion():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GenerateStatelessSuggestionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.generate_stateless_suggestion(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dialogflow_v2beta1.types.GenerateStatelessSuggestionRequest, dict]):
+                The request object. The request message for
+                [Conversations.GenerateStatelessSuggestion][google.cloud.dialogflow.v2beta1.Conversations.GenerateStatelessSuggestion].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2beta1.types.GenerateStatelessSuggestionResponse:
+                The response message for
+                   [Conversations.GenerateStatelessSuggestion][google.cloud.dialogflow.v2beta1.Conversations.GenerateStatelessSuggestion].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversation.GenerateStatelessSuggestionRequest):
+            request = conversation.GenerateStatelessSuggestionRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.generate_stateless_suggestion
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def search_knowledge(
         self,
         request: Optional[Union[conversation.SearchKnowledgeRequest, dict]] = None,
@@ -1801,7 +1922,9 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.SearchKnowledgeRequest(
+                    parent="parent_value",
                     conversation_profile="conversation_profile_value",
+                    session_id="session_id_value",
                 )
 
                 # Make the request

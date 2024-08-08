@@ -299,6 +299,28 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def generator_path(
+        project: str,
+        location: str,
+        generator: str,
+    ) -> str:
+        """Returns a fully-qualified generator string."""
+        return "projects/{project}/locations/{location}/generators/{generator}".format(
+            project=project,
+            location=location,
+            generator=generator,
+        )
+
+    @staticmethod
+    def parse_generator_path(path: str) -> Dict[str, str]:
+        """Parses a generator path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/generators/(?P<generator>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def knowledge_base_path(
         project: str,
         knowledge_base: str,
@@ -1611,7 +1633,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
                 request = dialogflow_v2beta1.ClearSuggestionFeatureConfigRequest(
                     conversation_profile="conversation_profile_value",
                     participant_role="END_USER",
-                    suggestion_feature_type="KNOWLEDGE_SEARCH",
+                    suggestion_feature_type="KNOWLEDGE_ASSIST",
                 )
 
                 # Make the request

@@ -60,6 +60,9 @@ __protobuf__ = proto.module(
         "MessageAnnotation",
         "SuggestionInput",
         "AssistQueryParameters",
+        "SuggestKnowledgeAssistRequest",
+        "SuggestKnowledgeAssistResponse",
+        "KnowledgeAssistAnswer",
     },
 )
 
@@ -1506,6 +1509,11 @@ class SuggestionResult(proto.Message):
             ARTICLE_SUGGESTION.
 
             This field is a member of `oneof`_ ``suggestion_response``.
+        suggest_knowledge_assist_response (google.cloud.dialogflow_v2.types.SuggestKnowledgeAssistResponse):
+            SuggestKnowledgeAssistResponse if request is for
+            KNOWLEDGE_ASSIST.
+
+            This field is a member of `oneof`_ ``suggestion_response``.
         suggest_faq_answers_response (google.cloud.dialogflow_v2.types.SuggestFaqAnswersResponse):
             SuggestFaqAnswersResponse if request is for FAQ_ANSWER.
 
@@ -1527,6 +1535,12 @@ class SuggestionResult(proto.Message):
         number=2,
         oneof="suggestion_response",
         message="SuggestArticlesResponse",
+    )
+    suggest_knowledge_assist_response: "SuggestKnowledgeAssistResponse" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="suggestion_response",
+        message="SuggestKnowledgeAssistResponse",
     )
     suggest_faq_answers_response: "SuggestFaqAnswersResponse" = proto.Field(
         proto.MESSAGE,
@@ -1676,6 +1690,232 @@ class AssistQueryParameters(proto.Message):
         proto.STRING,
         proto.STRING,
         number=1,
+    )
+
+
+class SuggestKnowledgeAssistRequest(proto.Message):
+    r"""The request message for
+    [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2.Participants.SuggestKnowledgeAssist].
+
+    Attributes:
+        parent (str):
+            Required. The name of the participant to fetch suggestions
+            for. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
+        latest_message (str):
+            Optional. The name of the latest conversation message to
+            compile suggestions for. If empty, it will be the latest
+            message of the conversation. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
+        context_size (int):
+            Optional. Max number of messages prior to and including
+            [latest_message][google.cloud.dialogflow.v2.SuggestKnowledgeAssistRequest.latest_message]
+            to use as context when compiling the suggestion. The context
+            size is by default 100 and at most 100.
+        previous_suggested_query (str):
+            Optional. The previously suggested query for
+            the given conversation. This helps identify
+            whether the next suggestion we generate is
+            resonably different from the previous one. This
+            is useful to avoid similar suggestions within
+            the conversation.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    latest_message: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    context_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    previous_suggested_query: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class SuggestKnowledgeAssistResponse(proto.Message):
+    r"""The response message for
+    [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2.Participants.SuggestKnowledgeAssist].
+
+    Attributes:
+        knowledge_assist_answer (google.cloud.dialogflow_v2.types.KnowledgeAssistAnswer):
+            Output only. Knowledge Assist suggestion.
+        latest_message (str):
+            The name of the latest conversation message used to compile
+            suggestion for. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
+        context_size (int):
+            Number of messages prior to and including
+            [latest_message][google.cloud.dialogflow.v2.SuggestKnowledgeAssistResponse.latest_message]
+            to compile the suggestion. It may be smaller than the
+            [SuggestKnowledgeAssistRequest.context_size][google.cloud.dialogflow.v2.SuggestKnowledgeAssistRequest.context_size]
+            field in the request if there are fewer messages in the
+            conversation.
+    """
+
+    knowledge_assist_answer: "KnowledgeAssistAnswer" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="KnowledgeAssistAnswer",
+    )
+    latest_message: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    context_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
+class KnowledgeAssistAnswer(proto.Message):
+    r"""Represents a Knowledge Assist answer.
+
+    Attributes:
+        suggested_query (google.cloud.dialogflow_v2.types.KnowledgeAssistAnswer.SuggestedQuery):
+            The query suggested based on the context.
+            Suggestion is made only if it is different from
+            the previous suggestion.
+        suggested_query_answer (google.cloud.dialogflow_v2.types.KnowledgeAssistAnswer.KnowledgeAnswer):
+            The answer generated for the suggested query.
+            Whether or not an answer is generated depends on
+            how confident we are about the generated query.
+        answer_record (str):
+            The name of the answer record. Format:
+            ``projects/<Project ID>/locations/<location ID>/answer Records/<Answer Record ID>``.
+    """
+
+    class SuggestedQuery(proto.Message):
+        r"""Represents a suggested query.
+
+        Attributes:
+            query_text (str):
+                Suggested query text.
+        """
+
+        query_text: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class KnowledgeAnswer(proto.Message):
+        r"""Represents an answer from Knowledge. Currently supports FAQ
+        and Generative answers.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            answer_text (str):
+                The piece of text from the ``source`` that answers this
+                suggested query.
+            faq_source (google.cloud.dialogflow_v2.types.KnowledgeAssistAnswer.KnowledgeAnswer.FaqSource):
+                Populated if the prediction came from FAQ.
+
+                This field is a member of `oneof`_ ``source``.
+            generative_source (google.cloud.dialogflow_v2.types.KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource):
+                Populated if the prediction was Generative.
+
+                This field is a member of `oneof`_ ``source``.
+        """
+
+        class FaqSource(proto.Message):
+            r"""Details about source of FAQ answer.
+
+            Attributes:
+                question (str):
+                    The corresponding FAQ question.
+            """
+
+            question: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        class GenerativeSource(proto.Message):
+            r"""Details about source of Generative answer.
+
+            Attributes:
+                snippets (MutableSequence[google.cloud.dialogflow_v2.types.KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource.Snippet]):
+                    All snippets used for this Generative
+                    Prediction, with their source URI and data.
+            """
+
+            class Snippet(proto.Message):
+                r"""Snippet Source for a Generative Prediction.
+
+                Attributes:
+                    uri (str):
+                        URI the data is sourced from.
+                    text (str):
+                        Text taken from that URI.
+                    title (str):
+                        Title of the document.
+                """
+
+                uri: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
+                text: str = proto.Field(
+                    proto.STRING,
+                    number=3,
+                )
+                title: str = proto.Field(
+                    proto.STRING,
+                    number=4,
+                )
+
+            snippets: MutableSequence[
+                "KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource.Snippet"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource.Snippet",
+            )
+
+        answer_text: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        faq_source: "KnowledgeAssistAnswer.KnowledgeAnswer.FaqSource" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="source",
+            message="KnowledgeAssistAnswer.KnowledgeAnswer.FaqSource",
+        )
+        generative_source: "KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=4,
+                oneof="source",
+                message="KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource",
+            )
+        )
+
+    suggested_query: SuggestedQuery = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=SuggestedQuery,
+    )
+    suggested_query_answer: KnowledgeAnswer = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=KnowledgeAnswer,
+    )
+    answer_record: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
