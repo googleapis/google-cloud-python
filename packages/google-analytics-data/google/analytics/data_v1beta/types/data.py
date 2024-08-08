@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "Dimension",
         "DimensionExpression",
         "Metric",
+        "Comparison",
         "FilterExpression",
         "FilterExpressionList",
         "Filter",
@@ -54,6 +55,7 @@ __protobuf__ = proto.module(
         "QuotaStatus",
         "DimensionMetadata",
         "MetricMetadata",
+        "ComparisonMetadata",
         "DimensionCompatibility",
         "MetricCompatibility",
     },
@@ -468,6 +470,56 @@ class Metric(proto.Message):
     invisible: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class Comparison(proto.Message):
+    r"""Defines an individual comparison. Most requests will include
+    multiple comparisons so that the report compares between the
+    comparisons.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Each comparison produces separate rows in the
+            response. In the response, this comparison is
+            identified by this name. If name is unspecified,
+            we will use the saved comparisons display name.
+
+            This field is a member of `oneof`_ ``_name``.
+        dimension_filter (google.analytics.data_v1beta.types.FilterExpression):
+            A basic comparison.
+
+            This field is a member of `oneof`_ ``one_comparison``.
+        comparison (str):
+            A saved comparison identified by the
+            comparison's resource name. For example,
+            'comparisons/1234'.
+
+            This field is a member of `oneof`_ ``one_comparison``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    dimension_filter: "FilterExpression" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="one_comparison",
+        message="FilterExpression",
+    )
+    comparison: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="one_comparison",
     )
 
 
@@ -1751,8 +1803,14 @@ class DimensionMetadata(proto.Message):
             the deprecation period, the dimension will be available only
             by ``apiName``.
         custom_definition (bool):
-            True if the dimension is a custom dimension
-            for this property.
+            True if the dimension is custom to this
+            property. This includes user, event, & item
+            scoped custom dimensions; to learn more about
+            custom dimensions, see
+            https://support.google.com/analytics/answer/14240153.
+            This also include custom channel groups; to
+            learn more about custom channel groups, see
+            https://support.google.com/analytics/answer/13051316.
         category (str):
             The display name of the category that this
             dimension belongs to. Similar dimensions and
@@ -1886,6 +1944,35 @@ class MetricMetadata(proto.Message):
     category: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+
+
+class ComparisonMetadata(proto.Message):
+    r"""The metadata for a single comparison.
+
+    Attributes:
+        api_name (str):
+            This comparison's resource name. Useable in
+            `Comparison <#Comparison>`__'s ``comparison`` field. For
+            example, 'comparisons/1234'.
+        ui_name (str):
+            This comparison's name within the Google
+            Analytics user interface.
+        description (str):
+            This comparison's description.
+    """
+
+    api_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ui_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
