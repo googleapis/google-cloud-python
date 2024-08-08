@@ -237,6 +237,8 @@ class ListAdaptiveMtDatasetsResponse(proto.Message):
 class AdaptiveMtTranslateRequest(proto.Message):
     r"""The request for sending an AdaptiveMt translation query.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. Location to make a regional call.
@@ -249,9 +251,117 @@ class AdaptiveMtTranslateRequest(proto.Message):
             ``projects/{project}/locations/{location-id}/adaptiveMtDatasets/{dataset}``
         content (MutableSequence[str]):
             Required. The content of the input in string
-            format. For now only one sentence per request is
-            supported.
+            format.
+        reference_sentence_config (google.cloud.translate_v3.types.AdaptiveMtTranslateRequest.ReferenceSentenceConfig):
+            Configuration for caller provided reference
+            sentences.
+
+            This field is a member of `oneof`_ ``_reference_sentence_config``.
+        glossary_config (google.cloud.translate_v3.types.AdaptiveMtTranslateRequest.GlossaryConfig):
+            Optional. Glossary to be applied. The glossary must be
+            within the same region (have the same location-id) as the
+            model, otherwise an INVALID_ARGUMENT (400) error is
+            returned.
+
+            This field is a member of `oneof`_ ``_glossary_config``.
     """
+
+    class ReferenceSentencePair(proto.Message):
+        r"""A pair of sentences used as reference in source and target
+        languages.
+
+        Attributes:
+            source_sentence (str):
+                Source sentence in the sentence pair.
+            target_sentence (str):
+                Target sentence in the sentence pair.
+        """
+
+        source_sentence: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        target_sentence: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class ReferenceSentencePairList(proto.Message):
+        r"""A list of reference sentence pairs.
+
+        Attributes:
+            reference_sentence_pairs (MutableSequence[google.cloud.translate_v3.types.AdaptiveMtTranslateRequest.ReferenceSentencePair]):
+                Reference sentence pairs.
+        """
+
+        reference_sentence_pairs: MutableSequence[
+            "AdaptiveMtTranslateRequest.ReferenceSentencePair"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="AdaptiveMtTranslateRequest.ReferenceSentencePair",
+        )
+
+    class ReferenceSentenceConfig(proto.Message):
+        r"""Message of caller-provided reference configuration.
+
+        Attributes:
+            reference_sentence_pair_lists (MutableSequence[google.cloud.translate_v3.types.AdaptiveMtTranslateRequest.ReferenceSentencePairList]):
+                Reference sentences pair lists. Each list
+                will be used as the references to translate the
+                sentence under "content" field at the
+                corresponding index. Length of the list is
+                required to be equal to the length of "content"
+                field.
+            source_language_code (str):
+                Source language code.
+            target_language_code (str):
+                Target language code.
+        """
+
+        reference_sentence_pair_lists: MutableSequence[
+            "AdaptiveMtTranslateRequest.ReferenceSentencePairList"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="AdaptiveMtTranslateRequest.ReferenceSentencePairList",
+        )
+        source_language_code: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        target_language_code: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    class GlossaryConfig(proto.Message):
+        r"""Configures which glossary is used for a specific target
+        language and defines
+        options for applying that glossary.
+
+        Attributes:
+            glossary (str):
+                Required. The ``glossary`` to be applied for this
+                translation.
+
+                The format depends on the glossary:
+
+                -  User-provided custom glossary:
+                   ``projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}``
+            ignore_case (bool):
+                Optional. Indicates match is case insensitive. The default
+                value is ``false`` if missing.
+        """
+
+        glossary: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        ignore_case: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
 
     parent: str = proto.Field(
         proto.STRING,
@@ -264,6 +374,18 @@ class AdaptiveMtTranslateRequest(proto.Message):
     content: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+    reference_sentence_config: ReferenceSentenceConfig = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        optional=True,
+        message=ReferenceSentenceConfig,
+    )
+    glossary_config: GlossaryConfig = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        optional=True,
+        message=GlossaryConfig,
     )
 
 
@@ -289,6 +411,10 @@ class AdaptiveMtTranslateResponse(proto.Message):
             Output only. The translation.
         language_code (str):
             Output only. The translation's language code.
+        glossary_translations (MutableSequence[google.cloud.translate_v3.types.AdaptiveMtTranslation]):
+            Text translation response if a glossary is
+            provided in the request. This could be the same
+            as 'translation' above if no terms apply.
     """
 
     translations: MutableSequence["AdaptiveMtTranslation"] = proto.RepeatedField(
@@ -299,6 +425,13 @@ class AdaptiveMtTranslateResponse(proto.Message):
     language_code: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    glossary_translations: MutableSequence[
+        "AdaptiveMtTranslation"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="AdaptiveMtTranslation",
     )
 
 

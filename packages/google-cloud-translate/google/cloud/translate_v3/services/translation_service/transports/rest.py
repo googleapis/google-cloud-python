@@ -32,6 +32,9 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import json_format
 import grpc  # type: ignore
 from requests import __version__ as requests_version
@@ -45,7 +48,12 @@ except AttributeError:  # pragma: NO COVER
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.translate_v3.types import adaptive_mt, translation_service
+from google.cloud.translate_v3.types import (
+    adaptive_mt,
+    automl_translation,
+    common,
+    translation_service,
+)
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import TranslationServiceTransport
@@ -104,11 +112,35 @@ class TranslationServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_dataset(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_dataset(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_glossary(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_create_glossary(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_glossary_entry(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_glossary_entry(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_model(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_model(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -120,6 +152,14 @@ class TranslationServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_dataset(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_dataset(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_glossary(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -128,11 +168,31 @@ class TranslationServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_glossary_entry(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_model(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_model(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_detect_language(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_detect_language(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_export_data(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_export_data(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -152,11 +212,35 @@ class TranslationServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_dataset(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_dataset(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_glossary(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_glossary(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_glossary_entry(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_glossary_entry(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_model(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_model(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -173,6 +257,14 @@ class TranslationServiceRestInterceptor:
                 return request, metadata
 
             def post_import_adaptive_mt_file(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_import_data(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_import_data(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -200,11 +292,51 @@ class TranslationServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_datasets(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_datasets(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_examples(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_examples(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_glossaries(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_glossaries(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_glossary_entries(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_glossary_entries(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_models(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_models(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_romanize_text(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_romanize_text(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -221,6 +353,22 @@ class TranslationServiceRestInterceptor:
                 return request, metadata
 
             def post_translate_text(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_glossary(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_glossary(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_glossary_entry(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_glossary_entry(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -326,6 +474,29 @@ class TranslationServiceRestInterceptor:
         """
         return response
 
+    def pre_create_dataset(
+        self,
+        request: automl_translation.CreateDatasetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[automl_translation.CreateDatasetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_dataset
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_create_dataset(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_dataset
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_glossary(
         self,
         request: translation_service.CreateGlossaryRequest,
@@ -342,6 +513,54 @@ class TranslationServiceRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_glossary
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_glossary_entry(
+        self,
+        request: translation_service.CreateGlossaryEntryRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        translation_service.CreateGlossaryEntryRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_glossary_entry
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_create_glossary_entry(
+        self, response: common.GlossaryEntry
+    ) -> common.GlossaryEntry:
+        """Post-rpc interceptor for create_glossary_entry
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_model(
+        self,
+        request: automl_translation.CreateModelRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[automl_translation.CreateModelRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_model
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_create_model(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_model
 
         Override in a subclass to manipulate the response
         after it is returned by the TranslationService server but before
@@ -373,6 +592,29 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_dataset(
+        self,
+        request: automl_translation.DeleteDatasetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[automl_translation.DeleteDatasetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_dataset
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_delete_dataset(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_dataset
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_glossary(
         self,
         request: translation_service.DeleteGlossaryRequest,
@@ -396,6 +638,43 @@ class TranslationServiceRestInterceptor:
         """
         return response
 
+    def pre_delete_glossary_entry(
+        self,
+        request: translation_service.DeleteGlossaryEntryRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        translation_service.DeleteGlossaryEntryRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_glossary_entry
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def pre_delete_model(
+        self,
+        request: automl_translation.DeleteModelRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[automl_translation.DeleteModelRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_model
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_delete_model(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_model
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_detect_language(
         self,
         request: translation_service.DetectLanguageRequest,
@@ -412,6 +691,29 @@ class TranslationServiceRestInterceptor:
         self, response: translation_service.DetectLanguageResponse
     ) -> translation_service.DetectLanguageResponse:
         """Post-rpc interceptor for detect_language
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_export_data(
+        self,
+        request: automl_translation.ExportDataRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[automl_translation.ExportDataRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for export_data
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_export_data(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for export_data
 
         Override in a subclass to manipulate the response
         after it is returned by the TranslationService server but before
@@ -465,6 +767,29 @@ class TranslationServiceRestInterceptor:
         """
         return response
 
+    def pre_get_dataset(
+        self,
+        request: automl_translation.GetDatasetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[automl_translation.GetDatasetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_dataset
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_get_dataset(
+        self, response: automl_translation.Dataset
+    ) -> automl_translation.Dataset:
+        """Post-rpc interceptor for get_dataset
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_glossary(
         self,
         request: translation_service.GetGlossaryRequest,
@@ -481,6 +806,52 @@ class TranslationServiceRestInterceptor:
         self, response: translation_service.Glossary
     ) -> translation_service.Glossary:
         """Post-rpc interceptor for get_glossary
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_glossary_entry(
+        self,
+        request: translation_service.GetGlossaryEntryRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[translation_service.GetGlossaryEntryRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_glossary_entry
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_get_glossary_entry(
+        self, response: common.GlossaryEntry
+    ) -> common.GlossaryEntry:
+        """Post-rpc interceptor for get_glossary_entry
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_model(
+        self,
+        request: automl_translation.GetModelRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[automl_translation.GetModelRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_model
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_get_model(
+        self, response: automl_translation.Model
+    ) -> automl_translation.Model:
+        """Post-rpc interceptor for get_model
 
         Override in a subclass to manipulate the response
         after it is returned by the TranslationService server but before
@@ -529,6 +900,29 @@ class TranslationServiceRestInterceptor:
         self, response: adaptive_mt.ImportAdaptiveMtFileResponse
     ) -> adaptive_mt.ImportAdaptiveMtFileResponse:
         """Post-rpc interceptor for import_adaptive_mt_file
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_import_data(
+        self,
+        request: automl_translation.ImportDataRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[automl_translation.ImportDataRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for import_data
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_import_data(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for import_data
 
         Override in a subclass to manipulate the response
         after it is returned by the TranslationService server but before
@@ -605,6 +999,52 @@ class TranslationServiceRestInterceptor:
         """
         return response
 
+    def pre_list_datasets(
+        self,
+        request: automl_translation.ListDatasetsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[automl_translation.ListDatasetsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_datasets
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_list_datasets(
+        self, response: automl_translation.ListDatasetsResponse
+    ) -> automl_translation.ListDatasetsResponse:
+        """Post-rpc interceptor for list_datasets
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_examples(
+        self,
+        request: automl_translation.ListExamplesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[automl_translation.ListExamplesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_examples
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_list_examples(
+        self, response: automl_translation.ListExamplesResponse
+    ) -> automl_translation.ListExamplesResponse:
+        """Post-rpc interceptor for list_examples
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_glossaries(
         self,
         request: translation_service.ListGlossariesRequest,
@@ -621,6 +1061,77 @@ class TranslationServiceRestInterceptor:
         self, response: translation_service.ListGlossariesResponse
     ) -> translation_service.ListGlossariesResponse:
         """Post-rpc interceptor for list_glossaries
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_glossary_entries(
+        self,
+        request: translation_service.ListGlossaryEntriesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        translation_service.ListGlossaryEntriesRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_glossary_entries
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_list_glossary_entries(
+        self, response: translation_service.ListGlossaryEntriesResponse
+    ) -> translation_service.ListGlossaryEntriesResponse:
+        """Post-rpc interceptor for list_glossary_entries
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_models(
+        self,
+        request: automl_translation.ListModelsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[automl_translation.ListModelsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_models
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_list_models(
+        self, response: automl_translation.ListModelsResponse
+    ) -> automl_translation.ListModelsResponse:
+        """Post-rpc interceptor for list_models
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_romanize_text(
+        self,
+        request: translation_service.RomanizeTextRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[translation_service.RomanizeTextRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for romanize_text
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_romanize_text(
+        self, response: translation_service.RomanizeTextResponse
+    ) -> translation_service.RomanizeTextResponse:
+        """Post-rpc interceptor for romanize_text
 
         Override in a subclass to manipulate the response
         after it is returned by the TranslationService server but before
@@ -667,6 +1178,211 @@ class TranslationServiceRestInterceptor:
         self, response: translation_service.TranslateTextResponse
     ) -> translation_service.TranslateTextResponse:
         """Post-rpc interceptor for translate_text
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_glossary(
+        self,
+        request: translation_service.UpdateGlossaryRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[translation_service.UpdateGlossaryRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_glossary
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_update_glossary(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_glossary
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_glossary_entry(
+        self,
+        request: translation_service.UpdateGlossaryEntryRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        translation_service.UpdateGlossaryEntryRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_glossary_entry
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_update_glossary_entry(
+        self, response: common.GlossaryEntry
+    ) -> common.GlossaryEntry:
+        """Post-rpc interceptor for update_glossary_entry
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_location(
+        self,
+        request: locations_pb2.GetLocationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_location
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_get_location(
+        self, response: locations_pb2.Location
+    ) -> locations_pb2.Location:
+        """Post-rpc interceptor for get_location
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_locations(
+        self,
+        request: locations_pb2.ListLocationsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_list_locations(
+        self, response: locations_pb2.ListLocationsResponse
+    ) -> locations_pb2.ListLocationsResponse:
+        """Post-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_cancel_operation(
+        self,
+        request: operations_pb2.CancelOperationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_cancel_operation(self, response: None) -> None:
+        """Post-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_operation(
+        self,
+        request: operations_pb2.DeleteOperationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_delete_operation(self, response: None) -> None:
+        """Post-rpc interceptor for delete_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_operation(
+        self,
+        request: operations_pb2.GetOperationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_get_operation(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for get_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_operations(
+        self,
+        request: operations_pb2.ListOperationsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_operations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_list_operations(
+        self, response: operations_pb2.ListOperationsResponse
+    ) -> operations_pb2.ListOperationsResponse:
+        """Post-rpc interceptor for list_operations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_wait_operation(
+        self,
+        request: operations_pb2.WaitOperationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[operations_pb2.WaitOperationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for wait_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_wait_operation(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for wait_operation
 
         Override in a subclass to manipulate the response
         after it is returned by the TranslationService server but before
@@ -1213,6 +1929,99 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
             resp = self._interceptor.post_create_adaptive_mt_dataset(resp)
             return resp
 
+    class _CreateDataset(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("CreateDataset")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: automl_translation.CreateDatasetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create dataset method over HTTP.
+
+            Args:
+                request (~.automl_translation.CreateDatasetRequest):
+                    The request object. Request message for CreateDataset.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{parent=projects/*/locations/*}/datasets",
+                    "body": "dataset",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_dataset(request, metadata)
+            pb_request = automl_translation.CreateDatasetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_dataset(resp)
+            return resp
+
     class _CreateGlossary(TranslationServiceRestStub):
         def __hash__(self):
             return hash("CreateGlossary")
@@ -1304,6 +2113,196 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_glossary(resp)
+            return resp
+
+    class _CreateGlossaryEntry(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("CreateGlossaryEntry")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: translation_service.CreateGlossaryEntryRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> common.GlossaryEntry:
+            r"""Call the create glossary entry method over HTTP.
+
+            Args:
+                request (~.translation_service.CreateGlossaryEntryRequest):
+                    The request object. Request message for
+                CreateGlossaryEntry
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.common.GlossaryEntry:
+                    Represents a single entry in a
+                glossary.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{parent=projects/*/locations/*/glossaries/*}/glossaryEntries",
+                    "body": "glossary_entry",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_glossary_entry(
+                request, metadata
+            )
+            pb_request = translation_service.CreateGlossaryEntryRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = common.GlossaryEntry()
+            pb_resp = common.GlossaryEntry.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_glossary_entry(resp)
+            return resp
+
+    class _CreateModel(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("CreateModel")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: automl_translation.CreateModelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create model method over HTTP.
+
+            Args:
+                request (~.automl_translation.CreateModelRequest):
+                    The request object. Request message for CreateModel.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{parent=projects/*/locations/*}/models",
+                    "body": "model",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_model(request, metadata)
+            pb_request = automl_translation.CreateModelRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_model(resp)
             return resp
 
     class _DeleteAdaptiveMtDataset(TranslationServiceRestStub):
@@ -1459,6 +2458,92 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteDataset(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteDataset")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: automl_translation.DeleteDatasetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete dataset method over HTTP.
+
+            Args:
+                request (~.automl_translation.DeleteDatasetRequest):
+                    The request object. Request message for DeleteDataset.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v3/{name=projects/*/locations/*/datasets/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_dataset(request, metadata)
+            pb_request = automl_translation.DeleteDatasetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_dataset(resp)
+            return resp
+
     class _DeleteGlossary(TranslationServiceRestStub):
         def __hash__(self):
             return hash("DeleteGlossary")
@@ -1543,6 +2628,168 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_glossary(resp)
+            return resp
+
+    class _DeleteGlossaryEntry(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteGlossaryEntry")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: translation_service.DeleteGlossaryEntryRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete glossary entry method over HTTP.
+
+            Args:
+                request (~.translation_service.DeleteGlossaryEntryRequest):
+                    The request object. Request message for Delete Glossary
+                Entry
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v3/{name=projects/*/locations/*/glossaries/*/glossaryEntries/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_glossary_entry(
+                request, metadata
+            )
+            pb_request = translation_service.DeleteGlossaryEntryRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteModel(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteModel")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: automl_translation.DeleteModelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete model method over HTTP.
+
+            Args:
+                request (~.automl_translation.DeleteModelRequest):
+                    The request object. Request message for DeleteModel.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v3/{name=projects/*/locations/*/models/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_model(request, metadata)
+            pb_request = automl_translation.DeleteModelRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_model(resp)
             return resp
 
     class _DetectLanguage(TranslationServiceRestStub):
@@ -1643,6 +2890,99 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_detect_language(resp)
+            return resp
+
+    class _ExportData(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("ExportData")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: automl_translation.ExportDataRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the export data method over HTTP.
+
+            Args:
+                request (~.automl_translation.ExportDataRequest):
+                    The request object. Request message for ExportData.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{dataset=projects/*/locations/*/datasets/*}:exportData",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_export_data(request, metadata)
+            pb_request = automl_translation.ExportDataRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_export_data(resp)
             return resp
 
     class _GetAdaptiveMtDataset(TranslationServiceRestStub):
@@ -1821,6 +3161,94 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
             resp = self._interceptor.post_get_adaptive_mt_file(resp)
             return resp
 
+    class _GetDataset(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("GetDataset")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: automl_translation.GetDatasetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> automl_translation.Dataset:
+            r"""Call the get dataset method over HTTP.
+
+            Args:
+                request (~.automl_translation.GetDatasetRequest):
+                    The request object. Request message for GetDataset.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.automl_translation.Dataset:
+                    A dataset that hosts the examples
+                (sentence pairs) used for translation
+                models.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{name=projects/*/locations/*/datasets/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_dataset(request, metadata)
+            pb_request = automl_translation.GetDatasetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = automl_translation.Dataset()
+            pb_resp = automl_translation.Dataset.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_dataset(resp)
+            return resp
+
     class _GetGlossary(TranslationServiceRestStub):
         def __hash__(self):
             return hash("GetGlossary")
@@ -1906,6 +3334,181 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_glossary(resp)
+            return resp
+
+    class _GetGlossaryEntry(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("GetGlossaryEntry")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: translation_service.GetGlossaryEntryRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> common.GlossaryEntry:
+            r"""Call the get glossary entry method over HTTP.
+
+            Args:
+                request (~.translation_service.GetGlossaryEntryRequest):
+                    The request object. Request message for the Get Glossary
+                Entry Api
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.common.GlossaryEntry:
+                    Represents a single entry in a
+                glossary.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{name=projects/*/locations/*/glossaries/*/glossaryEntries/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_glossary_entry(
+                request, metadata
+            )
+            pb_request = translation_service.GetGlossaryEntryRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = common.GlossaryEntry()
+            pb_resp = common.GlossaryEntry.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_glossary_entry(resp)
+            return resp
+
+    class _GetModel(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("GetModel")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: automl_translation.GetModelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> automl_translation.Model:
+            r"""Call the get model method over HTTP.
+
+            Args:
+                request (~.automl_translation.GetModelRequest):
+                    The request object. Request message for GetModel.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.automl_translation.Model:
+                    A trained translation model.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{name=projects/*/locations/*/models/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_model(request, metadata)
+            pb_request = automl_translation.GetModelRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = automl_translation.Model()
+            pb_resp = automl_translation.Model.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_model(resp)
             return resp
 
     class _GetSupportedLanguages(TranslationServiceRestStub):
@@ -2098,6 +3701,99 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_import_adaptive_mt_file(resp)
+            return resp
+
+    class _ImportData(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("ImportData")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: automl_translation.ImportDataRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the import data method over HTTP.
+
+            Args:
+                request (~.automl_translation.ImportDataRequest):
+                    The request object. Request message for ImportData.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{dataset=projects/*/locations/*/datasets/*}:importData",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_import_data(request, metadata)
+            pb_request = automl_translation.ImportDataRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_import_data(resp)
             return resp
 
     class _ListAdaptiveMtDatasets(TranslationServiceRestStub):
@@ -2372,6 +4068,176 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
             resp = self._interceptor.post_list_adaptive_mt_sentences(resp)
             return resp
 
+    class _ListDatasets(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("ListDatasets")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: automl_translation.ListDatasetsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> automl_translation.ListDatasetsResponse:
+            r"""Call the list datasets method over HTTP.
+
+            Args:
+                request (~.automl_translation.ListDatasetsRequest):
+                    The request object. Request message for ListDatasets.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.automl_translation.ListDatasetsResponse:
+                    Response message for ListDatasets.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{parent=projects/*/locations/*}/datasets",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_datasets(request, metadata)
+            pb_request = automl_translation.ListDatasetsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = automl_translation.ListDatasetsResponse()
+            pb_resp = automl_translation.ListDatasetsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_datasets(resp)
+            return resp
+
+    class _ListExamples(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("ListExamples")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: automl_translation.ListExamplesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> automl_translation.ListExamplesResponse:
+            r"""Call the list examples method over HTTP.
+
+            Args:
+                request (~.automl_translation.ListExamplesRequest):
+                    The request object. Request message for ListExamples.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.automl_translation.ListExamplesResponse:
+                    Response message for ListExamples.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{parent=projects/*/locations/*/datasets/*}/examples",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_examples(request, metadata)
+            pb_request = automl_translation.ListExamplesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = automl_translation.ListExamplesResponse()
+            pb_resp = automl_translation.ListExamplesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_examples(resp)
+            return resp
+
     class _ListGlossaries(TranslationServiceRestStub):
         def __hash__(self):
             return hash("ListGlossaries")
@@ -2455,6 +4321,281 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_glossaries(resp)
+            return resp
+
+    class _ListGlossaryEntries(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("ListGlossaryEntries")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: translation_service.ListGlossaryEntriesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> translation_service.ListGlossaryEntriesResponse:
+            r"""Call the list glossary entries method over HTTP.
+
+            Args:
+                request (~.translation_service.ListGlossaryEntriesRequest):
+                    The request object. Request message for
+                ListGlossaryEntries
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.translation_service.ListGlossaryEntriesResponse:
+                    Response message for
+                ListGlossaryEntries
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{parent=projects/*/locations/*/glossaries/*}/glossaryEntries",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_glossary_entries(
+                request, metadata
+            )
+            pb_request = translation_service.ListGlossaryEntriesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = translation_service.ListGlossaryEntriesResponse()
+            pb_resp = translation_service.ListGlossaryEntriesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_glossary_entries(resp)
+            return resp
+
+    class _ListModels(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("ListModels")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: automl_translation.ListModelsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> automl_translation.ListModelsResponse:
+            r"""Call the list models method over HTTP.
+
+            Args:
+                request (~.automl_translation.ListModelsRequest):
+                    The request object. Request message for ListModels.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.automl_translation.ListModelsResponse:
+                    Response message for ListModels.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{parent=projects/*/locations/*}/models",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_models(request, metadata)
+            pb_request = automl_translation.ListModelsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = automl_translation.ListModelsResponse()
+            pb_resp = automl_translation.ListModelsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_models(resp)
+            return resp
+
+    class _RomanizeText(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("RomanizeText")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: translation_service.RomanizeTextRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> translation_service.RomanizeTextResponse:
+            r"""Call the romanize text method over HTTP.
+
+            Args:
+                request (~.translation_service.RomanizeTextRequest):
+                    The request object. The request message for synchronous
+                romanization.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.translation_service.RomanizeTextResponse:
+                    The response message for synchronous
+                romanization.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{parent=projects/*/locations/*}:romanizeText",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v3/{parent=projects/*}:romanizeText",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_romanize_text(request, metadata)
+            pb_request = translation_service.RomanizeTextRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = translation_service.RomanizeTextResponse()
+            pb_resp = translation_service.RomanizeTextResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_romanize_text(resp)
             return resp
 
     class _TranslateDocument(TranslationServiceRestStub):
@@ -2651,6 +4792,197 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
             resp = self._interceptor.post_translate_text(resp)
             return resp
 
+    class _UpdateGlossary(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateGlossary")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: translation_service.UpdateGlossaryRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update glossary method over HTTP.
+
+            Args:
+                request (~.translation_service.UpdateGlossaryRequest):
+                    The request object. Request message for the update
+                glossary flow
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v3/{glossary.name=projects/*/locations/*/glossaries/*}",
+                    "body": "glossary",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_glossary(request, metadata)
+            pb_request = translation_service.UpdateGlossaryRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_glossary(resp)
+            return resp
+
+    class _UpdateGlossaryEntry(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateGlossaryEntry")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: translation_service.UpdateGlossaryEntryRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> common.GlossaryEntry:
+            r"""Call the update glossary entry method over HTTP.
+
+            Args:
+                request (~.translation_service.UpdateGlossaryEntryRequest):
+                    The request object. Request message for
+                UpdateGlossaryEntry
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.common.GlossaryEntry:
+                    Represents a single entry in a
+                glossary.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v3/{glossary_entry.name=projects/*/locations/*/glossaries/*/glossaryEntries/*}",
+                    "body": "glossary_entry",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_glossary_entry(
+                request, metadata
+            )
+            pb_request = translation_service.UpdateGlossaryEntryRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = common.GlossaryEntry()
+            pb_resp = common.GlossaryEntry.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_glossary_entry(resp)
+            return resp
+
     @property
     def adaptive_mt_translate(
         self,
@@ -2693,6 +5025,14 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         return self._CreateAdaptiveMtDataset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_dataset(
+        self,
+    ) -> Callable[[automl_translation.CreateDatasetRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateDataset(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_glossary(
         self,
     ) -> Callable[
@@ -2701,6 +5041,24 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGlossary(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_glossary_entry(
+        self,
+    ) -> Callable[
+        [translation_service.CreateGlossaryEntryRequest], common.GlossaryEntry
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateGlossaryEntry(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_model(
+        self,
+    ) -> Callable[[automl_translation.CreateModelRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_adaptive_mt_dataset(
@@ -2719,6 +5077,14 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         return self._DeleteAdaptiveMtFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_dataset(
+        self,
+    ) -> Callable[[automl_translation.DeleteDatasetRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteDataset(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_glossary(
         self,
     ) -> Callable[
@@ -2727,6 +5093,22 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteGlossary(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_glossary_entry(
+        self,
+    ) -> Callable[[translation_service.DeleteGlossaryEntryRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteGlossaryEntry(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_model(
+        self,
+    ) -> Callable[[automl_translation.DeleteModelRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def detect_language(
@@ -2738,6 +5120,14 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DetectLanguage(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def export_data(
+        self,
+    ) -> Callable[[automl_translation.ExportDataRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExportData(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_adaptive_mt_dataset(
@@ -2758,6 +5148,14 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         return self._GetAdaptiveMtFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_dataset(
+        self,
+    ) -> Callable[[automl_translation.GetDatasetRequest], automl_translation.Dataset]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetDataset(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_glossary(
         self,
     ) -> Callable[
@@ -2766,6 +5164,22 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGlossary(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_glossary_entry(
+        self,
+    ) -> Callable[[translation_service.GetGlossaryEntryRequest], common.GlossaryEntry]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetGlossaryEntry(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_model(
+        self,
+    ) -> Callable[[automl_translation.GetModelRequest], automl_translation.Model]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_supported_languages(
@@ -2788,6 +5202,14 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportAdaptiveMtFile(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def import_data(
+        self,
+    ) -> Callable[[automl_translation.ImportDataRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ImportData(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_adaptive_mt_datasets(
@@ -2823,6 +5245,28 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         return self._ListAdaptiveMtSentences(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_datasets(
+        self,
+    ) -> Callable[
+        [automl_translation.ListDatasetsRequest],
+        automl_translation.ListDatasetsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListDatasets(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_examples(
+        self,
+    ) -> Callable[
+        [automl_translation.ListExamplesRequest],
+        automl_translation.ListExamplesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListExamples(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_glossaries(
         self,
     ) -> Callable[
@@ -2832,6 +5276,38 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGlossaries(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_glossary_entries(
+        self,
+    ) -> Callable[
+        [translation_service.ListGlossaryEntriesRequest],
+        translation_service.ListGlossaryEntriesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListGlossaryEntries(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_models(
+        self,
+    ) -> Callable[
+        [automl_translation.ListModelsRequest], automl_translation.ListModelsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListModels(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def romanize_text(
+        self,
+    ) -> Callable[
+        [translation_service.RomanizeTextRequest],
+        translation_service.RomanizeTextResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RomanizeText(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def translate_document(
@@ -2854,6 +5330,486 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TranslateText(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_glossary(
+        self,
+    ) -> Callable[
+        [translation_service.UpdateGlossaryRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateGlossary(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_glossary_entry(
+        self,
+    ) -> Callable[
+        [translation_service.UpdateGlossaryEntryRequest], common.GlossaryEntry
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateGlossaryEntry(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_location(self):
+        return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetLocation(TranslationServiceRestStub):
+        def __call__(
+            self,
+            request: locations_pb2.GetLocationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> locations_pb2.Location:
+            r"""Call the get location method over HTTP.
+
+            Args:
+                request (locations_pb2.GetLocationRequest):
+                    The request object for GetLocation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                locations_pb2.Location: Response from GetLocation method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{name=projects/*/locations/*}",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_get_location(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = locations_pb2.Location()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_get_location(resp)
+            return resp
+
+    @property
+    def list_locations(self):
+        return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _ListLocations(TranslationServiceRestStub):
+        def __call__(
+            self,
+            request: locations_pb2.ListLocationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> locations_pb2.ListLocationsResponse:
+            r"""Call the list locations method over HTTP.
+
+            Args:
+                request (locations_pb2.ListLocationsRequest):
+                    The request object for ListLocations method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                locations_pb2.ListLocationsResponse: Response from ListLocations method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{name=projects/*}/locations",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_list_locations(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = locations_pb2.ListLocationsResponse()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_list_locations(resp)
+            return resp
+
+    @property
+    def cancel_operation(self):
+        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _CancelOperation(TranslationServiceRestStub):
+        def __call__(
+            self,
+            request: operations_pb2.CancelOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> None:
+            r"""Call the cancel operation method over HTTP.
+
+            Args:
+                request (operations_pb2.CancelOperationRequest):
+                    The request object for CancelOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{name=projects/*/locations/*/operations/*}:cancel",
+                    "body": "*",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_cancel_operation(
+                request, metadata
+            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            body = json.dumps(transcoded_request["body"])
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_cancel_operation(None)
+
+    @property
+    def delete_operation(self):
+        return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _DeleteOperation(TranslationServiceRestStub):
+        def __call__(
+            self,
+            request: operations_pb2.DeleteOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> None:
+            r"""Call the delete operation method over HTTP.
+
+            Args:
+                request (operations_pb2.DeleteOperationRequest):
+                    The request object for DeleteOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v3/{name=projects/*/locations/*/operations/*}",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_delete_operation(
+                request, metadata
+            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_delete_operation(None)
+
+    @property
+    def get_operation(self):
+        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetOperation(TranslationServiceRestStub):
+        def __call__(
+            self,
+            request: operations_pb2.GetOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the get operation method over HTTP.
+
+            Args:
+                request (operations_pb2.GetOperationRequest):
+                    The request object for GetOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                operations_pb2.Operation: Response from GetOperation method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{name=projects/*/locations/*/operations/*}",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_get_operation(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = operations_pb2.Operation()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_get_operation(resp)
+            return resp
+
+    @property
+    def list_operations(self):
+        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _ListOperations(TranslationServiceRestStub):
+        def __call__(
+            self,
+            request: operations_pb2.ListOperationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.ListOperationsResponse:
+            r"""Call the list operations method over HTTP.
+
+            Args:
+                request (operations_pb2.ListOperationsRequest):
+                    The request object for ListOperations method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                operations_pb2.ListOperationsResponse: Response from ListOperations method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{name=projects/*/locations/*}/operations",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_list_operations(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = operations_pb2.ListOperationsResponse()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_list_operations(resp)
+            return resp
+
+    @property
+    def wait_operation(self):
+        return self._WaitOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _WaitOperation(TranslationServiceRestStub):
+        def __call__(
+            self,
+            request: operations_pb2.WaitOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the wait operation method over HTTP.
+
+            Args:
+                request (operations_pb2.WaitOperationRequest):
+                    The request object for WaitOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                operations_pb2.Operation: Response from WaitOperation method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{name=projects/*/locations/*/operations/*}:wait",
+                    "body": "*",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_wait_operation(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            body = json.dumps(transcoded_request["body"])
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = operations_pb2.Operation()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_wait_operation(resp)
+            return resp
 
     @property
     def kind(self) -> str:

@@ -36,6 +36,9 @@ __protobuf__ = proto.module(
         "PurgeSuggestionDenyListEntriesRequest",
         "PurgeSuggestionDenyListEntriesResponse",
         "PurgeSuggestionDenyListEntriesMetadata",
+        "PurgeCompletionSuggestionsRequest",
+        "PurgeCompletionSuggestionsResponse",
+        "PurgeCompletionSuggestionsMetadata",
     },
 )
 
@@ -178,6 +181,10 @@ class PurgeDocumentsRequest(proto.Message):
     [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.PurgeDocuments]
     method.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -189,6 +196,11 @@ class PurgeDocumentsRequest(proto.Message):
             -  ``document_id``: One valid
                [Document.id][google.cloud.discoveryengine.v1alpha.Document.id]
                per line.
+
+            This field is a member of `oneof`_ ``source``.
+        inline_source (google.cloud.discoveryengine_v1alpha.types.PurgeDocumentsRequest.InlineSource):
+            Inline source for the input content for
+            purge.
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
@@ -206,11 +218,35 @@ class PurgeDocumentsRequest(proto.Message):
             documents.
     """
 
+    class InlineSource(proto.Message):
+        r"""The inline source for the input config for
+        [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.PurgeDocuments]
+        method.
+
+        Attributes:
+            documents (MutableSequence[str]):
+                Required. A list of full resource name of documents to
+                purge. In the format
+                ``projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*``.
+                Recommended max of 100 items.
+        """
+
+        documents: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
     gcs_source: import_config.GcsSource = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="source",
         message=import_config.GcsSource,
+    )
+    inline_source: InlineSource = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="source",
+        message=InlineSource,
     )
     parent: str = proto.Field(
         proto.STRING,
@@ -351,6 +387,74 @@ class PurgeSuggestionDenyListEntriesMetadata(proto.Message):
     r"""Metadata related to the progress of the
     PurgeSuggestionDenyListEntries operation. This is returned by
     the google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class PurgeCompletionSuggestionsRequest(proto.Message):
+    r"""Request message for
+    [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1alpha.CompletionService.PurgeCompletionSuggestions]
+    method.
+
+    Attributes:
+        parent (str):
+            Required. The parent data store resource name for which to
+            purge completion suggestions. Follows pattern
+            projects/\ */locations/*/collections/*/dataStores/*.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PurgeCompletionSuggestionsResponse(proto.Message):
+    r"""Response message for
+    [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1alpha.CompletionService.PurgeCompletionSuggestions]
+    method.
+
+    Attributes:
+        purge_succeeded (bool):
+            Whether the completion suggestions were
+            successfully purged.
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
+            A sample of errors encountered while
+            processing the request.
+    """
+
+    purge_succeeded: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+
+
+class PurgeCompletionSuggestionsMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    PurgeCompletionSuggestions operation. This is returned by the
+    google.longrunning.Operation.metadata field.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):

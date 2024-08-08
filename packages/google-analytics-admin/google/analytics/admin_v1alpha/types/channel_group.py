@@ -268,6 +268,15 @@ class ChannelGroup(proto.Message):
             is the Default Channel Group predefined by
             Google Analytics. Display name and grouping
             rules cannot be updated for this channel group.
+        primary (bool):
+            Optional. If true, this channel group will be used as the
+            default channel group for reports. Only one channel group
+            can be set as ``primary`` at any time. If the ``primary``
+            field gets set on a channel group, it will get unset on the
+            previous primary channel group.
+
+            The Google Analytics predefined channel group is the primary
+            by default.
     """
 
     name: str = proto.Field(
@@ -290,6 +299,10 @@ class ChannelGroup(proto.Message):
     system_defined: bool = proto.Field(
         proto.BOOL,
         number=5,
+    )
+    primary: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 

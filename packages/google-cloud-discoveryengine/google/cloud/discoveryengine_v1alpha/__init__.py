@@ -103,7 +103,7 @@ from .types.common import (
     SolutionType,
     UserInfo,
 )
-from .types.completion import SuggestionDenyListEntry
+from .types.completion import CompletionSuggestion, SuggestionDenyListEntry
 from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .types.control import Condition, Control
 from .types.control_service import (
@@ -141,7 +141,7 @@ from .types.conversational_search_service import (
     UpdateSessionRequest,
 )
 from .types.custom_tuning_model import CustomTuningModel
-from .types.data_store import DataStore
+from .types.data_store import DataStore, LanguageInfo
 from .types.data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -203,6 +203,7 @@ from .types.grounded_generation_service import (
 )
 from .types.grounding import FactChunk, GroundingFact
 from .types.import_config import (
+    AlloyDbSource,
     BigQuerySource,
     BigtableOptions,
     BigtableSource,
@@ -210,6 +211,9 @@ from .types.import_config import (
     FhirStoreSource,
     FirestoreSource,
     GcsSource,
+    ImportCompletionSuggestionsMetadata,
+    ImportCompletionSuggestionsRequest,
+    ImportCompletionSuggestionsResponse,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
     ImportDocumentsResponse,
@@ -233,6 +237,9 @@ from .types.project_service import (
     ReportConsentChangeRequest,
 )
 from .types.purge_config import (
+    PurgeCompletionSuggestionsMetadata,
+    PurgeCompletionSuggestionsRequest,
+    PurgeCompletionSuggestionsResponse,
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
     PurgeDocumentsResponse,
@@ -314,11 +321,16 @@ from .types.site_search_engine_service import (
     FetchDomainVerificationStatusResponse,
     GetSiteSearchEngineRequest,
     GetTargetSiteRequest,
+    GetUriPatternDocumentDataRequest,
+    GetUriPatternDocumentDataResponse,
     ListTargetSitesRequest,
     ListTargetSitesResponse,
     RecrawlUrisMetadata,
     RecrawlUrisRequest,
     RecrawlUrisResponse,
+    SetUriPatternDocumentDataMetadata,
+    SetUriPatternDocumentDataRequest,
+    SetUriPatternDocumentDataResponse,
     UpdateTargetSiteMetadata,
     UpdateTargetSiteRequest,
 )
@@ -359,6 +371,7 @@ __all__ = (
     "UserEventServiceAsyncClient",
     "AclConfig",
     "AclConfigServiceClient",
+    "AlloyDbSource",
     "Answer",
     "AnswerQueryRequest",
     "AnswerQueryResponse",
@@ -382,6 +395,7 @@ __all__ = (
     "CompleteQueryResponse",
     "CompletionInfo",
     "CompletionServiceClient",
+    "CompletionSuggestion",
     "Condition",
     "Control",
     "ControlServiceClient",
@@ -472,10 +486,15 @@ __all__ = (
     "GetSessionRequest",
     "GetSiteSearchEngineRequest",
     "GetTargetSiteRequest",
+    "GetUriPatternDocumentDataRequest",
+    "GetUriPatternDocumentDataResponse",
     "GroundedGenerationServiceClient",
     "GroundingFact",
     "GuidedSearchSpec",
     "IdpConfig",
+    "ImportCompletionSuggestionsMetadata",
+    "ImportCompletionSuggestionsRequest",
+    "ImportCompletionSuggestionsResponse",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
@@ -491,6 +510,7 @@ __all__ = (
     "ImportUserEventsResponse",
     "IndustryVertical",
     "Interval",
+    "LanguageInfo",
     "ListChunksRequest",
     "ListChunksResponse",
     "ListControlsRequest",
@@ -531,6 +551,9 @@ __all__ = (
     "ProjectServiceClient",
     "ProvisionProjectMetadata",
     "ProvisionProjectRequest",
+    "PurgeCompletionSuggestionsMetadata",
+    "PurgeCompletionSuggestionsRequest",
+    "PurgeCompletionSuggestionsResponse",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
@@ -573,6 +596,9 @@ __all__ = (
     "ServingConfig",
     "ServingConfigServiceClient",
     "Session",
+    "SetUriPatternDocumentDataMetadata",
+    "SetUriPatternDocumentDataRequest",
+    "SetUriPatternDocumentDataResponse",
     "SiteSearchEngine",
     "SiteSearchEngineServiceClient",
     "SiteVerificationInfo",

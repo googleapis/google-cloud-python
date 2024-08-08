@@ -48,9 +48,9 @@ class Chunk(proto.Message):
             Content is a string from a document (parsed
             content).
         relevance_score (float):
-            The relevance score based on similarity. Higher score
-            indicates higher chunk relevance. The score is in range
-            [-1.0, 1.0]. Only populated on
+            Output only. Represents the relevance score based on
+            similarity. Higher score indicates higher chunk relevance.
+            The score is in range [-1.0, 1.0]. Only populated on
             [SearchService.SearchResponse][].
 
             This field is a member of `oneof`_ ``_relevance_score``.

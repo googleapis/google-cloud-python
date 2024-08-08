@@ -113,9 +113,19 @@
                 "complete_query"
               ]
             },
+            "ImportCompletionSuggestions": {
+              "methods": [
+                "import_completion_suggestions"
+              ]
+            },
             "ImportSuggestionDenyListEntries": {
               "methods": [
                 "import_suggestion_deny_list_entries"
+              ]
+            },
+            "PurgeCompletionSuggestions": {
+              "methods": [
+                "purge_completion_suggestions"
               ]
             },
             "PurgeSuggestionDenyListEntries": {
@@ -133,9 +143,19 @@
                 "complete_query"
               ]
             },
+            "ImportCompletionSuggestions": {
+              "methods": [
+                "import_completion_suggestions"
+              ]
+            },
             "ImportSuggestionDenyListEntries": {
               "methods": [
                 "import_suggestion_deny_list_entries"
+              ]
+            },
+            "PurgeCompletionSuggestions": {
+              "methods": [
+                "purge_completion_suggestions"
               ]
             },
             "PurgeSuggestionDenyListEntries": {
@@ -153,9 +173,19 @@
                 "complete_query"
               ]
             },
+            "ImportCompletionSuggestions": {
+              "methods": [
+                "import_completion_suggestions"
+              ]
+            },
             "ImportSuggestionDenyListEntries": {
               "methods": [
                 "import_suggestion_deny_list_entries"
+              ]
+            },
+            "PurgeCompletionSuggestions": {
+              "methods": [
+                "purge_completion_suggestions"
               ]
             },
             "PurgeSuggestionDenyListEntries": {
@@ -1650,6 +1680,11 @@
                 "get_target_site"
               ]
             },
+            "GetUriPatternDocumentData": {
+              "methods": [
+                "get_uri_pattern_document_data"
+              ]
+            },
             "ListTargetSites": {
               "methods": [
                 "list_target_sites"
@@ -1658,6 +1693,11 @@
             "RecrawlUris": {
               "methods": [
                 "recrawl_uris"
+              ]
+            },
+            "SetUriPatternDocumentData": {
+              "methods": [
+                "set_uri_pattern_document_data"
               ]
             },
             "UpdateTargetSite": {
@@ -1715,6 +1755,11 @@
                 "get_target_site"
               ]
             },
+            "GetUriPatternDocumentData": {
+              "methods": [
+                "get_uri_pattern_document_data"
+              ]
+            },
             "ListTargetSites": {
               "methods": [
                 "list_target_sites"
@@ -1723,6 +1768,11 @@
             "RecrawlUris": {
               "methods": [
                 "recrawl_uris"
+              ]
+            },
+            "SetUriPatternDocumentData": {
+              "methods": [
+                "set_uri_pattern_document_data"
               ]
             },
             "UpdateTargetSite": {
@@ -1780,6 +1830,11 @@
                 "get_target_site"
               ]
             },
+            "GetUriPatternDocumentData": {
+              "methods": [
+                "get_uri_pattern_document_data"
+              ]
+            },
             "ListTargetSites": {
               "methods": [
                 "list_target_sites"
@@ -1788,6 +1843,11 @@
             "RecrawlUris": {
               "methods": [
                 "recrawl_uris"
+              ]
+            },
+            "SetUriPatternDocumentData": {
+              "methods": [
+                "set_uri_pattern_document_data"
               ]
             },
             "UpdateTargetSite": {
