@@ -1731,6 +1731,7 @@ def test_get_function(request_type, transport: str = "grpc"):
             source_token="source_token_value",
             docker_repository="docker_repository_value",
             docker_registry=functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY,
+            build_service_account="build_service_account_value",
             source_archive_url="source_archive_url_value",
         )
         response = client.get_function(request)
@@ -1772,6 +1773,7 @@ def test_get_function(request_type, transport: str = "grpc"):
         response.docker_registry
         == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
     )
+    assert response.build_service_account == "build_service_account_value"
 
 
 def test_get_function_empty_call():
@@ -1891,6 +1893,7 @@ async def test_get_function_empty_call_async():
                 source_token="source_token_value",
                 docker_repository="docker_repository_value",
                 docker_registry=functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY,
+                build_service_account="build_service_account_value",
             )
         )
         response = await client.get_function()
@@ -1979,6 +1982,7 @@ async def test_get_function_async(
                 source_token="source_token_value",
                 docker_repository="docker_repository_value",
                 docker_registry=functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY,
+                build_service_account="build_service_account_value",
             )
         )
         response = await client.get_function(request)
@@ -2020,6 +2024,7 @@ async def test_get_function_async(
         response.docker_registry
         == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
     )
+    assert response.build_service_account == "build_service_account_value"
 
 
 @pytest.mark.asyncio
@@ -5442,6 +5447,7 @@ def test_get_function_rest(request_type):
             source_token="source_token_value",
             docker_repository="docker_repository_value",
             docker_registry=functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY,
+            build_service_account="build_service_account_value",
             source_archive_url="source_archive_url_value",
         )
 
@@ -5487,6 +5493,7 @@ def test_get_function_rest(request_type):
         response.docker_registry
         == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
     )
+    assert response.build_service_account == "build_service_account_value"
 
 
 def test_get_function_rest_use_cached_wrapped_rpc():
@@ -5821,6 +5828,7 @@ def test_create_function_rest(request_type):
         "docker_registry": 1,
         "automatic_update_policy": {},
         "on_deploy_update_policy": {"runtime_version": "runtime_version_value"},
+        "build_service_account": "build_service_account_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6256,6 +6264,7 @@ def test_update_function_rest(request_type):
         "docker_registry": 1,
         "automatic_update_policy": {},
         "on_deploy_update_policy": {"runtime_version": "runtime_version_value"},
+        "build_service_account": "build_service_account_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
