@@ -17,6 +17,7 @@
     "packages/google-cloud-api-keys": "0.5.11",
     "packages/google-cloud-apigee-connect": "1.9.5",
     "packages/google-cloud-apigee-registry": "0.6.11",
+    "packages/google-cloud-apihub": "0.0.0",
     "packages/google-cloud-appengine-admin": "1.11.5",
     "packages/google-cloud-appengine-logging": "1.4.5",
     "packages/google-cloud-apphub": "0.1.2",
