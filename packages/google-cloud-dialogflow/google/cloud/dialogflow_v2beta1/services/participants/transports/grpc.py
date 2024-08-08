@@ -521,6 +521,36 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
         return self._stubs["suggest_smart_replies"]
 
     @property
+    def suggest_knowledge_assist(
+        self,
+    ) -> Callable[
+        [participant.SuggestKnowledgeAssistRequest],
+        participant.SuggestKnowledgeAssistResponse,
+    ]:
+        r"""Return a callable for the suggest knowledge assist method over gRPC.
+
+        Gets knowledge assist suggestions based on historical
+        messages.
+
+        Returns:
+            Callable[[~.SuggestKnowledgeAssistRequest],
+                    ~.SuggestKnowledgeAssistResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "suggest_knowledge_assist" not in self._stubs:
+            self._stubs["suggest_knowledge_assist"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Participants/SuggestKnowledgeAssist",
+                request_serializer=participant.SuggestKnowledgeAssistRequest.serialize,
+                response_deserializer=participant.SuggestKnowledgeAssistResponse.deserialize,
+            )
+        return self._stubs["suggest_knowledge_assist"]
+
+    @property
     def list_suggestions(
         self,
     ) -> Callable[

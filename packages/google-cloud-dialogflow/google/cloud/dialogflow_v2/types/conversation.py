@@ -23,6 +23,7 @@ import proto  # type: ignore
 from google.cloud.dialogflow_v2.types import (
     conversation_profile as gcd_conversation_profile,
 )
+from google.cloud.dialogflow_v2.types import generator as gcd_generator
 from google.cloud.dialogflow_v2.types import participant, session
 
 __protobuf__ = proto.module(
@@ -41,6 +42,8 @@ __protobuf__ = proto.module(
         "SuggestConversationSummaryResponse",
         "GenerateStatelessSummaryRequest",
         "GenerateStatelessSummaryResponse",
+        "GenerateStatelessSuggestionRequest",
+        "GenerateStatelessSuggestionResponse",
         "SearchKnowledgeRequest",
         "SearchKnowledgeResponse",
         "SearchKnowledgeAnswer",
@@ -57,8 +60,8 @@ class Conversation(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The unique identifier of this conversation.
-            Format:
+            Output only. Identifier. The unique identifier of this
+            conversation. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
         lifecycle_state (google.cloud.dialogflow_v2.types.Conversation.LifecycleState):
             Output only. The current state of the
@@ -77,8 +80,9 @@ class Conversation(proto.Message):
             Output only. The time the conversation was
             finished.
         conversation_stage (google.cloud.dialogflow_v2.types.Conversation.ConversationStage):
-            The stage of a conversation. It indicates whether the
-            virtual agent or a human agent is handling the conversation.
+            Optional. The stage of a conversation. It indicates whether
+            the virtual agent or a human agent is handling the
+            conversation.
 
             If the conversation is created with the conversation profile
             that has Dialogflow config set, defaults to
@@ -226,22 +230,10 @@ class ListConversationsRequest(proto.Message):
             Optional. The next_page_token value returned from a previous
             list request.
         filter (str):
-            A filter expression that filters conversations listed in the
-            response. In general, the expression must specify the field
-            name, a comparison operator, and the value to use for
-            filtering:
-
-            .. raw:: html
-
-                <ul>
-                  <li>The value must be a string, a number, or a boolean.</li>
-                  <li>The comparison operator must be either `=`,`!=`, `>`, or `<`.</li>
-                  <li>To filter on multiple expressions, separate the
-                      expressions with `AND` or `OR` (omitting both implies `AND`).</li>
-                  <li>For clarity, expressions can be enclosed in parentheses.</li>
-                </ul>
-                Only `lifecycle_state` can be filtered on in this way. For example,
-                the following expression only returns `COMPLETED` conversations:
+            Optional. A filter expression that filters conversations
+            listed in the response. Only ``lifecycle_state`` can be
+            filtered on in this way. For example, the following
+            expression only returns ``COMPLETED`` conversations:
 
             ``lifecycle_state = "COMPLETED"``
 
@@ -431,19 +423,19 @@ class SuggestConversationSummaryRequest(proto.Message):
             Required. The conversation to fetch suggestion for. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
         latest_message (str):
-            The name of the latest conversation message used as context
-            for compiling suggestion. If empty, the latest message of
-            the conversation will be used.
+            Optional. The name of the latest conversation message used
+            as context for compiling suggestion. If empty, the latest
+            message of the conversation will be used.
 
             Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         context_size (int):
-            Max number of messages prior to and including
+            Optional. Max number of messages prior to and including
             [latest_message] to use as context when compiling the
             suggestion. By default 500 and at most 1000.
         assist_query_params (google.cloud.dialogflow_v2.types.AssistQueryParameters):
-            Parameters for a human assist query. Only
-            used for POC/demo purpose.
+            Optional. Parameters for a human assist
+            query. Only used for POC/demo purpose.
     """
 
     conversation: str = proto.Field(
@@ -556,13 +548,14 @@ class GenerateStatelessSummaryRequest(proto.Message):
             {language_code, security_settings} Optional fields:
             {agent_assistant_config}
         latest_message (str):
-            The name of the latest conversation message
-            used as context for generating a Summary. If
-            empty, the latest message of the conversation
-            will be used. The format is specific to the user
-            and the names of the messages provided.
+            Optional. The name of the latest conversation
+            message used as context for generating a
+            Summary. If empty, the latest message of the
+            conversation will be used. The format is
+            specific to the user and the names of the
+            messages provided.
         max_context_size (int):
-            Max number of messages prior to and including
+            Optional. Max number of messages prior to and including
             [latest_message] to use as context when compiling the
             suggestion. By default 500 and at most 1000.
     """
@@ -683,14 +676,94 @@ class GenerateStatelessSummaryResponse(proto.Message):
     )
 
 
+class GenerateStatelessSuggestionRequest(proto.Message):
+    r"""The request message for
+    [Conversations.GenerateStatelessSuggestion][google.cloud.dialogflow.v2.Conversations.GenerateStatelessSuggestion].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. The parent resource to charge for the Suggestion's
+            generation. Format:
+            ``projects/<Project ID>/locations/<Location ID>``.
+        generator (google.cloud.dialogflow_v2.types.Generator):
+            Uncreated generator. It should be a complete
+            generator that includes all information about
+            the generator.
+
+            This field is a member of `oneof`_ ``generator_resource``.
+        generator_name (str):
+            The resource name of the existing created generator. Format:
+            ``projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>``
+
+            This field is a member of `oneof`_ ``generator_resource``.
+        conversation_context (google.cloud.dialogflow_v2.types.ConversationContext):
+            Optional. Context of the conversation,
+            including transcripts.
+        trigger_events (MutableSequence[google.cloud.dialogflow_v2.types.TriggerEvent]):
+            Optional. A list of trigger events. Generator
+            will be triggered only if it's trigger event is
+            included here.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    generator: gcd_generator.Generator = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="generator_resource",
+        message=gcd_generator.Generator,
+    )
+    generator_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="generator_resource",
+    )
+    conversation_context: gcd_generator.ConversationContext = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=gcd_generator.ConversationContext,
+    )
+    trigger_events: MutableSequence[gcd_generator.TriggerEvent] = proto.RepeatedField(
+        proto.ENUM,
+        number=6,
+        enum=gcd_generator.TriggerEvent,
+    )
+
+
+class GenerateStatelessSuggestionResponse(proto.Message):
+    r"""The response message for
+    [Conversations.GenerateStatelessSuggestion][google.cloud.dialogflow.v2.Conversations.GenerateStatelessSuggestion].
+
+    Attributes:
+        generator_suggestion (google.cloud.dialogflow_v2.types.GeneratorSuggestion):
+            Required. Generated suggestion for a
+            conversation.
+    """
+
+    generator_suggestion: gcd_generator.GeneratorSuggestion = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_generator.GeneratorSuggestion,
+    )
+
+
 class SearchKnowledgeRequest(proto.Message):
     r"""The request message for
     [Conversations.SearchKnowledge][google.cloud.dialogflow.v2.Conversations.SearchKnowledge].
 
     Attributes:
         parent (str):
-            The parent resource contains the conversation profile
-            Format: 'projects/' or
+            Required. The parent resource contains the conversation
+            profile Format: 'projects/' or
             ``projects/<Project ID>/locations/<Location ID>``.
         query (google.cloud.dialogflow_v2.types.TextInput):
             Required. The natural language text query for
@@ -700,21 +773,21 @@ class SearchKnowledgeRequest(proto.Message):
             search. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``.
         session_id (str):
-            The ID of the search session. The session_id can be combined
-            with Dialogflow V3 Agent ID retrieved from conversation
-            profile or on its own to identify a search session. The
-            search history of the same session will impact the search
-            result. It's up to the API caller to choose an appropriate
-            ``Session ID``. It can be a random number or some type of
-            session identifiers (preferably hashed). The length must not
-            exceed 36 characters.
+            Required. The ID of the search session. The session_id can
+            be combined with Dialogflow V3 Agent ID retrieved from
+            conversation profile or on its own to identify a search
+            session. The search history of the same session will impact
+            the search result. It's up to the API caller to choose an
+            appropriate ``Session ID``. It can be a random number or
+            some type of session identifiers (preferably hashed). The
+            length must not exceed 36 characters.
         conversation (str):
-            The conversation (between human agent and end user) where
-            the search request is triggered. Format:
+            Optional. The conversation (between human agent and end
+            user) where the search request is triggered. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
         latest_message (str):
-            The name of the latest conversation message when the request
-            is triggered. Format:
+            Optional. The name of the latest conversation message when
+            the request is triggered. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
     """
 

@@ -169,6 +169,11 @@ class ConversationsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.generate_stateless_suggestion: gapic_v1.method.wrap_method(
+                self.generate_stateless_suggestion,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.search_knowledge: gapic_v1.method.wrap_method(
                 self.search_knowledge,
                 default_timeout=None,
@@ -256,6 +261,18 @@ class ConversationsTransport(abc.ABC):
         Union[
             conversation.GenerateStatelessSummaryResponse,
             Awaitable[conversation.GenerateStatelessSummaryResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def generate_stateless_suggestion(
+        self,
+    ) -> Callable[
+        [conversation.GenerateStatelessSuggestionRequest],
+        Union[
+            conversation.GenerateStatelessSuggestionResponse,
+            Awaitable[conversation.GenerateStatelessSuggestionResponse],
         ],
     ]:
         raise NotImplementedError()

@@ -476,6 +476,11 @@
                 "create_conversation"
               ]
             },
+            "GenerateStatelessSuggestion": {
+              "methods": [
+                "generate_stateless_suggestion"
+              ]
+            },
             "GenerateStatelessSummary": {
               "methods": [
                 "generate_stateless_summary"
@@ -526,6 +531,11 @@
                 "create_conversation"
               ]
             },
+            "GenerateStatelessSuggestion": {
+              "methods": [
+                "generate_stateless_suggestion"
+              ]
+            },
             "GenerateStatelessSummary": {
               "methods": [
                 "generate_stateless_summary"
@@ -574,6 +584,11 @@
             "CreateConversation": {
               "methods": [
                 "create_conversation"
+              ]
+            },
+            "GenerateStatelessSuggestion": {
+              "methods": [
+                "generate_stateless_suggestion"
               ]
             },
             "GenerateStatelessSummary": {
@@ -728,6 +743,55 @@
             "UpdateDocument": {
               "methods": [
                 "update_document"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "EncryptionSpecService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "EncryptionSpecServiceClient",
+          "rpcs": {
+            "GetEncryptionSpec": {
+              "methods": [
+                "get_encryption_spec"
+              ]
+            },
+            "InitializeEncryptionSpec": {
+              "methods": [
+                "initialize_encryption_spec"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "EncryptionSpecServiceAsyncClient",
+          "rpcs": {
+            "GetEncryptionSpec": {
+              "methods": [
+                "get_encryption_spec"
+              ]
+            },
+            "InitializeEncryptionSpec": {
+              "methods": [
+                "initialize_encryption_spec"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "EncryptionSpecServiceClient",
+          "rpcs": {
+            "GetEncryptionSpec": {
+              "methods": [
+                "get_encryption_spec"
+              ]
+            },
+            "InitializeEncryptionSpec": {
+              "methods": [
+                "initialize_encryption_spec"
               ]
             }
           }
@@ -1061,6 +1125,100 @@
         }
       }
     },
+    "Generators": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "GeneratorsClient",
+          "rpcs": {
+            "CreateGenerator": {
+              "methods": [
+                "create_generator"
+              ]
+            },
+            "DeleteGenerator": {
+              "methods": [
+                "delete_generator"
+              ]
+            },
+            "GetGenerator": {
+              "methods": [
+                "get_generator"
+              ]
+            },
+            "ListGenerators": {
+              "methods": [
+                "list_generators"
+              ]
+            },
+            "UpdateGenerator": {
+              "methods": [
+                "update_generator"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "GeneratorsAsyncClient",
+          "rpcs": {
+            "CreateGenerator": {
+              "methods": [
+                "create_generator"
+              ]
+            },
+            "DeleteGenerator": {
+              "methods": [
+                "delete_generator"
+              ]
+            },
+            "GetGenerator": {
+              "methods": [
+                "get_generator"
+              ]
+            },
+            "ListGenerators": {
+              "methods": [
+                "list_generators"
+              ]
+            },
+            "UpdateGenerator": {
+              "methods": [
+                "update_generator"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "GeneratorsClient",
+          "rpcs": {
+            "CreateGenerator": {
+              "methods": [
+                "create_generator"
+              ]
+            },
+            "DeleteGenerator": {
+              "methods": [
+                "delete_generator"
+              ]
+            },
+            "GetGenerator": {
+              "methods": [
+                "get_generator"
+              ]
+            },
+            "ListGenerators": {
+              "methods": [
+                "list_generators"
+              ]
+            },
+            "UpdateGenerator": {
+              "methods": [
+                "update_generator"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Intents": {
       "clients": {
         "grpc": {
@@ -1329,6 +1487,11 @@
                 "suggest_faq_answers"
               ]
             },
+            "SuggestKnowledgeAssist": {
+              "methods": [
+                "suggest_knowledge_assist"
+              ]
+            },
             "SuggestSmartReplies": {
               "methods": [
                 "suggest_smart_replies"
@@ -1389,6 +1552,11 @@
                 "suggest_faq_answers"
               ]
             },
+            "SuggestKnowledgeAssist": {
+              "methods": [
+                "suggest_knowledge_assist"
+              ]
+            },
             "SuggestSmartReplies": {
               "methods": [
                 "suggest_smart_replies"
@@ -1447,6 +1615,11 @@
             "SuggestFaqAnswers": {
               "methods": [
                 "suggest_faq_answers"
+              ]
+            },
+            "SuggestKnowledgeAssist": {
+              "methods": [
+                "suggest_knowledge_assist"
               ]
             },
             "SuggestSmartReplies": {

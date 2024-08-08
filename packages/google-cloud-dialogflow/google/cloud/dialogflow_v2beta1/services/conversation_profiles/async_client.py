@@ -99,6 +99,8 @@ class ConversationProfilesAsyncClient:
     )
     document_path = staticmethod(ConversationProfilesClient.document_path)
     parse_document_path = staticmethod(ConversationProfilesClient.parse_document_path)
+    generator_path = staticmethod(ConversationProfilesClient.generator_path)
+    parse_generator_path = staticmethod(ConversationProfilesClient.parse_generator_path)
     knowledge_base_path = staticmethod(ConversationProfilesClient.knowledge_base_path)
     parse_knowledge_base_path = staticmethod(
         ConversationProfilesClient.parse_knowledge_base_path
@@ -1125,7 +1127,7 @@ class ConversationProfilesAsyncClient:
                 request = dialogflow_v2beta1.ClearSuggestionFeatureConfigRequest(
                     conversation_profile="conversation_profile_value",
                     participant_role="END_USER",
-                    suggestion_feature_type="KNOWLEDGE_SEARCH",
+                    suggestion_feature_type="KNOWLEDGE_ASSIST",
                 )
 
                 # Make the request
