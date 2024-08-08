@@ -2520,6 +2520,10 @@ def test_update_answer_record_rest(request_type):
                     "answer_copied": True,
                     "clicked_uris": ["clicked_uris_value1", "clicked_uris_value2"],
                 },
+                "knowledge_assist_feedback": {
+                    "answer_copied": True,
+                    "clicked_uris": ["clicked_uris_value1", "clicked_uris_value2"],
+                },
             },
             "clicked": True,
             "click_time": {},

@@ -502,6 +502,10 @@ class InputAudioConfig(proto.Message):
         enable_automatic_punctuation (bool):
             Enable automatic punctuation option at the
             speech backend.
+        default_no_speech_timeout (google.protobuf.duration_pb2.Duration):
+            If set, use this no-speech timeout when the
+            agent does not provide a no-speech timeout
+            itself.
         opt_out_conformer_model_migration (bool):
             If ``true``, the request will opt out for STT conformer
             model migration. This field will be deprecated once force
@@ -561,6 +565,11 @@ class InputAudioConfig(proto.Message):
     enable_automatic_punctuation: bool = proto.Field(
         proto.BOOL,
         number=17,
+    )
+    default_no_speech_timeout: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=duration_pb2.Duration,
     )
     opt_out_conformer_model_migration: bool = proto.Field(
         proto.BOOL,
@@ -753,6 +762,29 @@ class SpeechToTextConfig(proto.Message):
             Leave this field unspecified to use `Agent Speech
             settings <https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech>`__
             for model selection.
+        audio_encoding (google.cloud.dialogflow_v2beta1.types.AudioEncoding):
+            Audio encoding of the audio content to
+            process.
+        sample_rate_hertz (int):
+            Sample rate (in Hertz) of the audio content sent in the
+            query. Refer to `Cloud Speech API
+            documentation <https://cloud.google.com/speech-to-text/docs/basics>`__
+            for more details.
+        language_code (str):
+            The language of the supplied audio. Dialogflow does not do
+            translations. See `Language
+            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            for a list of the currently supported language codes. Note
+            that queries in the same session do not necessarily need to
+            specify the same language.
+        enable_word_info (bool):
+            If ``true``, Dialogflow returns
+            [SpeechWordInfo][google.cloud.dialogflow.v2beta1.SpeechWordInfo]
+            in
+            [StreamingRecognitionResult][google.cloud.dialogflow.v2beta1.StreamingRecognitionResult]
+            with information about the recognized speech words, e.g.
+            start and end time offsets. If false or unspecified, Speech
+            doesn't return any word-level information.
         use_timeout_based_endpointing (bool):
             Use timeout based endpointing, interpreting
             endpointer sensitivy as seconds of timeout
@@ -767,6 +799,23 @@ class SpeechToTextConfig(proto.Message):
     model: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    audio_encoding: "AudioEncoding" = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="AudioEncoding",
+    )
+    sample_rate_hertz: int = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    enable_word_info: bool = proto.Field(
+        proto.BOOL,
+        number=9,
     )
     use_timeout_based_endpointing: bool = proto.Field(
         proto.BOOL,

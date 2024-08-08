@@ -44,8 +44,10 @@ async def sample_search_knowledge():
     query.language_code = "language_code_value"
 
     request = dialogflow_v2.SearchKnowledgeRequest(
+        parent="parent_value",
         query=query,
         conversation_profile="conversation_profile_value",
+        session_id="session_id_value",
     )
 
     # Make the request
