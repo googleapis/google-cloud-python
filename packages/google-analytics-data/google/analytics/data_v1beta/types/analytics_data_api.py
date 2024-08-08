@@ -157,6 +157,8 @@ class Metadata(proto.Message):
             The dimension descriptions.
         metrics (MutableSequence[google.analytics.data_v1beta.types.MetricMetadata]):
             The metric descriptions.
+        comparisons (MutableSequence[google.analytics.data_v1beta.types.ComparisonMetadata]):
+            The comparison descriptions.
     """
 
     name: str = proto.Field(
@@ -172,6 +174,11 @@ class Metadata(proto.Message):
         proto.MESSAGE,
         number=2,
         message=data.MetricMetadata,
+    )
+    comparisons: MutableSequence[data.ComparisonMetadata] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=data.ComparisonMetadata,
     )
 
 
@@ -269,6 +276,11 @@ class RunReportRequest(proto.Message):
             Toggles whether to return the current state of this
             Analytics Property's quota. Quota is returned in
             `PropertyQuota <#PropertyQuota>`__.
+        comparisons (MutableSequence[google.analytics.data_v1beta.types.Comparison]):
+            Optional. The configuration of comparisons
+            requested and displayed. The request only
+            requires a comparisons field in order to receive
+            a comparison column in the response.
     """
 
     property: str = proto.Field(
@@ -334,6 +346,11 @@ class RunReportRequest(proto.Message):
     return_property_quota: bool = proto.Field(
         proto.BOOL,
         number=14,
+    )
+    comparisons: MutableSequence[data.Comparison] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=15,
+        message=data.Comparison,
     )
 
 
@@ -504,6 +521,12 @@ class RunPivotReportRequest(proto.Message):
             Toggles whether to return the current state of this
             Analytics Property's quota. Quota is returned in
             `PropertyQuota <#PropertyQuota>`__.
+        comparisons (MutableSequence[google.analytics.data_v1beta.types.Comparison]):
+            Optional. The configuration of comparisons
+            requested and displayed. The request requires
+            both a comparisons field and a comparisons
+            dimension to receive a comparison column in the
+            response.
     """
 
     property: str = proto.Field(
@@ -556,6 +579,11 @@ class RunPivotReportRequest(proto.Message):
     return_property_quota: bool = proto.Field(
         proto.BOOL,
         number=11,
+    )
+    comparisons: MutableSequence[data.Comparison] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message=data.Comparison,
     )
 
 
