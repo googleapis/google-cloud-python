@@ -76,7 +76,7 @@ jobs:
         python -m pip install nox
     - name: Run compliance tests
       env:
-        COVERAGE_FILE: .coverage-${{ matrix.python }}
+        COVERAGE_FILE: .coverage-compliance-${{ matrix.python }}
       run: |
         nox -s compliance-${{ matrix.python }}
     - name: Upload coverage results
