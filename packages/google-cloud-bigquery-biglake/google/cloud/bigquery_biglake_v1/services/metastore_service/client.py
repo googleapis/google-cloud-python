@@ -727,7 +727,7 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 Type[MetastoreServiceTransport],
                 Callable[..., MetastoreServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                MetastoreServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., MetastoreServiceTransport], transport)
             )

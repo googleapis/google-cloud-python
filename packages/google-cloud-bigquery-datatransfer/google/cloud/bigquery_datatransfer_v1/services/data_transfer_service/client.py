@@ -713,7 +713,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 Type[DataTransferServiceTransport],
                 Callable[..., DataTransferServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                DataTransferServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DataTransferServiceTransport], transport)
             )

@@ -695,7 +695,7 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
                 Type[AppConnectorsServiceTransport],
                 Callable[..., AppConnectorsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AppConnectorsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AppConnectorsServiceTransport], transport)
             )
