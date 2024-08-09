@@ -693,7 +693,7 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
             transport_init: Union[
                 Type[BatchControllerTransport], Callable[..., BatchControllerTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                BatchControllerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., BatchControllerTransport], transport)
             )

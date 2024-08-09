@@ -854,7 +854,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             transport_init: Union[
                 Type[DataplexServiceTransport], Callable[..., DataplexServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                DataplexServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DataplexServiceTransport], transport)
             )

@@ -1017,7 +1017,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
             transport_init: Union[
                 Type[CloudDeployTransport], Callable[..., CloudDeployTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CloudDeployClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudDeployTransport], transport)
             )

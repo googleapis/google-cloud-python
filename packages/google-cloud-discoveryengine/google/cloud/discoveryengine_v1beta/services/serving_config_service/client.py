@@ -679,7 +679,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 Type[ServingConfigServiceTransport],
                 Callable[..., ServingConfigServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ServingConfigServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ServingConfigServiceTransport], transport)
             )

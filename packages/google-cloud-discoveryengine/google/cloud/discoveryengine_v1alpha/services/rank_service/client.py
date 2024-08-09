@@ -657,7 +657,7 @@ class RankServiceClient(metaclass=RankServiceClientMeta):
             transport_init: Union[
                 Type[RankServiceTransport], Callable[..., RankServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                RankServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RankServiceTransport], transport)
             )

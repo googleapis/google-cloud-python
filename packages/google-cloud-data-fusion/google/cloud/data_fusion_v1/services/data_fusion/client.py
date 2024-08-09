@@ -688,7 +688,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
             transport_init: Union[
                 Type[DataFusionTransport], Callable[..., DataFusionTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                DataFusionClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DataFusionTransport], transport)
             )

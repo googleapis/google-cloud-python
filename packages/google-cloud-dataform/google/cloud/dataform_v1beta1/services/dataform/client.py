@@ -807,7 +807,7 @@ class DataformClient(metaclass=DataformClientMeta):
             transport_init: Union[
                 Type[DataformTransport], Callable[..., DataformTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                DataformClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DataformTransport], transport)
             )

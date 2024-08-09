@@ -718,7 +718,7 @@ class SessionControllerClient(metaclass=SessionControllerClientMeta):
                 Type[SessionControllerTransport],
                 Callable[..., SessionControllerTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SessionControllerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SessionControllerTransport], transport)
             )

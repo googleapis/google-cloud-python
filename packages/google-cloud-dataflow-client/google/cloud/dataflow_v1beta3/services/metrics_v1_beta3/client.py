@@ -642,7 +642,7 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
             transport_init: Union[
                 Type[MetricsV1Beta3Transport], Callable[..., MetricsV1Beta3Transport]
             ] = (
-                type(self).get_transport_class(transport)
+                MetricsV1Beta3Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., MetricsV1Beta3Transport], transport)
             )

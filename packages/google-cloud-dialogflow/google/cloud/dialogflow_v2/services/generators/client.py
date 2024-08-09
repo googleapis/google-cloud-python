@@ -666,7 +666,7 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
             transport_init: Union[
                 Type[GeneratorsTransport], Callable[..., GeneratorsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                GeneratorsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., GeneratorsTransport], transport)
             )
