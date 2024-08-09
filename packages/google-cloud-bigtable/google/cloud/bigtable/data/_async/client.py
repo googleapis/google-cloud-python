@@ -456,38 +456,38 @@ class BigtableDataClientAsync(ClientWithProject):
         retryable_errors list until operation_timeout is reached.
 
         Args:
-            - query: Query to be run on Bigtable instance. The query can use ``@param``
+            query: Query to be run on Bigtable instance. The query can use ``@param``
                 placeholders to use parameter interpolation on the server. Values for all
                 parameters should be provided in ``parameters``. Types of parameters are
                 inferred but should be provided in ``parameter_types`` if the inference is
                 not possible (i.e. when value can be None, an empty list or an empty dict).
-            - instance_id: The Bigtable instance ID to perform the query on.
+            instance_id: The Bigtable instance ID to perform the query on.
                 instance_id is combined with the client's project to fully
                 specify the instance.
-            - parameters: Dictionary with values for all parameters used in the ``query``.
-            - parameter_types: Dictionary with types of parameters used in the ``query``.
+            parameters: Dictionary with values for all parameters used in the ``query``.
+            parameter_types: Dictionary with types of parameters used in the ``query``.
                 Required to contain entries only for parameters whose type cannot be
                 detected automatically (i.e. the value can be None, an empty list or
                 an empty dict).
-            - app_profile_id: The app profile to associate with requests.
+            app_profile_id: The app profile to associate with requests.
                 https://cloud.google.com/bigtable/docs/app-profiles
-            - operation_timeout: the time budget for the entire operation, in seconds.
+            operation_timeout: the time budget for the entire operation, in seconds.
                 Failed requests will be retried within the budget.
                 Defaults to 600 seconds.
-            - attempt_timeout: the time budget for an individual network request, in seconds.
+            attempt_timeout: the time budget for an individual network request, in seconds.
                 If it takes longer than this time to complete, the request will be cancelled with
                 a DeadlineExceeded exception, and a retry will be attempted.
                 Defaults to the 20 seconds.
                 If None, defaults to operation_timeout.
-            - retryable_errors: a list of errors that will be retried if encountered.
+            retryable_errors: a list of errors that will be retried if encountered.
                 Defaults to 4 (DeadlineExceeded), 14 (ServiceUnavailable), and 10 (Aborted)
         Returns:
-            - an asynchronous iterator that yields rows returned by the query
+            ExecuteQueryIteratorAsync: an asynchronous iterator that yields rows returned by the query
         Raises:
-            - DeadlineExceeded: raised after operation timeout
+            google.api_core.exceptions.DeadlineExceeded: raised after operation timeout
                 will be chained with a RetryExceptionGroup containing GoogleAPIError exceptions
                 from any retries that failed
-            - GoogleAPIError: raised if the request encounters an unrecoverable error
+            google.api_core.exceptions.GoogleAPIError: raised if the request encounters an unrecoverable error
         """
         warnings.warn(
             "ExecuteQuery is in preview and may change in the future.",

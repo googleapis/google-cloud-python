@@ -23,6 +23,7 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
+    TYPE_CHECKING,
 )
 
 from google.api_core import retry as retries
@@ -43,11 +44,14 @@ from google.cloud.bigtable_v2.types.bigtable import (
     ExecuteQueryRequest as ExecuteQueryRequestPB,
 )
 
+if TYPE_CHECKING:
+    from google.cloud.bigtable.data import BigtableDataClientAsync
+
 
 class ExecuteQueryIteratorAsync:
     """
     ExecuteQueryIteratorAsync handles collecting streaming responses from the
-    ExecuteQuery RPC and parsing them to `QueryResultRow`s.
+    ExecuteQuery RPC and parsing them to QueryResultRows.
 
     ExecuteQueryIteratorAsync implements Asynchronous Iterator interface and can
     be used with "async for" syntax. It is also a context manager.
@@ -55,23 +59,25 @@ class ExecuteQueryIteratorAsync:
     It is **not thread-safe**. It should not be used by multiple asyncio Tasks.
 
     Args:
-            client (google.cloud.bigtable.data._async.BigtableDataClientAsync): bigtable client
-            instance_id (str): id of the instance on which the query is executed
-            request_body (Dict[str, Any]): dict representing the body of the ExecuteQueryRequest
-            attempt_timeout (float | None): the time budget for the entire operation, in seconds.
-                Failed requests will be retried within the budget.
-                Defaults to 600 seconds.
-            operation_timeout (float): the time budget for an individual network request, in seconds.
-                If it takes longer than this time to complete, the request will be cancelled with
-                a DeadlineExceeded exception, and a retry will be attempted.
-                Defaults to the 20 seconds. If None, defaults to operation_timeout.
-            req_metadata (Sequence[Tuple[str, str]]): metadata used while sending the gRPC request
-            retryable_excs (List[type[Exception]]): a list of errors that will be retried if encountered.
+        client: bigtable client
+        instance_id: id of the instance on which the query is executed
+        request_body: dict representing the body of the ExecuteQueryRequest
+        attempt_timeout: the time budget for the entire operation, in seconds.
+            Failed requests will be retried within the budget.
+            Defaults to 600 seconds.
+        operation_timeout: the time budget for an individual network request, in seconds.
+            If it takes longer than this time to complete, the request will be cancelled with
+            a DeadlineExceeded exception, and a retry will be attempted.
+            Defaults to the 20 seconds. If None, defaults to operation_timeout.
+        req_metadata: metadata used while sending the gRPC request
+        retryable_excs: a list of errors that will be retried if encountered.
+    Raises:
+        RuntimeError: if the instance is not created within an async event loop context.
     """
 
     def __init__(
         self,
-        client: Any,
+        client: BigtableDataClientAsync,
         instance_id: str,
         app_profile_id: Optional[str],
         request_body: Dict[str, Any],
@@ -112,15 +118,18 @@ class ExecuteQueryIteratorAsync:
             ) from e
 
     @property
-    def is_closed(self):
+    def is_closed(self) -> bool:
+        """Returns True if the iterator is closed, False otherwise."""
         return self._is_closed
 
     @property
-    def app_profile_id(self):
+    def app_profile_id(self) -> Optional[str]:
+        """Returns the app_profile_id of the iterator."""
         return self._app_profile_id
 
     @property
-    def table_name(self):
+    def table_name(self) -> Optional[str]:
+        """Returns the table_name of the iterator."""
         return self._table_name
 
     async def _make_request_with_resume_token(self):
@@ -176,7 +185,7 @@ class ExecuteQueryIteratorAsync:
                 yield result
         await self.close()
 
-    async def __anext__(self):
+    async def __anext__(self) -> QueryResultRow:
         if self._is_closed:
             raise StopAsyncIteration
         return await self._result_generator.__anext__()

@@ -13,3 +13,6 @@ Async Data Client
   async_data_mutations
   async_data_read_modify_write_rules
   async_data_exceptions
+  async_data_execute_query_iterator
+  async_data_execute_query_values
+  async_data_execute_query_metadata
