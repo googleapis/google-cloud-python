@@ -89,7 +89,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[grpc.Channel] = None,
+        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -109,14 +109,17 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
-                which to make calls.
+                ignored if a ``channel`` instance is provided.
+            channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]]):
+                A ``Channel`` instance through which to make calls, or a Callable
+                that constructs and returns one. If set to None, ``self.create_channel``
+                is used to create the channel. If a Callable is given, it will be called
+                with the same arguments as used in ``self.create_channel``.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -126,11 +129,11 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
                 private key bytes, both in PEM format. It is ignored if
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
-                for the grpc channel. It is ignored if ``channel`` is provided.
+                for the grpc channel. It is ignored if a ``channel`` instance is provided.
             client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 A callback to provide client certificate bytes and private key bytes,
                 both in PEM format. It is used to configure a mutual TLS channel. It is
-                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+                ignored if a ``channel`` instance or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -157,9 +160,10 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
+        if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
@@ -198,7 +202,9 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            # initialize with the provided callable or the default channel
+            channel_init = channel or type(self).create_channel
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -565,6 +571,43 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         return self._stubs["import_documents"]
 
     @property
+    def bulk_delete_documents(
+        self,
+    ) -> Callable[
+        [firestore_admin.BulkDeleteDocumentsRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the bulk delete documents method over gRPC.
+
+        Bulk deletes a subset of documents from Google Cloud
+        Firestore. Documents created or updated after the
+        underlying system starts to process the request will not
+        be deleted. The bulk delete occurs in the background and
+        its progress can be monitored and managed via the
+        Operation resource that is created.
+
+        For more details on bulk delete behavior, refer to:
+
+        https://cloud.google.com/firestore/docs/manage-data/bulk-delete
+
+        Returns:
+            Callable[[~.BulkDeleteDocumentsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "bulk_delete_documents" not in self._stubs:
+            self._stubs["bulk_delete_documents"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/BulkDeleteDocuments",
+                request_serializer=firestore_admin.BulkDeleteDocumentsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["bulk_delete_documents"]
+
+    @property
     def create_database(
         self,
     ) -> Callable[[firestore_admin.CreateDatabaseRequest], operations_pb2.Operation]:
@@ -785,7 +828,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         The new database must be in the same cloud region or
         multi-region location as the existing backup. This behaves
         similar to
-        [FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.CreateDatabase]
+        [FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.FirestoreAdmin.CreateDatabase]
         except instead of creating a new empty database, a new database
         is created with the database type, index configuration, and
         documents from an existing backup.

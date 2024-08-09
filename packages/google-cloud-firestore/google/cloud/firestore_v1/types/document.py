@@ -176,7 +176,7 @@ class Value(proto.Message):
             An array value.
 
             Cannot directly contain another array value,
-            though can contain an map which contains another
+            though can contain a map which contains another
             array.
 
             This field is a member of `oneof`_ ``value_type``.

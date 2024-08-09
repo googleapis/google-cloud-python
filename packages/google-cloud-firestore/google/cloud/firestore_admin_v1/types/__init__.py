@@ -23,6 +23,8 @@ from .field import (
     Field,
 )
 from .firestore_admin import (
+    BulkDeleteDocumentsRequest,
+    BulkDeleteDocumentsResponse,
     CreateBackupScheduleRequest,
     CreateDatabaseMetadata,
     CreateDatabaseRequest,
@@ -62,6 +64,7 @@ from .location import (
     LocationMetadata,
 )
 from .operation import (
+    BulkDeleteDocumentsMetadata,
     ExportDocumentsMetadata,
     ExportDocumentsResponse,
     FieldOperationMetadata,
@@ -81,6 +84,8 @@ __all__ = (
     "Backup",
     "Database",
     "Field",
+    "BulkDeleteDocumentsRequest",
+    "BulkDeleteDocumentsResponse",
     "CreateBackupScheduleRequest",
     "CreateDatabaseMetadata",
     "CreateDatabaseRequest",
@@ -114,6 +119,7 @@ __all__ = (
     "UpdateFieldRequest",
     "Index",
     "LocationMetadata",
+    "BulkDeleteDocumentsMetadata",
     "ExportDocumentsMetadata",
     "ExportDocumentsResponse",
     "FieldOperationMetadata",

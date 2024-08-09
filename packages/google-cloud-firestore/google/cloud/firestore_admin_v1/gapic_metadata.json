@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "FirestoreAdminClient",
           "rpcs": {
+            "BulkDeleteDocuments": {
+              "methods": [
+                "bulk_delete_documents"
+              ]
+            },
             "CreateBackupSchedule": {
               "methods": [
                 "create_backup_schedule"
@@ -130,6 +135,11 @@
         "grpc-async": {
           "libraryClient": "FirestoreAdminAsyncClient",
           "rpcs": {
+            "BulkDeleteDocuments": {
+              "methods": [
+                "bulk_delete_documents"
+              ]
+            },
             "CreateBackupSchedule": {
               "methods": [
                 "create_backup_schedule"
@@ -250,6 +260,11 @@
         "rest": {
           "libraryClient": "FirestoreAdminClient",
           "rpcs": {
+            "BulkDeleteDocuments": {
+              "methods": [
+                "bulk_delete_documents"
+              ]
+            },
             "CreateBackupSchedule": {
               "methods": [
                 "create_backup_schedule"

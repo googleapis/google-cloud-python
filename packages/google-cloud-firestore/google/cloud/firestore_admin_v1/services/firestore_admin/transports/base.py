@@ -94,6 +94,8 @@ class FirestoreAdminTransport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes
+        if not hasattr(self, "_ignore_credentials"):
+            self._ignore_credentials: bool = False
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -106,7 +108,7 @@ class FirestoreAdminTransport(abc.ABC):
             credentials, _ = google.auth.load_credentials_from_file(
                 credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
             )
-        elif credentials is None:
+        elif credentials is None and not self._ignore_credentials:
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
@@ -236,6 +238,11 @@ class FirestoreAdminTransport(abc.ABC):
             ),
             self.import_documents: gapic_v1.method.wrap_method(
                 self.import_documents,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.bulk_delete_documents: gapic_v1.method.wrap_method(
+                self.bulk_delete_documents,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -406,6 +413,15 @@ class FirestoreAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [firestore_admin.ImportDocumentsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def bulk_delete_documents(
+        self,
+    ) -> Callable[
+        [firestore_admin.BulkDeleteDocumentsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

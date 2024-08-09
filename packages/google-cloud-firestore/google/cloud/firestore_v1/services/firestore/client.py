@@ -18,6 +18,7 @@ import os
 import re
 from typing import (
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -526,7 +527,9 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, FirestoreTransport]] = None,
+        transport: Optional[
+            Union[str, FirestoreTransport, Callable[..., FirestoreTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -538,9 +541,11 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, FirestoreTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,FirestoreTransport,Callable[..., FirestoreTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the FirestoreTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -646,8 +651,15 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[FirestoreTransport], Callable[..., FirestoreTransport]
+            ] = (
+                FirestoreClient.get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., FirestoreTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -714,10 +726,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.GetDocumentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.GetDocumentRequest):
             request = firestore.GetDocumentRequest(request)
 
@@ -803,10 +813,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.ListDocumentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.ListDocumentsRequest):
             request = firestore.ListDocumentsRequest(request)
 
@@ -842,6 +850,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -926,8 +936,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([document, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -935,10 +945,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.UpdateDocumentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.UpdateDocumentRequest):
             request = firestore.UpdateDocumentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1027,8 +1035,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1036,10 +1044,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.DeleteDocumentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.DeleteDocumentRequest):
             request = firestore.DeleteDocumentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1126,10 +1132,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.BatchGetDocumentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.BatchGetDocumentsRequest):
             request = firestore.BatchGetDocumentsRequest(request)
 
@@ -1218,8 +1222,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([database])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1227,10 +1231,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.BeginTransactionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.BeginTransactionRequest):
             request = firestore.BeginTransactionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1333,8 +1335,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([database, writes])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1342,10 +1344,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.CommitRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.CommitRequest):
             request = firestore.CommitRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1440,8 +1440,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([database, transaction])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1449,10 +1449,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.RollbackRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.RollbackRequest):
             request = firestore.RollbackRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1538,10 +1536,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.RunQueryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.RunQueryRequest):
             request = firestore.RunQueryRequest(request)
 
@@ -1638,10 +1634,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.RunAggregationQueryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.RunAggregationQueryRequest):
             request = firestore.RunAggregationQueryRequest(request)
 
@@ -1730,10 +1724,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.PartitionQueryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.PartitionQueryRequest):
             request = firestore.PartitionQueryRequest(request)
 
@@ -1764,6 +1756,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2028,8 +2022,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2037,10 +2031,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.ListCollectionIdsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.ListCollectionIdsRequest):
             request = firestore.ListCollectionIdsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2075,6 +2067,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2144,10 +2138,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.BatchWriteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.BatchWriteRequest):
             request = firestore.BatchWriteRequest(request)
 
@@ -2230,10 +2222,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a firestore.CreateDocumentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, firestore.CreateDocumentRequest):
             request = firestore.CreateDocumentRequest(request)
 

@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "FieldOperationMetadata",
         "ExportDocumentsMetadata",
         "ImportDocumentsMetadata",
+        "BulkDeleteDocumentsMetadata",
         "ExportDocumentsResponse",
         "RestoreDatabaseMetadata",
         "Progress",
@@ -409,6 +410,79 @@ class ImportDocumentsMetadata(proto.Message):
     namespace_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
+    )
+
+
+class BulkDeleteDocumentsMetadata(proto.Message):
+    r"""Metadata for
+    [google.longrunning.Operation][google.longrunning.Operation] results
+    from
+    [FirestoreAdmin.BulkDeleteDocuments][google.firestore.admin.v1.FirestoreAdmin.BulkDeleteDocuments].
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time this operation started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time this operation completed. Will be
+            unset if operation still in progress.
+        operation_state (google.cloud.firestore_admin_v1.types.OperationState):
+            The state of the operation.
+        progress_documents (google.cloud.firestore_admin_v1.types.Progress):
+            The progress, in documents, of this
+            operation.
+        progress_bytes (google.cloud.firestore_admin_v1.types.Progress):
+            The progress, in bytes, of this operation.
+        collection_ids (MutableSequence[str]):
+            The ids of the collection groups that are
+            being deleted.
+        namespace_ids (MutableSequence[str]):
+            Which namespace ids are being deleted.
+        snapshot_time (google.protobuf.timestamp_pb2.Timestamp):
+            The timestamp that corresponds to the version
+            of the database that is being read to get the
+            list of documents to delete. This time can also
+            be used as the timestamp of PITR in case of
+            disaster recovery (subject to PITR window
+            limit).
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    operation_state: "OperationState" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="OperationState",
+    )
+    progress_documents: "Progress" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="Progress",
+    )
+    progress_bytes: "Progress" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="Progress",
+    )
+    collection_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    namespace_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    snapshot_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
     )
 
 

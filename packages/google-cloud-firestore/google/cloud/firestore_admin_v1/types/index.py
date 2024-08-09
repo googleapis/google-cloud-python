@@ -180,7 +180,7 @@ class Index(proto.Message):
                 This field is a member of `oneof`_ ``value_mode``.
             vector_config (google.cloud.firestore_admin_v1.types.Index.IndexField.VectorConfig):
                 Indicates that this field supports nearest
-                neighbors and distance operations on vector.
+                neighbor and distance operations on vector.
 
                 This field is a member of `oneof`_ ``value_mode``.
         """

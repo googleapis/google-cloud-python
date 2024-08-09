@@ -153,8 +153,8 @@ class StructuredQuery(proto.Message):
             -  The value must be greater than or equal to zero if
                specified.
         find_nearest (google.cloud.firestore_v1.types.StructuredQuery.FindNearest):
-            Optional. A potential Nearest Neighbors
-            Search.
+            Optional. A potential nearest neighbors
+            search.
             Applies after all other filters and ordering.
 
             Finds the closest vector embeddings to the given
@@ -520,7 +520,10 @@ class StructuredQuery(proto.Message):
         )
 
     class FindNearest(proto.Message):
-        r"""Nearest Neighbors search config.
+        r"""Nearest Neighbors search config. The ordering provided by
+        FindNearest supersedes the order_by stage. If multiple documents
+        have the same vector distance, the returned document order is not
+        guaranteed to be stable between queries.
 
         Attributes:
             vector_field (google.cloud.firestore_v1.types.StructuredQuery.FieldReference):
@@ -532,12 +535,27 @@ class StructuredQuery(proto.Message):
                 searching on. Must be a vector of no more than
                 2048 dimensions.
             distance_measure (google.cloud.firestore_v1.types.StructuredQuery.FindNearest.DistanceMeasure):
-                Required. The Distance Measure to use,
+                Required. The distance measure to use,
                 required.
             limit (google.protobuf.wrappers_pb2.Int32Value):
                 Required. The number of nearest neighbors to
                 return. Must be a positive integer of no more
                 than 1000.
+            distance_result_field (str):
+                Optional. Optional name of the field to output the result of
+                the vector distance calculation. Must conform to [document
+                field name][google.firestore.v1.Document.fields]
+                limitations.
+            distance_threshold (google.protobuf.wrappers_pb2.DoubleValue):
+                Optional. Option to specify a threshold for which no less
+                similar documents will be returned. The behavior of the
+                specified ``distance_measure`` will affect the meaning of
+                the distance threshold. Since DOT_PRODUCT distances increase
+                when the vectors are more similar, the comparison is
+                inverted.
+
+                For EUCLIDEAN, COSINE: WHERE distance <= distance_threshold
+                For DOT_PRODUCT: WHERE distance >= distance_threshold
         """
 
         class DistanceMeasure(proto.Enum):
@@ -549,21 +567,25 @@ class StructuredQuery(proto.Message):
                 EUCLIDEAN (1):
                     Measures the EUCLIDEAN distance between the vectors. See
                     `Euclidean <https://en.wikipedia.org/wiki/Euclidean_distance>`__
-                    to learn more
+                    to learn more. The resulting distance decreases the more
+                    similar two vectors are.
                 COSINE (2):
-                    Compares vectors based on the angle between them, which
-                    allows you to measure similarity that isn't based on the
-                    vectors magnitude. We recommend using DOT_PRODUCT with unit
-                    normalized vectors instead of COSINE distance, which is
-                    mathematically equivalent with better performance. See
-                    `Cosine
+                    COSINE distance compares vectors based on the angle between
+                    them, which allows you to measure similarity that isn't
+                    based on the vectors magnitude. We recommend using
+                    DOT_PRODUCT with unit normalized vectors instead of COSINE
+                    distance, which is mathematically equivalent with better
+                    performance. See `Cosine
                     Similarity <https://en.wikipedia.org/wiki/Cosine_similarity>`__
-                    to learn more.
+                    to learn more about COSINE similarity and COSINE distance.
+                    The resulting COSINE distance decreases the more similar two
+                    vectors are.
                 DOT_PRODUCT (3):
                     Similar to cosine but is affected by the magnitude of the
                     vectors. See `Dot
                     Product <https://en.wikipedia.org/wiki/Dot_product>`__ to
-                    learn more.
+                    learn more. The resulting distance increases the more
+                    similar two vectors are.
             """
             DISTANCE_MEASURE_UNSPECIFIED = 0
             EUCLIDEAN = 1
@@ -589,6 +611,15 @@ class StructuredQuery(proto.Message):
             proto.MESSAGE,
             number=4,
             message=wrappers_pb2.Int32Value,
+        )
+        distance_result_field: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        distance_threshold: wrappers_pb2.DoubleValue = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=wrappers_pb2.DoubleValue,
         )
 
     select: Projection = proto.Field(
