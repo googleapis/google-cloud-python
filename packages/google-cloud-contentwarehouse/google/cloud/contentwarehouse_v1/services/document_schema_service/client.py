@@ -691,7 +691,7 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
                 Type[DocumentSchemaServiceTransport],
                 Callable[..., DocumentSchemaServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                DocumentSchemaServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DocumentSchemaServiceTransport], transport)
             )

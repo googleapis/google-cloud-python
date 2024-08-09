@@ -647,7 +647,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 Type[NetworkEndpointGroupsTransport],
                 Callable[..., NetworkEndpointGroupsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                NetworkEndpointGroupsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., NetworkEndpointGroupsTransport], transport)
             )

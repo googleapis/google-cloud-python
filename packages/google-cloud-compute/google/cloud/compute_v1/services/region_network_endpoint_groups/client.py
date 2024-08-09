@@ -651,7 +651,7 @@ class RegionNetworkEndpointGroupsClient(
                 Type[RegionNetworkEndpointGroupsTransport],
                 Callable[..., RegionNetworkEndpointGroupsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionNetworkEndpointGroupsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., RegionNetworkEndpointGroupsTransport], transport

@@ -642,7 +642,7 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
             transport_init: Union[
                 Type[GlobalAddressesTransport], Callable[..., GlobalAddressesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                GlobalAddressesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., GlobalAddressesTransport], transport)
             )

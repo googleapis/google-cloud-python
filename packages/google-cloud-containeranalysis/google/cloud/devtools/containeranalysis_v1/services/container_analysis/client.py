@@ -662,7 +662,7 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
                 Type[ContainerAnalysisTransport],
                 Callable[..., ContainerAnalysisTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ContainerAnalysisClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ContainerAnalysisTransport], transport)
             )

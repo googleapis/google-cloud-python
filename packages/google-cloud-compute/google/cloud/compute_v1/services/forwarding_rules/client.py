@@ -642,7 +642,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
             transport_init: Union[
                 Type[ForwardingRulesTransport], Callable[..., ForwardingRulesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ForwardingRulesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ForwardingRulesTransport], transport)
             )

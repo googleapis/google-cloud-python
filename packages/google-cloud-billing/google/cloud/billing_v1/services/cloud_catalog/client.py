@@ -668,7 +668,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
             transport_init: Union[
                 Type[CloudCatalogTransport], Callable[..., CloudCatalogTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CloudCatalogClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudCatalogTransport], transport)
             )

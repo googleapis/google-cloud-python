@@ -703,7 +703,7 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
                 Type[ConsumerProcurementServiceTransport],
                 Callable[..., ConsumerProcurementServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ConsumerProcurementServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ConsumerProcurementServiceTransport], transport)
             )

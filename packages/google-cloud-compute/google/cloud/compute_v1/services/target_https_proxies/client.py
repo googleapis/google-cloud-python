@@ -645,7 +645,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 Type[TargetHttpsProxiesTransport],
                 Callable[..., TargetHttpsProxiesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                TargetHttpsProxiesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TargetHttpsProxiesTransport], transport)
             )

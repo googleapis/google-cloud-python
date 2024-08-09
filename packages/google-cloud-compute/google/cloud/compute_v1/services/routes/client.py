@@ -635,7 +635,7 @@ class RoutesClient(metaclass=RoutesClientMeta):
             transport_init: Union[
                 Type[RoutesTransport], Callable[..., RoutesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                RoutesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RoutesTransport], transport)
             )

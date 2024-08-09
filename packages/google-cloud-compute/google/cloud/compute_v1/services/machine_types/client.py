@@ -632,7 +632,7 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
             transport_init: Union[
                 Type[MachineTypesTransport], Callable[..., MachineTypesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                MachineTypesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., MachineTypesTransport], transport)
             )
