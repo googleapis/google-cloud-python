@@ -814,7 +814,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 Type[BigtableTableAdminTransport],
                 Callable[..., BigtableTableAdminTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                BigtableTableAdminClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., BigtableTableAdminTransport], transport)
             )
