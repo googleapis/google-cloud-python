@@ -718,7 +718,7 @@ class LineageClient(metaclass=LineageClientMeta):
             transport_init: Union[
                 Type[LineageTransport], Callable[..., LineageTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                LineageClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., LineageTransport], transport)
             )

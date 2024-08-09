@@ -662,7 +662,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
             transport_init: Union[
                 Type[EntityTypesTransport], Callable[..., EntityTypesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                EntityTypesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., EntityTypesTransport], transport)
             )

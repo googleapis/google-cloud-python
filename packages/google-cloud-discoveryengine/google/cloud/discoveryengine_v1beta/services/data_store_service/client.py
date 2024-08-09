@@ -751,7 +751,7 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
                 Type[DataStoreServiceTransport],
                 Callable[..., DataStoreServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                DataStoreServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DataStoreServiceTransport], transport)
             )

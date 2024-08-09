@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -198,9 +197,7 @@ class BatchControllerAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(BatchControllerClient).get_transport_class, type(BatchControllerClient)
-    )
+    get_transport_class = BatchControllerClient.get_transport_class
 
     def __init__(
         self,

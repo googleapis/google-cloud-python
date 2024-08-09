@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -208,9 +207,7 @@ class DocumentServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(DocumentServiceClient).get_transport_class, type(DocumentServiceClient)
-    )
+    get_transport_class = DocumentServiceClient.get_transport_class
 
     def __init__(
         self,

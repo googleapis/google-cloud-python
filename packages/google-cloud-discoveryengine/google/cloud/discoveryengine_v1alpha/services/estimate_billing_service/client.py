@@ -666,7 +666,7 @@ class EstimateBillingServiceClient(metaclass=EstimateBillingServiceClientMeta):
                 Type[EstimateBillingServiceTransport],
                 Callable[..., EstimateBillingServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                EstimateBillingServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., EstimateBillingServiceTransport], transport)
             )

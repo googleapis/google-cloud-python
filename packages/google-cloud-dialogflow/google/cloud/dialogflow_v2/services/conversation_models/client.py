@@ -741,7 +741,7 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
                 Type[ConversationModelsTransport],
                 Callable[..., ConversationModelsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ConversationModelsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ConversationModelsTransport], transport)
             )

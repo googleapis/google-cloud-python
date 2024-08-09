@@ -797,7 +797,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
             transport_init: Union[
                 Type[DataCatalogTransport], Callable[..., DataCatalogTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                DataCatalogClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DataCatalogTransport], transport)
             )

@@ -848,7 +848,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
             transport_init: Union[
                 Type[ConversationsTransport], Callable[..., ConversationsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ConversationsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ConversationsTransport], transport)
             )

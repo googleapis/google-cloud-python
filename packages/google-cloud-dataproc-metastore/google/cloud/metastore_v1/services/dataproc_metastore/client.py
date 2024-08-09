@@ -786,7 +786,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
                 Type[DataprocMetastoreTransport],
                 Callable[..., DataprocMetastoreTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                DataprocMetastoreClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DataprocMetastoreTransport], transport)
             )
