@@ -152,12 +152,7 @@ class BaseIbisIR(abc.ABC):
             raise ValueError(
                 "Column name {} not in set of values: {}".format(key, self.column_ids)
             )
-        return typing.cast(
-            ibis_types.Value,
-            bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
-                self._column_names[key]
-            ),
-        )
+        return typing.cast(ibis_types.Value, self._column_names[key])
 
     def get_column_type(self, key: str) -> bigframes.dtypes.Dtype:
         ibis_type = typing.cast(
@@ -327,12 +322,7 @@ class UnorderedIR(BaseIbisIR):
         if not columns:
             return ibis.memtable([])
 
-        # Make sure all dtypes are the "canonical" ones for BigFrames. This is
-        # important for operations like UNION where the schema must match.
-        table = self._table.select(
-            bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(column)
-            for column in columns
-        )
+        table = self._table.select(columns)
         base_table = table
         if self._reduced_predicate is not None:
             table = table.filter(base_table[PREDICATE_COLUMN])
@@ -1039,14 +1029,7 @@ class OrderedIR(BaseIbisIR):
         # Make sure we don't have any unbound (deferred) columns.
         table = self._table.select(columns)
 
-        # Make sure all dtypes are the "canonical" ones for BigFrames. This is
-        # important for operations like UNION where the schema must match.
-        table = table.select(
-            bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
-                table[column]
-            )
-            for column in table.columns
-        )
+        table = table.select(table[column] for column in table.columns)
         base_table = table
         if self._reduced_predicate is not None:
             table = table.filter(base_table[PREDICATE_COLUMN])

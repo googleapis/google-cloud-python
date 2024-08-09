@@ -224,7 +224,7 @@ def json_extract(
 
         >>> s = bpd.Series(['{"class": {"students": [{"id": 5}, {"id": 12}]}}'])
         >>> bbq.json_extract(s, json_path="$.class")
-        0    "{\\\"students\\\":[{\\\"id\\\":5},{\\\"id\\\":12}]}"
+        0    {"students":[{"id":5},{"id":12}]}
         dtype: string
 
     Args:

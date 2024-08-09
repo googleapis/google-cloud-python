@@ -208,6 +208,7 @@ def ibis_value_to_canonical_type(value: ibis_types.Value) -> ibis_types.Value:
     name = value.get_name()
     if ibis_type.is_json():
         value = vendored_ibis_ops.ToJsonString(value).to_expr()
+        value = value.case().when("null", ibis.null()).else_(value).end()
         return value.name(name)
     # Allow REQUIRED fields to be joined with NULLABLE fields.
     nullable_type = ibis_type.copy(nullable=True)
