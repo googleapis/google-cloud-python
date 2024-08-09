@@ -651,7 +651,7 @@ class RegionInstanceGroupManagersClient(
                 Type[RegionInstanceGroupManagersTransport],
                 Callable[..., RegionInstanceGroupManagersTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionInstanceGroupManagersClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., RegionInstanceGroupManagersTransport], transport

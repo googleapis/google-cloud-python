@@ -647,7 +647,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 Type[InstanceGroupManagersTransport],
                 Callable[..., InstanceGroupManagersTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                InstanceGroupManagersClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., InstanceGroupManagersTransport], transport)
             )

@@ -649,7 +649,7 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
                 Type[RegionHealthCheckServicesTransport],
                 Callable[..., RegionHealthCheckServicesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionHealthCheckServicesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionHealthCheckServicesTransport], transport)
             )

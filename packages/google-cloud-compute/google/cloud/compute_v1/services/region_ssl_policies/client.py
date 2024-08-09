@@ -645,7 +645,7 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
                 Type[RegionSslPoliciesTransport],
                 Callable[..., RegionSslPoliciesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionSslPoliciesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionSslPoliciesTransport], transport)
             )

@@ -648,7 +648,7 @@ class InstanceSettingsServiceClient(metaclass=InstanceSettingsServiceClientMeta)
                 Type[InstanceSettingsServiceTransport],
                 Callable[..., InstanceSettingsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                InstanceSettingsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., InstanceSettingsServiceTransport], transport)
             )

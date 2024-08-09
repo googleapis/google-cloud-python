@@ -635,7 +635,7 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
             transport_init: Union[
                 Type[SnapshotsTransport], Callable[..., SnapshotsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SnapshotsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SnapshotsTransport], transport)
             )

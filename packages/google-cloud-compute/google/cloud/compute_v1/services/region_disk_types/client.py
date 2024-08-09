@@ -639,7 +639,7 @@ class RegionDiskTypesClient(metaclass=RegionDiskTypesClientMeta):
             transport_init: Union[
                 Type[RegionDiskTypesTransport], Callable[..., RegionDiskTypesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                RegionDiskTypesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionDiskTypesTransport], transport)
             )

@@ -645,7 +645,7 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
                 Type[RegionAutoscalersTransport],
                 Callable[..., RegionAutoscalersTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionAutoscalersClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionAutoscalersTransport], transport)
             )
