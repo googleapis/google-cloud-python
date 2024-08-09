@@ -701,7 +701,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
             transport_init: Union[
                 Type[BigtableTransport], Callable[..., BigtableTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                BigtableClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., BigtableTransport], transport)
             )
