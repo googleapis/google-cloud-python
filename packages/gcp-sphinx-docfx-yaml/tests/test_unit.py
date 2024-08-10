@@ -53,7 +53,13 @@ class TestGenerate(unittest.TestCase):
                 "google.api_core.client_info": "client_info",
                 "google.api_core.gapic_v1.client_info": "gapic_v1.client_info",
             },
-        ]
+        ],
+        [
+            # Tests repeated duplicates in a row. No changes expected.
+            "tests/yaml_repeat_duplicate.yaml",
+            "tests/yaml_repeat_duplicate.yaml",
+            {},
+        ],
     ]
     @parameterized.expand(test_entries)
     def test_disambiguates_toc_name(

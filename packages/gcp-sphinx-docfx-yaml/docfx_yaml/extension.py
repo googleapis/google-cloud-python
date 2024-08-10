@@ -162,6 +162,10 @@ _FILE_NAME_AND_ENTRY_NAME_BY_SUMMARY_TYPE = {
 logging.getLogger("blib2to3").setLevel(logging.ERROR)
 
 
+# Type alias used for yaml entries.
+_yaml_type_alias = dict[str, any]
+
+
 def _grab_repo_metadata() -> Mapping[str, str] | None:
     """Retrieves the repository's metadata info if found."""
     try:
@@ -1406,10 +1410,18 @@ def find_unique_name(package_name, entries):
     # If there is no way to disambiguate or we found duplicates, return the identifier name.
     return [package_name[-1]]
 
-# Used to disambiguate names that have same entries.
-# Returns a dictionary of names that are disambiguated in the form of:
-# {uidname: disambiguated_name}
-def disambiguate_toc_name(pkg_toc_yaml):
+
+def disambiguate_toc_name(
+    pkg_toc_yaml: _yaml_type_alias,
+) -> Mapping[str, str]:
+    """Disambiguates names that have same entries in table of contents.
+
+    Args:
+        pkg_toc_yaml: The table of contents for the client library.
+
+    Returns:
+        Mapping from uidname to disambiguated name.
+    """
     name_entries = {}
     disambiguated_names = {}
 
@@ -1418,13 +1430,21 @@ def disambiguate_toc_name(pkg_toc_yaml):
         if module_name not in name_entries:
             name_entries[module_name] = {}
 
+        prev_part = ""
         # Split the name and mark all duplicates.
         # There will be at least 1 unique identifer for each name.
         for part in module['uidname'].split("."):
-            if part not in name_entries[module_name]:
+            if part not in name_entries[module_name] or (
+                # If the name appears in a row, for example:
+                #   google.cloud.run_v2.services
+                #   google.cloud.run_v2.services.services
+                # then ignore this entry as this is clear from the left-nav layout.
+                part == prev_part
+            ):
                 name_entries[module_name][part] = 1
             else:
                 name_entries[module_name][part] += 1
+            prev_part = part
 
         # Some entries don't contain `name` in `uidname`, add these into the map as well.
         if module_name not in name_entries[module_name]:
@@ -1436,7 +1456,7 @@ def disambiguate_toc_name(pkg_toc_yaml):
 
     for module in pkg_toc_yaml:
         module_name = module['name']
-        # Check if there are multiple entires of module['name'], disambiguate if needed.
+        # Check if there are multiple entries of module['name'], disambiguate if needed.
         if name_entries[module_name][module_name] > 1:
             module['name'] = ".".join(find_unique_name(module['uidname'].split("."), name_entries[module_name]))
             disambiguated_names[module['uidname']] = module['name']
@@ -1479,10 +1499,6 @@ def pretty_package_name(package_group):
     # Capitalize the first letter of each package name part
     capitalized_name = [part.capitalize() for part in split_name.split("_")]
     return " ".join(capitalized_name)
-
-
-# Type alias used for yaml entries.
-_yaml_type_alias = dict[str, any]
 
 
 def _find_and_add_summary_details(
