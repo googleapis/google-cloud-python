@@ -88,12 +88,21 @@ class TocSection:
         index_file_path = os.path.join(dir_name, index_file_name)
         # find set of files referenced by the index file
         with open(index_file_path, "r") as f:
-            self.title = f.readline().strip()
+            self.title = None
             in_toc = False
             self.items = []
             for line in f:
                 # ignore empty lines
                 if not line.strip():
+                    continue
+                # add files explictly included in the toc
+                if line.startswith(".. include::"):
+                    file_base = os.path.splitext(line.split("::")[1].strip())[0]
+                    self.items.append(
+                        self.extract_toc_entry(
+                            file_base, file_title=file_base.capitalize()
+                        )
+                    )
                     continue
                 if line.startswith(".. toctree::"):
                     in_toc = True
@@ -101,6 +110,9 @@ class TocSection:
                 # ignore directives
                 if ":" in line:
                     continue
+                # set tile as first line with no directive
+                if self.title is None:
+                    self.title = line.strip()
                 if not in_toc:
                     continue
                 # bail when toc indented block is done
@@ -109,14 +121,16 @@ class TocSection:
                 # extract entries
                 self.items.append(self.extract_toc_entry(line.strip()))
 
-    def extract_toc_entry(self, file_name):
+    def extract_toc_entry(self, file_name, file_title=None):
         """
         Given the name of a file, extract the title and href for the toc entry,
         and return as a dictionary
         """
         # load the file to get the title
         with open(f"{self.dir_name}/{file_name}.rst", "r") as f2:
-            file_title = f2.readline().strip()
+            if file_title is None:
+                # use first line as title if not provided
+                file_title = f2.readline().strip()
             return {"name": file_title, "href": f"{file_name}.md"}
 
     def to_dict(self):
@@ -143,7 +157,9 @@ def validate_toc(toc_file_path, expected_section_list, added_sections):
     current_toc = yaml.safe_load(open(toc_file_path, "r"))
     # make sure the set of sections matches what we expect
     found_sections = [d["name"] for d in current_toc[0]["items"]]
-    assert found_sections == expected_section_list
+    assert (
+        found_sections == expected_section_list
+    ), f"Expected {expected_section_list}, found {found_sections}"
     # make sure each customs ection is in the toc
     for section in added_sections:
         assert section.title in found_sections

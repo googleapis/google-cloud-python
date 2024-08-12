@@ -34,7 +34,15 @@ remaining exclusively in the existing synchronous client.
 Feedback and bug reports are welcome at cbt-python-client-v3-feedback@google.com,
 or through the Github `issue tracker`_.
 
+
+    .. note::
+
+        It is generally not recommended to use the async client in an otherwise synchronous codebase. To make use of asyncio's
+        performance benefits, the codebase should be designed to be async from the ground up.
+
+
 .. _issue tracker: https://github.com/googleapis/python-bigtable/issues
+
 
 Quick Start
 -----------
