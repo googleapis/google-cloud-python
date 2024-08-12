@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.2.0...v1.3.0) (2024-08-08)
+
+
+### Features
+
+* Create db_dtypes JSONDtype and JSONArray ([#284](https://github.com/googleapis/python-db-dtypes-pandas/issues/284)) ([76790a8](https://github.com/googleapis/python-db-dtypes-pandas/commit/76790a8c67ae8fa9687a4e6a6f950b15e6f34c6f))
+
+
+### Documentation
+
+* Add summary_overview template ([#264](https://github.com/googleapis/python-db-dtypes-pandas/issues/264)) ([a97c341](https://github.com/googleapis/python-db-dtypes-pandas/commit/a97c34198cbed37c8ff8ea683d485ebe36b804d7))
+
 ## [1.2.0](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.1.1...v1.2.0) (2023-12-10)
 
 
