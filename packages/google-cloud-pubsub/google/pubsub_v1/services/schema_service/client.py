@@ -659,7 +659,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
             transport_init: Union[
                 Type[SchemaServiceTransport], Callable[..., SchemaServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SchemaServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SchemaServiceTransport], transport)
             )
@@ -1024,6 +1024,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1138,6 +1140,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

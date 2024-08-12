@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Dict,
@@ -191,9 +190,7 @@ class SchemaServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(SchemaServiceClient).get_transport_class, type(SchemaServiceClient)
-    )
+    get_transport_class = SchemaServiceClient.get_transport_class
 
     def __init__(
         self,
@@ -609,6 +606,8 @@ class SchemaServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -726,6 +725,8 @@ class SchemaServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
