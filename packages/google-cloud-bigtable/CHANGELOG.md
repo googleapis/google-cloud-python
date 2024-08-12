@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.26.0](https://github.com/googleapis/python-bigtable/compare/v2.25.0...v2.26.0) (2024-08-12)
+
+
+### Features
+
+* Add fields and the BackupType proto for Hot Backups ([#1010](https://github.com/googleapis/python-bigtable/issues/1010)) ([b95801f](https://github.com/googleapis/python-bigtable/commit/b95801ffa8081e0072232247fbc5879105c109a6))
+* Add MergeToCell to Mutation APIs ([f029a24](https://github.com/googleapis/python-bigtable/commit/f029a242e2b0e6020d0b87ef256a414194321fad))
+* Add min, max, hll aggregators and more types ([f029a24](https://github.com/googleapis/python-bigtable/commit/f029a242e2b0e6020d0b87ef256a414194321fad))
+* Async execute query client ([#1011](https://github.com/googleapis/python-bigtable/issues/1011)) ([45bc8c4](https://github.com/googleapis/python-bigtable/commit/45bc8c4a0fe567ce5e0126a1a70e7eb3dca93e92))
+
+
+### Bug Fixes
+
+* Use single routing metadata header ([#1005](https://github.com/googleapis/python-bigtable/issues/1005)) ([20eeb0a](https://github.com/googleapis/python-bigtable/commit/20eeb0a68d7b44d07a6d84bc7a7e040ad63bb96d))
+
+
+### Documentation
+
+* Add clarification around SQL timestamps ([#1012](https://github.com/googleapis/python-bigtable/issues/1012)) ([6e80190](https://github.com/googleapis/python-bigtable/commit/6e801900bbe9385d3b579b8c3327c87c3617d92f))
+* Corrected various type documentation ([f029a24](https://github.com/googleapis/python-bigtable/commit/f029a242e2b0e6020d0b87ef256a414194321fad))
+
 ## [2.25.0](https://github.com/googleapis/python-bigtable/compare/v2.24.0...v2.25.0) (2024-07-18)
 
 
