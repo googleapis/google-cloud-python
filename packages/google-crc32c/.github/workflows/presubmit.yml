@@ -40,7 +40,7 @@ jobs:
         submodules: 'recursive'
 
     - name: Build Wheels
-      uses: pypa/cibuildwheel@v2.16.2
+      uses: pypa/cibuildwheel@v2.20.0
       env:
         # For presubmit, just build / test the most common arch
         CIBW_ARCHS: native
@@ -116,7 +116,7 @@ jobs:
         make -C build all install
 
     - name: Build Wheels
-      uses: pypa/cibuildwheel@v2.16.2
+      uses: pypa/cibuildwheel@v2.20.0
       env:
         # For presubmit, just build / test the most common arch
         CIBW_ARCHS: native
@@ -203,7 +203,7 @@ jobs:
         fi
 
     - name: Build Wheels
-      uses: pypa/cibuildwheel@v2.16.2
+      uses: pypa/cibuildwheel@v2.20.0
       env:
         CIBW_ARCHS_WINDOWS: ${{ steps.platform-arch.outputs.arch }}
         # For presubmit, skip build / test for pypy
