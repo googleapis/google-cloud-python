@@ -26,7 +26,7 @@ import pandas as pd
 import pyarrow as pa  # type: ignore
 import pytest
 
-from bigframes.functions import remote_function
+import bigframes.functions._utils as functions_utils
 import bigframes.pandas
 
 ML_REGRESSION_METRICS = [
@@ -340,7 +340,7 @@ def get_cloud_functions(
         not name or not name_prefix
     ), "Either 'name' or 'name_prefix' can be passed but not both."
 
-    _, location = remote_function.get_remote_function_locations(location)
+    _, location = functions_utils.get_remote_function_locations(location)
     parent = f"projects/{project}/locations/{location}"
     request = functions_v2.ListFunctionsRequest(parent=parent)
     page_result = functions_client.list_functions(request=request)

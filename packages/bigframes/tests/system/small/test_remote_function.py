@@ -23,6 +23,7 @@ import pytest
 import bigframes
 import bigframes.dtypes
 import bigframes.exceptions
+from bigframes.functions import _utils as rf_utils
 from bigframes.functions import remote_function as rf
 from tests.system.utils import assert_pandas_df_equal
 
@@ -89,12 +90,12 @@ def get_rf_name(func, package_requirements=None, is_row_processor=False):
     """Get a remote function name for testing given a udf."""
     # Augment user package requirements with any internal package
     # requirements
-    package_requirements = rf._get_updated_package_requirements(
+    package_requirements = rf_utils._get_updated_package_requirements(
         package_requirements, is_row_processor
     )
 
     # Compute a unique hash representing the user code
-    function_hash = rf._get_hash(func, package_requirements)
+    function_hash = rf_utils._get_hash(func, package_requirements)
 
     return f"bigframes_{function_hash}"
 
@@ -714,7 +715,7 @@ def test_read_gbq_function_reads_udfs(session, bigquery_client, dataset_id):
 
         src = {"x": [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]}
 
-        routine_ref_str = rf.routine_ref_to_string_for_query(routine.reference)
+        routine_ref_str = rf_utils.routine_ref_to_string_for_query(routine.reference)
         direct_sql = " UNION ALL ".join(
             [f"SELECT {x} AS x, {routine_ref_str}({x}) AS y" for x in src["x"]]
         )

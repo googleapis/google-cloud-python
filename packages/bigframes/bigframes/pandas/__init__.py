@@ -63,7 +63,7 @@ import bigframes.core.reshape
 import bigframes.core.tools
 import bigframes.dataframe
 import bigframes.enums
-import bigframes.functions.remote_function as bigframes_rf
+import bigframes.functions._utils as functions_utils
 import bigframes.operations as ops
 import bigframes.series
 import bigframes.session
@@ -817,7 +817,7 @@ def clean_up_by_session_id(
         session.bqclient, dataset, session_id
     )
 
-    bigframes_rf._clean_up_by_session_id(
+    functions_utils._clean_up_by_session_id(
         session.bqclient, session.cloudfunctionsclient, dataset, session_id
     )
 
