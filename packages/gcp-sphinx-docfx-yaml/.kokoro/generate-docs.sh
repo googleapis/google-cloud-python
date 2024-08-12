@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Update 2024-08-12: We are using python3.10 explicitly everywhere to
+# avoid `test(3.10)` failures.
+
 # Should run regardless of failure status for the generator.
 set +eo pipefail
 
@@ -30,8 +33,8 @@ gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS
 
 # Install dependencies.
 # Disable dependency resolver as all dependencies should have been laid out.
-python3 -m pip install --no-deps --require-hashes -r .kokoro/requirements.txt
-python3 -m pip install -e .
+python3.10 -m pip install --no-deps --require-hashes -r .kokoro/requirements.txt
+python3.10 -m pip install -e .
 
 # Store the contents of bucket log in a variable to reuse.
 python_bucket_items=$(gsutil ls "gs://docs-staging-v2/docfx-python*")
@@ -100,11 +103,11 @@ for package in $(echo "${python_bucket_items}" | cut -d "-" -f 5- | rev | cut -d
     ## Build HTML docs for googleapis.dev.
     # nox -s docs
 
-    # python3 -m docuploader create-metadata \
+    # python3.10 -m docuploader create-metadata \
     #  --name=$(jq --raw-output '.name // empty' .repo-metadata.json) \
-    #  --version=$(python3 setup.py --version) \
+    #  --version=$(python3.10 setup.py --version) \
     #  --language=$(jq --raw-output '.language // empty' .repo-metadata.json) \
-    #  --distribution-name=$(python3 setup.py --name) \
+    #  --distribution-name=$(python3.10 setup.py --name) \
     #  --product-page=$(jq --raw-output '.product_documentation // empty' .repo-metadata.json) \
     #  --github-repository=$(jq --raw-output '.repo // empty' .repo-metadata.json) \
     #  --issue-tracker=$(jq --raw-output '.issue_tracker // empty' .repo-metadata.json)
@@ -112,12 +115,12 @@ for package in $(echo "${python_bucket_items}" | cut -d "-" -f 5- | rev | cut -d
     # cat docs.metadata
 
     ## upload docs
-    # python3 -m docuploader upload docs/_build/html --metadata-file docs.metadata --staging-bucket "${STAGING_BUCKET}"
+    # python3.10 -m docuploader upload docs/_build/html --metadata-file docs.metadata --staging-bucket "${STAGING_BUCKET}"
 
     # Test running with the plugin version locally.
     if [[ "${TEST_PLUGIN}" == "true" ]]; then
       # --no-use-pep517 is required for django-spanner install issue: see https://github.com/pypa/pip/issues/7953
-      python3 -m pip install --user --no-use-pep517 -e .[all]
+      python3.10 -m pip install --user --no-use-pep517 -e .[all]
       sphinx-build -T -N -D extensions=sphinx.ext.autodoc,sphinx.ext.autosummary,docfx_yaml.extension,sphinx.ext.intersphinx,sphinx.ext.coverage,sphinx.ext.napoleon,sphinx.ext.todo,sphinx.ext.viewcode,recommonmark -b html -d docs/_build/doctrees/ docs/ docs/_build/html/
       continue
     fi
@@ -143,11 +146,11 @@ for package in $(echo "${python_bucket_items}" | cut -d "-" -f 5- | rev | cut -d
       name="iam"
     fi
 
-    python3 -m docuploader create-metadata \
+    python3.10 -m docuploader create-metadata \
       --name=${name} \
-      --version=$(python3 setup.py --version) \
+      --version=$(python3.10 setup.py --version) \
       --language=$(jq --raw-output '.language // empty' .repo-metadata.json) \
-      --distribution-name=$(python3 setup.py --name) \
+      --distribution-name=$(python3.10 setup.py --name) \
       --product-page=$(jq --raw-output '.product_documentation // empty' .repo-metadata.json) \
       --github-repository=$(jq --raw-output '.repo // empty' .repo-metadata.json) \
       --issue-tracker=$(jq --raw-output '.issue_tracker // empty' .repo-metadata.json)
@@ -155,7 +158,7 @@ for package in $(echo "${python_bucket_items}" | cut -d "-" -f 5- | rev | cut -d
     cat docs.metadata
 
     # upload docs
-    python3 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"
+    python3.10 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"
   done
 
   # Clean up the repository to make room.
@@ -178,7 +181,7 @@ if [ -n "${monorepo_packages}" ]; then
     # Test running with the plugin version locally.
     if [[ "${TEST_PLUGIN}" == "true" ]]; then
       # --no-use-pep517 is required for django-spanner install issue: see https://github.com/pypa/pip/issues/7953
-      python3 -m pip install --user --no-use-pep517 -e .[all]
+      python3.10 -m pip install --user --no-use-pep517 -e .[all]
       sphinx-build -T -N -D extensions=sphinx.ext.autodoc,sphinx.ext.autosummary,docfx_yaml.extension,sphinx.ext.intersphinx,sphinx.ext.coverage,sphinx.ext.napoleon,sphinx.ext.todo,sphinx.ext.viewcode,recommonmark -b html -d docs/_build/doctrees/ docs/ docs/_build/html/
       continue
     fi
@@ -192,11 +195,11 @@ if [ -n "${monorepo_packages}" ]; then
       continue
     fi
 
-    python3 -m docuploader create-metadata \
+    python3.10 -m docuploader create-metadata \
       --name=$(jq --raw-output '.name // empty' .repo-metadata.json) \
-      --version=$(python3 setup.py --version) \
+      --version=$(python3.10 setup.py --version) \
       --language=$(jq --raw-output '.language // empty' .repo-metadata.json) \
-      --distribution-name=$(python3 setup.py --name) \
+      --distribution-name=$(python3.10 setup.py --name) \
       --product-page=$(jq --raw-output '.product_documentation // empty' .repo-metadata.json) \
       --github-repository=$(jq --raw-output '.repo // empty' .repo-metadata.json) \
       --issue-tracker=$(jq --raw-output '.issue_tracker // empty' .repo-metadata.json)
@@ -204,7 +207,7 @@ if [ -n "${monorepo_packages}" ]; then
     cat docs.metadata
 
     # upload docs
-    python3 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"
+    python3.10 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"
 
     # Clean up the package to make room.
     cd ../
