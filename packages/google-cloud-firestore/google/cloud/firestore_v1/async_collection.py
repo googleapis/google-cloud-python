@@ -23,6 +23,7 @@ from google.cloud.firestore_v1 import (
     async_aggregation,
     async_document,
     async_query,
+    async_vector_query,
     transaction,
 )
 from google.cloud.firestore_v1.base_collection import (
@@ -80,6 +81,14 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
             :class:`~google.cloud.firestore_v1.async_aggregation.AsyncAggregationQuery
         """
         return async_aggregation.AsyncAggregationQuery(self._query())
+
+    def _vector_query(self) -> async_vector_query.AsyncVectorQuery:
+        """AsyncVectorQuery factory.
+
+        Returns:
+            :class:`~google.cloud.firestore_v1.async_vector_query.AsyncVectorQuery`
+        """
+        return async_vector_query.AsyncVectorQuery(self._query())
 
     async def _chunkify(self, chunk_size: int):
         async for page in self._query()._chunkify(chunk_size):
