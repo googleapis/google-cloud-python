@@ -644,7 +644,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
             transport_init: Union[
                 Type[DatastoreTransport], Callable[..., DatastoreTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                DatastoreClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DatastoreTransport], transport)
             )

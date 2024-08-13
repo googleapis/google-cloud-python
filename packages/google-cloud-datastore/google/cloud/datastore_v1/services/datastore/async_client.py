@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Dict,
@@ -191,9 +190,7 @@ class DatastoreAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(DatastoreClient).get_transport_class, type(DatastoreClient)
-    )
+    get_transport_class = DatastoreClient.get_transport_class
 
     def __init__(
         self,
