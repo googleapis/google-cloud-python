@@ -18,31 +18,31 @@ from google.cloud.orgpolicy import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.orgpolicy_v2.services.org_policy.client import OrgPolicyClient
 from google.cloud.orgpolicy_v2.services.org_policy.async_client import (
     OrgPolicyAsyncClient,
 )
-
-from google.cloud.orgpolicy_v2.types.constraint import Constraint
-from google.cloud.orgpolicy_v2.types.constraint import CustomConstraint
-from google.cloud.orgpolicy_v2.types.orgpolicy import AlternatePolicySpec
-from google.cloud.orgpolicy_v2.types.orgpolicy import CreateCustomConstraintRequest
-from google.cloud.orgpolicy_v2.types.orgpolicy import CreatePolicyRequest
-from google.cloud.orgpolicy_v2.types.orgpolicy import DeleteCustomConstraintRequest
-from google.cloud.orgpolicy_v2.types.orgpolicy import DeletePolicyRequest
-from google.cloud.orgpolicy_v2.types.orgpolicy import GetCustomConstraintRequest
-from google.cloud.orgpolicy_v2.types.orgpolicy import GetEffectivePolicyRequest
-from google.cloud.orgpolicy_v2.types.orgpolicy import GetPolicyRequest
-from google.cloud.orgpolicy_v2.types.orgpolicy import ListConstraintsRequest
-from google.cloud.orgpolicy_v2.types.orgpolicy import ListConstraintsResponse
-from google.cloud.orgpolicy_v2.types.orgpolicy import ListCustomConstraintsRequest
-from google.cloud.orgpolicy_v2.types.orgpolicy import ListCustomConstraintsResponse
-from google.cloud.orgpolicy_v2.types.orgpolicy import ListPoliciesRequest
-from google.cloud.orgpolicy_v2.types.orgpolicy import ListPoliciesResponse
-from google.cloud.orgpolicy_v2.types.orgpolicy import Policy
-from google.cloud.orgpolicy_v2.types.orgpolicy import PolicySpec
-from google.cloud.orgpolicy_v2.types.orgpolicy import UpdateCustomConstraintRequest
-from google.cloud.orgpolicy_v2.types.orgpolicy import UpdatePolicyRequest
+from google.cloud.orgpolicy_v2.services.org_policy.client import OrgPolicyClient
+from google.cloud.orgpolicy_v2.types.constraint import Constraint, CustomConstraint
+from google.cloud.orgpolicy_v2.types.orgpolicy import (
+    AlternatePolicySpec,
+    CreateCustomConstraintRequest,
+    CreatePolicyRequest,
+    DeleteCustomConstraintRequest,
+    DeletePolicyRequest,
+    GetCustomConstraintRequest,
+    GetEffectivePolicyRequest,
+    GetPolicyRequest,
+    ListConstraintsRequest,
+    ListConstraintsResponse,
+    ListCustomConstraintsRequest,
+    ListCustomConstraintsResponse,
+    ListPoliciesRequest,
+    ListPoliciesResponse,
+    Policy,
+    PolicySpec,
+    UpdateCustomConstraintRequest,
+    UpdatePolicyRequest,
+)
 
 __all__ = (
     "OrgPolicyClient",

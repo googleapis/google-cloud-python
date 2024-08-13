@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.orgpolicy_v2.types import constraint
-from google.cloud.orgpolicy_v2.types import orgpolicy
+from google.cloud.orgpolicy_v2.types import constraint, orgpolicy
 
 
 class ListConstraintsPager:

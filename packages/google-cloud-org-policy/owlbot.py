@@ -69,7 +69,16 @@ templated_files = gcp.CommonTemplates().py_library(
     microgenerator=True,
     versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
-s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "noxfile.py", ".github/workflows/docs.yml"])
+s.move(
+    templated_files,
+    excludes=[
+        ".coveragerc",
+        ".github/release-please.yml",
+        "noxfile.py",
+        ".github/workflows/docs.yml",
+        ".github/workflows/unittest.yml",
+    ],
+)
 
 s.replace("setup.py",
     "url = \"https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-org-policy\"",
@@ -107,6 +116,4 @@ s.replace(
     fr"{LICENSE}\n\n\g<1>\n\n\g<2>",  # add line breaks to avoid stacking replacements
 )
 
-# run format session for all directories which have a noxfile
-for noxfile in Path(".").glob("**/noxfile.py"):
-    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)
+s.shell.run(["nox", "-s", "format"], hide_output=False)

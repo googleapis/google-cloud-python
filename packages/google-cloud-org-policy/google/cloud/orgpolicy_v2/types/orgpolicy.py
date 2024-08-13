@@ -17,13 +17,12 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
-from google.cloud.orgpolicy_v2.types import constraint
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.orgpolicy_v2.types import constraint
 
 __protobuf__ = proto.module(
     package="google.cloud.orgpolicy.v2",

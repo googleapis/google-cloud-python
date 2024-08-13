@@ -22,40 +22,36 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 from collections.abc import Iterable
-from google.protobuf import json_format
 import json
 import math
-import pytest
-from google.api_core import api_core_version
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
-from google.protobuf import json_format
 
-from google.api_core import client_options
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.orgpolicy_v2.services.org_policy import OrgPolicyAsyncClient
-from google.cloud.orgpolicy_v2.services.org_policy import OrgPolicyClient
-from google.cloud.orgpolicy_v2.services.org_policy import pagers
-from google.cloud.orgpolicy_v2.services.org_policy import transports
-from google.cloud.orgpolicy_v2.types import constraint
-from google.cloud.orgpolicy_v2.types import orgpolicy
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+from google.cloud.orgpolicy_v2.services.org_policy import (
+    OrgPolicyAsyncClient,
+    OrgPolicyClient,
+    pagers,
+    transports,
+)
+from google.cloud.orgpolicy_v2.types import constraint, orgpolicy
 
 
 def client_cert_source_callback():

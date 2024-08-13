@@ -16,19 +16,17 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-from google.cloud.orgpolicy_v2 import gapic_version as package_version
-
-import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-
-from google.cloud.orgpolicy_v2.types import constraint
-from google.cloud.orgpolicy_v2.types import orgpolicy
 from google.protobuf import empty_pb2  # type: ignore
+
+from google.cloud.orgpolicy_v2 import gapic_version as package_version
+from google.cloud.orgpolicy_v2.types import constraint, orgpolicy
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
