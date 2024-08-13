@@ -715,7 +715,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
             transport_init: Union[
                 Type[OrgPolicyTransport], Callable[..., OrgPolicyTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                OrgPolicyClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., OrgPolicyTransport], transport)
             )
@@ -850,6 +850,8 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -977,6 +979,8 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2012,6 +2016,8 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
