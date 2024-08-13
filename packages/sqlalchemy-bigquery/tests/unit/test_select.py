@@ -507,3 +507,53 @@ def test_visit_mod_binary(faux_conn):
     expected = "MOD(`table`.`foo`, %(foo_1:INT64)s)"
 
     assert result == expected
+
+
+def test_window_rows_between(faux_conn):
+    """This is a replacement for the
+    'test_window_rows_between'
+    test in sqlalchemy's suite of compliance tests.
+
+    Their test is expecting things in sorted order and BQ
+    doesn't return sorted results the way they expect so that
+    test fails.
+
+    Note: that test only appears in:
+    sqlalchemy/lib/sqlalchemy/testing/suite/test_select.py
+    in version 2.0.32. It appears as though that test will be
+    replaced with a similar but new test called:
+    'test_window_rows_between_w_caching'
+    due to the fact the rows are part of the cache key right now and
+    not handled as binds.  This is related to sqlalchemy Issue #11515
+
+    It is expected the new test will also have the same sorting failure.
+    """
+
+    table = setup_table(
+        faux_conn,
+        "table",
+        sqlalchemy.Column("id", sqlalchemy.String),
+        sqlalchemy.Column("col1", sqlalchemy.Integer),
+        sqlalchemy.Column("col2", sqlalchemy.Integer),
+    )
+
+    stmt = sqlalchemy.select(
+        sqlalchemy.func.max(table.c.col2).over(
+            order_by=[table.c.col1],
+            rows=(-5, 0),
+        )
+    )
+
+    sql = stmt.compile(
+        dialect=faux_conn.dialect,
+        compile_kwargs={"literal_binds": True},
+    )
+
+    result = str(sql)
+    expected = (
+        "SELECT max(`table`.`col2`) "
+        "OVER (ORDER BY `table`.`col1` "
+        "ROWS BETWEEN 5 PRECEDING AND CURRENT ROW) AS `anon_1` \n"  # newline character required here to match
+        "FROM `table`"
+    )
+    assert result == expected
