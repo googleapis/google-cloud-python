@@ -10,4 +10,4 @@ google-auth==2.14.1
 google-cloud-core==1.4.0
 proto-plus==1.22.0
 libcst==0.2.5
-protobuf==3.19.5
+protobuf==3.20.2
