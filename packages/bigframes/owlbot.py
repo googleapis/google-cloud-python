@@ -61,7 +61,7 @@ s.move(
 # ----------------------------------------------------------------------------
 
 # Encourage sharring all relevant versions in bug reports.
-s.replace(
+assert 1 == s.replace(
     [".github/ISSUE_TEMPLATE/bug_report.md"],
     re.escape("#### Steps to reproduce\n"),
     textwrap.dedent(
@@ -90,7 +90,7 @@ s.replace(
 )
 
 # Make sure build includes all necessary files.
-s.replace(
+assert 1 == s.replace(
     ["MANIFEST.in"],
     re.escape("recursive-include google"),
     "recursive-include third_party/bigframes_vendored *\nrecursive-include bigframes",
@@ -98,7 +98,7 @@ s.replace(
 
 # Even though BigQuery DataFrames isn't technically a client library, we are
 # opting into Cloud RAD for docs hosting.
-s.replace(
+assert 1 == s.replace(
     [".kokoro/docs/common.cfg"],
     re.escape('value: "docs-staging-v2-staging"'),
     'value: "docs-staging-v2"',
@@ -106,7 +106,7 @@ s.replace(
 
 # Use a custom table of contents since the default one isn't organized well
 # enough for the number of classes we have.
-s.replace(
+assert 1 == s.replace(
     [".kokoro/publish-docs.sh"],
     (
         re.escape("# upload docs")
@@ -124,17 +124,10 @@ s.replace(
 )
 
 # Fixup the documentation.
-s.replace(
+assert 1 == s.replace(
     ["docs/conf.py"],
     re.escape("Google Cloud Client Libraries for bigframes"),
     "BigQuery DataFrames provides DataFrame APIs on the BigQuery engine",
-)
-
-# Update the contributing guide to reflect some differences in this repo.
-s.replace(
-    ["CONTRIBUTING.rst"],
-    re.escape("blacken"),
-    "format",
 )
 
 # ----------------------------------------------------------------------------
