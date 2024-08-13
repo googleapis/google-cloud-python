@@ -902,6 +902,24 @@ def array_to_string_op_impl(x: ibis_types.Value, op: ops.ArrayToStringOp):
     return typing.cast(ibis_types.ArrayValue, x).join(op.delimiter)
 
 
+@scalar_op_compiler.register_unary_op(ops.ArrayIndexOp, pass_op=True)
+def array_index_op_impl(x: ibis_types.Value, op: ops.ArrayIndexOp):
+    res = typing.cast(ibis_types.ArrayValue, x)[op.index]
+    if x.type().is_string():
+        return _null_or_value(res, res != ibis.literal(""))
+    else:
+        return res
+
+
+@scalar_op_compiler.register_unary_op(ops.ArraySliceOp, pass_op=True)
+def array_slice_op_impl(x: ibis_types.Value, op: ops.ArraySliceOp):
+    res = typing.cast(ibis_types.ArrayValue, x)[op.start : op.stop : op.step]
+    if x.type().is_string():
+        return _null_or_value(res, res != ibis.literal(""))
+    else:
+        return res
+
+
 # JSON Ops
 @scalar_op_compiler.register_binary_op(ops.JSONSet, pass_op=True)
 def json_set_op_impl(x: ibis_types.Value, y: ibis_types.Value, op: ops.JSONSet):
@@ -984,7 +1002,7 @@ def ne_op(
 
 
 def _null_or_value(value: ibis_types.Value, where_value: ibis_types.BooleanValue):
-    return ibis.where(
+    return ibis.ifelse(
         where_value,
         value,
         ibis.null(),

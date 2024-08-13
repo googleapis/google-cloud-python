@@ -13,6 +13,37 @@ class StringMethods:
     R's stringr package.
     """
 
+    def __getitem__(self, key: typing.Union[int, slice]):
+        """
+        Index or slice string or list in the Series.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series(['Alice', 'Bob', 'Charlie'])
+            >>> s.str[0]
+            0     A
+            1     B
+            2     C
+            dtype: string
+
+            >>> s.str[0:3]
+            0     Ali
+            1     Bob
+            2     Cha
+            dtype: string
+
+        Args:
+            key (int | slice):
+                Index or slice of indices to access from each string or list.
+
+        Returns:
+            bigframes.series.Series: The list at requested index.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def extract(self, pat: str, flags: int = 0):
         """
         Extract capture groups in the regex `pat` as columns in a DataFrame.

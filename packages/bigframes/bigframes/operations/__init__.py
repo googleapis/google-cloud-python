@@ -602,6 +602,40 @@ class ArrayToStringOp(UnaryOp):
         return dtypes.STRING_DTYPE
 
 
+@dataclasses.dataclass(frozen=True)
+class ArrayIndexOp(UnaryOp):
+    name: typing.ClassVar[str] = "array_index"
+    index: int
+
+    def output_type(self, *input_types):
+        input_type = input_types[0]
+        if dtypes.is_string_like(input_type):
+            return dtypes.STRING_DTYPE
+        elif dtypes.is_array_like(input_type):
+            return dtypes.arrow_dtype_to_bigframes_dtype(
+                input_type.pyarrow_dtype.value_type
+            )
+        else:
+            raise TypeError("Input type must be an array or string-like type.")
+
+
+@dataclasses.dataclass(frozen=True)
+class ArraySliceOp(UnaryOp):
+    name: typing.ClassVar[str] = "array_slice"
+    start: int
+    stop: typing.Optional[int] = None
+    step: typing.Optional[int] = None
+
+    def output_type(self, *input_types):
+        input_type = input_types[0]
+        if dtypes.is_string_like(input_type):
+            return dtypes.STRING_DTYPE
+        elif dtypes.is_array_like(input_type):
+            return input_type
+        else:
+            raise TypeError("Input type must be an array or string-like type.")
+
+
 ## JSON Ops
 @dataclasses.dataclass(frozen=True)
 class JSONExtract(UnaryOp):
