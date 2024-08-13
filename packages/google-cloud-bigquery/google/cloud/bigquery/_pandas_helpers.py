@@ -204,7 +204,9 @@ def bq_to_arrow_field(bq_field, array_type=None):
             metadata=metadata,
         )
 
-    warnings.warn("Unable to determine type for field '{}'.".format(bq_field.name))
+    warnings.warn(
+        "Unable to determine Arrow type for field '{}'.".format(bq_field.name)
+    )
     return None
 
 

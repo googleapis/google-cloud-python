@@ -21,6 +21,7 @@ import json
 import math
 import re
 import os
+import warnings
 from typing import Optional, Union
 
 from dateutil import relativedelta
@@ -297,12 +298,7 @@ def _record_from_json(value, field):
         record = {}
         record_iter = zip(field.fields, value["f"])
         for subfield, cell in record_iter:
-            converter = _CELLDATA_FROM_JSON[subfield.field_type]
-            if subfield.mode == "REPEATED":
-                value = [converter(item["v"], subfield) for item in cell["v"]]
-            else:
-                value = converter(cell["v"], subfield)
-            record[subfield.name] = value
+            record[subfield.name] = _field_from_json(cell["v"], subfield)
         return record
 
 
@@ -382,7 +378,11 @@ def _field_to_index_mapping(schema):
 
 
 def _field_from_json(resource, field):
-    converter = _CELLDATA_FROM_JSON.get(field.field_type, lambda value, _: value)
+    def default_converter(value, field):
+        _warn_unknown_field_type(field)
+        return value
+
+    converter = _CELLDATA_FROM_JSON.get(field.field_type, default_converter)
     if field.mode == "REPEATED":
         return [converter(item["v"], field) for item in resource]
     else:
@@ -482,6 +482,11 @@ def _json_to_json(value):
     if value is None:
         return None
     return json.dumps(value)
+
+
+def _string_to_json(value):
+    """NOOP string -> string coercion"""
+    return value
 
 
 def _timestamp_to_json_parameter(value):
@@ -596,6 +601,7 @@ _SCALAR_VALUE_TO_JSON_ROW = {
     "DATE": _date_to_json,
     "TIME": _time_to_json,
     "JSON": _json_to_json,
+    "STRING": _string_to_json,
     # Make sure DECIMAL and BIGDECIMAL are handled, even though
     # requests for them should be converted to NUMERIC.  Better safe
     # than sorry.
@@ -607,6 +613,15 @@ _SCALAR_VALUE_TO_JSON_ROW = {
 # Converters used for scalar values marshalled as query parameters.
 _SCALAR_VALUE_TO_JSON_PARAM = _SCALAR_VALUE_TO_JSON_ROW.copy()
 _SCALAR_VALUE_TO_JSON_PARAM["TIMESTAMP"] = _timestamp_to_json_parameter
+
+
+def _warn_unknown_field_type(field):
+    warnings.warn(
+        "Unknown type '{}' for field '{}'. Behavior reading and writing this type is not officially supported and may change in the future.".format(
+            field.field_type, field.name
+        ),
+        FutureWarning,
+    )
 
 
 def _scalar_field_to_json(field, row_value):
@@ -621,9 +636,12 @@ def _scalar_field_to_json(field, row_value):
     Returns:
         Any: A JSON-serializable object.
     """
-    converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
-    if converter is None:  # STRING doesn't need converting
-        return row_value
+
+    def default_converter(value):
+        _warn_unknown_field_type(field)
+        return value
+
+    converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type, default_converter)
     return converter(row_value)
 
 

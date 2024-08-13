@@ -591,9 +591,8 @@ class ScalarQueryParameter(_AbstractQueryParameter):
             Dict: JSON mapping
         """
         value = self.value
-        converter = _SCALAR_VALUE_TO_JSON_PARAM.get(self.type_)
-        if converter is not None:
-            value = converter(value)  # type: ignore
+        converter = _SCALAR_VALUE_TO_JSON_PARAM.get(self.type_, lambda value: value)
+        value = converter(value)  # type: ignore
         resource: Dict[str, Any] = {
             "parameterType": {"type": self.type_},
             "parameterValue": {"value": value},
@@ -748,9 +747,10 @@ class ArrayQueryParameter(_AbstractQueryParameter):
             else:
                 a_type = self.array_type.to_api_repr()
 
-            converter = _SCALAR_VALUE_TO_JSON_PARAM.get(a_type["type"])
-            if converter is not None:
-                values = [converter(value) for value in values]  # type: ignore
+            converter = _SCALAR_VALUE_TO_JSON_PARAM.get(
+                a_type["type"], lambda value: value
+            )
+            values = [converter(value) for value in values]  # type: ignore
             a_values = [{"value": value} for value in values]
 
         resource = {
@@ -792,7 +792,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
 
 
 class StructQueryParameter(_AbstractQueryParameter):
-    """Named / positional query parameters for struct values.
+    """Name / positional query parameters for struct values.
 
     Args:
         name (Optional[str]):
@@ -897,10 +897,8 @@ class StructQueryParameter(_AbstractQueryParameter):
                 values[name] = repr_["parameterValue"]
             else:
                 s_types[name] = {"name": name, "type": {"type": type_}}
-                converter = _SCALAR_VALUE_TO_JSON_PARAM.get(type_)
-                if converter is not None:
-                    value = converter(value)  # type: ignore
-                values[name] = {"value": value}
+                converter = _SCALAR_VALUE_TO_JSON_PARAM.get(type_, lambda value: value)
+                values[name] = {"value": converter(value)}
 
         resource = {
             "parameterType": {

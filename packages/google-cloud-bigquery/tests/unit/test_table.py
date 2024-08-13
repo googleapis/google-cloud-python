@@ -2751,9 +2751,9 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(ages, [33, 29])
         self.assertEqual(sports, ["volleyball", "basketball"])
 
-        self.assertEqual(len(warned), 1)
-        warning = warned[0]
-        self.assertTrue("sport" in str(warning))
+        # Expect warning from both the arrow conversion, and the json deserialization.
+        self.assertEqual(len(warned), 2)
+        self.assertTrue(all("sport" in str(warning) for warning in warned))
 
     def test_to_arrow_w_empty_table(self):
         pyarrow = pytest.importorskip(

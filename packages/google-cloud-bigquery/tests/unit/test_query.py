@@ -1780,6 +1780,25 @@ class Test_StructQueryParameter(unittest.TestCase):
         param = self._make_one("foo", scalar_1, sub)
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
+    def test_to_api_repr_w_unknown_type(self):
+        EXPECTED = {
+            "name": "foo",
+            "parameterType": {
+                "type": "STRUCT",
+                "structTypes": [
+                    {"name": "bar", "type": {"type": "INT64"}},
+                    {"name": "baz", "type": {"type": "UNKNOWN_TYPE"}},
+                ],
+            },
+            "parameterValue": {
+                "structValues": {"bar": {"value": "123"}, "baz": {"value": "abc"}}
+            },
+        }
+        sub_1 = _make_subparam("bar", "INT64", 123)
+        sub_2 = _make_subparam("baz", "UNKNOWN_TYPE", "abc")
+        param = self._make_one("foo", sub_1, sub_2)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
     def test___eq___wrong_type(self):
         field = self._make_one("test", _make_subparam("bar", "STRING", "abc"))
         other = object()
