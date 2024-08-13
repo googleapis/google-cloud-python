@@ -37,7 +37,7 @@ from google.cloud import firestore_v1 as firestore
 from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.vector import Vector
-from tests.system.test__helpers import (
+from test__helpers import (
     EMULATOR_CREDS,
     FIRESTORE_CREDS,
     FIRESTORE_EMULATOR,

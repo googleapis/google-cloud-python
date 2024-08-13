@@ -265,32 +265,13 @@ pylintrc.test
 )
 
 s.replace(
-    "setup.cfg",
-    """\
-universal = 1
-""",
-    """\
-universal = 1
-[pytype]
-python_version = 3.8
-inputs =
-    google/cloud/
-exclude =
-    tests/
-output = .pytype/
-# Workaround for https://github.com/google/pytype/issues/150
-disable = pyi-error
-""",
-)
-
-s.replace(
     "noxfile.py",
     """\
-BLACK_VERSION = "black==22.3.0"
+BLACK_VERSION = "black\[jupyter\]==23.7.0"
 """,
     """\
 PYTYPE_VERSION = "pytype==2020.7.24"
-BLACK_VERSION = "black==22.3.0"
+BLACK_VERSION = "black[jupyter]==23.7.0"
 """,
 )
 
@@ -353,3 +334,4 @@ To update the copy of these conformance tests used by this repository, run the p
 Test Coverage"""
 )
 
+s.replace("noxfile.py", "\"pytest-asyncio\"", "\"pytest-asyncio==0.21.2\"")
