@@ -659,7 +659,7 @@ class SystemPolicyV1Beta1Client(metaclass=SystemPolicyV1Beta1ClientMeta):
                 Type[SystemPolicyV1Beta1Transport],
                 Callable[..., SystemPolicyV1Beta1Transport],
             ] = (
-                type(self).get_transport_class(transport)
+                SystemPolicyV1Beta1Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SystemPolicyV1Beta1Transport], transport)
             )

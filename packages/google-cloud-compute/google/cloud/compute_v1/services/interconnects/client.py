@@ -638,7 +638,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
             transport_init: Union[
                 Type[InterconnectsTransport], Callable[..., InterconnectsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                InterconnectsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., InterconnectsTransport], transport)
             )

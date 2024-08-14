@@ -655,7 +655,7 @@ class RegionNetworkFirewallPoliciesClient(
                 Type[RegionNetworkFirewallPoliciesTransport],
                 Callable[..., RegionNetworkFirewallPoliciesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionNetworkFirewallPoliciesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., RegionNetworkFirewallPoliciesTransport], transport

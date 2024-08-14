@@ -635,7 +635,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
             transport_init: Union[
                 Type[TargetPoolsTransport], Callable[..., TargetPoolsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                TargetPoolsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TargetPoolsTransport], transport)
             )

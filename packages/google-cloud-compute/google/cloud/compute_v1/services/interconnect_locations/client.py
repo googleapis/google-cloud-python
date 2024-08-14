@@ -644,7 +644,7 @@ class InterconnectLocationsClient(metaclass=InterconnectLocationsClientMeta):
                 Type[InterconnectLocationsTransport],
                 Callable[..., InterconnectLocationsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                InterconnectLocationsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., InterconnectLocationsTransport], transport)
             )
