@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.34.0](https://github.com/googleapis/google-auth-library-python/compare/v2.33.0...v2.34.0) (2024-08-13)
+
+
+### Features
+
+* **auth:** Update get_client_ssl_credentials to support X.509 workload certs ([#1558](https://github.com/googleapis/google-auth-library-python/issues/1558)) ([18c2ec1](https://github.com/googleapis/google-auth-library-python/commit/18c2ec1b571d506c0dbcffc483aa5e7b95e1b246))
+
+
+### Bug Fixes
+
+* Retry token request on retryable status code ([#1563](https://github.com/googleapis/google-auth-library-python/issues/1563)) ([f858a15](https://github.com/googleapis/google-auth-library-python/commit/f858a151cb7e29d34578e03c9e3fd4110c6bc258))
+
 ## [2.33.0](https://github.com/googleapis/google-auth-library-python/compare/v2.32.0...v2.33.0) (2024-08-06)
 
 
