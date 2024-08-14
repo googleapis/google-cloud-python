@@ -640,7 +640,7 @@ class RegionOperationsClient(metaclass=RegionOperationsClientMeta):
                 Type[RegionOperationsTransport],
                 Callable[..., RegionOperationsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionOperationsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionOperationsTransport], transport)
             )

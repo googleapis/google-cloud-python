@@ -640,7 +640,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
             transport_init: Union[
                 Type[InstanceGroupsTransport], Callable[..., InstanceGroupsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                InstanceGroupsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., InstanceGroupsTransport], transport)
             )

@@ -692,7 +692,7 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
             transport_init: Union[
                 Type[CloudQuotasTransport], Callable[..., CloudQuotasTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CloudQuotasClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudQuotasTransport], transport)
             )

@@ -635,7 +635,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
             transport_init: Union[
                 Type[ImagesTransport], Callable[..., ImagesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ImagesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ImagesTransport], transport)
             )

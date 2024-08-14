@@ -870,7 +870,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
             transport_init: Union[
                 Type[CloudBuildTransport], Callable[..., CloudBuildTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CloudBuildClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudBuildTransport], transport)
             )

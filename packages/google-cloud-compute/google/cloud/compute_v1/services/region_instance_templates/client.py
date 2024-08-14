@@ -649,7 +649,7 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
                 Type[RegionInstanceTemplatesTransport],
                 Callable[..., RegionInstanceTemplatesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionInstanceTemplatesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionInstanceTemplatesTransport], transport)
             )

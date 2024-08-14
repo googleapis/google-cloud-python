@@ -645,7 +645,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
                 Type[TargetGrpcProxiesTransport],
                 Callable[..., TargetGrpcProxiesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                TargetGrpcProxiesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TargetGrpcProxiesTransport], transport)
             )

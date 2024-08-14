@@ -635,7 +635,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
             transport_init: Union[
                 Type[ReservationsTransport], Callable[..., ReservationsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ReservationsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ReservationsTransport], transport)
             )

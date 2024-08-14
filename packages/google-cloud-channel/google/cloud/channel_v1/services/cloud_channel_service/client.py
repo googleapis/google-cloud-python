@@ -873,7 +873,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 Type[CloudChannelServiceTransport],
                 Callable[..., CloudChannelServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                CloudChannelServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudChannelServiceTransport], transport)
             )

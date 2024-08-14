@@ -642,7 +642,7 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
             transport_init: Union[
                 Type[BackendServicesTransport], Callable[..., BackendServicesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                BackendServicesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., BackendServicesTransport], transport)
             )
