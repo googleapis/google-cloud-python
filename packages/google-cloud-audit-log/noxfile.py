@@ -29,6 +29,12 @@ nox.options.error_on_missing_interpreters = True
 
 BLACK_VERSION = "black==19.3b0"
 
+CURRENT_DIRECTORY = Path(__file__).parent.absolute()
+
+DEFAULT_PYTHON_VERSION = "3.8"
+
+UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+
 # NOTE: Pin the version of grpcio-tools to 1.48.2 for compatibility with 
 # Protobuf 3.19.5. Please ensure that the minimum required version of 
 # protobuf in setup.py is compatible with the pb2 files generated
@@ -36,7 +42,7 @@ BLACK_VERSION = "black==19.3b0"
 GRPCIO_TOOLS_VERSION = "grpcio-tools==1.48.2"
 
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     """Run black.
     Format code to uniform standard.
@@ -46,7 +52,7 @@ def blacken(session):
 
 
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def generate_protos(session):
     """Generates the protos using protoc.
     Some notes on the `google` directory:
@@ -70,7 +76,7 @@ def generate_protos(session):
         *protos,
     )
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid"""
     session.install("docutils", "pygments")
@@ -80,13 +86,17 @@ def lint_setup_py(session):
 def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("mock", "pytest", "pytest-cov")
-    session.install("-e", ".")
+
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(
         "py.test",
         "--quiet",
-        "--cov=google.cloud",
+        "--cov=google",
         "--cov=tests.unit",
         "--cov-append",
         "--cov-config=.coveragerc",
@@ -96,7 +106,7 @@ def default(session):
         *session.posargs,
     )
 
-@nox.session(python="3.8")
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run the unit test suite."""
     default(session)
