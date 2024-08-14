@@ -19,9 +19,8 @@
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
-from google.protobuf import message as _message
-from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+from google.protobuf.internal import builder as _builder
 
 # @@protoc_insertion_point(imports)
 
@@ -36,21 +35,14 @@ DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b"\nEgoogle/identity/accesscontextmanager/v1/gcp_user_access_binding.proto\x12'google.identity.accesscontextmanager.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\"\xa3\x02\n\x14GcpUserAccessBinding\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x05\x12\x19\n\tgroup_key\x18\x02 \x01(\tB\x06\xe0\x41\x02\xe0\x41\x05\x12N\n\raccess_levels\x18\x03 \x03(\tB7\xe0\x41\x02\xfa\x41\x31\n/accesscontextmanager.googleapis.com/AccessLevel:\x8c\x01\xea\x41\x88\x01\n8accesscontextmanager.googleapis.com/GcpUserAccessBinding\x12Lorganizations/{organization}/gcpUserAccessBindings/{gcp_user_access_binding}B\xb0\x02\n+com.google.identity.accesscontextmanager.v1B\x19GcpUserAccessBindingProtoP\x01Z\\cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb;accesscontextmanagerpb\xa2\x02\x04GACM\xaa\x02'Google.Identity.AccessContextManager.V1\xca\x02'Google\\Identity\\AccessContextManager\\V1\xea\x02*Google::Identity::AccessContextManager::V1b\x06proto3"
 )
 
-
-_GCPUSERACCESSBINDING = DESCRIPTOR.message_types_by_name["GcpUserAccessBinding"]
-GcpUserAccessBinding = _reflection.GeneratedProtocolMessageType(
-    "GcpUserAccessBinding",
-    (_message.Message,),
-    {
-        "DESCRIPTOR": _GCPUSERACCESSBINDING,
-        "__module__": "google.identity.accesscontextmanager.v1.gcp_user_access_binding_pb2"
-        # @@protoc_insertion_point(class_scope:google.identity.accesscontextmanager.v1.GcpUserAccessBinding)
-    },
+_globals = globals()
+_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
+_builder.BuildTopDescriptorsAndMessages(
+    DESCRIPTOR,
+    "google.identity.accesscontextmanager.v1.gcp_user_access_binding_pb2",
+    _globals,
 )
-_sym_db.RegisterMessage(GcpUserAccessBinding)
-
 if _descriptor._USE_C_DESCRIPTORS == False:
-
     DESCRIPTOR._options = None
     DESCRIPTOR._serialized_options = b"\n+com.google.identity.accesscontextmanager.v1B\031GcpUserAccessBindingProtoP\001Z\\cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb;accesscontextmanagerpb\242\002\004GACM\252\002'Google.Identity.AccessContextManager.V1\312\002'Google\\Identity\\AccessContextManager\\V1\352\002*Google::Identity::AccessContextManager::V1"
     _GCPUSERACCESSBINDING.fields_by_name["name"]._options = None
@@ -67,6 +59,6 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     )
     _GCPUSERACCESSBINDING._options = None
     _GCPUSERACCESSBINDING._serialized_options = b"\352A\210\001\n8accesscontextmanager.googleapis.com/GcpUserAccessBinding\022Lorganizations/{organization}/gcpUserAccessBindings/{gcp_user_access_binding}"
-    _GCPUSERACCESSBINDING._serialized_start = 175
-    _GCPUSERACCESSBINDING._serialized_end = 466
+    _globals["_GCPUSERACCESSBINDING"]._serialized_start = 175
+    _globals["_GCPUSERACCESSBINDING"]._serialized_end = 466
 # @@protoc_insertion_point(module_scope)
