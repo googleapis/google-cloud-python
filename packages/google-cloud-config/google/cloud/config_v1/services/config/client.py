@@ -808,7 +808,7 @@ class ConfigClient(metaclass=ConfigClientMeta):
             transport_init: Union[
                 Type[ConfigTransport], Callable[..., ConfigTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ConfigClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ConfigTransport], transport)
             )

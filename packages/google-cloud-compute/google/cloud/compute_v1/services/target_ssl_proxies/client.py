@@ -643,7 +643,7 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
                 Type[TargetSslProxiesTransport],
                 Callable[..., TargetSslProxiesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                TargetSslProxiesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TargetSslProxiesTransport], transport)
             )

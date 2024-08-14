@@ -639,7 +639,7 @@ class ImageFamilyViewsClient(metaclass=ImageFamilyViewsClientMeta):
                 Type[ImageFamilyViewsTransport],
                 Callable[..., ImageFamilyViewsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ImageFamilyViewsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ImageFamilyViewsTransport], transport)
             )

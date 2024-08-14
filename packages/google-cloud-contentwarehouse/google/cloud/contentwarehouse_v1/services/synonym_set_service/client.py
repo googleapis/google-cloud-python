@@ -687,7 +687,7 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
                 Type[SynonymSetServiceTransport],
                 Callable[..., SynonymSetServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SynonymSetServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SynonymSetServiceTransport], transport)
             )

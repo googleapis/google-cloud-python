@@ -649,7 +649,7 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
                 Type[InterconnectAttachmentsTransport],
                 Callable[..., InterconnectAttachmentsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                InterconnectAttachmentsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., InterconnectAttachmentsTransport], transport)
             )

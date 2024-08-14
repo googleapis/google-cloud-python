@@ -638,7 +638,7 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
             transport_init: Union[
                 Type[NodeTemplatesTransport], Callable[..., NodeTemplatesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                NodeTemplatesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., NodeTemplatesTransport], transport)
             )

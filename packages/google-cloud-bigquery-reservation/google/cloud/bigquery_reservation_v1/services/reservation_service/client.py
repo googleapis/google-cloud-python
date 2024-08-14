@@ -754,7 +754,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
                 Type[ReservationServiceTransport],
                 Callable[..., ReservationServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ReservationServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ReservationServiceTransport], transport)
             )

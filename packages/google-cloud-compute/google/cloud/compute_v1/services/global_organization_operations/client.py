@@ -650,7 +650,7 @@ class GlobalOrganizationOperationsClient(
                 Type[GlobalOrganizationOperationsTransport],
                 Callable[..., GlobalOrganizationOperationsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                GlobalOrganizationOperationsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., GlobalOrganizationOperationsTransport], transport

@@ -643,7 +643,7 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
                 Type[AcceleratorTypesTransport],
                 Callable[..., AcceleratorTypesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AcceleratorTypesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AcceleratorTypesTransport], transport)
             )

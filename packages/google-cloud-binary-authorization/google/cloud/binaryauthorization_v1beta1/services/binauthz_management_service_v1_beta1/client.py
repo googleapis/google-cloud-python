@@ -701,7 +701,7 @@ class BinauthzManagementServiceV1Beta1Client(
                 Type[BinauthzManagementServiceV1Beta1Transport],
                 Callable[..., BinauthzManagementServiceV1Beta1Transport],
             ] = (
-                type(self).get_transport_class(transport)
+                BinauthzManagementServiceV1Beta1Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., BinauthzManagementServiceV1Beta1Transport], transport

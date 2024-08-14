@@ -645,7 +645,7 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
                 Type[RegionCommitmentsTransport],
                 Callable[..., RegionCommitmentsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionCommitmentsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionCommitmentsTransport], transport)
             )

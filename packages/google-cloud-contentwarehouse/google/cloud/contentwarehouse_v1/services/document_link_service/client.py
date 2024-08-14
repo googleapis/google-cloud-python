@@ -695,7 +695,7 @@ class DocumentLinkServiceClient(metaclass=DocumentLinkServiceClientMeta):
                 Type[DocumentLinkServiceTransport],
                 Callable[..., DocumentLinkServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                DocumentLinkServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DocumentLinkServiceTransport], transport)
             )

@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -184,10 +183,7 @@ class ValidationHelperV1AsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(ValidationHelperV1Client).get_transport_class,
-        type(ValidationHelperV1Client),
-    )
+    get_transport_class = ValidationHelperV1Client.get_transport_class
 
     def __init__(
         self,

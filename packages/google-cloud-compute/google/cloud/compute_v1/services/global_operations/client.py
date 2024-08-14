@@ -640,7 +640,7 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
                 Type[GlobalOperationsTransport],
                 Callable[..., GlobalOperationsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                GlobalOperationsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., GlobalOperationsTransport], transport)
             )
