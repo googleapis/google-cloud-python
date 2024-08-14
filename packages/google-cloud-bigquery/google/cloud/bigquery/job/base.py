@@ -49,7 +49,7 @@ _ERROR_REASON_TO_EXCEPTION = {
     "notImplemented": http.client.NOT_IMPLEMENTED,
     "policyViolation": http.client.FORBIDDEN,
     "quotaExceeded": http.client.FORBIDDEN,
-    "rateLimitExceeded": http.client.FORBIDDEN,
+    "rateLimitExceeded": http.client.TOO_MANY_REQUESTS,
     "resourceInUse": http.client.BAD_REQUEST,
     "resourcesExceeded": http.client.BAD_REQUEST,
     "responseTooLarge": http.client.FORBIDDEN,

@@ -442,7 +442,7 @@ def test_disable_retry_failed_jobs(sleep, client, job_retry_on_query):
 
     orig_job_id = job.job_id
     job_retry = dict(job_retry=None) if job_retry_on_query == "Result" else {}
-    with pytest.raises(google.api_core.exceptions.Forbidden):
+    with pytest.raises(google.api_core.exceptions.TooManyRequests):
         job.result(**job_retry)
 
     assert job.job_id == orig_job_id
