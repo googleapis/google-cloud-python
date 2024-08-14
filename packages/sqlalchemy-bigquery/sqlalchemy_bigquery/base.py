@@ -1018,6 +1018,7 @@ class BigQueryDialect(DefaultDialect):
         sqlalchemy.sql.sqltypes.Time: BQClassTaggedStr,
         sqlalchemy.sql.sqltypes.TIMESTAMP: BQTimestamp,
         sqlalchemy.sql.sqltypes.ARRAY: BQArray,
+        sqlalchemy.sql.sqltypes.Enum: sqlalchemy.sql.sqltypes.Enum,
     }
 
     def __init__(
