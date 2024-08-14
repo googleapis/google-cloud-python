@@ -15,8 +15,6 @@
 """Helpers for applying Google Cloud Firestore changes in a transaction."""
 
 
-import random
-import time
 from typing import Any, Callable, Generator
 
 from google.api_core import exceptions, gapic_v1
@@ -31,9 +29,6 @@ from google.cloud.firestore_v1.base_transaction import (
     _CANT_COMMIT,
     _CANT_ROLLBACK,
     _EXCEED_ATTEMPTS_TEMPLATE,
-    _INITIAL_SLEEP,
-    _MAX_SLEEP,
-    _MULTIPLIER,
     _WRITE_READ_ONLY,
     MAX_ATTEMPTS,
     BaseTransaction,
@@ -41,7 +36,6 @@ from google.cloud.firestore_v1.base_transaction import (
 )
 from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.query import Query
-from google.cloud.firestore_v1.types import CommitResponse
 
 
 class Transaction(batch.WriteBatch, BaseTransaction):
@@ -138,7 +132,14 @@ class Transaction(batch.WriteBatch, BaseTransaction):
         if not self.in_progress:
             raise ValueError(_CANT_COMMIT)
 
-        commit_response = _commit_with_retry(self._client, self._write_pbs, self._id)
+        commit_response = self._client._firestore_api.commit(
+            request={
+                "database": self._client._database_string,
+                "writes": self._write_pbs,
+                "transaction": self._id,
+            },
+            metadata=self._client._rpc_metadata,
+        )
 
         self._clean_up()
         return list(commit_response.write_results)
@@ -301,75 +302,3 @@ def transactional(to_wrap: Callable) -> _Transactional:
         the wrapped callable.
     """
     return _Transactional(to_wrap)
-
-
-def _commit_with_retry(
-    client, write_pbs: list, transaction_id: bytes
-) -> CommitResponse:
-    """Call ``Commit`` on the GAPIC client with retry / sleep.
-
-    Retries the ``Commit`` RPC on Unavailable. Usually this RPC-level
-    retry is handled by the underlying GAPICd client, but in this case it
-    doesn't because ``Commit`` is not always idempotent. But here we know it
-    is "idempotent"-like because it has a transaction ID. We also need to do
-    our own retry to special-case the ``INVALID_ARGUMENT`` error.
-
-    Args:
-        client (:class:`~google.cloud.firestore_v1.client.Client`):
-            A client with GAPIC client and configuration details.
-        write_pbs (List[:class:`google.cloud.proto.firestore.v1.write.Write`, ...]):
-            A ``Write`` protobuf instance to be committed.
-        transaction_id (bytes):
-            ID of an existing transaction that this commit will run in.
-
-    Returns:
-        :class:`google.cloud.firestore_v1.types.CommitResponse`:
-        The protobuf response from ``Commit``.
-
-    Raises:
-        ~google.api_core.exceptions.GoogleAPICallError: If a non-retryable
-            exception is encountered.
-    """
-    current_sleep = _INITIAL_SLEEP
-    while True:
-        try:
-            return client._firestore_api.commit(
-                request={
-                    "database": client._database_string,
-                    "writes": write_pbs,
-                    "transaction": transaction_id,
-                },
-                metadata=client._rpc_metadata,
-            )
-        except exceptions.ServiceUnavailable:
-            # Retry
-            pass
-
-        current_sleep = _sleep(current_sleep)
-
-
-def _sleep(
-    current_sleep: float, max_sleep: float = _MAX_SLEEP, multiplier: float = _MULTIPLIER
-) -> float:
-    """Sleep and produce a new sleep time.
-
-    .. _Exponential Backoff And Jitter: https://www.awsarchitectureblog.com/\
-                                        2015/03/backoff.html
-
-    Select a duration between zero and ``current_sleep``. It might seem
-    counterintuitive to have so much jitter, but
-    `Exponential Backoff And Jitter`_ argues that "full jitter" is
-    the best strategy.
-
-    Args:
-        current_sleep (float): The current "max" for sleep interval.
-        max_sleep (Optional[float]): Eventual "max" sleep time
-        multiplier (Optional[float]): Multiplier for exponential backoff.
-
-    Returns:
-        float: Newly doubled ``current_sleep`` or ``max_sleep`` (whichever
-        is smaller)
-    """
-    actual_sleep = random.uniform(0.0, current_sleep)
-    time.sleep(actual_sleep)
-    return min(multiplier * current_sleep, max_sleep)
