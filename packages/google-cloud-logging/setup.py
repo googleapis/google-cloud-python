@@ -40,11 +40,11 @@ dependencies = [
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
     "google-auth >= 2.14.1, <3.0.0dev,!=2.24.0,!=2.25.0",
-    "google-cloud-appengine-logging>=0.1.0, <2.0.0dev",
-    "google-cloud-audit-log >= 0.1.0, < 1.0.0dev",
+    "google-cloud-appengine-logging>=0.1.3, <2.0.0dev",
+    "google-cloud-audit-log >= 0.2.4, < 1.0.0dev",
     "google-cloud-core >= 2.0.0, <3.0.0dev",
     "grpc-google-iam-v1 >=0.12.4, <1.0.0dev",
-    "opentelemetry-api >= 1.0.0",
+    "opentelemetry-api >= 1.9.0",
     "proto-plus >= 1.22.0, <2.0.0dev",
     "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
     "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",

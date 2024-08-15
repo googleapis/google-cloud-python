@@ -2,5 +2,15 @@
 # This constraints file is required for unit tests.
 # List all library dependencies and extras in this file.
 google-api-core
+google-auth
 proto-plus
 protobuf
+google-cloud-core
+google-cloud-appengine-logging
+google-cloud-audit-log
+grpc-google-iam-v1
+opentelemetry-api
+
+# optional dependencies
+django
+flask
