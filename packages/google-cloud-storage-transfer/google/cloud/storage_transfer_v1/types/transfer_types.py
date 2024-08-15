@@ -36,6 +36,7 @@ __protobuf__ = proto.module(
         "AzureBlobStorageData",
         "HttpData",
         "PosixFilesystem",
+        "HdfsData",
         "AwsS3CompatibleData",
         "S3CompatibleMetadata",
         "AgentPool",
@@ -305,6 +306,20 @@ class GcsData(proto.Message):
 
             The root path value must meet `Object Name
             Requirements </storage/docs/naming#objectnames>`__.
+        managed_folder_transfer_enabled (bool):
+            Preview. Enables the transfer of managed folders between
+            Cloud Storage buckets. Set this option on the
+            gcs_data_source.
+
+            If set to true:
+
+            -  Managed folders in the source bucket are transferred to
+               the destination bucket.
+            -  Managed folders in the destination bucket are
+               overwritten. Other OVERWRITE options are not supported.
+
+            See `Transfer Cloud Storage managed
+            folders </storage-transfer/docs/managed-folders>`__.
     """
 
     bucket_name: str = proto.Field(
@@ -315,12 +330,19 @@ class GcsData(proto.Message):
         proto.STRING,
         number=3,
     )
+    managed_folder_transfer_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class AwsS3Data(proto.Message):
     r"""An AwsS3Data resource can be a data source, but not a data
     sink. In an AwsS3Data resource, an object's name is the S3
     object's key name.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         bucket_name (str):
@@ -353,34 +375,44 @@ class AwsS3Data(proto.Message):
             using the
             [GoogleServiceAccount][google.storagetransfer.v1.GoogleServiceAccount]
             for this project.
+        cloudfront_domain (str):
+            Optional. The CloudFront distribution domain name pointing
+            to this bucket, to use when fetching.
+
+            See `Transfer from S3 via
+            CloudFront <https://cloud.google.com/storage-transfer/docs/s3-cloudfront>`__
+            for more information.
+
+            Format: ``https://{id}.cloudfront.net`` or any valid custom
+            domain. Must begin with ``https://``.
         credentials_secret (str):
             Optional. The Resource name of a secret in Secret Manager.
 
-            The Azure SAS token must be stored in Secret Manager in JSON
+            AWS credentials must be stored in Secret Manager in JSON
             format:
 
-            .. raw:: html
-
-                <pre>{
-                 "sas_token" : "<var>SAS_TOKEN</var>"
-                }</pre>
+            { "access_key_id": "ACCESS_KEY_ID", "secret_access_key":
+            "SECRET_ACCESS_KEY" }
 
             [GoogleServiceAccount][google.storagetransfer.v1.GoogleServiceAccount]
             must be granted ``roles/secretmanager.secretAccessor`` for
             the resource.
 
-            See [Configure access to a source: Microsoft Azure Blob
-            Storage]
-            (https://cloud.google.com/storage-transfer/docs/source-microsoft-azure#secret_manager)
+            See [Configure access to a source: Amazon S3]
+            (https://cloud.google.com/storage-transfer/docs/source-amazon-s3#secret_manager)
             for more information.
 
             If ``credentials_secret`` is specified, do not specify
-            [azure_credentials][].
-
-            This feature is in
-            `preview <https://cloud.google.com/terms/service-terms#1>`__.
+            [role_arn][google.storagetransfer.v1.AwsS3Data.role_arn] or
+            [aws_access_key][google.storagetransfer.v1.AwsS3Data.aws_access_key].
 
             Format: ``projects/{project_number}/secrets/{secret_name}``
+        managed_private_network (bool):
+            Egress bytes over a Google-managed private
+            network. This network is shared between other
+            users of Storage Transfer Service.
+
+            This field is a member of `oneof`_ ``private_network``.
     """
 
     bucket_name: str = proto.Field(
@@ -400,9 +432,18 @@ class AwsS3Data(proto.Message):
         proto.STRING,
         number=4,
     )
+    cloudfront_domain: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
     credentials_secret: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    managed_private_network: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+        oneof="private_network",
     )
 
 
@@ -442,11 +483,7 @@ class AzureBlobStorageData(proto.Message):
             The Azure SAS token must be stored in Secret Manager in JSON
             format:
 
-            .. raw:: html
-
-                <pre>{
-                 "sas_token" : "<var>SAS_TOKEN</var>"
-                }</pre>
+            { "sas_token" : "SAS_TOKEN" }
 
             [GoogleServiceAccount][google.storagetransfer.v1.GoogleServiceAccount]
             must be granted ``roles/secretmanager.secretAccessor`` for
@@ -459,9 +496,6 @@ class AzureBlobStorageData(proto.Message):
 
             If ``credentials_secret`` is specified, do not specify
             [azure_credentials][google.storagetransfer.v1.AzureBlobStorageData.azure_credentials].
-
-            This feature is in
-            `preview <https://cloud.google.com/terms/service-terms#1>`__.
 
             Format: ``projects/{project_number}/secrets/{secret_name}``
     """
@@ -554,6 +588,24 @@ class PosixFilesystem(proto.Message):
     """
 
     root_directory: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class HdfsData(proto.Message):
+    r"""An HdfsData resource specifies a path within an HDFS entity
+    (e.g. a cluster). All cluster-specific settings, such as
+    namenodes and ports, are configured on the transfer agents
+    servicing requests, so HdfsData only contains the root path to
+    the data in our transfer.
+
+    Attributes:
+        path (str):
+            Root path to transfer files.
+    """
+
+    path: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -727,7 +779,7 @@ class S3CompatibleMetadata(proto.Message):
 
 
 class AgentPool(proto.Message):
-    r"""Represents an On-Premises Agent pool.
+    r"""Represents an agent pool.
 
     Attributes:
         name (str):
@@ -755,8 +807,8 @@ class AgentPool(proto.Message):
                 Default value. This value is unused.
             CREATING (1):
                 This is an initialization state. During this
-                stage, the resources such as Pub/Sub topics are
-                allocated for the AgentPool.
+                stage, resources are allocated for the
+                AgentPool.
             CREATED (2):
                 Determines that the AgentPool is created for
                 use. At this state, Agents can join the
@@ -934,6 +986,10 @@ class TransferSpec(proto.Message):
             An AWS S3 compatible data source.
 
             This field is a member of `oneof`_ ``data_source``.
+        hdfs_data_source (google.cloud.storage_transfer_v1.types.HdfsData):
+            An HDFS cluster data source.
+
+            This field is a member of `oneof`_ ``data_source``.
         gcs_intermediate_data_location (google.cloud.storage_transfer_v1.types.GcsData):
             For transfers between file systems, specifies a Cloud
             Storage bucket to be used as an intermediate location
@@ -1020,6 +1076,12 @@ class TransferSpec(proto.Message):
         oneof="data_source",
         message="AwsS3CompatibleData",
     )
+    hdfs_data_source: "HdfsData" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        oneof="data_source",
+        message="HdfsData",
+    )
     gcs_intermediate_data_location: "GcsData" = proto.Field(
         proto.MESSAGE,
         number=16,
@@ -1102,9 +1164,12 @@ class MetadataOptions(proto.Message):
             [KMS_KEY_DESTINATION_BUCKET_DEFAULT][google.storagetransfer.v1.MetadataOptions.KmsKey.KMS_KEY_DESTINATION_BUCKET_DEFAULT].
         time_created (google.cloud.storage_transfer_v1.types.MetadataOptions.TimeCreated):
             Specifies how each object's ``timeCreated`` metadata is
-            preserved for transfers between Google Cloud Storage
-            buckets. If unspecified, the default behavior is the same as
+            preserved for transfers. If unspecified, the default
+            behavior is the same as
             [TIME_CREATED_SKIP][google.storagetransfer.v1.MetadataOptions.TimeCreated.TIME_CREATED_SKIP].
+            This behavior is supported for transfers to Cloud Storage
+            buckets from Cloud Storage, Amazon S3, S3-compatible
+            storage, and Azure sources.
     """
 
     class Symlink(proto.Enum):
@@ -1273,10 +1338,11 @@ class MetadataOptions(proto.Message):
                 Do not preserve the ``timeCreated`` metadata from the source
                 object.
             TIME_CREATED_PRESERVE_AS_CUSTOM_TIME (2):
-                Preserves the source object's ``timeCreated`` metadata in
-                the ``customTime`` field in the destination object. Note
-                that any value stored in the source object's ``customTime``
-                field will not be propagated to the destination object.
+                Preserves the source object's ``timeCreated`` or
+                ``lastModified`` metadata in the ``customTime`` field in the
+                destination object. Note that any value stored in the source
+                object's ``customTime`` field will not be propagated to the
+                destination object.
         """
         TIME_CREATED_UNSPECIFIED = 0
         TIME_CREATED_SKIP = 1
@@ -1539,9 +1605,7 @@ class TransferJob(proto.Message):
         transfer_spec (google.cloud.storage_transfer_v1.types.TransferSpec):
             Transfer specification.
         notification_config (google.cloud.storage_transfer_v1.types.NotificationConfig):
-            Notification configuration. This is not
-            supported for transfers involving
-            PosixFilesystem.
+            Notification configuration.
         logging_config (google.cloud.storage_transfer_v1.types.LoggingConfig):
             Logging configuration.
         schedule (google.cloud.storage_transfer_v1.types.Schedule):
@@ -2000,34 +2064,26 @@ class NotificationConfig(proto.Message):
 class LoggingConfig(proto.Message):
     r"""Specifies the logging behavior for transfer operations.
 
-    For cloud-to-cloud transfers, logs are sent to Cloud Logging. See
-    `Read transfer
+    Logs can be sent to Cloud Logging for all transfer types. See `Read
+    transfer
     logs <https://cloud.google.com/storage-transfer/docs/read-transfer-logs>`__
-    for details.
-
-    For transfers to or from a POSIX file system, logs are stored in the
-    Cloud Storage bucket that is the source or sink of the transfer. See
-    [Managing Transfer for on-premises jobs]
-    (https://cloud.google.com/storage-transfer/docs/managing-on-prem-jobs#viewing-logs)
     for details.
 
     Attributes:
         log_actions (MutableSequence[google.cloud.storage_transfer_v1.types.LoggingConfig.LoggableAction]):
-            Specifies the actions to be logged. If empty, no logs are
-            generated. Not supported for transfers with PosixFilesystem
-            data sources; use
-            [enable_onprem_gcs_transfer_logs][google.storagetransfer.v1.LoggingConfig.enable_onprem_gcs_transfer_logs]
-            instead.
+            Specifies the actions to be logged. If empty,
+            no logs are generated.
         log_action_states (MutableSequence[google.cloud.storage_transfer_v1.types.LoggingConfig.LoggableActionState]):
             States in which ``log_actions`` are logged. If empty, no
-            logs are generated. Not supported for transfers with
-            PosixFilesystem data sources; use
-            [enable_onprem_gcs_transfer_logs][google.storagetransfer.v1.LoggingConfig.enable_onprem_gcs_transfer_logs]
-            instead.
+            logs are generated.
         enable_onprem_gcs_transfer_logs (bool):
-            For transfers with a PosixFilesystem source,
-            this option enables the Cloud Storage transfer
-            logs for this transfer.
+            For PosixFilesystem transfers, enables `file system transfer
+            logs <https://cloud.google.com/storage-transfer/docs/on-prem-transfer-log-format>`__
+            instead of, or in addition to, Cloud Logging.
+
+            This option ignores [LoggableAction] and
+            [LoggableActionState]. If these are set, Cloud Logging will
+            also be enabled for this transfer.
     """
 
     class LoggableAction(proto.Enum):
