@@ -67,8 +67,7 @@ for library in s.get_staging_dirs(default_version):
     s.move([library], excludes=[
             "**/gapic_version.py",
             "setup.py",
-            "testing/constraints-3.7.txt",
-            "testing/constraints-3.8.txt",
+            "testing/constraints*.txt",
             "README.rst",
             "google/cloud/logging/__init__.py",  # generated types are hidden from users
             "google/cloud/logging_v2/__init__.py",
@@ -95,6 +94,7 @@ templated_files = gcp.CommonTemplates().py_library(
         "google-cloud-testutils",
         "opentelemetry-sdk"
     ],
+    system_test_python_versions=["3.12"],
     unit_test_external_dependencies=["flask", "webob", "django"],
     samples=True,
 )
@@ -109,6 +109,13 @@ s.move(templated_files,
         ".github/auto-label.yaml",
         "README.rst", # This repo has a customized README
     ],
+)
+s.replace("noxfile.py",
+"""prerel_deps = \[
+        "protobuf",""",
+"""prerel_deps = [
+        "google-cloud-audit-log",
+        "protobuf",""",
 )
 
 # adjust .trampolinerc for environment tests

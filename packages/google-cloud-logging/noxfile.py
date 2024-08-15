@@ -52,7 +52,7 @@ UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -419,6 +419,7 @@ def prerelease_deps(session, protobuf_implementation):
     session.install(*constraints_deps)
 
     prerel_deps = [
+        "google-cloud-audit-log",
         "protobuf",
         # dependency of grpc
         "six",
