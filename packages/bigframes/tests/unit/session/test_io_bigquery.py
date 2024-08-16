@@ -155,7 +155,12 @@ def test_create_temp_table_default_expiration():
     )
 
     session = resources.create_bigquery_session()
-    bigframes.session._io.bigquery.create_temp_table(session, expiration)
+    table_ref = bigquery.TableReference.from_string(
+        "test-project.test_dataset.bqdf_new_random_table"
+    )
+    bigframes.session._io.bigquery.create_temp_table(
+        session.bqclient, table_ref, expiration
+    )
 
     session.bqclient.create_table.assert_called_once()
     call_args = session.bqclient.create_table.call_args

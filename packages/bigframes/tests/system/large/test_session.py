@@ -59,7 +59,7 @@ def test_read_gbq_for_large_tables(
     assert len(df.columns) != 0
 
 
-def test_close(session):
+def test_close(session: bigframes.Session):
     # we will create two tables and confirm that they are deleted
     # when the session is closed
 
@@ -69,8 +69,12 @@ def test_close(session):
         datetime.datetime.now(datetime.timezone.utc)
         + bigframes.constants.DEFAULT_EXPIRATION
     )
-    full_id_1 = bigframes.session._io.bigquery.create_temp_table(session, expiration)
-    full_id_2 = bigframes.session._io.bigquery.create_temp_table(session, expiration)
+    full_id_1 = bigframes.session._io.bigquery.create_temp_table(
+        session.bqclient, session._temp_storage_manager._random_table(), expiration
+    )
+    full_id_2 = bigframes.session._io.bigquery.create_temp_table(
+        session.bqclient, session._temp_storage_manager._random_table(), expiration
+    )
 
     # check that the tables were actually created
     assert bqclient.get_table(full_id_1).created is not None
@@ -101,8 +105,12 @@ def test_clean_up_by_session_id():
         datetime.datetime.now(datetime.timezone.utc)
         + bigframes.constants.DEFAULT_EXPIRATION
     )
-    bigframes.session._io.bigquery.create_temp_table(session, expiration)
-    bigframes.session._io.bigquery.create_temp_table(session, expiration)
+    bigframes.session._io.bigquery.create_temp_table(
+        session.bqclient, session._temp_storage_manager._random_table(), expiration
+    )
+    bigframes.session._io.bigquery.create_temp_table(
+        session.bqclient, session._temp_storage_manager._random_table(), expiration
+    )
 
     # check that some table exists with the expected session_id
     tables_before = bqclient.list_tables(

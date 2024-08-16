@@ -556,7 +556,8 @@ def test_read_gbq_with_custom_global_labels(
         bigframes.options.compute.assign_extra_query_labels(test1=1, test2="abc")
         bigframes.options.compute.extra_query_labels["test3"] = False
 
-        job_labels = session.read_gbq(scalars_table_id).query_job.labels  # type:ignore
+        query_job = session.read_gbq(scalars_table_id).query_job
+        job_labels = query_job.labels  # type:ignore
         expected_labels = {"test1": "1", "test2": "abc", "test3": "false"}
 
         # All jobs should include a bigframes-api key. See internal issue 336521938.

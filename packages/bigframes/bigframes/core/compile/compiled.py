@@ -20,11 +20,14 @@ import typing
 from typing import Collection, Literal, Optional, Sequence
 
 import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
+import google.cloud.bigquery
 import ibis
 import ibis.backends.bigquery as ibis_bigquery
+import ibis.backends.bigquery.datatypes
 import ibis.common.deferred  # type: ignore
 import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.operations as ibis_ops
+import ibis.expr.schema as ibis_schema
 import ibis.expr.types as ibis_types
 import pandas
 
@@ -531,7 +534,8 @@ class OrderedIR(BaseIbisIR):
             for column in self._columns
         }
         self._hidden_ordering_column_names = {
-            column.get_name(): column for column in self._hidden_ordering_columns
+            typing.cast(str, column.get_name()): column
+            for column in self._hidden_ordering_columns
         }
         ### Validation
         value_col_ids = self._column_names.keys()
@@ -947,14 +951,28 @@ class OrderedIR(BaseIbisIR):
             )
         return typing.cast(str, sql)
 
-    def raw_sql(self) -> str:
-        """Return sql with all hidden columns. Used to cache with ordering information."""
-        return ibis_bigquery.Backend().compile(
-            self._to_ibis_expr(
-                ordering_mode="unordered",
-                expose_hidden_cols=True,
-            )
+    def raw_sql_and_schema(
+        self,
+    ) -> typing.Tuple[str, typing.Sequence[google.cloud.bigquery.SchemaField]]:
+        """Return sql with all hidden columns. Used to cache with ordering information.
+
+        Also returns schema, as the extra ordering columns are determined compile-time.
+        """
+        all_columns = (*self.column_ids, *self._hidden_ordering_column_names.keys())
+        as_ibis = self._to_ibis_expr(
+            ordering_mode="unordered",
+            expose_hidden_cols=True,
+        ).select(all_columns)
+
+        # Ibis will produce non-nullable schema types, but bigframes should always be nullable
+        fixed_ibis_schema = ibis_schema.Schema.from_tuples(
+            (name, dtype.copy(nullable=True))
+            for (name, dtype) in as_ibis.schema().items()
         )
+        bq_schema = ibis.backends.bigquery.datatypes.BigQuerySchema.from_ibis(
+            fixed_ibis_schema
+        )
+        return ibis_bigquery.Backend().compile(as_ibis), bq_schema
 
     def _to_ibis_expr(
         self,

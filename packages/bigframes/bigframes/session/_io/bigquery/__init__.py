@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import datetime
 import itertools
-import os
 import re
 import textwrap
 import types
@@ -35,14 +34,17 @@ from bigframes.core import log_adapter
 import bigframes.core.compile.googlesql as googlesql
 import bigframes.core.sql
 import bigframes.formatting_helpers as formatting_helpers
+import bigframes.session.metrics
+
+CHECK_DRIVE_PERMISSIONS = "\nCheck https://cloud.google.com/bigquery/docs/query-drive-data#Google_Drive_permissions."
+
 
 IO_ORDERING_ID = "bqdf_row_nums"
 MAX_LABELS_COUNT = 64
 _LIST_TABLES_LIMIT = 10000  # calls to bqclient.list_tables
 # will be limited to this many tables
 
-LOGGING_NAME_ENV_VAR = "BIGFRAMES_PERFORMANCE_LOG_NAME"
-CHECK_DRIVE_PERMISSIONS = "\nCheck https://cloud.google.com/bigquery/docs/query-drive-data#Google_Drive_permissions."
+_MAX_CLUSTER_COLUMNS = 4
 
 
 def create_job_configs_labels(
@@ -129,24 +131,28 @@ def table_ref_to_sql(table: bigquery.TableReference) -> str:
 
 
 def create_temp_table(
-    session: bigframes.session.Session,
+    bqclient: bigquery.Client,
+    table_ref: bigquery.TableReference,
     expiration: datetime.datetime,
     *,
     schema: Optional[Iterable[bigquery.SchemaField]] = None,
     cluster_columns: Optional[list[str]] = None,
+    kms_key: Optional[str] = None,
 ) -> str:
     """Create an empty table with an expiration in the desired session.
 
     The table will be deleted when the session is closed or the expiration
     is reached.
     """
-    bqclient: bigquery.Client = session.bqclient
-    table_ref = session._random_table()
     destination = bigquery.Table(table_ref)
     destination.expires = expiration
     destination.schema = schema
     if cluster_columns:
         destination.clustering_fields = cluster_columns
+    if kms_key:
+        destination.encryption_configuration = bigquery.EncryptionConfiguration(
+            kms_key_name=kms_key
+        )
     # Ok if already exists, since this will only happen from retries internal to this method
     # as the requested table id has a random UUID4 component.
     bqclient.create_table(destination, exists_ok=True)
@@ -222,17 +228,17 @@ def add_labels(job_config, api_name: Optional[str] = None):
 
 
 def start_query_with_client(
-    session: bigframes.session.Session,
+    bq_client: bigquery.Client,
     sql: str,
     job_config: bigquery.job.QueryJobConfig,
     max_results: Optional[int] = None,
     timeout: Optional[float] = None,
     api_name: Optional[str] = None,
+    metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
 ) -> Tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
     """
     Starts query job and waits for results.
     """
-    bq_client: bigquery.Client = session.bqclient
     add_labels(job_config, api_name=api_name)
 
     try:
@@ -250,62 +256,9 @@ def start_query_with_client(
     else:
         results_iterator = query_job.result(max_results=max_results)
 
-    stats = get_performance_stats(query_job)
-    if stats is not None:
-        bytes_processed, slot_millis = stats
-        session._add_bytes_processed(bytes_processed)
-        session._add_slot_millis(slot_millis)
-        if LOGGING_NAME_ENV_VAR in os.environ:
-            # when running notebooks via pytest nbmake
-            write_stats_to_disk(bytes_processed, slot_millis)
-
+    if metrics is not None:
+        metrics.count_job_stats(query_job)
     return results_iterator, query_job
-
-
-def get_performance_stats(query_job: bigquery.QueryJob) -> Optional[Tuple[int, int]]:
-    """Parse the query job for performance stats.
-
-    Return None if the stats do not reflect real work done in bigquery.
-    """
-    bytes_processed = query_job.total_bytes_processed
-    if not isinstance(bytes_processed, int):
-        return None  # filter out mocks
-    if query_job.configuration.dry_run:
-        # dry run stats are just predictions of the real run
-        bytes_processed = 0
-
-    slot_millis = query_job.slot_millis
-    if not isinstance(slot_millis, int):
-        return None  # filter out mocks
-    if query_job.configuration.dry_run:
-        # dry run stats are just predictions of the real run
-        slot_millis = 0
-
-    return bytes_processed, slot_millis
-
-
-def write_stats_to_disk(bytes_processed: int, slot_millis: int):
-    """For pytest runs only, log information about the query job
-    to a file in order to create a performance report.
-    """
-    if LOGGING_NAME_ENV_VAR not in os.environ:
-        raise EnvironmentError(
-            "Environment variable {env_var} is not set".format(
-                env_var=LOGGING_NAME_ENV_VAR
-            )
-        )
-    test_name = os.environ[LOGGING_NAME_ENV_VAR]
-    current_directory = os.getcwd()
-
-    # store bytes processed
-    bytes_file = os.path.join(current_directory, test_name + ".bytesprocessed")
-    with open(bytes_file, "a") as f:
-        f.write(str(bytes_processed) + "\n")
-
-    # store slot milliseconds
-    bytes_file = os.path.join(current_directory, test_name + ".slotmillis")
-    with open(bytes_file, "a") as f:
-        f.write(str(slot_millis) + "\n")
 
 
 def delete_tables_matching_session_id(
@@ -504,3 +457,34 @@ def compile_filters(filters: third_party_pandas_gbq.FiltersType) -> str:
             filter_string = and_expression
 
     return filter_string
+
+
+def select_cluster_cols(
+    schema: typing.Sequence[bigquery.SchemaField],
+    cluster_candidates: typing.Sequence[str],
+) -> typing.Sequence[str]:
+    return [
+        item.name
+        for item in schema
+        if (item.name in cluster_candidates) and _can_cluster_bq(item)
+    ][:_MAX_CLUSTER_COLUMNS]
+
+
+def _can_cluster_bq(field: bigquery.SchemaField):
+    # https://cloud.google.com/bigquery/docs/clustered-tables
+    # Notably, float is excluded
+    type_ = field.field_type
+    return type_ in (
+        "INTEGER",
+        "INT64",
+        "STRING",
+        "NUMERIC",
+        "DECIMAL",
+        "BIGNUMERIC",
+        "BIGDECIMAL",
+        "DATE",
+        "DATETIME",
+        "TIMESTAMP",
+        "BOOL",
+        "BOOLEAN",
+    )

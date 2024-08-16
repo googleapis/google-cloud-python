@@ -144,6 +144,21 @@ class ClientsProvider:
             project=self._project,
             location=self._location,
         )
+        if self._bq_kms_key_name:
+            # Note: Key configuration only applies automatically to load and query jobs, not copy jobs.
+            encryption_config = bigquery.EncryptionConfiguration(
+                kms_key_name=self._bq_kms_key_name
+            )
+            default_load_job_config = bigquery.LoadJobConfig()
+            default_query_job_config = bigquery.QueryJobConfig()
+            default_load_job_config.destination_encryption_configuration = (
+                encryption_config
+            )
+            default_query_job_config.destination_encryption_configuration = (
+                encryption_config
+            )
+            bq_client.default_load_job_config = default_load_job_config
+            bq_client.default_query_job_config = default_query_job_config
 
         return bq_client
 

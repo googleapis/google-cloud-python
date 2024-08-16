@@ -1214,7 +1214,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             category=bigframes.exceptions.PreviewWarning,
         )
 
-        self._optimize_query_complexity()
         pa_table, query_job = self._block.to_arrow(ordered=ordered)
         self._set_internal_query_job(query_job)
         return pa_table
@@ -1255,7 +1254,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 downsampled rows and all columns of this DataFrame.
         """
         # TODO(orrbradford): Optimize this in future. Potentially some cases where we can return the stored query job
-        self._optimize_query_complexity()
         df, query_job = self._block.to_pandas(
             max_download_size=max_download_size,
             sampling_method=sampling_method,
@@ -1285,7 +1283,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 form the original dataframe. Results stream from bigquery,
                 see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.table.RowIterator#google_cloud_bigquery_table_RowIterator_to_arrow_iterable
         """
-        self._optimize_query_complexity()
         return self._block.to_pandas_batches(
             page_size=page_size, max_results=max_results
         )
@@ -3046,12 +3043,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         ordering_id: Optional[str] = None,
         clustering_columns: Union[pandas.Index, Iterable[typing.Hashable]] = (),
     ) -> str:
-        dispositions = {
-            "fail": bigquery.WriteDisposition.WRITE_EMPTY,
-            "replace": bigquery.WriteDisposition.WRITE_TRUNCATE,
-            "append": bigquery.WriteDisposition.WRITE_APPEND,
-        }
-
         temp_table_ref = None
 
         if destination_table is None:
@@ -3063,7 +3054,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 )
             if_exists = "replace"
 
-            temp_table_ref = self._session._random_table(
+            temp_table_ref = self._session._temp_storage_manager._random_table(
                 # The client code owns this table reference now, so skip_cleanup=True
                 #  to not clean it up when we close the session.
                 skip_cleanup=True,
@@ -3086,10 +3077,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if if_exists is None:
             if_exists = "fail"
 
-        if if_exists not in dispositions:
+        valid_if_exists = ["fail", "replace", "append"]
+        if if_exists not in valid_if_exists:
             raise ValueError(
                 f"Got invalid value {repr(if_exists)} for if_exists. "
-                f"Valid options include None or one of {dispositions.keys()}."
+                f"Valid options include None or one of {valid_if_exists}."
             )
 
         try:
@@ -3101,16 +3093,25 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             clustering_columns, index=index
         )
 
-        job_config = bigquery.QueryJobConfig(
-            write_disposition=dispositions[if_exists],
-            destination=bigquery.table.TableReference.from_string(
-                destination_table,
-                default_project=default_project,
-            ),
-            clustering_fields=clustering_fields if clustering_fields else None,
+        export_array, id_overrides = self._prepare_export(
+            index=index and self._has_index, ordering_id=ordering_id
         )
+        destination = bigquery.table.TableReference.from_string(
+            destination_table,
+            default_project=default_project,
+        )
+        _, query_job = self._session._export(
+            export_array,
+            destination=destination,
+            col_id_overrides=id_overrides,
+            cluster_cols=clustering_fields,
+            if_exists=if_exists,
+        )
+        self._set_internal_query_job(query_job)
 
-        self._run_io_query(index=index, ordering_id=ordering_id, job_config=job_config)
+        # The query job should have finished, so there should be always be a result table.
+        result_table = query_job.destination
+        assert result_table is not None
 
         if temp_table_ref:
             bigframes.session._io.bigquery.set_table_expiration(
@@ -3402,19 +3403,16 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         self,
         index: bool,
         ordering_id: Optional[str] = None,
-        job_config: Optional[bigquery.job.QueryJobConfig] = None,
     ) -> bigquery.TableReference:
         """Executes a query job presenting this dataframe and returns the destination
         table."""
         session = self._block.expr.session
-        self._optimize_query_complexity()
         export_array, id_overrides = self._prepare_export(
             index=index and self._has_index, ordering_id=ordering_id
         )
 
         _, query_job = session._execute(
             export_array,
-            job_config=job_config,
             ordered=False,
             col_id_overrides=id_overrides,
         )
@@ -3668,13 +3666,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             return self
         self._block.cached(force=force)
         return self
-
-    def _optimize_query_complexity(self):
-        """Reduce query complexity by caching repeated subtrees and recursively materializing maximum-complexity subtrees.
-        May generate many queries and take substantial time to execute.
-        """
-        # TODO: Move all this to session
-        self._session._simplify_with_caching(self._block.expr)
 
     _DataFrameOrSeries = typing.TypeVar("_DataFrameOrSeries")
 

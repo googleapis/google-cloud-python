@@ -188,7 +188,6 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     __len__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__len__)
 
     def __iter__(self) -> typing.Iterator:
-        self._optimize_query_complexity()
         return itertools.chain.from_iterable(
             map(lambda x: x.squeeze(axis=1), self._block.to_pandas_batches())
         )
@@ -358,7 +357,6 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             pandas.Series: A pandas Series with all rows of this Series if the data_sampling_threshold_mb
                 is not exceeded; otherwise, a pandas Series with downsampled rows of the DataFrame.
         """
-        self._optimize_query_complexity()
         df, query_job = self._block.to_pandas(
             max_download_size=max_download_size,
             sampling_method=sampling_method,
@@ -1891,13 +1889,6 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def _cached(self, *, force: bool = True, session_aware: bool = True) -> Series:
         self._block.cached(force=force, session_aware=session_aware)
         return self
-
-    def _optimize_query_complexity(self):
-        """Reduce query complexity by caching repeated subtrees and recursively materializing maximum-complexity subtrees.
-        May generate many queries and take substantial time to execute.
-        """
-        # TODO: Move all this to session
-        self._block.session._simplify_with_caching(self._block.expr)
 
 
 def _is_list_like(obj: typing.Any) -> typing_extensions.TypeGuard[typing.Sequence]:

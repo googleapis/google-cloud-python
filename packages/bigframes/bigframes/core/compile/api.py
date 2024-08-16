@@ -13,7 +13,9 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import Mapping, Tuple, TYPE_CHECKING
+from typing import Mapping, Sequence, Tuple, TYPE_CHECKING
+
+import google.cloud.bigquery as bigquery
 
 import bigframes.core.compile.compiler as compiler
 
@@ -58,11 +60,13 @@ class SQLCompiler:
     def compile_raw(
         self,
         node: bigframes.core.nodes.BigFrameNode,
-    ) -> Tuple[str, bigframes.core.ordering.RowOrdering]:
+    ) -> Tuple[
+        str, Sequence[bigquery.SchemaField], bigframes.core.ordering.RowOrdering
+    ]:
         """Compile node into sql that exposes all columns, including hidden ordering-only columns."""
         ir = self._compiler.compile_ordered_ir(node)
-        sql = ir.raw_sql()
-        return sql, ir._ordering
+        sql, schema = ir.raw_sql_and_schema()
+        return sql, schema, ir._ordering
 
 
 def test_only_try_evaluate(node: bigframes.core.nodes.BigFrameNode):

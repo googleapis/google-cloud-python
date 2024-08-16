@@ -488,12 +488,7 @@ class Block:
             list(self.value_columns) + list(self.index_columns)
         )
 
-        _, query_job = self.session._query_to_destination(
-            self.session._to_sql(expr, ordered=ordered),
-            list(self.index_columns),
-            api_name="cached",
-            do_clustering=False,
-        )
+        _, query_job = self.session._execute(expr, ordered=ordered)
         results_iterator = query_job.result()
         pa_table = results_iterator.to_arrow()
 
@@ -582,12 +577,7 @@ class Block:
         see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob#google_cloud_bigquery_job_QueryJob_result"""
         dtypes = dict(zip(self.index_columns, self.index.dtypes))
         dtypes.update(zip(self.value_columns, self.dtypes))
-        _, query_job = self.session._query_to_destination(
-            self.session._to_sql(self.expr, ordered=True),
-            list(self.index_columns),
-            api_name="cached",
-            do_clustering=False,
-        )
+        _, query_job = self.session._execute(self.expr, ordered=True)
         results_iterator = query_job.result(
             page_size=page_size, max_results=max_results
         )
@@ -617,11 +607,8 @@ class Block:
     ) -> Tuple[pd.DataFrame, bigquery.QueryJob]:
         """Run query and download results as a pandas DataFrame. Return the total number of results as well."""
         # TODO(swast): Allow for dry run and timeout.
-        _, query_job = self.session._query_to_destination(
-            self.session._to_sql(self.expr, ordered=materialize_options.ordered),
-            list(self.index_columns),
-            api_name="cached",
-            do_clustering=False,
+        _, query_job = self.session._execute(
+            self.expr, ordered=materialize_options.ordered
         )
         results_iterator = query_job.result()
 
@@ -797,8 +784,7 @@ class Block:
         self, value_keys: Optional[Iterable[str]] = None
     ) -> bigquery.QueryJob:
         expr = self._apply_value_keys_to_expr(value_keys=value_keys)
-        job_config = bigquery.QueryJobConfig(dry_run=True)
-        _, query_job = self.session._execute(expr, job_config=job_config, dry_run=True)
+        _, query_job = self.session._dry_run(expr)
         return query_job
 
     def _apply_value_keys_to_expr(self, value_keys: Optional[Iterable[str]] = None):
@@ -2404,12 +2390,15 @@ class Block:
     def cached(self, *, force: bool = False, session_aware: bool = False) -> None:
         """Write the block to a session table."""
         # use a heuristic for whether something needs to be cached
-        if (not force) and self.session._is_trivially_executable(self.expr):
+        if (not force) and self.session._executor._is_trivially_executable(self.expr):
             return
         elif session_aware:
-            self.session._cache_with_session_awareness(self.expr)
+            bfet_roots = [obj._block._expr.node for obj in self.session.objects]
+            self.session._executor._cache_with_session_awareness(
+                self.expr, session_forest=bfet_roots
+            )
         else:
-            self.session._cache_with_cluster_cols(
+            self.session._executor._cache_with_cluster_cols(
                 self.expr, cluster_cols=self.index_columns
             )
 

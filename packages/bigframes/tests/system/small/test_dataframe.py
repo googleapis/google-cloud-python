@@ -2179,10 +2179,10 @@ def test_binop_with_self_aggregate(session, scalars_dfs):
     df_columns = ["int64_col", "float64_col", "int64_too"]
 
     # Ensure that this takes the optimized single-query path by counting executions
-    execution_count_before = session._execution_count
+    execution_count_before = session._metrics.execution_count
     bf_df = scalars_df[df_columns]
     bf_result = (bf_df - bf_df.mean()).to_pandas()
-    execution_count_after = session._execution_count
+    execution_count_after = session._metrics.execution_count
 
     pd_df = scalars_pandas_df[df_columns]
     pd_result = pd_df - pd_df.mean()
