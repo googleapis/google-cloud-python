@@ -844,7 +844,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 Type[TranslationServiceTransport],
                 Callable[..., TranslationServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                TranslationServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TranslationServiceTransport], transport)
             )
