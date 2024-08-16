@@ -53,7 +53,7 @@ replacements:
     before: |
       \ usage computation
       \    https://cloud.google.com/bigquery/docs/querying-wildcard-tables
-    after:  " usage computation\n      https://cloud.google.com/bigquery/docs/querying-wildcard-tables"
+    after:  " usage computation\n      https://cloud.google.com/bigquery/docs/querying-wildcard-tables\n"
     count: 1
   - paths: [
       packages/google-cloud-edgenetwork/google/cloud/edgenetwork_v1/types/resources.py,
