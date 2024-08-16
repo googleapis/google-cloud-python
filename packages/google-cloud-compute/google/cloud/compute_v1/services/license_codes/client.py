@@ -631,7 +631,7 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
             transport_init: Union[
                 Type[LicenseCodesTransport], Callable[..., LicenseCodesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                LicenseCodesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., LicenseCodesTransport], transport)
             )

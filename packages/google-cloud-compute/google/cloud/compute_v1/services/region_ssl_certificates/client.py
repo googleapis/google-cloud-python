@@ -647,7 +647,7 @@ class RegionSslCertificatesClient(metaclass=RegionSslCertificatesClientMeta):
                 Type[RegionSslCertificatesTransport],
                 Callable[..., RegionSslCertificatesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionSslCertificatesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionSslCertificatesTransport], transport)
             )

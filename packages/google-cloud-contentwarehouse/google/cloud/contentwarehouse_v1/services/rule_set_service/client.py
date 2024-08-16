@@ -701,7 +701,7 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
             transport_init: Union[
                 Type[RuleSetServiceTransport], Callable[..., RuleSetServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                RuleSetServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RuleSetServiceTransport], transport)
             )

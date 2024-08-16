@@ -647,7 +647,7 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
                 Type[RegionBackendServicesTransport],
                 Callable[..., RegionBackendServicesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionBackendServicesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionBackendServicesTransport], transport)
             )

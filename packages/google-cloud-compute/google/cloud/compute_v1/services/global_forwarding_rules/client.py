@@ -647,7 +647,7 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
                 Type[GlobalForwardingRulesTransport],
                 Callable[..., GlobalForwardingRulesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                GlobalForwardingRulesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., GlobalForwardingRulesTransport], transport)
             )

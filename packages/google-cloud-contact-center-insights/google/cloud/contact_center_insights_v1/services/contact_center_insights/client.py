@@ -885,7 +885,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 Type[ContactCenterInsightsTransport],
                 Callable[..., ContactCenterInsightsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ContactCenterInsightsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ContactCenterInsightsTransport], transport)
             )
