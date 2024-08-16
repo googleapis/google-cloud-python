@@ -73,8 +73,9 @@ replacements:
   - paths: [
       packages/google-cloud-retail/google/cloud/retail_v2alpha/types/project.py,
     ]
-    before: "resource. Format: projects/\*/loggingConfig"
-    after:  "resource. Format: `projects/*/loggingConfig`"
+    before: |
+      \            resource. Format: projects/\*/loggingConfig
+    after:  "            resource. Format: `projects/*/loggingConfig`\n"
     count: 1
   - paths: [    packages/google-cloud-securitycentermanagement/google/cloud/securitycentermanagement_v1/types/security_center_management.py,
     ]
