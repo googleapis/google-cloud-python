@@ -114,8 +114,10 @@ replacements:
   - paths: [
       packages/google-cloud-visionai/google/cloud/visionai_v1/types/platform.py,
     ]
-    before: "'application': STRING;"
-    after:  "      'application': STRING;"
+    before: |
+      \'ingestionTime': DOUBLE; \(UNIX timestamp\)
+      \            'application': STRING;
+    after: "'ingestionTime': DOUBLE; (UNIX timestamp)\n                  'application': STRING;\n"
     count: 1
   - paths: [
     packages/google-cloud-visionai/google/cloud/visionai_v1/types/platform.py,
