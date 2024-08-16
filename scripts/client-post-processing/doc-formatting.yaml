@@ -42,6 +42,12 @@ replacements:
     after: "`corpora/*/documents/`"
     count: 1
   - paths: [
+      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta/types/retriever.py,
+    ]
+    before: \"corpora/\*/documents/\*/chunks/\"
+    after: "corpora/*/documents/*/chunks/"
+    count: 1    
+  - paths: [
       packages/google-cloud-datacatalog/google/cloud/datacatalog_v1beta1/types/usage.py,
     ]
     before: |
