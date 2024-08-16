@@ -36,8 +36,8 @@ download the results as a :class:`pandas.DataFrame` object.
 By default, queries use standard SQL syntax. Visit the :doc:`reading tables
 guide <reading>` to learn about the available options.
 
-Adjusting log vebosity
-^^^^^^^^^^^^^^^^^^^^^^
+Adjusting log verbosity
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Because some requests take some time, this library will log its progress of
 longer queries. IPython & Jupyter by default attach a handler to the logger.
