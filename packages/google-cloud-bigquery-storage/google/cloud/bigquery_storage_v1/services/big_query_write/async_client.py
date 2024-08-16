@@ -14,12 +14,12 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     AsyncIterable,
     AsyncIterator,
     Awaitable,
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -200,15 +200,15 @@ class BigQueryWriteAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(BigQueryWriteClient).get_transport_class, type(BigQueryWriteClient)
-    )
+    get_transport_class = BigQueryWriteClient.get_transport_class
 
     def __init__(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BigQueryWriteTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, BigQueryWriteTransport, Callable[..., BigQueryWriteTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -220,9 +220,11 @@ class BigQueryWriteAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.BigQueryWriteTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,BigQueryWriteTransport,Callable[..., BigQueryWriteTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the BigQueryWriteTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -340,8 +342,8 @@ class BigQueryWriteAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, write_stream])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -349,7 +351,10 @@ class BigQueryWriteAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage.CreateWriteStreamRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage.CreateWriteStreamRequest):
+            request = storage.CreateWriteStreamRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -360,22 +365,9 @@ class BigQueryWriteAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_write_stream,
-            default_retry=retries.AsyncRetry(
-                initial=10.0,
-                maximum=120.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ResourceExhausted,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=1200.0,
-            ),
-            default_timeout=1200.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_write_stream
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -503,20 +495,9 @@ class BigQueryWriteAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.append_rows,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=86400.0,
-            ),
-            default_timeout=86400.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.append_rows
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -597,8 +578,8 @@ class BigQueryWriteAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -606,7 +587,10 @@ class BigQueryWriteAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage.GetWriteStreamRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage.GetWriteStreamRequest):
+            request = storage.GetWriteStreamRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -615,22 +599,9 @@ class BigQueryWriteAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_write_stream,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ResourceExhausted,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_write_stream
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -711,8 +682,8 @@ class BigQueryWriteAsyncClient:
                 Response message for FinalizeWriteStream.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -720,7 +691,10 @@ class BigQueryWriteAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage.FinalizeWriteStreamRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage.FinalizeWriteStreamRequest):
+            request = storage.FinalizeWriteStreamRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -729,22 +703,9 @@ class BigQueryWriteAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.finalize_write_stream,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ResourceExhausted,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.finalize_write_stream
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -831,8 +792,8 @@ class BigQueryWriteAsyncClient:
                 Response message for BatchCommitWriteStreams.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -840,7 +801,10 @@ class BigQueryWriteAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage.BatchCommitWriteStreamsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage.BatchCommitWriteStreamsRequest):
+            request = storage.BatchCommitWriteStreamsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -849,22 +813,9 @@ class BigQueryWriteAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_commit_write_streams,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ResourceExhausted,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_commit_write_streams
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -953,8 +904,8 @@ class BigQueryWriteAsyncClient:
                 Respond message for FlushRows.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([write_stream])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -962,7 +913,10 @@ class BigQueryWriteAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage.FlushRowsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage.FlushRowsRequest):
+            request = storage.FlushRowsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -971,22 +925,9 @@ class BigQueryWriteAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.flush_rows,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ResourceExhausted,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.flush_rows
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

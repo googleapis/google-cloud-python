@@ -37,7 +37,7 @@ for library in s.get_staging_dirs(default_version):
     # We don't want the generated client to be accessible through
     # "google.cloud.bigquery_storage", replace it with the hand written client that
     # wraps it.
-    s.replace(
+    assert 1 == s.replace(
         library / "google/cloud/bigquery_storage/__init__.py",
         f"from google\\.cloud\\.bigquery_storage_{library.name}\\.services.big_query_read.client import",
         f"from google.cloud.bigquery_storage_{library.name} import",
@@ -45,7 +45,7 @@ for library in s.get_staging_dirs(default_version):
 
     # We also don't want to expose the async client just yet, at least not until
     # it is wrapped in its own manual client class.
-    s.replace(
+    assert 1 == s.replace(
         library / "google/cloud/bigquery_storage/__init__.py",
         (
             f"from google\\.cloud\\.bigquery_storage_{library.name}\\.services.big_query_read.async_client "
@@ -53,20 +53,20 @@ for library in s.get_staging_dirs(default_version):
         ),
         "",
     )
-    s.replace(
+    assert 1 == s.replace(
         library / "google/cloud/bigquery_storage/__init__.py",
         r"""["']BigQueryReadAsyncClient["'],\n""",
         "",
     )
 
-    s.replace(
+    assert 1 == s.replace(
         library / "google/cloud/bigquery_storage/__init__.py",
         r"""["']ArrowRecordBatch["']""",
         ('"__version__",\n' '    "types",\n' "    \\g<0>"),
     )
 
     # We want types to be accessible through the "main" library
-    s.replace(
+    assert 1 == s.replace(
         library / "google/cloud/bigquery_storage/__init__.py",
         f"from google\\.cloud\\.bigquery_storage_{library.name}\\.types\\.arrow import ArrowRecordBatch",
         (
@@ -76,29 +76,29 @@ for library in s.get_staging_dirs(default_version):
     )
 
     # The DataFormat enum is not exposed in bigquery_storage_v1/types, add it there.
-    s.replace(
+    assert 1 == s.replace(
         library / f"google/cloud/bigquery_storage_{library.name}*/types/__init__.py",
         r"from \.stream import \(",
         "\\g<0>\n    DataFormat,",
     )
-    s.replace(
+    assert 1 == s.replace(
         library / f"google/cloud/bigquery_storage_{library.name}*/types/__init__.py",
         r"""["']ReadSession["']""",
         '"DataFormat",\n    \\g<0>',
     )
 
     # Expose handwritten classes AppendRowsStream and ReadRowsStream here.
-    s.replace(
+    assert 1 == s.replace(
         library / "google/cloud/bigquery_storage/__init__.py",
         f"from google.cloud.bigquery_storage_{library.name} import BigQueryReadClient",
         (
             f"from google.cloud.bigquery_storage_{library.name}.writer import AppendRowsStream\n"
-            "\\g<0>"
+            "\\g<0>\n"
             f"from google.cloud.bigquery_storage_{library.name}.reader import ReadRowsStream\n"
         ),
     )
-    s.replace(
-        library / f"google/cloud/bigquery_storage_{library.name}*/types/__init__.py",
+    assert 1 == s.replace(
+        library / f"google/cloud/bigquery_storage/__init__.py",
         r"""["']ReadSession["']""",
         (
             '"AppendRowsStream",\n'

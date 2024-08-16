@@ -57,6 +57,7 @@ def client_under_test(mock_transport):
 
 def test_constructor_w_client_info():
     from google.cloud import bigquery_storage
+    from google.cloud.bigquery_storage_v1.services import big_query_read
 
     class MyTransport:
         def __init__(self, *args, **kwargs):
@@ -64,7 +65,7 @@ def test_constructor_w_client_info():
             self.kwargs = kwargs
 
     transport_class_patcher = mock.patch.object(
-        bigquery_storage.BigQueryReadClient,
+        big_query_read.BigQueryReadClient,
         "get_transport_class",
         return_value=MyTransport,
     )
