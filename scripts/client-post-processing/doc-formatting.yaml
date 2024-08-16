@@ -44,7 +44,6 @@ replacements:
   - paths: [
       packages/google-cloud-datacatalog/google/cloud/datacatalog_v1beta1/types/usage.py,
     ]
-    # this replacement does not seem to work
     before: |
       \ usage computation
       \    https://cloud.google.com/bigquery/docs/querying-wildcard-tables
@@ -53,14 +52,12 @@ replacements:
   - paths: [
       packages/google-cloud-edgenetwork/google/cloud/edgenetwork_v1/types/resources.py,
     ]
-    # this replacement does not seem to work
     before: " 14 years, 51 weeks, 6 days, 23 hours, 59"
     after:  "14 years, 51 weeks, 6 days, 23 hours, 59"
     count: 1
   - paths: [
       packages/google-cloud-network-connectivity/google/cloud/networkconnectivity_v1/types/policy_based_routing.py,
     ]
-    # this replacement does not seem to work
     before: "    65535, inclusive"
     after:  "65535, inclusive"
     count: 1
