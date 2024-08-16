@@ -65,8 +65,10 @@ replacements:
   - paths: [
       packages/google-cloud-network-connectivity/google/cloud/networkconnectivity_v1/types/policy_based_routing.py,
     ]
-    before: "    65535, inclusive"
-    after:  "65535, inclusive"
+    before: |
+      \            1000. The priority value must be from 1 to
+      \                65535, inclusive.
+    after: "            1000. The priority value must be from 1 to\n            65535, inclusive.\n"
     count: 1
   - paths: [
       packages/google-cloud-retail/google/cloud/retail_v2alpha/types/project.py,
