@@ -224,13 +224,9 @@ class BigQueryOptions:
     @property
     def kms_key_name(self) -> Optional[str]:
         """
-        Customer-managed encryption key
-        used to control encryption of the data at rest in BigQuery. This key
-        takes the format projects/PROJECT_ID/locations/LOCATION/keyRings/KEYRING/cryptoKeys/KEY
-
         Customer managed encryption key used to control encryption of the
         data-at-rest in BigQuery. This is of the format
-        projects/PROJECT_ID/locations/LOCATION/keyRings/KEYRING/cryptoKeys/KEY
+        projects/PROJECT_ID/locations/LOCATION/keyRings/KEYRING/cryptoKeys/KEY.
 
         For more information, see https://cloud.google.com/bigquery/docs/customer-managed-encryption
         Customer-managed Cloud KMS keys
