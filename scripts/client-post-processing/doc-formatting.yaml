@@ -58,8 +58,9 @@ replacements:
   - paths: [
       packages/google-cloud-edgenetwork/google/cloud/edgenetwork_v1/types/resources.py,
     ]
-    before: " 14 years, 51 weeks, 6 days, 23 hours, 59"
-    after:  "14 years, 51 weeks, 6 days, 23 hours, 59"
+    before: |
+      \                 14 years, 51 weeks, 6 days, 23 hours, 59
+    after: "                14 years, 51 weeks, 6 days, 23 hours, 59\n"
     count: 1
   - paths: [
       packages/google-cloud-network-connectivity/google/cloud/networkconnectivity_v1/types/policy_based_routing.py,
