@@ -48,7 +48,8 @@ replacements:
     after: "corpora/*/documents/*/chunks/"
     count: 1    
   - paths: [
-      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/services/permission_service/async_client.py
+      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/services/permission_service/async_client.py,
+      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/services/permission_service/client.py
       ]
     before: |
       \                role's permitted operations:
@@ -62,12 +63,24 @@ replacements:
     after: "                role's permitted operations:\n\n                - reader can use the resource (e.g.\n                  tuned model) for inference\n                - writer has reader's permissions and\n                  additionally can edit and share\n                - owner has writer's permissions and\n                  additionally can delete\n"
     count: 1
   - paths: [
+    packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/types/permission.py,
+      ]
+    before: |
+      \    previous role's permitted operations:
+      \
+      \     - reader can use the resource (e.g. tuned model) for inference
+      \     - writer has reader's permissions and additionally can edit and
+      \      share
+      \     - owner has writer's permissions and additionally can delete
+    after: "    previous role's permitted operations:\n\n    - reader can use the resource (e.g. tuned model) for inference\n    - writer has reader's permissions and additionally can edit and\n      share\n    - owner has writer's permissions and additionally can delete\n"
+    count: 1
+  - paths: [
       packages/google-cloud-datacatalog/google/cloud/datacatalog_v1beta1/types/usage.py,
     ]
     before: |
-      \ usage computation
+      \      references are not yet counted in usage computation
       \    https://cloud.google.com/bigquery/docs/querying-wildcard-tables
-    after:  " usage computation\n      https://cloud.google.com/bigquery/docs/querying-wildcard-tables\n"
+    after:  "      references are not yet counted in usage computation\n      https://cloud.google.com/bigquery/docs/querying-wildcard-tables\n"
     count: 1
   - paths: [
       packages/google-cloud-edgenetwork/google/cloud/edgenetwork_v1/types/resources.py,
@@ -111,27 +124,41 @@ replacements:
   - paths: [
       packages/google-cloud-securitycentermanagement/google/cloud/securitycentermanagement_v1/types/security_center_management.py,
     ]
-    before: "2. A failure occurred while trying to delete the\n                module."
-    after:  "2. A failure occurred while trying to delete the\n            module."
+    before: |
+      \            module could still fail because 1. the state
+      \            could have changed \(e.g. IAM permission lost\) or
+      \            2. A failure occurred while trying to update the
+      \                module.
+    after:  "            module could still fail because\n\n            - The state could have changed (e.g. IAM permission lost) or\n            - A failure occurred while trying to update the module.\n"
     count: 2
   - paths: [
       packages/google-cloud-securitycentermanagement/google/cloud/securitycentermanagement_v1/types/security_center_management.py,
     ]
-    before: "2. A failure occurred while trying to update the\n                module."
-    after:  "2. A failure occurred while trying to update the\n            module."
-    count: 2    
-  - paths: [    packages/google-cloud-securitycentermanagement/google/cloud/securitycentermanagement_v1/types/security_center_management.py,
+    before: |
+      \            module could still fail because 1. the state
+      \            could have changed \(e.g. IAM permission lost\) or
+      \            2. A failure occurred while trying to delete the
+      \                module.
+    after:  "            module could still fail because\n\n            - The state could have changed (e.g. IAM permission lost) or\n            - A failure occurred while trying to delete the module.\n"
+    count: 2
+  - paths: [
+      packages/google-cloud-securitycentermanagement/google/cloud/securitycentermanagement_v1/types/security_center_management.py,
     ]
-    before: "2. A failure occurred during creation of the\n                module."
-    after:  "2. A failure occurred during creation of the\n            module."
+    before: |
+      \            module could still fail because 1. the state
+      \            could have changed \(e.g. IAM permission lost\) or
+      \            2. A failure occurred during creation of the
+      \                module.
+    after:  "            module could still fail because\n\n            - The state could have changed (e.g. IAM permission lost) or\n            - A failure occurred during creation of the module.\n"
     count: 1
   - paths: [
       packages/google-cloud-visionai/google/cloud/visionai_v1/types/platform.py,
+      packages/google-cloud-visionai/google/cloud/visionai_v1alpha1/types/platform.py,
     ]
     before: |
-      \'ingestionTime': DOUBLE; \(UNIX timestamp\)
+      \                  'ingestionTime': DOUBLE; \(UNIX timestamp\)
       \            'application': STRING;
-    after: "'ingestionTime': DOUBLE; (UNIX timestamp)\n                  'application': STRING;\n"
+    after: "                  'ingestionTime': DOUBLE; (UNIX timestamp)\n                  'application': STRING;\n"
     count: 1
   - paths: [
     packages/google-cloud-visionai/google/cloud/visionai_v1/types/platform.py,
@@ -140,4 +167,3 @@ replacements:
     after:  "'processor': STRING;\n\n             }\n\n        dynamic_config_input_topic "
     count: 1
 
-    
