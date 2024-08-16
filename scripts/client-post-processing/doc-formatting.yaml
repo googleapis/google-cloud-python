@@ -35,3 +35,57 @@ replacements:
     before: \"NS_\"
     after: "`NS_`"
     count: 2
+  - paths: [
+      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta/types/retriever.py,
+    ]
+    before: "`corpora/*/documents/`"
+    after: "``corpora/*/documents/``"
+    count: 1
+  - paths: [
+      packages/google-cloud-datacatalog/google/cloud/datacatalog_v1beta1/types/usage.py,
+    ]
+    # this replacement does not seem to work
+    before: |
+      \ usage computation
+      \    https://cloud.google.com/bigquery/docs/querying-wildcard-tables
+    after:  " usage computation\n      https://cloud.google.com/bigquery/docs/querying-wildcard-tables"
+    count: 1
+  - paths: [
+      packages/google-cloud-edgenetwork/google/cloud/edgenetwork_v1/types/resources.py,
+    ]
+    # this replacement does not seem to work
+    before: " 14 years, 51 weeks, 6 days, 23 hours, 59"
+    after:  "14 years, 51 weeks, 6 days, 23 hours, 59"
+    count: 1
+  - paths: [
+      packages/google-cloud-network-connectivity/google/cloud/networkconnectivity_v1/types/policy_based_routing.py,
+    ]
+    # this replacement does not seem to work
+    before: "    65535, inclusive"
+    after:  "65535, inclusive"
+    count: 1
+  - paths: [
+      packages/google-cloud-retail/google/cloud/retail_v2alpha/types/project.py,
+    ]
+    before: "resource. Format: projects/\*/loggingConfig"
+    after:  "resource. Format: `projects/*/loggingConfig`"
+    count: 1
+  - paths: [    packages/google-cloud-securitycentermanagement/google/cloud/securitycentermanagement_v1/types/security_center_management.py,
+    ]
+    before: "2. A failure occurred during creation of the\n                module."
+    after:  "2. A failure occurred during creation of the\n            module."
+    count: 1
+  - paths: [
+    packages/google-cloud-visionai/google/cloud/visionai_v1/types/platform.py,
+    ]
+    before: "'application': STRING;"
+    after:  "      'application': STRING;"
+    count: 1
+  - paths: [
+    packages/google-cloud-visionai/google/cloud/visionai_v1/types/platform.py,
+    ]
+    before: "'processor': STRING;\n             }\n        dynamic_config_input_topic "
+    after:  "'processor': STRING;\n\n             }\n\n        dynamic_config_input_topic "
+    count: 1
+
+    
