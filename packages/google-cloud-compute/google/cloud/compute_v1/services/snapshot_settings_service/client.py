@@ -648,7 +648,7 @@ class SnapshotSettingsServiceClient(metaclass=SnapshotSettingsServiceClientMeta)
                 Type[SnapshotSettingsServiceTransport],
                 Callable[..., SnapshotSettingsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SnapshotSettingsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SnapshotSettingsServiceTransport], transport)
             )

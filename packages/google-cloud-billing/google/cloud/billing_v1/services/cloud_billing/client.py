@@ -698,7 +698,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
             transport_init: Union[
                 Type[CloudBillingTransport], Callable[..., CloudBillingTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CloudBillingClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudBillingTransport], transport)
             )

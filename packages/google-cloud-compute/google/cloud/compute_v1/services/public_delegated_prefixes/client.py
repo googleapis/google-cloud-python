@@ -649,7 +649,7 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
                 Type[PublicDelegatedPrefixesTransport],
                 Callable[..., PublicDelegatedPrefixesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                PublicDelegatedPrefixesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PublicDelegatedPrefixesTransport], transport)
             )

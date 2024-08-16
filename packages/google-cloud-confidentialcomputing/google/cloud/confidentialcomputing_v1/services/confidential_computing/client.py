@@ -670,7 +670,7 @@ class ConfidentialComputingClient(metaclass=ConfidentialComputingClientMeta):
                 Type[ConfidentialComputingTransport],
                 Callable[..., ConfidentialComputingTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ConfidentialComputingClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ConfidentialComputingTransport], transport)
             )

@@ -645,7 +645,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
                 Type[ServiceAttachmentsTransport],
                 Callable[..., ServiceAttachmentsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ServiceAttachmentsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ServiceAttachmentsTransport], transport)
             )

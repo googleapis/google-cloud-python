@@ -664,7 +664,7 @@ class InstanceGroupManagerResizeRequestsClient(
                 Type[InstanceGroupManagerResizeRequestsTransport],
                 Callable[..., InstanceGroupManagerResizeRequestsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                InstanceGroupManagerResizeRequestsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., InstanceGroupManagerResizeRequestsTransport],

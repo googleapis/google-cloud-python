@@ -635,7 +635,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
             transport_init: Union[
                 Type[SubnetworksTransport], Callable[..., SubnetworksTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SubnetworksClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SubnetworksTransport], transport)
             )

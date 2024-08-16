@@ -644,7 +644,7 @@ class SqlTranslationServiceClient(metaclass=SqlTranslationServiceClientMeta):
                 Type[SqlTranslationServiceTransport],
                 Callable[..., SqlTranslationServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SqlTranslationServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SqlTranslationServiceTransport], transport)
             )

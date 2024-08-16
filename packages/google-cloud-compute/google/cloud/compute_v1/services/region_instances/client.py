@@ -641,7 +641,7 @@ class RegionInstancesClient(metaclass=RegionInstancesClientMeta):
             transport_init: Union[
                 Type[RegionInstancesTransport], Callable[..., RegionInstancesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                RegionInstancesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionInstancesTransport], transport)
             )

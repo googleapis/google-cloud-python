@@ -642,7 +642,7 @@ class ValidationHelperV1Client(metaclass=ValidationHelperV1ClientMeta):
                 Type[ValidationHelperV1Transport],
                 Callable[..., ValidationHelperV1Transport],
             ] = (
-                type(self).get_transport_class(transport)
+                ValidationHelperV1Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ValidationHelperV1Transport], transport)
             )

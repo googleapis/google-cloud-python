@@ -635,7 +635,7 @@ class DisksClient(metaclass=DisksClientMeta):
             transport_init: Union[
                 Type[DisksTransport], Callable[..., DisksTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                DisksClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DisksTransport], transport)
             )

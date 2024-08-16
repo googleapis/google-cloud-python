@@ -645,7 +645,7 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
                 Type[InstanceTemplatesTransport],
                 Callable[..., InstanceTemplatesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                InstanceTemplatesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., InstanceTemplatesTransport], transport)
             )

@@ -637,7 +637,7 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
             transport_init: Union[
                 Type[ZoneOperationsTransport], Callable[..., ZoneOperationsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ZoneOperationsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ZoneOperationsTransport], transport)
             )

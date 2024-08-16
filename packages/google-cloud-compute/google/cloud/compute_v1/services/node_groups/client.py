@@ -635,7 +635,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
             transport_init: Union[
                 Type[NodeGroupsTransport], Callable[..., NodeGroupsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                NodeGroupsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., NodeGroupsTransport], transport)
             )

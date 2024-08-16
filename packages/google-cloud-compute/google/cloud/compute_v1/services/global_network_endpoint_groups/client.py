@@ -651,7 +651,7 @@ class GlobalNetworkEndpointGroupsClient(
                 Type[GlobalNetworkEndpointGroupsTransport],
                 Callable[..., GlobalNetworkEndpointGroupsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                GlobalNetworkEndpointGroupsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., GlobalNetworkEndpointGroupsTransport], transport

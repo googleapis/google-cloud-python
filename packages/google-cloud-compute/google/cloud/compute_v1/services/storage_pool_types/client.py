@@ -640,7 +640,7 @@ class StoragePoolTypesClient(metaclass=StoragePoolTypesClientMeta):
                 Type[StoragePoolTypesTransport],
                 Callable[..., StoragePoolTypesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                StoragePoolTypesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., StoragePoolTypesTransport], transport)
             )
