@@ -690,7 +690,7 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
                 Type[AppGatewaysServiceTransport],
                 Callable[..., AppGatewaysServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AppGatewaysServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AppGatewaysServiceTransport], transport)
             )
