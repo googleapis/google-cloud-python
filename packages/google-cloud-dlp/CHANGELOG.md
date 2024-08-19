@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.21.0...google-cloud-dlp-v3.22.0) (2024-08-19)
+
+
+### Features
+
+* file store data profiles can now be filtered by type and storage location ([5dc35c8](https://github.com/googleapis/google-cloud-python/commit/5dc35c8b35091a0ed7f69a0f4f4652a48523efaa))
+* inspect template modified cadence discovery config for Cloud SQL ([5dc35c8](https://github.com/googleapis/google-cloud-python/commit/5dc35c8b35091a0ed7f69a0f4f4652a48523efaa))
+
+
+### Documentation
+
+* small improvements ([5dc35c8](https://github.com/googleapis/google-cloud-python/commit/5dc35c8b35091a0ed7f69a0f4f4652a48523efaa))
+
 ## [3.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.20.0...google-cloud-dlp-v3.21.0) (2024-08-08)
 
 
