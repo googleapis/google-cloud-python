@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -199,10 +198,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(IdentityAwareProxyOAuthServiceClient).get_transport_class,
-        type(IdentityAwareProxyOAuthServiceClient),
-    )
+    get_transport_class = IdentityAwareProxyOAuthServiceClient.get_transport_class
 
     def __init__(
         self,

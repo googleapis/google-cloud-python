@@ -695,7 +695,7 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
                 Type[SampleQuerySetServiceTransport],
                 Callable[..., SampleQuerySetServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SampleQuerySetServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SampleQuerySetServiceTransport], transport)
             )

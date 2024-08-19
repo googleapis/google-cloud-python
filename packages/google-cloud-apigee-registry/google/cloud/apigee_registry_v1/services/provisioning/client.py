@@ -665,7 +665,7 @@ class ProvisioningClient(metaclass=ProvisioningClientMeta):
             transport_init: Union[
                 Type[ProvisioningTransport], Callable[..., ProvisioningTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ProvisioningClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ProvisioningTransport], transport)
             )

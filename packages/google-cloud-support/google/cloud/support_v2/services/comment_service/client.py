@@ -682,7 +682,7 @@ class CommentServiceClient(metaclass=CommentServiceClientMeta):
             transport_init: Union[
                 Type[CommentServiceTransport], Callable[..., CommentServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CommentServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CommentServiceTransport], transport)
             )

@@ -675,7 +675,7 @@ class CustomFieldServiceClient(metaclass=CustomFieldServiceClientMeta):
                 Type[CustomFieldServiceTransport],
                 Callable[..., CustomFieldServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                CustomFieldServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CustomFieldServiceTransport], transport)
             )

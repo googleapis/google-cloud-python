@@ -673,7 +673,7 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 Type[DataPolicyServiceTransport],
                 Callable[..., DataPolicyServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                DataPolicyServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DataPolicyServiceTransport], transport)
             )

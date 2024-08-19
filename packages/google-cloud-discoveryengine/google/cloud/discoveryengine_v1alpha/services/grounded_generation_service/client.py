@@ -674,7 +674,7 @@ class GroundedGenerationServiceClient(metaclass=GroundedGenerationServiceClientM
                 Type[GroundedGenerationServiceTransport],
                 Callable[..., GroundedGenerationServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                GroundedGenerationServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., GroundedGenerationServiceTransport], transport)
             )

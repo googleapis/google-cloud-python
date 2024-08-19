@@ -840,7 +840,7 @@ class ConversationalSearchServiceClient(
                 Type[ConversationalSearchServiceTransport],
                 Callable[..., ConversationalSearchServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ConversationalSearchServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., ConversationalSearchServiceTransport], transport

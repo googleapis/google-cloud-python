@@ -677,7 +677,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
                 Type[PredictionServiceTransport],
                 Callable[..., PredictionServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                PredictionServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PredictionServiceTransport], transport)
             )

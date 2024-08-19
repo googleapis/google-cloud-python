@@ -726,7 +726,7 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
             transport_init: Union[
                 Type[MetadataServiceTransport], Callable[..., MetadataServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                MetadataServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., MetadataServiceTransport], transport)
             )

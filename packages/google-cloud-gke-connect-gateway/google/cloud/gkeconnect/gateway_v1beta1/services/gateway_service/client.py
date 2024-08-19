@@ -642,7 +642,7 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
             transport_init: Union[
                 Type[GatewayServiceTransport], Callable[..., GatewayServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                GatewayServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., GatewayServiceTransport], transport)
             )

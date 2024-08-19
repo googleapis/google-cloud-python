@@ -642,7 +642,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
             transport_init: Union[
                 Type[JobControllerTransport], Callable[..., JobControllerTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                JobControllerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., JobControllerTransport], transport)
             )

@@ -667,7 +667,7 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
                 Type[MapsPlatformDatasetsTransport],
                 Callable[..., MapsPlatformDatasetsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                MapsPlatformDatasetsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., MapsPlatformDatasetsTransport], transport)
             )

@@ -643,7 +643,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
             transport_init: Union[
                 Type[DomainMappingsTransport], Callable[..., DomainMappingsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                DomainMappingsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DomainMappingsTransport], transport)
             )

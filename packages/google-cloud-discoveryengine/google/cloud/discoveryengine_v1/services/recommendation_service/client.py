@@ -743,7 +743,7 @@ class RecommendationServiceClient(metaclass=RecommendationServiceClientMeta):
                 Type[RecommendationServiceTransport],
                 Callable[..., RecommendationServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RecommendationServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RecommendationServiceTransport], transport)
             )

@@ -696,7 +696,7 @@ class SimulatorClient(metaclass=SimulatorClientMeta):
             transport_init: Union[
                 Type[SimulatorTransport], Callable[..., SimulatorTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SimulatorClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SimulatorTransport], transport)
             )

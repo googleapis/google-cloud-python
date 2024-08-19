@@ -659,7 +659,7 @@ class DocumentUnderstandingServiceClient(
                 Type[DocumentUnderstandingServiceTransport],
                 Callable[..., DocumentUnderstandingServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                DocumentUnderstandingServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., DocumentUnderstandingServiceTransport], transport

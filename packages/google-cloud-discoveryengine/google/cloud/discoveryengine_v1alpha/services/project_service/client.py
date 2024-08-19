@@ -662,7 +662,7 @@ class ProjectServiceClient(metaclass=ProjectServiceClientMeta):
             transport_init: Union[
                 Type[ProjectServiceTransport], Callable[..., ProjectServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ProjectServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ProjectServiceTransport], transport)
             )

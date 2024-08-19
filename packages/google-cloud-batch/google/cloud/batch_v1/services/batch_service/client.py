@@ -718,7 +718,7 @@ class BatchServiceClient(metaclass=BatchServiceClientMeta):
             transport_init: Union[
                 Type[BatchServiceTransport], Callable[..., BatchServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                BatchServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., BatchServiceTransport], transport)
             )

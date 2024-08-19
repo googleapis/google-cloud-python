@@ -708,7 +708,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
             transport_init: Union[
                 Type[OsConfigServiceTransport], Callable[..., OsConfigServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                OsConfigServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., OsConfigServiceTransport], transport)
             )

@@ -671,7 +671,7 @@ class HealthCheckServiceClient(metaclass=HealthCheckServiceClientMeta):
                 Type[HealthCheckServiceTransport],
                 Callable[..., HealthCheckServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                HealthCheckServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., HealthCheckServiceTransport], transport)
             )

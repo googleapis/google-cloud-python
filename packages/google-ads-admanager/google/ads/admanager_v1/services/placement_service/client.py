@@ -691,7 +691,7 @@ class PlacementServiceClient(metaclass=PlacementServiceClientMeta):
                 Type[PlacementServiceTransport],
                 Callable[..., PlacementServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                PlacementServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PlacementServiceTransport], transport)
             )

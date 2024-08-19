@@ -776,7 +776,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             transport_init: Union[
                 Type[DatastreamTransport], Callable[..., DatastreamTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                DatastreamClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DatastreamTransport], transport)
             )

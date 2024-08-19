@@ -674,7 +674,7 @@ class NodeGroupControllerClient(metaclass=NodeGroupControllerClientMeta):
                 Type[NodeGroupControllerTransport],
                 Callable[..., NodeGroupControllerTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                NodeGroupControllerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., NodeGroupControllerTransport], transport)
             )

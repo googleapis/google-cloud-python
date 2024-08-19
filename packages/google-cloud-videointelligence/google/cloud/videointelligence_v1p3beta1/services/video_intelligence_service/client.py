@@ -647,7 +647,7 @@ class VideoIntelligenceServiceClient(metaclass=VideoIntelligenceServiceClientMet
                 Type[VideoIntelligenceServiceTransport],
                 Callable[..., VideoIntelligenceServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                VideoIntelligenceServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., VideoIntelligenceServiceTransport], transport)
             )

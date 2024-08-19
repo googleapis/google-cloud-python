@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -257,10 +256,7 @@ class AutoSuggestionServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(AutoSuggestionServiceClient).get_transport_class,
-        type(AutoSuggestionServiceClient),
-    )
+    get_transport_class = AutoSuggestionServiceClient.get_transport_class
 
     def __init__(
         self,

@@ -761,7 +761,7 @@ class AppPlatformClient(metaclass=AppPlatformClientMeta):
             transport_init: Union[
                 Type[AppPlatformTransport], Callable[..., AppPlatformTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AppPlatformClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AppPlatformTransport], transport)
             )

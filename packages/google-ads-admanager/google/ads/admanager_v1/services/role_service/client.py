@@ -663,7 +663,7 @@ class RoleServiceClient(metaclass=RoleServiceClientMeta):
             transport_init: Union[
                 Type[RoleServiceTransport], Callable[..., RoleServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                RoleServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RoleServiceTransport], transport)
             )

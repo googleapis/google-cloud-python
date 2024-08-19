@@ -726,7 +726,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
             transport_init: Union[
                 Type[AccessApprovalTransport], Callable[..., AccessApprovalTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AccessApprovalClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AccessApprovalTransport], transport)
             )

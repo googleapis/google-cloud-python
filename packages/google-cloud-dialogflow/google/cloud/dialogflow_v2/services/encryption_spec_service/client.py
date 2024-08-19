@@ -672,7 +672,7 @@ class EncryptionSpecServiceClient(metaclass=EncryptionSpecServiceClientMeta):
                 Type[EncryptionSpecServiceTransport],
                 Callable[..., EncryptionSpecServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                EncryptionSpecServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., EncryptionSpecServiceTransport], transport)
             )

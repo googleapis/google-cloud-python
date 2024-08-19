@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -214,9 +213,7 @@ class CloudMemcacheAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(CloudMemcacheClient).get_transport_class, type(CloudMemcacheClient)
-    )
+    get_transport_class = CloudMemcacheClient.get_transport_class
 
     def __init__(
         self,

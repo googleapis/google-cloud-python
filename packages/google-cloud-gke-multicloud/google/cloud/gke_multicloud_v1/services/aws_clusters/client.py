@@ -718,7 +718,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             transport_init: Union[
                 Type[AwsClustersTransport], Callable[..., AwsClustersTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AwsClustersClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AwsClustersTransport], transport)
             )

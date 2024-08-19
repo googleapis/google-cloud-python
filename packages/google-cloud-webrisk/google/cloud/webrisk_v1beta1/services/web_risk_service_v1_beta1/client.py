@@ -648,7 +648,7 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
                 Type[WebRiskServiceV1Beta1Transport],
                 Callable[..., WebRiskServiceV1Beta1Transport],
             ] = (
-                type(self).get_transport_class(transport)
+                WebRiskServiceV1Beta1Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., WebRiskServiceV1Beta1Transport], transport)
             )

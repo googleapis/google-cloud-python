@@ -694,7 +694,7 @@ class CustomTargetingValueServiceClient(
                 Type[CustomTargetingValueServiceTransport],
                 Callable[..., CustomTargetingValueServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                CustomTargetingValueServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., CustomTargetingValueServiceTransport], transport
