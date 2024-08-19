@@ -684,7 +684,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
             transport_init: Union[
                 Type[SpeechTransport], Callable[..., SpeechTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SpeechClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SpeechTransport], transport)
             )

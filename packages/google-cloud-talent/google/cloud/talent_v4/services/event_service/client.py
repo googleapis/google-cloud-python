@@ -652,7 +652,7 @@ class EventServiceClient(metaclass=EventServiceClientMeta):
             transport_init: Union[
                 Type[EventServiceTransport], Callable[..., EventServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                EventServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., EventServiceTransport], transport)
             )

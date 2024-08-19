@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -192,9 +191,7 @@ class LookupServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(LookupServiceClient).get_transport_class, type(LookupServiceClient)
-    )
+    get_transport_class = LookupServiceClient.get_transport_class
 
     def __init__(
         self,
