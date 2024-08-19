@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/python-access-context-manager/compare/v0.2.0...v0.2.1) (2024-08-14)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf&gt;=3.20.2, protobuf&lt;6 ([ef6827b](https://github.com/googleapis/python-access-context-manager/commit/ef6827b2aa9519abf760ddd20cd9ea0f228c4272))
+* Regenerate pb2 files for compatibility with protobuf 5.x ([ef6827b](https://github.com/googleapis/python-access-context-manager/commit/ef6827b2aa9519abf760ddd20cd9ea0f228c4272))
+
 ## [0.2.0](https://github.com/googleapis/python-access-context-manager/compare/v0.1.16...v0.2.0) (2024-02-15)
 
 
