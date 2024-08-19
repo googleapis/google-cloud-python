@@ -762,7 +762,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
             transport_init: Union[
                 Type[RegistryTransport], Callable[..., RegistryTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                RegistryClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegistryTransport], transport)
             )

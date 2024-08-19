@@ -699,7 +699,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
             transport_init: Union[
                 Type[TablesServiceTransport], Callable[..., TablesServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                TablesServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TablesServiceTransport], transport)
             )

@@ -850,7 +850,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
             transport_init: Union[
                 Type[ChatServiceTransport], Callable[..., ChatServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ChatServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ChatServiceTransport], transport)
             )

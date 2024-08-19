@@ -683,7 +683,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
                 Type[BetaAnalyticsDataTransport],
                 Callable[..., BetaAnalyticsDataTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                BetaAnalyticsDataClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., BetaAnalyticsDataTransport], transport)
             )

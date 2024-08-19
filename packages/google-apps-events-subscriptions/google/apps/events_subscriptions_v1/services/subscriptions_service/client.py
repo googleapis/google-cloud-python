@@ -703,7 +703,7 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
                 Type[SubscriptionsServiceTransport],
                 Callable[..., SubscriptionsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SubscriptionsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SubscriptionsServiceTransport], transport)
             )

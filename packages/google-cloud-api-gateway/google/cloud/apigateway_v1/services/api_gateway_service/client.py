@@ -766,7 +766,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 Type[ApiGatewayServiceTransport],
                 Callable[..., ApiGatewayServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ApiGatewayServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ApiGatewayServiceTransport], transport)
             )
