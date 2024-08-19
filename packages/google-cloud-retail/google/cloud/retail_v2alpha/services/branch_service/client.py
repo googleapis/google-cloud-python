@@ -718,7 +718,7 @@ class BranchServiceClient(metaclass=BranchServiceClientMeta):
             transport_init: Union[
                 Type[BranchServiceTransport], Callable[..., BranchServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                BranchServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., BranchServiceTransport], transport)
             )

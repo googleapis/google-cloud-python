@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -195,9 +194,7 @@ class TagBindingsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(TagBindingsClient).get_transport_class, type(TagBindingsClient)
-    )
+    get_transport_class = TagBindingsClient.get_transport_class
 
     def __init__(
         self,

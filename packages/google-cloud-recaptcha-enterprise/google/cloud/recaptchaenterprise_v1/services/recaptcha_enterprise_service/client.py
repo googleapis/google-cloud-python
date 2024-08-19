@@ -765,7 +765,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
                 Type[RecaptchaEnterpriseServiceTransport],
                 Callable[..., RecaptchaEnterpriseServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RecaptchaEnterpriseServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RecaptchaEnterpriseServiceTransport], transport)
             )
