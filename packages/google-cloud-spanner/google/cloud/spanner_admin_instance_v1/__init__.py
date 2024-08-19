@@ -49,6 +49,9 @@ from .types.spanner_instance_admin import ListInstancePartitionsRequest
 from .types.spanner_instance_admin import ListInstancePartitionsResponse
 from .types.spanner_instance_admin import ListInstancesRequest
 from .types.spanner_instance_admin import ListInstancesResponse
+from .types.spanner_instance_admin import MoveInstanceMetadata
+from .types.spanner_instance_admin import MoveInstanceRequest
+from .types.spanner_instance_admin import MoveInstanceResponse
 from .types.spanner_instance_admin import ReplicaInfo
 from .types.spanner_instance_admin import UpdateInstanceConfigMetadata
 from .types.spanner_instance_admin import UpdateInstanceConfigRequest
@@ -87,6 +90,9 @@ __all__ = (
     "ListInstancePartitionsResponse",
     "ListInstancesRequest",
     "ListInstancesResponse",
+    "MoveInstanceMetadata",
+    "MoveInstanceRequest",
+    "MoveInstanceResponse",
     "OperationProgress",
     "ReplicaInfo",
     "UpdateInstanceConfigMetadata",

@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Dict,
@@ -194,9 +193,7 @@ class SpannerAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(SpannerClient).get_transport_class, type(SpannerClient)
-    )
+    get_transport_class = SpannerClient.get_transport_class
 
     def __init__(
         self,

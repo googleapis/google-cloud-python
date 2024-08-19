@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Dict,
@@ -225,9 +224,7 @@ class InstanceAdminAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(InstanceAdminClient).get_transport_class, type(InstanceAdminClient)
-    )
+    get_transport_class = InstanceAdminClient.get_transport_class
 
     def __init__(
         self,
@@ -545,39 +542,39 @@ class InstanceAdminAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates an instance config and begins preparing it to be used.
-        The returned [long-running
+        r"""Creates an instance configuration and begins preparing it to be
+        used. The returned [long-running
         operation][google.longrunning.Operation] can be used to track
-        the progress of preparing the new instance config. The instance
-        config name is assigned by the caller. If the named instance
-        config already exists, ``CreateInstanceConfig`` returns
-        ``ALREADY_EXISTS``.
+        the progress of preparing the new instance configuration. The
+        instance configuration name is assigned by the caller. If the
+        named instance configuration already exists,
+        ``CreateInstanceConfig`` returns ``ALREADY_EXISTS``.
 
         Immediately after the request returns:
 
-        -  The instance config is readable via the API, with all
-           requested attributes. The instance config's
+        -  The instance configuration is readable via the API, with all
+           requested attributes. The instance configuration's
            [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
            field is set to true. Its state is ``CREATING``.
 
         While the operation is pending:
 
-        -  Cancelling the operation renders the instance config
+        -  Cancelling the operation renders the instance configuration
            immediately unreadable via the API.
         -  Except for deleting the creating resource, all other attempts
-           to modify the instance config are rejected.
+           to modify the instance configuration are rejected.
 
         Upon completion of the returned operation:
 
         -  Instances can be created using the instance configuration.
-        -  The instance config's
+        -  The instance configuration's
            [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
            field becomes false. Its state becomes ``READY``.
 
         The returned [long-running
         operation][google.longrunning.Operation] will have a name of the
         format ``<instance_config_name>/operations/<operation_id>`` and
-        can be used to track creation of the instance config. The
+        can be used to track creation of the instance configuration. The
         [metadata][google.longrunning.Operation.metadata] field type is
         [CreateInstanceConfigMetadata][google.spanner.admin.instance.v1.CreateInstanceConfigMetadata].
         The [response][google.longrunning.Operation.response] field type
@@ -626,7 +623,7 @@ class InstanceAdminAsyncClient:
                 [CreateInstanceConfigRequest][InstanceAdmin.CreateInstanceConfigRequest].
             parent (:class:`str`):
                 Required. The name of the project in which to create the
-                instance config. Values are of the form
+                instance configuration. Values are of the form
                 ``projects/<project>``.
 
                 This corresponds to the ``parent`` field
@@ -644,11 +641,11 @@ class InstanceAdminAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             instance_config_id (:class:`str`):
-                Required. The ID of the instance config to create. Valid
-                identifiers are of the form
+                Required. The ID of the instance configuration to
+                create. Valid identifiers are of the form
                 ``custom-[-a-z0-9]*[a-z0-9]`` and must be between 2 and
                 64 characters in length. The ``custom-`` prefix is
-                required to avoid name conflicts with Google managed
+                required to avoid name conflicts with Google-managed
                 configurations.
 
                 This corresponds to the ``instance_config_id`` field
@@ -739,16 +736,16 @@ class InstanceAdminAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Updates an instance config. The returned [long-running
+        r"""Updates an instance configuration. The returned [long-running
         operation][google.longrunning.Operation] can be used to track
         the progress of updating the instance. If the named instance
-        config does not exist, returns ``NOT_FOUND``.
+        configuration does not exist, returns ``NOT_FOUND``.
 
-        Only user managed configurations can be updated.
+        Only user-managed configurations can be updated.
 
         Immediately after the request returns:
 
-        -  The instance config's
+        -  The instance configuration's
            [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
            field is set to true.
 
@@ -759,25 +756,27 @@ class InstanceAdminAsyncClient:
            The operation is guaranteed to succeed at undoing all
            changes, after which point it terminates with a ``CANCELLED``
            status.
-        -  All other attempts to modify the instance config are
+        -  All other attempts to modify the instance configuration are
            rejected.
-        -  Reading the instance config via the API continues to give the
-           pre-request values.
+        -  Reading the instance configuration via the API continues to
+           give the pre-request values.
 
         Upon completion of the returned operation:
 
         -  Creating instances using the instance configuration uses the
            new values.
-        -  The instance config's new values are readable via the API.
-        -  The instance config's
+        -  The new values of the instance configuration are readable via
+           the API.
+        -  The instance configuration's
            [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
            field becomes false.
 
         The returned [long-running
         operation][google.longrunning.Operation] will have a name of the
         format ``<instance_config_name>/operations/<operation_id>`` and
-        can be used to track the instance config modification. The
-        [metadata][google.longrunning.Operation.metadata] field type is
+        can be used to track the instance configuration modification.
+        The [metadata][google.longrunning.Operation.metadata] field type
+        is
         [UpdateInstanceConfigMetadata][google.spanner.admin.instance.v1.UpdateInstanceConfigMetadata].
         The [response][google.longrunning.Operation.response] field type
         is
@@ -822,9 +821,9 @@ class InstanceAdminAsyncClient:
                 The request object. The request for
                 [UpdateInstanceConfigRequest][InstanceAdmin.UpdateInstanceConfigRequest].
             instance_config (:class:`google.cloud.spanner_admin_instance_v1.types.InstanceConfig`):
-                Required. The user instance config to update, which must
-                always include the instance config name. Otherwise, only
-                fields mentioned in
+                Required. The user instance configuration to update,
+                which must always include the instance configuration
+                name. Otherwise, only fields mentioned in
                 [update_mask][google.spanner.admin.instance.v1.UpdateInstanceConfigRequest.update_mask]
                 need be included. To prevent conflicts of concurrent
                 updates,
@@ -931,11 +930,11 @@ class InstanceAdminAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes the instance config. Deletion is only allowed when no
-        instances are using the configuration. If any instances are
-        using the config, returns ``FAILED_PRECONDITION``.
+        r"""Deletes the instance configuration. Deletion is only allowed
+        when no instances are using the configuration. If any instances
+        are using the configuration, returns ``FAILED_PRECONDITION``.
 
-        Only user managed configurations can be deleted.
+        Only user-managed configurations can be deleted.
 
         Authorization requires ``spanner.instanceConfigs.delete``
         permission on the resource
@@ -1036,9 +1035,9 @@ class InstanceAdminAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstanceConfigOperationsAsyncPager:
-        r"""Lists the user-managed instance config [long-running
+        r"""Lists the user-managed instance configuration [long-running
         operations][google.longrunning.Operation] in the given project.
-        An instance config operation has a name of the form
+        An instance configuration operation has a name of the form
         ``projects/<project>/instanceConfigs/<instance_config>/operations/<operation>``.
         The long-running operation
         [metadata][google.longrunning.Operation.metadata] field type
@@ -1081,8 +1080,9 @@ class InstanceAdminAsyncClient:
                 The request object. The request for
                 [ListInstanceConfigOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigOperations].
             parent (:class:`str`):
-                Required. The project of the instance config operations.
-                Values are of the form ``projects/<project>``.
+                Required. The project of the instance configuration
+                operations. Values are of the form
+                ``projects/<project>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3159,6 +3159,172 @@ class InstanceAdminAsyncClient:
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def move_instance(
+        self,
+        request: Optional[
+            Union[spanner_instance_admin.MoveInstanceRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Moves an instance to the target instance configuration. You can
+        use the returned [long-running
+        operation][google.longrunning.Operation] to track the progress
+        of moving the instance.
+
+        ``MoveInstance`` returns ``FAILED_PRECONDITION`` if the instance
+        meets any of the following criteria:
+
+        -  Is undergoing a move to a different instance configuration
+        -  Has backups
+        -  Has an ongoing update
+        -  Contains any CMEK-enabled databases
+        -  Is a free trial instance
+
+        While the operation is pending:
+
+        -  All other attempts to modify the instance, including changes
+           to its compute capacity, are rejected.
+
+        -  The following database and backup admin operations are
+           rejected:
+
+           -  ``DatabaseAdmin.CreateDatabase``
+           -  ``DatabaseAdmin.UpdateDatabaseDdl`` (disabled if
+              default_leader is specified in the request.)
+           -  ``DatabaseAdmin.RestoreDatabase``
+           -  ``DatabaseAdmin.CreateBackup``
+           -  ``DatabaseAdmin.CopyBackup``
+
+        -  Both the source and target instance configurations are
+           subject to hourly compute and storage charges.
+
+        -  The instance might experience higher read-write latencies and
+           a higher transaction abort rate. However, moving an instance
+           doesn't cause any downtime.
+
+        The returned [long-running
+        operation][google.longrunning.Operation] has a name of the
+        format ``<instance_name>/operations/<operation_id>`` and can be
+        used to track the move instance operation. The
+        [metadata][google.longrunning.Operation.metadata] field type is
+        [MoveInstanceMetadata][google.spanner.admin.instance.v1.MoveInstanceMetadata].
+        The [response][google.longrunning.Operation.response] field type
+        is [Instance][google.spanner.admin.instance.v1.Instance], if
+        successful. Cancelling the operation sets its metadata's
+        [cancel_time][google.spanner.admin.instance.v1.MoveInstanceMetadata.cancel_time].
+        Cancellation is not immediate because it involves moving any
+        data previously moved to the target instance configuration back
+        to the original instance configuration. You can use this
+        operation to track the progress of the cancellation. Upon
+        successful completion of the cancellation, the operation
+        terminates with ``CANCELLED`` status.
+
+        If not cancelled, upon completion of the returned operation:
+
+        -  The instance successfully moves to the target instance
+           configuration.
+        -  You are billed for compute and storage in target instance
+           configuration.
+
+        Authorization requires the ``spanner.instances.update``
+        permission on the resource
+        [instance][google.spanner.admin.instance.v1.Instance].
+
+        For more details, see `Move an
+        instance <https://cloud.google.com/spanner/docs/move-instance>`__.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_instance_v1
+
+            async def sample_move_instance():
+                # Create a client
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_instance_v1.MoveInstanceRequest(
+                    name="name_value",
+                    target_config="target_config_value",
+                )
+
+                # Make the request
+                operation = client.move_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.MoveInstanceRequest, dict]]):
+                The request object. The request for
+                [MoveInstance][google.spanner.admin.instance.v1.InstanceAdmin.MoveInstance].
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.spanner_admin_instance_v1.types.MoveInstanceResponse` The response for
+                   [MoveInstance][google.spanner.admin.instance.v1.InstanceAdmin.MoveInstance].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, spanner_instance_admin.MoveInstanceRequest):
+            request = spanner_instance_admin.MoveInstanceRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.move_instance
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            spanner_instance_admin.MoveInstanceResponse,
+            metadata_type=spanner_instance_admin.MoveInstanceMetadata,
         )
 
         # Done; return the response.

@@ -44,6 +44,7 @@ __protobuf__ = proto.module(
         "CreateBackupEncryptionConfig",
         "CopyBackupEncryptionConfig",
         "FullBackupSpec",
+        "IncrementalBackupSpec",
     },
 )
 
@@ -98,6 +99,30 @@ class Backup(proto.Message):
             equivalent to the ``create_time``.
         size_bytes (int):
             Output only. Size of the backup in bytes.
+        freeable_size_bytes (int):
+            Output only. The number of bytes that will be
+            freed by deleting this backup. This value will
+            be zero if, for example, this backup is part of
+            an incremental backup chain and younger backups
+            in the chain require that we keep its data. For
+            backups not in an incremental backup chain, this
+            is always the size of the backup. This value may
+            change if backups on the same chain get created,
+            deleted or expired.
+        exclusive_size_bytes (int):
+            Output only. For a backup in an incremental
+            backup chain, this is the storage space needed
+            to keep the data that has changed since the
+            previous backup. For all other backups, this is
+            always the size of the backup. This value may
+            change if backups on the same chain get deleted
+            or expired.
+
+            This field can be used to calculate the total
+            storage space used by a set of backups. For
+            example, the total space used by all backups of
+            a database can be computed by summing up this
+            field.
         state (google.cloud.spanner_admin_database_v1.types.Backup.State):
             Output only. The current state of the backup.
         referencing_databases (MutableSequence[str]):
@@ -156,6 +181,24 @@ class Backup(proto.Message):
             If collapsing is not done, then this field
             captures the single backup schedule URI
             associated with creating this backup.
+        incremental_backup_chain_id (str):
+            Output only. Populated only for backups in an incremental
+            backup chain. Backups share the same chain id if and only if
+            they belong to the same incremental backup chain. Use this
+            field to determine which backups are part of the same
+            incremental backup chain. The ordering of backups in the
+            chain can be determined by ordering the backup
+            ``version_time``.
+        oldest_version_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Data deleted at a time older
+            than this is guaranteed not to be retained in
+            order to support this backup. For a backup in an
+            incremental backup chain, this is the version
+            time of the oldest backup that exists or ever
+            existed in the chain. For all other backups,
+            this is the version time of the backup. This
+            field can be used to understand what data is
+            being retained by the backup system.
     """
 
     class State(proto.Enum):
@@ -201,6 +244,14 @@ class Backup(proto.Message):
         proto.INT64,
         number=5,
     )
+    freeable_size_bytes: int = proto.Field(
+        proto.INT64,
+        number=15,
+    )
+    exclusive_size_bytes: int = proto.Field(
+        proto.INT64,
+        number=16,
+    )
     state: State = proto.Field(
         proto.ENUM,
         number=6,
@@ -239,6 +290,15 @@ class Backup(proto.Message):
     backup_schedules: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=14,
+    )
+    incremental_backup_chain_id: str = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    oldest_version_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -553,6 +613,7 @@ class ListBackupsRequest(proto.Message):
             -  ``version_time`` (and values are of the format
                YYYY-MM-DDTHH:MM:SSZ)
             -  ``size_bytes``
+            -  ``backup_schedules``
 
             You can combine multiple expressions by enclosing each
             expression in parentheses. By default, expressions are
@@ -576,6 +637,8 @@ class ListBackupsRequest(proto.Message):
                ``expire_time`` is before 2018-03-28T14:50:00Z.
             -  ``size_bytes > 10000000000`` - The backup's size is
                greater than 10GB
+            -  ``backup_schedules:daily`` - The backup is created from a
+               schedule with "daily" in its name.
         page_size (int):
             Number of backups to be returned in the
             response. If 0 or less, defaults to the server's
@@ -995,6 +1058,17 @@ class FullBackupSpec(proto.Message):
     r"""The specification for full backups.
     A full backup stores the entire contents of the database at a
     given version time.
+
+    """
+
+
+class IncrementalBackupSpec(proto.Message):
+    r"""The specification for incremental backup chains.
+    An incremental backup stores the delta of changes between a
+    previous backup and the database contents at a given version
+    time. An incremental backup chain consists of a full backup and
+    zero or more successive incremental backups. The first backup
+    created for an incremental backup chain is always a full backup.
 
     """
 

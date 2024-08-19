@@ -66,6 +66,10 @@ class BackupSchedule(proto.Message):
     specification for a Spanner database.
     Next ID: 10
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -95,6 +99,11 @@ class BackupSchedule(proto.Message):
             same encryption configuration as the database.
         full_backup_spec (google.cloud.spanner_admin_database_v1.types.FullBackupSpec):
             The schedule creates only full backups.
+
+            This field is a member of `oneof`_ ``backup_type_spec``.
+        incremental_backup_spec (google.cloud.spanner_admin_database_v1.types.IncrementalBackupSpec):
+            The schedule creates incremental backup
+            chains.
 
             This field is a member of `oneof`_ ``backup_type_spec``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -128,6 +137,12 @@ class BackupSchedule(proto.Message):
         number=7,
         oneof="backup_type_spec",
         message=backup.FullBackupSpec,
+    )
+    incremental_backup_spec: backup.IncrementalBackupSpec = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="backup_type_spec",
+        message=backup.IncrementalBackupSpec,
     )
     update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

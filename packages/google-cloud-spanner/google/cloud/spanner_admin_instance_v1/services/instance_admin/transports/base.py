@@ -297,6 +297,11 @@ class InstanceAdminTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.move_instance: gapic_v1.method.wrap_method(
+                self.move_instance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -516,6 +521,15 @@ class InstanceAdminTransport(abc.ABC):
             spanner_instance_admin.ListInstancePartitionOperationsResponse,
             Awaitable[spanner_instance_admin.ListInstancePartitionOperationsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def move_instance(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.MoveInstanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

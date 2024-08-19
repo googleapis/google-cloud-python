@@ -32,6 +32,7 @@ from .types.backup import CreateBackupRequest
 from .types.backup import DeleteBackupRequest
 from .types.backup import FullBackupSpec
 from .types.backup import GetBackupRequest
+from .types.backup import IncrementalBackupSpec
 from .types.backup import ListBackupOperationsRequest
 from .types.backup import ListBackupOperationsResponse
 from .types.backup import ListBackupsRequest
@@ -108,6 +109,7 @@ __all__ = (
     "GetDatabaseDdlRequest",
     "GetDatabaseDdlResponse",
     "GetDatabaseRequest",
+    "IncrementalBackupSpec",
     "ListBackupOperationsRequest",
     "ListBackupOperationsResponse",
     "ListBackupSchedulesRequest",

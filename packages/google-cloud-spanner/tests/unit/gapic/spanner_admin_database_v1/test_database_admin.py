@@ -1312,22 +1312,23 @@ async def test_list_databases_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_databases
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.list_databases(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_databases(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1817,8 +1818,9 @@ def test_create_database_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.create_database(request)
@@ -1872,26 +1874,28 @@ async def test_create_database_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_database
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.create_database(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.create_database(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2266,22 +2270,23 @@ async def test_get_database_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_database
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.get_database(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_database(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2583,8 +2588,9 @@ def test_update_database_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.update_database(request)
@@ -2638,26 +2644,28 @@ async def test_update_database_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_database
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.update_database(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.update_database(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2970,8 +2978,9 @@ def test_update_database_ddl_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.update_database_ddl(request)
@@ -3027,26 +3036,28 @@ async def test_update_database_ddl_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_database_ddl
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.update_database_ddl(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.update_database_ddl(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -3406,22 +3417,23 @@ async def test_drop_database_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.drop_database
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.drop_database(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.drop_database(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -3767,22 +3779,23 @@ async def test_get_database_ddl_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_database_ddl
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.get_database_ddl(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_database_ddl(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -4137,22 +4150,23 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.set_iam_policy
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.set_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.set_iam_policy(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -4520,22 +4534,23 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_iam_policy
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.get_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_iam_policy(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -4911,22 +4926,23 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.test_iam_permissions
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.test_iam_permissions(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.test_iam_permissions(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -5261,8 +5277,9 @@ def test_create_backup_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.create_backup(request)
@@ -5316,26 +5333,28 @@ async def test_create_backup_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_backup
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.create_backup(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.create_backup(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -5649,8 +5668,9 @@ def test_copy_backup_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.copy_backup(request)
@@ -5704,26 +5724,28 @@ async def test_copy_backup_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.copy_backup
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.copy_backup(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.copy_backup(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -5959,11 +5981,14 @@ def test_get_backup(request_type, transport: str = "grpc"):
             database="database_value",
             name="name_value",
             size_bytes=1089,
+            freeable_size_bytes=2006,
+            exclusive_size_bytes=2168,
             state=backup.Backup.State.CREATING,
             referencing_databases=["referencing_databases_value"],
             database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
             referencing_backups=["referencing_backups_value"],
             backup_schedules=["backup_schedules_value"],
+            incremental_backup_chain_id="incremental_backup_chain_id_value",
         )
         response = client.get_backup(request)
 
@@ -5978,11 +6003,14 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert response.database == "database_value"
     assert response.name == "name_value"
     assert response.size_bytes == 1089
+    assert response.freeable_size_bytes == 2006
+    assert response.exclusive_size_bytes == 2168
     assert response.state == backup.Backup.State.CREATING
     assert response.referencing_databases == ["referencing_databases_value"]
     assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
     assert response.referencing_backups == ["referencing_backups_value"]
     assert response.backup_schedules == ["backup_schedules_value"]
+    assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
 
 
 def test_get_backup_empty_call():
@@ -6084,11 +6112,14 @@ async def test_get_backup_empty_call_async():
                 database="database_value",
                 name="name_value",
                 size_bytes=1089,
+                freeable_size_bytes=2006,
+                exclusive_size_bytes=2168,
                 state=backup.Backup.State.CREATING,
                 referencing_databases=["referencing_databases_value"],
                 database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
                 referencing_backups=["referencing_backups_value"],
                 backup_schedules=["backup_schedules_value"],
+                incremental_backup_chain_id="incremental_backup_chain_id_value",
             )
         )
         response = await client.get_backup()
@@ -6118,22 +6149,23 @@ async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_backup
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.get_backup(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_backup(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -6157,11 +6189,14 @@ async def test_get_backup_async(
                 database="database_value",
                 name="name_value",
                 size_bytes=1089,
+                freeable_size_bytes=2006,
+                exclusive_size_bytes=2168,
                 state=backup.Backup.State.CREATING,
                 referencing_databases=["referencing_databases_value"],
                 database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
                 referencing_backups=["referencing_backups_value"],
                 backup_schedules=["backup_schedules_value"],
+                incremental_backup_chain_id="incremental_backup_chain_id_value",
             )
         )
         response = await client.get_backup(request)
@@ -6177,11 +6212,14 @@ async def test_get_backup_async(
     assert response.database == "database_value"
     assert response.name == "name_value"
     assert response.size_bytes == 1089
+    assert response.freeable_size_bytes == 2006
+    assert response.exclusive_size_bytes == 2168
     assert response.state == backup.Backup.State.CREATING
     assert response.referencing_databases == ["referencing_databases_value"]
     assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
     assert response.referencing_backups == ["referencing_backups_value"]
     assert response.backup_schedules == ["backup_schedules_value"]
+    assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
 
 
 @pytest.mark.asyncio
@@ -6352,11 +6390,14 @@ def test_update_backup(request_type, transport: str = "grpc"):
             database="database_value",
             name="name_value",
             size_bytes=1089,
+            freeable_size_bytes=2006,
+            exclusive_size_bytes=2168,
             state=gsad_backup.Backup.State.CREATING,
             referencing_databases=["referencing_databases_value"],
             database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
             referencing_backups=["referencing_backups_value"],
             backup_schedules=["backup_schedules_value"],
+            incremental_backup_chain_id="incremental_backup_chain_id_value",
         )
         response = client.update_backup(request)
 
@@ -6371,11 +6412,14 @@ def test_update_backup(request_type, transport: str = "grpc"):
     assert response.database == "database_value"
     assert response.name == "name_value"
     assert response.size_bytes == 1089
+    assert response.freeable_size_bytes == 2006
+    assert response.exclusive_size_bytes == 2168
     assert response.state == gsad_backup.Backup.State.CREATING
     assert response.referencing_databases == ["referencing_databases_value"]
     assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
     assert response.referencing_backups == ["referencing_backups_value"]
     assert response.backup_schedules == ["backup_schedules_value"]
+    assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
 
 
 def test_update_backup_empty_call():
@@ -6473,11 +6517,14 @@ async def test_update_backup_empty_call_async():
                 database="database_value",
                 name="name_value",
                 size_bytes=1089,
+                freeable_size_bytes=2006,
+                exclusive_size_bytes=2168,
                 state=gsad_backup.Backup.State.CREATING,
                 referencing_databases=["referencing_databases_value"],
                 database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
                 referencing_backups=["referencing_backups_value"],
                 backup_schedules=["backup_schedules_value"],
+                incremental_backup_chain_id="incremental_backup_chain_id_value",
             )
         )
         response = await client.update_backup()
@@ -6509,22 +6556,23 @@ async def test_update_backup_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_backup
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.update_backup(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.update_backup(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -6548,11 +6596,14 @@ async def test_update_backup_async(
                 database="database_value",
                 name="name_value",
                 size_bytes=1089,
+                freeable_size_bytes=2006,
+                exclusive_size_bytes=2168,
                 state=gsad_backup.Backup.State.CREATING,
                 referencing_databases=["referencing_databases_value"],
                 database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
                 referencing_backups=["referencing_backups_value"],
                 backup_schedules=["backup_schedules_value"],
+                incremental_backup_chain_id="incremental_backup_chain_id_value",
             )
         )
         response = await client.update_backup(request)
@@ -6568,11 +6619,14 @@ async def test_update_backup_async(
     assert response.database == "database_value"
     assert response.name == "name_value"
     assert response.size_bytes == 1089
+    assert response.freeable_size_bytes == 2006
+    assert response.exclusive_size_bytes == 2168
     assert response.state == gsad_backup.Backup.State.CREATING
     assert response.referencing_databases == ["referencing_databases_value"]
     assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
     assert response.referencing_backups == ["referencing_backups_value"]
     assert response.backup_schedules == ["backup_schedules_value"]
+    assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
 
 
 @pytest.mark.asyncio
@@ -6886,22 +6940,23 @@ async def test_delete_backup_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_backup
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.delete_backup(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.delete_backup(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -7245,22 +7300,23 @@ async def test_list_backups_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_backups
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.list_backups(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_backups(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -7753,8 +7809,9 @@ def test_restore_database_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.restore_database(request)
@@ -7808,26 +7865,28 @@ async def test_restore_database_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.restore_database
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.restore_database(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.restore_database(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -8207,22 +8266,23 @@ async def test_list_database_operations_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_database_operations
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.list_database_operations(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_database_operations(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -8803,22 +8863,23 @@ async def test_list_backup_operations_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_backup_operations
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.list_backup_operations(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_backup_operations(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -9393,22 +9454,23 @@ async def test_list_database_roles_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_database_roles
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.list_database_roles(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_database_roles(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -9987,22 +10049,23 @@ async def test_create_backup_schedule_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_backup_schedule
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.create_backup_schedule(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.create_backup_schedule(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -10394,22 +10457,23 @@ async def test_get_backup_schedule_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_backup_schedule
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.get_backup_schedule(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_backup_schedule(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -10778,22 +10842,23 @@ async def test_update_backup_schedule_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_backup_schedule
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.update_backup_schedule(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.update_backup_schedule(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -11169,22 +11234,23 @@ async def test_delete_backup_schedule_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_backup_schedule
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.delete_backup_schedule(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.delete_backup_schedule(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -11550,22 +11616,23 @@ async def test_list_backup_schedules_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_backup_schedules
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.list_backup_schedules(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_backup_schedules(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -15251,6 +15318,8 @@ def test_create_backup_rest(request_type):
         "name": "name_value",
         "create_time": {},
         "size_bytes": 1089,
+        "freeable_size_bytes": 2006,
+        "exclusive_size_bytes": 2168,
         "state": 1,
         "referencing_databases": [
             "referencing_databases_value1",
@@ -15278,6 +15347,8 @@ def test_create_backup_rest(request_type):
         ],
         "max_expire_time": {},
         "backup_schedules": ["backup_schedules_value1", "backup_schedules_value2"],
+        "incremental_backup_chain_id": "incremental_backup_chain_id_value",
+        "oldest_version_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -16012,11 +16083,14 @@ def test_get_backup_rest(request_type):
             database="database_value",
             name="name_value",
             size_bytes=1089,
+            freeable_size_bytes=2006,
+            exclusive_size_bytes=2168,
             state=backup.Backup.State.CREATING,
             referencing_databases=["referencing_databases_value"],
             database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
             referencing_backups=["referencing_backups_value"],
             backup_schedules=["backup_schedules_value"],
+            incremental_backup_chain_id="incremental_backup_chain_id_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16035,11 +16109,14 @@ def test_get_backup_rest(request_type):
     assert response.database == "database_value"
     assert response.name == "name_value"
     assert response.size_bytes == 1089
+    assert response.freeable_size_bytes == 2006
+    assert response.exclusive_size_bytes == 2168
     assert response.state == backup.Backup.State.CREATING
     assert response.referencing_databases == ["referencing_databases_value"]
     assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
     assert response.referencing_backups == ["referencing_backups_value"]
     assert response.backup_schedules == ["backup_schedules_value"]
+    assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
 
 
 def test_get_backup_rest_use_cached_wrapped_rpc():
@@ -16322,6 +16399,8 @@ def test_update_backup_rest(request_type):
         "name": "projects/sample1/instances/sample2/backups/sample3",
         "create_time": {},
         "size_bytes": 1089,
+        "freeable_size_bytes": 2006,
+        "exclusive_size_bytes": 2168,
         "state": 1,
         "referencing_databases": [
             "referencing_databases_value1",
@@ -16349,6 +16428,8 @@ def test_update_backup_rest(request_type):
         ],
         "max_expire_time": {},
         "backup_schedules": ["backup_schedules_value1", "backup_schedules_value2"],
+        "incremental_backup_chain_id": "incremental_backup_chain_id_value",
+        "oldest_version_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -16426,11 +16507,14 @@ def test_update_backup_rest(request_type):
             database="database_value",
             name="name_value",
             size_bytes=1089,
+            freeable_size_bytes=2006,
+            exclusive_size_bytes=2168,
             state=gsad_backup.Backup.State.CREATING,
             referencing_databases=["referencing_databases_value"],
             database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
             referencing_backups=["referencing_backups_value"],
             backup_schedules=["backup_schedules_value"],
+            incremental_backup_chain_id="incremental_backup_chain_id_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16449,11 +16533,14 @@ def test_update_backup_rest(request_type):
     assert response.database == "database_value"
     assert response.name == "name_value"
     assert response.size_bytes == 1089
+    assert response.freeable_size_bytes == 2006
+    assert response.exclusive_size_bytes == 2168
     assert response.state == gsad_backup.Backup.State.CREATING
     assert response.referencing_databases == ["referencing_databases_value"]
     assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
     assert response.referencing_backups == ["referencing_backups_value"]
     assert response.backup_schedules == ["backup_schedules_value"]
+    assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
 
 
 def test_update_backup_rest_use_cached_wrapped_rpc():
@@ -18890,6 +18977,7 @@ def test_create_backup_schedule_rest(request_type):
             "kms_key_names": ["kms_key_names_value1", "kms_key_names_value2"],
         },
         "full_backup_spec": {},
+        "incremental_backup_spec": {},
         "update_time": {"seconds": 751, "nanos": 543},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -19634,6 +19722,7 @@ def test_update_backup_schedule_rest(request_type):
             "kms_key_names": ["kms_key_names_value1", "kms_key_names_value2"],
         },
         "full_backup_spec": {},
+        "incremental_backup_spec": {},
         "update_time": {"seconds": 751, "nanos": 543},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

@@ -54,6 +54,7 @@ class spanner_admin_instanceCallTransformer(cst.CSTTransformer):
         'list_instance_partition_operations': ('parent', 'filter', 'page_size', 'page_token', 'instance_partition_deadline', ),
         'list_instance_partitions': ('parent', 'page_size', 'page_token', 'instance_partition_deadline', ),
         'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'instance_deadline', ),
+        'move_instance': ('name', 'target_config', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_instance': ('instance', 'field_mask', ),

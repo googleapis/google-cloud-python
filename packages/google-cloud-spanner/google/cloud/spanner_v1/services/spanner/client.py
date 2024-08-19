@@ -690,7 +690,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
             transport_init: Union[
                 Type[SpannerTransport], Callable[..., SpannerTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SpannerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SpannerTransport], transport)
             )

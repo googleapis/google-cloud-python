@@ -85,6 +85,11 @@
                 "list_instances"
               ]
             },
+            "MoveInstance": {
+              "methods": [
+                "move_instance"
+              ]
+            },
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
@@ -190,6 +195,11 @@
                 "list_instances"
               ]
             },
+            "MoveInstance": {
+              "methods": [
+                "move_instance"
+              ]
+            },
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
@@ -293,6 +303,11 @@
             "ListInstances": {
               "methods": [
                 "list_instances"
+              ]
+            },
+            "MoveInstance": {
+              "methods": [
+                "move_instance"
               ]
             },
             "SetIamPolicy": {

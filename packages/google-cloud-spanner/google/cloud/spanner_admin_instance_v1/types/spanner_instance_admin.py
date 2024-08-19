@@ -61,6 +61,9 @@ __protobuf__ = proto.module(
         "ListInstancePartitionsResponse",
         "ListInstancePartitionOperationsRequest",
         "ListInstancePartitionOperationsResponse",
+        "MoveInstanceRequest",
+        "MoveInstanceResponse",
+        "MoveInstanceMetadata",
     },
 )
 
@@ -147,12 +150,15 @@ class InstanceConfig(proto.Message):
             A unique identifier for the instance configuration. Values
             are of the form
             ``projects/<project>/instanceConfigs/[a-z][-a-z0-9]*``.
+
+            User instance configuration must start with ``custom-``.
         display_name (str):
             The name of this instance configuration as it
             appears in UIs.
         config_type (google.cloud.spanner_admin_instance_v1.types.InstanceConfig.Type):
-            Output only. Whether this instance config is
-            a Google or User Managed Configuration.
+            Output only. Whether this instance
+            configuration is a Google-managed or
+            user-managed configuration.
         replicas (MutableSequence[google.cloud.spanner_admin_instance_v1.types.ReplicaInfo]):
             The geographic placement of nodes in this
             instance configuration and their replication
@@ -201,30 +207,31 @@ class InstanceConfig(proto.Message):
         etag (str):
             etag is used for optimistic concurrency
             control as a way to help prevent simultaneous
-            updates of a instance config from overwriting
-            each other. It is strongly suggested that
-            systems make use of the etag in the
+            updates of a instance configuration from
+            overwriting each other. It is strongly suggested
+            that systems make use of the etag in the
             read-modify-write cycle to perform instance
-            config updates in order to avoid race
+            configuration updates in order to avoid race
             conditions: An etag is returned in the response
-            which contains instance configs, and systems are
-            expected to put that etag in the request to
-            update instance config to ensure that their
-            change will be applied to the same version of
-            the instance config.
-            If no etag is provided in the call to update
-            instance config, then the existing instance
-            config is overwritten blindly.
+            which contains instance configurations, and
+            systems are expected to put that etag in the
+            request to update instance configuration to
+            ensure that their change is applied to the same
+            version of the instance configuration. If no
+            etag is provided in the call to update the
+            instance configuration, then the existing
+            instance configuration is overwritten blindly.
         leader_options (MutableSequence[str]):
             Allowed values of the "default_leader" schema option for
             databases in instances that use this instance configuration.
         reconciling (bool):
-            Output only. If true, the instance config is
-            being created or updated. If false, there are no
-            ongoing operations for the instance config.
+            Output only. If true, the instance
+            configuration is being created or updated. If
+            false, there are no ongoing operations for the
+            instance configuration.
         state (google.cloud.spanner_admin_instance_v1.types.InstanceConfig.State):
-            Output only. The current instance config
-            state.
+            Output only. The current instance configuration state.
+            Applicable only for ``USER_MANAGED`` configurations.
     """
 
     class Type(proto.Enum):
@@ -243,16 +250,17 @@ class InstanceConfig(proto.Message):
         USER_MANAGED = 2
 
     class State(proto.Enum):
-        r"""Indicates the current state of the instance config.
+        r"""Indicates the current state of the instance configuration.
 
         Values:
             STATE_UNSPECIFIED (0):
                 Not specified.
             CREATING (1):
-                The instance config is still being created.
+                The instance configuration is still being
+                created.
             READY (2):
-                The instance config is fully created and
-                ready to be used to create instances.
+                The instance configuration is fully created
+                and ready to be used to create instances.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -310,7 +318,7 @@ class InstanceConfig(proto.Message):
 
 
 class AutoscalingConfig(proto.Message):
-    r"""Autoscaling config for an instance.
+    r"""Autoscaling configuration for an instance.
 
     Attributes:
         autoscaling_limits (google.cloud.spanner_admin_instance_v1.types.AutoscalingConfig.AutoscalingLimits):
@@ -521,6 +529,8 @@ class Instance(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the instance
             was most recently updated.
+        edition (google.cloud.spanner_admin_instance_v1.types.Instance.Edition):
+            Optional. The ``Edition`` of the current instance.
     """
 
     class State(proto.Enum):
@@ -541,6 +551,25 @@ class Instance(proto.Message):
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
+
+    class Edition(proto.Enum):
+        r"""The edition selected for this instance. Different editions
+        provide different capabilities at different price points.
+
+        Values:
+            EDITION_UNSPECIFIED (0):
+                Edition not specified.
+            STANDARD (1):
+                Standard edition.
+            ENTERPRISE (2):
+                Enterprise edition.
+            ENTERPRISE_PLUS (3):
+                Enterprise Plus edition.
+        """
+        EDITION_UNSPECIFIED = 0
+        STANDARD = 1
+        ENTERPRISE = 2
+        ENTERPRISE_PLUS = 3
 
     name: str = proto.Field(
         proto.STRING,
@@ -590,6 +619,11 @@ class Instance(proto.Message):
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
+    )
+    edition: Edition = proto.Field(
+        proto.ENUM,
+        number=20,
+        enum=Edition,
     )
 
 
@@ -680,14 +714,14 @@ class CreateInstanceConfigRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The name of the project in which to create the
-            instance config. Values are of the form
+            instance configuration. Values are of the form
             ``projects/<project>``.
         instance_config_id (str):
-            Required. The ID of the instance config to create. Valid
-            identifiers are of the form ``custom-[-a-z0-9]*[a-z0-9]``
-            and must be between 2 and 64 characters in length. The
-            ``custom-`` prefix is required to avoid name conflicts with
-            Google managed configurations.
+            Required. The ID of the instance configuration to create.
+            Valid identifiers are of the form
+            ``custom-[-a-z0-9]*[a-z0-9]`` and must be between 2 and 64
+            characters in length. The ``custom-`` prefix is required to
+            avoid name conflicts with Google-managed configurations.
         instance_config (google.cloud.spanner_admin_instance_v1.types.InstanceConfig):
             Required. The InstanceConfig proto of the configuration to
             create. instance_config.name must be
@@ -726,9 +760,9 @@ class UpdateInstanceConfigRequest(proto.Message):
 
     Attributes:
         instance_config (google.cloud.spanner_admin_instance_v1.types.InstanceConfig):
-            Required. The user instance config to update, which must
-            always include the instance config name. Otherwise, only
-            fields mentioned in
+            Required. The user instance configuration to update, which
+            must always include the instance configuration name.
+            Otherwise, only fields mentioned in
             [update_mask][google.spanner.admin.instance.v1.UpdateInstanceConfigRequest.update_mask]
             need be included. To prevent conflicts of concurrent
             updates,
@@ -776,13 +810,14 @@ class DeleteInstanceConfigRequest(proto.Message):
         etag (str):
             Used for optimistic concurrency control as a
             way to help prevent simultaneous deletes of an
-            instance config from overwriting each other. If
-            not empty, the API
-            only deletes the instance config when the etag
-            provided matches the current status of the
-            requested instance config. Otherwise, deletes
-            the instance config without checking the current
-            status of the requested instance config.
+            instance configuration from overwriting each
+            other. If not empty, the API
+            only deletes the instance configuration when the
+            etag provided matches the current status of the
+            requested instance configuration. Otherwise,
+            deletes the instance configuration without
+            checking the current status of the requested
+            instance configuration.
         validate_only (bool):
             An option to validate, but not actually
             execute, a request, and provide the same
@@ -809,8 +844,8 @@ class ListInstanceConfigOperationsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The project of the instance config operations.
-            Values are of the form ``projects/<project>``.
+            Required. The project of the instance configuration
+            operations. Values are of the form ``projects/<project>``.
         filter (str):
             An expression that filters the list of returned operations.
 
@@ -857,7 +892,8 @@ class ListInstanceConfigOperationsRequest(proto.Message):
 
                -  The operation's metadata type is
                   [CreateInstanceConfigMetadata][google.spanner.admin.instance.v1.CreateInstanceConfigMetadata].
-               -  The instance config name contains "custom-config".
+               -  The instance configuration name contains
+                  "custom-config".
                -  The operation started before 2021-03-28T14:50:00Z.
                -  The operation resulted in an error.
         page_size (int):
@@ -896,10 +932,10 @@ class ListInstanceConfigOperationsResponse(proto.Message):
 
     Attributes:
         operations (MutableSequence[google.longrunning.operations_pb2.Operation]):
-            The list of matching instance config [long-running
+            The list of matching instance configuration [long-running
             operations][google.longrunning.Operation]. Each operation's
-            name will be prefixed by the instance config's name. The
-            operation's
+            name will be prefixed by the name of the instance
+            configuration. The operation's
             [metadata][google.longrunning.Operation.metadata] field type
             ``metadata.type_url`` describes the type of the metadata.
         next_page_token (str):
@@ -1247,7 +1283,7 @@ class CreateInstanceConfigMetadata(proto.Message):
 
     Attributes:
         instance_config (google.cloud.spanner_admin_instance_v1.types.InstanceConfig):
-            The target instance config end state.
+            The target instance configuration end state.
         progress (google.cloud.spanner_admin_instance_v1.types.OperationProgress):
             The progress of the
             [CreateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstanceConfig]
@@ -1280,7 +1316,8 @@ class UpdateInstanceConfigMetadata(proto.Message):
 
     Attributes:
         instance_config (google.cloud.spanner_admin_instance_v1.types.InstanceConfig):
-            The desired instance config after updating.
+            The desired instance configuration after
+            updating.
         progress (google.cloud.spanner_admin_instance_v1.types.OperationProgress):
             The progress of the
             [UpdateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstanceConfig]
@@ -1895,6 +1932,73 @@ class ListInstancePartitionOperationsResponse(proto.Message):
     unreachable_instance_partitions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+
+
+class MoveInstanceRequest(proto.Message):
+    r"""The request for
+    [MoveInstance][google.spanner.admin.instance.v1.InstanceAdmin.MoveInstance].
+
+    Attributes:
+        name (str):
+            Required. The instance to move. Values are of the form
+            ``projects/<project>/instances/<instance>``.
+        target_config (str):
+            Required. The target instance configuration where to move
+            the instance. Values are of the form
+            ``projects/<project>/instanceConfigs/<config>``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_config: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class MoveInstanceResponse(proto.Message):
+    r"""The response for
+    [MoveInstance][google.spanner.admin.instance.v1.InstanceAdmin.MoveInstance].
+
+    """
+
+
+class MoveInstanceMetadata(proto.Message):
+    r"""Metadata type for the operation returned by
+    [MoveInstance][google.spanner.admin.instance.v1.InstanceAdmin.MoveInstance].
+
+    Attributes:
+        target_config (str):
+            The target instance configuration where to move the
+            instance. Values are of the form
+            ``projects/<project>/instanceConfigs/<config>``.
+        progress (google.cloud.spanner_admin_instance_v1.types.OperationProgress):
+            The progress of the
+            [MoveInstance][google.spanner.admin.instance.v1.InstanceAdmin.MoveInstance]
+            operation.
+            [progress_percent][google.spanner.admin.instance.v1.OperationProgress.progress_percent]
+            is reset when cancellation is requested.
+        cancel_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which this operation was
+            cancelled.
+    """
+
+    target_config: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    progress: common.OperationProgress = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.OperationProgress,
+    )
+    cancel_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
 
 
