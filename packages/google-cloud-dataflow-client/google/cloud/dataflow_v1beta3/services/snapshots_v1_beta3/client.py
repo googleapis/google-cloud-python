@@ -645,7 +645,7 @@ class SnapshotsV1Beta3Client(metaclass=SnapshotsV1Beta3ClientMeta):
                 Type[SnapshotsV1Beta3Transport],
                 Callable[..., SnapshotsV1Beta3Transport],
             ] = (
-                type(self).get_transport_class(transport)
+                SnapshotsV1Beta3Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SnapshotsV1Beta3Transport], transport)
             )

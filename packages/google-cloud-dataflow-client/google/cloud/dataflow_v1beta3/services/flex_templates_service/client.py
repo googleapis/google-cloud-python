@@ -644,7 +644,7 @@ class FlexTemplatesServiceClient(metaclass=FlexTemplatesServiceClientMeta):
                 Type[FlexTemplatesServiceTransport],
                 Callable[..., FlexTemplatesServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                FlexTemplatesServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., FlexTemplatesServiceTransport], transport)
             )

@@ -684,7 +684,7 @@ class PolicyTagManagerSerializationClient(
                 Type[PolicyTagManagerSerializationTransport],
                 Callable[..., PolicyTagManagerSerializationTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                PolicyTagManagerSerializationClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., PolicyTagManagerSerializationTransport], transport

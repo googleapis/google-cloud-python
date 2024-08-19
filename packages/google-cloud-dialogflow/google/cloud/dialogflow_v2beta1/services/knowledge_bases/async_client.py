@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -196,9 +195,7 @@ class KnowledgeBasesAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(KnowledgeBasesClient).get_transport_class, type(KnowledgeBasesClient)
-    )
+    get_transport_class = KnowledgeBasesClient.get_transport_class
 
     def __init__(
         self,

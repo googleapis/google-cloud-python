@@ -696,7 +696,7 @@ class SearchTuningServiceClient(metaclass=SearchTuningServiceClientMeta):
                 Type[SearchTuningServiceTransport],
                 Callable[..., SearchTuningServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SearchTuningServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SearchTuningServiceTransport], transport)
             )

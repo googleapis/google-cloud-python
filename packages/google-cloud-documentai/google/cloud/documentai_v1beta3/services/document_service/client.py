@@ -720,7 +720,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
             transport_init: Union[
                 Type[DocumentServiceTransport], Callable[..., DocumentServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                DocumentServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DocumentServiceTransport], transport)
             )

@@ -711,7 +711,7 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
             transport_init: Union[
                 Type[QuestionServiceTransport], Callable[..., QuestionServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                QuestionServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., QuestionServiceTransport], transport)
             )

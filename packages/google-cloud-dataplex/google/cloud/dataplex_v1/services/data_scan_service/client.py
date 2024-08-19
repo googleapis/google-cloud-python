@@ -731,7 +731,7 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
             transport_init: Union[
                 Type[DataScanServiceTransport], Callable[..., DataScanServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                DataScanServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DataScanServiceTransport], transport)
             )

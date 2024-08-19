@@ -666,7 +666,7 @@ class AclConfigServiceClient(metaclass=AclConfigServiceClientMeta):
                 Type[AclConfigServiceTransport],
                 Callable[..., AclConfigServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AclConfigServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AclConfigServiceTransport], transport)
             )

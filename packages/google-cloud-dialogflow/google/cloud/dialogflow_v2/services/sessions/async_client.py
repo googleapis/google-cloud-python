@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     AsyncIterable,
@@ -199,9 +198,7 @@ class SessionsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(SessionsClient).get_transport_class, type(SessionsClient)
-    )
+    get_transport_class = SessionsClient.get_transport_class
 
     def __init__(
         self,
