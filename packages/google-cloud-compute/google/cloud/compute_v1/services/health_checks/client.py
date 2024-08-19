@@ -635,7 +635,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
             transport_init: Union[
                 Type[HealthChecksTransport], Callable[..., HealthChecksTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                HealthChecksClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., HealthChecksTransport], transport)
             )

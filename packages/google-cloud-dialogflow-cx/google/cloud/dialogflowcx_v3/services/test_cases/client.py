@@ -888,7 +888,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
             transport_init: Union[
                 Type[TestCasesTransport], Callable[..., TestCasesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                TestCasesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TestCasesTransport], transport)
             )

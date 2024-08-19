@@ -690,7 +690,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
             transport_init: Union[
                 Type[IntentsTransport], Callable[..., IntentsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                IntentsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., IntentsTransport], transport)
             )

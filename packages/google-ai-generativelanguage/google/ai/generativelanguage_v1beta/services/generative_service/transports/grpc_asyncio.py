@@ -249,14 +249,15 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
     ]:
         r"""Return a callable for the generate content method over gRPC.
 
-        Generates a response from the model given an input
-        ``GenerateContentRequest``.
-
-        Input capabilities differ between models, including tuned
-        models. See the `model
-        guide <https://ai.google.dev/models/gemini>`__ and `tuning
-        guide <https://ai.google.dev/docs/model_tuning_guidance>`__ for
-        details.
+        Generates a model response given an input
+        ``GenerateContentRequest``. Refer to the `text generation
+        guide <https://ai.google.dev/gemini-api/docs/text-generation>`__
+        for detailed usage information. Input capabilities differ
+        between models, including tuned models. Refer to the `model
+        guide <https://ai.google.dev/gemini-api/docs/models/gemini>`__
+        and `tuning
+        guide <https://ai.google.dev/gemini-api/docs/model-tuning>`__
+        for details.
 
         Returns:
             Callable[[~.GenerateContentRequest],
@@ -315,8 +316,9 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
     ]:
         r"""Return a callable for the stream generate content method over gRPC.
 
-        Generates a streamed response from the model given an input
-        ``GenerateContentRequest``.
+        Generates a `streamed
+        response <https://ai.google.dev/gemini-api/docs/text-generation?lang=python#generate-a-text-stream>`__
+        from the model given an input ``GenerateContentRequest``.
 
         Returns:
             Callable[[~.GenerateContentRequest],
@@ -345,8 +347,9 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
     ]:
         r"""Return a callable for the embed content method over gRPC.
 
-        Generates an embedding from the model given an input
-        ``Content``.
+        Generates a text embedding vector from the input ``Content``
+        using the specified `Gemini Embedding
+        model <https://ai.google.dev/gemini-api/docs/models/gemini#text-embedding>`__.
 
         Returns:
             Callable[[~.EmbedContentRequest],
@@ -375,8 +378,9 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
     ]:
         r"""Return a callable for the batch embed contents method over gRPC.
 
-        Generates multiple embeddings from the model given
-        input text in a synchronous call.
+        Generates multiple embedding vectors from the input ``Content``
+        which consists of a batch of strings represented as
+        ``EmbedContentRequest`` objects.
 
         Returns:
             Callable[[~.BatchEmbedContentsRequest],
@@ -405,8 +409,10 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
     ]:
         r"""Return a callable for the count tokens method over gRPC.
 
-        Runs a model's tokenizer on input content and returns
-        the token count.
+        Runs a model's tokenizer on input ``Content`` and returns the
+        token count. Refer to the `tokens
+        guide <https://ai.google.dev/gemini-api/docs/tokens>`__ to learn
+        more about tokens.
 
         Returns:
             Callable[[~.CountTokensRequest],

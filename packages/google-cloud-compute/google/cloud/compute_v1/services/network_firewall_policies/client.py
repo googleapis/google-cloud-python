@@ -649,7 +649,7 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
                 Type[NetworkFirewallPoliciesTransport],
                 Callable[..., NetworkFirewallPoliciesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                NetworkFirewallPoliciesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., NetworkFirewallPoliciesTransport], transport)
             )

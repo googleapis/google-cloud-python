@@ -701,7 +701,7 @@ class RetrieverServiceClient(metaclass=RetrieverServiceClientMeta):
                 Type[RetrieverServiceTransport],
                 Callable[..., RetrieverServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RetrieverServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RetrieverServiceTransport], transport)
             )

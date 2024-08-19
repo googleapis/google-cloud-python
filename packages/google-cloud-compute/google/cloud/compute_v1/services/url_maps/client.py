@@ -635,7 +635,7 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
             transport_init: Union[
                 Type[UrlMapsTransport], Callable[..., UrlMapsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                UrlMapsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., UrlMapsTransport], transport)
             )

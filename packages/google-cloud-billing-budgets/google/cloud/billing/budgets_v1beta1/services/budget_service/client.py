@@ -656,7 +656,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
             transport_init: Union[
                 Type[BudgetServiceTransport], Callable[..., BudgetServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                BudgetServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., BudgetServiceTransport], transport)
             )

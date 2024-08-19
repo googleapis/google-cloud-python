@@ -747,7 +747,7 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 Type[RepositoryManagerTransport],
                 Callable[..., RepositoryManagerTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RepositoryManagerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RepositoryManagerTransport], transport)
             )

@@ -139,6 +139,11 @@ class TextToSpeechTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.streaming_synthesize: gapic_v1.method.wrap_method(
+                self.streaming_synthesize,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -167,6 +172,18 @@ class TextToSpeechTransport(abc.ABC):
         Union[
             cloud_tts.SynthesizeSpeechResponse,
             Awaitable[cloud_tts.SynthesizeSpeechResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def streaming_synthesize(
+        self,
+    ) -> Callable[
+        [cloud_tts.StreamingSynthesizeRequest],
+        Union[
+            cloud_tts.StreamingSynthesizeResponse,
+            Awaitable[cloud_tts.StreamingSynthesizeResponse],
         ],
     ]:
         raise NotImplementedError()

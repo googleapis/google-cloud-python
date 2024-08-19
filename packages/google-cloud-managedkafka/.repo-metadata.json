@@ -1,7 +1,7 @@
 {
     "name": "google-cloud-managedkafka",
-    "name_pretty": "Apache Kafka for BigQuery API",
-    "api_description": "Apache Kafka for BigQuery is a managed cloud service that lets you ingest Kafka streams directly into Google Cloud.",
+    "name_pretty": "Managed Service for Apache Kafka",
+    "api_description": "Managed Service for Apache Kafka API is a managed cloud service that lets you ingest Kafka streams directly into Google Cloud.",
     "product_documentation": "https://cloud.google.com/managed-kafka",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-managedkafka/latest",
     "issue_tracker": "https://issuetracker.google.com/issues/new?component=1376234",

@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -201,9 +200,7 @@ class ManagedKafkaAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(ManagedKafkaClient).get_transport_class, type(ManagedKafkaClient)
-    )
+    get_transport_class = ManagedKafkaClient.get_transport_class
 
     def __init__(
         self,

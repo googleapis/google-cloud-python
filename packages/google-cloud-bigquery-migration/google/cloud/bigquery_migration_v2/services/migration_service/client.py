@@ -693,7 +693,7 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
                 Type[MigrationServiceTransport],
                 Callable[..., MigrationServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                MigrationServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., MigrationServiceTransport], transport)
             )

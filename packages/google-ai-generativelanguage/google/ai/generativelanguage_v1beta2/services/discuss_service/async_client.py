@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -190,9 +189,7 @@ class DiscussServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(DiscussServiceClient).get_transport_class, type(DiscussServiceClient)
-    )
+    get_transport_class = DiscussServiceClient.get_transport_class
 
     def __init__(
         self,

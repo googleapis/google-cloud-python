@@ -635,7 +635,7 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
             transport_init: Union[
                 Type[VpnGatewaysTransport], Callable[..., VpnGatewaysTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                VpnGatewaysClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., VpnGatewaysTransport], transport)
             )

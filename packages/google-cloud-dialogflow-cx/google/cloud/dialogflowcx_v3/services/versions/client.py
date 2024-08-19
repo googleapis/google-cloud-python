@@ -672,7 +672,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
             transport_init: Union[
                 Type[VersionsTransport], Callable[..., VersionsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                VersionsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., VersionsTransport], transport)
             )

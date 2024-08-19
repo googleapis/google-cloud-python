@@ -720,7 +720,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 Type[SecuritySettingsServiceTransport],
                 Callable[..., SecuritySettingsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SecuritySettingsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SecuritySettingsServiceTransport], transport)
             )
