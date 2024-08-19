@@ -714,7 +714,7 @@ class MerchantCenterAccountLinkServiceClient(
                 Type[MerchantCenterAccountLinkServiceTransport],
                 Callable[..., MerchantCenterAccountLinkServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                MerchantCenterAccountLinkServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., MerchantCenterAccountLinkServiceTransport], transport

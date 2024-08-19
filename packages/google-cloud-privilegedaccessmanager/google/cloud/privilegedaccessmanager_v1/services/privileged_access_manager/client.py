@@ -728,7 +728,7 @@ class PrivilegedAccessManagerClient(metaclass=PrivilegedAccessManagerClientMeta)
                 Type[PrivilegedAccessManagerTransport],
                 Callable[..., PrivilegedAccessManagerTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                PrivilegedAccessManagerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PrivilegedAccessManagerTransport], transport)
             )

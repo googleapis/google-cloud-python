@@ -688,7 +688,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
             transport_init: Union[
                 Type[CloudSchedulerTransport], Callable[..., CloudSchedulerTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CloudSchedulerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudSchedulerTransport], transport)
             )
