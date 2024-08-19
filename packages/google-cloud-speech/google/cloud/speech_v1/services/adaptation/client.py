@@ -680,7 +680,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
             transport_init: Union[
                 Type[AdaptationTransport], Callable[..., AdaptationTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AdaptationClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AdaptationTransport], transport)
             )

@@ -687,7 +687,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             transport_init: Union[
                 Type[JobServiceTransport], Callable[..., JobServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                JobServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., JobServiceTransport], transport)
             )

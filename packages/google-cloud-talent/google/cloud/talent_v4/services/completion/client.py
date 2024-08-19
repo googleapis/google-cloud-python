@@ -673,7 +673,7 @@ class CompletionClient(metaclass=CompletionClientMeta):
             transport_init: Union[
                 Type[CompletionTransport], Callable[..., CompletionTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CompletionClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CompletionTransport], transport)
             )

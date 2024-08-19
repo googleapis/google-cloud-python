@@ -686,7 +686,7 @@ class CaseAttachmentServiceClient(metaclass=CaseAttachmentServiceClientMeta):
                 Type[CaseAttachmentServiceTransport],
                 Callable[..., CaseAttachmentServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                CaseAttachmentServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CaseAttachmentServiceTransport], transport)
             )

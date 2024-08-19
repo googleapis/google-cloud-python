@@ -653,7 +653,7 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
                 Type[ServiceControllerTransport],
                 Callable[..., ServiceControllerTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ServiceControllerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ServiceControllerTransport], transport)
             )

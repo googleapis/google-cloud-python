@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -219,10 +218,7 @@ class RegistrationServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(RegistrationServiceClient).get_transport_class,
-        type(RegistrationServiceClient),
-    )
+    get_transport_class = RegistrationServiceClient.get_transport_class
 
     def __init__(
         self,
