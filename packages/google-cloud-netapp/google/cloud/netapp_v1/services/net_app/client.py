@@ -880,7 +880,7 @@ class NetAppClient(metaclass=NetAppClientMeta):
             transport_init: Union[
                 Type[NetAppTransport], Callable[..., NetAppTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                NetAppClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., NetAppTransport], transport)
             )

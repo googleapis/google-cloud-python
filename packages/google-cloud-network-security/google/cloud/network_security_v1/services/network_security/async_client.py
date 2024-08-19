@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -225,9 +224,7 @@ class NetworkSecurityAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(NetworkSecurityClient).get_transport_class, type(NetworkSecurityClient)
-    )
+    get_transport_class = NetworkSecurityClient.get_transport_class
 
     def __init__(
         self,

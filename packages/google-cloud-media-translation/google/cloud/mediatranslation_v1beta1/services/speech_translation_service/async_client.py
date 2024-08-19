@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     AsyncIterable,
@@ -195,10 +194,7 @@ class SpeechTranslationServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(SpeechTranslationServiceClient).get_transport_class,
-        type(SpeechTranslationServiceClient),
-    )
+    get_transport_class = SpeechTranslationServiceClient.get_transport_class
 
     def __init__(
         self,

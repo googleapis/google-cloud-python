@@ -687,7 +687,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
                 Type[DashboardsServiceTransport],
                 Callable[..., DashboardsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                DashboardsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DashboardsServiceTransport], transport)
             )

@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -205,10 +204,7 @@ class UptimeCheckServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(UptimeCheckServiceClient).get_transport_class,
-        type(UptimeCheckServiceClient),
-    )
+    get_transport_class = UptimeCheckServiceClient.get_transport_class
 
     def __init__(
         self,
