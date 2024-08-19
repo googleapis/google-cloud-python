@@ -737,7 +737,7 @@ class ManagedKafkaClient(metaclass=ManagedKafkaClientMeta):
             transport_init: Union[
                 Type[ManagedKafkaTransport], Callable[..., ManagedKafkaTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ManagedKafkaClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ManagedKafkaTransport], transport)
             )

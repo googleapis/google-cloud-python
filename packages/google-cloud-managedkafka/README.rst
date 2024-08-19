@@ -1,9 +1,9 @@
-Python Client for Apache Kafka for BigQuery API
-===============================================
+Python Client for Managed Service for Apache Kafka
+==================================================
 
 |preview| |pypi| |versions|
 
-`Apache Kafka for BigQuery API`_: Apache Kafka for BigQuery is a managed cloud service that lets you ingest Kafka streams directly into Google Cloud.
+`Managed Service for Apache Kafka`_: Managed Service for Apache Kafka API is a managed cloud service that lets you ingest Kafka streams directly into Google Cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Apache Kafka for BigQuery API
    :target: https://pypi.org/project/google-cloud-managedkafka/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-managedkafka.svg
    :target: https://pypi.org/project/google-cloud-managedkafka/
-.. _Apache Kafka for BigQuery API: https://cloud.google.com/managed-kafka
+.. _Managed Service for Apache Kafka: https://cloud.google.com/managed-kafka
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-managedkafka/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/managed-kafka
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Apache Kafka for BigQuery API.`_
+3. `Enable the Managed Service for Apache Kafka.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Apache Kafka for BigQuery API.:  https://cloud.google.com/managed-kafka
+.. _Enable the Managed Service for Apache Kafka.:  https://cloud.google.com/managed-kafka
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Apache Kafka for BigQuery API
+-  Read the `Client Library Documentation`_ for Managed Service for Apache Kafka
    to see other available methods on the client.
--  Read the `Apache Kafka for BigQuery API Product documentation`_ to learn
+-  Read the `Managed Service for Apache Kafka Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Apache Kafka for BigQuery API Product documentation:  https://cloud.google.com/managed-kafka
+.. _Managed Service for Apache Kafka Product documentation:  https://cloud.google.com/managed-kafka
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

@@ -669,8 +669,8 @@ class GenerativeServiceRestTransport(GenerativeServiceTransport):
 
             Args:
                 request (~.generative_service.GenerateAnswerRequest):
-                    The request object. Request to generate a grounded answer
-                from the model.
+                    The request object. Request to generate a grounded answer from the
+                ``Model``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -774,20 +774,21 @@ class GenerativeServiceRestTransport(GenerativeServiceTransport):
 
             Returns:
                 ~.generative_service.GenerateContentResponse:
-                    Response from the model supporting multiple candidates.
+                    Response from the model supporting multiple candidate
+                responses.
 
-                Note on safety ratings and content filtering. They are
-                reported for both prompt in
+                Safety ratings and content filtering are reported for
+                both prompt in
                 ``GenerateContentResponse.prompt_feedback`` and for each
                 candidate in ``finish_reason`` and in
-                ``safety_ratings``. The API contract is that:
+                ``safety_ratings``. The API:
 
-                -  either all requested candidates are returned or no
-                   candidates at all
-                -  no candidates are returned only if there was
-                   something wrong with the prompt (see
+                -  Returns either all requested candidates or none of
+                   them
+                -  Returns no candidates at all only if there was
+                   something wrong with the prompt (check
                    ``prompt_feedback``)
-                -  feedback on each candidate is reported on
+                -  Reports feedback on each candidate in
                    ``finish_reason`` and ``safety_ratings``.
 
             """
@@ -889,20 +890,21 @@ class GenerativeServiceRestTransport(GenerativeServiceTransport):
 
             Returns:
                 ~.generative_service.GenerateContentResponse:
-                    Response from the model supporting multiple candidates.
+                    Response from the model supporting multiple candidate
+                responses.
 
-                Note on safety ratings and content filtering. They are
-                reported for both prompt in
+                Safety ratings and content filtering are reported for
+                both prompt in
                 ``GenerateContentResponse.prompt_feedback`` and for each
                 candidate in ``finish_reason`` and in
-                ``safety_ratings``. The API contract is that:
+                ``safety_ratings``. The API:
 
-                -  either all requested candidates are returned or no
-                   candidates at all
-                -  no candidates are returned only if there was
-                   something wrong with the prompt (see
+                -  Returns either all requested candidates or none of
+                   them
+                -  Returns no candidates at all only if there was
+                   something wrong with the prompt (check
                    ``prompt_feedback``)
-                -  feedback on each candidate is reported on
+                -  Reports feedback on each candidate in
                    ``finish_reason`` and ``safety_ratings``.
 
             """

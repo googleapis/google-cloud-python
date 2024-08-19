@@ -787,7 +787,7 @@ class PagesClient(metaclass=PagesClientMeta):
             transport_init: Union[
                 Type[PagesTransport], Callable[..., PagesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                PagesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PagesTransport], transport)
             )

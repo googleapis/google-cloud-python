@@ -54,7 +54,7 @@ class TunedModel(proto.Message):
             This field is a member of `oneof`_ ``source_model``.
         base_model (str):
             Immutable. The name of the ``Model`` to tune. Example:
-            ``models/text-bison-001``
+            ``models/gemini-1.5-flash-001``
 
             This field is a member of `oneof`_ ``source_model``.
         name (str):
@@ -63,8 +63,11 @@ class TunedModel(proto.Message):
             display_name is set on create, the id portion of the name
             will be set by concatenating the words of the display_name
             with hyphens and adding a random portion for uniqueness.
-            Example: display_name = "Sentence Translator" name =
-            "tunedModels/sentence-translator-u3b7m".
+
+            Example:
+
+            -  display_name = ``Sentence Translator``
+            -  name = ``tunedModels/sentence-translator-u3b7m``
         display_name (str):
             Optional. The name to display for this model
             in user interfaces. The display name must be up
@@ -206,7 +209,7 @@ class TunedModelSource(proto.Message):
         base_model (str):
             Output only. The name of the base ``Model`` this
             ``TunedModel`` was tuned from. Example:
-            ``models/text-bison-001``
+            ``models/gemini-1.5-flash-001``
     """
 
     tuned_model: str = proto.Field(

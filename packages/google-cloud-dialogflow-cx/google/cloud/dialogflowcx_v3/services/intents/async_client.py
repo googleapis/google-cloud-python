@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -190,9 +189,7 @@ class IntentsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(IntentsClient).get_transport_class, type(IntentsClient)
-    )
+    get_transport_class = IntentsClient.get_transport_class
 
     def __init__(
         self,

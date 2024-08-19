@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -187,9 +186,7 @@ class ModelServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(ModelServiceClient).get_transport_class, type(ModelServiceClient)
-    )
+    get_transport_class = ModelServiceClient.get_transport_class
 
     def __init__(
         self,
@@ -266,7 +263,12 @@ class ModelServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> model.Model:
-        r"""Gets information about a specific Model.
+        r"""Gets information about a specific ``Model`` such as its version
+        number, token limits,
+        `parameters <https://ai.google.dev/gemini-api/docs/models/generative-models#model-parameters>`__
+        and other metadata. Refer to the `Gemini models
+        guide <https://ai.google.dev/gemini-api/docs/models/gemini>`__
+        for detailed model information.
 
         .. code-block:: python
 
@@ -377,7 +379,9 @@ class ModelServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListModelsAsyncPager:
-        r"""Lists models available through the API.
+        r"""Lists the
+        ```Model``\ s <https://ai.google.dev/gemini-api/docs/models/gemini>`__
+        available through the Gemini API.
 
         .. code-block:: python
 
@@ -411,10 +415,9 @@ class ModelServiceAsyncClient:
             page_size (:class:`int`):
                 The maximum number of ``Models`` to return (per page).
 
-                The service may return fewer models. If unspecified, at
-                most 50 models will be returned per page. This method
-                returns at most 1000 models per page, even if you pass a
-                larger page_size.
+                If unspecified, 50 models will be returned per page.
+                This method returns at most 1000 models per page, even
+                if you pass a larger page_size.
 
                 This corresponds to the ``page_size`` field
                 on the ``request`` instance; if ``request`` is provided, this
