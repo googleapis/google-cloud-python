@@ -667,7 +667,7 @@ class PromotionsServiceClient(metaclass=PromotionsServiceClientMeta):
                 Type[PromotionsServiceTransport],
                 Callable[..., PromotionsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                PromotionsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PromotionsServiceTransport], transport)
             )

@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -137,9 +136,7 @@ class GrafeasAsyncClient:
         """
         return self._client.transport
 
-    get_transport_class = functools.partial(
-        type(GrafeasClient).get_transport_class, type(GrafeasClient)
-    )
+    get_transport_class = GrafeasClient.get_transport_class
 
     def __init__(
         self,

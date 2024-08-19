@@ -677,7 +677,7 @@ class AccountIssueServiceClient(metaclass=AccountIssueServiceClientMeta):
                 Type[AccountIssueServiceTransport],
                 Callable[..., AccountIssueServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AccountIssueServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AccountIssueServiceTransport], transport)
             )

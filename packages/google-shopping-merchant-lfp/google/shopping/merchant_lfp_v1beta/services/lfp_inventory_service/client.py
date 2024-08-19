@@ -672,7 +672,7 @@ class LfpInventoryServiceClient(metaclass=LfpInventoryServiceClientMeta):
                 Type[LfpInventoryServiceTransport],
                 Callable[..., LfpInventoryServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                LfpInventoryServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., LfpInventoryServiceTransport], transport)
             )

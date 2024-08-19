@@ -660,7 +660,7 @@ class LfpSaleServiceClient(metaclass=LfpSaleServiceClientMeta):
             transport_init: Union[
                 Type[LfpSaleServiceTransport], Callable[..., LfpSaleServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                LfpSaleServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., LfpSaleServiceTransport], transport)
             )
