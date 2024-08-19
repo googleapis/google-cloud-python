@@ -40,9 +40,16 @@ _TEXT_GENERATOR_ENDPOINTS = (
 
 _EMBEDDING_GENERATOR_GECKO_ENDPOINT = "textembedding-gecko"
 _EMBEDDING_GENERATOR_GECKO_MULTILINGUAL_ENDPOINT = "textembedding-gecko-multilingual"
-_EMBEDDING_GENERATOR_ENDPOINTS = (
+_PALM2_EMBEDDING_GENERATOR_ENDPOINTS = (
     _EMBEDDING_GENERATOR_GECKO_ENDPOINT,
     _EMBEDDING_GENERATOR_GECKO_MULTILINGUAL_ENDPOINT,
+)
+
+_TEXT_EMBEDDING_004_ENDPOINT = "text-embedding-004"
+_TEXT_MULTILINGUAL_EMBEDDING_002_ENDPOINT = "text-multilingual-embedding-002"
+_TEXT_EMBEDDING_ENDPOINTS = (
+    _TEXT_EMBEDDING_004_ENDPOINT,
+    _TEXT_MULTILINGUAL_EMBEDDING_002_ENDPOINT,
 )
 
 _GEMINI_PRO_ENDPOINT = "gemini-pro"
@@ -57,6 +64,7 @@ _GEMINI_ENDPOINTS = (
 
 _ML_GENERATE_TEXT_STATUS = "ml_generate_text_status"
 _ML_EMBED_TEXT_STATUS = "ml_embed_text_status"
+_ML_GENERATE_EMBEDDING_STATUS = "ml_generate_embedding_status"
 
 
 @log_adapter.class_logger
@@ -387,6 +395,10 @@ class PaLM2TextGenerator(base.BaseEstimator):
 class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
     """PaLM2 text embedding generator LLM model.
 
+    .. note::
+        Models in this class are outdated and going to be deprecated. To use the most updated text embedding models, go to the TextEmbeddingGenerator class.
+
+
     Args:
         model_name (str, Default to "textembedding-gecko"):
             The model for text embedding. “textembedding-gecko” returns model embeddings for text inputs.
@@ -447,9 +459,9 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
                 iam_role="aiplatform.user",
             )
 
-        if self.model_name not in _EMBEDDING_GENERATOR_ENDPOINTS:
+        if self.model_name not in _PALM2_EMBEDDING_GENERATOR_ENDPOINTS:
             raise ValueError(
-                f"Model name {self.model_name} is not supported. We only support {', '.join(_EMBEDDING_GENERATOR_ENDPOINTS)}."
+                f"Model name {self.model_name} is not supported. We only support {', '.join(_PALM2_EMBEDDING_GENERATOR_ENDPOINTS)}."
             )
 
         endpoint = (
@@ -546,6 +558,154 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
 
         Returns:
             PaLM2TextEmbeddingGenerator: Saved model."""
+
+        new_model = self._bqml_model.copy(model_name, replace)
+        return new_model.session.read_gbq_model(model_name)
+
+
+@log_adapter.class_logger
+class TextEmbeddingGenerator(base.BaseEstimator):
+    """Text embedding generator LLM model.
+
+    Args:
+        model_name (str, Default to "text-embedding-004"):
+            The model for text embedding. Possible values are "text-embedding-004" or "text-multilingual-embedding-002".
+            text-embedding models returns model embeddings for text inputs.
+            text-multilingual-embedding models returns model embeddings for text inputs which support over 100 languages.
+            Default to "text-embedding-004".
+        session (bigframes.Session or None):
+            BQ session to create the model. If None, use the global default session.
+        connection_name (str or None):
+            Connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
+            If None, use default connection in session context.
+    """
+
+    def __init__(
+        self,
+        *,
+        model_name: Literal[
+            "text-embedding-004", "text-multilingual-embedding-002"
+        ] = "text-embedding-004",
+        session: Optional[bigframes.Session] = None,
+        connection_name: Optional[str] = None,
+    ):
+        self.model_name = model_name
+        self.session = session or bpd.get_global_session()
+        self._bq_connection_manager = self.session.bqconnectionmanager
+
+        connection_name = connection_name or self.session._bq_connection
+        self.connection_name = clients.resolve_full_bq_connection_name(
+            connection_name,
+            default_project=self.session._project,
+            default_location=self.session._location,
+        )
+
+        self._bqml_model_factory = globals.bqml_model_factory()
+        self._bqml_model: core.BqmlModel = self._create_bqml_model()
+
+    def _create_bqml_model(self):
+        # Parse and create connection if needed.
+        if not self.connection_name:
+            raise ValueError(
+                "Must provide connection_name, either in constructor or through session options."
+            )
+
+        if self._bq_connection_manager:
+            connection_name_parts = self.connection_name.split(".")
+            if len(connection_name_parts) != 3:
+                raise ValueError(
+                    f"connection_name must be of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>, got {self.connection_name}."
+                )
+            self._bq_connection_manager.create_bq_connection(
+                project_id=connection_name_parts[0],
+                location=connection_name_parts[1],
+                connection_id=connection_name_parts[2],
+                iam_role="aiplatform.user",
+            )
+
+        if self.model_name not in _TEXT_EMBEDDING_ENDPOINTS:
+            raise ValueError(
+                f"Model name {self.model_name} is not supported. We only support {', '.join(_TEXT_EMBEDDING_ENDPOINTS)}."
+            )
+
+        options = {
+            "endpoint": self.model_name,
+        }
+        return self._bqml_model_factory.create_remote_model(
+            session=self.session, connection_name=self.connection_name, options=options
+        )
+
+    @classmethod
+    def _from_bq(
+        cls, session: bigframes.Session, bq_model: bigquery.Model
+    ) -> TextEmbeddingGenerator:
+        assert bq_model.model_type == "MODEL_TYPE_UNSPECIFIED"
+        assert "remoteModelInfo" in bq_model._properties
+        assert "endpoint" in bq_model._properties["remoteModelInfo"]
+        assert "connection" in bq_model._properties["remoteModelInfo"]
+
+        # Parse the remote model endpoint
+        bqml_endpoint = bq_model._properties["remoteModelInfo"]["endpoint"]
+        model_connection = bq_model._properties["remoteModelInfo"]["connection"]
+        model_endpoint = bqml_endpoint.split("/")[-1]
+
+        model = cls(
+            session=session,
+            model_name=model_endpoint,  # type: ignore
+            connection_name=model_connection,
+        )
+
+        model._bqml_model = core.BqmlModel(session, bq_model)
+        return model
+
+    def predict(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
+        """Predict the result from input DataFrame.
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                Input DataFrame, which needs to contain a column with name "content". Only the column will be used as input. Content can include preamble, questions, suggestions, instructions, or examples.
+
+        Returns:
+            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
+        """
+
+        # Params reference: https://cloud.google.com/vertex-ai/docs/generative-ai/learn/models
+        (X,) = utils.convert_to_dataframe(X)
+
+        if len(X.columns) != 1:
+            raise ValueError(
+                f"Only support one column as input. {constants.FEEDBACK_LINK}"
+            )
+
+        # BQML identified the column by name
+        col_label = cast(blocks.Label, X.columns[0])
+        X = X.rename(columns={col_label: "content"})
+
+        options = {
+            "flatten_json_output": True,
+        }
+
+        df = self._bqml_model.generate_embedding(X, options)
+
+        if (df[_ML_GENERATE_EMBEDDING_STATUS] != "").any():
+            warnings.warn(
+                f"Some predictions failed. Check column {_ML_GENERATE_EMBEDDING_STATUS} for detailed status. You may want to filter the failed rows and retry.",
+                RuntimeWarning,
+            )
+
+        return df
+
+    def to_gbq(self, model_name: str, replace: bool = False) -> TextEmbeddingGenerator:
+        """Save the model to BigQuery.
+
+        Args:
+            model_name (str):
+                The name of the model.
+            replace (bool, default False):
+                Determine whether to replace if the model already exists. Default to False.
+
+        Returns:
+            TextEmbeddingGenerator: Saved model."""
 
         new_model = self._bqml_model.copy(model_name, replace)
         return new_model.session.read_gbq_model(model_name)

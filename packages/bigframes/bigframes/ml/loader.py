@@ -63,6 +63,8 @@ _BQML_ENDPOINT_TYPE_MAPPING = MappingProxyType(
         llm._GEMINI_PRO_ENDPOINT: llm.GeminiTextGenerator,
         llm._GEMINI_1P5_PRO_PREVIEW_ENDPOINT: llm.GeminiTextGenerator,
         llm._GEMINI_1P5_PRO_FLASH_PREVIEW_ENDPOINT: llm.GeminiTextGenerator,
+        llm._TEXT_EMBEDDING_004_ENDPOINT: llm.TextEmbeddingGenerator,
+        llm._TEXT_MULTILINGUAL_EMBEDDING_002_ENDPOINT: llm.TextEmbeddingGenerator,
     }
 )
 
@@ -84,6 +86,7 @@ def from_bq(
     imported.XGBoostModel,
     llm.PaLM2TextGenerator,
     llm.PaLM2TextEmbeddingGenerator,
+    llm.TextEmbeddingGenerator,
     pipeline.Pipeline,
     compose.ColumnTransformer,
     preprocessing.PreprocessingType,

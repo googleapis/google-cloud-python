@@ -306,6 +306,47 @@ def test_embedding_generator_predict_series_success(
 
 @pytest.mark.parametrize(
     "model_name",
+    ("text-embedding-004", "text-multilingual-embedding-002"),
+)
+def test_create_load_text_embedding_generator_model(
+    dataset_id, model_name, session, bq_connection
+):
+    text_embedding_model = llm.TextEmbeddingGenerator(
+        model_name=model_name, connection_name=bq_connection, session=session
+    )
+    assert text_embedding_model is not None
+    assert text_embedding_model._bqml_model is not None
+
+    # save, load to ensure configuration was kept
+    reloaded_model = text_embedding_model.to_gbq(
+        f"{dataset_id}.temp_text_model", replace=True
+    )
+    assert f"{dataset_id}.temp_text_model" == reloaded_model._bqml_model.model_name
+    assert reloaded_model.connection_name == bq_connection
+    assert reloaded_model.model_name == model_name
+
+
+@pytest.mark.parametrize(
+    "model_name",
+    ("text-embedding-004", "text-multilingual-embedding-002"),
+)
+@pytest.mark.flaky(retries=2)
+def test_gemini_text_embedding_generator_predict_default_params_success(
+    llm_text_df, model_name, session, bq_connection
+):
+    text_embedding_model = llm.TextEmbeddingGenerator(
+        model_name=model_name, connection_name=bq_connection, session=session
+    )
+    df = text_embedding_model.predict(llm_text_df).to_pandas()
+    assert df.shape == (3, 4)
+    assert "ml_generate_embedding_result" in df.columns
+    series = df["ml_generate_embedding_result"]
+    value = series[0]
+    assert len(value) == 768
+
+
+@pytest.mark.parametrize(
+    "model_name",
     ("gemini-pro", "gemini-1.5-pro-preview-0514", "gemini-1.5-flash-preview-0514"),
 )
 def test_create_load_gemini_text_generator_model(
