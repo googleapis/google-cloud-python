@@ -549,9 +549,7 @@ class AllocationPolicy(proto.Message):
                 following image values are supported for a boot disk:
 
                 -  ``batch-debian``: use Batch Debian images.
-                -  ``batch-centos``: use Batch CentOS images.
                 -  ``batch-cos``: use Batch Container-Optimized images.
-                -  ``batch-hpc-centos``: use Batch HPC CentOS images.
                 -  ``batch-hpc-rocky``: use Batch HPC Rocky Linux images.
 
                 This field is a member of `oneof`_ ``data_source``.
