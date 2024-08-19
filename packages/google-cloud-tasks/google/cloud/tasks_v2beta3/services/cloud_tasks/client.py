@@ -693,7 +693,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
             transport_init: Union[
                 Type[CloudTasksTransport], Callable[..., CloudTasksTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CloudTasksClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudTasksTransport], transport)
             )

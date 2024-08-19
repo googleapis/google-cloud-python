@@ -799,7 +799,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             transport_init: Union[
                 Type[SecurityCenterTransport], Callable[..., SecurityCenterTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SecurityCenterClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SecurityCenterTransport], transport)
             )

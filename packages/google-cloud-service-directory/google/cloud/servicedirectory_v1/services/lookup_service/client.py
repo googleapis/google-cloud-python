@@ -707,7 +707,7 @@ class LookupServiceClient(metaclass=LookupServiceClientMeta):
             transport_init: Union[
                 Type[LookupServiceTransport], Callable[..., LookupServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                LookupServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., LookupServiceTransport], transport)
             )
