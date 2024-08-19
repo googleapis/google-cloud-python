@@ -1,2 +1,0 @@
-recursive-include google/cloud/visionai *.py
-recursive-include google/cloud/visionai_v1 *.py

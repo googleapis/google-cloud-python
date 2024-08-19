@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -187,9 +186,7 @@ class TraceServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(TraceServiceClient).get_transport_class, type(TraceServiceClient)
-    )
+    get_transport_class = TraceServiceClient.get_transport_class
 
     def __init__(
         self,

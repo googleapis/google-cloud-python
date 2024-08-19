@@ -733,7 +733,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             transport_init: Union[
                 Type[ProductSearchTransport], Callable[..., ProductSearchTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ProductSearchClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ProductSearchTransport], transport)
             )
