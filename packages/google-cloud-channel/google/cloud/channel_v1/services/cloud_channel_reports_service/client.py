@@ -694,7 +694,7 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
                 Type[CloudChannelReportsServiceTransport],
                 Callable[..., CloudChannelReportsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                CloudChannelReportsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudChannelReportsServiceTransport], transport)
             )

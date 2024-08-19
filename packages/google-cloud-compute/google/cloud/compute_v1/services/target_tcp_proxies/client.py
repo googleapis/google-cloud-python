@@ -643,7 +643,7 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
                 Type[TargetTcpProxiesTransport],
                 Callable[..., TargetTcpProxiesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                TargetTcpProxiesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TargetTcpProxiesTransport], transport)
             )

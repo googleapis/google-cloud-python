@@ -809,7 +809,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
             transport_init: Union[
                 Type[AgentsTransport], Callable[..., AgentsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AgentsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AgentsTransport], transport)
             )

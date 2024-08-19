@@ -678,7 +678,7 @@ class CacheServiceClient(metaclass=CacheServiceClientMeta):
             transport_init: Union[
                 Type[CacheServiceTransport], Callable[..., CacheServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CacheServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CacheServiceTransport], transport)
             )

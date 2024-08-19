@@ -642,7 +642,7 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
             transport_init: Union[
                 Type[SslCertificatesTransport], Callable[..., SslCertificatesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SslCertificatesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SslCertificatesTransport], transport)
             )

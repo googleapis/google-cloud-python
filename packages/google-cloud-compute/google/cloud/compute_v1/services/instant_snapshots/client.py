@@ -643,7 +643,7 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 Type[InstantSnapshotsTransport],
                 Callable[..., InstantSnapshotsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                InstantSnapshotsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., InstantSnapshotsTransport], transport)
             )

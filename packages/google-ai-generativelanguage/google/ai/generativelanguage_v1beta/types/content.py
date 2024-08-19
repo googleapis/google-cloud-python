@@ -587,6 +587,7 @@ class Schema(proto.Message):
 
              for NUMBER type: float, double
              for INTEGER type: int32, int64
+             for STRING type: enum
         description (str):
             Optional. A brief description of the
             parameter. This could contain examples of use.
@@ -604,6 +605,9 @@ class Schema(proto.Message):
             Type.ARRAY.
 
             This field is a member of `oneof`_ ``_items``.
+        max_items (int):
+            Optional. Maximum number of the elements for
+            Type.ARRAY.
         properties (MutableMapping[str, google.ai.generativelanguage_v1beta.types.Schema]):
             Optional. Properties of Type.OBJECT.
         required (MutableSequence[str]):
@@ -636,6 +640,10 @@ class Schema(proto.Message):
         number=6,
         optional=True,
         message="Schema",
+    )
+    max_items: int = proto.Field(
+        proto.INT64,
+        number=21,
     )
     properties: MutableMapping[str, "Schema"] = proto.MapField(
         proto.STRING,

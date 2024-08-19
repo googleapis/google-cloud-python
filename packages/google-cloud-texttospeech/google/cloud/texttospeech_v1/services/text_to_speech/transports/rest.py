@@ -356,6 +356,22 @@ class TextToSpeechRestTransport(TextToSpeechTransport):
             resp = self._interceptor.post_list_voices(resp)
             return resp
 
+    class _StreamingSynthesize(TextToSpeechRestStub):
+        def __hash__(self):
+            return hash("StreamingSynthesize")
+
+        def __call__(
+            self,
+            request: cloud_tts.StreamingSynthesizeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> rest_streaming.ResponseIterator:
+            raise NotImplementedError(
+                "Method StreamingSynthesize is not available over REST transport"
+            )
+
     class _SynthesizeSpeech(TextToSpeechRestStub):
         def __hash__(self):
             return hash("SynthesizeSpeech")
@@ -458,6 +474,16 @@ class TextToSpeechRestTransport(TextToSpeechTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVoices(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def streaming_synthesize(
+        self,
+    ) -> Callable[
+        [cloud_tts.StreamingSynthesizeRequest], cloud_tts.StreamingSynthesizeResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StreamingSynthesize(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def synthesize_speech(

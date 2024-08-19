@@ -674,7 +674,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 Type[StorageTransferServiceTransport],
                 Callable[..., StorageTransferServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                StorageTransferServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., StorageTransferServiceTransport], transport)
             )
@@ -1538,7 +1538,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
 
         Returns:
             google.cloud.storage_transfer_v1.types.AgentPool:
-                Represents an On-Premises Agent pool.
+                Represents an agent pool.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1672,7 +1672,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
 
         Returns:
             google.cloud.storage_transfer_v1.types.AgentPool:
-                Represents an On-Premises Agent pool.
+                Represents an agent pool.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1777,7 +1777,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
 
         Returns:
             google.cloud.storage_transfer_v1.types.AgentPool:
-                Represents an On-Premises Agent pool.
+                Represents an agent pool.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have

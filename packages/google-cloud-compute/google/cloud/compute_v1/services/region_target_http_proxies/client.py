@@ -649,7 +649,7 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
                 Type[RegionTargetHttpProxiesTransport],
                 Callable[..., RegionTargetHttpProxiesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionTargetHttpProxiesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionTargetHttpProxiesTransport], transport)
             )

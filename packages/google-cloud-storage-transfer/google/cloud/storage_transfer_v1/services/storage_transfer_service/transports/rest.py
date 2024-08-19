@@ -702,7 +702,7 @@ class StorageTransferServiceRestTransport(StorageTransferServiceTransport):
 
             Returns:
                 ~.transfer_types.AgentPool:
-                    Represents an On-Premises Agent pool.
+                    Represents an agent pool.
             """
 
             http_options: List[Dict[str, str]] = [
@@ -1047,7 +1047,7 @@ class StorageTransferServiceRestTransport(StorageTransferServiceTransport):
 
             Returns:
                 ~.transfer_types.AgentPool:
-                    Represents an On-Premises Agent pool.
+                    Represents an agent pool.
             """
 
             http_options: List[Dict[str, str]] = [
@@ -1753,7 +1753,7 @@ class StorageTransferServiceRestTransport(StorageTransferServiceTransport):
 
             Returns:
                 ~.transfer_types.AgentPool:
-                    Represents an On-Premises Agent pool.
+                    Represents an agent pool.
             """
 
             http_options: List[Dict[str, str]] = [

@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -211,10 +210,7 @@ class TransitionRouteGroupsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(TransitionRouteGroupsClient).get_transport_class,
-        type(TransitionRouteGroupsClient),
-    )
+    get_transport_class = TransitionRouteGroupsClient.get_transport_class
 
     def __init__(
         self,

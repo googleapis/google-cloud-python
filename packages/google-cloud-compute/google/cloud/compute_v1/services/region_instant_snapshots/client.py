@@ -647,7 +647,7 @@ class RegionInstantSnapshotsClient(metaclass=RegionInstantSnapshotsClientMeta):
                 Type[RegionInstantSnapshotsTransport],
                 Callable[..., RegionInstantSnapshotsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionInstantSnapshotsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionInstantSnapshotsTransport], transport)
             )

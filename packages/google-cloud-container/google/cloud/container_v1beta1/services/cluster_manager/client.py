@@ -655,7 +655,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
             transport_init: Union[
                 Type[ClusterManagerTransport], Callable[..., ClusterManagerTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ClusterManagerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ClusterManagerTransport], transport)
             )

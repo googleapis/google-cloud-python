@@ -290,6 +290,35 @@ class TextToSpeechGrpcTransport(TextToSpeechTransport):
             )
         return self._stubs["synthesize_speech"]
 
+    @property
+    def streaming_synthesize(
+        self,
+    ) -> Callable[
+        [cloud_tts.StreamingSynthesizeRequest], cloud_tts.StreamingSynthesizeResponse
+    ]:
+        r"""Return a callable for the streaming synthesize method over gRPC.
+
+        Performs bidirectional streaming speech synthesis:
+        receive audio while sending text.
+
+        Returns:
+            Callable[[~.StreamingSynthesizeRequest],
+                    ~.StreamingSynthesizeResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "streaming_synthesize" not in self._stubs:
+            self._stubs["streaming_synthesize"] = self.grpc_channel.stream_stream(
+                "/google.cloud.texttospeech.v1beta1.TextToSpeech/StreamingSynthesize",
+                request_serializer=cloud_tts.StreamingSynthesizeRequest.serialize,
+                response_deserializer=cloud_tts.StreamingSynthesizeResponse.deserialize,
+            )
+        return self._stubs["streaming_synthesize"]
+
     def close(self):
         self.grpc_channel.close()
 

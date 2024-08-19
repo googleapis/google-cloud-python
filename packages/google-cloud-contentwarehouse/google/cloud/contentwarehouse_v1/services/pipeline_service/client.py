@@ -682,7 +682,7 @@ class PipelineServiceClient(metaclass=PipelineServiceClientMeta):
             transport_init: Union[
                 Type[PipelineServiceTransport], Callable[..., PipelineServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                PipelineServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PipelineServiceTransport], transport)
             )

@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -201,10 +200,7 @@ class StorageTransferServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(StorageTransferServiceClient).get_transport_class,
-        type(StorageTransferServiceClient),
-    )
+    get_transport_class = StorageTransferServiceClient.get_transport_class
 
     def __init__(
         self,
@@ -1137,7 +1133,7 @@ class StorageTransferServiceAsyncClient:
 
         Returns:
             google.cloud.storage_transfer_v1.types.AgentPool:
-                Represents an On-Premises Agent pool.
+                Represents an agent pool.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1274,7 +1270,7 @@ class StorageTransferServiceAsyncClient:
 
         Returns:
             google.cloud.storage_transfer_v1.types.AgentPool:
-                Represents an On-Premises Agent pool.
+                Represents an agent pool.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1382,7 +1378,7 @@ class StorageTransferServiceAsyncClient:
 
         Returns:
             google.cloud.storage_transfer_v1.types.AgentPool:
-                Represents an On-Premises Agent pool.
+                Represents an agent pool.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have

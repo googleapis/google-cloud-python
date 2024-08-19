@@ -654,7 +654,7 @@ class SystemPolicyV1Client(metaclass=SystemPolicyV1ClientMeta):
             transport_init: Union[
                 Type[SystemPolicyV1Transport], Callable[..., SystemPolicyV1Transport]
             ] = (
-                type(self).get_transport_class(transport)
+                SystemPolicyV1Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SystemPolicyV1Transport], transport)
             )
