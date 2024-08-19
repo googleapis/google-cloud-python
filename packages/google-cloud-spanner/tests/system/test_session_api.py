@@ -29,7 +29,7 @@ from google.cloud import spanner_v1
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud._helpers import UTC
 from google.cloud.spanner_v1.data_types import JsonObject
-from samples.samples.testdata import singer_pb2
+from .testdata import singer_pb2
 from tests import _helpers as ot_helpers
 from . import _helpers
 from . import _sample_data

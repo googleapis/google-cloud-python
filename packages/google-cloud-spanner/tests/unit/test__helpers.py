@@ -356,7 +356,7 @@ class Test_make_value_pb(unittest.TestCase):
     def test_w_proto_message(self):
         from google.protobuf.struct_pb2 import Value
         import base64
-        from samples.samples.testdata import singer_pb2
+        from .testdata import singer_pb2
 
         singer_info = singer_pb2.SingerInfo()
         expected = Value(string_value=base64.b64encode(singer_info.SerializeToString()))
@@ -366,7 +366,7 @@ class Test_make_value_pb(unittest.TestCase):
 
     def test_w_proto_enum(self):
         from google.protobuf.struct_pb2 import Value
-        from samples.samples.testdata import singer_pb2
+        from .testdata import singer_pb2
 
         value_pb = self._callFUT(singer_pb2.Genre.ROCK)
         self.assertIsInstance(value_pb, Value)
@@ -710,7 +710,7 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.cloud.spanner_v1 import Type
         from google.cloud.spanner_v1 import TypeCode
         import base64
-        from samples.samples.testdata import singer_pb2
+        from .testdata import singer_pb2
 
         VALUE = singer_pb2.SingerInfo()
         field_type = Type(code=TypeCode.PROTO)
@@ -726,7 +726,7 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
         from google.cloud.spanner_v1 import Type
         from google.cloud.spanner_v1 import TypeCode
-        from samples.samples.testdata import singer_pb2
+        from .testdata import singer_pb2
 
         VALUE = "ROCK"
         field_type = Type(code=TypeCode.ENUM)

@@ -18,7 +18,7 @@ import math
 from google.api_core import datetime_helpers
 from google.cloud._helpers import UTC
 from google.cloud import spanner_v1
-from samples.samples.testdata import singer_pb2
+from .testdata import singer_pb2
 
 TABLE = "contacts"
 COLUMNS = ("contact_id", "first_name", "last_name", "email")

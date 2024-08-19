@@ -94,7 +94,7 @@ class Test_ProtoMessageParamType(unittest.TestCase):
         from google.cloud.spanner_v1 import Type
         from google.cloud.spanner_v1 import TypeCode
         from google.cloud.spanner_v1 import param_types
-        from samples.samples.testdata import singer_pb2
+        from .testdata import singer_pb2
 
         singer_info = singer_pb2.SingerInfo()
         expected = Type(
@@ -111,7 +111,7 @@ class Test_ProtoEnumParamType(unittest.TestCase):
         from google.cloud.spanner_v1 import Type
         from google.cloud.spanner_v1 import TypeCode
         from google.cloud.spanner_v1 import param_types
-        from samples.samples.testdata import singer_pb2
+        from .testdata import singer_pb2
 
         singer_genre = singer_pb2.Genre
         expected = Type(
