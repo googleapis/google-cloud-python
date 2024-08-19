@@ -653,7 +653,7 @@ class TextServiceClient(metaclass=TextServiceClientMeta):
             transport_init: Union[
                 Type[TextServiceTransport], Callable[..., TextServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                TextServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TextServiceTransport], transport)
             )

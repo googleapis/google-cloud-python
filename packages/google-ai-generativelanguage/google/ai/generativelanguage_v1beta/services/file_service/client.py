@@ -652,7 +652,7 @@ class FileServiceClient(metaclass=FileServiceClientMeta):
             transport_init: Union[
                 Type[FileServiceTransport], Callable[..., FileServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                FileServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., FileServiceTransport], transport)
             )

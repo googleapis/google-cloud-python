@@ -669,7 +669,7 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
                 Type[PermissionServiceTransport],
                 Callable[..., PermissionServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                PermissionServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PermissionServiceTransport], transport)
             )
