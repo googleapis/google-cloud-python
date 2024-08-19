@@ -45,7 +45,7 @@ replacements:
       packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta/types/retriever.py,
     ]
     before: \"corpora/\*/documents/\*/chunks/\"
-    after: "corpora/*/documents/*/chunks/"
+    after: "`corpora/*/documents/*/chunks/`"
     count: 1    
   - paths: [
       packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/services/permission_service/async_client.py,
@@ -61,14 +61,14 @@ replacements:
       \                 - owner has writer's permissions and
       \                  additionally can delete
     after: "                role's permitted operations:\n\n                - reader can use the resource (e.g.\n                  tuned model) for inference\n                - writer has reader's permissions and\n                  additionally can edit and share\n                - owner has writer's permissions and\n                  additionally can delete\n"
-    count: 1
+    count: 6
   - paths: [
     packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/types/permission.py,
       ]
     before: |
       \    previous role's permitted operations:
       \
-      \     - reader can use the resource (e.g. tuned model) for inference
+      \     - reader can use the resource \(e.g. tuned model\) for inference
       \     - writer has reader's permissions and additionally can edit and
       \      share
       \     - owner has writer's permissions and additionally can delete
