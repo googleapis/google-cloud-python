@@ -34,6 +34,10 @@ __protobuf__ = proto.module(
         "CustomVoiceParams",
         "SynthesizeSpeechResponse",
         "Timepoint",
+        "StreamingSynthesizeConfig",
+        "StreamingSynthesisInput",
+        "StreamingSynthesizeRequest",
+        "StreamingSynthesizeResponse",
     },
 )
 
@@ -299,9 +303,9 @@ class VoiceSelectionParams(proto.Message):
             e.g. using "nb" (Norwegian Bokmal) instead of "no"
             (Norwegian)".
         name (str):
-            The name of the voice. If not set, the service will choose a
-            voice based on the other parameters such as language_code
-            and gender.
+            The name of the voice. If both the name and the gender are
+            not set, the service will choose a voice based on the other
+            parameters such as language_code.
         ssml_gender (google.cloud.texttospeech_v1beta1.types.SsmlVoiceGender):
             The preferred gender of the voice. If not set, the service
             will choose a voice based on the other parameters such as
@@ -511,6 +515,108 @@ class Timepoint(proto.Message):
     time_seconds: float = proto.Field(
         proto.DOUBLE,
         number=3,
+    )
+
+
+class StreamingSynthesizeConfig(proto.Message):
+    r"""Provides configuration information for the
+    StreamingSynthesize request.
+
+    Attributes:
+        voice (google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams):
+            Required. The desired voice of the
+            synthesized audio.
+    """
+
+    voice: "VoiceSelectionParams" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="VoiceSelectionParams",
+    )
+
+
+class StreamingSynthesisInput(proto.Message):
+    r"""Input to be synthesized.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        text (str):
+            The raw text to be synthesized. It is
+            recommended that each input contains complete,
+            terminating sentences, as this will likely
+            result in better prosody in the output audio.
+            That being said, users are free to input text
+            however they please.
+
+            This field is a member of `oneof`_ ``input_source``.
+    """
+
+    text: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="input_source",
+    )
+
+
+class StreamingSynthesizeRequest(proto.Message):
+    r"""Request message for the ``StreamingSynthesize`` method. Multiple
+    ``StreamingSynthesizeRequest`` messages are sent in one call. The
+    first message must contain a ``streaming_config`` that fully
+    specifies the request configuration and must not contain ``input``.
+    All subsequent messages must only have ``input`` set.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        streaming_config (google.cloud.texttospeech_v1beta1.types.StreamingSynthesizeConfig):
+            StreamingSynthesizeConfig to be used in this streaming
+            attempt. Only specified in the first message sent in a
+            ``StreamingSynthesize`` call.
+
+            This field is a member of `oneof`_ ``streaming_request``.
+        input (google.cloud.texttospeech_v1beta1.types.StreamingSynthesisInput):
+            Input to synthesize. Specified in all messages but the first
+            in a ``StreamingSynthesize`` call.
+
+            This field is a member of `oneof`_ ``streaming_request``.
+    """
+
+    streaming_config: "StreamingSynthesizeConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="streaming_request",
+        message="StreamingSynthesizeConfig",
+    )
+    input: "StreamingSynthesisInput" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="streaming_request",
+        message="StreamingSynthesisInput",
+    )
+
+
+class StreamingSynthesizeResponse(proto.Message):
+    r"""``StreamingSynthesizeResponse`` is the only message returned to the
+    client by ``StreamingSynthesize`` method. A series of zero or more
+    ``StreamingSynthesizeResponse`` messages are streamed back to the
+    client.
+
+    Attributes:
+        audio_content (bytes):
+            The audio data bytes encoded as specified in
+            the request. This is headerless LINEAR16 audio
+            with a sample rate of 24000.
+    """
+
+    audio_content: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
     )
 
 

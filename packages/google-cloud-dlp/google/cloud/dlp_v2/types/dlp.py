@@ -9114,6 +9114,11 @@ class DiscoveryCloudSqlGenerationCadence(proto.Message):
             this field, profiles are refreshed at this
             frequency regardless of whether the underlying
             tables have changed. Defaults to never.
+        inspect_template_modified_cadence (google.cloud.dlp_v2.types.DiscoveryInspectTemplateModifiedCadence):
+            Governs when to update data profiles when the inspection
+            rules defined by the ``InspectTemplate`` change. If not set,
+            changing the template will not cause a data profile to
+            update.
     """
 
     class SchemaModifiedCadence(proto.Message):
@@ -9166,6 +9171,13 @@ class DiscoveryCloudSqlGenerationCadence(proto.Message):
         proto.ENUM,
         number=2,
         enum="DataProfileUpdateFrequency",
+    )
+    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="DiscoveryInspectTemplateModifiedCadence",
+        )
     )
 
 
@@ -12163,10 +12175,14 @@ class FileClusterSummary(proto.Message):
             cluster.
         file_extensions_scanned (MutableSequence[google.cloud.dlp_v2.types.FileExtensionInfo]):
             A sample of file types scanned in this
-            cluster. Empty if no files were scanned.
+            cluster. Empty if no files were scanned. File
+            extensions can be derived from the file name or
+            the file content.
         file_extensions_seen (MutableSequence[google.cloud.dlp_v2.types.FileExtensionInfo]):
             A sample of file types seen in this cluster.
-            Empty if no files were seen.
+            Empty if no files were seen. File extensions can
+            be derived from the file name or the file
+            content.
         no_files_exist (bool):
             True if no files exist in this cluster. If the bucket had
             more files than could be listed, this will be false even if
@@ -12307,6 +12323,10 @@ class ListFileStoreDataProfilesRequest(proto.Message):
 
                -  ``project_id`` - The Google Cloud project ID.
                -  ``file_store_path`` - The path like "gs://bucket".
+               -  ``data_source_type`` - The profile's data source type,
+                  like "google/storage/bucket".
+               -  ``data_storage_location`` - The location where the
+                  file store's data is stored, like "us-central1".
                -  ``sensitivity_level`` - HIGH|MODERATE|LOW
                -  ``data_risk_level`` - HIGH|MODERATE|LOW
                -  ``resource_visibility``: PUBLIC|RESTRICTED

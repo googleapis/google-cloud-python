@@ -98,28 +98,38 @@ class GenerateContentRequest(proto.Message):
 
             Format: ``name=models/{model}``.
         system_instruction (google.ai.generativelanguage_v1beta.types.Content):
-            Optional. Developer set system instruction.
+            Optional. Developer set `system
+            instruction(s) <https://ai.google.dev/gemini-api/docs/system-instructions>`__.
             Currently, text only.
 
             This field is a member of `oneof`_ ``_system_instruction``.
         contents (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
-            Required. The content of the current
-            conversation with the model.
-            For single-turn queries, this is a single
-            instance. For multi-turn queries, this is a
-            repeated field that contains conversation
-            history + latest request.
+            Required. The content of the current conversation with the
+            model.
+
+            For single-turn queries, this is a single instance. For
+            multi-turn queries like
+            `chat <https://ai.google.dev/gemini-api/docs/text-generation#chat>`__,
+            this is a repeated field that contains the conversation
+            history and the latest request.
         tools (MutableSequence[google.ai.generativelanguage_v1beta.types.Tool]):
-            Optional. A list of ``Tools`` the model may use to generate
-            the next response.
+            Optional. A list of ``Tools`` the ``Model`` may use to
+            generate the next response.
 
             A ``Tool`` is a piece of code that enables the system to
             interact with external systems to perform an action, or set
-            of actions, outside of knowledge and scope of the model. The
-            only supported tool is currently ``Function``.
+            of actions, outside of knowledge and scope of the ``Model``.
+            Supported ``Tool``\ s are ``Function`` and
+            ``code_execution``. Refer to the `Function
+            calling <https://ai.google.dev/gemini-api/docs/function-calling>`__
+            and the `Code
+            execution <https://ai.google.dev/gemini-api/docs/code-execution>`__
+            guides to learn more.
         tool_config (google.ai.generativelanguage_v1beta.types.ToolConfig):
             Optional. Tool configuration for any ``Tool`` specified in
-            the request.
+            the request. Refer to the `Function calling
+            guide <https://ai.google.dev/gemini-api/docs/function-calling#function_calling_mode>`__
+            for a usage example.
         safety_settings (MutableSequence[google.ai.generativelanguage_v1beta.types.SafetySetting]):
             Optional. A list of unique ``SafetySetting`` instances for
             blocking unsafe content.
@@ -137,17 +147,22 @@ class GenerateContentRequest(proto.Message):
             categories HARM_CATEGORY_HATE_SPEECH,
             HARM_CATEGORY_SEXUALLY_EXPLICIT,
             HARM_CATEGORY_DANGEROUS_CONTENT, HARM_CATEGORY_HARASSMENT
-            are supported.
+            are supported. Refer to the
+            `guide <https://ai.google.dev/gemini-api/docs/safety-settings>`__
+            for detailed information on available safety settings. Also
+            refer to the `Safety
+            guidance <https://ai.google.dev/gemini-api/docs/safety-guidance>`__
+            to learn how to incorporate safety considerations in your AI
+            applications.
         generation_config (google.ai.generativelanguage_v1beta.types.GenerationConfig):
             Optional. Configuration options for model
             generation and outputs.
 
             This field is a member of `oneof`_ ``_generation_config``.
         cached_content (str):
-            Optional. The name of the cached content used as context to
-            serve the prediction. Note: only used in explicit caching,
-            where users can have control over caching (e.g. what content
-            to cache) and enjoy guaranteed cost savings. Format:
+            Optional. The name of the content
+            `cached <https://ai.google.dev/gemini-api/docs/caching>`__
+            to use as context to serve the prediction. Format:
             ``cachedContents/{cachedContent}``
 
             This field is a member of `oneof`_ ``_cached_content``.
@@ -198,7 +213,7 @@ class GenerateContentRequest(proto.Message):
 
 class GenerationConfig(proto.Message):
     r"""Configuration options for model generation and outputs. Not
-    all parameters may be configurable for every model.
+    all parameters are configurable for every model.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -212,14 +227,13 @@ class GenerationConfig(proto.Message):
 
             This field is a member of `oneof`_ ``_candidate_count``.
         stop_sequences (MutableSequence[str]):
-            Optional. The set of character sequences (up
-            to 5) that will stop output generation. If
-            specified, the API will stop at the first
-            appearance of a stop sequence. The stop sequence
-            will not be included as part of the response.
+            Optional. The set of character sequences (up to 5) that will
+            stop output generation. If specified, the API will stop at
+            the first appearance of a ``stop_sequence``. The stop
+            sequence will not be included as part of the response.
         max_output_tokens (int):
             Optional. The maximum number of tokens to include in a
-            candidate.
+            response candidate.
 
             Note: The default value varies by model, see the
             ``Model.output_token_limit`` attribute of the ``Model``
@@ -240,49 +254,55 @@ class GenerationConfig(proto.Message):
             Optional. The maximum cumulative probability of tokens to
             consider when sampling.
 
-            The model uses combined Top-k and nucleus sampling.
+            The model uses combined Top-k and Top-p (nucleus) sampling.
 
             Tokens are sorted based on their assigned probabilities so
             that only the most likely tokens are considered. Top-k
             sampling directly limits the maximum number of tokens to
-            consider, while Nucleus sampling limits number of tokens
+            consider, while Nucleus sampling limits the number of tokens
             based on the cumulative probability.
 
-            Note: The default value varies by model, see the
-            ``Model.top_p`` attribute of the ``Model`` returned from the
-            ``getModel`` function.
+            Note: The default value varies by ``Model`` and is specified
+            by the\ ``Model.top_p`` attribute returned from the
+            ``getModel`` function. An empty ``top_k`` attribute
+            indicates that the model doesn't apply top-k sampling and
+            doesn't allow setting ``top_k`` on requests.
 
             This field is a member of `oneof`_ ``_top_p``.
         top_k (int):
             Optional. The maximum number of tokens to consider when
             sampling.
 
-            Models use nucleus sampling or combined Top-k and nucleus
-            sampling. Top-k sampling considers the set of ``top_k`` most
-            probable tokens. Models running with nucleus sampling don't
-            allow top_k setting.
+            Gemini models use Top-p (nucleus) sampling or a combination
+            of Top-k and nucleus sampling. Top-k sampling considers the
+            set of ``top_k`` most probable tokens. Models running with
+            nucleus sampling don't allow top_k setting.
 
-            Note: The default value varies by model, see the
-            ``Model.top_k`` attribute of the ``Model`` returned from the
-            ``getModel`` function. Empty ``top_k`` field in ``Model``
-            indicates the model doesn't apply top-k sampling and doesn't
-            allow setting ``top_k`` on requests.
+            Note: The default value varies by ``Model`` and is specified
+            by the\ ``Model.top_p`` attribute returned from the
+            ``getModel`` function. An empty ``top_k`` attribute
+            indicates that the model doesn't apply top-k sampling and
+            doesn't allow setting ``top_k`` on requests.
 
             This field is a member of `oneof`_ ``_top_k``.
         response_mime_type (str):
-            Optional. Output response mimetype of the generated
-            candidate text. Supported mimetype: ``text/plain``:
-            (default) Text output. ``application/json``: JSON response
-            in the candidates.
+            Optional. MIME type of the generated candidate text.
+            Supported MIME types are: ``text/plain``: (default) Text
+            output. ``application/json``: JSON response in the response
+            candidates. Refer to the
+            `docs <https://ai.google.dev/gemini-api/docs/prompting_with_media#plain_text_formats>`__
+            for a list of all supported text MIME types.
         response_schema (google.ai.generativelanguage_v1beta.types.Schema):
-            Optional. Output response schema of the generated candidate
-            text when response mime type can have schema. Schema can be
-            objects, primitives or arrays and is a subset of `OpenAPI
-            schema <https://spec.openapis.org/oas/v3.0.3#schema>`__.
+            Optional. Output schema of the generated candidate text.
+            Schemas must be a subset of the `OpenAPI
+            schema <https://spec.openapis.org/oas/v3.0.3#schema>`__ and
+            can be objects, primitives or arrays.
 
-            If set, a compatible response_mime_type must also be set.
-            Compatible mimetypes: ``application/json``: Schema for JSON
-            response.
+            If set, a compatible ``response_mime_type`` must also be
+            set. Compatible MIME types: ``application/json``: Schema for
+            JSON response. Refer to the `JSON text generation
+            guide <https://ai.google.dev/gemini-api/docs/json-mode>`__
+            for more details.
     """
 
     candidate_count: int = proto.Field(
@@ -334,11 +354,11 @@ class SemanticRetrieverConfig(proto.Message):
 
     Attributes:
         source (str):
-            Required. Name of the resource for retrieval,
-            e.g. corpora/123 or corpora/123/documents/abc.
+            Required. Name of the resource for retrieval. Example:
+            ``corpora/123`` or ``corpora/123/documents/abc``.
         query (google.ai.generativelanguage_v1beta.types.Content):
-            Required. Query to use for similarity matching ``Chunk``\ s
-            in the given resource.
+            Required. Query to use for matching ``Chunk``\ s in the
+            given resource by similarity.
         metadata_filters (MutableSequence[google.ai.generativelanguage_v1beta.types.MetadataFilter]):
             Optional. Filters for selecting ``Document``\ s and/or
             ``Chunk``\ s from the resource.
@@ -381,18 +401,16 @@ class SemanticRetrieverConfig(proto.Message):
 
 
 class GenerateContentResponse(proto.Message):
-    r"""Response from the model supporting multiple candidates.
+    r"""Response from the model supporting multiple candidate responses.
 
-    Note on safety ratings and content filtering. They are reported for
-    both prompt in ``GenerateContentResponse.prompt_feedback`` and for
-    each candidate in ``finish_reason`` and in ``safety_ratings``. The
-    API contract is that:
+    Safety ratings and content filtering are reported for both prompt in
+    ``GenerateContentResponse.prompt_feedback`` and for each candidate
+    in ``finish_reason`` and in ``safety_ratings``. The API:
 
-    -  either all requested candidates are returned or no candidates at
-       all
-    -  no candidates are returned only if there was something wrong with
-       the prompt (see ``prompt_feedback``)
-    -  feedback on each candidate is reported on ``finish_reason`` and
+    -  Returns either all requested candidates or none of them
+    -  Returns no candidates at all only if there was something wrong
+       with the prompt (check ``prompt_feedback``)
+    -  Reports feedback on each candidate in ``finish_reason`` and
        ``safety_ratings``.
 
     Attributes:
@@ -413,29 +431,35 @@ class GenerateContentResponse(proto.Message):
         Attributes:
             block_reason (google.ai.generativelanguage_v1beta.types.GenerateContentResponse.PromptFeedback.BlockReason):
                 Optional. If set, the prompt was blocked and
-                no candidates are returned. Rephrase your
-                prompt.
+                no candidates are returned. Rephrase the prompt.
             safety_ratings (MutableSequence[google.ai.generativelanguage_v1beta.types.SafetyRating]):
                 Ratings for safety of the prompt.
                 There is at most one rating per category.
         """
 
         class BlockReason(proto.Enum):
-            r"""Specifies what was the reason why prompt was blocked.
+            r"""Specifies the reason why the prompt was blocked.
 
             Values:
                 BLOCK_REASON_UNSPECIFIED (0):
                     Default value. This value is unused.
                 SAFETY (1):
-                    Prompt was blocked due to safety reasons. You can inspect
+                    Prompt was blocked due to safety reasons. Inspect
                     ``safety_ratings`` to understand which safety category
                     blocked it.
                 OTHER (2):
                     Prompt was blocked due to unknown reasons.
+                BLOCKLIST (3):
+                    Prompt was blocked due to the terms which are
+                    included from the terminology blocklist.
+                PROHIBITED_CONTENT (4):
+                    Prompt was blocked due to prohibited content.
             """
             BLOCK_REASON_UNSPECIFIED = 0
             SAFETY = 1
             OTHER = 2
+            BLOCKLIST = 3
+            PROHIBITED_CONTENT = 4
 
         block_reason: "GenerateContentResponse.PromptFeedback.BlockReason" = (
             proto.Field(
@@ -455,18 +479,18 @@ class GenerateContentResponse(proto.Message):
 
         Attributes:
             prompt_token_count (int):
-                Number of tokens in the prompt. When cached_content is set,
-                this is still the total effective prompt size. I.e. this
-                includes the number of tokens in the cached content.
+                Number of tokens in the prompt. When ``cached_content`` is
+                set, this is still the total effective prompt size meaning
+                this includes the number of tokens in the cached content.
             cached_content_token_count (int):
                 Number of tokens in the cached part of the
-                prompt, i.e. in the cached content.
+                prompt (the cached content)
             candidates_token_count (int):
-                Total number of tokens across the generated
-                candidates.
+                Total number of tokens across all the
+                generated response candidates.
             total_token_count (int):
                 Total token count for the generation request
-                (prompt + candidates).
+                (prompt + response candidates).
         """
 
         prompt_token_count: int = proto.Field(
@@ -511,7 +535,7 @@ class Candidate(proto.Message):
     Attributes:
         index (int):
             Output only. Index of the candidate in the
-            list of candidates.
+            list of response candidates.
 
             This field is a member of `oneof`_ ``_index``.
         content (google.ai.generativelanguage_v1beta.types.Content):
@@ -521,7 +545,7 @@ class Candidate(proto.Message):
             Optional. Output only. The reason why the
             model stopped generating tokens.
             If empty, the model has not stopped generating
-            the tokens.
+            tokens.
         safety_ratings (MutableSequence[google.ai.generativelanguage_v1beta.types.SafetyRating]):
             List of ratings for the safety of a response
             candidate.
@@ -556,20 +580,41 @@ class Candidate(proto.Message):
                 The maximum number of tokens as specified in
                 the request was reached.
             SAFETY (3):
-                The candidate content was flagged for safety
-                reasons.
+                The response candidate content was flagged
+                for safety reasons.
             RECITATION (4):
-                The candidate content was flagged for
-                recitation reasons.
+                The response candidate content was flagged
+                for recitation reasons.
+            LANGUAGE (6):
+                The response candidate content was flagged
+                for using an unsupported language.
             OTHER (5):
                 Unknown reason.
+            BLOCKLIST (7):
+                Token generation stopped because the content
+                contains forbidden terms.
+            PROHIBITED_CONTENT (8):
+                Token generation stopped for potentially
+                containing prohibited content.
+            SPII (9):
+                Token generation stopped because the content
+                potentially contains Sensitive Personally
+                Identifiable Information (SPII).
+            MALFORMED_FUNCTION_CALL (10):
+                The function call generated by the model is
+                invalid.
         """
         FINISH_REASON_UNSPECIFIED = 0
         STOP = 1
         MAX_TOKENS = 2
         SAFETY = 3
         RECITATION = 4
+        LANGUAGE = 6
         OTHER = 5
+        BLOCKLIST = 7
+        PROHIBITED_CONTENT = 8
+        SPII = 9
+        MALFORMED_FUNCTION_CALL = 10
 
     index: int = proto.Field(
         proto.INT32,
@@ -714,7 +759,7 @@ class GroundingAttribution(proto.Message):
 
 
 class GenerateAnswerRequest(proto.Message):
-    r"""Request to generate a grounded answer from the model.
+    r"""Request to generate a grounded answer from the ``Model``.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -740,13 +785,12 @@ class GenerateAnswerRequest(proto.Message):
             Format: ``model=models/{model}``.
         contents (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
             Required. The content of the current conversation with the
-            model. For single-turn queries, this is a single question to
-            answer. For multi-turn queries, this is a repeated field
-            that contains conversation history and the last ``Content``
-            in the list containing the question.
+            ``Model``. For single-turn queries, this is a single
+            question to answer. For multi-turn queries, this is a
+            repeated field that contains conversation history and the
+            last ``Content`` in the list containing the question.
 
-            Note: GenerateAnswer currently only supports queries in
-            English.
+            Note: ``GenerateAnswer`` only supports queries in English.
         answer_style (google.ai.generativelanguage_v1beta.types.GenerateAnswerRequest.AnswerStyle):
             Required. Style in which answers should be
             returned.
@@ -767,7 +811,13 @@ class GenerateAnswerRequest(proto.Message):
             categories HARM_CATEGORY_HATE_SPEECH,
             HARM_CATEGORY_SEXUALLY_EXPLICIT,
             HARM_CATEGORY_DANGEROUS_CONTENT, HARM_CATEGORY_HARASSMENT
-            are supported.
+            are supported. Refer to the
+            `guide <https://ai.google.dev/gemini-api/docs/safety-settings>`__
+            for detailed information on available safety settings. Also
+            refer to the `Safety
+            guidance <https://ai.google.dev/gemini-api/docs/safety-guidance>`__
+            to learn how to incorporate safety considerations in your AI
+            applications.
         temperature (float):
             Optional. Controls the randomness of the output.
 
@@ -858,26 +908,25 @@ class GenerateAnswerResponse(proto.Message):
             Output only. The model's estimate of the probability that
             its answer is correct and grounded in the input passages.
 
-            A low answerable_probability indicates that the answer might
-            not be grounded in the sources.
+            A low ``answerable_probability`` indicates that the answer
+            might not be grounded in the sources.
 
-            When ``answerable_probability`` is low, some clients may
-            wish to:
+            When ``answerable_probability`` is low, you may want to:
 
             -  Display a message to the effect of "We couldn’t answer
                that question" to the user.
             -  Fall back to a general-purpose LLM that answers the
                question from world knowledge. The threshold and nature
-               of such fallbacks will depend on individual clients’ use
-               cases. 0.5 is a good starting threshold.
+               of such fallbacks will depend on individual use cases.
+               ``0.5`` is a good starting threshold.
 
             This field is a member of `oneof`_ ``_answerable_probability``.
         input_feedback (google.ai.generativelanguage_v1beta.types.GenerateAnswerResponse.InputFeedback):
             Output only. Feedback related to the input data used to
-            answer the question, as opposed to model-generated response
-            to the question.
+            answer the question, as opposed to the model-generated
+            response to the question.
 
-            "Input data" can be one or more of the following:
+            The input data can be one or more of the following:
 
             -  Question specified by the last entry in
                ``GenerateAnswerRequest.content``
@@ -892,7 +941,7 @@ class GenerateAnswerResponse(proto.Message):
 
     class InputFeedback(proto.Message):
         r"""Feedback related to the input data used to answer the
-        question, as opposed to model-generated response to the
+        question, as opposed to the model-generated response to the
         question.
 
 
@@ -901,7 +950,7 @@ class GenerateAnswerResponse(proto.Message):
         Attributes:
             block_reason (google.ai.generativelanguage_v1beta.types.GenerateAnswerResponse.InputFeedback.BlockReason):
                 Optional. If set, the input was blocked and
-                no candidates are returned. Rephrase your input.
+                no candidates are returned. Rephrase the input.
 
                 This field is a member of `oneof`_ ``_block_reason``.
             safety_ratings (MutableSequence[google.ai.generativelanguage_v1beta.types.SafetyRating]):
@@ -916,7 +965,7 @@ class GenerateAnswerResponse(proto.Message):
                 BLOCK_REASON_UNSPECIFIED (0):
                     Default value. This value is unused.
                 SAFETY (1):
-                    Input was blocked due to safety reasons. You can inspect
+                    Input was blocked due to safety reasons. Inspect
                     ``safety_ratings`` to understand which safety category
                     blocked it.
                 OTHER (2):
@@ -990,8 +1039,8 @@ class EmbedContentRequest(proto.Message):
             Optional. Optional reduced dimension for the output
             embedding. If set, excessive values in the output embedding
             are truncated from the end. Supported by newer models since
-            2024, and the earlier model (``models/embedding-001``)
-            cannot specify this value.
+            2024 only. You cannot set this value if using the earlier
+            model (``models/embedding-001``).
 
             This field is a member of `oneof`_ ``_output_dimensionality``.
     """
@@ -1119,9 +1168,16 @@ class CountTokensRequest(proto.Message):
             Optional. The input given to the model as a prompt. This
             field is ignored when ``generate_content_request`` is set.
         generate_content_request (google.ai.generativelanguage_v1beta.types.GenerateContentRequest):
-            Optional. The overall input given to the
-            model. CountTokens will count prompt, function
-            calling, etc.
+            Optional. The overall input given to the ``Model``. This
+            includes the prompt as well as other model steering
+            information like `system
+            instructions <https://ai.google.dev/gemini-api/docs/system-instructions>`__,
+            and/or function declarations for `function
+            calling <https://ai.google.dev/gemini-api/docs/function-calling>`__.
+            ``Model``\ s/\ ``Content``\ s and
+            ``generate_content_request``\ s are mutually exclusive. You
+            can either send ``Model`` + ``Content``\ s or a
+            ``generate_content_request``, but never both.
     """
 
     model: str = proto.Field(
@@ -1147,12 +1203,8 @@ class CountTokensResponse(proto.Message):
 
     Attributes:
         total_tokens (int):
-            The number of tokens that the ``model`` tokenizes the
-            ``prompt`` into.
-
-            Always non-negative. When cached_content is set, this is
-            still the total effective prompt size. I.e. this includes
-            the number of tokens in the cached content.
+            The number of tokens that the ``Model`` tokenizes the
+            ``prompt`` into. Always non-negative.
         cached_content_token_count (int):
             Number of tokens in the cached part of the
             prompt, i.e. in the cached content.

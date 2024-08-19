@@ -34,7 +34,10 @@ class Model(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the ``Model``.
+            Required. The resource name of the ``Model``. Refer to
+            `Model
+            variants <https://ai.google.dev/gemini-api/docs/models/gemini#model-variations>`__
+            for all allowed values.
 
             Format: ``models/{model}`` with a ``{model}`` naming
             convention of:
@@ -43,21 +46,21 @@ class Model(proto.Message):
 
             Examples:
 
-            -  ``models/chat-bison-001``
+            -  ``models/gemini-1.5-flash-001``
         base_model_id (str):
             Required. The name of the base model, pass this to the
             generation request.
 
             Examples:
 
-            -  ``chat-bison``
+            -  ``gemini-1.5-flash``
         version (str):
             Required. The version number of the model.
 
-            This represents the major version
+            This represents the major version (``1.0`` or ``1.5``)
         display_name (str):
             The human-readable name of the model. E.g.
-            "Chat Bison".
+            "Gemini 1.5 Flash".
             The name can be up to 128 characters long and
             can consist of any UTF-8 characters.
         description (str):
@@ -71,21 +74,27 @@ class Model(proto.Message):
         supported_generation_methods (MutableSequence[str]):
             The model's supported generation methods.
 
-            The method names are defined as Pascal case strings, such as
-            ``generateMessage`` which correspond to API methods.
+            The corresponding API method names are defined as Pascal
+            case strings, such as ``generateMessage`` and
+            ``generateContent``.
         temperature (float):
             Controls the randomness of the output.
 
-            Values can range over ``[0.0,1.0]``, inclusive. A value
-            closer to ``1.0`` will produce responses that are more
-            varied, while a value closer to ``0.0`` will typically
-            result in less surprising responses from the model. This
-            value specifies default to be used by the backend while
-            making the call to the model.
+            Values can range over ``[0.0,max_temperature]``, inclusive.
+            A higher value will produce responses that are more varied,
+            while a value closer to ``0.0`` will typically result in
+            less surprising responses from the model. This value
+            specifies default to be used by the backend while making the
+            call to the model.
 
             This field is a member of `oneof`_ ``_temperature``.
+        max_temperature (float):
+            The maximum temperature this model can use.
+
+            This field is a member of `oneof`_ ``_max_temperature``.
         top_p (float):
-            For Nucleus sampling.
+            For `Nucleus
+            sampling <https://ai.google.dev/gemini-api/docs/prompting-strategies#top-p>`__.
 
             Nucleus sampling considers the smallest set of tokens whose
             probability sum is at least ``top_p``. This value specifies
@@ -140,6 +149,11 @@ class Model(proto.Message):
     temperature: float = proto.Field(
         proto.FLOAT,
         number=9,
+        optional=True,
+    )
+    max_temperature: float = proto.Field(
+        proto.FLOAT,
+        number=13,
         optional=True,
     )
     top_p: float = proto.Field(

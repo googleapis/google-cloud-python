@@ -793,7 +793,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
             transport_init: Union[
                 Type[FlowsTransport], Callable[..., FlowsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                FlowsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., FlowsTransport], transport)
             )

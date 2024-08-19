@@ -779,7 +779,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
                 Type[TransitionRouteGroupsTransport],
                 Callable[..., TransitionRouteGroupsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                TransitionRouteGroupsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TransitionRouteGroupsTransport], transport)
             )

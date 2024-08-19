@@ -266,7 +266,12 @@ class ModelServiceGrpcAsyncIOTransport(ModelServiceTransport):
     ) -> Callable[[model_service.GetModelRequest], Awaitable[model.Model]]:
         r"""Return a callable for the get model method over gRPC.
 
-        Gets information about a specific Model.
+        Gets information about a specific ``Model`` such as its version
+        number, token limits,
+        `parameters <https://ai.google.dev/gemini-api/docs/models/generative-models#model-parameters>`__
+        and other metadata. Refer to the `Gemini models
+        guide <https://ai.google.dev/gemini-api/docs/models/gemini>`__
+        for detailed model information.
 
         Returns:
             Callable[[~.GetModelRequest],
@@ -294,7 +299,9 @@ class ModelServiceGrpcAsyncIOTransport(ModelServiceTransport):
     ]:
         r"""Return a callable for the list models method over gRPC.
 
-        Lists models available through the API.
+        Lists the
+        ```Model``\ s <https://ai.google.dev/gemini-api/docs/models/gemini>`__
+        available through the Gemini API.
 
         Returns:
             Callable[[~.ListModelsRequest],
@@ -351,7 +358,7 @@ class ModelServiceGrpcAsyncIOTransport(ModelServiceTransport):
     ]:
         r"""Return a callable for the list tuned models method over gRPC.
 
-        Lists tuned models owned by the user.
+        Lists created tuned models.
 
         Returns:
             Callable[[~.ListTunedModelsRequest],
@@ -379,12 +386,11 @@ class ModelServiceGrpcAsyncIOTransport(ModelServiceTransport):
     ]:
         r"""Return a callable for the create tuned model method over gRPC.
 
-        Creates a tuned model. Intermediate tuning progress (if any) is
-        accessed through the [google.longrunning.Operations] service.
+        Creates a tuned model. Check intermediate tuning progress (if
+        any) through the [google.longrunning.Operations] service.
 
-        Status and results can be accessed through the Operations
-        service. Example: GET
-        /v1/tunedModels/az2mb0bpw6i/operations/000-111-222
+        Access status and results through the Operations service.
+        Example: GET /v1/tunedModels/az2mb0bpw6i/operations/000-111-222
 
         Returns:
             Callable[[~.CreateTunedModelRequest],

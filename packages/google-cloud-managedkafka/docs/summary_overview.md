@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Apache Kafka for BigQuery API API
+# Managed Service for Apache Kafka API
 
-Overview of the APIs available for Apache Kafka for BigQuery API API.
+Overview of the APIs available for Managed Service for Apache Kafka API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Apache Kafka for BigQuery API API.
+Managed Service for Apache Kafka API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-managedkafka/latest/summary_class.html)
 

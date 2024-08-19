@@ -1253,22 +1253,23 @@ async def test_list_voices_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_voices
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.list_voices(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_voices(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1559,22 +1560,23 @@ async def test_synthesize_speech_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.synthesize_speech
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.synthesize_speech(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.synthesize_speech(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1734,6 +1736,163 @@ async def test_synthesize_speech_flattened_error_async():
                 audio_encoding=cloud_tts.AudioEncoding.LINEAR16
             ),
         )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tts.StreamingSynthesizeRequest,
+        dict,
+    ],
+)
+def test_streaming_synthesize(request_type, transport: str = "grpc"):
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.streaming_synthesize), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter([cloud_tts.StreamingSynthesizeResponse()])
+        response = client.streaming_synthesize(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(message, cloud_tts.StreamingSynthesizeResponse)
+
+
+def test_streaming_synthesize_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = TextToSpeechClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.streaming_synthesize in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.streaming_synthesize
+        ] = mock_rpc
+        request = [{}]
+        client.streaming_synthesize(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.streaming_synthesize(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_streaming_synthesize_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = TextToSpeechAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.streaming_synthesize
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.streaming_synthesize
+        ] = mock_rpc
+
+        request = [{}]
+        await client.streaming_synthesize(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.streaming_synthesize(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_streaming_synthesize_async(
+    transport: str = "grpc_asyncio", request_type=cloud_tts.StreamingSynthesizeRequest
+):
+    client = TextToSpeechAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.streaming_synthesize), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[cloud_tts.StreamingSynthesizeResponse()]
+        )
+        response = await client.streaming_synthesize(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(message, cloud_tts.StreamingSynthesizeResponse)
+
+
+@pytest.mark.asyncio
+async def test_streaming_synthesize_async_from_dict():
+    await test_streaming_synthesize_async(request_type=dict)
 
 
 @pytest.mark.parametrize(
@@ -2263,6 +2422,30 @@ def test_synthesize_speech_rest_error():
     )
 
 
+def test_streaming_synthesize_rest_no_http_options():
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = cloud_tts.StreamingSynthesizeRequest()
+    requests = [request]
+    with pytest.raises(RuntimeError):
+        client.streaming_synthesize(requests)
+
+
+def test_streaming_synthesize_rest_error():
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.streaming_synthesize({})
+    assert "Method StreamingSynthesize is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.TextToSpeechGrpcTransport(
@@ -2404,6 +2587,7 @@ def test_text_to_speech_base_transport():
     methods = (
         "list_voices",
         "synthesize_speech",
+        "streaming_synthesize",
         "get_operation",
         "list_operations",
     )
@@ -2666,6 +2850,9 @@ def test_text_to_speech_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.synthesize_speech._session
     session2 = client2.transport.synthesize_speech._session
+    assert session1 != session2
+    session1 = client1.transport.streaming_synthesize._session
+    session2 = client2.transport.streaming_synthesize._session
     assert session1 != session2
 
 
