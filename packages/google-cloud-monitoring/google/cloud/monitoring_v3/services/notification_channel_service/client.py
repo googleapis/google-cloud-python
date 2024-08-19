@@ -699,7 +699,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
                 Type[NotificationChannelServiceTransport],
                 Callable[..., NotificationChannelServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                NotificationChannelServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., NotificationChannelServiceTransport], transport)
             )

@@ -676,7 +676,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
             transport_init: Union[
                 Type[NotebookServiceTransport], Callable[..., NotebookServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                NotebookServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., NotebookServiceTransport], transport)
             )

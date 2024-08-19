@@ -651,7 +651,7 @@ class WorkflowsServiceV2BetaClient(metaclass=WorkflowsServiceV2BetaClientMeta):
                 Type[WorkflowsServiceV2BetaTransport],
                 Callable[..., WorkflowsServiceV2BetaTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                WorkflowsServiceV2BetaClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., WorkflowsServiceV2BetaTransport], transport)
             )

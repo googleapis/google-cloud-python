@@ -714,7 +714,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             transport_init: Union[
                 Type[EnvironmentsTransport], Callable[..., EnvironmentsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                EnvironmentsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., EnvironmentsTransport], transport)
             )
