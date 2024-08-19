@@ -327,8 +327,8 @@ class ConsumerPartitionMetadata(proto.Message):
 
     Attributes:
         offset (int):
-            Required. The offset for this partition, or 0
-            if no offset has been committed.
+            Required. The current offset for this
+            partition, or 0 if no offset has been committed.
         metadata (str):
             Optional. The associated metadata for this
             partition, or empty if it does not exist.
