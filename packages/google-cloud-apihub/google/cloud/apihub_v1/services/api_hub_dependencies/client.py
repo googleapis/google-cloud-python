@@ -696,7 +696,7 @@ class ApiHubDependenciesClient(metaclass=ApiHubDependenciesClientMeta):
                 Type[ApiHubDependenciesTransport],
                 Callable[..., ApiHubDependenciesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ApiHubDependenciesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ApiHubDependenciesTransport], transport)
             )

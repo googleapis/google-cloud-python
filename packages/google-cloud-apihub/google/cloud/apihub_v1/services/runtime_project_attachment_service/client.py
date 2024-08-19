@@ -686,7 +686,7 @@ class RuntimeProjectAttachmentServiceClient(
                 Type[RuntimeProjectAttachmentServiceTransport],
                 Callable[..., RuntimeProjectAttachmentServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RuntimeProjectAttachmentServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., RuntimeProjectAttachmentServiceTransport], transport

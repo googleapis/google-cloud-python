@@ -785,7 +785,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 Type[ConferenceRecordsServiceTransport],
                 Callable[..., ConferenceRecordsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ConferenceRecordsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ConferenceRecordsServiceTransport], transport)
             )

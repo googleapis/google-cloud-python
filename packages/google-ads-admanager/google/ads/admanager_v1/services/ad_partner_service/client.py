@@ -673,7 +673,7 @@ class AdPartnerServiceClient(metaclass=AdPartnerServiceClientMeta):
                 Type[AdPartnerServiceTransport],
                 Callable[..., AdPartnerServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AdPartnerServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AdPartnerServiceTransport], transport)
             )

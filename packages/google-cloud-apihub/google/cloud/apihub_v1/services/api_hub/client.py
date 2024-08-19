@@ -830,7 +830,7 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
             transport_init: Union[
                 Type[ApiHubTransport], Callable[..., ApiHubTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ApiHubClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ApiHubTransport], transport)
             )

@@ -645,7 +645,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
             transport_init: Union[
                 Type[FirewallTransport], Callable[..., FirewallTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                FirewallClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., FirewallTransport], transport)
             )
