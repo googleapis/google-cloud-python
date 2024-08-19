@@ -727,7 +727,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 Type[CloudFunctionsServiceTransport],
                 Callable[..., CloudFunctionsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                CloudFunctionsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudFunctionsServiceTransport], transport)
             )
