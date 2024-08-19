@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -191,9 +190,7 @@ class GatewayServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(GatewayServiceClient).get_transport_class, type(GatewayServiceClient)
-    )
+    get_transport_class = GatewayServiceClient.get_transport_class
 
     def __init__(
         self,

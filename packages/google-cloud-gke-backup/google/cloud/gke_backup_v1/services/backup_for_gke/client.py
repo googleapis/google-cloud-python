@@ -847,7 +847,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             transport_init: Union[
                 Type[BackupForGKETransport], Callable[..., BackupForGKETransport]
             ] = (
-                type(self).get_transport_class(transport)
+                BackupForGKEClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., BackupForGKETransport], transport)
             )

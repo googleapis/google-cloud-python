@@ -741,7 +741,7 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
             transport_init: Union[
                 Type[AzureClustersTransport], Callable[..., AzureClustersTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AzureClustersClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AzureClustersTransport], transport)
             )

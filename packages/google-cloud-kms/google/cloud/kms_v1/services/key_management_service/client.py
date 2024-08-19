@@ -786,7 +786,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 Type[KeyManagementServiceTransport],
                 Callable[..., KeyManagementServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                KeyManagementServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., KeyManagementServiceTransport], transport)
             )

@@ -702,7 +702,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
             transport_init: Union[
                 Type[GkeHubTransport], Callable[..., GkeHubTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                GkeHubClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., GkeHubTransport], transport)
             )
