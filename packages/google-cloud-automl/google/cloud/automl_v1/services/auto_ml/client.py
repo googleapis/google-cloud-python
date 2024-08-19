@@ -760,7 +760,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
             transport_init: Union[
                 Type[AutoMlTransport], Callable[..., AutoMlTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AutoMlClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AutoMlTransport], transport)
             )

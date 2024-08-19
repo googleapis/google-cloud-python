@@ -792,7 +792,7 @@ class AppHubClient(metaclass=AppHubClientMeta):
             transport_init: Union[
                 Type[AppHubTransport], Callable[..., AppHubTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AppHubClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AppHubTransport], transport)
             )
