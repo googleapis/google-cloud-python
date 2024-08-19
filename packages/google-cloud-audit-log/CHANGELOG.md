@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-audit-log/compare/v0.2.5...v0.3.0) (2024-08-15)
+
+
+### Features
+
+* Add `google/cloud/audit/bigquery_audit_metadata_pb2.py` ([c6efc56](https://github.com/googleapis/python-audit-log/commit/c6efc56eec9627ecf1e139cc33d5815937f04dc6))
+* Add PolicyViolation. this will only be present when access is denied due to Organization Policy [fc5be6f](https://github.com/googleapis/googleapis/commit/fc5be6f850e7989e912b40c6b79306c6dc9655bd) ([c6efc56](https://github.com/googleapis/python-audit-log/commit/c6efc56eec9627ecf1e139cc33d5815937f04dc6))
+* Add support for Python 3.12 ([#113](https://github.com/googleapis/python-audit-log/issues/113)) ([08b0bca](https://github.com/googleapis/python-audit-log/commit/08b0bca0ee634d65bba18c7de102063be17d0958))
+* Add the principal field to the ServiceAccountDelegationInfo [ba89dac](https://github.com/googleapis/googleapis/commit/ba89dace27923254d96ab8339b831dc996e2112f) ([c6efc56](https://github.com/googleapis/python-audit-log/commit/c6efc56eec9627ecf1e139cc33d5815937f04dc6))
+* Introduce compatibility with native namespace packages ([#117](https://github.com/googleapis/python-audit-log/issues/117)) ([9007e8a](https://github.com/googleapis/python-audit-log/commit/9007e8af7f5300f866f42035c36a9d3fe36ef117))
+* Update AuditLog proto to include all new changes in Audit Logging [40292fc](https://github.com/googleapis/googleapis/commit/40292fc8f271f3b8708f9c91c85d7240200893a6) ([c6efc56](https://github.com/googleapis/python-audit-log/commit/c6efc56eec9627ecf1e139cc33d5815937f04dc6))
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf&gt;=3.20.2, protobuf&lt;6 ([bf1434a](https://github.com/googleapis/python-audit-log/commit/bf1434a7f4c0d03767c6f943de898d5562e874b1))
+* Regenerate pb2 files for compatibility with protobuf 5.x ([bf1434a](https://github.com/googleapis/python-audit-log/commit/bf1434a7f4c0d03767c6f943de898d5562e874b1))
+
 ## [0.2.5](https://github.com/googleapis/python-audit-log/compare/v0.2.4...v0.2.5) (2023-01-07)
 
 
