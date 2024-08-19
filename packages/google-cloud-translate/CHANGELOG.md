@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.16.0...google-cloud-translate-v3.17.0) (2024-08-19)
+
+
+### Features
+
+* [google-cloud-translate] Add BigQuery Metastore Partition Service API version v1alpha ([#13006](https://github.com/googleapis/google-cloud-python/issues/13006)) ([95fb211](https://github.com/googleapis/google-cloud-python/commit/95fb211319a62f021866a5a6cd103553e282d8c0))
+
 ## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.15.5...google-cloud-translate-v3.16.0) (2024-08-08)
 
 
