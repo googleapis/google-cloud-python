@@ -708,7 +708,7 @@ class TpuClient(metaclass=TpuClientMeta):
                 )
 
             transport_init: Union[Type[TpuTransport], Callable[..., TpuTransport]] = (
-                type(self).get_transport_class(transport)
+                TpuClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TpuTransport], transport)
             )

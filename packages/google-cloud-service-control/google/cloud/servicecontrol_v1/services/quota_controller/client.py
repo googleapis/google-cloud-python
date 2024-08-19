@@ -643,7 +643,7 @@ class QuotaControllerClient(metaclass=QuotaControllerClientMeta):
             transport_init: Union[
                 Type[QuotaControllerTransport], Callable[..., QuotaControllerTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                QuotaControllerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., QuotaControllerTransport], transport)
             )

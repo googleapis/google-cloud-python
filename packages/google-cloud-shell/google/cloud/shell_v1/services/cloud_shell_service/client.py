@@ -671,7 +671,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
                 Type[CloudShellServiceTransport],
                 Callable[..., CloudShellServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                CloudShellServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudShellServiceTransport], transport)
             )

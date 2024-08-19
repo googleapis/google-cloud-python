@@ -793,7 +793,7 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
             transport_init: Union[
                 Type[TelcoAutomationTransport], Callable[..., TelcoAutomationTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                TelcoAutomationClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TelcoAutomationTransport], transport)
             )
