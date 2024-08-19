@@ -1767,7 +1767,7 @@ replacements:
       \            transport_init: Union\[
       \                Type\[GrafeasTransport\], Callable\[..., GrafeasTransport\]
       \            \] = \(
-      \                type\(self\).get_transport_class\(transport\)
+      \                GrafeasClient.get_transport_class\(transport\)
       \                if isinstance\(transport, str\) or transport is None
       \                else cast\(Callable\[..., GrafeasTransport\], transport\)
       \            \)
@@ -1817,7 +1817,7 @@ replacements:
       packages/grafeas/grafeas/grafeas_v1/services/grafeas/async_client.py
     ]
     before: |
-      \)\n
+      GrafeasClient.get_transport_class\n
       \    def __init__\(
       \        self,
       \        \*,
