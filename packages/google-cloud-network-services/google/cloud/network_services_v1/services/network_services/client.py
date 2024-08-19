@@ -934,7 +934,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
             transport_init: Union[
                 Type[NetworkServicesTransport], Callable[..., NetworkServicesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                NetworkServicesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., NetworkServicesTransport], transport)
             )

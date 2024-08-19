@@ -695,7 +695,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
                 Type[UptimeCheckServiceTransport],
                 Callable[..., UptimeCheckServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                UptimeCheckServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., UptimeCheckServiceTransport], transport)
             )

@@ -665,7 +665,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
             transport_init: Union[
                 Type[GroupServiceTransport], Callable[..., GroupServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                GroupServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., GroupServiceTransport], transport)
             )

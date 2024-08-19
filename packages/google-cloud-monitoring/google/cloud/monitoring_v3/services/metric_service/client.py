@@ -703,7 +703,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             transport_init: Union[
                 Type[MetricServiceTransport], Callable[..., MetricServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                MetricServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., MetricServiceTransport], transport)
             )

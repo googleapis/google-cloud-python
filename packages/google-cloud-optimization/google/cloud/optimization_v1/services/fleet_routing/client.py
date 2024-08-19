@@ -659,7 +659,7 @@ class FleetRoutingClient(metaclass=FleetRoutingClientMeta):
             transport_init: Union[
                 Type[FleetRoutingTransport], Callable[..., FleetRoutingTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                FleetRoutingClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., FleetRoutingTransport], transport)
             )
