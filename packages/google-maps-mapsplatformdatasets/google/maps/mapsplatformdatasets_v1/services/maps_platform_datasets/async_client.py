@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -194,10 +193,7 @@ class MapsPlatformDatasetsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(MapsPlatformDatasetsClient).get_transport_class,
-        type(MapsPlatformDatasetsClient),
-    )
+    get_transport_class = MapsPlatformDatasetsClient.get_transport_class
 
     def __init__(
         self,

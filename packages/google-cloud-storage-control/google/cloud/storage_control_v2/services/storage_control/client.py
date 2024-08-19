@@ -707,7 +707,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             transport_init: Union[
                 Type[StorageControlTransport], Callable[..., StorageControlTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                StorageControlClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., StorageControlTransport], transport)
             )

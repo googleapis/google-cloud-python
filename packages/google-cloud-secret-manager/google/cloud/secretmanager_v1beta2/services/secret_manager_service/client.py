@@ -713,7 +713,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 Type[SecretManagerServiceTransport],
                 Callable[..., SecretManagerServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SecretManagerServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SecretManagerServiceTransport], transport)
             )

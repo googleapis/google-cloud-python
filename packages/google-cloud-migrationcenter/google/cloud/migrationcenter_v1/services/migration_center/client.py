@@ -871,7 +871,7 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
             transport_init: Union[
                 Type[MigrationCenterTransport], Callable[..., MigrationCenterTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                MigrationCenterClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., MigrationCenterTransport], transport)
             )

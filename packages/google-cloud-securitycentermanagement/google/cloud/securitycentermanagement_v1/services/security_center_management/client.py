@@ -792,7 +792,7 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 Type[SecurityCenterManagementTransport],
                 Callable[..., SecurityCenterManagementTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SecurityCenterManagementClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SecurityCenterManagementTransport], transport)
             )

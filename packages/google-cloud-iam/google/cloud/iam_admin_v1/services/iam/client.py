@@ -705,7 +705,7 @@ class IAMClient(metaclass=IAMClientMeta):
                 )
 
             transport_init: Union[Type[IAMTransport], Callable[..., IAMTransport]] = (
-                type(self).get_transport_class(transport)
+                IAMClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., IAMTransport], transport)
             )

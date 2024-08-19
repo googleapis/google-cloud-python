@@ -703,7 +703,7 @@ class IdentityAwareProxyAdminServiceClient(
                 Type[IdentityAwareProxyAdminServiceTransport],
                 Callable[..., IdentityAwareProxyAdminServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                IdentityAwareProxyAdminServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., IdentityAwareProxyAdminServiceTransport], transport

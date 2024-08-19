@@ -671,7 +671,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
             transport_init: Union[
                 Type[ServiceManagerTransport], Callable[..., ServiceManagerTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ServiceManagerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ServiceManagerTransport], transport)
             )

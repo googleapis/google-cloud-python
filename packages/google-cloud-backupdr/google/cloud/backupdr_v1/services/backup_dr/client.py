@@ -665,7 +665,7 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
             transport_init: Union[
                 Type[BackupDRTransport], Callable[..., BackupDRTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                BackupDRClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., BackupDRTransport], transport)
             )

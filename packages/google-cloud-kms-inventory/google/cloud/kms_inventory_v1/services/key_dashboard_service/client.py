@@ -697,7 +697,7 @@ class KeyDashboardServiceClient(metaclass=KeyDashboardServiceClientMeta):
                 Type[KeyDashboardServiceTransport],
                 Callable[..., KeyDashboardServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                KeyDashboardServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., KeyDashboardServiceTransport], transport)
             )

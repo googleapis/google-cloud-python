@@ -707,7 +707,7 @@ class ClientConnectorServicesServiceClient(
                 Type[ClientConnectorServicesServiceTransport],
                 Callable[..., ClientConnectorServicesServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ClientConnectorServicesServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., ClientConnectorServicesServiceTransport], transport

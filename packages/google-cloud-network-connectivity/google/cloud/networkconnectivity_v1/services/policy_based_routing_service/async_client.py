@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -217,10 +216,7 @@ class PolicyBasedRoutingServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(PolicyBasedRoutingServiceClient).get_transport_class,
-        type(PolicyBasedRoutingServiceClient),
-    )
+    get_transport_class = PolicyBasedRoutingServiceClient.get_transport_class
 
     def __init__(
         self,

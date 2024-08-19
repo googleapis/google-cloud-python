@@ -646,7 +646,7 @@ class AuthorizedDomainsClient(metaclass=AuthorizedDomainsClientMeta):
                 Type[AuthorizedDomainsTransport],
                 Callable[..., AuthorizedDomainsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AuthorizedDomainsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AuthorizedDomainsTransport], transport)
             )

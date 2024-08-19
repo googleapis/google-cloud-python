@@ -658,7 +658,7 @@ class IDSClient(metaclass=IDSClientMeta):
                 )
 
             transport_init: Union[Type[IDSTransport], Callable[..., IDSTransport]] = (
-                type(self).get_transport_class(transport)
+                IDSClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., IDSTransport], transport)
             )

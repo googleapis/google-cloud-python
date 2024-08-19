@@ -673,7 +673,7 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
                 Type[CompletionServiceTransport],
                 Callable[..., CompletionServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                CompletionServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CompletionServiceTransport], transport)
             )

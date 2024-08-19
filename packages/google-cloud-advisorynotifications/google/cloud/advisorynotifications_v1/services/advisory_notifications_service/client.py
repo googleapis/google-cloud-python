@@ -699,7 +699,7 @@ class AdvisoryNotificationsServiceClient(
                 Type[AdvisoryNotificationsServiceTransport],
                 Callable[..., AdvisoryNotificationsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AdvisoryNotificationsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., AdvisoryNotificationsServiceTransport], transport

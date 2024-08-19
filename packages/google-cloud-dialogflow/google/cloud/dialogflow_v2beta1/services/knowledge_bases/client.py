@@ -664,7 +664,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
             transport_init: Union[
                 Type[KnowledgeBasesTransport], Callable[..., KnowledgeBasesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                KnowledgeBasesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., KnowledgeBasesTransport], transport)
             )

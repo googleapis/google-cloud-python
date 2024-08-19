@@ -648,7 +648,7 @@ class AnalyticsServiceClient(metaclass=AnalyticsServiceClientMeta):
                 Type[AnalyticsServiceTransport],
                 Callable[..., AnalyticsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AnalyticsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AnalyticsServiceTransport], transport)
             )

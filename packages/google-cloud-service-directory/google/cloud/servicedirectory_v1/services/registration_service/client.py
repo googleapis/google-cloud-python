@@ -761,7 +761,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 Type[RegistrationServiceTransport],
                 Callable[..., RegistrationServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegistrationServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegistrationServiceTransport], transport)
             )

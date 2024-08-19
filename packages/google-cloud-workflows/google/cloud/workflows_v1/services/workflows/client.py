@@ -690,7 +690,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
             transport_init: Union[
                 Type[WorkflowsTransport], Callable[..., WorkflowsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                WorkflowsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., WorkflowsTransport], transport)
             )

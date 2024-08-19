@@ -661,7 +661,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
             transport_init: Union[
                 Type[ContextsTransport], Callable[..., ContextsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ContextsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ContextsTransport], transport)
             )

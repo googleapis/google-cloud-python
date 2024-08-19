@@ -701,7 +701,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
             transport_init: Union[
                 Type[AnswerRecordsTransport], Callable[..., AnswerRecordsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AnswerRecordsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AnswerRecordsTransport], transport)
             )

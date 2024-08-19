@@ -730,7 +730,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
             transport_init: Union[
                 Type[NetworkSecurityTransport], Callable[..., NetworkSecurityTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                NetworkSecurityClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., NetworkSecurityTransport], transport)
             )

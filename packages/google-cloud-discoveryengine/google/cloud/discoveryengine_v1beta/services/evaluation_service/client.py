@@ -835,7 +835,7 @@ class EvaluationServiceClient(metaclass=EvaluationServiceClientMeta):
                 Type[EvaluationServiceTransport],
                 Callable[..., EvaluationServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                EvaluationServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., EvaluationServiceTransport], transport)
             )

@@ -660,7 +660,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
                 Type[ConnectionServiceTransport],
                 Callable[..., ConnectionServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ConnectionServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ConnectionServiceTransport], transport)
             )

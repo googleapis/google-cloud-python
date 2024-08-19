@@ -791,7 +791,7 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 Type[SecureSourceManagerTransport],
                 Callable[..., SecureSourceManagerTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SecureSourceManagerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SecureSourceManagerTransport], transport)
             )

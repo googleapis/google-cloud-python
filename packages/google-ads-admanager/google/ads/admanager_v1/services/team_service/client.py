@@ -663,7 +663,7 @@ class TeamServiceClient(metaclass=TeamServiceClientMeta):
             transport_init: Union[
                 Type[TeamServiceTransport], Callable[..., TeamServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                TeamServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TeamServiceTransport], transport)
             )

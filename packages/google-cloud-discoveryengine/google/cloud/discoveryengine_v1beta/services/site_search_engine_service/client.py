@@ -705,7 +705,7 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
                 Type[SiteSearchEngineServiceTransport],
                 Callable[..., SiteSearchEngineServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SiteSearchEngineServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SiteSearchEngineServiceTransport], transport)
             )

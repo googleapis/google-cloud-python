@@ -672,7 +672,7 @@ class StreamingServiceClient(metaclass=StreamingServiceClientMeta):
                 Type[StreamingServiceTransport],
                 Callable[..., StreamingServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                StreamingServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., StreamingServiceTransport], transport)
             )

@@ -788,7 +788,7 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
             transport_init: Union[
                 Type[EdgeNetworkTransport], Callable[..., EdgeNetworkTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                EdgeNetworkClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., EdgeNetworkTransport], transport)
             )

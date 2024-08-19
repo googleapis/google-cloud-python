@@ -697,7 +697,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 Type[TranscoderServiceTransport],
                 Callable[..., TranscoderServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                TranscoderServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TranscoderServiceTransport], transport)
             )

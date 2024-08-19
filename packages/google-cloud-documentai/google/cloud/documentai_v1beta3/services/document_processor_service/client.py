@@ -784,7 +784,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 Type[DocumentProcessorServiceTransport],
                 Callable[..., DocumentProcessorServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                DocumentProcessorServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DocumentProcessorServiceTransport], transport)
             )

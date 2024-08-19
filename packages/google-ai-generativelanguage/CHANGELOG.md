@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.9](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.8...google-ai-generativelanguage-v0.6.9) (2024-08-19)
+
+
+### Features
+
+* Add model max_temperature ([fdebbf2](https://github.com/googleapis/google-cloud-python/commit/fdebbf2e914e9a8ed5a31a04ce9fe26de0f69c72))
+* Add new PromptFeedback and FinishReason entries ([fdebbf2](https://github.com/googleapis/google-cloud-python/commit/fdebbf2e914e9a8ed5a31a04ce9fe26de0f69c72))
+* Add new PromptFeedback and FinishReason entries for https://github.com/google-gemini/generative-ai-python/issues/476 ([fdebbf2](https://github.com/googleapis/google-cloud-python/commit/fdebbf2e914e9a8ed5a31a04ce9fe26de0f69c72))
+
+
+### Documentation
+
+* Many small fixes ([fdebbf2](https://github.com/googleapis/google-cloud-python/commit/fdebbf2e914e9a8ed5a31a04ce9fe26de0f69c72))
+
 ## [0.6.8](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.7...google-ai-generativelanguage-v0.6.8) (2024-07-30)
 
 

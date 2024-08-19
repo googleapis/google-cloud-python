@@ -636,7 +636,7 @@ class QueryServiceClient(metaclass=QueryServiceClientMeta):
             transport_init: Union[
                 Type[QueryServiceTransport], Callable[..., QueryServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                QueryServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., QueryServiceTransport], transport)
             )

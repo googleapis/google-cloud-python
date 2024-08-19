@@ -660,7 +660,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
             transport_init: Union[
                 Type[ServiceUsageTransport], Callable[..., ServiceUsageTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ServiceUsageClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ServiceUsageTransport], transport)
             )

@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -197,10 +196,7 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(PhishingProtectionServiceV1Beta1Client).get_transport_class,
-        type(PhishingProtectionServiceV1Beta1Client),
-    )
+    get_transport_class = PhishingProtectionServiceV1Beta1Client.get_transport_class
 
     def __init__(
         self,

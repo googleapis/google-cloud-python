@@ -825,7 +825,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 Type[DataLabelingServiceTransport],
                 Callable[..., DataLabelingServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                DataLabelingServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DataLabelingServiceTransport], transport)
             )

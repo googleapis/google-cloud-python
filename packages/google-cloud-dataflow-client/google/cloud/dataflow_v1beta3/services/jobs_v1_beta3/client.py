@@ -639,7 +639,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
             transport_init: Union[
                 Type[JobsV1Beta3Transport], Callable[..., JobsV1Beta3Transport]
             ] = (
-                type(self).get_transport_class(transport)
+                JobsV1Beta3Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., JobsV1Beta3Transport], transport)
             )

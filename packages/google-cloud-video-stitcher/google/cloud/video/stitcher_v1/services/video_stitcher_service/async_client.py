@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -244,10 +243,7 @@ class VideoStitcherServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(VideoStitcherServiceClient).get_transport_class,
-        type(VideoStitcherServiceClient),
-    )
+    get_transport_class = VideoStitcherServiceClient.get_transport_class
 
     def __init__(
         self,

@@ -696,7 +696,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
                 Type[AlertPolicyServiceTransport],
                 Callable[..., AlertPolicyServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AlertPolicyServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AlertPolicyServiceTransport], transport)
             )

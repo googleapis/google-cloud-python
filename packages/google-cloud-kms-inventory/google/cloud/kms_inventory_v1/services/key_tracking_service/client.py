@@ -706,7 +706,7 @@ class KeyTrackingServiceClient(metaclass=KeyTrackingServiceClientMeta):
                 Type[KeyTrackingServiceTransport],
                 Callable[..., KeyTrackingServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                KeyTrackingServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., KeyTrackingServiceTransport], transport)
             )

@@ -718,7 +718,7 @@ class AutoSuggestionServiceClient(metaclass=AutoSuggestionServiceClientMeta):
                 Type[AutoSuggestionServiceTransport],
                 Callable[..., AutoSuggestionServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AutoSuggestionServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AutoSuggestionServiceTransport], transport)
             )

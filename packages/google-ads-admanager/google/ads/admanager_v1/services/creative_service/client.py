@@ -711,7 +711,7 @@ class CreativeServiceClient(metaclass=CreativeServiceClientMeta):
             transport_init: Union[
                 Type[CreativeServiceTransport], Callable[..., CreativeServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CreativeServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CreativeServiceTransport], transport)
             )
