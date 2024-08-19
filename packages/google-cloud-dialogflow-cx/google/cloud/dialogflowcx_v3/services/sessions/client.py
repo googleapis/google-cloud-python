@@ -887,7 +887,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
             transport_init: Union[
                 Type[SessionsTransport], Callable[..., SessionsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SessionsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SessionsTransport], transport)
             )
