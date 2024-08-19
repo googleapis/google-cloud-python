@@ -218,8 +218,11 @@ class _JobConfig(object):
                 err.__traceback__
             )
 
-        """ Docs indicate a string is expected by the API """
-        self._properties["jobTimeoutMs"] = str(value)
+        if value is not None:
+            # docs indicate a string is expected by the API
+            self._properties["jobTimeoutMs"] = str(value)
+        else:
+            self._properties.pop("jobTimeoutMs", None)
 
     @property
     def labels(self):

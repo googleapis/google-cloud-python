@@ -1320,3 +1320,21 @@ class Test_JobConfig(unittest.TestCase):
         # Confirm that integers get converted to strings.
         job_config.job_timeout_ms = 5000
         assert job_config.job_timeout_ms == "5000"  # int is converted to string
+
+    def test_job_timeout_is_none_when_set_none(self):
+        job_config = self._make_one()
+        job_config.job_timeout_ms = None
+        # Confirm value is None and not literal string 'None'
+        assert job_config.job_timeout_ms is None
+
+    def test_job_timeout_properties(self):
+        # Make sure any value stored in properties is erased
+        # when setting job_timeout to None.
+        job_config = self._make_one()
+        job_config.job_timeout_ms = 4200
+        assert job_config.job_timeout_ms == "4200"
+        assert job_config._properties.get("jobTimeoutMs") == "4200"
+
+        job_config.job_timeout_ms = None
+        assert job_config.job_timeout_ms is None
+        assert "jobTimeoutMs" not in job_config._properties
