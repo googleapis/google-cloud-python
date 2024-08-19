@@ -1,0 +1,322 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.ads.admanager_v1",
+  "protoPackage": "google.ads.admanager.v1",
+  "schema": "1.0",
+  "services": {
+    "AdPartnerService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "AdPartnerServiceClient",
+          "rpcs": {
+            "GetAdPartner": {
+              "methods": [
+                "get_ad_partner"
+              ]
+            },
+            "ListAdPartners": {
+              "methods": [
+                "list_ad_partners"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "AdUnitService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "AdUnitServiceClient",
+          "rpcs": {
+            "GetAdUnit": {
+              "methods": [
+                "get_ad_unit"
+              ]
+            },
+            "ListAdUnits": {
+              "methods": [
+                "list_ad_units"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CompanyService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CompanyServiceClient",
+          "rpcs": {
+            "GetCompany": {
+              "methods": [
+                "get_company"
+              ]
+            },
+            "ListCompanies": {
+              "methods": [
+                "list_companies"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ContactService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ContactServiceClient",
+          "rpcs": {
+            "GetContact": {
+              "methods": [
+                "get_contact"
+              ]
+            },
+            "ListContacts": {
+              "methods": [
+                "list_contacts"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CreativeService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CreativeServiceClient",
+          "rpcs": {
+            "GetCreative": {
+              "methods": [
+                "get_creative"
+              ]
+            },
+            "ListCreatives": {
+              "methods": [
+                "list_creatives"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CustomFieldService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CustomFieldServiceClient",
+          "rpcs": {
+            "GetCustomField": {
+              "methods": [
+                "get_custom_field"
+              ]
+            },
+            "ListCustomFields": {
+              "methods": [
+                "list_custom_fields"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CustomTargetingKeyService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CustomTargetingKeyServiceClient",
+          "rpcs": {
+            "GetCustomTargetingKey": {
+              "methods": [
+                "get_custom_targeting_key"
+              ]
+            },
+            "ListCustomTargetingKeys": {
+              "methods": [
+                "list_custom_targeting_keys"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CustomTargetingValueService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CustomTargetingValueServiceClient",
+          "rpcs": {
+            "GetCustomTargetingValue": {
+              "methods": [
+                "get_custom_targeting_value"
+              ]
+            },
+            "ListCustomTargetingValues": {
+              "methods": [
+                "list_custom_targeting_values"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "LabelService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "LabelServiceClient",
+          "rpcs": {
+            "GetLabel": {
+              "methods": [
+                "get_label"
+              ]
+            },
+            "ListLabels": {
+              "methods": [
+                "list_labels"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "LineItemService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "LineItemServiceClient",
+          "rpcs": {
+            "GetLineItem": {
+              "methods": [
+                "get_line_item"
+              ]
+            },
+            "ListLineItems": {
+              "methods": [
+                "list_line_items"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "NetworkService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "NetworkServiceClient",
+          "rpcs": {
+            "GetNetwork": {
+              "methods": [
+                "get_network"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "OrderService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "OrderServiceClient",
+          "rpcs": {
+            "GetOrder": {
+              "methods": [
+                "get_order"
+              ]
+            },
+            "ListOrders": {
+              "methods": [
+                "list_orders"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "PlacementService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "PlacementServiceClient",
+          "rpcs": {
+            "GetPlacement": {
+              "methods": [
+                "get_placement"
+              ]
+            },
+            "ListPlacements": {
+              "methods": [
+                "list_placements"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ReportService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ReportServiceClient",
+          "rpcs": {
+            "ExportSavedReport": {
+              "methods": [
+                "export_saved_report"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RoleService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RoleServiceClient",
+          "rpcs": {
+            "GetRole": {
+              "methods": [
+                "get_role"
+              ]
+            },
+            "ListRoles": {
+              "methods": [
+                "list_roles"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "TeamService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "TeamServiceClient",
+          "rpcs": {
+            "GetTeam": {
+              "methods": [
+                "get_team"
+              ]
+            },
+            "ListTeams": {
+              "methods": [
+                "list_teams"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "UserService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "UserServiceClient",
+          "rpcs": {
+            "GetUser": {
+              "methods": [
+                "get_user"
+              ]
+            },
+            "ListUsers": {
+              "methods": [
+                "list_users"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
