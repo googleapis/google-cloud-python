@@ -14,9 +14,11 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
+    AsyncIterable,
+    AsyncIterator,
+    Awaitable,
     Callable,
     Dict,
     Mapping,
@@ -184,9 +186,7 @@ class TextToSpeechAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(TextToSpeechClient).get_transport_class, type(TextToSpeechClient)
-    )
+    get_transport_class = TextToSpeechClient.get_transport_class
 
     def __init__(
         self,
@@ -487,6 +487,100 @@ class TextToSpeechAsyncClient:
         # Send the request.
         response = await rpc(
             request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def streaming_synthesize(
+        self,
+        requests: Optional[AsyncIterator[cloud_tts.StreamingSynthesizeRequest]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> Awaitable[AsyncIterable[cloud_tts.StreamingSynthesizeResponse]]:
+        r"""Performs bidirectional streaming speech synthesis:
+        receive audio while sending text.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import texttospeech_v1beta1
+
+            async def sample_streaming_synthesize():
+                # Create a client
+                client = texttospeech_v1beta1.TextToSpeechAsyncClient()
+
+                # Initialize request argument(s)
+                streaming_config = texttospeech_v1beta1.StreamingSynthesizeConfig()
+                streaming_config.voice.language_code = "language_code_value"
+
+                request = texttospeech_v1beta1.StreamingSynthesizeRequest(
+                    streaming_config=streaming_config,
+                )
+
+                # This method expects an iterator which contains
+                # 'texttospeech_v1beta1.StreamingSynthesizeRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = await client.streaming_synthesize(requests=request_generator())
+
+                # Handle the response
+                async for response in stream:
+                    print(response)
+
+        Args:
+            requests (AsyncIterator[`google.cloud.texttospeech_v1beta1.types.StreamingSynthesizeRequest`]):
+                The request object AsyncIterator. Request message for the ``StreamingSynthesize`` method.
+                Multiple ``StreamingSynthesizeRequest`` messages are
+                sent in one call. The first message must contain a
+                ``streaming_config`` that fully specifies the request
+                configuration and must not contain ``input``. All
+                subsequent messages must only have ``input`` set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            AsyncIterable[google.cloud.texttospeech_v1beta1.types.StreamingSynthesizeResponse]:
+                StreamingSynthesizeResponse is the only message returned to the
+                   client by StreamingSynthesize method. A series of
+                   zero or more StreamingSynthesizeResponse messages are
+                   streamed back to the client.
+
+        """
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.streaming_synthesize
+        ]
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            requests,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

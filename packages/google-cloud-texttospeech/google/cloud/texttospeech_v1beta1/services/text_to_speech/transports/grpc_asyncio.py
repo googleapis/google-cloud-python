@@ -297,6 +297,36 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
             )
         return self._stubs["synthesize_speech"]
 
+    @property
+    def streaming_synthesize(
+        self,
+    ) -> Callable[
+        [cloud_tts.StreamingSynthesizeRequest],
+        Awaitable[cloud_tts.StreamingSynthesizeResponse],
+    ]:
+        r"""Return a callable for the streaming synthesize method over gRPC.
+
+        Performs bidirectional streaming speech synthesis:
+        receive audio while sending text.
+
+        Returns:
+            Callable[[~.StreamingSynthesizeRequest],
+                    Awaitable[~.StreamingSynthesizeResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "streaming_synthesize" not in self._stubs:
+            self._stubs["streaming_synthesize"] = self.grpc_channel.stream_stream(
+                "/google.cloud.texttospeech.v1beta1.TextToSpeech/StreamingSynthesize",
+                request_serializer=cloud_tts.StreamingSynthesizeRequest.serialize,
+                response_deserializer=cloud_tts.StreamingSynthesizeResponse.deserialize,
+            )
+        return self._stubs["streaming_synthesize"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -307,6 +337,11 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
             ),
             self.synthesize_speech: gapic_v1.method_async.wrap_method(
                 self.synthesize_speech,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.streaming_synthesize: gapic_v1.method_async.wrap_method(
+                self.streaming_synthesize,
                 default_timeout=None,
                 client_info=client_info,
             ),
