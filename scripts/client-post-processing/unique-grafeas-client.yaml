@@ -1884,7 +1884,7 @@ replacements:
       \            client_info=client_info,
       \        \)
     after: |
-      )\n
+      GrafeasClient.get_transport_class\n
           def __init__(
               self,
               *,
