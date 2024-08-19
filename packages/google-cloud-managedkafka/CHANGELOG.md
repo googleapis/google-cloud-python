@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.2...google-cloud-managedkafka-v0.1.3) (2024-08-19)
+
+
+### Documentation
+
+* [google-cloud-managedkafka] changed API title to official name ([#13010](https://github.com/googleapis/google-cloud-python/issues/13010)) ([5e6b4ce](https://github.com/googleapis/google-cloud-python/commit/5e6b4ce92614cc9a169c530f9a23d3934f4868cc))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.1...google-cloud-managedkafka-v0.1.2) (2024-07-30)
 
 

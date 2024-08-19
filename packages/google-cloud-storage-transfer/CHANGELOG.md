@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.11.5...google-cloud-storage-transfer-v1.12.0) (2024-08-19)
+
+
+### Features
+
+* add GCS Managed Folders ([9c54c1d](https://github.com/googleapis/google-cloud-python/commit/9c54c1d92e54f71f35d8e7a65bb16f730ec841b0))
+* add HDFS configuration ([9c54c1d](https://github.com/googleapis/google-cloud-python/commit/9c54c1d92e54f71f35d8e7a65bb16f730ec841b0))
+* add S3 Cloudfront Domain ([9c54c1d](https://github.com/googleapis/google-cloud-python/commit/9c54c1d92e54f71f35d8e7a65bb16f730ec841b0))
+* add S3 Managed Private Network ([9c54c1d](https://github.com/googleapis/google-cloud-python/commit/9c54c1d92e54f71f35d8e7a65bb16f730ec841b0))
+
 ## [1.11.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.11.4...google-cloud-storage-transfer-v1.11.5) (2024-07-30)
 
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.17.25](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.24...google-cloud-batch-v0.17.25) (2024-08-19)
+
+
+### Documentation
+
+* Batch CentOS images and HPC CentOS images are EOS ([5f179b9](https://github.com/googleapis/google-cloud-python/commit/5f179b98744808c33b07768f44efdfb3551fda03))
+* Clarify required fields for Runnable.Container ([5f179b9](https://github.com/googleapis/google-cloud-python/commit/5f179b98744808c33b07768f44efdfb3551fda03))
+* Clarify required oneof fields for Runnable.Script ([5f179b9](https://github.com/googleapis/google-cloud-python/commit/5f179b98744808c33b07768f44efdfb3551fda03))
+* Clarify TaskSpec requires one or more runnables ([5f179b9](https://github.com/googleapis/google-cloud-python/commit/5f179b98744808c33b07768f44efdfb3551fda03))
+
 ## [0.17.24](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.23...google-cloud-batch-v0.17.24) (2024-08-08)
 
 

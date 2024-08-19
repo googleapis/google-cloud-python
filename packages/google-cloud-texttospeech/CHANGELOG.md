@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.16.5...google-cloud-texttospeech-v2.17.0) (2024-08-19)
+
+
+### Features
+
+* A new method `StreamingSynthesize` is added to service `TextToSpeech` ([973e48a](https://github.com/googleapis/google-cloud-python/commit/973e48afb87cef6565535a7262e38195245018ef))
+
+
+### Documentation
+
+* A comment for field `name` in message `.google.cloud.texttospeech.v1.VoiceSelectionParams` is changed ([973e48a](https://github.com/googleapis/google-cloud-python/commit/973e48afb87cef6565535a7262e38195245018ef))
+* A comment for field `name` in message `.google.cloud.texttospeech.v1beta1.VoiceSelectionParams` is changed ([973e48a](https://github.com/googleapis/google-cloud-python/commit/973e48afb87cef6565535a7262e38195245018ef))
+
 ## [2.16.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.16.4...google-cloud-texttospeech-v2.16.5) (2024-07-30)
 
 
