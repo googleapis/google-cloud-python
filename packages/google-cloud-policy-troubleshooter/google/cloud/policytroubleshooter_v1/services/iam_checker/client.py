@@ -638,7 +638,7 @@ class IamCheckerClient(metaclass=IamCheckerClientMeta):
             transport_init: Union[
                 Type[IamCheckerTransport], Callable[..., IamCheckerTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                IamCheckerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., IamCheckerTransport], transport)
             )

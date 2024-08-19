@@ -656,7 +656,7 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
             transport_init: Union[
                 Type[TagValuesTransport], Callable[..., TagValuesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                TagValuesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TagValuesTransport], transport)
             )

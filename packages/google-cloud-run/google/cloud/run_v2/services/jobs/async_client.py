@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -199,9 +198,7 @@ class JobsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(JobsClient).get_transport_class, type(JobsClient)
-    )
+    get_transport_class = JobsClient.get_transport_class
 
     def __init__(
         self,
