@@ -240,7 +240,12 @@ class ModelServiceGrpcTransport(ModelServiceTransport):
     def get_model(self) -> Callable[[model_service.GetModelRequest], model.Model]:
         r"""Return a callable for the get model method over gRPC.
 
-        Gets information about a specific Model.
+        Gets information about a specific ``Model`` such as its version
+        number, token limits,
+        `parameters <https://ai.google.dev/gemini-api/docs/models/generative-models#model-parameters>`__
+        and other metadata. Refer to the `Gemini models
+        guide <https://ai.google.dev/gemini-api/docs/models/gemini>`__
+        for detailed model information.
 
         Returns:
             Callable[[~.GetModelRequest],
@@ -266,7 +271,9 @@ class ModelServiceGrpcTransport(ModelServiceTransport):
     ) -> Callable[[model_service.ListModelsRequest], model_service.ListModelsResponse]:
         r"""Return a callable for the list models method over gRPC.
 
-        Lists models available through the API.
+        Lists the
+        ```Model``\ s <https://ai.google.dev/gemini-api/docs/models/gemini>`__
+        available through the Gemini API.
 
         Returns:
             Callable[[~.ListModelsRequest],

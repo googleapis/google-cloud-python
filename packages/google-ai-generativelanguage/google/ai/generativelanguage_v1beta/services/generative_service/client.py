@@ -679,7 +679,7 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 Type[GenerativeServiceTransport],
                 Callable[..., GenerativeServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                GenerativeServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., GenerativeServiceTransport], transport)
             )
@@ -708,14 +708,15 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> generative_service.GenerateContentResponse:
-        r"""Generates a response from the model given an input
-        ``GenerateContentRequest``.
-
-        Input capabilities differ between models, including tuned
-        models. See the `model
-        guide <https://ai.google.dev/models/gemini>`__ and `tuning
-        guide <https://ai.google.dev/docs/model_tuning_guidance>`__ for
-        details.
+        r"""Generates a model response given an input
+        ``GenerateContentRequest``. Refer to the `text generation
+        guide <https://ai.google.dev/gemini-api/docs/text-generation>`__
+        for detailed usage information. Input capabilities differ
+        between models, including tuned models. Refer to the `model
+        guide <https://ai.google.dev/gemini-api/docs/models/gemini>`__
+        and `tuning
+        guide <https://ai.google.dev/gemini-api/docs/model-tuning>`__
+        for details.
 
         .. code-block:: python
 
@@ -757,12 +758,14 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             contents (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
-                Required. The content of the current
-                conversation with the model.
-                For single-turn queries, this is a
-                single instance. For multi-turn queries,
-                this is a repeated field that contains
-                conversation history + latest request.
+                Required. The content of the current conversation with
+                the model.
+
+                For single-turn queries, this is a single instance. For
+                multi-turn queries like
+                `chat <https://ai.google.dev/gemini-api/docs/text-generation#chat>`__,
+                this is a repeated field that contains the conversation
+                history and the latest request.
 
                 This corresponds to the ``contents`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -775,18 +778,18 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
 
         Returns:
             google.ai.generativelanguage_v1beta.types.GenerateContentResponse:
-                Response from the model supporting multiple candidates.
+                Response from the model supporting multiple candidate
+                responses.
 
-                   Note on safety ratings and content filtering. They
-                   are reported for both prompt in
+                   Safety ratings and content filtering are reported for
+                   both prompt in
                    GenerateContentResponse.prompt_feedback and for each
                    candidate in finish_reason and in safety_ratings. The
-                   API contract is that: - either all requested
-                   candidates are returned or no candidates at all - no
-                   candidates are returned only if there was something
-                   wrong with the prompt (see prompt_feedback) -
-                   feedback on each candidate is reported on
-                   finish_reason and safety_ratings.
+                   API: - Returns either all requested candidates or
+                   none of them - Returns no candidates at all only if
+                   there was something wrong with the prompt (check
+                   prompt_feedback) - Reports feedback on each candidate
+                   in finish_reason and safety_ratings.
 
         """
         # Create or coerce a protobuf request object.
@@ -880,8 +883,8 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
 
         Args:
             request (Union[google.ai.generativelanguage_v1beta.types.GenerateAnswerRequest, dict]):
-                The request object. Request to generate a grounded answer
-                from the model.
+                The request object. Request to generate a grounded answer from the
+                ``Model``.
             model (str):
                 Required. The name of the ``Model`` to use for
                 generating the grounded response.
@@ -893,13 +896,13 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 should not be set.
             contents (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
                 Required. The content of the current conversation with
-                the model. For single-turn queries, this is a single
+                the ``Model``. For single-turn queries, this is a single
                 question to answer. For multi-turn queries, this is a
                 repeated field that contains conversation history and
                 the last ``Content`` in the list containing the
                 question.
 
-                Note: GenerateAnswer currently only supports queries in
+                Note: ``GenerateAnswer`` only supports queries in
                 English.
 
                 This corresponds to the ``contents`` field
@@ -923,7 +926,13 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 categories HARM_CATEGORY_HATE_SPEECH,
                 HARM_CATEGORY_SEXUALLY_EXPLICIT,
                 HARM_CATEGORY_DANGEROUS_CONTENT,
-                HARM_CATEGORY_HARASSMENT are supported.
+                HARM_CATEGORY_HARASSMENT are supported. Refer to the
+                `guide <https://ai.google.dev/gemini-api/docs/safety-settings>`__
+                for detailed information on available safety settings.
+                Also refer to the `Safety
+                guidance <https://ai.google.dev/gemini-api/docs/safety-guidance>`__
+                to learn how to incorporate safety considerations in
+                your AI applications.
 
                 This corresponds to the ``safety_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1008,8 +1017,9 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[generative_service.GenerateContentResponse]:
-        r"""Generates a streamed response from the model given an input
-        ``GenerateContentRequest``.
+        r"""Generates a `streamed
+        response <https://ai.google.dev/gemini-api/docs/text-generation?lang=python#generate-a-text-stream>`__
+        from the model given an input ``GenerateContentRequest``.
 
         .. code-block:: python
 
@@ -1052,12 +1062,14 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             contents (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
-                Required. The content of the current
-                conversation with the model.
-                For single-turn queries, this is a
-                single instance. For multi-turn queries,
-                this is a repeated field that contains
-                conversation history + latest request.
+                Required. The content of the current conversation with
+                the model.
+
+                For single-turn queries, this is a single instance. For
+                multi-turn queries like
+                `chat <https://ai.google.dev/gemini-api/docs/text-generation#chat>`__,
+                this is a repeated field that contains the conversation
+                history and the latest request.
 
                 This corresponds to the ``contents`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1070,18 +1082,18 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
 
         Returns:
             Iterable[google.ai.generativelanguage_v1beta.types.GenerateContentResponse]:
-                Response from the model supporting multiple candidates.
+                Response from the model supporting multiple candidate
+                responses.
 
-                   Note on safety ratings and content filtering. They
-                   are reported for both prompt in
+                   Safety ratings and content filtering are reported for
+                   both prompt in
                    GenerateContentResponse.prompt_feedback and for each
                    candidate in finish_reason and in safety_ratings. The
-                   API contract is that: - either all requested
-                   candidates are returned or no candidates at all - no
-                   candidates are returned only if there was something
-                   wrong with the prompt (see prompt_feedback) -
-                   feedback on each candidate is reported on
-                   finish_reason and safety_ratings.
+                   API: - Returns either all requested candidates or
+                   none of them - Returns no candidates at all only if
+                   there was something wrong with the prompt (check
+                   prompt_feedback) - Reports feedback on each candidate
+                   in finish_reason and safety_ratings.
 
         """
         # Create or coerce a protobuf request object.
@@ -1139,8 +1151,9 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> generative_service.EmbedContentResponse:
-        r"""Generates an embedding from the model given an input
-        ``Content``.
+        r"""Generates a text embedding vector from the input ``Content``
+        using the specified `Gemini Embedding
+        model <https://ai.google.dev/gemini-api/docs/models/gemini#text-embedding>`__.
 
         .. code-block:: python
 
@@ -1260,8 +1273,9 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> generative_service.BatchEmbedContentsResponse:
-        r"""Generates multiple embeddings from the model given
-        input text in a synchronous call.
+        r"""Generates multiple embedding vectors from the input ``Content``
+        which consists of a batch of strings represented as
+        ``EmbedContentRequest`` objects.
 
         .. code-block:: python
 
@@ -1382,8 +1396,10 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> generative_service.CountTokensResponse:
-        r"""Runs a model's tokenizer on input content and returns
-        the token count.
+        r"""Runs a model's tokenizer on input ``Content`` and returns the
+        token count. Refer to the `tokens
+        guide <https://ai.google.dev/gemini-api/docs/tokens>`__ to learn
+        more about tokens.
 
         .. code-block:: python
 
