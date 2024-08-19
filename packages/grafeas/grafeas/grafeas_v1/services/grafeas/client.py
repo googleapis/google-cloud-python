@@ -339,7 +339,7 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         if isinstance(transport, GrafeasTransport):
             self._transport = transport
         else:
-            Transport = type(self).get_transport_class(transport)
+            Transport = GrafeasClient.get_transport_class(transport)
             self._transport = Transport(credentials=credentials)
 
     def get_occurrence(

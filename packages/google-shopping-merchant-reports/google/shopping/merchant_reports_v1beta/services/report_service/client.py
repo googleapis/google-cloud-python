@@ -639,7 +639,7 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
             transport_init: Union[
                 Type[ReportServiceTransport], Callable[..., ReportServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ReportServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ReportServiceTransport], transport)
             )

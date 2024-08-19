@@ -671,7 +671,7 @@ class AccountTaxServiceClient(metaclass=AccountTaxServiceClientMeta):
                 Type[AccountTaxServiceTransport],
                 Callable[..., AccountTaxServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AccountTaxServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AccountTaxServiceTransport], transport)
             )

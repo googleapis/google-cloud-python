@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -185,9 +184,7 @@ class QuotaServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(QuotaServiceClient).get_transport_class, type(QuotaServiceClient)
-    )
+    get_transport_class = QuotaServiceClient.get_transport_class
 
     def __init__(
         self,

@@ -678,7 +678,7 @@ class RegionalInventoryServiceClient(metaclass=RegionalInventoryServiceClientMet
                 Type[RegionalInventoryServiceTransport],
                 Callable[..., RegionalInventoryServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RegionalInventoryServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RegionalInventoryServiceTransport], transport)
             )

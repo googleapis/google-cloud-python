@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -189,10 +188,7 @@ class AccountLabelsServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(AccountLabelsServiceClient).get_transport_class,
-        type(AccountLabelsServiceClient),
-    )
+    get_transport_class = AccountLabelsServiceClient.get_transport_class
 
     def __init__(
         self,

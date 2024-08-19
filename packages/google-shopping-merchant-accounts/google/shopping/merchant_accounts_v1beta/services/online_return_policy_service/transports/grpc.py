@@ -35,7 +35,9 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
     ads and free listings
 
     programs. This API defines the following resource model:
-    - [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
+    --------------------------------------------------------
+
+    [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

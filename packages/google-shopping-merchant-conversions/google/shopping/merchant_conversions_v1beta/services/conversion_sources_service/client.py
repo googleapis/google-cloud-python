@@ -674,7 +674,7 @@ class ConversionSourcesServiceClient(metaclass=ConversionSourcesServiceClientMet
                 Type[ConversionSourcesServiceTransport],
                 Callable[..., ConversionSourcesServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ConversionSourcesServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ConversionSourcesServiceTransport], transport)
             )

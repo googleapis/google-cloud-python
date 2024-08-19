@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -201,10 +200,7 @@ class CssProductInputsServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(CssProductInputsServiceClient).get_transport_class,
-        type(CssProductInputsServiceClient),
-    )
+    get_transport_class = CssProductInputsServiceClient.get_transport_class
 
     def __init__(
         self,

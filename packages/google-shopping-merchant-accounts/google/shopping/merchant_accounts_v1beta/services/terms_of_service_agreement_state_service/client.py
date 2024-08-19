@@ -716,7 +716,7 @@ class TermsOfServiceAgreementStateServiceClient(
                 Type[TermsOfServiceAgreementStateServiceTransport],
                 Callable[..., TermsOfServiceAgreementStateServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                TermsOfServiceAgreementStateServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., TermsOfServiceAgreementStateServiceTransport],
