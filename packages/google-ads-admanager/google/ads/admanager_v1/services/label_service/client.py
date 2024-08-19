@@ -663,7 +663,7 @@ class LabelServiceClient(metaclass=LabelServiceClientMeta):
             transport_init: Union[
                 Type[LabelServiceTransport], Callable[..., LabelServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                LabelServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., LabelServiceTransport], transport)
             )

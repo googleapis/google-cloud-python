@@ -707,7 +707,7 @@ class AdUnitServiceClient(metaclass=AdUnitServiceClientMeta):
             transport_init: Union[
                 Type[AdUnitServiceTransport], Callable[..., AdUnitServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AdUnitServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AdUnitServiceTransport], transport)
             )

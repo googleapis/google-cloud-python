@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -196,9 +195,7 @@ class ApiHubAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(ApiHubClient).get_transport_class, type(ApiHubClient)
-    )
+    get_transport_class = ApiHubClient.get_transport_class
 
     def __init__(
         self,

@@ -703,7 +703,7 @@ class LineItemServiceClient(metaclass=LineItemServiceClientMeta):
             transport_init: Union[
                 Type[LineItemServiceTransport], Callable[..., LineItemServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                LineItemServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., LineItemServiceTransport], transport)
             )

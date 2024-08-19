@@ -667,7 +667,7 @@ class SpacesServiceClient(metaclass=SpacesServiceClientMeta):
             transport_init: Union[
                 Type[SpacesServiceTransport], Callable[..., SpacesServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SpacesServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SpacesServiceTransport], transport)
             )

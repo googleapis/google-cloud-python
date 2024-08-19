@@ -753,7 +753,7 @@ class OrderServiceClient(metaclass=OrderServiceClientMeta):
             transport_init: Union[
                 Type[OrderServiceTransport], Callable[..., OrderServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                OrderServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., OrderServiceTransport], transport)
             )
