@@ -663,7 +663,7 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
                 Type[ShippingSettingsServiceTransport],
                 Callable[..., ShippingSettingsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ShippingSettingsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ShippingSettingsServiceTransport], transport)
             )

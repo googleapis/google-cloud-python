@@ -102,7 +102,9 @@ class OnlineReturnPolicyServiceClient(metaclass=OnlineReturnPolicyServiceClientM
     ads and free listings
 
     programs. This API defines the following resource model:
-    - [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
+    --------------------------------------------------------
+
+    [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
     """
 
     @staticmethod
@@ -675,7 +677,7 @@ class OnlineReturnPolicyServiceClient(metaclass=OnlineReturnPolicyServiceClientM
                 Type[OnlineReturnPolicyServiceTransport],
                 Callable[..., OnlineReturnPolicyServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                OnlineReturnPolicyServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., OnlineReturnPolicyServiceTransport], transport)
             )

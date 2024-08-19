@@ -669,7 +669,7 @@ class RouteOptimizationClient(metaclass=RouteOptimizationClientMeta):
                 Type[RouteOptimizationTransport],
                 Callable[..., RouteOptimizationTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                RouteOptimizationClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RouteOptimizationTransport], transport)
             )

@@ -652,7 +652,7 @@ class QuotaServiceClient(metaclass=QuotaServiceClientMeta):
             transport_init: Union[
                 Type[QuotaServiceTransport], Callable[..., QuotaServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                QuotaServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., QuotaServiceTransport], transport)
             )

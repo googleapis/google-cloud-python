@@ -673,7 +673,7 @@ class NotificationsApiServiceClient(metaclass=NotificationsApiServiceClientMeta)
                 Type[NotificationsApiServiceTransport],
                 Callable[..., NotificationsApiServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                NotificationsApiServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., NotificationsApiServiceTransport], transport)
             )

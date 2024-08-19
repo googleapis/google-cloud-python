@@ -665,7 +665,7 @@ class BusinessInfoServiceClient(metaclass=BusinessInfoServiceClientMeta):
                 Type[BusinessInfoServiceTransport],
                 Callable[..., BusinessInfoServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                BusinessInfoServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., BusinessInfoServiceTransport], transport)
             )

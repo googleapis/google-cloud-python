@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -59,7 +58,9 @@ class OnlineReturnPolicyServiceAsyncClient:
     ads and free listings
 
     programs. This API defines the following resource model:
-    - [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
+    --------------------------------------------------------
+
+    [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
     """
 
     _client: OnlineReturnPolicyServiceClient
@@ -207,10 +208,7 @@ class OnlineReturnPolicyServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(OnlineReturnPolicyServiceClient).get_transport_class,
-        type(OnlineReturnPolicyServiceClient),
-    )
+    get_transport_class = OnlineReturnPolicyServiceClient.get_transport_class
 
     def __init__(
         self,

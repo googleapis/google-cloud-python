@@ -685,7 +685,7 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
                 Type[ProductInputsServiceTransport],
                 Callable[..., ProductInputsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ProductInputsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ProductInputsServiceTransport], transport)
             )

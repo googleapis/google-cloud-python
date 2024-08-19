@@ -660,7 +660,7 @@ class AccountLabelsServiceClient(metaclass=AccountLabelsServiceClientMeta):
                 Type[AccountLabelsServiceTransport],
                 Callable[..., AccountLabelsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AccountLabelsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AccountLabelsServiceTransport], transport)
             )

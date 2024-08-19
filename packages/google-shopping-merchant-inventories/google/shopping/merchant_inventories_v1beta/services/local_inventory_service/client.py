@@ -672,7 +672,7 @@ class LocalInventoryServiceClient(metaclass=LocalInventoryServiceClientMeta):
                 Type[LocalInventoryServiceTransport],
                 Callable[..., LocalInventoryServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                LocalInventoryServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., LocalInventoryServiceTransport], transport)
             )

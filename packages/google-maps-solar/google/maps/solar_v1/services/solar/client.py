@@ -637,7 +637,7 @@ class SolarClient(metaclass=SolarClientMeta):
             transport_init: Union[
                 Type[SolarTransport], Callable[..., SolarTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SolarClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SolarTransport], transport)
             )
