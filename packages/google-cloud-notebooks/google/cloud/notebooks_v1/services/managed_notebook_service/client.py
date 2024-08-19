@@ -679,7 +679,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
                 Type[ManagedNotebookServiceTransport],
                 Callable[..., ManagedNotebookServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ManagedNotebookServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ManagedNotebookServiceTransport], transport)
             )

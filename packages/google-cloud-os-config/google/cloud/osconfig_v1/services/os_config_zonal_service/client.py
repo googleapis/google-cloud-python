@@ -796,7 +796,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
                 Type[OsConfigZonalServiceTransport],
                 Callable[..., OsConfigZonalServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                OsConfigZonalServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., OsConfigZonalServiceTransport], transport)
             )

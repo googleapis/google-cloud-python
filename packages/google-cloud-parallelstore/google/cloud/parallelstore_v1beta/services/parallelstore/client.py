@@ -748,7 +748,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             transport_init: Union[
                 Type[ParallelstoreTransport], Callable[..., ParallelstoreTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ParallelstoreClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ParallelstoreTransport], transport)
             )

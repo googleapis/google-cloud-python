@@ -680,7 +680,7 @@ class SnoozeServiceClient(metaclass=SnoozeServiceClientMeta):
             transport_init: Union[
                 Type[SnoozeServiceTransport], Callable[..., SnoozeServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SnoozeServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SnoozeServiceTransport], transport)
             )

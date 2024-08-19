@@ -679,7 +679,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
             transport_init: Union[
                 Type[OsLoginServiceTransport], Callable[..., OsLoginServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                OsLoginServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., OsLoginServiceTransport], transport)
             )

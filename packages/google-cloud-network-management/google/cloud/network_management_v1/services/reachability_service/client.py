@@ -683,7 +683,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
                 Type[ReachabilityServiceTransport],
                 Callable[..., ReachabilityServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ReachabilityServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ReachabilityServiceTransport], transport)
             )

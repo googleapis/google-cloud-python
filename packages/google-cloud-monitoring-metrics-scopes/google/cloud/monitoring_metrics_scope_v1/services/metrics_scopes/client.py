@@ -677,7 +677,7 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
             transport_init: Union[
                 Type[MetricsScopesTransport], Callable[..., MetricsScopesTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                MetricsScopesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., MetricsScopesTransport], transport)
             )
