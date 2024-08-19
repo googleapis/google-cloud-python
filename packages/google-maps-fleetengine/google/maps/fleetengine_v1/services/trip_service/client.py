@@ -653,7 +653,7 @@ class TripServiceClient(metaclass=TripServiceClientMeta):
             transport_init: Union[
                 Type[TripServiceTransport], Callable[..., TripServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                TripServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TripServiceTransport], transport)
             )

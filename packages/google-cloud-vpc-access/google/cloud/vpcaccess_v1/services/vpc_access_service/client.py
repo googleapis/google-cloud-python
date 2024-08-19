@@ -672,7 +672,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
                 Type[VpcAccessServiceTransport],
                 Callable[..., VpcAccessServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                VpcAccessServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., VpcAccessServiceTransport], transport)
             )

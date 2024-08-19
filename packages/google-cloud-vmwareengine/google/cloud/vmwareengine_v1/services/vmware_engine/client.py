@@ -1030,7 +1030,7 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
             transport_init: Union[
                 Type[VmwareEngineTransport], Callable[..., VmwareEngineTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                VmwareEngineClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., VmwareEngineTransport], transport)
             )

@@ -666,7 +666,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
             transport_init: Union[
                 Type[TraceServiceTransport], Callable[..., TraceServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                TraceServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TraceServiceTransport], transport)
             )

@@ -642,7 +642,7 @@ class AddressValidationClient(metaclass=AddressValidationClientMeta):
                 Type[AddressValidationTransport],
                 Callable[..., AddressValidationTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AddressValidationClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AddressValidationTransport], transport)
             )
