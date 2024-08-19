@@ -661,7 +661,7 @@ class IdentityAwareProxyOAuthServiceClient(
                 Type[IdentityAwareProxyOAuthServiceTransport],
                 Callable[..., IdentityAwareProxyOAuthServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                IdentityAwareProxyOAuthServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., IdentityAwareProxyOAuthServiceTransport], transport

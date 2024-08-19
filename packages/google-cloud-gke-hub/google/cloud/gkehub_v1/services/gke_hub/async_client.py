@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -202,9 +201,7 @@ class GkeHubAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(GkeHubClient).get_transport_class, type(GkeHubClient)
-    )
+    get_transport_class = GkeHubClient.get_transport_class
 
     def __init__(
         self,

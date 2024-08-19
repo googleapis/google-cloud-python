@@ -770,7 +770,7 @@ class EnterpriseKnowledgeGraphServiceClient(
                 Type[EnterpriseKnowledgeGraphServiceTransport],
                 Callable[..., EnterpriseKnowledgeGraphServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                EnterpriseKnowledgeGraphServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., EnterpriseKnowledgeGraphServiceTransport], transport

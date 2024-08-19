@@ -838,7 +838,7 @@ class GDCHardwareManagementClient(metaclass=GDCHardwareManagementClientMeta):
                 Type[GDCHardwareManagementTransport],
                 Callable[..., GDCHardwareManagementTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                GDCHardwareManagementClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., GDCHardwareManagementTransport], transport)
             )
