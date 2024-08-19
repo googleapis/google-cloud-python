@@ -670,7 +670,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             transport_init: Union[
                 Type[IAMCredentialsTransport], Callable[..., IAMCredentialsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                IAMCredentialsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., IAMCredentialsTransport], transport)
             )

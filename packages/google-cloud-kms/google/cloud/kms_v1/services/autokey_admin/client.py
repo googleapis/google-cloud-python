@@ -661,7 +661,7 @@ class AutokeyAdminClient(metaclass=AutokeyAdminClientMeta):
             transport_init: Union[
                 Type[AutokeyAdminTransport], Callable[..., AutokeyAdminTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AutokeyAdminClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AutokeyAdminTransport], transport)
             )

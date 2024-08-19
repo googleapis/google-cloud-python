@@ -660,7 +660,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
             transport_init: Union[
                 Type[PublisherTransport], Callable[..., PublisherTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                PublisherClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PublisherTransport], transport)
             )

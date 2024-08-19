@@ -641,7 +641,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
             transport_init: Union[
                 Type[LanguageServiceTransport], Callable[..., LanguageServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                LanguageServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., LanguageServiceTransport], transport)
             )

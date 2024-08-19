@@ -724,7 +724,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
             transport_init: Union[
                 Type[GSuiteAddOnsTransport], Callable[..., GSuiteAddOnsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                GSuiteAddOnsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., GSuiteAddOnsTransport], transport)
             )

@@ -692,7 +692,7 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
                 Type[GkeHubMembershipServiceTransport],
                 Callable[..., GkeHubMembershipServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                GkeHubMembershipServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., GkeHubMembershipServiceTransport], transport)
             )
