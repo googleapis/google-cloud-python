@@ -724,7 +724,7 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
                 Type[CloudRedisClusterTransport],
                 Callable[..., CloudRedisClusterTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                CloudRedisClusterClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudRedisClusterTransport], transport)
             )

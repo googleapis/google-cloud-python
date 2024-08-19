@@ -646,7 +646,7 @@ class PolicyTroubleshooterClient(metaclass=PolicyTroubleshooterClientMeta):
                 Type[PolicyTroubleshooterTransport],
                 Callable[..., PolicyTroubleshooterTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                PolicyTroubleshooterClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PolicyTroubleshooterTransport], transport)
             )

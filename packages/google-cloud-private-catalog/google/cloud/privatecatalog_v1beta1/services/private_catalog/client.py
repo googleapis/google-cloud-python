@@ -712,7 +712,7 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
             transport_init: Union[
                 Type[PrivateCatalogTransport], Callable[..., PrivateCatalogTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                PrivateCatalogClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PrivateCatalogTransport], transport)
             )

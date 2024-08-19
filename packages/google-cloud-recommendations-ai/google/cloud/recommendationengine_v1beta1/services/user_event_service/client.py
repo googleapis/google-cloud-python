@@ -676,7 +676,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 Type[UserEventServiceTransport],
                 Callable[..., UserEventServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                UserEventServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., UserEventServiceTransport], transport)
             )
