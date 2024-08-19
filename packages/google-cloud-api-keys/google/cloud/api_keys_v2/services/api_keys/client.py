@@ -662,7 +662,7 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
             transport_init: Union[
                 Type[ApiKeysTransport], Callable[..., ApiKeysTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ApiKeysClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ApiKeysTransport], transport)
             )

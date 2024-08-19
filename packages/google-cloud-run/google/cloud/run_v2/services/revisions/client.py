@@ -778,7 +778,7 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
             transport_init: Union[
                 Type[RevisionsTransport], Callable[..., RevisionsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                RevisionsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RevisionsTransport], transport)
             )

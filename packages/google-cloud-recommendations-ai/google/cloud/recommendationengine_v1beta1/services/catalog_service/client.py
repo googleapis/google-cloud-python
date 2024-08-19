@@ -695,7 +695,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             transport_init: Union[
                 Type[CatalogServiceTransport], Callable[..., CatalogServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CatalogServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CatalogServiceTransport], transport)
             )

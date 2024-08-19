@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -203,10 +202,7 @@ class AutoscalingPolicyServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(AutoscalingPolicyServiceClient).get_transport_class,
-        type(AutoscalingPolicyServiceClient),
-    )
+    get_transport_class = AutoscalingPolicyServiceClient.get_transport_class
 
     def __init__(
         self,

@@ -638,7 +638,7 @@ class TetherClient(metaclass=TetherClientMeta):
             transport_init: Union[
                 Type[TetherTransport], Callable[..., TetherTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                TetherClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TetherTransport], transport)
             )

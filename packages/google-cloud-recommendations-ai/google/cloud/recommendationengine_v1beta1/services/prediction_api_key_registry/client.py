@@ -707,7 +707,7 @@ class PredictionApiKeyRegistryClient(metaclass=PredictionApiKeyRegistryClientMet
                 Type[PredictionApiKeyRegistryTransport],
                 Callable[..., PredictionApiKeyRegistryTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                PredictionApiKeyRegistryClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PredictionApiKeyRegistryTransport], transport)
             )

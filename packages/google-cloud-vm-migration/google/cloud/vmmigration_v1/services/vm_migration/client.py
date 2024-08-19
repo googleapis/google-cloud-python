@@ -861,7 +861,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             transport_init: Union[
                 Type[VmMigrationTransport], Callable[..., VmMigrationTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                VmMigrationClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., VmMigrationTransport], transport)
             )

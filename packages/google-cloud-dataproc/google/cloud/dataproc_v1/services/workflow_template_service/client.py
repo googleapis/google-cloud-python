@@ -726,7 +726,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
                 Type[WorkflowTemplateServiceTransport],
                 Callable[..., WorkflowTemplateServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                WorkflowTemplateServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., WorkflowTemplateServiceTransport], transport)
             )

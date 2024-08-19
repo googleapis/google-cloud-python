@@ -689,7 +689,7 @@ class LintingServiceClient(metaclass=LintingServiceClientMeta):
             transport_init: Union[
                 Type[LintingServiceTransport], Callable[..., LintingServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                LintingServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., LintingServiceTransport], transport)
             )

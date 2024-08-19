@@ -677,7 +677,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
                 Type[AssuredWorkloadsServiceTransport],
                 Callable[..., AssuredWorkloadsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AssuredWorkloadsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AssuredWorkloadsServiceTransport], transport)
             )

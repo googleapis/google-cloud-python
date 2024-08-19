@@ -746,7 +746,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 Type[CloudFilestoreManagerTransport],
                 Callable[..., CloudFilestoreManagerTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                CloudFilestoreManagerClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudFilestoreManagerTransport], transport)
             )

@@ -850,7 +850,7 @@ class AlloyDBAdminClient(metaclass=AlloyDBAdminClientMeta):
             transport_init: Union[
                 Type[AlloyDBAdminTransport], Callable[..., AlloyDBAdminTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AlloyDBAdminClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AlloyDBAdminTransport], transport)
             )

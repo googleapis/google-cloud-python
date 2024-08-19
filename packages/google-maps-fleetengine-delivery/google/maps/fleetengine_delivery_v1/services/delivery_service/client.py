@@ -707,7 +707,7 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
             transport_init: Union[
                 Type[DeliveryServiceTransport], Callable[..., DeliveryServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                DeliveryServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DeliveryServiceTransport], transport)
             )

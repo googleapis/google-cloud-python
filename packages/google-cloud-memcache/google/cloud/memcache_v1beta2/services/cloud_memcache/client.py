@@ -685,7 +685,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
             transport_init: Union[
                 Type[CloudMemcacheTransport], Callable[..., CloudMemcacheTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CloudMemcacheClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudMemcacheTransport], transport)
             )

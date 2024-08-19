@@ -3434,7 +3434,6 @@ class VertexCustomConfig(proto.Message):
                stored in the annotations field.
             -  To drop the prediction output, simply clear the payload
                field in the returned AppPlatformCloudFunctionResponse.
-
         attach_application_metadata (bool):
             If true, the prediction request received by
             custom model will also contain metadata with the
@@ -3447,7 +3446,7 @@ class VertexCustomConfig(proto.Message):
                   'node': STRING;
                   'processor': STRING;
 
-            }
+             }
 
         dynamic_config_input_topic (str):
             Optional. By setting the configuration_input_topic,
@@ -3463,7 +3462,6 @@ class VertexCustomConfig(proto.Message):
             fps set inside the topic. int32 fps = 2; }
 
             This field is a member of `oneof`_ ``_dynamic_config_input_topic``.
-
     """
 
     max_prediction_fps: int = proto.Field(

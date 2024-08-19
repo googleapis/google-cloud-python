@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -201,10 +200,7 @@ class ServingConfigServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(ServingConfigServiceClient).get_transport_class,
-        type(ServingConfigServiceClient),
-    )
+    get_transport_class = ServingConfigServiceClient.get_transport_class
 
     def __init__(
         self,

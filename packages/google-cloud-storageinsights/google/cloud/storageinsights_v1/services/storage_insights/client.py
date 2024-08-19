@@ -693,7 +693,7 @@ class StorageInsightsClient(metaclass=StorageInsightsClientMeta):
             transport_init: Union[
                 Type[StorageInsightsTransport], Callable[..., StorageInsightsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                StorageInsightsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., StorageInsightsTransport], transport)
             )

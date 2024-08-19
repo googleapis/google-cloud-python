@@ -644,7 +644,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
             transport_init: Union[
                 Type[ImageAnnotatorTransport], Callable[..., ImageAnnotatorTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ImageAnnotatorClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ImageAnnotatorTransport], transport)
             )

@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -380,10 +379,7 @@ class AnalyticsAdminServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(AnalyticsAdminServiceClient).get_transport_class,
-        type(AnalyticsAdminServiceClient),
-    )
+    get_transport_class = AnalyticsAdminServiceClient.get_transport_class
 
     def __init__(
         self,
@@ -12122,7 +12118,7 @@ class AnalyticsAdminServiceAsyncClient:
                 metric's resource name.
 
                 This value should be 1-80 characters and valid
-                characters are `[a-zA-Z0-9_]`, no spaces allowed.
+                characters are /[a-zA-Z0-9_]/, no spaces allowed.
                 calculated_metric_id must be unique between all
                 calculated metrics under a property. The
                 calculated_metric_id is used when referencing this

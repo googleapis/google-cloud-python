@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -222,10 +221,7 @@ class DataprocMetastoreFederationAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(DataprocMetastoreFederationClient).get_transport_class,
-        type(DataprocMetastoreFederationClient),
-    )
+    get_transport_class = DataprocMetastoreFederationClient.get_transport_class
 
     def __init__(
         self,

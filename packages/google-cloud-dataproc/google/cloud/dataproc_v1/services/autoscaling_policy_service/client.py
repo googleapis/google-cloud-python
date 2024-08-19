@@ -675,7 +675,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
                 Type[AutoscalingPolicyServiceTransport],
                 Callable[..., AutoscalingPolicyServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                AutoscalingPolicyServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AutoscalingPolicyServiceTransport], transport)
             )

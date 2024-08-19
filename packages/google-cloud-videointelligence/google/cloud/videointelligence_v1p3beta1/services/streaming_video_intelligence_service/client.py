@@ -663,7 +663,7 @@ class StreamingVideoIntelligenceServiceClient(
                 Type[StreamingVideoIntelligenceServiceTransport],
                 Callable[..., StreamingVideoIntelligenceServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                StreamingVideoIntelligenceServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., StreamingVideoIntelligenceServiceTransport], transport

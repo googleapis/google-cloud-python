@@ -719,7 +719,7 @@ class DeveloperConnectClient(metaclass=DeveloperConnectClientMeta):
                 Type[DeveloperConnectTransport],
                 Callable[..., DeveloperConnectTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                DeveloperConnectClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DeveloperConnectTransport], transport)
             )

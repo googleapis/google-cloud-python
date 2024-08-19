@@ -685,7 +685,7 @@ class CustomTargetingKeyServiceClient(metaclass=CustomTargetingKeyServiceClientM
                 Type[CustomTargetingKeyServiceTransport],
                 Callable[..., CustomTargetingKeyServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                CustomTargetingKeyServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CustomTargetingKeyServiceTransport], transport)
             )

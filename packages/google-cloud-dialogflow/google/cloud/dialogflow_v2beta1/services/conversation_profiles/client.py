@@ -799,7 +799,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
                 Type[ConversationProfilesTransport],
                 Callable[..., ConversationProfilesTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ConversationProfilesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ConversationProfilesTransport], transport)
             )

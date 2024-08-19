@@ -708,7 +708,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
                 Type[ManagedIdentitiesServiceTransport],
                 Callable[..., ManagedIdentitiesServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ManagedIdentitiesServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ManagedIdentitiesServiceTransport], transport)
             )

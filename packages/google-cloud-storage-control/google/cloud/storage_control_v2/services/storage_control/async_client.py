@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -203,9 +202,7 @@ class StorageControlAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(StorageControlClient).get_transport_class, type(StorageControlClient)
-    )
+    get_transport_class = StorageControlClient.get_transport_class
 
     def __init__(
         self,

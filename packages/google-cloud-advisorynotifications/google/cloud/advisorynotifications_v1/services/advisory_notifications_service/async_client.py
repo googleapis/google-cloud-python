@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -207,10 +206,7 @@ class AdvisoryNotificationsServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(AdvisoryNotificationsServiceClient).get_transport_class,
-        type(AdvisoryNotificationsServiceClient),
-    )
+    get_transport_class = AdvisoryNotificationsServiceClient.get_transport_class
 
     def __init__(
         self,

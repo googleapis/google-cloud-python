@@ -750,7 +750,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             transport_init: Union[
                 Type[HubServiceTransport], Callable[..., HubServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                HubServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., HubServiceTransport], transport)
             )

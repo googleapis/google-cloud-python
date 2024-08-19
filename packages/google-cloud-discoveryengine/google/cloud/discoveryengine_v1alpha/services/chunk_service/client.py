@@ -694,7 +694,7 @@ class ChunkServiceClient(metaclass=ChunkServiceClientMeta):
             transport_init: Union[
                 Type[ChunkServiceTransport], Callable[..., ChunkServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ChunkServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ChunkServiceTransport], transport)
             )
