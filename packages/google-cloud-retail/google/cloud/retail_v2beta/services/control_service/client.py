@@ -691,7 +691,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             transport_init: Union[
                 Type[ControlServiceTransport], Callable[..., ControlServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ControlServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ControlServiceTransport], transport)
             )

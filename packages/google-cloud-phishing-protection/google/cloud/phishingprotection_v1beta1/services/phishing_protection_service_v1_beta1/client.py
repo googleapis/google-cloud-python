@@ -657,7 +657,7 @@ class PhishingProtectionServiceV1Beta1Client(
                 Type[PhishingProtectionServiceV1Beta1Transport],
                 Callable[..., PhishingProtectionServiceV1Beta1Transport],
             ] = (
-                type(self).get_transport_class(transport)
+                PhishingProtectionServiceV1Beta1Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(
                     Callable[..., PhishingProtectionServiceV1Beta1Transport], transport

@@ -742,7 +742,7 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
             transport_init: Union[
                 Type[SearchServiceTransport], Callable[..., SearchServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                SearchServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SearchServiceTransport], transport)
             )

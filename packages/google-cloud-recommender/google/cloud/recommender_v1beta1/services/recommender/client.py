@@ -791,7 +791,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             transport_init: Union[
                 Type[RecommenderTransport], Callable[..., RecommenderTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                RecommenderClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., RecommenderTransport], transport)
             )
