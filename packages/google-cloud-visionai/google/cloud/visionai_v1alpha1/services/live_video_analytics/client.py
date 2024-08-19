@@ -702,7 +702,7 @@ class LiveVideoAnalyticsClient(metaclass=LiveVideoAnalyticsClientMeta):
                 Type[LiveVideoAnalyticsTransport],
                 Callable[..., LiveVideoAnalyticsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                LiveVideoAnalyticsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., LiveVideoAnalyticsTransport], transport)
             )

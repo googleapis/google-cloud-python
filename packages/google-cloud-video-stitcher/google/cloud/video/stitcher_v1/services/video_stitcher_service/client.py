@@ -870,7 +870,7 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 Type[VideoStitcherServiceTransport],
                 Callable[..., VideoStitcherServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                VideoStitcherServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., VideoStitcherServiceTransport], transport)
             )
