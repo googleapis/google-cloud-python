@@ -743,7 +743,7 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
             transport_init: Union[
                 Type[DeploymentsTransport], Callable[..., DeploymentsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                DeploymentsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DeploymentsTransport], transport)
             )

@@ -663,7 +663,7 @@ class ChangelogsClient(metaclass=ChangelogsClientMeta):
             transport_init: Union[
                 Type[ChangelogsTransport], Callable[..., ChangelogsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ChangelogsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ChangelogsTransport], transport)
             )

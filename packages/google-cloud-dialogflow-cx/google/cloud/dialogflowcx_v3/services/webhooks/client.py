@@ -689,7 +689,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
             transport_init: Union[
                 Type[WebhooksTransport], Callable[..., WebhooksTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                WebhooksClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., WebhooksTransport], transport)
             )

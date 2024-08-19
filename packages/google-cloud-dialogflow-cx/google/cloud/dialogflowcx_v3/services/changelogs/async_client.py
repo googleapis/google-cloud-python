@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -187,9 +186,7 @@ class ChangelogsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(ChangelogsClient).get_transport_class, type(ChangelogsClient)
-    )
+    get_transport_class = ChangelogsClient.get_transport_class
 
     def __init__(
         self,
