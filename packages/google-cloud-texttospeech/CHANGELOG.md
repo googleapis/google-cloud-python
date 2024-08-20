@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.17.0...google-cloud-texttospeech-v2.17.1) (2024-08-20)
+
+
+### Documentation
+
+* [google-cloud-texttospeech] update Long Audio capabilities to include SSML ([#13020](https://github.com/googleapis/google-cloud-python/issues/13020)) ([200a64b](https://github.com/googleapis/google-cloud-python/commit/200a64b0c9ce565103295ab0a8126353f386fbce))
+
 ## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.16.5...google-cloud-texttospeech-v2.17.0) (2024-08-19)
 
 

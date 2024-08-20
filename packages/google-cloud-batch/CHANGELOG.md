@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.17.26](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.25...google-cloud-batch-v0.17.26) (2024-08-20)
+
+
+### Documentation
+
+* [google-cloud-batch] clarify tasks success criteria for background ([e3a6b17](https://github.com/googleapis/google-cloud-python/commit/e3a6b17c8b05ef23da801e81598ce2d75e18b6bb))
+* [google-cloud-batch] clarify tasks success criteria for background runnable ([#13023](https://github.com/googleapis/google-cloud-python/issues/13023)) ([e3a6b17](https://github.com/googleapis/google-cloud-python/commit/e3a6b17c8b05ef23da801e81598ce2d75e18b6bb))
+
 ## [0.17.25](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.24...google-cloud-batch-v0.17.25) (2024-08-19)
 
 
