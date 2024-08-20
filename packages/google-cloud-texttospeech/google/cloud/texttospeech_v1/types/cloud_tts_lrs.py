@@ -42,8 +42,7 @@ class SynthesizeLongAudioRequest(proto.Message):
             ``projects/*/locations/*``.
         input (google.cloud.texttospeech_v1.types.SynthesisInput):
             Required. The Synthesizer requires either
-            plain text or SSML as input. While Long Audio is
-            in preview, SSML is temporarily unsupported.
+            plain text or SSML as input.
         audio_config (google.cloud.texttospeech_v1.types.AudioConfig):
             Required. The configuration of the
             synthesized audio.
