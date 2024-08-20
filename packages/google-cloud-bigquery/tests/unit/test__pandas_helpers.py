@@ -2002,6 +2002,23 @@ def test_bq_to_arrow_field_type_override(module_under_test):
     )
 
 
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
+def test_bq_to_arrow_field_set_repeated_nullable_false(module_under_test):
+    assert (
+        module_under_test.bq_to_arrow_field(
+            schema.SchemaField("name", "STRING", mode="REPEATED")
+        ).nullable
+        is False
+    )
+
+    assert (
+        module_under_test.bq_to_arrow_field(
+            schema.SchemaField("name", "STRING", mode="NULLABLE")
+        ).nullable
+        is True
+    )
+
+
 @pytest.mark.parametrize(
     "field_type, metadata",
     [

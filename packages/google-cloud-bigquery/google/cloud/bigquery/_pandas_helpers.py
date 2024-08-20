@@ -200,7 +200,7 @@ def bq_to_arrow_field(bq_field, array_type=None):
             # local NULL values. Arrow will gladly interpret these NULL values
             # as non-NULL and give you an arbitrary value. See:
             # https://github.com/googleapis/python-bigquery/issues/1692
-            nullable=True,
+            nullable=False if bq_field.mode.upper() == "REPEATED" else True,
             metadata=metadata,
         )
 
