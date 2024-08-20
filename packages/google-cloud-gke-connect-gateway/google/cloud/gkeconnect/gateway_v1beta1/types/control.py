@@ -19,12 +19,11 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.gkeconnect.gateway.v1beta1',
+    package="google.cloud.gkeconnect.gateway.v1beta1",
     manifest={
-        'GenerateCredentialsRequest',
-        'GenerateCredentialsResponse',
+        "GenerateCredentialsRequest",
+        "GenerateCredentialsResponse",
     },
 )
 
@@ -62,6 +61,7 @@ class GenerateCredentialsRequest(proto.Message):
             Optional. The operating system where the
             kubeconfig will be used.
     """
+
     class OperatingSystem(proto.Enum):
         r"""Operating systems requiring specialized kubeconfigs.
 

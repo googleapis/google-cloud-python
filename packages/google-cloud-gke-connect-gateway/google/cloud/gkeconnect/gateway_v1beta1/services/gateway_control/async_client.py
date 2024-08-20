@@ -15,17 +15,27 @@
 #
 from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Callable,
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.cloud.gkeconnect.gateway_v1beta1 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials   # type: ignore
-from google.oauth2 import service_account              # type: ignore
+from google.api_core.client_options import ClientOptions
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.gkeconnect.gateway_v1beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -33,9 +43,10 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.cloud.gkeconnect.gateway_v1beta1.types import control
-from .transports.base import GatewayControlTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import GatewayControlGrpcAsyncIOTransport
+
 from .client import GatewayControlClient
+from .transports.base import DEFAULT_CLIENT_INFO, GatewayControlTransport
+from .transports.grpc_asyncio import GatewayControlGrpcAsyncIOTransport
 
 
 class GatewayControlAsyncClient:
@@ -50,16 +61,30 @@ class GatewayControlAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = GatewayControlClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = GatewayControlClient._DEFAULT_UNIVERSE
 
-    common_billing_account_path = staticmethod(GatewayControlClient.common_billing_account_path)
-    parse_common_billing_account_path = staticmethod(GatewayControlClient.parse_common_billing_account_path)
+    common_billing_account_path = staticmethod(
+        GatewayControlClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        GatewayControlClient.parse_common_billing_account_path
+    )
     common_folder_path = staticmethod(GatewayControlClient.common_folder_path)
-    parse_common_folder_path = staticmethod(GatewayControlClient.parse_common_folder_path)
-    common_organization_path = staticmethod(GatewayControlClient.common_organization_path)
-    parse_common_organization_path = staticmethod(GatewayControlClient.parse_common_organization_path)
+    parse_common_folder_path = staticmethod(
+        GatewayControlClient.parse_common_folder_path
+    )
+    common_organization_path = staticmethod(
+        GatewayControlClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        GatewayControlClient.parse_common_organization_path
+    )
     common_project_path = staticmethod(GatewayControlClient.common_project_path)
-    parse_common_project_path = staticmethod(GatewayControlClient.parse_common_project_path)
+    parse_common_project_path = staticmethod(
+        GatewayControlClient.parse_common_project_path
+    )
     common_location_path = staticmethod(GatewayControlClient.common_location_path)
-    parse_common_location_path = staticmethod(GatewayControlClient.parse_common_location_path)
+    parse_common_location_path = staticmethod(
+        GatewayControlClient.parse_common_location_path
+    )
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -95,7 +120,9 @@ class GatewayControlAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[ClientOptions] = None
+    ):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -158,12 +185,16 @@ class GatewayControlAsyncClient:
 
     get_transport_class = GatewayControlClient.get_transport_class
 
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, GatewayControlTransport, Callable[..., GatewayControlTransport]]] = "grpc_asyncio",
-            client_options: Optional[ClientOptions] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[
+            Union[str, GatewayControlTransport, Callable[..., GatewayControlTransport]]
+        ] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the gateway control async client.
 
         Args:
@@ -218,16 +249,16 @@ class GatewayControlAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
-
         )
 
-    async def generate_credentials(self,
-            request: Optional[Union[control.GenerateCredentialsRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> control.GenerateCredentialsResponse:
+    async def generate_credentials(
+        self,
+        request: Optional[Union[control.GenerateCredentialsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> control.GenerateCredentialsResponse:
         r"""GenerateCredentials provides connection information
         that allows a user to access the specified membership
         using Connect Gateway.
@@ -282,14 +313,14 @@ class GatewayControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.generate_credentials]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_credentials
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -312,9 +343,10 @@ class GatewayControlAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-
-__all__ = (
-    "GatewayControlAsyncClient",
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
 )
+
+
+__all__ = ("GatewayControlAsyncClient",)

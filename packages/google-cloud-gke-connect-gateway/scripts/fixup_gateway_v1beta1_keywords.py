@@ -39,11 +39,7 @@ def partition(
 class gatewayCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'delete_resource': ('content_type', 'data', 'extensions', ),
-        'get_resource': ('content_type', 'data', 'extensions', ),
-        'patch_resource': ('content_type', 'data', 'extensions', ),
-        'post_resource': ('content_type', 'data', 'extensions', ),
-        'put_resource': ('content_type', 'data', 'extensions', ),
+        'generate_credentials': ('name', 'force_use_agent', 'version', 'kubernetes_namespace', 'operating_system', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

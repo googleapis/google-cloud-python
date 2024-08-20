@@ -13,20 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.gkeconnect.gateway_v1beta1 import gapic_version as package_version
+from collections import OrderedDict
+from typing import Dict, Type
 
-__version__ = package_version.__version__
+from .base import GatewayControlTransport
+from .grpc import GatewayControlGrpcTransport
+from .grpc_asyncio import GatewayControlGrpcAsyncIOTransport
 
-
-from .services.gateway_control import GatewayControlClient
-from .services.gateway_control import GatewayControlAsyncClient
-
-from .types.control import GenerateCredentialsRequest
-from .types.control import GenerateCredentialsResponse
+# Compile a registry of transports.
+_transport_registry = OrderedDict()  # type: Dict[str, Type[GatewayControlTransport]]
+_transport_registry["grpc"] = GatewayControlGrpcTransport
+_transport_registry["grpc_asyncio"] = GatewayControlGrpcAsyncIOTransport
 
 __all__ = (
-    'GatewayControlAsyncClient',
-'GatewayControlClient',
-'GenerateCredentialsRequest',
-'GenerateCredentialsResponse',
+    "GatewayControlTransport",
+    "GatewayControlGrpcTransport",
+    "GatewayControlGrpcAsyncIOTransport",
 )

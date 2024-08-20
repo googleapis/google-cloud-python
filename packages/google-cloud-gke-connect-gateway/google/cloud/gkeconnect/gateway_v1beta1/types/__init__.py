@@ -13,5 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .control import GenerateCredentialsRequest, GenerateCredentialsResponse
 
-__all__ = ()
+__all__ = (
+    "GenerateCredentialsRequest",
+    "GenerateCredentialsResponse",
+)
