@@ -116,7 +116,15 @@ def generate_pandas_api_coverage():
     """Inspect all our pandas objects, and compare with the real pandas objects, to see
     which methods we implement. For each, generate a regex that can be used to check if
     its present in a notebook"""
-    header = ["api", "pattern", "kind", "is_in_bigframes", "missing_parameters"]
+    header = [
+        "api",
+        "pattern",
+        "kind",
+        "is_in_bigframes",
+        "missing_parameters",
+        "requires_index",
+        "requires_ordering",
+    ]
     api_patterns = []
     indexers = ["loc", "iloc", "iat", "ix", "at"]
     for name, pandas_obj, bigframes_obj in PANDAS_TARGETS:
@@ -156,6 +164,13 @@ def generate_pandas_api_coverage():
                 token_type = "property"
 
             is_in_bigframes = hasattr(bigframes_obj, member)
+            requires_index = False
+            requires_ordering = False
+
+            if is_in_bigframes:
+                attr = getattr(bigframes_obj, member)
+                requires_index = hasattr(attr, "_validations_requires_index")
+                requires_ordering = hasattr(attr, "_validations_requires_ordering")
 
             api_patterns.append(
                 [
@@ -164,6 +179,8 @@ def generate_pandas_api_coverage():
                     token_type,
                     is_in_bigframes,
                     missing_parameters,
+                    requires_index,
+                    requires_ordering,
                 ]
             )
 
@@ -287,6 +304,7 @@ def generate_api_coverage(df, api_prefix):
         dataframe_apis["missing_parameters"].str.len() != 0
     ) & dataframe_apis["is_in_bigframes"]
     not_implemented = ~dataframe_apis["is_in_bigframes"]
+
     dataframe_table = pd.DataFrame(
         {
             "API": format_api(
@@ -295,12 +313,16 @@ def generate_api_coverage(df, api_prefix):
                 api_prefix,
             ),
             "Implemented": "",
+            "Requires index": "",
+            "Requires ordering": "",
             "Missing parameters": dataframe_apis["missing_parameters"],
         }
     )
     dataframe_table.loc[fully_implemented, "Implemented"] = "Y"
     dataframe_table.loc[partial_implemented, "Implemented"] = "P"
     dataframe_table.loc[not_implemented, "Implemented"] = "N"
+    dataframe_table.loc[dataframe_apis["requires_index"], "Requires index"] = "Y"
+    dataframe_table.loc[dataframe_apis["requires_ordering"], "Requires ordering"] = "Y"
     return dataframe_table
 
 

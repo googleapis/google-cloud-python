@@ -17,7 +17,6 @@
 from __future__ import annotations
 
 import datetime
-import functools
 import inspect
 import re
 import sys
@@ -90,15 +89,6 @@ ERROR_IO_REQUIRES_WILDCARD = (
     "https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements#export_data_statement"
     f"{constants.FEEDBACK_LINK}"
 )
-
-
-def requires_index(meth):
-    @functools.wraps(meth)
-    def guarded_meth(df: DataFrame, *args, **kwargs):
-        df._throw_if_null_index(meth.__name__)
-        return meth(df, *args, **kwargs)
-
-    return guarded_meth
 
 
 # Inherits from pandas DataFrame so that we can use the same docstrings.
@@ -261,7 +251,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return results
 
     @property
-    @requires_index
+    @validations.requires_index
     def index(
         self,
     ) -> indexes.Index:
@@ -277,7 +267,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         self.index.name = value.name if hasattr(value, "name") else None
 
     @property
-    @requires_index
+    @validations.requires_index
     def loc(self) -> indexers.LocDataFrameIndexer:
         return indexers.LocDataFrameIndexer(self)
 
@@ -292,7 +282,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return indexers.IatDataFrameIndexer(self)
 
     @property
-    @requires_index
+    @validations.requires_index
     def at(self) -> indexers.AtDataFrameIndexer:
         return indexers.AtDataFrameIndexer(self)
 
@@ -348,7 +338,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def T(self) -> DataFrame:
         return DataFrame(self._get_block().transpose())
 
-    @requires_index
+    @validations.requires_index
     @validations.requires_ordering()
     def transpose(self) -> DataFrame:
         return self.T
@@ -417,7 +407,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             column_sizes = pandas.concat([index_size, column_sizes])
         return column_sizes
 
-    @requires_index
+    @validations.requires_index
     def info(
         self,
         verbose: Optional[bool] = None,
@@ -1682,7 +1672,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         col_ids_strs: List[str] = [col_id for col_id in col_ids if col_id is not None]
         return DataFrame(self._block.set_index(col_ids_strs, append=append, drop=drop))
 
-    @requires_index
+    @validations.requires_index
     def sort_index(
         self, ascending: bool = True, na_position: Literal["first", "last"] = "last"
     ) -> DataFrame:
@@ -1884,7 +1874,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if columns is not None:
             return self._reindex_columns(columns)
 
-    @requires_index
+    @validations.requires_index
     def _reindex_rows(
         self,
         index,
@@ -1931,12 +1921,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         result_df.columns = new_column_index
         return result_df
 
-    @requires_index
+    @validations.requires_index
     def reindex_like(self, other: DataFrame, *, validate: typing.Optional[bool] = None):
         return self.reindex(index=other.index, columns=other.columns, validate=validate)
 
     @validations.requires_ordering()
-    @requires_index
+    @validations.requires_index
     def interpolate(self, method: str = "linear") -> DataFrame:
         if method == "pad":
             return self.ffill()
@@ -2231,12 +2221,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     aggregate = agg
     aggregate.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.agg)
 
-    @requires_index
+    @validations.requires_index
     @validations.requires_ordering()
     def idxmin(self) -> bigframes.series.Series:
         return bigframes.series.Series(block_ops.idxmin(self._block))
 
-    @requires_index
+    @validations.requires_index
     @validations.requires_ordering()
     def idxmax(self) -> bigframes.series.Series:
         return bigframes.series.Series(block_ops.idxmax(self._block))
@@ -2345,7 +2335,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
         return DataFrame(pivot_block)
 
-    @requires_index
+    @validations.requires_index
     @validations.requires_ordering()
     def pivot(
         self,
@@ -2360,7 +2350,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         return self._pivot(columns=columns, index=index, values=values)
 
-    @requires_index
+    @validations.requires_index
     @validations.requires_ordering()
     def pivot_table(
         self,
@@ -2460,7 +2450,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         block = block.stack(levels=len(level))
         return DataFrame(block)
 
-    @requires_index
+    @validations.requires_index
     @validations.requires_ordering()
     def unstack(self, level: LevelsType = -1):
         if not utils.is_list_like(level):
@@ -2711,7 +2701,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         else:
             raise TypeError("You have to supply one of 'by' and 'level'")
 
-    @requires_index
+    @validations.requires_index
     def _groupby_level(
         self,
         level: LevelsType,

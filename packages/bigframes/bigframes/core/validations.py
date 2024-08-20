@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import functools
-from typing import Optional, Protocol, TYPE_CHECKING
+from typing import Optional, Protocol, TYPE_CHECKING, Union
 
 import bigframes.constants
 import bigframes.exceptions
@@ -25,6 +25,8 @@ import bigframes.exceptions
 if TYPE_CHECKING:
     from bigframes import Session
     from bigframes.core.blocks import Block
+    from bigframes.dataframe import DataFrame
+    from bigframes.operations.base import SeriesMethods
 
 
 class HasSession(Protocol):
@@ -37,6 +39,16 @@ class HasSession(Protocol):
         ...
 
 
+def requires_index(meth):
+    @functools.wraps(meth)
+    def guarded_meth(df: Union[DataFrame, SeriesMethods], *args, **kwargs):
+        df._throw_if_null_index(meth.__name__)
+        return meth(df, *args, **kwargs)
+
+    guarded_meth._validations_requires_index = True  # type: ignore
+    return guarded_meth
+
+
 def requires_ordering(suggestion: Optional[str] = None):
     def decorator(meth):
         @functools.wraps(meth)
@@ -44,6 +56,7 @@ def requires_ordering(suggestion: Optional[str] = None):
             enforce_ordered(object, meth.__name__, suggestion)
             return meth(object, *args, **kwargs)
 
+        guarded_meth._validations_requires_ordering = True  # type: ignore
         return guarded_meth
 
     return decorator
