@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.11.1](https://github.com/googleapis/python-org-policy/compare/v1.11.0...v1.11.1) (2024-08-13)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf&gt;=3.20.2, protobuf&lt;6 ([078feca](https://github.com/googleapis/python-org-policy/commit/078fecaf4fe644de2cbdaccff35da3055e306696))
+* Regenerate pb2 files for compatibility with protobuf 5.x ([078feca](https://github.com/googleapis/python-org-policy/commit/078fecaf4fe644de2cbdaccff35da3055e306696))
+* Retry and timeout values do not propagate in requests during pagination ([8820e49](https://github.com/googleapis/python-org-policy/commit/8820e49bfb80f5a1d482e943dc2684f7092b67f4))
+
 ## [1.11.0](https://github.com/googleapis/python-org-policy/compare/v1.10.0...v1.11.0) (2024-03-28)
 
 
