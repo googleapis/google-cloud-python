@@ -174,6 +174,11 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.add_ip_override: gapic_v1.method.wrap_method(
+                self.add_ip_override,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_metrics: gapic_v1.method.wrap_method(
                 self.get_metrics,
                 default_timeout=None,
@@ -324,6 +329,18 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
     ) -> Callable[
         [recaptchaenterprise.MigrateKeyRequest],
         Union[recaptchaenterprise.Key, Awaitable[recaptchaenterprise.Key]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def add_ip_override(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.AddIpOverrideRequest],
+        Union[
+            recaptchaenterprise.AddIpOverrideResponse,
+            Awaitable[recaptchaenterprise.AddIpOverrideResponse],
+        ],
     ]:
         raise NotImplementedError()
 

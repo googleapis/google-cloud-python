@@ -492,6 +492,39 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["migrate_key"]
 
     @property
+    def add_ip_override(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.AddIpOverrideRequest],
+        recaptchaenterprise.AddIpOverrideResponse,
+    ]:
+        r"""Return a callable for the add ip override method over gRPC.
+
+        Adds an IP override to a key. The following restrictions hold:
+
+        -  The maximum number of IP overrides per key is 100.
+        -  For any conflict (such as IP already exists or IP part of an
+           existing IP range), an error will be returned.
+
+        Returns:
+            Callable[[~.AddIpOverrideRequest],
+                    ~.AddIpOverrideResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "add_ip_override" not in self._stubs:
+            self._stubs["add_ip_override"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/AddIpOverride",
+                request_serializer=recaptchaenterprise.AddIpOverrideRequest.serialize,
+                response_deserializer=recaptchaenterprise.AddIpOverrideResponse.deserialize,
+            )
+        return self._stubs["add_ip_override"]
+
+    @property
     def get_metrics(
         self,
     ) -> Callable[[recaptchaenterprise.GetMetricsRequest], recaptchaenterprise.Metrics]:

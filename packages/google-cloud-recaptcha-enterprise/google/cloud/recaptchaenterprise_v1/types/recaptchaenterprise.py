@@ -68,6 +68,7 @@ __protobuf__ = proto.module(
         "WebKeySettings",
         "AndroidKeySettings",
         "IOSKeySettings",
+        "ExpressKeySettings",
         "AppleDeveloperId",
         "ScoreDistribution",
         "ScoreMetrics",
@@ -81,9 +82,12 @@ __protobuf__ = proto.module(
         "ListRelatedAccountGroupsResponse",
         "SearchRelatedAccountGroupMembershipsRequest",
         "SearchRelatedAccountGroupMembershipsResponse",
+        "AddIpOverrideRequest",
+        "AddIpOverrideResponse",
         "RelatedAccountGroupMembership",
         "RelatedAccountGroup",
         "WafSettings",
+        "IpOverrideData",
     },
 )
 
@@ -771,7 +775,7 @@ class Event(proto.Message):
         express (bool):
             Optional. Flag for a reCAPTCHA express request for an
             assessment without a token. If enabled, ``site_key`` must
-            reference a SCORE key with WAF feature set to EXPRESS.
+            reference an Express site key.
         requested_uri (str):
             Optional. The URI resource the user requested
             that triggered an assessment.
@@ -2043,12 +2047,12 @@ class MigrateKeyRequest(proto.Message):
             Enterprise key or migrated key behaves differently than a
             reCAPTCHA (non-Enterprise version) key when you reach a
             quota limit (see
-            https://cloud.google.com/recaptcha-enterprise/quotas#quota_limit).
-            To avoid any disruption of your usage, we check that a
-            billing account is present. If your usage of reCAPTCHA is
-            under the free quota, you can safely skip the billing check
-            and proceed with the migration. See
-            https://cloud.google.com/recaptcha-enterprise/docs/billing-information.
+            https://cloud.google.com/recaptcha/quotas#quota_limit). To
+            avoid any disruption of your usage, we check that a billing
+            account is present. If your usage of reCAPTCHA is under the
+            free quota, you can safely skip the billing check and
+            proceed with the migration. See
+            https://cloud.google.com/recaptcha/docs/billing-information.
     """
 
     name: str = proto.Field(
@@ -2170,9 +2174,14 @@ class Key(proto.Message):
             apps.
 
             This field is a member of `oneof`_ ``platform_settings``.
+        express_settings (google.cloud.recaptchaenterprise_v1.types.ExpressKeySettings):
+            Settings for keys that can be used by
+            reCAPTCHA Express.
+
+            This field is a member of `oneof`_ ``platform_settings``.
         labels (MutableMapping[str, str]):
             Optional. See [Creating and managing labels]
-            (https://cloud.google.com/recaptcha-enterprise/docs/labels).
+            (https://cloud.google.com/recaptcha/docs/labels).
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp corresponding to
             the creation of this key.
@@ -2208,6 +2217,12 @@ class Key(proto.Message):
         number=5,
         oneof="platform_settings",
         message="IOSKeySettings",
+    )
+    express_settings: "ExpressKeySettings" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="platform_settings",
+        message="ExpressKeySettings",
     )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -2447,6 +2462,13 @@ class IOSKeySettings(proto.Message):
         number=3,
         message="AppleDeveloperId",
     )
+
+
+class ExpressKeySettings(proto.Message):
+    r"""Settings specific to keys that can be used for reCAPTCHA
+    Express.
+
+    """
 
 
 class AppleDeveloperId(proto.Message):
@@ -3032,6 +3054,32 @@ class SearchRelatedAccountGroupMembershipsResponse(proto.Message):
     )
 
 
+class AddIpOverrideRequest(proto.Message):
+    r"""The AddIpOverride request message.
+
+    Attributes:
+        name (str):
+            Required. The name of the key to which the IP override is
+            added, in the format ``projects/{project}/keys/{key}``.
+        ip_override_data (google.cloud.recaptchaenterprise_v1.types.IpOverrideData):
+            Required. IP override added to the key.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ip_override_data: "IpOverrideData" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="IpOverrideData",
+    )
+
+
+class AddIpOverrideResponse(proto.Message):
+    r"""Response for AddIpOverride."""
+
+
 class RelatedAccountGroupMembership(proto.Message):
     r"""A membership in a group of related accounts.
 
@@ -3097,7 +3145,7 @@ class WafSettings(proto.Message):
 
     class WafFeature(proto.Enum):
         r"""Supported WAF features. For more information, see
-        https://cloud.google.com/recaptcha-enterprise/docs/usecase#comparison_of_features.
+        https://cloud.google.com/recaptcha/docs/usecase#comparison_of_features.
 
         Values:
             WAF_FEATURE_UNSPECIFIED (0):
@@ -3148,6 +3196,49 @@ class WafSettings(proto.Message):
         proto.ENUM,
         number=2,
         enum=WafFeature,
+    )
+
+
+class IpOverrideData(proto.Message):
+    r"""Information about the IP or IP range override.
+
+    Attributes:
+        ip (str):
+            Required. The IP address to override (can be
+            IPv4, IPv6 or CIDR). The IP override must be a
+            valid IPv4 or IPv6 address, or a CIDR range. The
+            IP override must be a public IP address.
+            Example of IPv4: 168.192.5.6
+            Example of IPv6:
+            2001:0000:130F:0000:0000:09C0:876A:130B Example
+            of IPv4 with CIDR: 168.192.5.0/24
+            Example of IPv6 with CIDR: 2001:0DB8:1234::/48
+        override_type (google.cloud.recaptchaenterprise_v1.types.IpOverrideData.OverrideType):
+            Required. Describes the type of IP override.
+    """
+
+    class OverrideType(proto.Enum):
+        r"""Enum that represents the type of IP override.
+
+        Values:
+            OVERRIDE_TYPE_UNSPECIFIED (0):
+                Default override type that indicates this
+                enum hasn't been specified.
+            ALLOW (1):
+                Allowlist the IP address; i.e. give a
+                ``risk_analysis.score`` of 0.9 for all valid assessments.
+        """
+        OVERRIDE_TYPE_UNSPECIFIED = 0
+        ALLOW = 1
+
+    ip: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    override_type: OverrideType = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=OverrideType,
     )
 
 
