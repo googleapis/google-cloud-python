@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.11.2](https://github.com/googleapis/python-logging/compare/v3.11.1...v3.11.2) (2024-08-15)
+
+
+### Bug Fixes
+
+* **deps:** Require google-cloud-appengine-logging&gt;=0.1.3 ([550abca](https://github.com/googleapis/python-logging/commit/550abca2846218d114a6b4b42cb165489e630374))
+* **deps:** Require google-cloud-audit-log &gt;= 0.2.4 ([550abca](https://github.com/googleapis/python-logging/commit/550abca2846218d114a6b4b42cb165489e630374))
+* **deps:** Require opentelemetry-api&gt;=1.9.0 ([550abca](https://github.com/googleapis/python-logging/commit/550abca2846218d114a6b4b42cb165489e630374))
+* Fixed type hinting issue with specifying Transport class ([#930](https://github.com/googleapis/python-logging/issues/930)) ([e2875d6](https://github.com/googleapis/python-logging/commit/e2875d664c153a4328bd42790dfb7b4ac36a9048))
+
 ## [3.11.1](https://github.com/googleapis/python-logging/compare/v3.11.0...v3.11.1) (2024-08-06)
 
 
