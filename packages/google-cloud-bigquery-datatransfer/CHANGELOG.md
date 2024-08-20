@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.15.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.15.5...google-cloud-bigquery-datatransfer-v3.15.6) (2024-08-20)
+
+
+### Documentation
+
+* [google-cloud-bigquery-datatransfer] deprecate `authorization_code` ([#13021](https://github.com/googleapis/google-cloud-python/issues/13021)) ([78bd284](https://github.com/googleapis/google-cloud-python/commit/78bd284bbaa89ef26ce60c20beb6445212c8b27b))
+
 ## [3.15.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.15.4...google-cloud-bigquery-datatransfer-v3.15.5) (2024-07-30)
 
 
