@@ -146,6 +146,16 @@ def session() -> Generator[bigframes.Session, None, None]:
 
 
 @pytest.fixture(scope="session")
+def session_us_east5() -> Generator[bigframes.Session, None, None]:
+    context = bigframes.BigQueryOptions(
+        location="us-east5",
+    )
+    session = bigframes.Session(context=context)
+    yield session
+    session.close()  # close generated session at cleanup time
+
+
+@pytest.fixture(scope="session")
 def session_load() -> Generator[bigframes.Session, None, None]:
     context = bigframes.BigQueryOptions(location="US", project="bigframes-load-testing")
     session = bigframes.Session(context=context)

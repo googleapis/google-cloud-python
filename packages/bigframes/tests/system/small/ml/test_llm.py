@@ -18,7 +18,7 @@ from bigframes.ml import llm
 from tests.system import utils
 
 
-def test_create_text_generator_model(
+def test_create_load_text_generator_model(
     palm2_text_generator_model, dataset_id, bq_connection
 ):
     # Model creation doesn't return error
@@ -34,7 +34,7 @@ def test_create_text_generator_model(
     assert reloaded_model.connection_name == bq_connection
 
 
-def test_create_text_generator_32k_model(
+def test_create_load_text_generator_32k_model(
     palm2_text_generator_32k_model, dataset_id, bq_connection
 ):
     # Model creation doesn't return error
@@ -400,6 +400,67 @@ def test_gemini_text_generator_predict_with_params_success(
         llm_text_df, temperature=0.5, max_output_tokens=100, top_k=20, top_p=0.5
     ).to_pandas()
     assert df.shape == (3, 4)
+    assert "ml_generate_text_llm_result" in df.columns
+    series = df["ml_generate_text_llm_result"]
+    assert all(series.str.len() > 20)
+
+
+# TODO(garrettwu): add tests for claude3.5 sonnet and claude3 opus as they are only available in other regions.
+@pytest.mark.parametrize(
+    "model_name",
+    ("claude-3-sonnet", "claude-3-haiku"),
+)
+def test_claude3_text_generator_create_load(
+    dataset_id, model_name, session, bq_connection
+):
+    claude3_text_generator_model = llm.Claude3TextGenerator(
+        model_name=model_name, connection_name=bq_connection, session=session
+    )
+    assert claude3_text_generator_model is not None
+    assert claude3_text_generator_model._bqml_model is not None
+
+    # save, load to ensure configuration was kept
+    reloaded_model = claude3_text_generator_model.to_gbq(
+        f"{dataset_id}.temp_text_model", replace=True
+    )
+    assert f"{dataset_id}.temp_text_model" == reloaded_model._bqml_model.model_name
+    assert reloaded_model.connection_name == bq_connection
+    assert reloaded_model.model_name == model_name
+
+
+@pytest.mark.parametrize(
+    "model_name",
+    ("claude-3-sonnet", "claude-3-haiku"),
+)
+@pytest.mark.flaky(retries=2)
+def test_claude3_text_generator_predict_default_params_success(
+    llm_text_df, model_name, session, bq_connection
+):
+    claude3_text_generator_model = llm.Claude3TextGenerator(
+        model_name=model_name, connection_name=bq_connection, session=session
+    )
+    df = claude3_text_generator_model.predict(llm_text_df).to_pandas()
+    assert df.shape == (3, 3)
+    assert "ml_generate_text_llm_result" in df.columns
+    series = df["ml_generate_text_llm_result"]
+    assert all(series.str.len() > 20)
+
+
+@pytest.mark.parametrize(
+    "model_name",
+    ("claude-3-sonnet", "claude-3-haiku"),
+)
+@pytest.mark.flaky(retries=2)
+def test_claude3_text_generator_predict_with_params_success(
+    llm_text_df, model_name, session, bq_connection
+):
+    claude3_text_generator_model = llm.Claude3TextGenerator(
+        model_name=model_name, connection_name=bq_connection, session=session
+    )
+    df = claude3_text_generator_model.predict(
+        llm_text_df, max_output_tokens=100, top_k=20, top_p=0.5
+    ).to_pandas()
+    assert df.shape == (3, 3)
     assert "ml_generate_text_llm_result" in df.columns
     series = df["ml_generate_text_llm_result"]
     assert all(series.str.len() > 20)

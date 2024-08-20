@@ -157,6 +157,8 @@
         uid: bigframes.ml.llm.PaLM2TextGenerator
       - name: PaLM2TextEmbeddingGenerator
         uid: bigframes.ml.llm.PaLM2TextEmbeddingGenerator
+      - name: Claude3TextGenerator
+        uid: bigframes.ml.llm.Claude3TextGenerator
       name: llm
     - items:
       - name: metrics
