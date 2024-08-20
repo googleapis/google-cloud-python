@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.15.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.14.0...v1.15.0) (2024-08-20)
+
+
+### Features
+
+* Add llm.TextEmbeddingGenerator to support new embedding models ([#905](https://github.com/googleapis/python-bigquery-dataframes/issues/905)) ([6bc6a41](https://github.com/googleapis/python-bigquery-dataframes/commit/6bc6a41426fbbb60e77cd77f80860f88a1751a4b))
+* Add ml.llm.Claude3TextGenerator model ([#901](https://github.com/googleapis/python-bigquery-dataframes/issues/901)) ([7050038](https://github.com/googleapis/python-bigquery-dataframes/commit/7050038eeee258452860941aa6b01d6a8ae10c6f))
+
+
+### Documentation
+
+* Add columns for "requires ordering/index" to supported APIs summary ([#892](https://github.com/googleapis/python-bigquery-dataframes/issues/892)) ([d2fc51a](https://github.com/googleapis/python-bigquery-dataframes/commit/d2fc51a30c4fff6fe0b98df61eec70ddb28b37ec))
+* Remove duplicate description for `kms_key_name` ([#898](https://github.com/googleapis/python-bigquery-dataframes/issues/898)) ([1053d56](https://github.com/googleapis/python-bigquery-dataframes/commit/1053d56260eef1cff6e7c419f6c86be8f7e74373))
+* Update embedding model notebooks ([#906](https://github.com/googleapis/python-bigquery-dataframes/issues/906)) ([d9b8ef5](https://github.com/googleapis/python-bigquery-dataframes/commit/d9b8ef56deb0c776edeeb0112bd9d35d5ed1b70e))
+
 ## [1.14.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.13.0...v1.14.0) (2024-08-14)
 
 
