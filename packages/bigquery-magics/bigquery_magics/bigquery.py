@@ -104,13 +104,14 @@ from bigquery_magics import line_arg_parser as lap
 import bigquery_magics._versions_helpers
 import bigquery_magics.config
 import bigquery_magics.line_arg_parser.exceptions
+import bigquery_magics.version
 
 try:
     from google.cloud import bigquery_storage  # type: ignore
 except ImportError:
     bigquery_storage = None
 
-IPYTHON_USER_AGENT = "ipython-{}".format(IPython.__version__)
+USER_AGENT = f"ipython-{IPython.__version__} bigquery-magics/{bigquery_magics.version.__version__}"
 context = bigquery_magics.config.context
 
 
@@ -418,7 +419,7 @@ def _cell_magic(line, query):
         project=project,
         credentials=context.credentials,
         default_query_job_config=context.default_query_job_config,
-        client_info=client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
+        client_info=client_info.ClientInfo(user_agent=USER_AGENT),
         client_options=bigquery_client_options,
         location=location,
     )
@@ -633,7 +634,7 @@ def _make_bqstorage_client(client, use_bqstorage_api, client_options):
 
     return client._ensure_bqstorage_client(
         client_options=client_options,
-        client_info=gapic_client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
+        client_info=gapic_client_info.ClientInfo(user_agent=USER_AGENT),
     )
 
 

@@ -474,7 +474,10 @@ def test_bigquery_magic_default_connection_user_agent():
 
     client_info_arg = conn.call_args[1].get("client_info")
     assert client_info_arg is not None
-    assert client_info_arg.user_agent == "ipython-" + IPython.__version__
+    assert (
+        client_info_arg.user_agent
+        == f"ipython-{IPython.__version__} bigquery-magics/{bigquery_magics.__version__}"
+    )
 
 
 @pytest.mark.usefixtures("ipython_interactive")
@@ -615,7 +618,10 @@ def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
     assert kwargs.get("credentials") is mock_credentials
     client_info = kwargs.get("client_info")
     assert client_info is not None
-    assert client_info.user_agent == "ipython-" + IPython.__version__
+    assert (
+        client_info.user_agent
+        == f"ipython-{IPython.__version__} bigquery-magics/{bigquery_magics.__version__}"
+    )
 
     query_job_mock.to_dataframe.assert_called_once_with(
         bqstorage_client=bqstorage_instance_mock,
