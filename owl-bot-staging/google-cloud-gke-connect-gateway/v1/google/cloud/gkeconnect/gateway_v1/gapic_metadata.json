@@ -1,0 +1,43 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.gkeconnect.gateway_v1",
+  "protoPackage": "google.cloud.gkeconnect.gateway.v1",
+  "schema": "1.0",
+  "services": {
+    "GatewayControl": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "GatewayControlClient",
+          "rpcs": {
+            "GenerateCredentials": {
+              "methods": [
+                "generate_credentials"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "GatewayControlAsyncClient",
+          "rpcs": {
+            "GenerateCredentials": {
+              "methods": [
+                "generate_credentials"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "GatewayControlClient",
+          "rpcs": {
+            "GenerateCredentials": {
+              "methods": [
+                "generate_credentials"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
