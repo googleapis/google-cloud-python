@@ -19,7 +19,6 @@ deep-remove-regex:
   - /owl-bot-staging
 
 deep-preserve-regex:
-  - /owl-bot-staging/v1alpha
   - /owl-bot-staging/v1beta1
 
 deep-copy-regex:
