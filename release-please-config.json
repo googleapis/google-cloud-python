@@ -1542,7 +1542,13 @@
             "component": "google-cloud-gke-connect-gateway",
             "extra-files": [
                 "google/cloud/gkeconnect/gateway/gapic_version.py",
+                "google/cloud/gkeconnect/gateway_v1/gapic_version.py",
                 "google/cloud/gkeconnect/gateway_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gkeconnect.gateway.v1.json",
+                    "type": "json"
+                },
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.gkeconnect.gateway.v1beta1.json",
