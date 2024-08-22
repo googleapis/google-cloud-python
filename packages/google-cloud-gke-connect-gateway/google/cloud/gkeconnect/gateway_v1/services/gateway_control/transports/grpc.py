@@ -16,25 +16,21 @@
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api import httpbody_pb2  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 
-from .base import DEFAULT_CLIENT_INFO, GatewayServiceTransport
+from google.cloud.gkeconnect.gateway_v1.types import control
+
+from .base import DEFAULT_CLIENT_INFO, GatewayControlTransport
 
 
-class GatewayServiceGrpcTransport(GatewayServiceTransport):
-    """gRPC backend transport for GatewayService.
+class GatewayControlGrpcTransport(GatewayControlTransport):
+    """gRPC backend transport for GatewayControl.
 
-    Gateway service is a public API which works as a Kubernetes
-    resource model proxy between end users and registered Kubernetes
-    clusters. Each RPC in this service matches with an HTTP verb.
-    End user will initiate kubectl commands against the Gateway
-    service, and Gateway service will forward user requests to
-    clusters.
+    GatewayControl is the control plane API for Connect Gateway.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -239,67 +235,20 @@ class GatewayServiceGrpcTransport(GatewayServiceTransport):
         return self._grpc_channel
 
     @property
-    def get_resource(self) -> Callable[[httpbody_pb2.HttpBody], httpbody_pb2.HttpBody]:
-        r"""Return a callable for the get resource method over gRPC.
-
-        GetResource performs an HTTP GET request on the
-        Kubernetes API Server.
-
-        Returns:
-            Callable[[~.HttpBody],
-                    ~.HttpBody]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_resource" not in self._stubs:
-            self._stubs["get_resource"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkeconnect.gateway.v1beta1.GatewayService/GetResource",
-                request_serializer=httpbody_pb2.HttpBody.SerializeToString,
-                response_deserializer=httpbody_pb2.HttpBody.FromString,
-            )
-        return self._stubs["get_resource"]
-
-    @property
-    def post_resource(self) -> Callable[[httpbody_pb2.HttpBody], httpbody_pb2.HttpBody]:
-        r"""Return a callable for the post resource method over gRPC.
-
-        PostResource performs an HTTP POST on the Kubernetes
-        API Server.
-
-        Returns:
-            Callable[[~.HttpBody],
-                    ~.HttpBody]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "post_resource" not in self._stubs:
-            self._stubs["post_resource"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkeconnect.gateway.v1beta1.GatewayService/PostResource",
-                request_serializer=httpbody_pb2.HttpBody.SerializeToString,
-                response_deserializer=httpbody_pb2.HttpBody.FromString,
-            )
-        return self._stubs["post_resource"]
-
-    @property
-    def delete_resource(
+    def generate_credentials(
         self,
-    ) -> Callable[[httpbody_pb2.HttpBody], httpbody_pb2.HttpBody]:
-        r"""Return a callable for the delete resource method over gRPC.
+    ) -> Callable[
+        [control.GenerateCredentialsRequest], control.GenerateCredentialsResponse
+    ]:
+        r"""Return a callable for the generate credentials method over gRPC.
 
-        DeleteResource performs an HTTP DELETE on the
-        Kubernetes API Server.
+        GenerateCredentials provides connection information
+        that allows a user to access the specified membership
+        using Connect Gateway.
 
         Returns:
-            Callable[[~.HttpBody],
-                    ~.HttpBody]:
+            Callable[[~.GenerateCredentialsRequest],
+                    ~.GenerateCredentialsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -307,65 +256,13 @@ class GatewayServiceGrpcTransport(GatewayServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_resource" not in self._stubs:
-            self._stubs["delete_resource"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkeconnect.gateway.v1beta1.GatewayService/DeleteResource",
-                request_serializer=httpbody_pb2.HttpBody.SerializeToString,
-                response_deserializer=httpbody_pb2.HttpBody.FromString,
+        if "generate_credentials" not in self._stubs:
+            self._stubs["generate_credentials"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkeconnect.gateway.v1.GatewayControl/GenerateCredentials",
+                request_serializer=control.GenerateCredentialsRequest.serialize,
+                response_deserializer=control.GenerateCredentialsResponse.deserialize,
             )
-        return self._stubs["delete_resource"]
-
-    @property
-    def put_resource(self) -> Callable[[httpbody_pb2.HttpBody], httpbody_pb2.HttpBody]:
-        r"""Return a callable for the put resource method over gRPC.
-
-        PutResource performs an HTTP PUT on the Kubernetes
-        API Server.
-
-        Returns:
-            Callable[[~.HttpBody],
-                    ~.HttpBody]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "put_resource" not in self._stubs:
-            self._stubs["put_resource"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkeconnect.gateway.v1beta1.GatewayService/PutResource",
-                request_serializer=httpbody_pb2.HttpBody.SerializeToString,
-                response_deserializer=httpbody_pb2.HttpBody.FromString,
-            )
-        return self._stubs["put_resource"]
-
-    @property
-    def patch_resource(
-        self,
-    ) -> Callable[[httpbody_pb2.HttpBody], httpbody_pb2.HttpBody]:
-        r"""Return a callable for the patch resource method over gRPC.
-
-        PatchResource performs an HTTP PATCH on the
-        Kubernetes API Server.
-
-        Returns:
-            Callable[[~.HttpBody],
-                    ~.HttpBody]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "patch_resource" not in self._stubs:
-            self._stubs["patch_resource"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkeconnect.gateway.v1beta1.GatewayService/PatchResource",
-                request_serializer=httpbody_pb2.HttpBody.SerializeToString,
-                response_deserializer=httpbody_pb2.HttpBody.FromString,
-            )
-        return self._stubs["patch_resource"]
+        return self._stubs["generate_credentials"]
 
     def close(self):
         self.grpc_channel.close()
@@ -375,4 +272,4 @@ class GatewayServiceGrpcTransport(GatewayServiceTransport):
         return "grpc"
 
 
-__all__ = ("GatewayServiceGrpcTransport",)
+__all__ = ("GatewayControlGrpcTransport",)

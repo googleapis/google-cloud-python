@@ -13,9 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .control import GenerateCredentialsRequest, GenerateCredentialsResponse
-
-__all__ = (
-    "GenerateCredentialsRequest",
-    "GenerateCredentialsResponse",
-)
+__version__ = "0.0.0"  # {x-release-please-version}

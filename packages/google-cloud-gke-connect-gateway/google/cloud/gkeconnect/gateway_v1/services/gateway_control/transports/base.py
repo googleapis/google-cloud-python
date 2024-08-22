@@ -16,7 +16,6 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-from google.api import httpbody_pb2  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -25,15 +24,16 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.gkeconnect.gateway_v1beta1 import gapic_version as package_version
+from google.cloud.gkeconnect.gateway_v1 import gapic_version as package_version
+from google.cloud.gkeconnect.gateway_v1.types import control
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
 
-class GatewayServiceTransport(abc.ABC):
-    """Abstract transport class for GatewayService."""
+class GatewayControlTransport(abc.ABC):
+    """Abstract transport class for GatewayControl."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -128,29 +128,18 @@ class GatewayServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.get_resource: gapic_v1.method.wrap_method(
-                self.get_resource,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.post_resource: gapic_v1.method.wrap_method(
-                self.post_resource,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.delete_resource: gapic_v1.method.wrap_method(
-                self.delete_resource,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.put_resource: gapic_v1.method.wrap_method(
-                self.put_resource,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.patch_resource: gapic_v1.method.wrap_method(
-                self.patch_resource,
-                default_timeout=None,
+            self.generate_credentials: gapic_v1.method.wrap_method(
+                self.generate_credentials,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
         }
@@ -165,47 +154,14 @@ class GatewayServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_resource(
+    def generate_credentials(
         self,
     ) -> Callable[
-        [httpbody_pb2.HttpBody],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def post_resource(
-        self,
-    ) -> Callable[
-        [httpbody_pb2.HttpBody],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_resource(
-        self,
-    ) -> Callable[
-        [httpbody_pb2.HttpBody],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def put_resource(
-        self,
-    ) -> Callable[
-        [httpbody_pb2.HttpBody],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def patch_resource(
-        self,
-    ) -> Callable[
-        [httpbody_pb2.HttpBody],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
+        [control.GenerateCredentialsRequest],
+        Union[
+            control.GenerateCredentialsResponse,
+            Awaitable[control.GenerateCredentialsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -214,4 +170,4 @@ class GatewayServiceTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("GatewayServiceTransport",)
+__all__ = ("GatewayControlTransport",)

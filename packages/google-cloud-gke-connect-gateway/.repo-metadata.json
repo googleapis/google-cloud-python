@@ -10,7 +10,7 @@
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-gke-connect-gateway",
     "api_id": "connectgateway.googleapis.com",
-    "default_version": "v1beta1",
+    "default_version": "v1",
     "codeowner_team": "",
     "api_shortname": "connectgateway",
     "api_description": "builds on the power of fleets to let Anthos users connect to and run commands against registered Anthos clusters in a simple, consistent, and secured way, whether the clusters are on Google Cloud, other public clouds, or on premises, and makes it easier to automate DevOps processes across all your clusters."

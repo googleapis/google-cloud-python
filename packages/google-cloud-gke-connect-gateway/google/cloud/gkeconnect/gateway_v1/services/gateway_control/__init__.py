@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .control import GenerateCredentialsRequest, GenerateCredentialsResponse
+from .async_client import GatewayControlAsyncClient
+from .client import GatewayControlClient
 
 __all__ = (
-    "GenerateCredentialsRequest",
-    "GenerateCredentialsResponse",
+    "GatewayControlClient",
+    "GatewayControlAsyncClient",
 )

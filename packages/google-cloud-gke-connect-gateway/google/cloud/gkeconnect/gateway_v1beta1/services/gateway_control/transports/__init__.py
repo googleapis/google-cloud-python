@@ -16,17 +16,17 @@
 from collections import OrderedDict
 from typing import Dict, Type
 
-from .base import GatewayServiceTransport
-from .grpc import GatewayServiceGrpcTransport
-from .grpc_asyncio import GatewayServiceGrpcAsyncIOTransport
+from .base import GatewayControlTransport
+from .grpc import GatewayControlGrpcTransport
+from .grpc_asyncio import GatewayControlGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = OrderedDict()  # type: Dict[str, Type[GatewayServiceTransport]]
-_transport_registry["grpc"] = GatewayServiceGrpcTransport
-_transport_registry["grpc_asyncio"] = GatewayServiceGrpcAsyncIOTransport
+_transport_registry = OrderedDict()  # type: Dict[str, Type[GatewayControlTransport]]
+_transport_registry["grpc"] = GatewayControlGrpcTransport
+_transport_registry["grpc_asyncio"] = GatewayControlGrpcAsyncIOTransport
 
 __all__ = (
-    "GatewayServiceTransport",
-    "GatewayServiceGrpcTransport",
-    "GatewayServiceGrpcAsyncIOTransport",
+    "GatewayControlTransport",
+    "GatewayControlGrpcTransport",
+    "GatewayControlGrpcAsyncIOTransport",
 )

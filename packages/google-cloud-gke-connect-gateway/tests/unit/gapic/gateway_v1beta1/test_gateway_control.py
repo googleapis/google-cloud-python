@@ -24,7 +24,6 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
-from google.api import httpbody_pb2  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
@@ -33,18 +32,18 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 
-from google.cloud.gkeconnect.gateway_v1beta1.services.gateway_service import (
-    GatewayServiceAsyncClient,
-    GatewayServiceClient,
+from google.cloud.gkeconnect.gateway_v1beta1.services.gateway_control import (
+    GatewayControlAsyncClient,
+    GatewayControlClient,
     transports,
 )
+from google.cloud.gkeconnect.gateway_v1beta1.types import control
 
 
 def client_cert_source_callback():
@@ -80,40 +79,40 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert GatewayServiceClient._get_default_mtls_endpoint(None) is None
+    assert GatewayControlClient._get_default_mtls_endpoint(None) is None
     assert (
-        GatewayServiceClient._get_default_mtls_endpoint(api_endpoint)
+        GatewayControlClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        GatewayServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        GatewayControlClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        GatewayServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        GatewayControlClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        GatewayServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        GatewayControlClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        GatewayServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+        GatewayControlClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
     )
 
 
 def test__read_environment_variables():
-    assert GatewayServiceClient._read_environment_variables() == (False, "auto", None)
+    assert GatewayControlClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert GatewayServiceClient._read_environment_variables() == (
+        assert GatewayControlClient._read_environment_variables() == (
             True,
             "auto",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert GatewayServiceClient._read_environment_variables() == (
+        assert GatewayControlClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -123,28 +122,28 @@ def test__read_environment_variables():
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError) as excinfo:
-            GatewayServiceClient._read_environment_variables()
+            GatewayControlClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert GatewayServiceClient._read_environment_variables() == (
+        assert GatewayControlClient._read_environment_variables() == (
             False,
             "never",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert GatewayServiceClient._read_environment_variables() == (
+        assert GatewayControlClient._read_environment_variables() == (
             False,
             "always",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert GatewayServiceClient._read_environment_variables() == (
+        assert GatewayControlClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -152,14 +151,14 @@ def test__read_environment_variables():
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
-            GatewayServiceClient._read_environment_variables()
+            GatewayControlClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert GatewayServiceClient._read_environment_variables() == (
+        assert GatewayControlClient._read_environment_variables() == (
             False,
             "auto",
             "foo.com",
@@ -170,13 +169,13 @@ def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
 
-    assert GatewayServiceClient._get_client_cert_source(None, False) is None
+    assert GatewayControlClient._get_client_cert_source(None, False) is None
     assert (
-        GatewayServiceClient._get_client_cert_source(mock_provided_cert_source, False)
+        GatewayControlClient._get_client_cert_source(mock_provided_cert_source, False)
         is None
     )
     assert (
-        GatewayServiceClient._get_client_cert_source(mock_provided_cert_source, True)
+        GatewayControlClient._get_client_cert_source(mock_provided_cert_source, True)
         == mock_provided_cert_source
     )
 
@@ -188,11 +187,11 @@ def test__get_client_cert_source():
             return_value=mock_default_cert_source,
         ):
             assert (
-                GatewayServiceClient._get_client_cert_source(None, True)
+                GatewayControlClient._get_client_cert_source(None, True)
                 is mock_default_cert_source
             )
             assert (
-                GatewayServiceClient._get_client_cert_source(
+                GatewayControlClient._get_client_cert_source(
                     mock_provided_cert_source, "true"
                 )
                 is mock_provided_cert_source
@@ -200,64 +199,64 @@ def test__get_client_cert_source():
 
 
 @mock.patch.object(
-    GatewayServiceClient,
+    GatewayControlClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GatewayServiceClient),
+    modify_default_endpoint_template(GatewayControlClient),
 )
 @mock.patch.object(
-    GatewayServiceAsyncClient,
+    GatewayControlAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GatewayServiceAsyncClient),
+    modify_default_endpoint_template(GatewayControlAsyncClient),
 )
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
-    default_universe = GatewayServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = GatewayServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = GatewayControlClient._DEFAULT_UNIVERSE
+    default_endpoint = GatewayControlClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = GatewayServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = GatewayControlClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
     assert (
-        GatewayServiceClient._get_api_endpoint(
+        GatewayControlClient._get_api_endpoint(
             api_override, mock_client_cert_source, default_universe, "always"
         )
         == api_override
     )
     assert (
-        GatewayServiceClient._get_api_endpoint(
+        GatewayControlClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "auto"
         )
-        == GatewayServiceClient.DEFAULT_MTLS_ENDPOINT
+        == GatewayControlClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        GatewayServiceClient._get_api_endpoint(None, None, default_universe, "auto")
+        GatewayControlClient._get_api_endpoint(None, None, default_universe, "auto")
         == default_endpoint
     )
     assert (
-        GatewayServiceClient._get_api_endpoint(None, None, default_universe, "always")
-        == GatewayServiceClient.DEFAULT_MTLS_ENDPOINT
+        GatewayControlClient._get_api_endpoint(None, None, default_universe, "always")
+        == GatewayControlClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        GatewayServiceClient._get_api_endpoint(
+        GatewayControlClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "always"
         )
-        == GatewayServiceClient.DEFAULT_MTLS_ENDPOINT
+        == GatewayControlClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        GatewayServiceClient._get_api_endpoint(None, None, mock_universe, "never")
+        GatewayControlClient._get_api_endpoint(None, None, mock_universe, "never")
         == mock_endpoint
     )
     assert (
-        GatewayServiceClient._get_api_endpoint(None, None, default_universe, "never")
+        GatewayControlClient._get_api_endpoint(None, None, default_universe, "never")
         == default_endpoint
     )
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        GatewayServiceClient._get_api_endpoint(
+        GatewayControlClient._get_api_endpoint(
             None, mock_client_cert_source, mock_universe, "auto"
         )
     assert (
@@ -271,29 +270,29 @@ def test__get_universe_domain():
     universe_domain_env = "bar.com"
 
     assert (
-        GatewayServiceClient._get_universe_domain(
+        GatewayControlClient._get_universe_domain(
             client_universe_domain, universe_domain_env
         )
         == client_universe_domain
     )
     assert (
-        GatewayServiceClient._get_universe_domain(None, universe_domain_env)
+        GatewayControlClient._get_universe_domain(None, universe_domain_env)
         == universe_domain_env
     )
     assert (
-        GatewayServiceClient._get_universe_domain(None, None)
-        == GatewayServiceClient._DEFAULT_UNIVERSE
+        GatewayControlClient._get_universe_domain(None, None)
+        == GatewayControlClient._DEFAULT_UNIVERSE
     )
 
     with pytest.raises(ValueError) as excinfo:
-        GatewayServiceClient._get_universe_domain("", None)
+        GatewayControlClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (GatewayServiceClient, transports.GatewayServiceGrpcTransport, "grpc"),
+        (GatewayControlClient, transports.GatewayControlGrpcTransport, "grpc"),
     ],
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
@@ -372,11 +371,11 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (GatewayServiceClient, "grpc"),
-        (GatewayServiceAsyncClient, "grpc_asyncio"),
+        (GatewayControlClient, "grpc"),
+        (GatewayControlAsyncClient, "grpc_asyncio"),
     ],
 )
-def test_gateway_service_client_from_service_account_info(client_class, transport_name):
+def test_gateway_control_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
@@ -393,11 +392,11 @@ def test_gateway_service_client_from_service_account_info(client_class, transpor
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.GatewayServiceGrpcTransport, "grpc"),
-        (transports.GatewayServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.GatewayControlGrpcTransport, "grpc"),
+        (transports.GatewayControlGrpcAsyncIOTransport, "grpc_asyncio"),
     ],
 )
-def test_gateway_service_client_service_account_always_use_jwt(
+def test_gateway_control_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -418,11 +417,11 @@ def test_gateway_service_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (GatewayServiceClient, "grpc"),
-        (GatewayServiceAsyncClient, "grpc_asyncio"),
+        (GatewayControlClient, "grpc"),
+        (GatewayControlAsyncClient, "grpc_asyncio"),
     ],
 )
-def test_gateway_service_client_from_service_account_file(client_class, transport_name):
+def test_gateway_control_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
@@ -443,49 +442,49 @@ def test_gateway_service_client_from_service_account_file(client_class, transpor
         assert client.transport._host == ("connectgateway.googleapis.com:443")
 
 
-def test_gateway_service_client_get_transport_class():
-    transport = GatewayServiceClient.get_transport_class()
+def test_gateway_control_client_get_transport_class():
+    transport = GatewayControlClient.get_transport_class()
     available_transports = [
-        transports.GatewayServiceGrpcTransport,
+        transports.GatewayControlGrpcTransport,
     ]
     assert transport in available_transports
 
-    transport = GatewayServiceClient.get_transport_class("grpc")
-    assert transport == transports.GatewayServiceGrpcTransport
+    transport = GatewayControlClient.get_transport_class("grpc")
+    assert transport == transports.GatewayControlGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (GatewayServiceClient, transports.GatewayServiceGrpcTransport, "grpc"),
+        (GatewayControlClient, transports.GatewayControlGrpcTransport, "grpc"),
         (
-            GatewayServiceAsyncClient,
-            transports.GatewayServiceGrpcAsyncIOTransport,
+            GatewayControlAsyncClient,
+            transports.GatewayControlGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
 @mock.patch.object(
-    GatewayServiceClient,
+    GatewayControlClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GatewayServiceClient),
+    modify_default_endpoint_template(GatewayControlClient),
 )
 @mock.patch.object(
-    GatewayServiceAsyncClient,
+    GatewayControlAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GatewayServiceAsyncClient),
+    modify_default_endpoint_template(GatewayControlAsyncClient),
 )
-def test_gateway_service_client_client_options(
+def test_gateway_control_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(GatewayServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(GatewayControlClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(GatewayServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(GatewayControlClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -608,34 +607,34 @@ def test_gateway_service_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (GatewayServiceClient, transports.GatewayServiceGrpcTransport, "grpc", "true"),
+        (GatewayControlClient, transports.GatewayControlGrpcTransport, "grpc", "true"),
         (
-            GatewayServiceAsyncClient,
-            transports.GatewayServiceGrpcAsyncIOTransport,
+            GatewayControlAsyncClient,
+            transports.GatewayControlGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
-        (GatewayServiceClient, transports.GatewayServiceGrpcTransport, "grpc", "false"),
+        (GatewayControlClient, transports.GatewayControlGrpcTransport, "grpc", "false"),
         (
-            GatewayServiceAsyncClient,
-            transports.GatewayServiceGrpcAsyncIOTransport,
+            GatewayControlAsyncClient,
+            transports.GatewayControlGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    GatewayServiceClient,
+    GatewayControlClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GatewayServiceClient),
+    modify_default_endpoint_template(GatewayControlClient),
 )
 @mock.patch.object(
-    GatewayServiceAsyncClient,
+    GatewayControlAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GatewayServiceAsyncClient),
+    modify_default_endpoint_template(GatewayControlAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_gateway_service_client_mtls_env_auto(
+def test_gateway_control_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -738,19 +737,19 @@ def test_gateway_service_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize(
-    "client_class", [GatewayServiceClient, GatewayServiceAsyncClient]
+    "client_class", [GatewayControlClient, GatewayControlAsyncClient]
 )
 @mock.patch.object(
-    GatewayServiceClient,
+    GatewayControlClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(GatewayServiceClient),
+    modify_default_endpoint(GatewayControlClient),
 )
 @mock.patch.object(
-    GatewayServiceAsyncClient,
+    GatewayControlAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(GatewayServiceAsyncClient),
+    modify_default_endpoint(GatewayControlAsyncClient),
 )
-def test_gateway_service_client_get_mtls_endpoint_and_cert_source(client_class):
+def test_gateway_control_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -842,27 +841,27 @@ def test_gateway_service_client_get_mtls_endpoint_and_cert_source(client_class):
 
 
 @pytest.mark.parametrize(
-    "client_class", [GatewayServiceClient, GatewayServiceAsyncClient]
+    "client_class", [GatewayControlClient, GatewayControlAsyncClient]
 )
 @mock.patch.object(
-    GatewayServiceClient,
+    GatewayControlClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GatewayServiceClient),
+    modify_default_endpoint_template(GatewayControlClient),
 )
 @mock.patch.object(
-    GatewayServiceAsyncClient,
+    GatewayControlAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GatewayServiceAsyncClient),
+    modify_default_endpoint_template(GatewayControlAsyncClient),
 )
-def test_gateway_service_client_client_api_endpoint(client_class):
+def test_gateway_control_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
-    default_universe = GatewayServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = GatewayServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = GatewayControlClient._DEFAULT_UNIVERSE
+    default_endpoint = GatewayControlClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = GatewayServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = GatewayControlClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
@@ -930,15 +929,15 @@ def test_gateway_service_client_client_api_endpoint(client_class):
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (GatewayServiceClient, transports.GatewayServiceGrpcTransport, "grpc"),
+        (GatewayControlClient, transports.GatewayControlGrpcTransport, "grpc"),
         (
-            GatewayServiceAsyncClient,
-            transports.GatewayServiceGrpcAsyncIOTransport,
+            GatewayControlAsyncClient,
+            transports.GatewayControlGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
-def test_gateway_service_client_client_options_scopes(
+def test_gateway_control_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -967,20 +966,20 @@ def test_gateway_service_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            GatewayServiceClient,
-            transports.GatewayServiceGrpcTransport,
+            GatewayControlClient,
+            transports.GatewayControlGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            GatewayServiceAsyncClient,
-            transports.GatewayServiceGrpcAsyncIOTransport,
+            GatewayControlAsyncClient,
+            transports.GatewayControlGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_gateway_service_client_client_options_credentials_file(
+def test_gateway_control_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1004,12 +1003,12 @@ def test_gateway_service_client_client_options_credentials_file(
         )
 
 
-def test_gateway_service_client_client_options_from_dict():
+def test_gateway_control_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.gkeconnect.gateway_v1beta1.services.gateway_service.transports.GatewayServiceGrpcTransport.__init__"
+        "google.cloud.gkeconnect.gateway_v1beta1.services.gateway_control.transports.GatewayControlGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = GatewayServiceClient(
+        client = GatewayControlClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
@@ -1029,20 +1028,20 @@ def test_gateway_service_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            GatewayServiceClient,
-            transports.GatewayServiceGrpcTransport,
+            GatewayControlClient,
+            transports.GatewayControlGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            GatewayServiceAsyncClient,
-            transports.GatewayServiceGrpcAsyncIOTransport,
+            GatewayControlAsyncClient,
+            transports.GatewayControlGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_gateway_service_client_create_channel_credentials_file(
+def test_gateway_control_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1097,12 +1096,12 @@ def test_gateway_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        httpbody_pb2.HttpBody,
+        control.GenerateCredentialsRequest,
         dict,
     ],
 )
-def test_get_resource(request_type, transport: str = "grpc"):
-    client = GatewayServiceClient(
+def test_generate_credentials(request_type, transport: str = "grpc"):
+    client = GatewayControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1112,49 +1111,53 @@ def test_get_resource(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_resource), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.generate_credentials), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = httpbody_pb2.HttpBody(
-            content_type="content_type_value",
-            data=b"data_blob",
+        call.return_value = control.GenerateCredentialsResponse(
+            kubeconfig=b"kubeconfig_blob",
+            endpoint="endpoint_value",
         )
-        response = client.get_resource(request)
+        response = client.generate_credentials(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = httpbody_pb2.HttpBody()
+        request = control.GenerateCredentialsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
+    assert isinstance(response, control.GenerateCredentialsResponse)
+    assert response.kubeconfig == b"kubeconfig_blob"
+    assert response.endpoint == "endpoint_value"
 
 
-def test_get_resource_empty_call():
+def test_generate_credentials_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GatewayServiceClient(
+    client = GatewayControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_resource), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.generate_credentials), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.get_resource()
+        client.generate_credentials()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody()
+        assert args[0] == control.GenerateCredentialsRequest()
 
 
-def test_get_resource_non_empty_request_with_auto_populated_field():
+def test_generate_credentials_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = GatewayServiceClient(
+    client = GatewayControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1162,28 +1165,34 @@ def test_get_resource_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = httpbody_pb2.HttpBody(
-        content_type="content_type_value",
+    request = control.GenerateCredentialsRequest(
+        name="name_value",
+        version="version_value",
+        kubernetes_namespace="kubernetes_namespace_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_resource), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.generate_credentials), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.get_resource(request=request)
+        client.generate_credentials(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody(
-            content_type="content_type_value",
+        assert args[0] == control.GenerateCredentialsRequest(
+            name="name_value",
+            version="version_value",
+            kubernetes_namespace="kubernetes_namespace_value",
         )
 
 
-def test_get_resource_use_cached_wrapped_rpc():
+def test_generate_credentials_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GatewayServiceClient(
+        client = GatewayControlClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1193,21 +1202,25 @@ def test_get_resource_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.get_resource in client._transport._wrapped_methods
+        assert (
+            client._transport.generate_credentials in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_resource] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.generate_credentials
+        ] = mock_rpc
         request = {}
-        client.get_resource(request)
+        client.generate_credentials(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.get_resource(request)
+        client.generate_credentials(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1215,37 +1228,39 @@ def test_get_resource_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_resource_empty_call_async():
+async def test_generate_credentials_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GatewayServiceAsyncClient(
+    client = GatewayControlAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_resource), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.generate_credentials), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(
-                content_type="content_type_value",
-                data=b"data_blob",
+            control.GenerateCredentialsResponse(
+                kubeconfig=b"kubeconfig_blob",
+                endpoint="endpoint_value",
             )
         )
-        response = await client.get_resource()
+        response = await client.generate_credentials()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody()
+        assert args[0] == control.GenerateCredentialsRequest()
 
 
 @pytest.mark.asyncio
-async def test_get_resource_async_use_cached_wrapped_rpc(
+async def test_generate_credentials_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = GatewayServiceAsyncClient(
+        client = GatewayControlAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -1256,7 +1271,7 @@ async def test_get_resource_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.get_resource
+            client._client._transport.generate_credentials
             in client._client._transport._wrapped_methods
         )
 
@@ -1264,16 +1279,16 @@ async def test_get_resource_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.get_resource
+            client._client._transport.generate_credentials
         ] = mock_rpc
 
         request = {}
-        await client.get_resource(request)
+        await client.generate_credentials(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        await client.get_resource(request)
+        await client.generate_credentials(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1281,10 +1296,10 @@ async def test_get_resource_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_resource_async(
-    transport: str = "grpc_asyncio", request_type=httpbody_pb2.HttpBody
+async def test_generate_credentials_async(
+    transport: str = "grpc_asyncio", request_type=control.GenerateCredentialsRequest
 ):
-    client = GatewayServiceAsyncClient(
+    client = GatewayControlAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1294,1070 +1309,129 @@ async def test_get_resource_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_resource), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.generate_credentials), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(
-                content_type="content_type_value",
-                data=b"data_blob",
+            control.GenerateCredentialsResponse(
+                kubeconfig=b"kubeconfig_blob",
+                endpoint="endpoint_value",
             )
         )
-        response = await client.get_resource(request)
+        response = await client.generate_credentials(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = httpbody_pb2.HttpBody()
+        request = control.GenerateCredentialsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
+    assert isinstance(response, control.GenerateCredentialsResponse)
+    assert response.kubeconfig == b"kubeconfig_blob"
+    assert response.endpoint == "endpoint_value"
 
 
 @pytest.mark.asyncio
-async def test_get_resource_async_from_dict():
-    await test_get_resource_async(request_type=dict)
+async def test_generate_credentials_async_from_dict():
+    await test_generate_credentials_async(request_type=dict)
 
 
-def test_get_resource_from_dict_foreign():
-    client = GatewayServiceClient(
+def test_generate_credentials_field_headers():
+    client = GatewayControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = httpbody_pb2.HttpBody()
-        response = client.get_resource(
-            request={
-                "content_type": "content_type_value",
-                "data": b"data_blob",
-                "extensions": [
-                    any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
-                ],
-            }
-        )
-        call.assert_called()
 
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = control.GenerateCredentialsRequest()
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        httpbody_pb2.HttpBody,
-        dict,
-    ],
-)
-def test_post_resource(request_type, transport: str = "grpc"):
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.post_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = httpbody_pb2.HttpBody(
-            content_type="content_type_value",
-            data=b"data_blob",
-        )
-        response = client.post_resource(request)
+    with mock.patch.object(
+        type(client.transport.generate_credentials), "__call__"
+    ) as call:
+        call.return_value = control.GenerateCredentialsResponse()
+        client.generate_credentials(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = httpbody_pb2.HttpBody()
         assert args[0] == request
 
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
-
-
-def test_post_resource_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.post_resource), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.post_resource()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody()
-
-
-def test_post_resource_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = httpbody_pb2.HttpBody(
-        content_type="content_type_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.post_resource), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.post_resource(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody(
-            content_type="content_type_value",
-        )
-
-
-def test_post_resource_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GatewayServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.post_resource in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.post_resource] = mock_rpc
-        request = {}
-        client.post_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.post_resource(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_post_resource_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GatewayServiceAsyncClient(
+async def test_generate_credentials_field_headers_async():
+    client = GatewayControlAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
     )
 
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = control.GenerateCredentialsRequest()
+
+    request.name = "name_value"
+
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.post_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
+    with mock.patch.object(
+        type(client.transport.generate_credentials), "__call__"
+    ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(
-                content_type="content_type_value",
-                data=b"data_blob",
-            )
+            control.GenerateCredentialsResponse()
         )
-        response = await client.post_resource()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody()
-
-
-@pytest.mark.asyncio
-async def test_post_resource_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = GatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.post_resource
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.post_resource
-        ] = mock_rpc
-
-        request = {}
-        await client.post_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.post_resource(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_post_resource_async(
-    transport: str = "grpc_asyncio", request_type=httpbody_pb2.HttpBody
-):
-    client = GatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.post_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(
-                content_type="content_type_value",
-                data=b"data_blob",
-            )
-        )
-        response = await client.post_resource(request)
+        await client.generate_credentials(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = httpbody_pb2.HttpBody()
         assert args[0] == request
 
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_post_resource_async_from_dict():
-    await test_post_resource_async(request_type=dict)
-
-
-def test_post_resource_from_dict_foreign():
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.post_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = httpbody_pb2.HttpBody()
-        response = client.post_resource(
-            request={
-                "content_type": "content_type_value",
-                "data": b"data_blob",
-                "extensions": [
-                    any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
-                ],
-            }
-        )
-        call.assert_called()
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        httpbody_pb2.HttpBody,
-        dict,
-    ],
-)
-def test_delete_resource(request_type, transport: str = "grpc"):
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = httpbody_pb2.HttpBody(
-            content_type="content_type_value",
-            data=b"data_blob",
-        )
-        response = client.delete_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = httpbody_pb2.HttpBody()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
-
-
-def test_delete_resource_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_resource), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_resource()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody()
-
-
-def test_delete_resource_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = httpbody_pb2.HttpBody(
-        content_type="content_type_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_resource), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_resource(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody(
-            content_type="content_type_value",
-        )
-
-
-def test_delete_resource_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GatewayServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.delete_resource in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.delete_resource] = mock_rpc
-        request = {}
-        client.delete_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.delete_resource(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_delete_resource_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(
-                content_type="content_type_value",
-                data=b"data_blob",
-            )
-        )
-        response = await client.delete_resource()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody()
-
-
-@pytest.mark.asyncio
-async def test_delete_resource_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = GatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.delete_resource
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_resource
-        ] = mock_rpc
-
-        request = {}
-        await client.delete_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.delete_resource(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_delete_resource_async(
-    transport: str = "grpc_asyncio", request_type=httpbody_pb2.HttpBody
-):
-    client = GatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(
-                content_type="content_type_value",
-                data=b"data_blob",
-            )
-        )
-        response = await client.delete_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = httpbody_pb2.HttpBody()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_delete_resource_async_from_dict():
-    await test_delete_resource_async(request_type=dict)
-
-
-def test_delete_resource_from_dict_foreign():
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = httpbody_pb2.HttpBody()
-        response = client.delete_resource(
-            request={
-                "content_type": "content_type_value",
-                "data": b"data_blob",
-                "extensions": [
-                    any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
-                ],
-            }
-        )
-        call.assert_called()
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        httpbody_pb2.HttpBody,
-        dict,
-    ],
-)
-def test_put_resource(request_type, transport: str = "grpc"):
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.put_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = httpbody_pb2.HttpBody(
-            content_type="content_type_value",
-            data=b"data_blob",
-        )
-        response = client.put_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = httpbody_pb2.HttpBody()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
-
-
-def test_put_resource_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.put_resource), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.put_resource()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody()
-
-
-def test_put_resource_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = httpbody_pb2.HttpBody(
-        content_type="content_type_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.put_resource), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.put_resource(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody(
-            content_type="content_type_value",
-        )
-
-
-def test_put_resource_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GatewayServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.put_resource in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.put_resource] = mock_rpc
-        request = {}
-        client.put_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.put_resource(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_put_resource_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.put_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(
-                content_type="content_type_value",
-                data=b"data_blob",
-            )
-        )
-        response = await client.put_resource()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody()
-
-
-@pytest.mark.asyncio
-async def test_put_resource_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = GatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.put_resource
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.put_resource
-        ] = mock_rpc
-
-        request = {}
-        await client.put_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.put_resource(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_put_resource_async(
-    transport: str = "grpc_asyncio", request_type=httpbody_pb2.HttpBody
-):
-    client = GatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.put_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(
-                content_type="content_type_value",
-                data=b"data_blob",
-            )
-        )
-        response = await client.put_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = httpbody_pb2.HttpBody()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_put_resource_async_from_dict():
-    await test_put_resource_async(request_type=dict)
-
-
-def test_put_resource_from_dict_foreign():
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.put_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = httpbody_pb2.HttpBody()
-        response = client.put_resource(
-            request={
-                "content_type": "content_type_value",
-                "data": b"data_blob",
-                "extensions": [
-                    any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
-                ],
-            }
-        )
-        call.assert_called()
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        httpbody_pb2.HttpBody,
-        dict,
-    ],
-)
-def test_patch_resource(request_type, transport: str = "grpc"):
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.patch_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = httpbody_pb2.HttpBody(
-            content_type="content_type_value",
-            data=b"data_blob",
-        )
-        response = client.patch_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = httpbody_pb2.HttpBody()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
-
-
-def test_patch_resource_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.patch_resource), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.patch_resource()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody()
-
-
-def test_patch_resource_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = httpbody_pb2.HttpBody(
-        content_type="content_type_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.patch_resource), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.patch_resource(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody(
-            content_type="content_type_value",
-        )
-
-
-def test_patch_resource_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GatewayServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.patch_resource in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.patch_resource] = mock_rpc
-        request = {}
-        client.patch_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.patch_resource(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_patch_resource_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.patch_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(
-                content_type="content_type_value",
-                data=b"data_blob",
-            )
-        )
-        response = await client.patch_resource()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == httpbody_pb2.HttpBody()
-
-
-@pytest.mark.asyncio
-async def test_patch_resource_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = GatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.patch_resource
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.patch_resource
-        ] = mock_rpc
-
-        request = {}
-        await client.patch_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.patch_resource(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_patch_resource_async(
-    transport: str = "grpc_asyncio", request_type=httpbody_pb2.HttpBody
-):
-    client = GatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.patch_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(
-                content_type="content_type_value",
-                data=b"data_blob",
-            )
-        )
-        response = await client.patch_resource(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = httpbody_pb2.HttpBody()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_patch_resource_async_from_dict():
-    await test_patch_resource_async(request_type=dict)
-
-
-def test_patch_resource_from_dict_foreign():
-    client = GatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.patch_resource), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = httpbody_pb2.HttpBody()
-        response = client.patch_resource(
-            request={
-                "content_type": "content_type_value",
-                "data": b"data_blob",
-                "extensions": [
-                    any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
-                ],
-            }
-        )
-        call.assert_called()
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.GatewayServiceGrpcTransport(
+    transport = transports.GatewayControlGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = GatewayServiceClient(
+        client = GatewayControlClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.GatewayServiceGrpcTransport(
+    transport = transports.GatewayControlGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = GatewayServiceClient(
+        client = GatewayControlClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.GatewayServiceGrpcTransport(
+    transport = transports.GatewayControlGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = GatewayServiceClient(
+        client = GatewayControlClient(
             client_options=options,
             transport=transport,
         )
@@ -2366,16 +1440,16 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = GatewayServiceClient(
+        client = GatewayControlClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.GatewayServiceGrpcTransport(
+    transport = transports.GatewayControlGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = GatewayServiceClient(
+        client = GatewayControlClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -2383,22 +1457,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.GatewayServiceGrpcTransport(
+    transport = transports.GatewayControlGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = GatewayServiceClient(transport=transport)
+    client = GatewayControlClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.GatewayServiceGrpcTransport(
+    transport = transports.GatewayControlGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.GatewayServiceGrpcAsyncIOTransport(
+    transport = transports.GatewayControlGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -2408,8 +1482,8 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.GatewayServiceGrpcTransport,
-        transports.GatewayServiceGrpcAsyncIOTransport,
+        transports.GatewayControlGrpcTransport,
+        transports.GatewayControlGrpcAsyncIOTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2427,7 +1501,7 @@ def test_transport_adc(transport_class):
     ],
 )
 def test_transport_kind(transport_name):
-    transport = GatewayServiceClient.get_transport_class(transport_name)(
+    transport = GatewayControlClient.get_transport_class(transport_name)(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
@@ -2435,43 +1509,37 @@ def test_transport_kind(transport_name):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = GatewayServiceClient(
+    client = GatewayControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.GatewayServiceGrpcTransport,
+        transports.GatewayControlGrpcTransport,
     )
 
 
-def test_gateway_service_base_transport_error():
+def test_gateway_control_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.GatewayServiceTransport(
+        transport = transports.GatewayControlTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_gateway_service_base_transport():
+def test_gateway_control_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.gkeconnect.gateway_v1beta1.services.gateway_service.transports.GatewayServiceTransport.__init__"
+        "google.cloud.gkeconnect.gateway_v1beta1.services.gateway_control.transports.GatewayControlTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.GatewayServiceTransport(
+        transport = transports.GatewayControlTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
-    methods = (
-        "get_resource",
-        "post_resource",
-        "delete_resource",
-        "put_resource",
-        "patch_resource",
-    )
+    methods = ("generate_credentials",)
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
@@ -2488,16 +1556,16 @@ def test_gateway_service_base_transport():
             getattr(transport, r)()
 
 
-def test_gateway_service_base_transport_with_credentials_file():
+def test_gateway_control_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.gkeconnect.gateway_v1beta1.services.gateway_service.transports.GatewayServiceTransport._prep_wrapped_messages"
+        "google.cloud.gkeconnect.gateway_v1beta1.services.gateway_control.transports.GatewayControlTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.GatewayServiceTransport(
+        transport = transports.GatewayControlTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -2509,22 +1577,22 @@ def test_gateway_service_base_transport_with_credentials_file():
         )
 
 
-def test_gateway_service_base_transport_with_adc():
+def test_gateway_control_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.gkeconnect.gateway_v1beta1.services.gateway_service.transports.GatewayServiceTransport._prep_wrapped_messages"
+        "google.cloud.gkeconnect.gateway_v1beta1.services.gateway_control.transports.GatewayControlTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.GatewayServiceTransport()
+        transport = transports.GatewayControlTransport()
         adc.assert_called_once()
 
 
-def test_gateway_service_auth_adc():
+def test_gateway_control_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        GatewayServiceClient()
+        GatewayControlClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -2535,11 +1603,11 @@ def test_gateway_service_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.GatewayServiceGrpcTransport,
-        transports.GatewayServiceGrpcAsyncIOTransport,
+        transports.GatewayControlGrpcTransport,
+        transports.GatewayControlGrpcAsyncIOTransport,
     ],
 )
-def test_gateway_service_transport_auth_adc(transport_class):
+def test_gateway_control_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -2555,11 +1623,11 @@ def test_gateway_service_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.GatewayServiceGrpcTransport,
-        transports.GatewayServiceGrpcAsyncIOTransport,
+        transports.GatewayControlGrpcTransport,
+        transports.GatewayControlGrpcAsyncIOTransport,
     ],
 )
-def test_gateway_service_transport_auth_gdch_credentials(transport_class):
+def test_gateway_control_transport_auth_gdch_credentials(transport_class):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -2577,11 +1645,11 @@ def test_gateway_service_transport_auth_gdch_credentials(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.GatewayServiceGrpcTransport, grpc_helpers),
-        (transports.GatewayServiceGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.GatewayControlGrpcTransport, grpc_helpers),
+        (transports.GatewayControlGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_gateway_service_transport_create_channel(transport_class, grpc_helpers):
+def test_gateway_control_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -2612,11 +1680,11 @@ def test_gateway_service_transport_create_channel(transport_class, grpc_helpers)
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.GatewayServiceGrpcTransport,
-        transports.GatewayServiceGrpcAsyncIOTransport,
+        transports.GatewayControlGrpcTransport,
+        transports.GatewayControlGrpcAsyncIOTransport,
     ],
 )
-def test_gateway_service_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_gateway_control_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -2661,8 +1729,8 @@ def test_gateway_service_grpc_transport_client_cert_source_for_mtls(transport_cl
         "grpc_asyncio",
     ],
 )
-def test_gateway_service_host_no_port(transport_name):
-    client = GatewayServiceClient(
+def test_gateway_control_host_no_port(transport_name):
+    client = GatewayControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="connectgateway.googleapis.com"
@@ -2679,8 +1747,8 @@ def test_gateway_service_host_no_port(transport_name):
         "grpc_asyncio",
     ],
 )
-def test_gateway_service_host_with_port(transport_name):
-    client = GatewayServiceClient(
+def test_gateway_control_host_with_port(transport_name):
+    client = GatewayControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="connectgateway.googleapis.com:8000"
@@ -2690,11 +1758,11 @@ def test_gateway_service_host_with_port(transport_name):
     assert client.transport._host == ("connectgateway.googleapis.com:8000")
 
 
-def test_gateway_service_grpc_transport_channel():
+def test_gateway_control_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.GatewayServiceGrpcTransport(
+    transport = transports.GatewayControlGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -2703,11 +1771,11 @@ def test_gateway_service_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_gateway_service_grpc_asyncio_transport_channel():
+def test_gateway_control_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.GatewayServiceGrpcAsyncIOTransport(
+    transport = transports.GatewayControlGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -2721,11 +1789,11 @@ def test_gateway_service_grpc_asyncio_transport_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.GatewayServiceGrpcTransport,
-        transports.GatewayServiceGrpcAsyncIOTransport,
+        transports.GatewayControlGrpcTransport,
+        transports.GatewayControlGrpcAsyncIOTransport,
     ],
 )
-def test_gateway_service_transport_channel_mtls_with_client_cert_source(
+def test_gateway_control_transport_channel_mtls_with_client_cert_source(
     transport_class,
 ):
     with mock.patch(
@@ -2775,11 +1843,11 @@ def test_gateway_service_transport_channel_mtls_with_client_cert_source(
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.GatewayServiceGrpcTransport,
-        transports.GatewayServiceGrpcAsyncIOTransport,
+        transports.GatewayControlGrpcTransport,
+        transports.GatewayControlGrpcAsyncIOTransport,
     ],
 )
-def test_gateway_service_transport_channel_mtls_with_adc(transport_class):
+def test_gateway_control_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -2821,7 +1889,7 @@ def test_common_billing_account_path():
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = GatewayServiceClient.common_billing_account_path(billing_account)
+    actual = GatewayControlClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
@@ -2829,10 +1897,10 @@ def test_parse_common_billing_account_path():
     expected = {
         "billing_account": "clam",
     }
-    path = GatewayServiceClient.common_billing_account_path(**expected)
+    path = GatewayControlClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GatewayServiceClient.parse_common_billing_account_path(path)
+    actual = GatewayControlClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
@@ -2841,7 +1909,7 @@ def test_common_folder_path():
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = GatewayServiceClient.common_folder_path(folder)
+    actual = GatewayControlClient.common_folder_path(folder)
     assert expected == actual
 
 
@@ -2849,10 +1917,10 @@ def test_parse_common_folder_path():
     expected = {
         "folder": "octopus",
     }
-    path = GatewayServiceClient.common_folder_path(**expected)
+    path = GatewayControlClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GatewayServiceClient.parse_common_folder_path(path)
+    actual = GatewayControlClient.parse_common_folder_path(path)
     assert expected == actual
 
 
@@ -2861,7 +1929,7 @@ def test_common_organization_path():
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = GatewayServiceClient.common_organization_path(organization)
+    actual = GatewayControlClient.common_organization_path(organization)
     assert expected == actual
 
 
@@ -2869,10 +1937,10 @@ def test_parse_common_organization_path():
     expected = {
         "organization": "nudibranch",
     }
-    path = GatewayServiceClient.common_organization_path(**expected)
+    path = GatewayControlClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GatewayServiceClient.parse_common_organization_path(path)
+    actual = GatewayControlClient.parse_common_organization_path(path)
     assert expected == actual
 
 
@@ -2881,7 +1949,7 @@ def test_common_project_path():
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = GatewayServiceClient.common_project_path(project)
+    actual = GatewayControlClient.common_project_path(project)
     assert expected == actual
 
 
@@ -2889,10 +1957,10 @@ def test_parse_common_project_path():
     expected = {
         "project": "mussel",
     }
-    path = GatewayServiceClient.common_project_path(**expected)
+    path = GatewayControlClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GatewayServiceClient.parse_common_project_path(path)
+    actual = GatewayControlClient.parse_common_project_path(path)
     assert expected == actual
 
 
@@ -2903,7 +1971,7 @@ def test_common_location_path():
         project=project,
         location=location,
     )
-    actual = GatewayServiceClient.common_location_path(project, location)
+    actual = GatewayControlClient.common_location_path(project, location)
     assert expected == actual
 
 
@@ -2912,10 +1980,10 @@ def test_parse_common_location_path():
         "project": "scallop",
         "location": "abalone",
     }
-    path = GatewayServiceClient.common_location_path(**expected)
+    path = GatewayControlClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GatewayServiceClient.parse_common_location_path(path)
+    actual = GatewayControlClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -2923,18 +1991,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.GatewayServiceTransport, "_prep_wrapped_messages"
+        transports.GatewayControlTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = GatewayServiceClient(
+        client = GatewayControlClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.GatewayServiceTransport, "_prep_wrapped_messages"
+        transports.GatewayControlTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = GatewayServiceClient.get_transport_class()
+        transport_class = GatewayControlClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -2944,7 +2012,7 @@ def test_client_with_default_client_info():
 
 @pytest.mark.asyncio
 async def test_transport_close_async():
-    client = GatewayServiceAsyncClient(
+    client = GatewayControlAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -2962,7 +2030,7 @@ def test_transport_close():
     }
 
     for transport, close_name in transports.items():
-        client = GatewayServiceClient(
+        client = GatewayControlClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
@@ -2978,7 +2046,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = GatewayServiceClient(
+        client = GatewayControlClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -2992,8 +2060,8 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (GatewayServiceClient, transports.GatewayServiceGrpcTransport),
-        (GatewayServiceAsyncClient, transports.GatewayServiceGrpcAsyncIOTransport),
+        (GatewayControlClient, transports.GatewayControlGrpcTransport),
+        (GatewayControlAsyncClient, transports.GatewayControlGrpcAsyncIOTransport),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):

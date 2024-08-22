@@ -2,8 +2,8 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.cloud.gkeconnect.gateway.v1beta1",
-        "version": "v1beta1"
+        "id": "google.cloud.gkeconnect.gateway.v1",
+        "version": "v1"
       }
     ],
     "language": "PYTHON",
@@ -16,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.gkeconnect.gateway_v1beta1.GatewayControlAsyncClient",
+          "fullName": "google.cloud.gkeconnect.gateway_v1.GatewayControlAsyncClient",
           "shortName": "GatewayControlAsyncClient"
         },
-        "fullName": "google.cloud.gkeconnect.gateway_v1beta1.GatewayControlAsyncClient.generate_credentials",
+        "fullName": "google.cloud.gkeconnect.gateway_v1.GatewayControlAsyncClient.generate_credentials",
         "method": {
-          "fullName": "google.cloud.gkeconnect.gateway.v1beta1.GatewayControl.GenerateCredentials",
+          "fullName": "google.cloud.gkeconnect.gateway.v1.GatewayControl.GenerateCredentials",
           "service": {
-            "fullName": "google.cloud.gkeconnect.gateway.v1beta1.GatewayControl",
+            "fullName": "google.cloud.gkeconnect.gateway.v1.GatewayControl",
             "shortName": "GatewayControl"
           },
           "shortName": "GenerateCredentials"
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.gkeconnect.gateway_v1beta1.types.GenerateCredentialsRequest"
+            "type": "google.cloud.gkeconnect.gateway_v1.types.GenerateCredentialsRequest"
           },
           {
             "name": "retry",
@@ -46,14 +46,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.gkeconnect.gateway_v1beta1.types.GenerateCredentialsResponse",
+        "resultType": "google.cloud.gkeconnect.gateway_v1.types.GenerateCredentialsResponse",
         "shortName": "generate_credentials"
       },
       "description": "Sample for GenerateCredentials",
-      "file": "connectgateway_v1beta1_generated_gateway_control_generate_credentials_async.py",
+      "file": "connectgateway_v1_generated_gateway_control_generate_credentials_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "connectgateway_v1beta1_generated_GatewayControl_GenerateCredentials_async",
+      "regionTag": "connectgateway_v1_generated_GatewayControl_GenerateCredentials_async",
       "segments": [
         {
           "end": 51,
@@ -86,20 +86,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "connectgateway_v1beta1_generated_gateway_control_generate_credentials_async.py"
+      "title": "connectgateway_v1_generated_gateway_control_generate_credentials_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.gkeconnect.gateway_v1beta1.GatewayControlClient",
+          "fullName": "google.cloud.gkeconnect.gateway_v1.GatewayControlClient",
           "shortName": "GatewayControlClient"
         },
-        "fullName": "google.cloud.gkeconnect.gateway_v1beta1.GatewayControlClient.generate_credentials",
+        "fullName": "google.cloud.gkeconnect.gateway_v1.GatewayControlClient.generate_credentials",
         "method": {
-          "fullName": "google.cloud.gkeconnect.gateway.v1beta1.GatewayControl.GenerateCredentials",
+          "fullName": "google.cloud.gkeconnect.gateway.v1.GatewayControl.GenerateCredentials",
           "service": {
-            "fullName": "google.cloud.gkeconnect.gateway.v1beta1.GatewayControl",
+            "fullName": "google.cloud.gkeconnect.gateway.v1.GatewayControl",
             "shortName": "GatewayControl"
           },
           "shortName": "GenerateCredentials"
@@ -107,7 +107,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.gkeconnect.gateway_v1beta1.types.GenerateCredentialsRequest"
+            "type": "google.cloud.gkeconnect.gateway_v1.types.GenerateCredentialsRequest"
           },
           {
             "name": "retry",
@@ -122,14 +122,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.gkeconnect.gateway_v1beta1.types.GenerateCredentialsResponse",
+        "resultType": "google.cloud.gkeconnect.gateway_v1.types.GenerateCredentialsResponse",
         "shortName": "generate_credentials"
       },
       "description": "Sample for GenerateCredentials",
-      "file": "connectgateway_v1beta1_generated_gateway_control_generate_credentials_sync.py",
+      "file": "connectgateway_v1_generated_gateway_control_generate_credentials_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "connectgateway_v1beta1_generated_GatewayControl_GenerateCredentials_sync",
+      "regionTag": "connectgateway_v1_generated_GatewayControl_GenerateCredentials_sync",
       "segments": [
         {
           "end": 51,
@@ -162,7 +162,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "connectgateway_v1beta1_generated_gateway_control_generate_credentials_sync.py"
+      "title": "connectgateway_v1_generated_gateway_control_generate_credentials_sync.py"
     }
   ]
 }

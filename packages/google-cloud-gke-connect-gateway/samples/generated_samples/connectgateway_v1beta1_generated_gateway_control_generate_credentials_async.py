@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for PatchResource
+# Snippet for GenerateCredentials
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-gke-connect-gateway
 
 
-# [START connectgateway_v1beta1_generated_GatewayService_PatchResource_async]
+# [START connectgateway_v1beta1_generated_GatewayControl_GenerateCredentials_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -31,22 +31,22 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.api import httpbody_pb2  # type: ignore
 from google.cloud.gkeconnect import gateway_v1beta1
 
 
-async def sample_patch_resource():
+async def sample_generate_credentials():
     # Create a client
-    client = gateway_v1beta1.GatewayServiceAsyncClient()
+    client = gateway_v1beta1.GatewayControlAsyncClient()
 
     # Initialize request argument(s)
-    request = httpbody_pb2.HttpBody(
+    request = gateway_v1beta1.GenerateCredentialsRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = await client.patch_resource(request=request)
+    response = await client.generate_credentials(request=request)
 
     # Handle the response
     print(response)
 
-# [END connectgateway_v1beta1_generated_GatewayService_PatchResource_async]
+# [END connectgateway_v1beta1_generated_GatewayControl_GenerateCredentials_async]

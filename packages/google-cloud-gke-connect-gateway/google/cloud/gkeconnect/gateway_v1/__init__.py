@@ -13,12 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from google.cloud.gkeconnect.gateway_v1 import gapic_version as package_version
 
-__protobuf__ = proto.module(
-    package="google.cloud.gkeconnect.gateway.v1beta1",
-    manifest={},
+__version__ = package_version.__version__
+
+
+from .services.gateway_control import GatewayControlAsyncClient, GatewayControlClient
+from .types.control import GenerateCredentialsRequest, GenerateCredentialsResponse
+
+__all__ = (
+    "GatewayControlAsyncClient",
+    "GatewayControlClient",
+    "GenerateCredentialsRequest",
+    "GenerateCredentialsResponse",
 )
-
-
-__all__ = tuple(sorted(__protobuf__.manifest))
