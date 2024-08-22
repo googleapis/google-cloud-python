@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-gkeconnect-gateway
+#   python3 -m pip install google-cloud-gke-connect-gateway
 
 
 # [START connectgateway_v1_generated_GatewayControl_GenerateCredentials_async]
