@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-connect-gateway-v0.8.11...google-cloud-gke-connect-gateway-v0.9.0) (2024-08-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* [google-cloud-gke-connect-gateway] removed the nonfunctional GatewayService and replaced it with the GatewayControl service
+* existing client libraries are being regenerated to remove unused functionality and introduce new features.
+
+### Features
+
+* [google-cloud-gke-connect-gateway] removed the nonfunctional GatewayService and replaced it with the GatewayControl service ([6639798](https://github.com/googleapis/google-cloud-python/commit/6639798f019e86e72ce6cd5a2c837320439cb2b6))
+
+
+### Bug Fixes
+
+* Set google.cloud.gkeconnect.gateway_v1 as the default import ([6639798](https://github.com/googleapis/google-cloud-python/commit/6639798f019e86e72ce6cd5a2c837320439cb2b6))
+
 ## [0.8.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-connect-gateway-v0.8.10...google-cloud-gke-connect-gateway-v0.8.11) (2024-07-30)
 
 

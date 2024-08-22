@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.7...google-shopping-css-v0.1.8) (2024-08-22)
+
+
+### Documentation
+
+* [google-shopping-css] update `Certification` field descriptions ([#13027](https://github.com/googleapis/google-cloud-python/issues/13027)) ([70e2dd5](https://github.com/googleapis/google-cloud-python/commit/70e2dd5f024dd5c94a5e02b442bbab7e6e5f38fe))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.6...google-shopping-css-v0.1.7) (2024-07-30)
 
 

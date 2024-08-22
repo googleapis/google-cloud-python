@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.21.2...google-cloud-recaptcha-enterprise-v1.22.0) (2024-08-22)
+
+
+### Features
+
+* add `express_settings` to `Key` ([0b90478](https://github.com/googleapis/google-cloud-python/commit/0b90478bb70be96b304397fc433d2dbaf0160d30))
+* add AddIpOverride RPC ([0b90478](https://github.com/googleapis/google-cloud-python/commit/0b90478bb70be96b304397fc433d2dbaf0160d30))
+
+
+### Documentation
+
+* clarify `Event.express` field ([0b90478](https://github.com/googleapis/google-cloud-python/commit/0b90478bb70be96b304397fc433d2dbaf0160d30))
+* fix billing, quota, and usecase links ([0b90478](https://github.com/googleapis/google-cloud-python/commit/0b90478bb70be96b304397fc433d2dbaf0160d30))
+
 ## [1.21.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.21.1...google-cloud-recaptcha-enterprise-v1.21.2) (2024-07-30)
 
 
