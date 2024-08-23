@@ -239,6 +239,38 @@ def json_extract(
     return series._apply_unary_op(ops.JSONExtract(json_path=json_path))
 
 
+def json_extract_array(
+    series: series.Series,
+    json_path: str = "$",
+) -> series.Series:
+    """Extracts a JSON array and converts it to a SQL array of JSON-formatted `STRING` or `JSON`
+    values. This function uses single quotes and brackets to escape invalid JSONPath
+    characters in JSON keys.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bpd.options.display.progress_bar = None
+
+        >>> s = bpd.Series(['[1, 2, 3]', '[4, 5]'])
+        >>> bbq.json_extract_array(s)
+        0    ['1' '2' '3']
+        1        ['4' '5']
+        dtype: list<item: string>[pyarrow]
+
+    Args:
+        series (bigframes.series.Series):
+            The Series containing JSON data (as native JSON objects or JSON-formatted strings).
+        json_path (str):
+            The JSON path identifying the data that you want to obtain from the input.
+
+    Returns:
+        bigframes.series.Series: A new Series with the JSON or JSON-formatted STRING.
+    """
+    return series._apply_unary_op(ops.JSONExtractArray(json_path=json_path))
+
+
 # Search functions defined from
 # https://cloud.google.com/bigquery/docs/reference/standard-sql/search_functions
 

@@ -947,6 +947,11 @@ def json_extract_op_impl(x: ibis_types.Value, op: ops.JSONExtract):
     return json_extract(json_obj=x, json_path=op.json_path)
 
 
+@scalar_op_compiler.register_unary_op(ops.JSONExtractArray, pass_op=True)
+def json_extract_array_op_impl(x: ibis_types.Value, op: ops.JSONExtractArray):
+    return json_extract_array(json_obj=x, json_path=op.json_path)
+
+
 ### Binary Ops
 def short_circuit_nulls(type_override: typing.Optional[ibis_dtypes.DataType] = None):
     """Wraps a binary operator to generate nulls of the expected type if either input is a null scalar."""
@@ -1579,6 +1584,13 @@ def json_extract(
     json_obj: ibis_dtypes.JSON, json_path: ibis_dtypes.str
 ) -> ibis_dtypes.JSON:
     """Extracts a JSON value and converts it to a SQL JSON-formatted STRING or JSON value."""
+
+
+@ibis.udf.scalar.builtin(name="json_extract_array")
+def json_extract_array(
+    json_obj: ibis_dtypes.JSON, json_path: ibis_dtypes.str
+) -> ibis_dtypes.Array[ibis_dtypes.String]:
+    """Extracts a JSON array and converts it to a SQL ARRAY of JSON-formatted STRINGs or JSON values."""
 
 
 @ibis.udf.scalar.builtin(name="ML.DISTANCE")

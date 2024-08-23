@@ -139,3 +139,28 @@ def test_json_extract_from_string():
 def test_json_extract_w_invalid_series_type():
     with pytest.raises(TypeError):
         bbq.json_extract(bpd.Series([1, 2]), "$.a")
+
+
+def test_json_extract_array_from_json_strings():
+    s = bpd.Series(['{"a": [1, 2, 3]}', '{"a": []}', '{"a": [4,5]}'])
+    actual = bbq.json_extract_array(s, "$.a")
+    expected = bpd.Series([["1", "2", "3"], [], ["4", "5"]])
+    pd.testing.assert_series_equal(
+        actual.to_pandas(),
+        expected.to_pandas(),
+    )
+
+
+def test_json_extract_array_from_array_strings():
+    s = bpd.Series(["[1, 2, 3]", "[]", "[4,5]"])
+    actual = bbq.json_extract_array(s)
+    expected = bpd.Series([["1", "2", "3"], [], ["4", "5"]])
+    pd.testing.assert_series_equal(
+        actual.to_pandas(),
+        expected.to_pandas(),
+    )
+
+
+def test_json_extract_array_w_invalid_series_type():
+    with pytest.raises(TypeError):
+        bbq.json_extract_array(bpd.Series([1, 2]))
