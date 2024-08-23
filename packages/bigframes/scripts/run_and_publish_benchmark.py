@@ -158,7 +158,7 @@ def collect_benchmark_result(benchmark_path: str) -> pd.DataFrame:
     for index, row in benchmark_metrics.iterrows():
         formatted_local_exec_time = (
             f"{round(row['Local_Execution_Time_Sec'], 1)} seconds"
-            if not np.isnan(row["Local_Execution_Time_Sec"])
+            if not pd.isna(row["Local_Execution_Time_Sec"])
             else "N/A"
         )
         print(
