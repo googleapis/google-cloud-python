@@ -121,3 +121,56 @@ class StructAccessor:
             A *pandas* Series with the data type of all child fields.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+
+class StructFrameAccessor:
+    """
+    Accessor object for structured data properties of the DataFrame values.
+    """
+
+    def explode(self, column, *, separator: str = "."):
+        """
+        Extract all child fields of struct column(s) and add to the DataFrame.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import pyarrow as pa
+            >>> bpd.options.display.progress_bar = None
+            >>> countries = bpd.Series(["cn", "es", "us"])
+            >>> files = bpd.Series(
+            ...     [
+            ...         {"version": 1, "project": "pandas"},
+            ...         {"version": 2, "project": "pandas"},
+            ...         {"version": 1, "project": "numpy"},
+            ...     ],
+            ...     dtype=bpd.ArrowDtype(pa.struct(
+            ...         [("version", pa.int64()), ("project", pa.string())]
+            ...     ))
+            ... )
+            >>> downloads = bpd.Series([100, 200, 300])
+            >>> df = bpd.DataFrame({"country": countries, "file": files, "download_count": downloads})
+            >>> df.struct.explode("file")
+              country  file.version file.project  download_count
+            0      cn             1       pandas             100
+            1      es             2       pandas             200
+            2      us             1        numpy             300
+            <BLANKLINE>
+            [3 rows x 4 columns]
+
+        Args:
+            column:
+                Column(s) to explode. For multiple columns, specify a non-empty
+                list with each element be str or tuple, and all specified
+                columns their list-like data on same row of the frame must
+                have matching length.
+            separator:
+                Separator/delimiter to use to separate the original column name
+                from the sub-field column name.
+
+
+        Returns:
+            DataFrame:
+                Original DataFrame with exploded struct column(s).
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

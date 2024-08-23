@@ -22,6 +22,20 @@
   {
     "fields": [
       {
+        "name": "key",
+        "type": "STRING"
+      },
+      {
+        "name": "value",
+        "type": "STRING"
+      }
+    ],
+    "name": "label",
+    "type": "RECORD"
+  },
+  {
+    "fields": [
+      {
         "fields": [
           {
             "mode": "NULLABLE",
@@ -51,6 +65,20 @@
     ],
     "mode": "REPEATED",
     "name": "event_sequence",
+    "type": "RECORD"
+  },
+  {
+    "fields": [
+      {
+        "name": "street",
+        "type": "STRING"
+      },
+      {
+        "name": "city",
+        "type": "STRING"
+      }
+    ],
+    "name": "address",
     "type": "RECORD"
   }
 ]

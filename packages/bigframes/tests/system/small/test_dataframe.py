@@ -1436,6 +1436,14 @@ def test_get_dtypes_array_struct_table(nested_df):
                 "customer_id": pd.StringDtype(storage="pyarrow"),
                 "day": pd.ArrowDtype(pa.date32()),
                 "flag": pd.Int64Dtype(),
+                "label": pd.ArrowDtype(
+                    pa.struct(
+                        [
+                            ("key", pa.string()),
+                            ("value", pa.string()),
+                        ]
+                    ),
+                ),
                 "event_sequence": pd.ArrowDtype(
                     pa.list_(
                         pa.struct(
@@ -1455,6 +1463,14 @@ def test_get_dtypes_array_struct_table(nested_df):
                                 ("category", pa.string()),
                             ]
                         ),
+                    ),
+                ),
+                "address": pd.ArrowDtype(
+                    pa.struct(
+                        [
+                            ("street", pa.string()),
+                            ("city", pa.string()),
+                        ]
                     ),
                 ),
             }

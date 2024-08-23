@@ -57,3 +57,26 @@ class StructAccessor(
             ],
             index=[pa_type.field(i).name for i in range(pa_type.num_fields)],
         )
+
+
+@log_adapter.class_logger
+class StructFrameAccessor(vendoracessors.StructFrameAccessor):
+    __doc__ = vendoracessors.StructAccessor.__doc__
+
+    def __init__(self, data: bigframes.dataframe.DataFrame) -> None:
+        self._parent = data
+
+    def explode(self, column, *, separator: str = ".") -> bigframes.dataframe.DataFrame:
+        df = self._parent
+        column_labels = bigframes.core.explode.check_column(column)
+
+        for label in column_labels:
+            position = df.columns.to_list().index(label)
+            df = df.drop(columns=label)
+            subfields = self._parent[label].struct.explode()
+            for subfield in reversed(subfields.columns):
+                df.insert(
+                    position, f"{label}{separator}{subfield}", subfields[subfield]
+                )
+
+        return df

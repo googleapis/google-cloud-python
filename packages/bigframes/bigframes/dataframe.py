@@ -55,6 +55,7 @@ from bigframes.core import log_adapter
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.convert
+import bigframes.core.explode
 import bigframes.core.expression as ex
 import bigframes.core.groupby as groupby
 import bigframes.core.guid
@@ -71,6 +72,7 @@ import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.plotting as plotting
+import bigframes.operations.structs
 import bigframes.series
 import bigframes.series as bf_series
 import bigframes.session._io.bigquery
@@ -2875,15 +2877,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         *,
         ignore_index: Optional[bool] = False,
     ) -> DataFrame:
-        if not utils.is_list_like(column):
-            column_labels = typing.cast(typing.Sequence[blocks.Label], (column,))
-        else:
-            column_labels = typing.cast(typing.Sequence[blocks.Label], tuple(column))
-
-        if not column_labels:
-            raise ValueError("column must be nonempty")
-        if len(column_labels) > len(set(column_labels)):
-            raise ValueError("column must be unique")
+        column_labels = bigframes.core.explode.check_column(column)
 
         column_ids = [self._resolve_label_exact(label) for label in column_labels]
         missing = [
@@ -3750,6 +3744,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return self.dot(other)
 
     __matmul__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__matmul__)
+
+    @property
+    def struct(self):
+        return bigframes.operations.structs.StructFrameAccessor(self)
 
     def _throw_if_null_index(self, opname: str):
         if not self._has_index:
