@@ -1,0 +1,19 @@
+name: "polars-tpch"
+description:
+    "This repository contains modified TPC-H benchmark queries that are "
+    "specifically adapted to evaluate the performance of the BigFrames library. "
+    "These benchmarks are designed to test complex data processing workflows "
+    "that are typical in decision support systems."
+
+third_party {
+  identifier {
+    type: "Git"
+    value: "https://github.com/pola-rs/tpch"
+    primary_source: true
+    version: "Latest Commit on Main Branch as of Access"
+  }
+  version: "Latest Commit on Main Branch as of Access"
+  last_upgrade_date { year: 2024 month: 7 day: 12 }
+  license_type: PERMISSIVE
+  local_modifications: "Modified the queries to test and benchmark the BigFrames project"
+}
