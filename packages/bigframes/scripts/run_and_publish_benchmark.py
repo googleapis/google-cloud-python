@@ -156,11 +156,16 @@ def collect_benchmark_result(benchmark_path: str) -> pd.DataFrame:
 
     print("---BIGQUERY USAGE REPORT---")
     for index, row in benchmark_metrics.iterrows():
+        formatted_local_exec_time = (
+            f"{round(row['Local_Execution_Time_Sec'], 1)} seconds"
+            if not np.isnan(row["Local_Execution_Time_Sec"])
+            else "N/A"
+        )
         print(
             f"{index} - query count: {row['Query_Count']},"
             f" bytes processed sum: {row['Bytes_Processed']},"
             f" slot millis sum: {row['Slot_Millis']},"
-            f" local execution time: {round(row['Local_Execution_Time_Sec'], 1)} seconds,"
+            f" local execution time: {formatted_local_exec_time} seconds,"
             f" bigquery execution time: {round(row['BigQuery_Execution_Time_Sec'], 1)} seconds"
         )
 
