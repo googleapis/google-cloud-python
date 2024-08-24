@@ -11,14 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from pathlib import Path
+import pathlib
 
 import benchmark.utils as utils
 import bigframes_vendored.tpch.queries.q3 as vendored_tpch_q3
 
 if __name__ == "__main__":
     dataset_id, session, suffix = utils.get_tpch_configuration()
-    current_path = Path(__file__).absolute()
+    current_path = pathlib.Path(__file__).absolute()
 
     utils.get_execution_time(
         vendored_tpch_q3.q, current_path, suffix, dataset_id, session

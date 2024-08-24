@@ -15,12 +15,13 @@
 import pathlib
 
 import benchmark.utils as utils
-import bigframes_vendored.db_benchmark.groupby_queries as vendored_dbbenchmark_groupby_queries
+import bigframes_vendored.db_benchmark.join_queries as vendored_dbbenchmark_join_queries
 
 if __name__ == "__main__":
     table_id, session, suffix = utils.get_dbbenchmark_configuration()
+
     current_path = pathlib.Path(__file__).absolute()
 
     utils.get_execution_time(
-        vendored_dbbenchmark_groupby_queries.q1, current_path, suffix, table_id, session
+        vendored_dbbenchmark_join_queries.q4, current_path, suffix, table_id, session
     )

@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pathlib import Path
+import pathlib
 
 import benchmark.utils as utils
 import bigframes_vendored.db_benchmark.groupby_queries as vendored_dbbenchmark_groupby_queries
 
 if __name__ == "__main__":
     table_id, session, suffix = utils.get_dbbenchmark_configuration()
-    current_path = Path(__file__).absolute()
+    current_path = pathlib.Path(__file__).absolute()
 
     utils.get_execution_time(
         vendored_dbbenchmark_groupby_queries.q3, current_path, suffix, table_id, session
