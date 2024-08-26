@@ -158,7 +158,7 @@
     "packages/google-cloud-talent": "2.13.5",
     "packages/google-cloud-tasks": "2.16.5",
     "packages/google-cloud-telcoautomation": "0.2.5",
-    "packages/google-cloud-texttospeech": "2.17.1",
+    "packages/google-cloud-texttospeech": "2.17.2",
     "packages/google-cloud-tpu": "1.18.5",
     "packages/google-cloud-trace": "1.13.5",
     "packages/google-cloud-translate": "3.16.0",
