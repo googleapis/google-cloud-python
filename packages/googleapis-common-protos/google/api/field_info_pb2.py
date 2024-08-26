@@ -31,7 +31,7 @@ from google.protobuf import descriptor_pb2 as google_dot_protobuf_dot_descriptor
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x1bgoogle/api/field_info.proto\x12\ngoogle.api\x1a google/protobuf/descriptor.proto"\x8c\x01\n\tFieldInfo\x12,\n\x06\x66ormat\x18\x01 \x01(\x0e\x32\x1c.google.api.FieldInfo.Format"Q\n\x06\x46ormat\x12\x16\n\x12\x46ORMAT_UNSPECIFIED\x10\x00\x12\t\n\x05UUID4\x10\x01\x12\x08\n\x04IPV4\x10\x02\x12\x08\n\x04IPV6\x10\x03\x12\x10\n\x0cIPV4_OR_IPV6\x10\x04:L\n\nfield_info\x12\x1d.google.protobuf.FieldOptions\x18\xcc\xf1\xf9\x8a\x01 \x01(\x0b\x32\x15.google.api.FieldInfoBl\n\x0e\x63om.google.apiB\x0e\x46ieldInfoProtoP\x01ZAgoogle.golang.org/genproto/googleapis/api/annotations;annotations\xa2\x02\x04GAPIb\x06proto3'
+    b'\n\x1bgoogle/api/field_info.proto\x12\ngoogle.api\x1a google/protobuf/descriptor.proto"\xc1\x01\n\tFieldInfo\x12,\n\x06\x66ormat\x18\x01 \x01(\x0e\x32\x1c.google.api.FieldInfo.Format\x12\x33\n\x10referenced_types\x18\x02 \x03(\x0b\x32\x19.google.api.TypeReference"Q\n\x06\x46ormat\x12\x16\n\x12\x46ORMAT_UNSPECIFIED\x10\x00\x12\t\n\x05UUID4\x10\x01\x12\x08\n\x04IPV4\x10\x02\x12\x08\n\x04IPV6\x10\x03\x12\x10\n\x0cIPV4_OR_IPV6\x10\x04""\n\rTypeReference\x12\x11\n\ttype_name\x18\x01 \x01(\t:L\n\nfield_info\x12\x1d.google.protobuf.FieldOptions\x18\xcc\xf1\xf9\x8a\x01 \x01(\x0b\x32\x15.google.api.FieldInfoBl\n\x0e\x63om.google.apiB\x0e\x46ieldInfoProtoP\x01ZAgoogle.golang.org/genproto/googleapis/api/annotations;annotations\xa2\x02\x04GAPIb\x06proto3'
 )
 
 _globals = globals()
@@ -43,7 +43,9 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
     DESCRIPTOR._serialized_options = b"\n\016com.google.apiB\016FieldInfoProtoP\001ZAgoogle.golang.org/genproto/googleapis/api/annotations;annotations\242\002\004GAPI"
     _globals["_FIELDINFO"]._serialized_start = 78
-    _globals["_FIELDINFO"]._serialized_end = 218
-    _globals["_FIELDINFO_FORMAT"]._serialized_start = 137
-    _globals["_FIELDINFO_FORMAT"]._serialized_end = 218
+    _globals["_FIELDINFO"]._serialized_end = 271
+    _globals["_FIELDINFO_FORMAT"]._serialized_start = 190
+    _globals["_FIELDINFO_FORMAT"]._serialized_end = 271
+    _globals["_TYPEREFERENCE"]._serialized_start = 273
+    _globals["_TYPEREFERENCE"]._serialized_end = 307
 # @@protoc_insertion_point(module_scope)
