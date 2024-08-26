@@ -659,7 +659,7 @@ class ErrorGroupServiceClient(metaclass=ErrorGroupServiceClientMeta):
                 Type[ErrorGroupServiceTransport],
                 Callable[..., ErrorGroupServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                ErrorGroupServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ErrorGroupServiceTransport], transport)
             )
