@@ -581,6 +581,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return Series(block.select_column(result_col))
 
     def _mapping_replace(self, mapping: dict[typing.Hashable, typing.Hashable]):
+        if not mapping:
+            return self.copy()
+
         tuples = []
         lcd_types: list[typing.Optional[bigframes.dtypes.Dtype]] = []
         for key, value in mapping.items():
@@ -597,6 +600,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         result_dtype = functools.reduce(
             lambda t1, t2: bigframes.dtypes.lcd_type(t1, t2) if (t1 and t2) else None,
             lcd_types,
+            self.dtype,
         )
         if not result_dtype:
             raise NotImplementedError(
@@ -605,7 +609,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         block, result = self._block.apply_unary_op(
             self._value_column, ops.MapOp(tuple(tuples))
         )
-        return Series(block.select_column(result))
+        replaced = Series(block.select_column(result))
+        replaced.name = self.name
+        return replaced
 
     @validations.requires_ordering()
     @validations.requires_index
