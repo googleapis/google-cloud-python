@@ -230,17 +230,25 @@ class AsyncQuery(BaseQuery):
         query_vector: Vector,
         limit: int,
         distance_measure: DistanceMeasure,
+        *,
+        distance_result_field: Optional[str] = None,
+        distance_threshold: Optional[float] = None,
     ) -> AsyncVectorQuery:
         """
         Finds the closest vector embeddings to the given query vector.
 
         Args:
-            vector_field(str): An indexed vector field to search upon. Only documents which contain
+            vector_field (str): An indexed vector field to search upon. Only documents which contain
                 vectors whose dimensionality match the query_vector can be returned.
-            query_vector(Vector): The query vector that we are searching on. Must be a vector of no more
+            query_vector (Vector): The query vector that we are searching on. Must be a vector of no more
                 than 2048 dimensions.
             limit (int): The number of nearest neighbors to return. Must be a positive integer of no more than 1000.
-            distance_measure(:class:`DistanceMeasure`): The Distance Measure to use.
+            distance_measure (:class:`DistanceMeasure`): The Distance Measure to use.
+            distance_result_field (Optional[str]):
+                Name of the field to output the result of the vector distance
+                calculation. If unset then the distance will not be returned.
+            distance_threshold (Optional[float]):
+                A threshold for which no less similar documents will be returned.
 
         Returns:
             :class`~firestore_v1.vector_query.VectorQuery`: the vector query.
@@ -250,6 +258,8 @@ class AsyncQuery(BaseQuery):
             query_vector=query_vector,
             limit=limit,
             distance_measure=distance_measure,
+            distance_result_field=distance_result_field,
+            distance_threshold=distance_threshold,
         )
 
     def count(

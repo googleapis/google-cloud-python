@@ -108,6 +108,12 @@ def make_vector_query(*args, **kw):
     return VectorQuery(*args, **kw)
 
 
+def make_async_vector_query(*args, **kw):
+    from google.cloud.firestore_v1.async_vector_query import AsyncVectorQuery
+
+    return AsyncVectorQuery(*args, **kw)
+
+
 def build_test_timestamp(
     year: int = 2021,
     month: int = 1,
