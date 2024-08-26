@@ -59,6 +59,7 @@ SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_EXTRAS: List[str] = [
     "tracing",
+    "testing",
 ]
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
@@ -165,7 +166,7 @@ def install_unittest_dependencies(session, *constraints):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    session.install("-e", ".[tracing]", "-c", constraints_path)
+    session.install("-e", ".[tracing, testing]", "-c", constraints_path)
     # XXX: Dump installed versions to debug OT issue
     session.run("pip", "list")
 
@@ -336,7 +337,7 @@ def cover(session):
 def docs(session):
     """Build the docs for this library."""
 
-    session.install("-e", ".[tracing]")
+    session.install("-e", ".[tracing, testing]")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -371,7 +372,7 @@ def docs(session):
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
-    session.install("-e", ".[tracing]")
+    session.install("-e", ".[tracing, testing]")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -432,7 +433,7 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
-    session.install("-e", ".[all, tests, tracing]")
+    session.install("-e", ".[all, tests, tracing, testing]")
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
     session.install(*unit_deps_all)
     system_deps_all = (
