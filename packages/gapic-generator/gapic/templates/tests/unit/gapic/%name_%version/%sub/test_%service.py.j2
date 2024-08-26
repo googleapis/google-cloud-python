@@ -34,10 +34,18 @@ from requests.sessions import Session
 from google.protobuf import json_format
 {% endif %}
 
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError: # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 {# Import the service itself as well as every proto module that it imports. #}
 {% filter sort_lines %}
 import google.auth
 from google.auth import credentials as ga_credentials
+
+
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
@@ -83,6 +91,13 @@ from google.iam.v1 import policy_pb2  # type: ignore
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 {#TODO(https://github.com/googleapis/gapic-generator-python/issues/1894): Remove this function as part of cleanup when DEFAULT_ENDPOINT is no longer used.#}
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -185,7 +200,7 @@ def test__get_api_endpoint():
 {% for mode in ["", "async"] %}
 {% if mode == "async" %}
 async def test_{{ method_name }}_api_version_header_async(transport_name="grpc"):
-    client = {{ service.async_client_name }}(credentials=ga_credentials.AnonymousCredentials(), transport=transport_name)
+    client = {{ service.async_client_name }}(credentials=async_anonymous_credentials(), transport=transport_name)
 {% else %}
 @pytest.mark.parametrize("transport_name", [
     {% if 'grpc' in opts.transport %}
@@ -1657,7 +1672,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = {{ service.async_client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:

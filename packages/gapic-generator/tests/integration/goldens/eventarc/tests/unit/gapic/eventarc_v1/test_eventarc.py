@@ -36,6 +36,12 @@ from requests import Request, PreparedRequest
 from requests.sessions import Session
 from google.protobuf import json_format
 
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError: # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import future
@@ -77,6 +83,13 @@ import google.auth
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint so the client can produce a different
@@ -906,7 +919,7 @@ async def test_get_trigger_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -933,7 +946,7 @@ async def test_get_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -964,7 +977,7 @@ async def test_get_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 @pytest.mark.asyncio
 async def test_get_trigger_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetTriggerRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1040,7 +1053,7 @@ def test_get_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_get_trigger_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1111,7 +1124,7 @@ def test_get_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_get_trigger_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1139,7 +1152,7 @@ async def test_get_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_get_trigger_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1277,7 +1290,7 @@ async def test_list_triggers_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -1301,7 +1314,7 @@ async def test_list_triggers_async_use_cached_wrapped_rpc(transport: str = "grpc
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1332,7 +1345,7 @@ async def test_list_triggers_async_use_cached_wrapped_rpc(transport: str = "grpc
 @pytest.mark.asyncio
 async def test_list_triggers_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListTriggersRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1402,7 +1415,7 @@ def test_list_triggers_field_headers():
 @pytest.mark.asyncio
 async def test_list_triggers_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1473,7 +1486,7 @@ def test_list_triggers_flattened_error():
 @pytest.mark.asyncio
 async def test_list_triggers_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1501,7 +1514,7 @@ async def test_list_triggers_flattened_async():
 @pytest.mark.asyncio
 async def test_list_triggers_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1615,7 +1628,7 @@ def test_list_triggers_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_triggers_async_pager():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1664,7 +1677,7 @@ async def test_list_triggers_async_pager():
 @pytest.mark.asyncio
 async def test_list_triggers_async_pages():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1831,7 +1844,7 @@ async def test_create_trigger_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -1854,7 +1867,7 @@ async def test_create_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1890,7 +1903,7 @@ async def test_create_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
 @pytest.mark.asyncio
 async def test_create_trigger_async(transport: str = 'grpc_asyncio', request_type=eventarc.CreateTriggerRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1957,7 +1970,7 @@ def test_create_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_create_trigger_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2038,7 +2051,7 @@ def test_create_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_create_trigger_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2076,7 +2089,7 @@ async def test_create_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_create_trigger_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2208,7 +2221,7 @@ async def test_update_trigger_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -2231,7 +2244,7 @@ async def test_update_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2267,7 +2280,7 @@ async def test_update_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
 @pytest.mark.asyncio
 async def test_update_trigger_async(transport: str = 'grpc_asyncio', request_type=eventarc.UpdateTriggerRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2334,7 +2347,7 @@ def test_update_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_update_trigger_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2415,7 +2428,7 @@ def test_update_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_update_trigger_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2453,7 +2466,7 @@ async def test_update_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_update_trigger_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2589,7 +2602,7 @@ async def test_delete_trigger_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -2612,7 +2625,7 @@ async def test_delete_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2648,7 +2661,7 @@ async def test_delete_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
 @pytest.mark.asyncio
 async def test_delete_trigger_async(transport: str = 'grpc_asyncio', request_type=eventarc.DeleteTriggerRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2715,7 +2728,7 @@ def test_delete_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_delete_trigger_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2791,7 +2804,7 @@ def test_delete_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_trigger_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2825,7 +2838,7 @@ async def test_delete_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_trigger_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2967,7 +2980,7 @@ async def test_get_channel_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -2995,7 +3008,7 @@ async def test_get_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3026,7 +3039,7 @@ async def test_get_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 @pytest.mark.asyncio
 async def test_get_channel_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetChannelRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3104,7 +3117,7 @@ def test_get_channel_field_headers():
 @pytest.mark.asyncio
 async def test_get_channel_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3175,7 +3188,7 @@ def test_get_channel_flattened_error():
 @pytest.mark.asyncio
 async def test_get_channel_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3203,7 +3216,7 @@ async def test_get_channel_flattened_async():
 @pytest.mark.asyncio
 async def test_get_channel_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3339,7 +3352,7 @@ async def test_list_channels_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -3363,7 +3376,7 @@ async def test_list_channels_async_use_cached_wrapped_rpc(transport: str = "grpc
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3394,7 +3407,7 @@ async def test_list_channels_async_use_cached_wrapped_rpc(transport: str = "grpc
 @pytest.mark.asyncio
 async def test_list_channels_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListChannelsRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3464,7 +3477,7 @@ def test_list_channels_field_headers():
 @pytest.mark.asyncio
 async def test_list_channels_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3535,7 +3548,7 @@ def test_list_channels_flattened_error():
 @pytest.mark.asyncio
 async def test_list_channels_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3563,7 +3576,7 @@ async def test_list_channels_flattened_async():
 @pytest.mark.asyncio
 async def test_list_channels_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3677,7 +3690,7 @@ def test_list_channels_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_channels_async_pager():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3726,7 +3739,7 @@ async def test_list_channels_async_pager():
 @pytest.mark.asyncio
 async def test_list_channels_async_pages():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3893,7 +3906,7 @@ async def test_create_channel_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -3916,7 +3929,7 @@ async def test_create_channel_async_use_cached_wrapped_rpc(transport: str = "grp
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3952,7 +3965,7 @@ async def test_create_channel_async_use_cached_wrapped_rpc(transport: str = "grp
 @pytest.mark.asyncio
 async def test_create_channel_async(transport: str = 'grpc_asyncio', request_type=eventarc.CreateChannelRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4019,7 +4032,7 @@ def test_create_channel_field_headers():
 @pytest.mark.asyncio
 async def test_create_channel_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4100,7 +4113,7 @@ def test_create_channel_flattened_error():
 @pytest.mark.asyncio
 async def test_create_channel_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4138,7 +4151,7 @@ async def test_create_channel_flattened_async():
 @pytest.mark.asyncio
 async def test_create_channel_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4270,7 +4283,7 @@ async def test_update_channel_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -4293,7 +4306,7 @@ async def test_update_channel_async_use_cached_wrapped_rpc(transport: str = "grp
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4329,7 +4342,7 @@ async def test_update_channel_async_use_cached_wrapped_rpc(transport: str = "grp
 @pytest.mark.asyncio
 async def test_update_channel_async(transport: str = 'grpc_asyncio', request_type=eventarc.UpdateChannelRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4396,7 +4409,7 @@ def test_update_channel_field_headers():
 @pytest.mark.asyncio
 async def test_update_channel_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4472,7 +4485,7 @@ def test_update_channel_flattened_error():
 @pytest.mark.asyncio
 async def test_update_channel_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4506,7 +4519,7 @@ async def test_update_channel_flattened_async():
 @pytest.mark.asyncio
 async def test_update_channel_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4639,7 +4652,7 @@ async def test_delete_channel_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -4662,7 +4675,7 @@ async def test_delete_channel_async_use_cached_wrapped_rpc(transport: str = "grp
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4698,7 +4711,7 @@ async def test_delete_channel_async_use_cached_wrapped_rpc(transport: str = "grp
 @pytest.mark.asyncio
 async def test_delete_channel_async(transport: str = 'grpc_asyncio', request_type=eventarc.DeleteChannelRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4765,7 +4778,7 @@ def test_delete_channel_field_headers():
 @pytest.mark.asyncio
 async def test_delete_channel_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4836,7 +4849,7 @@ def test_delete_channel_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_channel_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4866,7 +4879,7 @@ async def test_delete_channel_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_channel_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4998,7 +5011,7 @@ async def test_get_provider_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -5022,7 +5035,7 @@ async def test_get_provider_async_use_cached_wrapped_rpc(transport: str = "grpc_
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5053,7 +5066,7 @@ async def test_get_provider_async_use_cached_wrapped_rpc(transport: str = "grpc_
 @pytest.mark.asyncio
 async def test_get_provider_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetProviderRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5123,7 +5136,7 @@ def test_get_provider_field_headers():
 @pytest.mark.asyncio
 async def test_get_provider_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5194,7 +5207,7 @@ def test_get_provider_flattened_error():
 @pytest.mark.asyncio
 async def test_get_provider_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5222,7 +5235,7 @@ async def test_get_provider_flattened_async():
 @pytest.mark.asyncio
 async def test_get_provider_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5360,7 +5373,7 @@ async def test_list_providers_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -5384,7 +5397,7 @@ async def test_list_providers_async_use_cached_wrapped_rpc(transport: str = "grp
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5415,7 +5428,7 @@ async def test_list_providers_async_use_cached_wrapped_rpc(transport: str = "grp
 @pytest.mark.asyncio
 async def test_list_providers_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListProvidersRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5485,7 +5498,7 @@ def test_list_providers_field_headers():
 @pytest.mark.asyncio
 async def test_list_providers_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5556,7 +5569,7 @@ def test_list_providers_flattened_error():
 @pytest.mark.asyncio
 async def test_list_providers_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5584,7 +5597,7 @@ async def test_list_providers_flattened_async():
 @pytest.mark.asyncio
 async def test_list_providers_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5698,7 +5711,7 @@ def test_list_providers_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_providers_async_pager():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5747,7 +5760,7 @@ async def test_list_providers_async_pager():
 @pytest.mark.asyncio
 async def test_list_providers_async_pages():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5916,7 +5929,7 @@ async def test_get_channel_connection_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -5942,7 +5955,7 @@ async def test_get_channel_connection_async_use_cached_wrapped_rpc(transport: st
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5973,7 +5986,7 @@ async def test_get_channel_connection_async_use_cached_wrapped_rpc(transport: st
 @pytest.mark.asyncio
 async def test_get_channel_connection_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetChannelConnectionRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6047,7 +6060,7 @@ def test_get_channel_connection_field_headers():
 @pytest.mark.asyncio
 async def test_get_channel_connection_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6118,7 +6131,7 @@ def test_get_channel_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_get_channel_connection_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6146,7 +6159,7 @@ async def test_get_channel_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_get_channel_connection_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6280,7 +6293,7 @@ async def test_list_channel_connections_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -6304,7 +6317,7 @@ async def test_list_channel_connections_async_use_cached_wrapped_rpc(transport: 
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6335,7 +6348,7 @@ async def test_list_channel_connections_async_use_cached_wrapped_rpc(transport: 
 @pytest.mark.asyncio
 async def test_list_channel_connections_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListChannelConnectionsRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6405,7 +6418,7 @@ def test_list_channel_connections_field_headers():
 @pytest.mark.asyncio
 async def test_list_channel_connections_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6476,7 +6489,7 @@ def test_list_channel_connections_flattened_error():
 @pytest.mark.asyncio
 async def test_list_channel_connections_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6504,7 +6517,7 @@ async def test_list_channel_connections_flattened_async():
 @pytest.mark.asyncio
 async def test_list_channel_connections_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6618,7 +6631,7 @@ def test_list_channel_connections_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_channel_connections_async_pager():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6667,7 +6680,7 @@ async def test_list_channel_connections_async_pager():
 @pytest.mark.asyncio
 async def test_list_channel_connections_async_pages():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6834,7 +6847,7 @@ async def test_create_channel_connection_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -6857,7 +6870,7 @@ async def test_create_channel_connection_async_use_cached_wrapped_rpc(transport:
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6893,7 +6906,7 @@ async def test_create_channel_connection_async_use_cached_wrapped_rpc(transport:
 @pytest.mark.asyncio
 async def test_create_channel_connection_async(transport: str = 'grpc_asyncio', request_type=eventarc.CreateChannelConnectionRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6960,7 +6973,7 @@ def test_create_channel_connection_field_headers():
 @pytest.mark.asyncio
 async def test_create_channel_connection_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7041,7 +7054,7 @@ def test_create_channel_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_create_channel_connection_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7079,7 +7092,7 @@ async def test_create_channel_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_create_channel_connection_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7213,7 +7226,7 @@ async def test_delete_channel_connection_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -7236,7 +7249,7 @@ async def test_delete_channel_connection_async_use_cached_wrapped_rpc(transport:
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7272,7 +7285,7 @@ async def test_delete_channel_connection_async_use_cached_wrapped_rpc(transport:
 @pytest.mark.asyncio
 async def test_delete_channel_connection_async(transport: str = 'grpc_asyncio', request_type=eventarc.DeleteChannelConnectionRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7339,7 +7352,7 @@ def test_delete_channel_connection_field_headers():
 @pytest.mark.asyncio
 async def test_delete_channel_connection_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7410,7 +7423,7 @@ def test_delete_channel_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_channel_connection_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7440,7 +7453,7 @@ async def test_delete_channel_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_channel_connection_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7572,7 +7585,7 @@ async def test_get_google_channel_config_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -7596,7 +7609,7 @@ async def test_get_google_channel_config_async_use_cached_wrapped_rpc(transport:
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7627,7 +7640,7 @@ async def test_get_google_channel_config_async_use_cached_wrapped_rpc(transport:
 @pytest.mark.asyncio
 async def test_get_google_channel_config_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetGoogleChannelConfigRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7697,7 +7710,7 @@ def test_get_google_channel_config_field_headers():
 @pytest.mark.asyncio
 async def test_get_google_channel_config_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7768,7 +7781,7 @@ def test_get_google_channel_config_flattened_error():
 @pytest.mark.asyncio
 async def test_get_google_channel_config_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7796,7 +7809,7 @@ async def test_get_google_channel_config_flattened_async():
 @pytest.mark.asyncio
 async def test_get_google_channel_config_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7926,7 +7939,7 @@ async def test_update_google_channel_config_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -7950,7 +7963,7 @@ async def test_update_google_channel_config_async_use_cached_wrapped_rpc(transpo
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EventarcAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7981,7 +7994,7 @@ async def test_update_google_channel_config_async_use_cached_wrapped_rpc(transpo
 @pytest.mark.asyncio
 async def test_update_google_channel_config_async(transport: str = 'grpc_asyncio', request_type=eventarc.UpdateGoogleChannelConfigRequest):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8051,7 +8064,7 @@ def test_update_google_channel_config_field_headers():
 @pytest.mark.asyncio
 async def test_update_google_channel_config_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8127,7 +8140,7 @@ def test_update_google_channel_config_flattened_error():
 @pytest.mark.asyncio
 async def test_update_google_channel_config_flattened_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8159,7 +8172,7 @@ async def test_update_google_channel_config_flattened_async():
 @pytest.mark.asyncio
 async def test_update_google_channel_config_flattened_error_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -14642,7 +14655,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
@@ -15099,7 +15112,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15147,7 +15160,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15188,7 +15201,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -15228,7 +15241,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15276,7 +15289,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15317,7 +15330,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -15357,7 +15370,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15405,7 +15418,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15446,7 +15459,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -15486,7 +15499,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15534,7 +15547,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15575,7 +15588,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -15615,7 +15628,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15663,7 +15676,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15704,7 +15717,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -15744,7 +15757,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15791,7 +15804,7 @@ def test_get_location_field_headers():
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=async_anonymous_credentials()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15832,7 +15845,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -15877,7 +15890,7 @@ def test_set_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15932,7 +15945,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15976,7 +15989,7 @@ def test_set_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -16026,7 +16039,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -16087,7 +16100,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16133,7 +16146,7 @@ def test_get_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -16185,7 +16198,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -16246,7 +16259,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16296,7 +16309,7 @@ def test_test_iam_permissions_from_dict():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
     client = EventarcAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(

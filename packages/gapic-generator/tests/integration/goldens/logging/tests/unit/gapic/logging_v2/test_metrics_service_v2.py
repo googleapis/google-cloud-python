@@ -29,6 +29,12 @@ from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
 
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError: # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api import distribution_pb2  # type: ignore
 from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
@@ -56,6 +62,13 @@ import google.auth
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint so the client can produce a different
@@ -867,7 +880,7 @@ async def test_list_log_metrics_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -890,7 +903,7 @@ async def test_list_log_metrics_async_use_cached_wrapped_rpc(transport: str = "g
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = MetricsServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -921,7 +934,7 @@ async def test_list_log_metrics_async_use_cached_wrapped_rpc(transport: str = "g
 @pytest.mark.asyncio
 async def test_list_log_metrics_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.ListLogMetricsRequest):
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -989,7 +1002,7 @@ def test_list_log_metrics_field_headers():
 @pytest.mark.asyncio
 async def test_list_log_metrics_field_headers_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1060,7 +1073,7 @@ def test_list_log_metrics_flattened_error():
 @pytest.mark.asyncio
 async def test_list_log_metrics_flattened_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1088,7 +1101,7 @@ async def test_list_log_metrics_flattened_async():
 @pytest.mark.asyncio
 async def test_list_log_metrics_flattened_error_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1202,7 +1215,7 @@ def test_list_log_metrics_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_log_metrics_async_pager():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1251,7 +1264,7 @@ async def test_list_log_metrics_async_pager():
 @pytest.mark.asyncio
 async def test_list_log_metrics_async_pages():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1426,7 +1439,7 @@ async def test_get_log_metric_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -1455,7 +1468,7 @@ async def test_get_log_metric_async_use_cached_wrapped_rpc(transport: str = "grp
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = MetricsServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1486,7 +1499,7 @@ async def test_get_log_metric_async_use_cached_wrapped_rpc(transport: str = "grp
 @pytest.mark.asyncio
 async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.GetLogMetricRequest):
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1566,7 +1579,7 @@ def test_get_log_metric_field_headers():
 @pytest.mark.asyncio
 async def test_get_log_metric_field_headers_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1637,7 +1650,7 @@ def test_get_log_metric_flattened_error():
 @pytest.mark.asyncio
 async def test_get_log_metric_flattened_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1665,7 +1678,7 @@ async def test_get_log_metric_flattened_async():
 @pytest.mark.asyncio
 async def test_get_log_metric_flattened_error_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1807,7 +1820,7 @@ async def test_create_log_metric_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -1836,7 +1849,7 @@ async def test_create_log_metric_async_use_cached_wrapped_rpc(transport: str = "
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = MetricsServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1867,7 +1880,7 @@ async def test_create_log_metric_async_use_cached_wrapped_rpc(transport: str = "
 @pytest.mark.asyncio
 async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.CreateLogMetricRequest):
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1947,7 +1960,7 @@ def test_create_log_metric_field_headers():
 @pytest.mark.asyncio
 async def test_create_log_metric_field_headers_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2023,7 +2036,7 @@ def test_create_log_metric_flattened_error():
 @pytest.mark.asyncio
 async def test_create_log_metric_flattened_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2055,7 +2068,7 @@ async def test_create_log_metric_flattened_async():
 @pytest.mark.asyncio
 async def test_create_log_metric_flattened_error_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2198,7 +2211,7 @@ async def test_update_log_metric_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -2227,7 +2240,7 @@ async def test_update_log_metric_async_use_cached_wrapped_rpc(transport: str = "
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = MetricsServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2258,7 +2271,7 @@ async def test_update_log_metric_async_use_cached_wrapped_rpc(transport: str = "
 @pytest.mark.asyncio
 async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.UpdateLogMetricRequest):
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2338,7 +2351,7 @@ def test_update_log_metric_field_headers():
 @pytest.mark.asyncio
 async def test_update_log_metric_field_headers_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2414,7 +2427,7 @@ def test_update_log_metric_flattened_error():
 @pytest.mark.asyncio
 async def test_update_log_metric_flattened_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2446,7 +2459,7 @@ async def test_update_log_metric_flattened_async():
 @pytest.mark.asyncio
 async def test_update_log_metric_flattened_error_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2574,7 +2587,7 @@ async def test_delete_log_metric_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -2595,7 +2608,7 @@ async def test_delete_log_metric_async_use_cached_wrapped_rpc(transport: str = "
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = MetricsServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2626,7 +2639,7 @@ async def test_delete_log_metric_async_use_cached_wrapped_rpc(transport: str = "
 @pytest.mark.asyncio
 async def test_delete_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.DeleteLogMetricRequest):
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2691,7 +2704,7 @@ def test_delete_log_metric_field_headers():
 @pytest.mark.asyncio
 async def test_delete_log_metric_field_headers_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2762,7 +2775,7 @@ def test_delete_log_metric_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_log_metric_flattened_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2790,7 +2803,7 @@ async def test_delete_log_metric_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_log_metric_flattened_error_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3393,7 +3406,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
@@ -3426,7 +3439,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3474,7 +3487,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3515,7 +3528,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -3555,7 +3568,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3603,7 +3616,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3644,7 +3657,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -3684,7 +3697,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3732,7 +3745,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3773,7 +3786,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:

@@ -19,6 +19,13 @@ import os
 import pytest
 
 from google.api_core.client_options import ClientOptions  # type: ignore
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.showcase import EchoClient
@@ -30,6 +37,13 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     import asyncio
     from google.showcase import EchoAsyncClient
     from google.showcase import IdentityAsyncClient
+
+    # TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+    # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+    def async_anonymous_credentials():
+        if HAS_GOOGLE_AUTH_AIO:
+            return ga_credentials_async.AnonymousCredentials()
+        return ga_credentials.AnonymousCredentials()
 
     _test_event_loop = asyncio.new_event_loop()
     asyncio.set_event_loop(_test_event_loop)
@@ -49,7 +63,8 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             EchoAsyncClient,
             use_mtls,
             transport_name="grpc_asyncio",
-            channel_creator=aio.insecure_channel
+            channel_creator=aio.insecure_channel,
+            credentials=async_anonymous_credentials(),
         )
 
     @pytest.fixture
@@ -58,7 +73,8 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             IdentityAsyncClient,
             use_mtls,
             transport_name="grpc_asyncio",
-            channel_creator=aio.insecure_channel
+            channel_creator=aio.insecure_channel,
+            credentials=async_anonymous_credentials(),
         )
 
 
@@ -94,11 +110,13 @@ def construct_client(
     transport_name="grpc",
     channel_creator=grpc.insecure_channel,  # for grpc,grpc_asyncio only
     credentials=ga_credentials.AnonymousCredentials(),
-    transport_endpoint="localhost:7469"
+    transport_endpoint="localhost:7469",
 ):
     if use_mtls:
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            with mock.patch("grpc.ssl_channel_credentials", autospec=True) as mock_ssl_cred:
+            with mock.patch(
+                "grpc.ssl_channel_credentials", autospec=True
+            ) as mock_ssl_cred:
                 mock_ssl_cred.return_value = ssl_credentials
                 client = client_class(
                     credentials=credentials,
@@ -137,9 +155,17 @@ def use_mtls(request):
 
 
 @pytest.fixture
-def parametrized_echo(use_mtls, channel_creator, transport_name, transport_endpoint, credential_universe, client_universe):
+def parametrized_echo(
+    use_mtls,
+    channel_creator,
+    transport_name,
+    transport_endpoint,
+    credential_universe,
+    client_universe,
+):
     print(
-        f"test_params: {channel_creator, transport_name, transport_endpoint, credential_universe, client_universe}")
+        f"test_params: {channel_creator, transport_name, transport_endpoint, credential_universe, client_universe}"
+    )
     credentials = ga_credentials.AnonymousCredentials()
     # TODO: This is needed to cater for older versions of google-auth
     # Make this test unconditional once the minimum supported version of
@@ -149,11 +175,14 @@ def parametrized_echo(use_mtls, channel_creator, transport_name, transport_endpo
     ]
     if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials._universe_domain = credential_universe
-    client = construct_client(EchoClient, use_mtls,
-                              transport_endpoint=transport_endpoint,
-                              transport_name=transport_name,
-                              channel_creator=channel_creator,
-                              credentials=credentials)
+    client = construct_client(
+        EchoClient,
+        use_mtls,
+        transport_endpoint=transport_endpoint,
+        transport_name=transport_name,
+        channel_creator=channel_creator,
+        credentials=credentials,
+    )
     # Since `channel_creator` does not take credentials, we set them
     # explicitly in the client for test purposes.
     #
@@ -171,7 +200,14 @@ def echo(use_mtls, request):
 
 @pytest.fixture(params=["grpc", "rest"])
 def echo_with_universe_credentials_localhost(use_mtls, request):
-    return construct_client(EchoClient, use_mtls, transport_name=request.param, credentials=ga_credentials.AnonymousCredentials(universe_domain="localhost:7469"))
+    return construct_client(
+        EchoClient,
+        use_mtls,
+        transport_name=request.param,
+        credentials=ga_credentials.AnonymousCredentials(
+            universe_domain="localhost:7469"
+        ),
+    )
 
 
 @pytest.fixture(params=["grpc", "rest"])

@@ -254,7 +254,7 @@ async def test_{{ method_name }}_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = {{ service.async_client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -310,7 +310,7 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = {{ service.async_client_name }}(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -358,7 +358,7 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
 async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_type={{ method.input.ident }}):
     {% with auto_populated_field_sample_value = "explicit value for autopopulate-able field" %}
     client = {{ service.async_client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -563,7 +563,7 @@ def test_{{ method_name }}_field_headers():
 @pytest.mark.asyncio
 async def test_{{ method_name }}_field_headers_async():
     client = {{ service.async_client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -716,7 +716,7 @@ def test_{{ method_name }}_flattened_error():
 @pytest.mark.asyncio
 async def test_{{ method_name }}_flattened_async():
     client = {{ service.async_client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -795,7 +795,7 @@ async def test_{{ method_name }}_flattened_async():
 @pytest.mark.asyncio
 async def test_{{ method_name }}_flattened_error_async():
     client = {{ service.async_client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -959,7 +959,7 @@ def test_{{ method_name }}_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_{{ method_name }}_async_pager():
     client = {{ service.async_client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1049,7 +1049,7 @@ async def test_{{ method_name }}_async_pager():
 @pytest.mark.asyncio
 async def test_{{ method_name }}_async_pages():
     client = {{ service.async_client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
