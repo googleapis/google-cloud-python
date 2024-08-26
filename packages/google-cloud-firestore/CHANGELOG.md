@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.18.0](https://github.com/googleapis/python-firestore/compare/v2.17.2...v2.18.0) (2024-08-26)
+
+
+### Features
+
+* Support returning computed distance and set distance thresholds on VectorQueries ([#960](https://github.com/googleapis/python-firestore/issues/960)) ([5c2192d](https://github.com/googleapis/python-firestore/commit/5c2192d3c66f6b6a11f122affbfb29556a77a535))
+
+
+### Bug Fixes
+
+* Remove custom retry loop ([#948](https://github.com/googleapis/python-firestore/issues/948)) ([04bb206](https://github.com/googleapis/python-firestore/commit/04bb20628a8e68a0ad86433c18c37734b6f282c8))
+
 ## [2.17.2](https://github.com/googleapis/python-firestore/compare/v2.17.1...v2.17.2) (2024-08-13)
 
 
