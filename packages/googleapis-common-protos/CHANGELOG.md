@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.64.0](https://github.com/googleapis/python-api-common-protos/compare/v1.63.2...v1.64.0) (2024-08-26)
+
+
+### Features
+
+* Add FieldInfo.referenced_types for generics ([2ba3577](https://github.com/googleapis/python-api-common-protos/commit/2ba35774cb6ea31513b1985e3a391c5c3435e7be))
+
+
+### Bug Fixes
+
+* Un-deprecate Endpoint.aliases field ([2ba3577](https://github.com/googleapis/python-api-common-protos/commit/2ba35774cb6ea31513b1985e3a391c5c3435e7be))
+
+
+### Documentation
+
+* Fix formatting in http.proto comments ([2ba3577](https://github.com/googleapis/python-api-common-protos/commit/2ba35774cb6ea31513b1985e3a391c5c3435e7be))
+* Improve MethodSettings selector examples ([2ba3577](https://github.com/googleapis/python-api-common-protos/commit/2ba35774cb6ea31513b1985e3a391c5c3435e7be))
+* Reformat comments in context proto ([2ba3577](https://github.com/googleapis/python-api-common-protos/commit/2ba35774cb6ea31513b1985e3a391c5c3435e7be))
+* Update ResourceDescriptor.plural docs with AIP-122 nested collections guidance ([2ba3577](https://github.com/googleapis/python-api-common-protos/commit/2ba35774cb6ea31513b1985e3a391c5c3435e7be))
+
 ## [1.63.2](https://github.com/googleapis/python-api-common-protos/compare/v1.63.1...v1.63.2) (2024-06-19)
 
 
