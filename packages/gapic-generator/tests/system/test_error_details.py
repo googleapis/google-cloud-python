@@ -23,9 +23,7 @@ from google.api_core import exceptions
 def create_status(error_details=None):
     status = rpc_status.status_pb2.Status()
     status.code = 3
-    status.message = (
-        "test"
-    )
+    status.message = "test"
     status_detail = any_pb2.Any()
     if error_details:
         status_detail.Pack(error_details)
@@ -47,14 +45,19 @@ def test_bad_request_details(echo):
         field_violation.field = "test field"
         field_violation.description = "test description"
         return bad_request_details
+
     bad_request_details = create_bad_request_details()
     status = create_status(bad_request_details)
 
     with pytest.raises(exceptions.GoogleAPICallError) as e:
-        _ = echo.echo(showcase.EchoRequest(
-            error=status,
-        ))
-        assert e.details == [bad_request_details]
+        _ = echo.echo(
+            showcase.EchoRequest(
+                error=status,
+            )
+        )
+
+    # Note: error details are exposed as e.value.details.
+    assert e.value.details == [bad_request_details]
 
 
 def test_precondition_failure_details(echo):
@@ -77,16 +80,31 @@ def test_precondition_failure_details(echo):
     status = create_status(pf_details)
 
     with pytest.raises(exceptions.GoogleAPICallError) as e:
-        _ = echo.echo(showcase.EchoRequest(
-            error=status,
-        ))
-        assert e.details == [pf_details]
+        _ = echo.echo(
+            showcase.EchoRequest(
+                error=status,
+            )
+        )
+
+    # Note: error details are exposed as e.value.details.
+    assert e.value.details == [pf_details]
 
 
 def test_unknown_details(echo):
+    # TODO(dovs): reenable when transcoding requests with an "Any"
+    # field is properly handled
+    # See https://github.com/googleapis/proto-plus-python/issues/285
+    # for background and tracking.
+    if "rest" in str(echo.transport).lower():
+        return
+
     status = create_status()
     with pytest.raises(exceptions.GoogleAPICallError) as e:
-        _ = echo.echo(showcase.EchoRequest(
-            error=status,
-        ))
-        assert e.details == status.details
+        _ = echo.echo(
+            showcase.EchoRequest(
+                error=status,
+            )
+        )
+
+    # Note: error details are exposed as e.value.details.
+    assert e.value.details == list(status.details)

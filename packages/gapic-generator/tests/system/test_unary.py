@@ -25,23 +25,27 @@ UUID4_RE = r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]
 
 
 def test_unary_with_request_object(echo):
-    response = echo.echo(showcase.EchoRequest(
-        content='The hail in Wales falls mainly on the snails.',
-        request_id='some_value',
-        other_request_id='',
-    ))
-    assert response.content == 'The hail in Wales falls mainly on the snails.'
-    assert response.request_id == 'some_value'
-    assert response.other_request_id == ''
+    response = echo.echo(
+        showcase.EchoRequest(
+            content="The hail in Wales falls mainly on the snails.",
+            request_id="some_value",
+            other_request_id="",
+        )
+    )
+    assert response.content == "The hail in Wales falls mainly on the snails."
+    assert response.request_id == "some_value"
+    assert response.other_request_id == ""
 
     # Repeat the same test but this time without `request_id`` set
     # The `request_id` field should be automatically populated with
     # a UUID4 value if it is not set.
     # See https://google.aip.dev/client-libraries/4235
-    response = echo.echo(showcase.EchoRequest(
-        content='The hail in Wales falls mainly on the snails.',
-    ))
-    assert response.content == 'The hail in Wales falls mainly on the snails.'
+    response = echo.echo(
+        showcase.EchoRequest(
+            content="The hail in Wales falls mainly on the snails.",
+        )
+    )
+    assert response.content == "The hail in Wales falls mainly on the snails."
     # Ensure that the uuid4 field is set according to AIP 4235
     assert re.match(UUID4_RE, response.request_id)
     assert len(response.request_id) == 36
@@ -51,23 +55,27 @@ def test_unary_with_request_object(echo):
 
 
 def test_unary_with_dict(echo):
-    response = echo.echo({
-        'content': 'The hail in Wales falls mainly on the snails.',
-        'request_id': 'some_value',
-        'other_request_id': '',
-    })
-    assert response.content == 'The hail in Wales falls mainly on the snails.'
-    assert response.request_id == 'some_value'
-    assert response.other_request_id == ''
+    response = echo.echo(
+        {
+            "content": "The hail in Wales falls mainly on the snails.",
+            "request_id": "some_value",
+            "other_request_id": "",
+        }
+    )
+    assert response.content == "The hail in Wales falls mainly on the snails."
+    assert response.request_id == "some_value"
+    assert response.other_request_id == ""
 
     # Repeat the same test but this time without `request_id`` set
     # The `request_id` field should be automatically populated with
     # a UUID4 value if it is not set.
     # See https://google.aip.dev/client-libraries/4235
-    response = echo.echo({
-        'content': 'The hail in Wales falls mainly on the snails.',
-    })
-    assert response.content == 'The hail in Wales falls mainly on the snails.'
+    response = echo.echo(
+        {
+            "content": "The hail in Wales falls mainly on the snails.",
+        }
+    )
+    assert response.content == "The hail in Wales falls mainly on the snails."
     assert re.match(UUID4_RE, response.request_id)
     assert len(response.request_id) == 36
     # Ensure that the uuid4 field is set according to AIP 4235
@@ -76,31 +84,43 @@ def test_unary_with_dict(echo):
 
 
 def test_unary_error(echo):
-    message = 'Bad things! Bad things!'
+    message = "Bad things! Bad things!"
+    http_message = f"POST http://localhost:7469/v1beta1/echo:echo: {message}"
     # Note: InvalidArgument is from gRPC, BadRequest from http (no MTLS), InternalServerError from http (MTLS)
     # TODO: Reduce number of different exception types here.
-    with pytest.raises((exceptions.InvalidArgument, exceptions.BadRequest, exceptions.InternalServerError)) as exc:
-        echo.echo({
-            'error': {
-                'code': code_pb2.Code.Value('INVALID_ARGUMENT'),
-                'message': message,
-            },
-        })
-        assert exc.value.code == 400
-        assert exc.value.message == message
+    with pytest.raises(
+        (
+            exceptions.InvalidArgument,
+            exceptions.BadRequest,
+            exceptions.InternalServerError,
+        )
+    ) as exc:
+        echo.echo(
+            {
+                "error": {
+                    "code": code_pb2.Code.Value("INVALID_ARGUMENT"),
+                    "message": message,
+                },
+            }
+        )
+    err_message = message if "grpc" in str(echo.transport) else http_message
+    assert exc.value.code == 400
+    assert exc.value.message == err_message
 
     if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
         # Under gRPC, we raise exceptions.InvalidArgument, which is a
         # sub-class of exceptions.BadRequest.
         with pytest.raises(exceptions.InvalidArgument) as exc:
-            echo.echo({
-                'error': {
-                    'code': code_pb2.Code.Value('INVALID_ARGUMENT'),
-                    'message': message,
-                },
-            })
-            assert exc.value.code == 400
-            assert exc.value.message == message
+            echo.echo(
+                {
+                    "error": {
+                        "code": code_pb2.Code.Value("INVALID_ARGUMENT"),
+                        "message": message,
+                    },
+                }
+            )
+        assert exc.value.code == 400
+        assert exc.value.message == message
 
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
@@ -108,27 +128,33 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_unary_with_request_object(async_echo):
-        response = await async_echo.echo(showcase.EchoRequest(
-            content='The hail in Wales falls mainly on the snails.',
-        ), timeout=1)
-        assert response.content == 'The hail in Wales falls mainly on the snails.'
+        response = await async_echo.echo(
+            showcase.EchoRequest(
+                content="The hail in Wales falls mainly on the snails.",
+            ),
+            timeout=1,
+        )
+        assert response.content == "The hail in Wales falls mainly on the snails."
 
     @pytest.mark.asyncio
     async def test_async_unary_with_dict(async_echo):
-        response = await async_echo.echo({
-            'content': 'The hail in Wales falls mainly on the snails.',
-        })
-        assert response.content == 'The hail in Wales falls mainly on the snails.'
+        response = await async_echo.echo(
+            {
+                "content": "The hail in Wales falls mainly on the snails.",
+            }
+        )
+        assert response.content == "The hail in Wales falls mainly on the snails."
 
     @pytest.mark.asyncio
     async def test_async_unary_error(async_echo):
-        message = 'Bad things! Bad things!'
+        message = "Bad things! Bad things!"
         with pytest.raises(exceptions.InvalidArgument) as exc:
-            await async_echo.echo({
-                'error': {
-                    'code': code_pb2.Code.Value('INVALID_ARGUMENT'),
-                    'message': message,
-                },
-            })
-            assert exc.value.code == 400
-            assert exc.value.message == message
+            await async_echo.echo(
+                {
+                    "error": {
+                        "code": code_pb2.Code.Value("INVALID_ARGUMENT"),
+                        "message": message,
+                    },
+                }
+            )
+        assert exc.value.message == message
