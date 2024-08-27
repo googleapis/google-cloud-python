@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.19.2](https://github.com/googleapis/python-api-core/compare/v2.19.1...v2.19.2) (2024-08-16)
+
+
+### Bug Fixes
+
+* Fail gracefully if could not import `rpc_status` module ([#680](https://github.com/googleapis/python-api-core/issues/680)) ([7ccbf57](https://github.com/googleapis/python-api-core/commit/7ccbf5738fa236649f9a155055c71789362b5c4c))
+
 ## [2.19.1](https://github.com/googleapis/python-api-core/compare/v2.19.0...v2.19.1) (2024-06-19)
 
 
