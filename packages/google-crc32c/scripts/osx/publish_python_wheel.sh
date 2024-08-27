@@ -15,15 +15,17 @@
 
 set -eo pipefail
 
+PYTHON=$(PYENV_VERSION=3.9 pyenv which python)
+PYTHON_BIN=$(dirname ${PYTHON})
+
 # Start the releasetool reporter
-python3 -m pip install --require-hashes -r github/python-crc32c/.kokoro/requirements.txt
-python3 -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script
+${PYTHON} -m pip install --require-hashes -r ${REPO_ROOT}/.kokoro/requirements.txt
+${PYTHON} -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script
+
+TWINE=${PYTHON_BIN}/twine
 
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
 
-# Move into the package, build the distribution and upload.
 TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-1")
-cd github/python-crc32c
-python3 setup.py sdist bdist_wheel
-twine upload --username __token__ --password "${TWINE_PASSWORD}" dist/*
+${PYTHON} -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" ${REPO_ROOT}/dist_wheels/*
