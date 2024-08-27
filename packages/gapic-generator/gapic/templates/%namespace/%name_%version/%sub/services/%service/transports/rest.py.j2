@@ -1,3 +1,4 @@
+{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 {% extends '_base.py.j2' %}
 
 {% block content %}
@@ -5,14 +6,11 @@
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 import json  # type: ignore
-import grpc  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
-from google.api_core import path_template
 from google.api_core import gapic_v1
 
 from google.protobuf import json_format
@@ -26,42 +24,21 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
-{% set import_ns = namespace(has_operations_mixin=false) %}
-{% if api.has_operations_mixin %}
-{% set import_ns.has_operations_mixin = True %}
-{% endif %}
+
 from requests import __version__ as requests_version
 import dataclasses
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+
+{{ shared_macros.operations_mixin_imports(api, service, opts) }}
+
+from .rest_base import _Base{{ service.name }}RestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
-{# TODO(yon-mg): re-add python_import/ python_modules from removed diff/current grpc template code #}
-{% filter sort_lines %}
-{% for method in service.methods.values() %}
-{{method.input.ident.python_import}}
-{% if method.output.ident|string() == "operations_pb2.Operation" %}
-{% set import_ns.has_operations_mixin = True %}
-{% else %}
-{{method.output.ident.python_import}}
-{% endif %}
-{% endfor %}
-{% if opts.add_iam_methods %}
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-{% endif %}
-{% endfilter %}
-{% if import_ns.has_operations_mixin %}
-from google.longrunning import operations_pb2  # type: ignore
-{% endif %}
-
-from .base import {{service.name}}Transport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -159,8 +136,8 @@ class {{service.name}}RestStub:
     _interceptor: {{ service.name }}RestInterceptor
 
 
-class {{service.name}}RestTransport({{service.name}}Transport):
-    """REST backend transport for {{ service.name }}.
+class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
+    """REST backend synchronous transport for {{ service.name }}.
 
     {{ service.meta.doc|rst(width=72, indent=4) }}
 
@@ -169,14 +146,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
-    {% if not opts.rest_numeric_enums %}
-    NOTE: This REST transport functionality is currently in a beta
-    state (preview). We welcome your feedback via an issue in this
-    library's source repository. Thank you!
-    {% endif %}
     """
-
 
     {# TODO(yon-mg): handle mtls stuff if that is relevant for rest transport #}
     def __init__(self, *,
@@ -235,19 +205,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience
         )
         self._session = AuthorizedSession(
@@ -305,24 +268,14 @@ class {{service.name}}RestTransport({{service.name}}Transport):
 
     {% endif %}{# service.has_lro #}
     {% for method in service.methods.values()|sort(attribute="name") %}
-    class _{{method.name}}({{service.name}}RestStub):
+    class _{{method.name}}(_Base{{ service.name }}RestTransport._Base{{method.name}}, {{service.name}}RestStub):
         def __hash__(self):
-            return hash("{{method.name}}")
-
+            return hash("{{service.name}}RestTransport.{{method.name}}")
         {% if method.http_options and not method.client_streaming %}
-        {% if method.input.required_fields %}
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        {% for req_field in method.input.required_fields if req_field.name in method.query_params %}
-            "{{ req_field.name | camel_case }}" : {% if req_field.field_pb.type == 9 %}"{{req_field.field_pb.default_value }}"{% elif req_field.field_pb.type in [11, 14] %}{}{% else %}{{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}{% endif %},{# default is str #}
-        {% endfor %}
-        }
 
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-        {% endif %}{# required fields #}
-        {% endif %}{# not method.client_streaming #}
+        {% set body_spec = method.http_options[0].body %}
+        {{ shared_macros.response_method(body_spec)|indent(8) }}
+        {% endif %}{# method.http_options and not method.client_streaming #}
 
         def __call__(self,
                 request: {{method.input.ident}}, *,
@@ -353,67 +306,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             {% endif %}
             """
 
-            http_options: List[Dict[str, str]] = [
-            {%- for rule in method.http_options %}{
-                'method': '{{ rule.method }}',
-                'uri': '{{ rule.uri }}',
-                {% if rule.body %}
-                'body': '{{ rule.body }}',
-                {% endif %}{# rule.body #}
-            },
-            {% endfor %}{# rule in method.http_options #}
-            ]
-            request, metadata = self._interceptor.pre_{{ method.name|snake_case }}(request, metadata)
-            {% if method.input.ident.is_proto_plus_type %}
-            pb_request = {{method.input.ident}}.pb(request)
-            {% else %}
-            pb_request = request
-            {% endif %}
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            {% set body_spec = method.http_options[0].body %}
-            {%- if body_spec %}
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums={{ opts.rest_numeric_enums }}
-            )
-            {%- endif %}
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-
-            # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums={{ opts.rest_numeric_enums }},
-            ))
-            {% if method.input.required_fields %}
-            query_params.update(self._get_unset_required_fields(query_params))
-            {% endif %}{# required fields #}
-
-            {% if opts.rest_numeric_enums %}
-            query_params["$alt"] = "json;enum-encoding=int"
-            {% endif %}
-
-            # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                {% if body_spec %}
-                data=body,
-                {% endif %}
-                )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
+            {{ shared_macros.rest_call_method_common(body_spec, method.name, service.name)|indent(8) }}
 
             {% if not method.void %}
             # Return the response

@@ -154,6 +154,7 @@ def test_get_response_ignores_unwanted_transports_and_clients():
             "foo/%service/transports/grpc.py.j2",
             "foo/%service/transports/__init__.py.j2",
             "foo/%service/transports/base.py.j2",
+            "foo/%service/transports/rest_base.py.j2",
             "foo/%service/async_client.py.j2",
             "foo/%service/client.py.j2",
             "mollusks/squid/sample.py.j2",

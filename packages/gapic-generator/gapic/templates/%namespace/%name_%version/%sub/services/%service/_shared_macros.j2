@@ -68,3 +68,94 @@ except ImportError:  # pragma: NO COVER
             )
     {% endif %}{# service_version #}
 {% endmacro %}
+
+{% macro operations_mixin_imports(api, service, opts) %}
+{% if import_ns is not defined %}
+{% set import_ns = namespace(has_operations_mixin=false) %}
+{% endif %}{# import_ns is not defined #}
+{% set import_ns.has_operations_mixin = api.has_operations_mixin %}
+
+{% filter sort_lines %}
+{% for method in service.methods.values() %}
+{{method.input.ident.python_import}}
+{% if method.output.ident|string() == "operations_pb2.Operation" %}
+{% set import_ns.has_operations_mixin = True %}
+{% else %}
+{{method.output.ident.python_import}}
+{% endif %}
+{% endfor %}
+{% if opts.add_iam_methods %}
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+{% endif %}{# opts.add_iam_methods #}
+{% endfilter %}
+{% if import_ns.has_operations_mixin %}
+from google.longrunning import operations_pb2  # type: ignore
+{% endif %}{# import_ns.has_operations_mixin #}
+{% endmacro %}
+
+{% macro http_options_method(rules) %}
+@staticmethod
+def _get_http_options():
+    http_options: List[Dict[str, str]] = [
+    {%- for rule in rules %}{
+        'method': '{{ rule.method }}',
+        'uri': '{{ rule.uri }}',
+        {% if rule.body %}
+        'body': '{{ rule.body }}',
+        {% endif %}{# rule.body #}
+    },
+    {% endfor %}{# rule in rules #}
+    ]
+    return http_options
+{% endmacro %}
+
+{% macro response_method(body_spec) %}
+@staticmethod
+def _get_response(
+    host,
+    metadata,
+    query_params,
+    session,
+    timeout,
+    transcoded_request,
+    body=None):
+    
+    uri = transcoded_request['uri']
+    method = transcoded_request['method']
+    headers = dict(metadata)
+    headers['Content-Type'] = 'application/json'
+    response = getattr(session, method)(
+        "{host}{uri}".format(host=host, uri=uri),
+        timeout=timeout,
+        headers=headers,
+        params=rest_helpers.flatten_query_params(query_params, strict=True),
+        {% if body_spec %}
+        data=body,
+        {% endif %}
+        )
+    return response
+{% endmacro %}
+
+{% macro rest_call_method_common(body_spec, method_name, service_name) %}
+
+    http_options = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_http_options()
+    request, metadata = self._interceptor.pre_{{ method_name|snake_case }}(request, metadata)
+    transcoded_request = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_transcoded_request(http_options, request)
+
+    {% if body_spec %}
+    body = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_request_body_json(transcoded_request)
+    {% endif %} {# body_spec #}
+
+    # Jsonify the query params
+    query_params = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_query_params_json(transcoded_request)
+
+    # Send the request
+    response = {{ service_name }}RestTransport._{{method_name}}._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request{% if body_spec %}, body{% endif %})
+
+    # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+    # subclass.
+    if response.status_code >= 400:
+        raise core_exceptions.from_http_response(response)
+
+{% endmacro %}
