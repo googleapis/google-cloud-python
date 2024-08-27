@@ -12,18 +12,21 @@
 @rem See the License for the specific language governing permissions and
 @rem limitations under the License.
 
-@rem This test file runs for one Python version at a time, and is intended to
-@rem be called from within the build loop.
+@echo "Starting Windows build"
 
-set PYTHON_VERSION=%1
-if "%PYTHON_VERSION%"=="" (
-  echo "Python version was not provided, using Python 3.10"
-  set PYTHON_VERSION=3.10
-)
+cd /d %~dp0
+cd ..
 
-py -%PYTHON_VERSION%-64 -m pip install --no-index --find-links=wheels google-crc32c --force-reinstall
+@rem as this package uses submodules make sure we have all content
+call git config --global --add safe.directory C:/tmpfs/src/github/python-crc32c
+call git submodule update --recursive || goto :error
 
-py -%PYTHON_VERSION%-64 ./scripts/check_crc32c_extension.py
+@echo "Build Wheels and Run Tests"
+call scripts\windows\build.bat || goto :error
 
-py -%PYTHON_VERSION%-64 -m pip install pytest
-py -%PYTHON_VERSION%-64 -m pytest tests
+for /r %%a in (*.whl) do xcopy "%%a" %KOKORO_ARTIFACTS_DIR% /i
+
+goto :EOF
+
+:error
+exit /b 1

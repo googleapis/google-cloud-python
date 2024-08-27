@@ -16,6 +16,9 @@
 set -e -x
 echo "BUILDING FOR OSX"
 
+# set deployment target
+export MACOSX_DEPLOYMENT_TARGET=12
+
 # ``readlink -f`` is not our friend on OS X. This relies on **some**
 # ``python`` being installed.
 SCRIPT_FI=$(python -c "import os; print(os.path.realpath('${0}'))")
@@ -23,47 +26,30 @@ OSX_DIR=$(dirname ${SCRIPT_FI})
 SCRIPTS_DIR=$(dirname ${OSX_DIR})
 export REPO_ROOT=$(dirname ${SCRIPTS_DIR})
 
-# NOTE: These are the Python.org versions of Python.
-PYTHON37="/Library/Frameworks/Python.framework/Versions/3.7/bin"
-PYTHON38="/Library/Frameworks/Python.framework/Versions/3.8/bin"
-PYTHON39="/Library/Frameworks/Python.framework/Versions/3.9/bin"
-PYTHON310="/Library/Frameworks/Python.framework/Versions/3.10/bin"
-PYTHON311="/Library/Frameworks/Python.framework/Versions/3.11/bin"
+# install required packages for pyenv
+# https://github.com/pyenv/pyenv/wiki#suggested-build-environment
+brew install openssl readline sqlite3 xz zlib tcl-tk
 
 # Build and install `libcrc32c`
 export PY_BIN="${PY_BIN:-python3}"
 export CRC32C_INSTALL_PREFIX="${REPO_ROOT}/usr"
 
 cd ${REPO_ROOT}
+# Add directory as safe to avoid "detected dubious ownership" fatal issue
+git config --global --add safe.directory $REPO_ROOT
+git config --global --add safe.directory $REPO_ROOT/google_crc32c
 git submodule update --init --recursive
 
 ${OSX_DIR}/build_c_lib.sh
 
-# Build wheel for Python 3.7.
-export PY_BIN="python3.7"
-export PY_TAG="cp37-cp37m"
-${OSX_DIR}/build_python_wheel.sh
+SUPPORTED_PYTHON_VERSIONS=("3.9" "3.10" "3.11" "3.12")
 
-# Build wheel for Python 3.8.
-# Note that the 'm' SOABI flag is no longer supported for Python >= 3.8
-export PY_BIN="python3.8"
-export PY_TAG="cp38-cp38"
-${OSX_DIR}/build_python_wheel.sh
-
-# Build wheel for Python 3.9.
-export PY_BIN="python3.9"
-export PY_TAG="cp39-cp39"
-${OSX_DIR}/build_python_wheel.sh
-
-# Build wheel for Python 3.10.
-export PY_BIN="python3.10"
-export PY_TAG="cp310-cp310"
-${OSX_DIR}/build_python_wheel.sh
-
-# Build wheel for Python 3.11.
-export PY_BIN="python3.11"
-export PY_TAG="cp311-cp311"
-${OSX_DIR}/build_python_wheel.sh
+for PYTHON_VERSION in ${SUPPORTED_PYTHON_VERSIONS[@]}; do
+    echo "Build wheel for Python ${PYTHON_VERSION}"
+    export PY_BIN=$PYTHON_VERSION
+    export PY_TAG="cp${PYTHON_VERSION//.}-cp${PYTHON_VERSION//.}"
+    . /${OSX_DIR}/build_python_wheel.sh
+done
 
 # Clean up.
 rm -fr ${CRC32C_INSTALL_PREFIX}

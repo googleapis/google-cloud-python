@@ -44,6 +44,7 @@ s.move(
         "setup.py",
         "setup.cfg",
         "testing/**/*",
+        ".kokoro/build.sh",
     ],
 )
 

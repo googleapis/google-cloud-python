@@ -54,23 +54,25 @@ ${VENV}/bin/python -m pip install "cmake >= 3.12.0"
 # Build `libcrc32c`
 cd ${REPO_ROOT}/google_crc32c
 mkdir -p build
+cd build
 ls
 
 # We don't build i386 anymore as XCode no longer supports.
 ${VENV}/bin/cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 \
-    -DCMAKE_OSX_ARCHITECTURES="x86_64" \
+    -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
     -DCRC32C_BUILD_TESTS=no \
     -DCRC32C_BUILD_BENCHMARKS=no \
     -DBUILD_SHARED_LIBS=yes \
     -DCMAKE_INSTALL_PREFIX:PATH=${CRC32C_INSTALL_PREFIX} \
     -DCMAKE_INSTALL_NAME_DIR:PATH=${CRC32C_INSTALL_PREFIX}/lib \
-    .
+    ..
 
 # Install `libcrc32c` into CRC32C_INSTALL_PREFIX.
 make all install
 
 # Clean up.
+cd ..
 rm -fr ${REPO_ROOT}/google_crc32c/build
 rm -fr ${VENV}
