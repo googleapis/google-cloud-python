@@ -38,6 +38,11 @@ class JsonObject(dict):
             self._array_value = args[0]
             return
 
+        if len(args) and isinstance(args[0], JsonObject):
+            self._is_array = args[0]._is_array
+            if self._is_array:
+                self._array_value = args[0]._array_value
+
         if not self._is_null:
             super(JsonObject, self).__init__(*args, **kwargs)
 
