@@ -1598,3 +1598,7 @@ class TestDbApi:
             assert "contacts_emails" in table_names
         else:  # if not include_views:
             assert "contacts_emails" not in table_names
+
+    def test_invalid_statement_error(self):
+        with pytest.raises(ProgrammingError):
+            self._cursor.execute("-- comment only")

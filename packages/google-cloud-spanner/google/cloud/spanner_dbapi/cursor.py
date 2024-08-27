@@ -251,6 +251,9 @@ class Cursor(object):
         exception = None
         try:
             self._parsed_statement = parse_utils.classify_statement(sql, args)
+            if self._parsed_statement is None:
+                raise ProgrammingError("Invalid Statement.")
+
             if self._parsed_statement.statement_type == StatementType.CLIENT_SIDE:
                 self._result_set = client_side_statement_executor.execute(
                     self, self._parsed_statement

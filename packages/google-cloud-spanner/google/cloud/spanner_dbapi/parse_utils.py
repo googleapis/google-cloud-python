@@ -226,6 +226,8 @@ def classify_statement(query, args=None):
     # PostgreSQL dollar quoted comments are not
     # supported and will not be stripped.
     query = sqlparse.format(query, strip_comments=True).strip()
+    if query == "":
+        return None
     parsed_statement: ParsedStatement = client_side_statement_parser.parse_stmt(query)
     if parsed_statement is not None:
         return parsed_statement
