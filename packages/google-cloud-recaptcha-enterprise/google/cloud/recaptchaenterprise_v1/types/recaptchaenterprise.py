@@ -87,6 +87,7 @@ __protobuf__ = proto.module(
         "RelatedAccountGroupMembership",
         "RelatedAccountGroup",
         "WafSettings",
+        "AssessmentEnvironment",
         "IpOverrideData",
     },
 )
@@ -684,6 +685,11 @@ class Assessment(proto.Message):
             Output only. Assessment returned when a site key, a token,
             and a phone number as ``user_id`` are provided. Account
             defender and SMS toll fraud protection need to be enabled.
+        assessment_environment (google.cloud.recaptchaenterprise_v1.types.AssessmentEnvironment):
+            Optional. The environment creating the
+            assessment. This describes your environment (the
+            system invoking CreateAssessment), NOT the
+            environment of your user.
     """
 
     name: str = proto.Field(
@@ -739,6 +745,11 @@ class Assessment(proto.Message):
         proto.MESSAGE,
         number=12,
         message="PhoneFraudAssessment",
+    )
+    assessment_environment: "AssessmentEnvironment" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="AssessmentEnvironment",
     )
 
 
@@ -3196,6 +3207,40 @@ class WafSettings(proto.Message):
         proto.ENUM,
         number=2,
         enum=WafFeature,
+    )
+
+
+class AssessmentEnvironment(proto.Message):
+    r"""The environment creating the assessment. This describes your
+    environment (the system invoking CreateAssessment), NOT the
+    environment of your user.
+
+    Attributes:
+        client (str):
+            Optional. Identifies the client module
+            initiating the CreateAssessment request. This
+            can be the link to the client module's project.
+            Examples include:
+
+            -
+              "github.com/GoogleCloudPlatform/recaptcha-enterprise-google-tag-manager"
+            -
+              "cloud.google.com/recaptcha/docs/implement-waf-akamai"
+            -
+              "cloud.google.com/recaptcha/docs/implement-waf-cloudflare"
+            - "wordpress.org/plugins/recaptcha-something".
+        version (str):
+            Optional. The version of the client module.
+            For example, "1.0.0".
+    """
+
+    client: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
