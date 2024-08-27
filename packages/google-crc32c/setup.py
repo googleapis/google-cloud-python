@@ -29,7 +29,6 @@ CRC32C_PURE_PYTHON = os.getenv("CRC32C_PURE_PYTHON") not in _FALSE_OPTIONS
 
 
 def copy_dll(build_lib):
-    return #  trying static build of C library.
     install_prefix = os.environ.get("CRC32C_INSTALL_PREFIX")
 
     if os.name == "nt" and install_prefix is not None:
