@@ -78,6 +78,10 @@ ${VENV}/bin/delocate-wheel \
     --check-archs \
     ${DIST_WHEELS}/google_crc32c*${PY_TAG}*.whl
 
+if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
+    . /${OSX_DIR}/publish_python_wheel.sh
+fi
+
 # Clean up.
 rm -fr ${DIST_WHEELS}
 rm -fr ${VENV}
