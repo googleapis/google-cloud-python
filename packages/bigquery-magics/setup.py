@@ -36,6 +36,7 @@ dependencies = [
     "packaging >= 20.0.0",
     "pandas>=1.1.0",
     "pyarrow >= 3.0.0",
+    "pydata-google-auth >=1.5.0",
     "tqdm >= 4.7.4, <5.0.0dev",
 ]
 extras = {

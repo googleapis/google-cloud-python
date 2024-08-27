@@ -13,8 +13,14 @@
 # limitations under the License.
 
 import google.api_core.client_options as client_options
-import google.auth  # type: ignore
 import google.cloud.bigquery as bigquery
+import pydata_google_auth
+
+_SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
+
+
+def _get_default_credentials_with_project():
+    return pydata_google_auth.default(scopes=_SCOPES, use_local_webserver=False)
 
 
 class Context(object):
@@ -61,7 +67,7 @@ class Context(object):
             /en/latest/user-guide.html#obtaining-credentials
         """
         if self._credentials is None:
-            self._credentials, _ = google.auth.default()
+            self._credentials, _ = _get_default_credentials_with_project()
         return self._credentials
 
     @credentials.setter
@@ -86,7 +92,7 @@ class Context(object):
             >>> bigquery_magics.context.project = 'my-project'
         """
         if self._project is None:
-            _, self._project = google.auth.default()
+            _, self._project = _get_default_credentials_with_project()
         return self._project
 
     @project.setter

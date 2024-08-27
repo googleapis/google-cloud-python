@@ -15,6 +15,7 @@
 import unittest.mock as mock
 
 import google.auth.credentials
+import pydata_google_auth
 
 import bigquery_magics
 
@@ -30,8 +31,11 @@ def test_context_with_default_credentials():
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
-    default_patch = mock.patch(
-        "google.auth.default", return_value=(credentials_mock, project)
+    default_patch = mock.patch.object(
+        pydata_google_auth,
+        "default",
+        autospec=True,
+        return_value=(credentials_mock, project),
     )
     with default_patch as default_mock:
         assert bigquery_magics.context.credentials is credentials_mock
@@ -46,8 +50,11 @@ def test_context_credentials_and_project_can_be_set_explicitly():
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
-    default_patch = mock.patch(
-        "google.auth.default", return_value=(credentials_mock, project1)
+    default_patch = mock.patch.object(
+        pydata_google_auth,
+        "default",
+        autospec=True,
+        return_value=(credentials_mock, project1),
     )
     with default_patch as default_mock:
         bigquery_magics.context.credentials = credentials_mock
