@@ -77,7 +77,8 @@ class BqmlModel(BaseBqml):
 
         result_sql = apply_sql_tvf(input_sql)
         df = self._session.read_gbq(result_sql, index_col=index_col_ids)
-        df.index.names = index_labels
+        if df._has_index:
+            df.index.names = index_labels
         # Restore column labels
         df.rename(
             columns={

@@ -111,7 +111,7 @@ def test_linear_regression_customized_params_fit_score(
     assert reloaded_model.learning_rate == 0.2
 
 
-def test_unordered_mode_regression_configure_fit_score(
+def test_unordered_mode_linear_regression_configure_fit_score_predict(
     unordered_session, penguins_table_id, dataset_id
 ):
     model = bigframes.ml.linear_model.LinearRegression()
@@ -153,6 +153,14 @@ def test_unordered_mode_regression_configure_fit_score(
     assert reloaded_model.ls_init_learning_rate is None
     assert reloaded_model.max_iterations == 20
     assert reloaded_model.tol == 0.01
+
+    pred = reloaded_model.predict(df)
+    utils.check_pandas_df_schema_and_index(
+        pred,
+        columns=("predicted_body_mass_g",),
+        col_exact=False,
+        index=334,
+    )
 
 
 # TODO(garrettwu): add tests for param warm_start. Requires a trained model.
