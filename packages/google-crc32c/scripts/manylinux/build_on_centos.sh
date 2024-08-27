@@ -14,8 +14,7 @@
 # limitations under the License.
 
 set -e -x
-
-MAIN_PYTHON_BIN="/opt/python/cp37-cp37m/bin"
+MAIN_PYTHON_BIN="/opt/python/cp39-cp39/bin/"
 echo "BUILD_PYTHON: ${BUILD_PYTHON}"
 REPO_ROOT=/var/code/python-crc32c/
 
@@ -45,16 +44,16 @@ if [[ -z ${BUILD_PYTHON} ]]; then
     # Collect all target Python versions.
     for PYTHON_BIN in /opt/python/*/bin; do
         # H/T: https://stackoverflow.com/a/229606/1068170
-        if [[ "${PYTHON_BIN}" == *"37"* ]]; then
-            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
-            continue
-        elif [[ "${PYTHON_BIN}" == *"38"* ]]; then
-            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
-            continue
-        elif [[ "${PYTHON_BIN}" == *"39"* ]]; then
+        if [[ "${PYTHON_BIN}" == *"39"* ]]; then
             PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
             continue
         elif [[ "${PYTHON_BIN}" == *"310"* ]]; then
+            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
+            continue
+        elif [[ "${PYTHON_BIN}" == *"311"* ]]; then
+            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
+            continue
+        elif [[ "${PYTHON_BIN}" == *"312"* ]]; then
             PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
             continue
         else

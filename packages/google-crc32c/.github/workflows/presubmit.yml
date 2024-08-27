@@ -66,11 +66,6 @@ jobs:
         CIBW_TEST_REQUIRES: pytest
         CIBW_TEST_COMMAND: py.test -v {project}/tests/
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: python-package-distributions
-        path: wheelhouse/
-
   build-wheels-macos:
     name: ${{ matrix.os }}
     strategy:
@@ -129,22 +124,16 @@ jobs:
         CIBW_TEST_REQUIRES: pytest
         CIBW_TEST_COMMAND: py.test -v {project}/tests/
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: python-package-distributions
-        path: wheelhouse/
-
   build-wheels-windows:
     name: ${{ matrix.os }} ( ${{ matrix.platform }} )
 
     strategy:
       matrix:
         os:
-        - windows-2019
+        - windows-2022
         platform:
         # For presubmit, just build / test the most common platform
         - x64
-       #- Win32
 
     runs-on: ${{ matrix.os }}
 
@@ -175,7 +164,7 @@ jobs:
         python -m pip install cmake
         echo "::endgroup::"
         echo "::group::Run cmake to initialze build tree"
-        cmake -S google_crc32c -B build -G "Visual Studio 16 2019" -A ${{ matrix.platform }} -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=no -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0
+        cmake -S google_crc32c -B build -G "Visual Studio 17 2022" -A ${{ matrix.platform }} -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=no -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0
         echo "::endgroup::"
         echo "::group::Run cmake to build library"
         cmake --build build --verbose --config Release
@@ -212,8 +201,3 @@ jobs:
         CIBW_BUILD_VERBOSITY: 3
         CIBW_TEST_REQUIRES: pytest
         CIBW_TEST_COMMAND: py.test -v {project}/tests
-
-    - uses: actions/upload-artifact@v3
-      with:
-        name: python-package-distributions
-        path: wheelhouse/

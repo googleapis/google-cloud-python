@@ -14,7 +14,7 @@
 
 set -e -x
 
-PY_BIN=${PY_BIN:-python3.7}
+PY_BIN=${PY_BIN:-python3.9}
 REPO_ROOT=${REPO_ROOT:-$(pwd)}
 
 CRC32C_INSTALL_PREFIX=${REPO_ROOT}/usr
