@@ -21,7 +21,7 @@ from setuptools import find_namespace_packages
 
 name = "googleapis-common-protos"
 description = "Common protobufs used in Google APIs"
-version = "1.64.0"
+version = "1.65.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "protobuf>=3.20.2,<6.0.0.dev0,!=3.20.0,!=3.20.1,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",

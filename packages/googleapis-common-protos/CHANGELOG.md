@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.65.0](https://github.com/googleapis/python-api-common-protos/compare/v1.64.0...v1.65.0) (2024-08-27)
+
+
+### Features
+
+* Add field `experimental_features` to message `PythonSettings` ([#249](https://github.com/googleapis/python-api-common-protos/issues/249)) ([139490f](https://github.com/googleapis/python-api-common-protos/commit/139490fedcebf1a6674d9cf058226e6814208619))
+
 ## [1.64.0](https://github.com/googleapis/python-api-common-protos/compare/v1.63.2...v1.64.0) (2024-08-26)
 
 
