@@ -120,6 +120,7 @@ __protobuf__ = proto.module(
         "DeleteAnnotationRequest",
         "ImportAssetsRequest",
         "ImportAssetsMetadata",
+        "BatchOperationStatus",
         "ImportAssetsResponse",
         "CreateSearchConfigRequest",
         "UpdateSearchConfigRequest",
@@ -607,11 +608,11 @@ class AnalyzeAssetMetadata(proto.Message):
                     The default process state should never
                     happen.
                 IN_PROGRESS (1):
-                    The feature is in progress.
+                    The ml model analysis is in progress.
                 SUCCEEDED (2):
-                    The process is successfully done.
+                    The ml model analysis is successfully done.
                 FAILED (3):
-                    The process failed.
+                    The ml model analysis failed.
             """
             STATE_UNSPECIFIED = 0
             IN_PROGRESS = 1
@@ -1629,6 +1630,22 @@ class Index(proto.Message):
             Index of VIDEO_ON_DEMAND corpus can have at most one
             deployed index. Index of IMAGE corpus can have multiple
             deployed indexes.
+        satisfies_pzs (bool):
+            Output only. This boolean field is only set
+            for projects that have Physical Zone Separation
+            enabled via an Org Policy constraint. It is set
+            to true when the index is a valid zone separated
+            index and false if it isn't.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
+        satisfies_pzi (bool):
+            Output only. This boolean field is only set
+            for projects that have Physical Zone Isolation
+            enabled via an Org Policy constraint. It is set
+            to true when the index is a valid zone isolated
+            index and false if it isn't.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
     """
 
     class State(proto.Enum):
@@ -1687,6 +1704,16 @@ class Index(proto.Message):
         number=8,
         message="DeployedIndexReference",
     )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+        optional=True,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+        optional=True,
+    )
 
 
 class DeployedIndexReference(proto.Message):
@@ -1709,6 +1736,9 @@ class Corpus(proto.Message):
     Within a corpus, media shares the same data schema. Search is
     also restricted within a single corpus.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Resource name of the corpus. Format:
@@ -1729,6 +1759,22 @@ class Corpus(proto.Message):
         search_capability_setting (google.cloud.visionai_v1.types.SearchCapabilitySetting):
             Default search capability setting on corpus
             level.
+        satisfies_pzs (bool):
+            Output only. This boolean field is only set
+            for projects that have Physical Zone Separation
+            enabled via an Org Policy constraint. It is set
+            to true when the corpus is a valid zone
+            separated corpus and false if it isn't.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
+        satisfies_pzi (bool):
+            Output only. This boolean field is only set
+            for projects that have Physical Zone Isolation
+            enabled via an Org Policy constraint. It is set
+            to true when the corpus is a valid zone isolated
+            corpus and false if it isn't.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
     """
 
     class Type(proto.Enum):
@@ -1777,6 +1823,16 @@ class Corpus(proto.Message):
         proto.MESSAGE,
         number=8,
         message="SearchCapabilitySetting",
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+        optional=True,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+        optional=True,
     )
 
 
@@ -2874,12 +2930,44 @@ class ImportAssetsMetadata(proto.Message):
     Attributes:
         metadata (google.cloud.visionai_v1.types.OperationMetadata):
             The metadata of the operation.
+        status (google.cloud.visionai_v1.types.BatchOperationStatus):
+            The importing status including partial
+            failures, if the implementation can provide such
+            information during the progress of the
+            ImportAssets.
     """
 
     metadata: common.OperationMetadata = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.OperationMetadata,
+    )
+    status: "BatchOperationStatus" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="BatchOperationStatus",
+    )
+
+
+class BatchOperationStatus(proto.Message):
+    r"""The batch operation status.
+
+    Attributes:
+        success_count (int):
+            The count of assets (together with their
+            annotations if any) successfully ingested.
+        failure_count (int):
+            The count of assets failed to ingested; it
+            might be due to the annotation ingestion error.
+    """
+
+    success_count: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    failure_count: int = proto.Field(
+        proto.INT32,
+        number=2,
     )
 
 
@@ -3084,6 +3172,9 @@ class IndexEndpoint(proto.Message):
     r"""Message representing IndexEndpoint resource. Indexes are
     deployed into it.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. Resource name of the IndexEndpoint. Format:
@@ -3125,6 +3216,22 @@ class IndexEndpoint(proto.Message):
             Output only. Create timestamp.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Update timestamp.
+        satisfies_pzs (bool):
+            Output only. This boolean field is only set
+            for projects that have Physical Zone Separation
+            enabled via an Org Policy constraint. It is set
+            to true when the index endpoint is a valid zone
+            separated index endpoint and false if it isn't.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
+        satisfies_pzi (bool):
+            Output only. This boolean field is only set
+            for projects that have Physical Zone Isolation
+            enabled via an Org Policy constraint. It is set
+            to true when the index endpoint is a valid zone
+            isolated index endpoint and false if it isn't.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
     """
 
     class State(proto.Enum):
@@ -3184,6 +3291,16 @@ class IndexEndpoint(proto.Message):
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=10,
+        optional=True,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+        optional=True,
     )
 
 
@@ -4639,11 +4756,13 @@ class SearchResultItem(proto.Message):
         segment (google.cloud.visionai_v1.types.Partition.TemporalPartition):
             The matched asset segment.
         relevance (float):
-            Relevance of this ``SearchResultItem`` to user search
-            request. Currently available only in Image Warehouse, and by
-            default represents cosine similarity. In the future can be
-            other measures such as "dot product" or "topicality"
-            requested in the search request.
+            Available to IMAGE corpus types. Relevance of this
+            ``SearchResultItem`` to user search query (text query or
+            image query). By default this represents cosine similarity
+            between the query and the retrieved media content. The value
+            is in the range of [-1, 1]. Note that search ranking is not
+            only decided by this relevance score, but also other factors
+            such as the match of annotations.
         requested_annotations (MutableSequence[google.cloud.visionai_v1.types.Annotation]):
             Search result annotations specified by
             result_annotation_keys in search request.
