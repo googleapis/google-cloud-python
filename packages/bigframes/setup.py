@@ -49,6 +49,7 @@ dependencies = [
     "google-cloud-storage >=2.0.0",
     "ibis-framework[bigquery] >=8.0.0,<9.0.0dev",
     "jellyfish >=0.8.9",
+    "numpy >=1.24.0",
     # TODO: Relax upper bound once we have fixed `system_prerelease` tests.
     "pandas >=1.5.0",
     "pyarrow >=8.0.0",

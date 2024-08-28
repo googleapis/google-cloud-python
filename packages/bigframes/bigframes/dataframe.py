@@ -112,12 +112,15 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         *,
         session: typing.Optional[bigframes.session.Session] = None,
     ):
+        global bigframes
+
         if copy is not None and not copy:
             raise ValueError(
                 f"DataFrame constructor only supports copy=True. {constants.FEEDBACK_LINK}"
             )
-        # just ignore object dtype if provided
-        if dtype in {numpy.dtypes.ObjectDType, "object"}:
+        # Ignore object dtype if provided, as it provides no additional
+        # information about what BigQuery type to use.
+        if dtype is not None and bigframes.dtypes.is_object_like(dtype):
             dtype = None
 
         # Check to see if constructing from BigQuery-backed objects before

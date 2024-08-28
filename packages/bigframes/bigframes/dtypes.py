@@ -205,67 +205,74 @@ NUMERIC_BIGFRAMES_TYPES_PERMISSIVE = NUMERIC_BIGFRAMES_TYPES_RESTRICTIVE + [
 
 
 ## dtype predicates - use these to maintain consistency
-def is_datetime_like(type: ExpressionType) -> bool:
-    return type in (DATETIME_DTYPE, TIMESTAMP_DTYPE)
+def is_datetime_like(type_: ExpressionType) -> bool:
+    return type_ in (DATETIME_DTYPE, TIMESTAMP_DTYPE)
 
 
-def is_date_like(type: ExpressionType) -> bool:
-    return type in (DATETIME_DTYPE, TIMESTAMP_DTYPE, DATE_DTYPE)
+def is_date_like(type_: ExpressionType) -> bool:
+    return type_ in (DATETIME_DTYPE, TIMESTAMP_DTYPE, DATE_DTYPE)
 
 
-def is_time_like(type: ExpressionType) -> bool:
-    return type in (DATETIME_DTYPE, TIMESTAMP_DTYPE, TIME_DTYPE)
+def is_time_like(type_: ExpressionType) -> bool:
+    return type_ in (DATETIME_DTYPE, TIMESTAMP_DTYPE, TIME_DTYPE)
 
 
-def is_binary_like(type: ExpressionType) -> bool:
-    return type in (BOOL_DTYPE, BYTES_DTYPE, INT_DTYPE)
+def is_binary_like(type_: ExpressionType) -> bool:
+    return type_ in (BOOL_DTYPE, BYTES_DTYPE, INT_DTYPE)
 
 
-def is_string_like(type: ExpressionType) -> bool:
-    return type in (STRING_DTYPE, BYTES_DTYPE)
+def is_object_like(type_: Union[ExpressionType, str]) -> bool:
+    # See: https://stackoverflow.com/a/40312924/101923 and
+    # https://numpy.org/doc/stable/reference/generated/numpy.dtype.kind.html
+    # for the way to identify object type.
+    return type_ in ("object", "O") or getattr(type_, "kind", None) == "O"
 
 
-def is_array_like(type: ExpressionType) -> bool:
-    return isinstance(type, pd.ArrowDtype) and isinstance(
-        type.pyarrow_dtype, pa.ListType
+def is_string_like(type_: ExpressionType) -> bool:
+    return type_ in (STRING_DTYPE, BYTES_DTYPE)
+
+
+def is_array_like(type_: ExpressionType) -> bool:
+    return isinstance(type_, pd.ArrowDtype) and isinstance(
+        type_.pyarrow_dtype, pa.ListType
     )
 
 
-def is_array_string_like(type: ExpressionType) -> bool:
+def is_array_string_like(type_: ExpressionType) -> bool:
     return (
-        isinstance(type, pd.ArrowDtype)
-        and isinstance(type.pyarrow_dtype, pa.ListType)
-        and pa.types.is_string(type.pyarrow_dtype.value_type)
+        isinstance(type_, pd.ArrowDtype)
+        and isinstance(type_.pyarrow_dtype, pa.ListType)
+        and pa.types.is_string(type_.pyarrow_dtype.value_type)
     )
 
 
-def is_struct_like(type: ExpressionType) -> bool:
-    return isinstance(type, pd.ArrowDtype) and isinstance(
-        type.pyarrow_dtype, pa.StructType
+def is_struct_like(type_: ExpressionType) -> bool:
+    return isinstance(type_, pd.ArrowDtype) and isinstance(
+        type_.pyarrow_dtype, pa.StructType
     )
 
 
-def is_json_like(type: ExpressionType) -> bool:
+def is_json_like(type_: ExpressionType) -> bool:
     # TODO: Add JSON type support
-    return type == STRING_DTYPE
+    return type_ == STRING_DTYPE
 
 
-def is_json_encoding_type(type: ExpressionType) -> bool:
+def is_json_encoding_type(type_: ExpressionType) -> bool:
     # Types can be converted into JSON.
     # https://cloud.google.com/bigquery/docs/reference/standard-sql/json_functions#json_encodings
-    return type != GEO_DTYPE
+    return type_ != GEO_DTYPE
 
 
-def is_numeric(type: ExpressionType) -> bool:
-    return type in NUMERIC_BIGFRAMES_TYPES_PERMISSIVE
+def is_numeric(type_: ExpressionType) -> bool:
+    return type_ in NUMERIC_BIGFRAMES_TYPES_PERMISSIVE
 
 
-def is_iterable(type: ExpressionType) -> bool:
-    return type in (STRING_DTYPE, BYTES_DTYPE) or is_array_like(type)
+def is_iterable(type_: ExpressionType) -> bool:
+    return type_ in (STRING_DTYPE, BYTES_DTYPE) or is_array_like(type_)
 
 
-def is_comparable(type: ExpressionType) -> bool:
-    return (type is not None) and is_orderable(type)
+def is_comparable(type_: ExpressionType) -> bool:
+    return (type_ is not None) and is_orderable(type_)
 
 
 _ORDERABLE_SIMPLE_TYPES = set(
@@ -273,9 +280,9 @@ _ORDERABLE_SIMPLE_TYPES = set(
 )
 
 
-def is_orderable(type: ExpressionType) -> bool:
+def is_orderable(type_: ExpressionType) -> bool:
     # On BQ side, ARRAY, STRUCT, GEOGRAPHY, JSON are not orderable
-    return type in _ORDERABLE_SIMPLE_TYPES
+    return type_ in _ORDERABLE_SIMPLE_TYPES
 
 
 _CLUSTERABLE_SIMPLE_TYPES = set(
@@ -283,15 +290,15 @@ _CLUSTERABLE_SIMPLE_TYPES = set(
 )
 
 
-def is_clusterable(type: ExpressionType) -> bool:
+def is_clusterable(type_: ExpressionType) -> bool:
     # https://cloud.google.com/bigquery/docs/clustered-tables#cluster_column_types
     # This is based on default database type mapping, could in theory represent in non-default bq type to cluster.
-    return type in _CLUSTERABLE_SIMPLE_TYPES
+    return type_ in _CLUSTERABLE_SIMPLE_TYPES
 
 
-def is_bool_coercable(type: ExpressionType) -> bool:
+def is_bool_coercable(type_: ExpressionType) -> bool:
     # TODO: Implement more bool coercions
-    return (type is None) or is_numeric(type) or is_string_like(type)
+    return (type_ is None) or is_numeric(type_) or is_string_like(type_)
 
 
 BIGFRAMES_STRING_TO_BIGFRAMES: Dict[DtypeString, Dtype] = {

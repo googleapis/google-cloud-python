@@ -18,7 +18,6 @@ import typing
 from typing import List, Sequence
 
 import bigframes_vendored.pandas.pandas._typing as vendored_pandas_typing
-import numpy
 import pandas as pd
 
 import bigframes.constants as constants
@@ -49,8 +48,9 @@ class SeriesMethods:
     ):
         import bigframes.pandas
 
-        # just ignore object dtype if provided
-        if dtype in {numpy.dtypes.ObjectDType, "object"}:
+        # Ignore object dtype if provided, as it provides no additional
+        # information about what BigQuery type to use.
+        if dtype is not None and bigframes.dtypes.is_object_like(dtype):
             dtype = None
 
         read_pandas_func = (
