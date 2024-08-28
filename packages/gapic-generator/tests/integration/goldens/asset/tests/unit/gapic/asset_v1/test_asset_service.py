@@ -915,10 +915,11 @@ async def test_export_assets_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.export_assets()
+        await client.export_assets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ExportAssetsRequest()
+
 
 @pytest.mark.asyncio
 async def test_export_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1190,10 +1191,11 @@ async def test_list_assets_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListAssetsResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.list_assets()
+        await client.list_assets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListAssetsRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1734,10 +1736,11 @@ async def test_batch_get_assets_history_empty_call_async():
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetAssetsHistoryResponse(
         ))
-        response = await client.batch_get_assets_history()
+        await client.batch_get_assets_history()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetAssetsHistoryRequest()
+
 
 @pytest.mark.asyncio
 async def test_batch_get_assets_history_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2015,10 +2018,11 @@ async def test_create_feed_empty_call_async():
             content_type=asset_service.ContentType.RESOURCE,
             relationship_types=['relationship_types_value'],
         ))
-        response = await client.create_feed()
+        await client.create_feed()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateFeedRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2386,10 +2390,11 @@ async def test_get_feed_empty_call_async():
             content_type=asset_service.ContentType.RESOURCE,
             relationship_types=['relationship_types_value'],
         ))
-        response = await client.get_feed()
+        await client.get_feed()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetFeedRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2742,10 +2747,11 @@ async def test_list_feeds_empty_call_async():
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListFeedsResponse(
         ))
-        response = await client.list_feeds()
+        await client.list_feeds()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListFeedsRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_feeds_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3101,10 +3107,11 @@ async def test_update_feed_empty_call_async():
             content_type=asset_service.ContentType.RESOURCE,
             relationship_types=['relationship_types_value'],
         ))
-        response = await client.update_feed()
+        await client.update_feed()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.UpdateFeedRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3455,10 +3462,11 @@ async def test_delete_feed_empty_call_async():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_feed()
+        await client.delete_feed()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteFeedRequest()
+
 
 @pytest.mark.asyncio
 async def test_delete_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3809,10 +3817,11 @@ async def test_search_all_resources_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllResourcesResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.search_all_resources()
+        await client.search_all_resources()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllResourcesRequest()
+
 
 @pytest.mark.asyncio
 async def test_search_all_resources_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -4382,10 +4391,11 @@ async def test_search_all_iam_policies_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllIamPoliciesResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.search_all_iam_policies()
+        await client.search_all_iam_policies()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllIamPoliciesRequest()
+
 
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -4939,10 +4949,11 @@ async def test_analyze_iam_policy_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeIamPolicyResponse(
             fully_explored=True,
         ))
-        response = await client.analyze_iam_policy()
+        await client.analyze_iam_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyRequest()
+
 
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -5210,10 +5221,11 @@ async def test_analyze_iam_policy_longrunning_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.analyze_iam_policy_longrunning()
+        await client.analyze_iam_policy_longrunning()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyLongrunningRequest()
+
 
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_longrunning_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -5482,10 +5494,11 @@ async def test_analyze_move_empty_call_async():
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeMoveResponse(
         ))
-        response = await client.analyze_move()
+        await client.analyze_move()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeMoveRequest()
+
 
 @pytest.mark.asyncio
 async def test_analyze_move_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -5758,10 +5771,11 @@ async def test_query_assets_empty_call_async():
             job_reference='job_reference_value',
             done=True,
         ))
-        response = await client.query_assets()
+        await client.query_assets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.QueryAssetsRequest()
+
 
 @pytest.mark.asyncio
 async def test_query_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -6040,10 +6054,11 @@ async def test_create_saved_query_empty_call_async():
             creator='creator_value',
             last_updater='last_updater_value',
         ))
-        response = await client.create_saved_query()
+        await client.create_saved_query()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateSavedQueryRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_saved_query_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -6426,10 +6441,11 @@ async def test_get_saved_query_empty_call_async():
             creator='creator_value',
             last_updater='last_updater_value',
         ))
-        response = await client.get_saved_query()
+        await client.get_saved_query()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetSavedQueryRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_saved_query_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -6787,10 +6803,11 @@ async def test_list_saved_queries_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListSavedQueriesResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.list_saved_queries()
+        await client.list_saved_queries()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListSavedQueriesRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_saved_queries_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -7341,10 +7358,11 @@ async def test_update_saved_query_empty_call_async():
             creator='creator_value',
             last_updater='last_updater_value',
         ))
-        response = await client.update_saved_query()
+        await client.update_saved_query()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.UpdateSavedQueryRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_saved_query_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -7703,10 +7721,11 @@ async def test_delete_saved_query_empty_call_async():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_saved_query()
+        await client.delete_saved_query()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteSavedQueryRequest()
+
 
 @pytest.mark.asyncio
 async def test_delete_saved_query_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -8048,10 +8067,11 @@ async def test_batch_get_effective_iam_policies_empty_call_async():
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetEffectiveIamPoliciesResponse(
         ))
-        response = await client.batch_get_effective_iam_policies()
+        await client.batch_get_effective_iam_policies()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest()
+
 
 @pytest.mark.asyncio
 async def test_batch_get_effective_iam_policies_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -8321,10 +8341,11 @@ async def test_analyze_org_policies_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPoliciesResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.analyze_org_policies()
+        await client.analyze_org_policies()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
+
 
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -8894,10 +8915,11 @@ async def test_analyze_org_policy_governed_containers_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.analyze_org_policy_governed_containers()
+        await client.analyze_org_policy_governed_containers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+
 
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -9467,10 +9489,11 @@ async def test_analyze_org_policy_governed_assets_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.analyze_org_policy_governed_assets()
+        await client.analyze_org_policy_governed_assets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
 
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):

@@ -919,10 +919,11 @@ async def test_list_instances_empty_call_async():
             next_page_token='next_page_token_value',
             unreachable=['unreachable_value'],
         ))
-        response = await client.list_instances()
+        await client.list_instances()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ListInstancesRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_instances_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1546,10 +1547,11 @@ async def test_get_instance_empty_call_async():
             maintenance_version='maintenance_version_value',
             available_maintenance_versions=['available_maintenance_versions_value'],
         ))
-        response = await client.get_instance()
+        await client.get_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.GetInstanceRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1949,10 +1951,11 @@ async def test_get_instance_auth_string_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString(
             auth_string='auth_string_value',
         ))
-        response = await client.get_instance_auth_string()
+        await client.get_instance_auth_string()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2304,10 +2307,11 @@ async def test_create_instance_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.create_instance()
+        await client.create_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.CreateInstanceRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2681,10 +2685,11 @@ async def test_update_instance_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.update_instance()
+        await client.update_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.UpdateInstanceRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3052,10 +3057,11 @@ async def test_upgrade_instance_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.upgrade_instance()
+        await client.upgrade_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.UpgradeInstanceRequest()
+
 
 @pytest.mark.asyncio
 async def test_upgrade_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3421,10 +3427,11 @@ async def test_import_instance_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.import_instance()
+        await client.import_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ImportInstanceRequest()
+
 
 @pytest.mark.asyncio
 async def test_import_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3790,10 +3797,11 @@ async def test_export_instance_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.export_instance()
+        await client.export_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ExportInstanceRequest()
+
 
 @pytest.mark.asyncio
 async def test_export_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -4159,10 +4167,11 @@ async def test_failover_instance_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.failover_instance()
+        await client.failover_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.FailoverInstanceRequest()
+
 
 @pytest.mark.asyncio
 async def test_failover_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -4528,10 +4537,11 @@ async def test_delete_instance_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.delete_instance()
+        await client.delete_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.DeleteInstanceRequest()
+
 
 @pytest.mark.asyncio
 async def test_delete_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -4887,10 +4897,11 @@ async def test_reschedule_maintenance_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.reschedule_maintenance()
+        await client.reschedule_maintenance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+
 
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):

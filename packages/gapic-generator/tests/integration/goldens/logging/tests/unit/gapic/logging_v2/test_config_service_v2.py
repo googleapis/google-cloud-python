@@ -892,10 +892,11 @@ async def test_list_buckets_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListBucketsResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.list_buckets()
+        await client.list_buckets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListBucketsRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_buckets_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1457,10 +1458,11 @@ async def test_get_bucket_empty_call_async():
             analytics_enabled=True,
             restricted_fields=['restricted_fields_value'],
         ))
-        response = await client.get_bucket()
+        await client.get_bucket()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetBucketRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1742,10 +1744,11 @@ async def test_create_bucket_async_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.create_bucket_async()
+        await client.create_bucket_async()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateBucketRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_bucket_async_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2017,10 +2020,11 @@ async def test_update_bucket_async_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.update_bucket_async()
+        await client.update_bucket_async()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateBucketRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_bucket_async_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2310,10 +2314,11 @@ async def test_create_bucket_empty_call_async():
             analytics_enabled=True,
             restricted_fields=['restricted_fields_value'],
         ))
-        response = await client.create_bucket()
+        await client.create_bucket()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateBucketRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2609,10 +2614,11 @@ async def test_update_bucket_empty_call_async():
             analytics_enabled=True,
             restricted_fields=['restricted_fields_value'],
         ))
-        response = await client.update_bucket()
+        await client.update_bucket()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateBucketRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2885,10 +2891,11 @@ async def test_delete_bucket_empty_call_async():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_bucket()
+        await client.delete_bucket()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteBucketRequest()
+
 
 @pytest.mark.asyncio
 async def test_delete_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3146,10 +3153,11 @@ async def test_undelete_bucket_empty_call_async():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.undelete_bucket()
+        await client.undelete_bucket()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UndeleteBucketRequest()
+
 
 @pytest.mark.asyncio
 async def test_undelete_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3414,10 +3422,11 @@ async def test_list_views_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListViewsResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.list_views()
+        await client.list_views()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListViewsRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_views_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3967,10 +3976,11 @@ async def test_get_view_empty_call_async():
             description='description_value',
             filter='filter_value',
         ))
-        response = await client.get_view()
+        await client.get_view()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetViewRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -4248,10 +4258,11 @@ async def test_create_view_empty_call_async():
             description='description_value',
             filter='filter_value',
         ))
-        response = await client.create_view()
+        await client.create_view()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateViewRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -4527,10 +4538,11 @@ async def test_update_view_empty_call_async():
             description='description_value',
             filter='filter_value',
         ))
-        response = await client.update_view()
+        await client.update_view()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateViewRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -4795,10 +4807,11 @@ async def test_delete_view_empty_call_async():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_view()
+        await client.delete_view()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteViewRequest()
+
 
 @pytest.mark.asyncio
 async def test_delete_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -5063,10 +5076,11 @@ async def test_list_sinks_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListSinksResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.list_sinks()
+        await client.list_sinks()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListSinksRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_sinks_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -5631,10 +5645,11 @@ async def test_get_sink_empty_call_async():
             writer_identity='writer_identity_value',
             include_children=True,
         ))
-        response = await client.get_sink()
+        await client.get_sink()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetSinkRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -6017,10 +6032,11 @@ async def test_create_sink_empty_call_async():
             writer_identity='writer_identity_value',
             include_children=True,
         ))
-        response = await client.create_sink()
+        await client.create_sink()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateSinkRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -6413,10 +6429,11 @@ async def test_update_sink_empty_call_async():
             writer_identity='writer_identity_value',
             include_children=True,
         ))
-        response = await client.update_sink()
+        await client.update_sink()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateSinkRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -6793,10 +6810,11 @@ async def test_delete_sink_empty_call_async():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_sink()
+        await client.delete_sink()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteSinkRequest()
+
 
 @pytest.mark.asyncio
 async def test_delete_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -7145,10 +7163,11 @@ async def test_create_link_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.create_link()
+        await client.create_link()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateLinkRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -7524,10 +7543,11 @@ async def test_delete_link_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.delete_link()
+        await client.delete_link()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteLinkRequest()
+
 
 @pytest.mark.asyncio
 async def test_delete_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -7883,10 +7903,11 @@ async def test_list_links_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListLinksResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.list_links()
+        await client.list_links()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListLinksRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_links_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -8436,10 +8457,11 @@ async def test_get_link_empty_call_async():
             description='description_value',
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
         ))
-        response = await client.get_link()
+        await client.get_link()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetLinkRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -8793,10 +8815,11 @@ async def test_list_exclusions_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListExclusionsResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.list_exclusions()
+        await client.list_exclusions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListExclusionsRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_exclusions_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -9349,10 +9372,11 @@ async def test_get_exclusion_empty_call_async():
             filter='filter_value',
             disabled=True,
         ))
-        response = await client.get_exclusion()
+        await client.get_exclusion()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetExclusionRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -9715,10 +9739,11 @@ async def test_create_exclusion_empty_call_async():
             filter='filter_value',
             disabled=True,
         ))
-        response = await client.create_exclusion()
+        await client.create_exclusion()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateExclusionRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -10091,10 +10116,11 @@ async def test_update_exclusion_empty_call_async():
             filter='filter_value',
             disabled=True,
         ))
-        response = await client.update_exclusion()
+        await client.update_exclusion()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateExclusionRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -10463,10 +10489,11 @@ async def test_delete_exclusion_empty_call_async():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_exclusion()
+        await client.delete_exclusion()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteExclusionRequest()
+
 
 @pytest.mark.asyncio
 async def test_delete_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -10820,10 +10847,11 @@ async def test_get_cmek_settings_empty_call_async():
             kms_key_version_name='kms_key_version_name_value',
             service_account_id='service_account_id_value',
         ))
-        response = await client.get_cmek_settings()
+        await client.get_cmek_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetCmekSettingsRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_cmek_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -11104,10 +11132,11 @@ async def test_update_cmek_settings_empty_call_async():
             kms_key_version_name='kms_key_version_name_value',
             service_account_id='service_account_id_value',
         ))
-        response = await client.update_cmek_settings()
+        await client.update_cmek_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateCmekSettingsRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_cmek_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -11391,10 +11420,11 @@ async def test_get_settings_empty_call_async():
             storage_location='storage_location_value',
             disable_default_sink=True,
         ))
-        response = await client.get_settings()
+        await client.get_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetSettingsRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -11762,10 +11792,11 @@ async def test_update_settings_empty_call_async():
             storage_location='storage_location_value',
             disable_default_sink=True,
         ))
-        response = await client.update_settings()
+        await client.update_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateSettingsRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -12137,10 +12168,11 @@ async def test_copy_log_entries_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.copy_log_entries()
+        await client.copy_log_entries()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CopyLogEntriesRequest()
+
 
 @pytest.mark.asyncio
 async def test_copy_log_entries_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):

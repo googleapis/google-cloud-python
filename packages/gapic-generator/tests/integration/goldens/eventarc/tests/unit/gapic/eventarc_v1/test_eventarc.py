@@ -935,10 +935,11 @@ async def test_get_trigger_empty_call_async():
             channel='channel_value',
             etag='etag_value',
         ))
-        response = await client.get_trigger()
+        await client.get_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetTriggerRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1303,10 +1304,11 @@ async def test_list_triggers_empty_call_async():
             next_page_token='next_page_token_value',
             unreachable=['unreachable_value'],
         ))
-        response = await client.list_triggers()
+        await client.list_triggers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListTriggersRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_triggers_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1856,10 +1858,11 @@ async def test_create_trigger_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.create_trigger()
+        await client.create_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.CreateTriggerRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2233,10 +2236,11 @@ async def test_update_trigger_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.update_trigger()
+        await client.update_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.UpdateTriggerRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2614,10 +2618,11 @@ async def test_delete_trigger_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.delete_trigger()
+        await client.delete_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.DeleteTriggerRequest()
+
 
 @pytest.mark.asyncio
 async def test_delete_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2997,10 +3002,11 @@ async def test_get_channel_empty_call_async():
             activation_token='activation_token_value',
             crypto_key_name='crypto_key_name_value',
         ))
-        response = await client.get_channel()
+        await client.get_channel()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetChannelRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3365,10 +3371,11 @@ async def test_list_channels_empty_call_async():
             next_page_token='next_page_token_value',
             unreachable=['unreachable_value'],
         ))
-        response = await client.list_channels()
+        await client.list_channels()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListChannelsRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_channels_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3918,10 +3925,11 @@ async def test_create_channel_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.create_channel()
+        await client.create_channel()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.CreateChannelRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -4295,10 +4303,11 @@ async def test_update_channel_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.update_channel()
+        await client.update_channel()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.UpdateChannelRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -4664,10 +4673,11 @@ async def test_delete_channel_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.delete_channel()
+        await client.delete_channel()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.DeleteChannelRequest()
+
 
 @pytest.mark.asyncio
 async def test_delete_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -5024,10 +5034,11 @@ async def test_get_provider_empty_call_async():
             name='name_value',
             display_name='display_name_value',
         ))
-        response = await client.get_provider()
+        await client.get_provider()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetProviderRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_provider_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -5386,10 +5397,11 @@ async def test_list_providers_empty_call_async():
             next_page_token='next_page_token_value',
             unreachable=['unreachable_value'],
         ))
-        response = await client.list_providers()
+        await client.list_providers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListProvidersRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_providers_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -5944,10 +5956,11 @@ async def test_get_channel_connection_empty_call_async():
             channel='channel_value',
             activation_token='activation_token_value',
         ))
-        response = await client.get_channel_connection()
+        await client.get_channel_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetChannelConnectionRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_channel_connection_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -6306,10 +6319,11 @@ async def test_list_channel_connections_empty_call_async():
             next_page_token='next_page_token_value',
             unreachable=['unreachable_value'],
         ))
-        response = await client.list_channel_connections()
+        await client.list_channel_connections()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListChannelConnectionsRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_channel_connections_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -6859,10 +6873,11 @@ async def test_create_channel_connection_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.create_channel_connection()
+        await client.create_channel_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.CreateChannelConnectionRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_channel_connection_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -7238,10 +7253,11 @@ async def test_delete_channel_connection_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        response = await client.delete_channel_connection()
+        await client.delete_channel_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.DeleteChannelConnectionRequest()
+
 
 @pytest.mark.asyncio
 async def test_delete_channel_connection_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -7598,10 +7614,11 @@ async def test_get_google_channel_config_empty_call_async():
             name='name_value',
             crypto_key_name='crypto_key_name_value',
         ))
-        response = await client.get_google_channel_config()
+        await client.get_google_channel_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetGoogleChannelConfigRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_google_channel_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -7952,10 +7969,11 @@ async def test_update_google_channel_config_empty_call_async():
             name='name_value',
             crypto_key_name='crypto_key_name_value',
         ))
-        response = await client.update_google_channel_config()
+        await client.update_google_channel_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.UpdateGoogleChannelConfigRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_google_channel_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):

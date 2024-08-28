@@ -892,10 +892,11 @@ async def test_list_log_metrics_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.ListLogMetricsResponse(
             next_page_token='next_page_token_value',
         ))
-        response = await client.list_log_metrics()
+        await client.list_log_metrics()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.ListLogMetricsRequest()
+
 
 @pytest.mark.asyncio
 async def test_list_log_metrics_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1457,10 +1458,11 @@ async def test_get_log_metric_empty_call_async():
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
-        response = await client.get_log_metric()
+        await client.get_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.GetLogMetricRequest()
+
 
 @pytest.mark.asyncio
 async def test_get_log_metric_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1838,10 +1840,11 @@ async def test_create_log_metric_empty_call_async():
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
-        response = await client.create_log_metric()
+        await client.create_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.CreateLogMetricRequest()
+
 
 @pytest.mark.asyncio
 async def test_create_log_metric_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2229,10 +2232,11 @@ async def test_update_log_metric_empty_call_async():
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
-        response = await client.update_log_metric()
+        await client.update_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.UpdateLogMetricRequest()
+
 
 @pytest.mark.asyncio
 async def test_update_log_metric_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2597,10 +2601,11 @@ async def test_delete_log_metric_empty_call_async():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_log_metric()
+        await client.delete_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.DeleteLogMetricRequest()
+
 
 @pytest.mark.asyncio
 async def test_delete_log_metric_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):

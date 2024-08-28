@@ -123,37 +123,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
 
 
 {% if not method.client_streaming %}
-def test_{{ method_name }}_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.{{ method.transport_safe_name|snake_case }}),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.{{ method_name }}()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        {% if method.client_streaming %}
-        assert next(args[0]) == request
-        {% else %}
-        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
-        {% if method_settings is not none %}
-        {% for auto_populated_field in method_settings.auto_populated_fields %}
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
-        # clear UUID field so that the check below succeeds
-        args[0].{{ auto_populated_field }} = None
-        {% endfor %}
-        {% endif %}{# if method_settings is not none #}
-        {% endwith %}{# method_settings #}
-        assert args[0] == {{ method.input.ident }}()
-        {% endif %}
+{{ empty_call_test(method, method_name, service, api, uuid4_re)}}
 
 
 def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
@@ -249,59 +219,7 @@ def test_{{ method_name }}_use_cached_wrapped_rpc():
 
 {% if not full_extended_lro %}
 {% if not method.client_streaming %}
-@pytest.mark.asyncio
-async def test_{{ method_name }}_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = {{ service.async_client_name }}(
-        credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.{{ method.transport_safe_name|snake_case }}),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        {% if method.void %}
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        {% elif method.lro %}
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        {% elif not method.client_streaming and method.server_streaming %}
-        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
-        call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
-        {% elif method.client_streaming and method.server_streaming %}
-        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
-        call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
-        {% else %}
-        call.return_value = {{ '' }}
-            {%- if not method.client_streaming and not method.server_streaming -%}
-                grpc_helpers_async.FakeUnaryUnaryCall
-            {%- else -%}
-                grpc_helpers_async.FakeStreamUnaryCall
-            {%- endif -%}({{ method.output.ident }}(
-            {% for field in method.output.fields.values() | rejectattr('message') %}{% if not field.oneof or field.proto3_optional %}
-            {{ field.name }}={{ field.mock_value }},
-            {% endif %}
-            {% endfor %}
-        ))
-        {% endif %}
-        response = await client.{{ method_name }}()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
-        {% if method_settings is not none %}
-        {% for auto_populated_field in method_settings.auto_populated_fields %}
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
-        # clear UUID field so that the check below succeeds
-        args[0].{{ auto_populated_field }} = None
-        {% endfor %}
-        {% endif %}{# if method_settings is not none #}
-        {% endwith %}{# method_settings #}
-        assert args[0] == {{ method.input.ident }}()
+{{ empty_call_test(method, method_name, service, api, uuid4_re, is_async=True) }}
 {% endif %}
 
 @pytest.mark.asyncio
@@ -1887,4 +1805,74 @@ def test_{{ method_name }}_rest_no_http_options():
 
 {% endif %}{# not method.http_options #}
 {% endwith %}{# method_name #}
+{% endmacro %}
+
+
+{% macro empty_call_test(method, method_name, service, api, uuid4_re, is_async=False) %}
+{% if is_async %}
+@pytest.mark.asyncio
+async def test_{{ method_name }}_empty_call_async():
+{% else %}
+def test_{{ method_name }}_empty_call():
+{% endif %}{# if is_async #}
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    {% if is_async %}
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+        transport='grpc_asyncio',
+    )
+    {% else %}
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+    {% endif %}{# if is_async #}
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.{{ method.transport_safe_name|snake_case }}),
+            '__call__') as call:
+        {% if is_async %}
+        # Designate an appropriate return value for the call.
+        {% if method.void %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        {% elif method.lro %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        {% elif method.server_streaming %}
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
+        {% else %}
+        call.return_value = {{ '' }}
+            {%- if not method.server_streaming -%}
+                grpc_helpers_async.FakeUnaryUnaryCall
+            {%- else -%}
+                grpc_helpers_async.FakeStreamUnaryCall
+            {%- endif -%}({{ method.output.ident }}(
+            {% for field in method.output.fields.values() | rejectattr('message') %}{% if not field.oneof or field.proto3_optional %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endif %}
+            {% endfor %}
+        ))
+        {% endif %}{# method.void #}
+        await client.{{ method_name }}()
+        {% else %}{# if not is_async #}
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.{{ method_name }}()
+        {% endif %}{# is_async #}
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+        {% if method_settings is not none %}
+        {% for auto_populated_field in method_settings.auto_populated_fields %}
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
+        # clear UUID field so that the check below succeeds
+        args[0].{{ auto_populated_field }} = None
+        {% endfor %}{# for auto_populated_field in method_settings.auto_populated_fields #}
+        {% endif %}{# if method_settings is not none #}
+        {% endwith %}{# method_settings #}
+        assert args[0] == {{ method.input.ident }}()
 {% endmacro %}

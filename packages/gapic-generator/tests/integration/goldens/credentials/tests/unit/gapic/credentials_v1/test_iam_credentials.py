@@ -903,10 +903,11 @@ async def test_generate_access_token_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateAccessTokenResponse(
             access_token='access_token_value',
         ))
-        response = await client.generate_access_token()
+        await client.generate_access_token()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateAccessTokenRequest()
+
 
 @pytest.mark.asyncio
 async def test_generate_access_token_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1282,10 +1283,11 @@ async def test_generate_id_token_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateIdTokenResponse(
             token='token_value',
         ))
-        response = await client.generate_id_token()
+        await client.generate_id_token()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateIdTokenRequest()
+
 
 @pytest.mark.asyncio
 async def test_generate_id_token_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1666,10 +1668,11 @@ async def test_sign_blob_empty_call_async():
             key_id='key_id_value',
             signed_blob=b'signed_blob_blob',
         ))
-        response = await client.sign_blob()
+        await client.sign_blob()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignBlobRequest()
+
 
 @pytest.mark.asyncio
 async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2044,10 +2047,11 @@ async def test_sign_jwt_empty_call_async():
             key_id='key_id_value',
             signed_jwt='signed_jwt_value',
         ))
-        response = await client.sign_jwt()
+        await client.sign_jwt()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignJwtRequest()
+
 
 @pytest.mark.asyncio
 async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
