@@ -74,10 +74,9 @@ def test_create_text_generator_model_default_session(
         llm_text_df = bpd.read_pandas(llm_text_pandas_df)
 
         df = model.predict(llm_text_df).to_pandas()
-        assert df.shape == (3, 4)
-        assert "ml_generate_text_llm_result" in df.columns
-        series = df["ml_generate_text_llm_result"]
-        assert all(series.str.len() > 20)
+        utils.check_pandas_df_schema_and_index(
+            df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
+        )
 
 
 @pytest.mark.flaky(retries=2)
@@ -104,10 +103,9 @@ def test_create_text_generator_32k_model_default_session(
         llm_text_df = bpd.read_pandas(llm_text_pandas_df)
 
         df = model.predict(llm_text_df).to_pandas()
-        assert df.shape == (3, 4)
-        assert "ml_generate_text_llm_result" in df.columns
-        series = df["ml_generate_text_llm_result"]
-        assert all(series.str.len() > 20)
+        utils.check_pandas_df_schema_and_index(
+            df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
+        )
 
 
 @pytest.mark.flaky(retries=2)
@@ -131,10 +129,9 @@ def test_create_text_generator_model_default_connection(
     )
 
     df = model.predict(llm_text_df).to_pandas()
-    assert df.shape == (3, 4)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() > 20)
+    utils.check_pandas_df_schema_and_index(
+        df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
+    )
 
 
 # Marked as flaky only because BQML LLM is in preview, the service only has limited capacity, not stable enough.
@@ -143,10 +140,9 @@ def test_text_generator_predict_default_params_success(
     palm2_text_generator_model, llm_text_df
 ):
     df = palm2_text_generator_model.predict(llm_text_df).to_pandas()
-    assert df.shape == (3, 4)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() > 20)
+    utils.check_pandas_df_schema_and_index(
+        df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
+    )
 
 
 @pytest.mark.flaky(retries=2)
@@ -154,10 +150,9 @@ def test_text_generator_predict_series_default_params_success(
     palm2_text_generator_model, llm_text_df
 ):
     df = palm2_text_generator_model.predict(llm_text_df["prompt"]).to_pandas()
-    assert df.shape == (3, 4)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() > 20)
+    utils.check_pandas_df_schema_and_index(
+        df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
+    )
 
 
 @pytest.mark.flaky(retries=2)
@@ -166,10 +161,9 @@ def test_text_generator_predict_arbitrary_col_label_success(
 ):
     llm_text_df = llm_text_df.rename(columns={"prompt": "arbitrary"})
     df = palm2_text_generator_model.predict(llm_text_df).to_pandas()
-    assert df.shape == (3, 4)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() > 20)
+    utils.check_pandas_df_schema_and_index(
+        df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
+    )
 
 
 @pytest.mark.flaky(retries=2)
@@ -179,10 +173,9 @@ def test_text_generator_predict_with_params_success(
     df = palm2_text_generator_model.predict(
         llm_text_df, temperature=0.5, max_output_tokens=100, top_k=20, top_p=0.5
     ).to_pandas()
-    assert df.shape == (3, 4)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() > 20)
+    utils.check_pandas_df_schema_and_index(
+        df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
+    )
 
 
 def test_create_embedding_generator_model(
@@ -379,10 +372,9 @@ def test_gemini_text_generator_predict_default_params_success(
         model_name=model_name, connection_name=bq_connection, session=session
     )
     df = gemini_text_generator_model.predict(llm_text_df).to_pandas()
-    assert df.shape == (3, 4)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() > 20)
+    utils.check_pandas_df_schema_and_index(
+        df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -399,10 +391,9 @@ def test_gemini_text_generator_predict_with_params_success(
     df = gemini_text_generator_model.predict(
         llm_text_df, temperature=0.5, max_output_tokens=100, top_k=20, top_p=0.5
     ).to_pandas()
-    assert df.shape == (3, 4)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() > 20)
+    utils.check_pandas_df_schema_and_index(
+        df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -444,10 +435,9 @@ def test_claude3_text_generator_predict_default_params_success(
         model_name=model_name, connection_name=bq_connection, session=session
     )
     df = claude3_text_generator_model.predict(llm_text_df).to_pandas()
-    assert df.shape == (3, 3)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() > 20)
+    utils.check_pandas_df_schema_and_index(
+        df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -466,10 +456,9 @@ def test_claude3_text_generator_predict_with_params_success(
     df = claude3_text_generator_model.predict(
         llm_text_df, max_output_tokens=100, top_k=20, top_p=0.5
     ).to_pandas()
-    assert df.shape == (3, 3)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() > 20)
+    utils.check_pandas_df_schema_and_index(
+        df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
+    )
 
 
 @pytest.mark.flaky(retries=2)

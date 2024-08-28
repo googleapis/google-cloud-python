@@ -45,6 +45,11 @@ ML_CLASSFICATION_METRICS = [
     "log_loss",
     "roc_auc",
 ]
+ML_GENERATE_TEXT_OUTPUT = [
+    "ml_generate_text_llm_result",
+    "ml_generate_text_status",
+    "prompt",
+]
 
 
 def skip_legacy_pandas(test):

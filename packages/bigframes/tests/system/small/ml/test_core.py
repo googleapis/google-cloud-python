@@ -14,7 +14,6 @@
 
 from datetime import datetime
 import typing
-from unittest import TestCase
 
 import pandas as pd
 import pyarrow as pa
@@ -24,7 +23,7 @@ import pytz
 import bigframes
 import bigframes.features
 from bigframes.ml import core
-import tests.system.utils
+from tests.system import utils
 
 
 def test_model_eval(
@@ -212,7 +211,7 @@ def test_pca_model_principal_components(penguins_bqml_pca_model: core.BqmlModel)
         .reset_index(drop=True)
     )
 
-    tests.system.utils.assert_pandas_df_equal_pca_components(
+    utils.assert_pandas_df_equal_pca_components(
         result,
         expected,
         check_exact=False,
@@ -234,7 +233,7 @@ def test_pca_model_principal_component_info(penguins_bqml_pca_model: core.BqmlMo
             "cumulative_explained_variance_ratio": [0.469357, 0.651283, 0.812383],
         },
     )
-    tests.system.utils.assert_pandas_df_equal(
+    utils.assert_pandas_df_equal(
         result,
         expected,
         check_exact=False,
@@ -349,18 +348,9 @@ def test_model_generate_text(
         llm_text_df, options=options
     ).to_pandas()
 
-    TestCase().assertSequenceEqual(df.shape, (3, 4))
-    TestCase().assertSequenceEqual(
-        [
-            "ml_generate_text_llm_result",
-            "ml_generate_text_rai_result",
-            "ml_generate_text_status",
-            "prompt",
-        ],
-        df.columns.to_list(),
+    utils.check_pandas_df_schema_and_index(
+        df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
     )
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() > 20)
 
 
 def test_model_forecast(time_series_bqml_arima_plus_model: core.BqmlModel):
