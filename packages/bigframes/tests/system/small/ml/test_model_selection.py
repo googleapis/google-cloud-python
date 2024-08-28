@@ -19,15 +19,20 @@ from bigframes.ml import model_selection
 import bigframes.pandas as bpd
 
 
-def test_train_test_split_default_correct_shape(penguins_df_default_index):
-    X = penguins_df_default_index[
+@pytest.mark.parametrize(
+    "df_fixture",
+    ("penguins_df_default_index", "penguins_df_null_index"),
+)
+def test_train_test_split_default_correct_shape(df_fixture, request):
+    df = request.getfixturevalue(df_fixture)
+    X = df[
         [
             "species",
             "island",
             "culmen_length_mm",
         ]
     ]
-    y = penguins_df_default_index[["body_mass_g"]]
+    y = df[["body_mass_g"]]
     X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y)
 
     # even though the default seed is random, it should always result in this shape
@@ -236,17 +241,18 @@ def test_train_test_split_value_error(penguins_df_default_index, train_size, tes
         )
 
 
-def test_train_test_split_stratify(penguins_df_default_index):
-    X = penguins_df_default_index[
-        [
-            "species",
-            "island",
-            "culmen_length_mm",
-        ]
-    ]
-    y = penguins_df_default_index[["species"]]
+@pytest.mark.parametrize(
+    "df_fixture",
+    ("penguins_df_default_index", "penguins_df_null_index"),
+)
+def test_train_test_split_stratify(df_fixture, request):
+    df = request.getfixturevalue(df_fixture)
+    X = df[["species", "island", "culmen_length_mm",]].rename(
+        columns={"species": "x_species"}
+    )  # Keep "species" col just for easy checking. Rename to avoid conflicts.
+    y = df[["species"]]
     X_train, X_test, y_train, y_test = model_selection.train_test_split(
-        X, y, stratify=penguins_df_default_index["species"]
+        X, y, stratify=df["species"]
     )
 
     # Original distribution is [152, 124, 68]. All the categories follow 75/25 split
@@ -277,12 +283,12 @@ def test_train_test_split_stratify(penguins_df_default_index):
         name="count",
     )
     pd.testing.assert_series_equal(
-        X_train["species"].value_counts().to_pandas(),
+        X_train["x_species"].rename("species").value_counts().to_pandas(),
         train_counts,
         check_index_type=False,
     )
     pd.testing.assert_series_equal(
-        X_test["species"].value_counts().to_pandas(),
+        X_test["x_species"].rename("species").value_counts().to_pandas(),
         test_counts,
         check_index_type=False,
     )

@@ -607,6 +607,14 @@ def penguins_df_default_index(
 
 
 @pytest.fixture(scope="session")
+def penguins_df_null_index(
+    penguins_table_id: str, unordered_session: bigframes.Session
+) -> bigframes.dataframe.DataFrame:
+    """DataFrame pointing at test data."""
+    return unordered_session.read_gbq(penguins_table_id)
+
+
+@pytest.fixture(scope="session")
 def time_series_df_default_index(
     time_series_table_id: str, session: bigframes.Session
 ) -> bigframes.dataframe.DataFrame:

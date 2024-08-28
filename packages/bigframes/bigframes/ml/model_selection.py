@@ -17,7 +17,6 @@ scikit-learn's model_selection module:
 https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection."""
 
 
-import typing
 from typing import cast, List, Union
 
 from bigframes.ml import utils
@@ -87,7 +86,7 @@ def train_test_split(
         merged_df = df.join(stratify.to_frame(), how="outer")
 
         train_dfs, test_dfs = [], []
-        uniq = stratify.unique()
+        uniq = stratify.value_counts().index
         for value in uniq:
             cur = merged_df[merged_df["bigframes_stratify_col"] == value]
             train, test = train_test_split(
@@ -107,26 +106,20 @@ def train_test_split(
         )
         return [train_df, test_df]
 
+    joined_df = dfs[0]
+    for df in dfs[1:]:
+        joined_df = joined_df.join(df, how="outer")
     if stratify is None:
-        split_dfs = dfs[0]._split(
+        joined_df_train, joined_df_test = joined_df._split(
             fracs=(train_size, test_size), random_state=random_state
         )
     else:
-        split_dfs = _stratify_split(dfs[0], stratify)
-    train_index = split_dfs[0].index
-    test_index = split_dfs[1].index
+        joined_df_train, joined_df_test = _stratify_split(joined_df, stratify)
 
-    split_dfs += typing.cast(
-        List[bpd.DataFrame],
-        [df.loc[index] for df in dfs[1:] for index in (train_index, test_index)],
-    )
-
-    # convert back to Series.
-    results: List[Union[bpd.DataFrame, bpd.Series]] = []
-    for i, array in enumerate(arrays):
-        if isinstance(array, bpd.Series):
-            results += utils.convert_to_series(split_dfs[2 * i], split_dfs[2 * i + 1])
-        else:
-            results += (split_dfs[2 * i], split_dfs[2 * i + 1])
+    results = []
+    for array in arrays:
+        columns = array.name if isinstance(array, bpd.Series) else array.columns
+        results.append(joined_df_train[columns])
+        results.append(joined_df_test[columns])
 
     return results
