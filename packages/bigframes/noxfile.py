@@ -195,6 +195,7 @@ def run_unit(session, install_test_extra):
     install_unittest_dependencies(session, install_test_extra, "-c", constraints_path)
 
     # Run py.test against the unit tests.
+    scripts_path = "scripts"
     tests_path = os.path.join("tests", "unit")
     third_party_tests_path = os.path.join("third_party", "bigframes_vendored")
     session.run(
@@ -209,6 +210,7 @@ def run_unit(session, install_test_extra):
         "--cov-fail-under=0",
         tests_path,
         third_party_tests_path,
+        scripts_path,
         *session.posargs,
     )
 

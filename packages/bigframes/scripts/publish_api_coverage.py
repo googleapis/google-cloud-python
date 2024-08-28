@@ -107,8 +107,15 @@ def names_from_signature(signature):
 
 
 def calculate_missing_parameters(bigframes_function, target_function):
-    bigframes_params = names_from_signature(inspect.signature(bigframes_function))
-    target_params = names_from_signature(inspect.signature(target_function))
+    # Some built-in functions can't be inspected. These raise a ValueError.
+    try:
+        bigframes_signature = inspect.signature(bigframes_function)
+        target_signature = inspect.signature(target_function)
+    except ValueError:
+        return {}
+
+    bigframes_params = names_from_signature(bigframes_signature)
+    target_params = names_from_signature(target_signature)
     return target_params - bigframes_params
 
 
@@ -164,13 +171,20 @@ def generate_pandas_api_coverage():
                 token_type = "property"
 
             is_in_bigframes = hasattr(bigframes_obj, member)
-            requires_index = False
-            requires_ordering = False
+            requires_index = ""
+            requires_ordering = ""
 
             if is_in_bigframes:
                 attr = getattr(bigframes_obj, member)
-                requires_index = hasattr(attr, "_validations_requires_index")
-                requires_ordering = hasattr(attr, "_validations_requires_ordering")
+
+                # TODO(b/361101138): Add check/documentation for partial
+                # support (e.g. with some parameters).
+                requires_index = (
+                    "Y" if hasattr(attr, "_validations_requires_index") else ""
+                )
+                requires_ordering = (
+                    "Y" if hasattr(attr, "_validations_requires_ordering") else ""
+                )
 
             api_patterns.append(
                 [
@@ -279,9 +293,12 @@ def build_api_coverage_table(bigframes_version: str, release_version: str):
     sklearn_cov_df["module"] = "bigframes.ml"
     combined_df = pd.concat([pandas_cov_df, sklearn_cov_df])
     combined_df["timestamp"] = pd.Timestamp.now()
+    # BigQuery only supports microsecond precision timestamps.
+    combined_df["timestamp"] = combined_df["timestamp"].astype("datetime64[us]")
     combined_df["bigframes_version"] = bigframes_version
     combined_df["release_version"] = release_version
-    return combined_df.infer_objects().convert_dtypes()
+    combined_df = combined_df.infer_objects().convert_dtypes()
+    return combined_df
 
 
 def format_api(api_names, is_in_bigframes, api_prefix):
@@ -313,16 +330,14 @@ def generate_api_coverage(df, api_prefix):
                 api_prefix,
             ),
             "Implemented": "",
-            "Requires index": "",
-            "Requires ordering": "",
+            "Requires index": dataframe_apis["requires_index"],
+            "Requires ordering": dataframe_apis["requires_ordering"],
             "Missing parameters": dataframe_apis["missing_parameters"],
         }
     )
     dataframe_table.loc[fully_implemented, "Implemented"] = "Y"
     dataframe_table.loc[partial_implemented, "Implemented"] = "P"
     dataframe_table.loc[not_implemented, "Implemented"] = "N"
-    dataframe_table.loc[dataframe_apis["requires_index"], "Requires index"] = "Y"
-    dataframe_table.loc[dataframe_apis["requires_ordering"], "Requires ordering"] = "Y"
     return dataframe_table
 
 
