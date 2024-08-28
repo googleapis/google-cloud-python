@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.1.1...v0.2.0) (2024-08-27)
+
+
+### Features
+
+* Depend on pydata-google-auth to fetch credentials ([#49](https://github.com/googleapis/python-bigquery-magics/issues/49)) ([8db23fc](https://github.com/googleapis/python-bigquery-magics/commit/8db23fc60624baae9c0dffd500d8856cb6e92f42))
+
 ## [0.1.1](https://github.com/googleapis/python-bigquery-magics/compare/v0.1.0...v0.1.1) (2024-08-22)
 
 
