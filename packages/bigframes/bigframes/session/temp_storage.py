@@ -32,13 +32,19 @@ class TemporaryGbqStorageManager:
     def __init__(
         self,
         bqclient: bigquery.Client,
-        dataset: bigquery.DatasetReference,
+        location: str,
         session_id: str,
         *,
         kms_key: Optional[str] = None
     ):
         self.bqclient = bqclient
-        self.dataset = dataset
+        self.location = location
+        self.dataset = bf_io_bigquery.create_bq_dataset_reference(
+            self.bqclient,
+            location=self.location,
+            api_name="session-__init__",
+        )
+
         self.session_id = session_id
         self._table_ids: List[str] = []
         self._kms_key = kms_key

@@ -37,6 +37,8 @@ import google.api_core.exceptions
 import google.api_core.retry
 from google.cloud import bigquery, functions_v2
 
+import bigframes.session._io.bigquery
+
 from . import _utils
 
 logger = logging.getLogger(__name__)
@@ -142,7 +144,12 @@ class RemoteFunctionClient:
             self._bq_client.create_dataset(dataset, exists_ok=True)
 
         # TODO(swast): plumb through the original, user-facing api_name.
-        _, query_job = self._session._start_query(create_function_ddl)
+        _, query_job = bigframes.session._io.bigquery.start_query_with_client(
+            self._session.bqclient,
+            create_function_ddl,
+            job_config=bigquery.QueryJobConfig(),
+        )
+
         logger.info(f"Created remote function {query_job.ddl_target_routine}")
 
     def get_cloud_function_fully_qualified_parent(self):

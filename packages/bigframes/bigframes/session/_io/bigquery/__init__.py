@@ -82,26 +82,12 @@ def create_job_configs_labels(
     return dict(zip(labels[:MAX_LABELS_COUNT], values[:MAX_LABELS_COUNT]))
 
 
-def create_export_csv_statement(
-    table_id: str, uri: str, field_delimiter: str, header: bool
-) -> str:
-    return create_export_data_statement(
-        table_id,
-        uri,
-        "CSV",
-        {
-            "field_delimiter": field_delimiter,
-            "header": header,
-        },
-    )
-
-
 def create_export_data_statement(
     table_id: str, uri: str, format: str, export_options: Dict[str, Union[bool, str]]
 ) -> str:
     all_options: Dict[str, Union[bool, str]] = {
         "uri": uri,
-        "format": format,
+        "format": format.upper(),
         # TODO(swast): Does pandas have an option not to overwrite files?
         "overwrite": True,
     }

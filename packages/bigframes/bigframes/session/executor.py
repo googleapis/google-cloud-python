@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import math
-from typing import cast, Iterable, Literal, Mapping, Optional, Sequence, Tuple
+from typing import cast, Iterable, Literal, Mapping, Optional, Sequence, Tuple, Union
 import warnings
 import weakref
 
@@ -118,9 +118,9 @@ class BigQueryCachingExecutor:
             job_config=job_config,
         )
 
-    def export(
+    def export_gbq(
         self,
-        array_value,
+        array_value: bigframes.core.ArrayValue,
         col_id_overrides: Mapping[str, str],
         destination: bigquery.TableReference,
         if_exists: Literal["fail", "replace", "append"] = "fail",
@@ -146,6 +146,35 @@ class BigQueryCachingExecutor:
             sql=sql,
             job_config=job_config,
         )
+
+    def export_gcs(
+        self,
+        array_value: bigframes.core.ArrayValue,
+        col_id_overrides: Mapping[str, str],
+        uri: str,
+        format: Literal["json", "csv", "parquet"],
+        export_options: Mapping[str, Union[bool, str]],
+    ):
+        """
+        Export the ArrayValue to gcs.
+        """
+        _, query_job = self.execute(
+            array_value,
+            ordered=False,
+            col_id_overrides=col_id_overrides,
+        )
+        result_table = query_job.destination
+        export_data_statement = bq_io.create_export_data_statement(
+            f"{result_table.project}.{result_table.dataset_id}.{result_table.table_id}",
+            uri=uri,
+            format=format,
+            export_options=dict(export_options),
+        )
+        job_config = bigquery.QueryJobConfig()
+        bq_io.add_labels(job_config, api_name=f"dataframe-to_{format.lower()}")
+        export_job = self.bqclient.query(export_data_statement, job_config=job_config)
+        self._wait_on_job(export_job)
+        return query_job
 
     def dry_run(self, array_value: bigframes.core.ArrayValue, ordered: bool = True):
         """
@@ -198,17 +227,7 @@ class BigQueryCachingExecutor:
             job_config.labels["bigframes-mode"] = "unordered"
         try:
             query_job = self.bqclient.query(sql, job_config=job_config)
-            opts = bigframes.options.display
-            if opts.progress_bar is not None and not query_job.configuration.dry_run:
-                results_iterator = formatting_helpers.wait_for_query_job(
-                    query_job, progress_bar=opts.progress_bar
-                )
-            else:
-                results_iterator = query_job.result()
-
-            if self.metrics is not None:
-                self.metrics.count_job_stats(query_job)
-            return results_iterator, query_job
+            return self._wait_on_job(query_job), query_job
 
         except google.api_core.exceptions.BadRequest as e:
             # Unfortunately, this error type does not have a separate error code or exception type
@@ -217,6 +236,19 @@ class BigQueryCachingExecutor:
                 raise bigframes.exceptions.QueryComplexityError(new_message) from e
             else:
                 raise
+
+    def _wait_on_job(self, query_job: bigquery.QueryJob) -> bigquery.table.RowIterator:
+        opts = bigframes.options.display
+        if opts.progress_bar is not None and not query_job.configuration.dry_run:
+            results_iterator = formatting_helpers.wait_for_query_job(
+                query_job, progress_bar=opts.progress_bar
+            )
+        else:
+            results_iterator = query_job.result()
+
+        if self.metrics is not None:
+            self.metrics.count_job_stats(query_job)
+        return results_iterator
 
     def _with_cached_executions(self, node: nodes.BigFrameNode) -> nodes.BigFrameNode:
         return tree_properties.replace_nodes(node, (dict(self._cached_executions)))

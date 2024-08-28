@@ -2956,17 +2956,20 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if "*" not in path_or_buf:
             raise NotImplementedError(ERROR_IO_REQUIRES_WILDCARD)
 
-        result_table = self._run_io_query(
-            index=index, ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID
+        export_array, id_overrides = self._prepare_export(
+            index=index and self._has_index,
+            ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID,
         )
-        export_data_statement = bigframes.session._io.bigquery.create_export_csv_statement(
-            f"{result_table.project}.{result_table.dataset_id}.{result_table.table_id}",
-            uri=path_or_buf,
-            field_delimiter=sep,
-            header=header,
-        )
-        _, query_job = self._block.expr.session._start_query(
-            export_data_statement, api_name="dataframe-to_csv"
+        options = {
+            "field_delimiter": sep,
+            "header": header,
+        }
+        query_job = self._session._executor.export_gcs(
+            export_array,
+            id_overrides,
+            path_or_buf,
+            format="csv",
+            export_options=options,
         )
         self._set_internal_query_job(query_job)
         return None
@@ -3006,17 +3009,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 "'lines' keyword is only valid when 'orient' is 'records'."
             )
 
-        result_table = self._run_io_query(
-            index=index, ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID
+        export_array, id_overrides = self._prepare_export(
+            index=index and self._has_index,
+            ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID,
         )
-        export_data_statement = bigframes.session._io.bigquery.create_export_data_statement(
-            f"{result_table.project}.{result_table.dataset_id}.{result_table.table_id}",
-            uri=path_or_buf,
-            format="JSON",
-            export_options={},
-        )
-        _, query_job = self._block.expr.session._start_query(
-            export_data_statement, api_name="dataframe-to_json"
+        query_job = self._session._executor.export_gcs(
+            export_array, id_overrides, path_or_buf, format="json", export_options={}
         )
         self._set_internal_query_job(query_job)
         return None
@@ -3145,17 +3143,16 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if compression:
             export_options["compression"] = compression.upper()
 
-        result_table = self._run_io_query(
-            index=index, ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID
+        export_array, id_overrides = self._prepare_export(
+            index=index and self._has_index,
+            ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID,
         )
-        export_data_statement = bigframes.session._io.bigquery.create_export_data_statement(
-            f"{result_table.project}.{result_table.dataset_id}.{result_table.table_id}",
-            uri=path,
-            format="PARQUET",
+        query_job = self._session._executor.export_gcs(
+            export_array,
+            id_overrides,
+            path,
+            format="parquet",
             export_options=export_options,
-        )
-        _, query_job = self._block.expr.session._start_query(
-            export_data_statement, api_name="dataframe-to_parquet"
         )
         self._set_internal_query_job(query_job)
         return None
@@ -3385,30 +3382,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if ordering_id is not None:
             array_value = array_value.promote_offsets(ordering_id)
         return array_value, id_overrides
-
-    def _run_io_query(
-        self,
-        index: bool,
-        ordering_id: Optional[str] = None,
-    ) -> bigquery.TableReference:
-        """Executes a query job presenting this dataframe and returns the destination
-        table."""
-        session = self._block.expr.session
-        export_array, id_overrides = self._prepare_export(
-            index=index and self._has_index, ordering_id=ordering_id
-        )
-
-        _, query_job = session._execute(
-            export_array,
-            ordered=False,
-            col_id_overrides=id_overrides,
-        )
-        self._set_internal_query_job(query_job)
-
-        # The query job should have finished, so there should be always be a result table.
-        result_table = query_job.destination
-        assert result_table is not None
-        return result_table
 
     def map(self, func, na_action: Optional[str] = None) -> DataFrame:
         if not callable(func):

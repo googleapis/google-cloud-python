@@ -2542,7 +2542,8 @@ T1 AS (
 SELECT {select_columns_csv} FROM T1
 """
         # The only ways this code is used is through df.apply(axis=1) cope path
-        destination, query_job = self.session._query_to_destination(
+        # TODO: Stop using internal API
+        destination, query_job = self.session._loader._query_to_destination(
             json_sql, index_cols=[ordering_column_name], api_name="apply"
         )
         if not destination:
