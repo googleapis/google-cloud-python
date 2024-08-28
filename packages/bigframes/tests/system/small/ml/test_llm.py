@@ -409,6 +409,7 @@ def test_gemini_text_generator_predict_with_params_success(
     "model_name",
     ("claude-3-sonnet", "claude-3-haiku", "claude-3-5-sonnet", "claude-3-opus"),
 )
+@pytest.mark.flaky(retries=3, delay=120)
 def test_claude3_text_generator_create_load(
     dataset_id, model_name, session, session_us_east5, bq_connection
 ):
@@ -433,7 +434,7 @@ def test_claude3_text_generator_create_load(
     "model_name",
     ("claude-3-sonnet", "claude-3-haiku", "claude-3-5-sonnet", "claude-3-opus"),
 )
-@pytest.mark.flaky(retries=2)
+@pytest.mark.flaky(retries=3, delay=120)
 def test_claude3_text_generator_predict_default_params_success(
     llm_text_df, model_name, session, session_us_east5, bq_connection
 ):
@@ -453,7 +454,7 @@ def test_claude3_text_generator_predict_default_params_success(
     "model_name",
     ("claude-3-sonnet", "claude-3-haiku", "claude-3-5-sonnet", "claude-3-opus"),
 )
-@pytest.mark.flaky(retries=2)
+@pytest.mark.flaky(retries=3, delay=120)
 def test_claude3_text_generator_predict_with_params_success(
     llm_text_df, model_name, session, session_us_east5, bq_connection
 ):
