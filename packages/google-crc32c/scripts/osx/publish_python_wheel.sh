@@ -28,4 +28,4 @@ TWINE=${PYTHON_BIN}/twine
 export PYTHONUNBUFFERED=1
 
 TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-1")
-${PYTHON} -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" ${REPO_ROOT}/dist_wheels/*
+${PYTHON} -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" ${REPO_ROOT}/wheels/*
