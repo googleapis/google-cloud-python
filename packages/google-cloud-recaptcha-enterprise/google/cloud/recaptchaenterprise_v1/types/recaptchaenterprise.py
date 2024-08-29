@@ -98,8 +98,8 @@ class CreateAssessmentRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project in which the assessment
-            will be created, in the format ``projects/{project}``.
+            Required. The name of the project in which the assessment is
+            created, in the format ``projects/{project}``.
         assessment (google.cloud.recaptchaenterprise_v1.types.Assessment):
             Required. The assessment details.
     """
@@ -282,11 +282,11 @@ class AnnotateAssessmentRequest(proto.Message):
             Required. The resource name of the Assessment, in the format
             ``projects/{project}/assessments/{assessment}``.
         annotation (google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Annotation):
-            Optional. The annotation that will be
-            assigned to the Event. This field can be left
-            empty to provide reasons that apply to an event
-            without concluding whether the event is
-            legitimate or fraudulent.
+            Optional. The annotation that is assigned to
+            the Event. This field can be left empty to
+            provide reasons that apply to an event without
+            concluding whether the event is legitimate or
+            fraudulent.
         reasons (MutableSequence[google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Reason]):
             Optional. Reasons for the annotation that are
             assigned to the event.
@@ -786,7 +786,7 @@ class Event(proto.Message):
         express (bool):
             Optional. Flag for a reCAPTCHA express request for an
             assessment without a token. If enabled, ``site_key`` must
-            reference an Express site key.
+            reference an express key.
         requested_uri (str):
             Optional. The URI resource the user requested
             that triggered an assessment.
@@ -803,15 +803,14 @@ class Event(proto.Message):
         firewall_policy_evaluation (bool):
             Optional. Flag for enabling firewall policy
             config assessment. If this flag is enabled, the
-            firewall policy will be evaluated and a
-            suggested firewall action will be returned in
-            the response.
+            firewall policy is evaluated and a suggested
+            firewall action is returned in the response.
         transaction_data (google.cloud.recaptchaenterprise_v1.types.TransactionData):
             Optional. Data describing a payment
             transaction to be assessed. Sending this data
-            enables reCAPTCHA Enterprise Fraud Prevention
-            and the FraudPreventionAssessment component in
-            the response.
+            enables reCAPTCHA Fraud Prevention and the
+            FraudPreventionAssessment component in the
+            response.
         user_info (google.cloud.recaptchaenterprise_v1.types.UserInfo):
             Optional. Information about the user that
             generates this event, when they can be
@@ -1743,7 +1742,7 @@ class CreateKeyRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project in which the key will be
+            Required. The name of the project in which the key is
             created, in the format ``projects/{project}``.
         key (google.cloud.recaptchaenterprise_v1.types.Key):
             Required. Information to create a reCAPTCHA
@@ -1767,7 +1766,7 @@ class ListKeysRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The name of the project that contains the keys
-            that will be listed, in the format ``projects/{project}``.
+            that are listed, in the format ``projects/{project}``.
         page_size (int):
             Optional. The maximum number of keys to
             return. Default is 10. Max limit is 1000.
@@ -1855,7 +1854,7 @@ class UpdateKeyRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields of
             the key get updated. If the mask is not present,
-            all fields will be updated.
+            all fields are updated.
     """
 
     key: "Key" = proto.Field(
@@ -1988,7 +1987,7 @@ class UpdateFirewallPolicyRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields of
             the policy get updated. If the mask is not
-            present, all fields will be updated.
+            present, all fields are updated.
     """
 
     firewall_policy: "FirewallPolicy" = proto.Field(
@@ -2101,12 +2100,12 @@ class Metrics(proto.Message):
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Inclusive start time aligned to a day (UTC).
         score_metrics (MutableSequence[google.cloud.recaptchaenterprise_v1.types.ScoreMetrics]):
-            Metrics will be continuous and in order by
-            dates, and in the granularity of day. All Key
-            types should have score-based data.
+            Metrics are continuous and in order by dates,
+            and in the granularity of day. All Key types
+            should have score-based data.
         challenge_metrics (MutableSequence[google.cloud.recaptchaenterprise_v1.types.ChallengeMetrics]):
-            Metrics will be continuous and in order by
-            dates, and in the granularity of day. Only
+            Metrics are continuous and in order by dates,
+            and in the granularity of day. Only
             challenge-based keys (CHECKBOX, INVISIBLE), will
             have challenge-based data.
     """
@@ -2186,8 +2185,8 @@ class Key(proto.Message):
 
             This field is a member of `oneof`_ ``platform_settings``.
         express_settings (google.cloud.recaptchaenterprise_v1.types.ExpressKeySettings):
-            Settings for keys that can be used by
-            reCAPTCHA Express.
+            Settings specific to keys that can be used
+            for reCAPTCHA Express.
 
             This field is a member of `oneof`_ ``platform_settings``.
         labels (MutableMapping[str, str]):
@@ -2605,13 +2604,12 @@ class FirewallPolicyAssessment(proto.Message):
     Attributes:
         error (google.rpc.status_pb2.Status):
             Output only. If the processing of a policy config fails, an
-            error will be populated and the firewall_policy will be left
-            empty.
+            error is populated and the firewall_policy is left empty.
         firewall_policy (google.cloud.recaptchaenterprise_v1.types.FirewallPolicy):
             Output only. The policy that matched the
             request. If more than one policy may match, this
             is the first match. If no policy matches the
-            incoming request, the policy field will be left
+            incoming request, the policy field is left
             empty.
     """
 
