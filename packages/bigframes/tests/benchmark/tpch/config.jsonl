@@ -6,5 +6,3 @@
 {"benchmark_suffix": "100g_unordered", "dataset_id": "tpch_0100g", "ordered": false}
 {"benchmark_suffix": "1t_ordered", "dataset_id": "tpch_0001t", "ordered": true}
 {"benchmark_suffix": "1t_unordered", "dataset_id": "tpch_0001t", "ordered": false}
-{"benchmark_suffix": "10t_ordered", "dataset_id": "tpch_0010t", "ordered": true}
-{"benchmark_suffix": "10t_unordered", "dataset_id": "tpch_0010t", "ordered": false}
