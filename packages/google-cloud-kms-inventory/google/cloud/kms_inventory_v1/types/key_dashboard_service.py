@@ -35,8 +35,8 @@ class ListCryptoKeysRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The Google Cloud project for which to retrieve key
-            metadata, in the format ``projects/*``
+            Required. The keyring for which to retrieve key
+            metadata, in the format ``projects/*/locations/*/keyRings/*``
         page_size (int):
             Optional. The maximum number of keys to
             return. The service may return fewer than this
