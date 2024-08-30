@@ -110,9 +110,11 @@ def _get_http_options():
     return http_options
 {% endmacro %}
 
-{% macro response_method(body_spec) %}
+{% macro response_method(body_spec, is_async=False) %}
+{% set async_prefix = "async " if is_async else "" %}
+{% set await_prefix = "await " if is_async else "" %}
 @staticmethod
-def _get_response(
+{{ async_prefix }}def _get_response(
     host,
     metadata,
     query_params,
@@ -125,7 +127,7 @@ def _get_response(
     method = transcoded_request['method']
     headers = dict(metadata)
     headers['Content-Type'] = 'application/json'
-    response = getattr(session, method)(
+    response = {{ await_prefix }}getattr(session, method)(
         "{host}{uri}".format(host=host, uri=uri),
         timeout=timeout,
         headers=headers,
