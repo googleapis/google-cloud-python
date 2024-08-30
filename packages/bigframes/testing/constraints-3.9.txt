@@ -15,8 +15,8 @@ google-cloud-storage==2.0.0
 ibis-framework==8.0.0
 jellyfish==0.8.9
 numpy==1.24.0
-pandas==1.5.0
-pyarrow==8.0.0
+pandas==1.5.3
+pyarrow==10.0.1
 pydata-google-auth==1.8.2
 requests==2.27.1
 scikit-learn==1.2.2

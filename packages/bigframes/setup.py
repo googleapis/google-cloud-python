@@ -50,9 +50,8 @@ dependencies = [
     "ibis-framework[bigquery] >=8.0.0,<9.0.0dev",
     "jellyfish >=0.8.9",
     "numpy >=1.24.0",
-    # TODO: Relax upper bound once we have fixed `system_prerelease` tests.
-    "pandas >=1.5.0",
-    "pyarrow >=8.0.0",
+    "pandas >=1.5.3",
+    "pyarrow >=10.0.1",
     "pydata-google-auth >=1.8.2",
     "requests >=2.27.1",
     "scikit-learn >=1.2.2",
