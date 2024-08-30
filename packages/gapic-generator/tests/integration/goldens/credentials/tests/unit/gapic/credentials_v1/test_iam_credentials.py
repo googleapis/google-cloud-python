@@ -3500,6 +3500,18 @@ def test_transport_kind(transport_name):
     )
     assert transport.kind == transport_name
 
+
+@pytest.mark.parametrize("transport_name", [
+    "grpc_asyncio",
+])
+@pytest.mark.asyncio
+async def test_transport_kind_async(transport_name):
+    transport = IAMCredentialsAsyncClient.get_transport_class(transport_name)(
+        credentials=async_anonymous_credentials(),
+    )
+    assert transport.kind == transport_name
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = IAMCredentialsClient(

@@ -1041,19 +1041,9 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
-@pytest.mark.parametrize("transport_name", [
-    {% if "grpc" in opts.transport %}
-    "grpc",
-    {% endif %}
-    {% if "rest" in opts.transport %}
-    "rest",
-    {% endif %}
-])
-def test_transport_kind(transport_name):
-    transport = {{ service.client_name }}.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    assert transport.kind == transport_name
+{{ test_macros.transport_kind_test(service, opts) }}
+
+{{ test_macros.transport_kind_test(service, opts, is_async=True) }}
 
 {% if 'grpc' in opts.transport %}
 def test_transport_grpc_default():

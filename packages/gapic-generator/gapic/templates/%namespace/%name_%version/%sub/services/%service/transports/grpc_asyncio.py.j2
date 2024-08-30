@@ -1,7 +1,9 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
+import inspect
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -241,6 +243,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -385,39 +388,16 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         return self._stubs["test_iam_permissions"]
     {% endif %}
 
-    def _prep_wrapped_messages(self, client_info):
-        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
-        self._wrapped_methods = {
-            {% for method in service.methods.values() %}
-            self.{{ method.transport_safe_name|snake_case }}: gapic_v1.method_async.wrap_method(
-                self.{{ method.transport_safe_name|snake_case }},
-                {% if method.retry %}
-                default_retry=retries.AsyncRetry(
-                    {% if method.retry.initial_backoff %}
-                    initial={{ method.retry.initial_backoff }},
-                    {% endif %}
-                    {% if method.retry.max_backoff %}
-                    maximum={{ method.retry.max_backoff }},
-                    {% endif %}
-                    {% if method.retry.backoff_multiplier %}
-                    multiplier={{ method.retry.backoff_multiplier }},
-                    {% endif %}
-                    predicate=retries.if_exception_type(
-                        {% for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
-                        core_exceptions.{{ ex.__name__ }},
-                        {% endfor %}
-                    ),
-                    deadline={{ method.timeout }},
-                ),
-                {% endif %}
-                default_timeout={{ method.timeout }},
-                client_info=client_info,
-            ),
-            {% endfor %} {# service.methods.values() #}
-        }
+    {{ shared_macros.prep_wrapped_messages_async_method(service)|indent(4) }}
+
+    {{ shared_macros.wrap_async_method_macro()|indent(4) }}
 
     def close(self):
         return self.grpc_channel.close()
+    
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     {% include '%namespace/%name_%version/%sub/services/%service/transports/_mixins.py.j2' %}
 

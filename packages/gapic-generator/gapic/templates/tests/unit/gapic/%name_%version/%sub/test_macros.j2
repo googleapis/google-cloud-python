@@ -1876,3 +1876,34 @@ def test_{{ method_name }}_empty_call():
         {% endwith %}{# method_settings #}
         assert args[0] == {{ method.input.ident }}()
 {% endmacro %}
+
+
+{% macro transport_kind_test(service, opts, is_async=False) %}
+@pytest.mark.parametrize("transport_name", [
+    {% if is_async %}
+    {% if "grpc" in opts.transport %}
+    "grpc_asyncio",
+    {% endif %}
+    {% else %}{# if not is_async #}
+    {% if "grpc" in opts.transport%}
+    "grpc",
+    {% endif %}
+    {% if "rest" in opts.transport %}
+    "rest",
+    {% endif %}
+    {% endif %}{# is_async #}
+])
+{% if is_async %}
+@pytest.mark.asyncio
+async def test_transport_kind_async(transport_name):
+    transport = {{ service.async_client_name }}.get_transport_class(transport_name)(
+        credentials=async_anonymous_credentials(),
+    )
+{% else %}
+def test_transport_kind(transport_name):
+    transport = {{ service.client_name }}.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+{% endif %}
+    assert transport.kind == transport_name
+{% endmacro %}

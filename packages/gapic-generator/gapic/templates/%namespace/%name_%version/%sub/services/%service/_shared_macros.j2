@@ -159,3 +159,53 @@ def _get_response(
         raise core_exceptions.from_http_response(response)
 
 {% endmacro %}
+
+
+{% macro prep_wrapped_messages_async_method(service) %}
+def _prep_wrapped_messages(self, client_info):
+    """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+    self._wrapped_methods = {
+        {% for method in service.methods.values() %}
+        self.{{ method.transport_safe_name|snake_case }}: self._wrap_method(
+            self.{{ method.transport_safe_name|snake_case }},
+            {% if method.retry %}
+            default_retry=retries.AsyncRetry(
+                {% if method.retry.initial_backoff %}
+                initial={{ method.retry.initial_backoff }},
+                {% endif %}
+                {% if method.retry.max_backoff %}
+                maximum={{ method.retry.max_backoff }},
+                {% endif %}
+                {% if method.retry.backoff_multiplier %}
+                multiplier={{ method.retry.backoff_multiplier }},
+                {% endif %}
+                predicate=retries.if_exception_type(
+                    {% for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
+                    core_exceptions.{{ ex.__name__ }},
+                    {% endfor %}
+                ),
+                deadline={{ method.timeout }},
+            ),
+            {% endif %}
+            default_timeout={{ method.timeout }},
+            client_info=client_info,
+        ),
+        {% endfor %}{# service.methods.values() #}
+    }
+{% endmacro %}
+
+{# TODO: This helper logic to check whether `kind` needs to be configured in wrap_method
+can be removed once we require the correct version of the google-api-core dependency to
+avoid having a gRPC code path in an async REST call.
+See related issue: https://github.com/googleapis/python-api-core/issues/661.
+In the meantime, if an older version of the dependency is installed (which has a wrap_method with
+no kind parameter), then an async gRPC call will work correctly and async REST transport
+will not be available as a transport.
+See related issue: https://github.com/googleapis/gapic-generator-python/issues/2119. #}
+{% macro wrap_async_method_macro() %}
+def _wrap_method(self, func, *args, **kwargs):
+    {# TODO: Remove `pragma: NO COVER` once https://github.com/googleapis/python-api-core/pull/688 is merged. #}
+    if self._wrap_with_kind:  # pragma: NO COVER
+        kwargs["kind"] = self.kind
+    return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+{% endmacro %}

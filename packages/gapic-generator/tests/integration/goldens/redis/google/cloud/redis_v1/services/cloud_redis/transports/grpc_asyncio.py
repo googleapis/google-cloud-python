@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -247,6 +248,7 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -612,65 +614,74 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_instances: gapic_v1.method_async.wrap_method(
+            self.list_instances: self._wrap_method(
                 self.list_instances,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_instance: gapic_v1.method_async.wrap_method(
+            self.get_instance: self._wrap_method(
                 self.get_instance,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_instance_auth_string: gapic_v1.method_async.wrap_method(
+            self.get_instance_auth_string: self._wrap_method(
                 self.get_instance_auth_string,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.create_instance: gapic_v1.method_async.wrap_method(
+            self.create_instance: self._wrap_method(
                 self.create_instance,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.update_instance: gapic_v1.method_async.wrap_method(
+            self.update_instance: self._wrap_method(
                 self.update_instance,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.upgrade_instance: gapic_v1.method_async.wrap_method(
+            self.upgrade_instance: self._wrap_method(
                 self.upgrade_instance,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.import_instance: gapic_v1.method_async.wrap_method(
+            self.import_instance: self._wrap_method(
                 self.import_instance,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.export_instance: gapic_v1.method_async.wrap_method(
+            self.export_instance: self._wrap_method(
                 self.export_instance,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.failover_instance: gapic_v1.method_async.wrap_method(
+            self.failover_instance: self._wrap_method(
                 self.failover_instance,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.delete_instance: gapic_v1.method_async.wrap_method(
+            self.delete_instance: self._wrap_method(
                 self.delete_instance,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.reschedule_maintenance: gapic_v1.method_async.wrap_method(
+            self.reschedule_maintenance: self._wrap_method(
                 self.reschedule_maintenance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-         }
+        }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(
