@@ -200,6 +200,7 @@ class Block:
     @functools.cached_property
     def shape(self) -> typing.Tuple[int, int]:
         """Returns dimensions as (length, width) tuple."""
+
         row_count_expr = self.expr.row_count()
 
         # Support in-memory engines for hermetic unit tests.
@@ -210,8 +211,7 @@ class Block:
             except Exception:
                 pass
 
-        iter, _ = self.session._execute(row_count_expr, ordered=False)
-        row_count = next(iter)[0]
+        row_count = self.session._executor.get_row_count(self.expr)
         return (row_count, len(self.value_columns))
 
     @property
@@ -560,7 +560,7 @@ class Block:
     def try_peek(
         self, n: int = 20, force: bool = False
     ) -> typing.Optional[pd.DataFrame]:
-        if force or tree_properties.peekable(self.expr.node):
+        if force or tree_properties.can_fast_peek(self.expr.node):
             iterator, _ = self.session._peek(self.expr, n)
             df = self._to_dataframe(iterator)
             self._copy_index_to_pandas(df)
@@ -1587,19 +1587,13 @@ class Block:
 
         Returns a tuple of the dataframe and the overall number of rows of the query.
         """
-        # TODO(swast): Select a subset of columns if max_columns is less than the
-        # number of columns in the schema.
-        count = self.shape[0]
-        if count > max_results:
-            head_block = self.slice(0, max_results)
-        else:
-            head_block = self
-        computed_df, query_job = head_block.to_pandas()
-        formatted_df = computed_df.set_axis(self.column_labels, axis=1)
-        # we reset the axis and substitute the bf index name(s) for the default
-        if len(self.index.names) > 0:
-            formatted_df.index.names = self.index.names  # type: ignore
-        return formatted_df, count, query_job
+
+        results, query_job = self.session._executor.head(self.expr, max_results)
+        count = self.session._executor.get_row_count(self.expr)
+
+        computed_df = self._to_dataframe(results)
+        self._copy_index_to_pandas(computed_df)
+        return computed_df, count, query_job
 
     def promote_offsets(self, label: Label = None) -> typing.Tuple[Block, str]:
         result_id = guid.generate_guid()

@@ -103,14 +103,16 @@ class Compiler:
 
     @_compile_node.register
     def compile_cached_table(self, node: nodes.CachedTableNode, ordered: bool = True):
-        full_table_name = f"{node.project_id}.{node.dataset_id}.{node.table_id}"
+        full_table_name = (
+            f"{node.table.project_id}.{node.table.dataset_id}.{node.table.table_id}"
+        )
         used_columns = (
             *node.schema.names,
             *node.hidden_columns,
         )
         # Physical schema might include unused columns, unsupported datatypes like JSON
         physical_schema = ibis.backends.bigquery.BigQuerySchema.to_ibis(
-            list(i for i in node.physical_schema if i.name in used_columns)
+            list(i for i in node.table.physical_schema if i.name in used_columns)
         )
         ibis_table = ibis.table(physical_schema, full_table_name)
         if ordered:
@@ -156,14 +158,16 @@ class Compiler:
     def read_table_as_unordered_ibis(
         self, node: nodes.ReadTableNode
     ) -> ibis.expr.types.Table:
-        full_table_name = f"{node.project_id}.{node.dataset_id}.{node.table_id}"
+        full_table_name = (
+            f"{node.table.project_id}.{node.table.dataset_id}.{node.table.table_id}"
+        )
         used_columns = (
             *node.schema.names,
             *[i for i in node.total_order_cols if i not in node.schema.names],
         )
         # Physical schema might include unused columns, unsupported datatypes like JSON
         physical_schema = ibis.backends.bigquery.BigQuerySchema.to_ibis(
-            list(i for i in node.physical_schema if i.name in used_columns)
+            list(i for i in node.table.physical_schema if i.name in used_columns)
         )
         if node.at_time is not None or node.sql_predicate is not None:
             import bigframes.session._io.bigquery

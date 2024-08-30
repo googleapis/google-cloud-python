@@ -312,17 +312,35 @@ class ConcatNode(BigFrameNode):
 
 # Input Nodex
 @dataclass(frozen=True)
-class ReadLocalNode(BigFrameNode):
+class LeafNode(BigFrameNode):
+    @property
+    def roots(self) -> typing.Set[BigFrameNode]:
+        return {self}
+
+    @property
+    def supports_fast_head(self) -> bool:
+        return False
+
+    def transform_children(
+        self, t: Callable[[BigFrameNode], BigFrameNode]
+    ) -> BigFrameNode:
+        return self
+
+    @property
+    def row_count(self) -> typing.Optional[int]:
+        """How many rows are in the data source. None means unknown."""
+        return None
+
+
+@dataclass(frozen=True)
+class ReadLocalNode(LeafNode):
     feather_bytes: bytes
     data_schema: schemata.ArraySchema
+    n_rows: int
     session: typing.Optional[bigframes.session.Session] = None
 
     def __hash__(self):
         return self._node_hash
-
-    @property
-    def roots(self) -> typing.Set[BigFrameNode]:
-        return {self}
 
     @functools.cached_property
     def schema(self) -> schemata.ArraySchema:
@@ -334,6 +352,10 @@ class ReadLocalNode(BigFrameNode):
         return len(self.schema.items) + 1
 
     @property
+    def supports_fast_head(self) -> bool:
+        return True
+
+    @property
     def order_ambiguous(self) -> bool:
         return False
 
@@ -341,20 +363,38 @@ class ReadLocalNode(BigFrameNode):
     def explicitly_ordered(self) -> bool:
         return True
 
-    def transform_children(
-        self, t: Callable[[BigFrameNode], BigFrameNode]
-    ) -> BigFrameNode:
-        return self
+    @property
+    def row_count(self) -> typing.Optional[int]:
+        return self.n_rows
+
+
+@dataclass(frozen=True)
+class GbqTable:
+    project_id: str = field()
+    dataset_id: str = field()
+    table_id: str = field()
+    physical_schema: Tuple[bq.SchemaField, ...] = field()
+    n_rows: int = field()
+    cluster_cols: typing.Optional[Tuple[str, ...]]
+
+    @staticmethod
+    def from_table(table: bq.Table) -> GbqTable:
+        return GbqTable(
+            project_id=table.project,
+            dataset_id=table.dataset_id,
+            table_id=table.table_id,
+            physical_schema=tuple(table.schema),
+            n_rows=table.num_rows,
+            cluster_cols=None
+            if table.clustering_fields is None
+            else tuple(table.clustering_fields),
+        )
 
 
 ## Put ordering in here or just add order_by node above?
 @dataclass(frozen=True)
-class ReadTableNode(BigFrameNode):
-    project_id: str = field()
-    dataset_id: str = field()
-    table_id: str = field()
-
-    physical_schema: Tuple[bq.SchemaField, ...] = field()
+class ReadTableNode(LeafNode):
+    table: GbqTable
     # Subset of physical schema columns, with chosen BQ types
     columns: schemata.ArraySchema = field()
 
@@ -370,10 +410,10 @@ class ReadTableNode(BigFrameNode):
 
     def __post_init__(self):
         # enforce invariants
-        physical_names = set(map(lambda i: i.name, self.physical_schema))
+        physical_names = set(map(lambda i: i.name, self.table.physical_schema))
         if not set(self.columns.names).issubset(physical_names):
             raise ValueError(
-                f"Requested schema {self.columns} cannot be derived from table schemal {self.physical_schema}"
+                f"Requested schema {self.columns} cannot be derived from table schemal {self.table.physical_schema}"
             )
         if self.order_col_is_sequential and len(self.total_order_cols) != 1:
             raise ValueError("Sequential primary key must have only one component")
@@ -386,10 +426,6 @@ class ReadTableNode(BigFrameNode):
         return self._node_hash
 
     @property
-    def roots(self) -> typing.Set[BigFrameNode]:
-        return {self}
-
-    @property
     def schema(self) -> schemata.ArraySchema:
         return self.columns
 
@@ -397,6 +433,13 @@ class ReadTableNode(BigFrameNode):
     def relation_ops_created(self) -> int:
         # Assume worst case, where readgbq actually has baked in analytic operation to generate index
         return 3
+
+    @property
+    def supports_fast_head(self) -> bool:
+        # Fast head is only supported when row offsets are available.
+        # In the future, ORDER BY+LIMIT optimizations may allow fast head when
+        # clustered and/or partitioned on ordering key
+        return self.order_col_is_sequential
 
     @property
     def order_ambiguous(self) -> bool:
@@ -410,37 +453,34 @@ class ReadTableNode(BigFrameNode):
     def variables_introduced(self) -> int:
         return len(self.schema.items) + 1
 
-    def transform_children(
-        self, t: Callable[[BigFrameNode], BigFrameNode]
-    ) -> BigFrameNode:
-        return self
+    @property
+    def row_count(self) -> typing.Optional[int]:
+        if self.sql_predicate is None:
+            return self.table.n_rows
+        return None
 
 
 # This node shouldn't be used in the "original" expression tree, only used as replacement for original during planning
 @dataclass(frozen=True)
-class CachedTableNode(BigFrameNode):
+class CachedTableNode(LeafNode):
     # The original BFET subtree that was cached
     # note: this isn't a "child" node.
     original_node: BigFrameNode = field()
     # reference to cached materialization of original_node
-    project_id: str = field()
-    dataset_id: str = field()
-    table_id: str = field()
-    physical_schema: Tuple[bq.SchemaField, ...] = field()
-
+    table: GbqTable
     ordering: typing.Optional[orderings.RowOrdering] = field()
 
     def __post_init__(self):
         # enforce invariants
-        physical_names = set(map(lambda i: i.name, self.physical_schema))
+        physical_names = set(map(lambda i: i.name, self.table.physical_schema))
         logical_names = self.original_node.schema.names
         if not set(logical_names).issubset(physical_names):
             raise ValueError(
-                f"Requested schema {logical_names} cannot be derived from table schema {self.physical_schema}"
+                f"Requested schema {logical_names} cannot be derived from table schema {self.table.physical_schema}"
             )
         if not set(self.hidden_columns).issubset(physical_names):
             raise ValueError(
-                f"Requested hidden columns {self.hidden_columns} cannot be derived from table schema {self.physical_schema}"
+                f"Requested hidden columns {self.hidden_columns} cannot be derived from table schema {self.table.physical_schema}"
             )
 
     @property
@@ -449,10 +489,6 @@ class CachedTableNode(BigFrameNode):
 
     def __hash__(self):
         return self._node_hash
-
-    @property
-    def roots(self) -> typing.Set[BigFrameNode]:
-        return {self}
 
     @property
     def schema(self) -> schemata.ArraySchema:
@@ -474,6 +510,13 @@ class CachedTableNode(BigFrameNode):
         )
 
     @property
+    def supports_fast_head(self) -> bool:
+        # Fast head is only supported when row offsets are available.
+        # In the future, ORDER BY+LIMIT optimizations may allow fast head when
+        # clustered and/or partitioned on ordering key
+        return (self.ordering is None) or self.ordering.is_sequential
+
+    @property
     def order_ambiguous(self) -> bool:
         return not isinstance(self.ordering, orderings.TotalOrdering)
 
@@ -483,10 +526,9 @@ class CachedTableNode(BigFrameNode):
             self.ordering.all_ordering_columns
         ) > 0
 
-    def transform_children(
-        self, t: Callable[[BigFrameNode], BigFrameNode]
-    ) -> BigFrameNode:
-        return self
+    @property
+    def row_count(self) -> typing.Optional[int]:
+        return self.table.n_rows
 
 
 # Unary nodes

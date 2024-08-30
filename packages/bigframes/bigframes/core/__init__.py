@@ -70,23 +70,7 @@ class ArrayValue:
             iobytes.getvalue(),
             data_schema=schema,
             session=session,
-        )
-        return cls(node)
-
-    @classmethod
-    def from_cached(
-        cls,
-        original: ArrayValue,
-        table: google.cloud.bigquery.Table,
-        ordering: orderings.TotalOrdering,
-    ):
-        node = nodes.CachedTableNode(
-            original_node=original.node,
-            project_id=table.reference.project,
-            dataset_id=table.reference.dataset_id,
-            table_id=table.reference.table_id,
-            physical_schema=tuple(table.schema),
-            ordering=ordering,
+            n_rows=arrow_table.num_rows,
         )
         return cls(node)
 
@@ -110,10 +94,7 @@ class ArrayValue:
                 bigframes.exceptions.PreviewWarning,
             )
         node = nodes.ReadTableNode(
-            project_id=table.reference.project,
-            dataset_id=table.reference.dataset_id,
-            table_id=table.reference.table_id,
-            physical_schema=tuple(table.schema),
+            table=nodes.GbqTable.from_table(table),
             total_order_cols=(offsets_col,) if offsets_col else tuple(primary_key),
             order_col_is_sequential=(offsets_col is not None),
             columns=schema,
@@ -154,10 +135,7 @@ class ArrayValue:
         """
         node = nodes.CachedTableNode(
             original_node=self.node,
-            project_id=cache_table.reference.project,
-            dataset_id=cache_table.reference.dataset_id,
-            table_id=cache_table.reference.table_id,
-            physical_schema=tuple(cache_table.schema),
+            table=nodes.GbqTable.from_table(cache_table),
             ordering=ordering,
         )
         return ArrayValue(node)
