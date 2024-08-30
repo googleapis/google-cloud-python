@@ -698,13 +698,23 @@ class API:
             self.service_yaml_config.publishing.library_settings
         )
 
-        return {
+        result = {
             library_setting.version: client_pb2.ClientLibrarySettings(
                 version=library_setting.version,
                 python_settings=library_setting.python_settings,
             )
             for library_setting in self.service_yaml_config.publishing.library_settings
         }
+
+        # Add default settings for the current proto package
+        if not result:
+            result = {
+                self.naming.proto_package: client_pb2.ClientLibrarySettings(
+                    version=self.naming.proto_package
+                )
+            }
+
+        return result
 
     def enforce_valid_library_settings(
         self, client_library_settings: Sequence[client_pb2.ClientLibrarySettings]

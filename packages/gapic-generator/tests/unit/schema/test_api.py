@@ -2726,6 +2726,23 @@ def test_read_python_settings_from_service_yaml():
     }
 
 
+def test_read_empty_python_settings_from_service_yaml():
+    service_yaml_config = {
+        "apis": [
+            {"name": "google.example.v1beta1.ServiceOne.Example1"},
+        ],
+    }
+    cli_options = Options(service_yaml_config=service_yaml_config)
+    fd = get_file_descriptor_proto_for_tests(fields=[])
+    api_schema = api.API.build(fd, "google.example.v1beta1", opts=cli_options)
+    assert api_schema.all_library_settings["google.example.v1beta1"].python_settings \
+        == client_pb2.PythonSettings()
+    assert api_schema.all_library_settings["google.example.v1beta1"].python_settings.experimental_features \
+        == client_pb2.PythonSettings.ExperimentalFeatures()
+    assert api_schema.all_library_settings["google.example.v1beta1"].python_settings.experimental_features.rest_async_io_enabled \
+        == False
+
+
 def test_python_settings_duplicate_version_raises_error():
     """
     Test that `ClientLibrarySettingsError` is raised when there are duplicate versions in
