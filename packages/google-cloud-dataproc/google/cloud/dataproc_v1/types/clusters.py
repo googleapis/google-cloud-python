@@ -2397,6 +2397,10 @@ class DiagnoseClusterRequest(proto.Message):
             for the diagnostic tarball. If not specified, a
             task-specific directory in the cluster's staging
             bucket will be used.
+        tarball_access (google.cloud.dataproc_v1.types.DiagnoseClusterRequest.TarballAccess):
+            Optional. (Optional) The access type to the
+            diagnostic tarball. If not specified, falls back
+            to default access of the bucket
         diagnosis_interval (google.type.interval_pb2.Interval):
             Optional. Time interval in which diagnosis
             should be carried out on the cluster.
@@ -2409,6 +2413,25 @@ class DiagnoseClusterRequest(proto.Message):
             applications on which diagnosis is to be
             performed.
     """
+
+    class TarballAccess(proto.Enum):
+        r"""Defines who has access to the diagnostic tarball
+
+        Values:
+            TARBALL_ACCESS_UNSPECIFIED (0):
+                Tarball Access unspecified. Falls back to
+                default access of the bucket
+            GOOGLE_CLOUD_SUPPORT (1):
+                Google Cloud Support group has read access to
+                the diagnostic tarball
+            GOOGLE_DATAPROC_DIAGNOSE (2):
+                Google Cloud Dataproc Diagnose service
+                account has read access to the diagnostic
+                tarball
+        """
+        TARBALL_ACCESS_UNSPECIFIED = 0
+        GOOGLE_CLOUD_SUPPORT = 1
+        GOOGLE_DATAPROC_DIAGNOSE = 2
 
     project_id: str = proto.Field(
         proto.STRING,
@@ -2425,6 +2448,11 @@ class DiagnoseClusterRequest(proto.Message):
     tarball_gcs_dir: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    tarball_access: TarballAccess = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=TarballAccess,
     )
     diagnosis_interval: interval_pb2.Interval = proto.Field(
         proto.MESSAGE,
