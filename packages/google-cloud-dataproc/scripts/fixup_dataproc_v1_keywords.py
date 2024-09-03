@@ -54,7 +54,7 @@ class dataprocCallTransformer(cst.CSTTransformer):
         'delete_session': ('name', 'request_id', ),
         'delete_session_template': ('name', ),
         'delete_workflow_template': ('name', 'version', ),
-        'diagnose_cluster': ('project_id', 'region', 'cluster_name', 'tarball_gcs_dir', 'diagnosis_interval', 'jobs', 'yarn_application_ids', ),
+        'diagnose_cluster': ('project_id', 'region', 'cluster_name', 'tarball_gcs_dir', 'tarball_access', 'diagnosis_interval', 'jobs', 'yarn_application_ids', ),
         'get_autoscaling_policy': ('name', ),
         'get_batch': ('name', ),
         'get_cluster': ('project_id', 'region', 'cluster_name', ),
