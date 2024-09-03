@@ -867,6 +867,29 @@ class CaseWhenOp(NaryOp):
 case_when_op = CaseWhenOp()
 
 
+@dataclasses.dataclass(frozen=True)
+class StructOp(NaryOp):
+    name: typing.ClassVar[str] = "struct"
+    column_names: tuple[str]
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        num_input_types = len(input_types)
+        # value1, value2, ...
+        assert num_input_types == len(self.column_names)
+        fields = []
+
+        for i in range(num_input_types):
+            fields.append(
+                (
+                    self.column_names[i],
+                    dtypes.bigframes_dtype_to_arrow_dtype(input_types[i]),
+                )
+            )
+        return pd.ArrowDtype(
+            pa.struct(fields)
+        )  # [(name1, value1), (name2, value2), ...]
+
+
 # Just parameterless unary ops for now
 # TODO: Parameter mappings
 NUMPY_TO_OP: typing.Final = {

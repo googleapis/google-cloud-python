@@ -1539,6 +1539,17 @@ def nary_remote_function_op_impl(
     return result
 
 
+@scalar_op_compiler.register_nary_op(ops.StructOp, pass_op=True)
+def struct_op_impl(
+    *values: ibis_types.Value, op: ops.StructOp
+) -> ibis_types.StructValue:
+    data = {}
+    for i, value in enumerate(values):
+        data[op.column_names[i]] = value
+
+    return ibis.struct(data)
+
+
 # Helpers
 def is_null(value) -> bool:
     # float NaN/inf should be treated as distinct from 'true' null values
