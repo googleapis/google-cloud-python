@@ -1172,11 +1172,12 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
     ) -> Callable[[warehouse.ClipAssetRequest], Awaitable[warehouse.ClipAssetResponse]]:
         r"""Return a callable for the clip asset method over gRPC.
 
-        Generates clips for downloading. The api takes in a time range,
-        and generates a clip of the first content available after
-        start_time and before end_time, which may overflow beyond these
-        bounds. Returned clips are truncated if the total size of the
-        clips are larger than 100MB.
+        Supported by STREAM_VIDEO corpus type. Generates clips for
+        downloading. The api takes in a time range, and generates a clip
+        of the first content available after start_time and before
+        end_time, which may overflow beyond these bounds. Returned clips
+        are truncated if the total size of the clips are larger than
+        100MB.
 
         Returns:
             Callable[[~.ClipAssetRequest],
