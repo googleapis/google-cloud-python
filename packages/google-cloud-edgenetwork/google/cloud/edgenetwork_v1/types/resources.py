@@ -224,9 +224,9 @@ class Subnet(proto.Message):
                 have both bonded and non-bonded connectivity to
                 machines.
             BONDED (1):
-                Single homed.
-            NON_BONDED (2):
                 Multi homed.
+            NON_BONDED (2):
+                Single homed.
         """
         BONDING_TYPE_UNSPECIFIED = 0
         BONDED = 1
