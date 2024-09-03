@@ -9286,7 +9286,10 @@ def test_create_service_config_rest(request_type):
                     },
                     "cpp_settings": {"common": {}},
                     "php_settings": {"common": {}},
-                    "python_settings": {"common": {}},
+                    "python_settings": {
+                        "common": {},
+                        "experimental_features": {"rest_async_io_enabled": True},
+                    },
                     "node_settings": {"common": {}},
                     "dotnet_settings": {
                         "common": {},

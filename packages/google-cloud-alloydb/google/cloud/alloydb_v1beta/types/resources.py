@@ -40,6 +40,8 @@ __protobuf__ = proto.module(
         "ContinuousBackupInfo",
         "BackupSource",
         "ContinuousBackupSource",
+        "MaintenanceUpdatePolicy",
+        "MaintenanceSchedule",
         "Cluster",
         "Instance",
         "ConnectionInfo",
@@ -622,6 +624,69 @@ class ContinuousBackupSource(proto.Message):
     )
 
 
+class MaintenanceUpdatePolicy(proto.Message):
+    r"""MaintenanceUpdatePolicy defines the policy for system
+    updates.
+
+    Attributes:
+        maintenance_windows (MutableSequence[google.cloud.alloydb_v1beta.types.MaintenanceUpdatePolicy.MaintenanceWindow]):
+            Preferred windows to perform maintenance.
+            Currently limited to 1.
+    """
+
+    class MaintenanceWindow(proto.Message):
+        r"""MaintenanceWindow specifies a preferred day and time for
+        maintenance.
+
+        Attributes:
+            day (google.type.dayofweek_pb2.DayOfWeek):
+                Preferred day of the week for maintenance,
+                e.g. MONDAY, TUESDAY, etc.
+            start_time (google.type.timeofday_pb2.TimeOfDay):
+                Preferred time to start the maintenance
+                operation on the specified day. Maintenance will
+                start within 1 hour of this time.
+        """
+
+        day: dayofweek_pb2.DayOfWeek = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum=dayofweek_pb2.DayOfWeek,
+        )
+        start_time: timeofday_pb2.TimeOfDay = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timeofday_pb2.TimeOfDay,
+        )
+
+    maintenance_windows: MutableSequence[MaintenanceWindow] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=MaintenanceWindow,
+    )
+
+
+class MaintenanceSchedule(proto.Message):
+    r"""MaintenanceSchedule stores the maintenance schedule generated
+    from the MaintenanceUpdatePolicy, once a maintenance rollout is
+    triggered, if MaintenanceWindow is set, and if there is no
+    conflicting DenyPeriod. The schedule is cleared once the update
+    takes place. This field cannot be manually changed; modify the
+    MaintenanceUpdatePolicy instead.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The scheduled start time for the
+            maintenance.
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
 class Cluster(proto.Message):
     r"""A cluster is a collection of regional AlloyDB resources. It
     can include a primary instance and one or more read pool
@@ -693,7 +758,7 @@ class Cluster(proto.Message):
             cluster resources are created and from which they are
             accessible via Private IP. The network must belong to the
             same project as the cluster. It is specified in the form:
-            "projects/{project}/global/networks/{network_id}". This is
+            ``projects/{project}/global/networks/{network_id}``. This is
             required to create a cluster. Deprecated, use
             network_config.network instead.
         etag (str):
@@ -752,6 +817,13 @@ class Cluster(proto.Message):
             specific to PRIMARY cluster.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
+        maintenance_update_policy (google.cloud.alloydb_v1beta.types.MaintenanceUpdatePolicy):
+            Optional. The maintenance update policy
+            determines when to allow or deny updates.
+        maintenance_schedule (google.cloud.alloydb_v1beta.types.MaintenanceSchedule):
+            Output only. The maintenance schedule for the
+            cluster, generated for a specific rollout if a
+            maintenance window is set.
     """
 
     class State(proto.Enum):
@@ -830,7 +902,7 @@ class Cluster(proto.Message):
                 cluster resources are created and from which they are
                 accessible via Private IP. The network must belong to the
                 same project as the cluster. It is specified in the form:
-                "projects/{project_number}/global/networks/{network_id}".
+                ``projects/{project_number}/global/networks/{network_id}``.
                 This is required to create a cluster.
             allocated_ip_range (str):
                 Optional. Name of the allocated IP range for the private IP
@@ -1014,6 +1086,16 @@ class Cluster(proto.Message):
         proto.BOOL,
         number=30,
     )
+    maintenance_update_policy: "MaintenanceUpdatePolicy" = proto.Field(
+        proto.MESSAGE,
+        number=32,
+        message="MaintenanceUpdatePolicy",
+    )
+    maintenance_schedule: "MaintenanceSchedule" = proto.Field(
+        proto.MESSAGE,
+        number=37,
+        message="MaintenanceSchedule",
+    )
 
 
 class Instance(proto.Message):
@@ -1147,6 +1229,9 @@ class Instance(proto.Message):
         network_config (google.cloud.alloydb_v1beta.types.Instance.InstanceNetworkConfig):
             Optional. Instance level network
             configuration.
+        outbound_public_ip_addresses (MutableSequence[str]):
+            Output only. All outbound public IP addresses
+            configured for the instance.
     """
 
     class State(proto.Enum):
@@ -1514,6 +1599,10 @@ class Instance(proto.Message):
             enable_public_ip (bool):
                 Optional. Enabling public ip for the
                 instance.
+            enable_outbound_public_ip (bool):
+                Optional. Enabling an outbound public IP
+                address to support a database server sending
+                requests out into the internet.
         """
 
         class AuthorizedNetwork(proto.Message):
@@ -1541,6 +1630,10 @@ class Instance(proto.Message):
         enable_public_ip: bool = proto.Field(
             proto.BOOL,
             number=2,
+        )
+        enable_outbound_public_ip: bool = proto.Field(
+            proto.BOOL,
+            number=3,
         )
 
     name: str = proto.Field(
@@ -1668,6 +1761,10 @@ class Instance(proto.Message):
         proto.MESSAGE,
         number=29,
         message=InstanceNetworkConfig,
+    )
+    outbound_public_ip_addresses: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=34,
     )
 
 

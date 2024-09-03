@@ -3867,6 +3867,7 @@ def test_create_job_rest(request_type):
                     "instance_template": "instance_template_value",
                     "install_gpu_drivers": True,
                     "install_ops_agent": True,
+                    "block_project_ssh_keys": True,
                 }
             ],
             "service_account": {
