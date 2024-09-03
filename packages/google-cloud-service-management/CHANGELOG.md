@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.8.5...google-cloud-service-management-v1.9.0) (2024-09-03)
+
+
+### Features
+
+* Support local binding for variables with keyword name collision ([c54700d](https://github.com/googleapis/google-cloud-python/commit/c54700d3e11e59eb5fae01fda25dbf3a9acbe382))
+
 ## [1.8.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.8.4...google-cloud-service-management-v1.8.5) (2024-07-30)
 
 

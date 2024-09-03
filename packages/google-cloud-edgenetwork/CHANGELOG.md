@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.10...google-cloud-edgenetwork-v0.1.11) (2024-09-03)
+
+
+### Documentation
+
+* swap comments on `BONDED` and `NON_BONDED` enums in `BondingType` ([308de6b](https://github.com/googleapis/google-cloud-python/commit/308de6b266e24a8996875736b66485d92f299401))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.9...google-cloud-edgenetwork-v0.1.10) (2024-07-30)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.27](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.26...google-cloud-batch-v0.17.27) (2024-09-03)
+
+
+### Features
+
+* **v1:** promote block_project_ssh_keys support to batch v1 API ([63a6de0](https://github.com/googleapis/google-cloud-python/commit/63a6de00b1c6e2b6289b4fa76468859c828cb363))
+
 ## [0.17.26](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.25...google-cloud-batch-v0.17.26) (2024-08-20)
 
 

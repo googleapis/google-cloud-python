@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.10.2...google-cloud-dataproc-v5.11.0) (2024-09-03)
+
+
+### Features
+
+* add optional parameters (tarball-access) in DiagnoseClusterRequest ([127e5c0](https://github.com/googleapis/google-cloud-python/commit/127e5c097b08042989c124ac4cdfb5147181855d))
+
 ## [5.10.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.10.1...google-cloud-dataproc-v5.10.2) (2024-07-30)
 
 
