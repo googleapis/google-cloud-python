@@ -4942,6 +4942,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
             reconciling=True,
             etag="etag_value",
             satisfies_pzs=True,
+            outbound_public_ip_addresses=["outbound_public_ip_addresses_value"],
         )
         response = client.get_instance(request)
 
@@ -4965,6 +4966,9 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.satisfies_pzs is True
+    assert response.outbound_public_ip_addresses == [
+        "outbound_public_ip_addresses_value"
+    ]
 
 
 def test_get_instance_empty_call():
@@ -5075,6 +5079,7 @@ async def test_get_instance_empty_call_async():
                 reconciling=True,
                 etag="etag_value",
                 satisfies_pzs=True,
+                outbound_public_ip_addresses=["outbound_public_ip_addresses_value"],
             )
         )
         response = await client.get_instance()
@@ -5155,6 +5160,7 @@ async def test_get_instance_async(
                 reconciling=True,
                 etag="etag_value",
                 satisfies_pzs=True,
+                outbound_public_ip_addresses=["outbound_public_ip_addresses_value"],
             )
         )
         response = await client.get_instance(request)
@@ -5179,6 +5185,9 @@ async def test_get_instance_async(
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.satisfies_pzs is True
+    assert response.outbound_public_ip_addresses == [
+        "outbound_public_ip_addresses_value"
+    ]
 
 
 @pytest.mark.asyncio
@@ -15285,6 +15294,10 @@ def test_create_cluster_rest(request_type):
             ]
         },
         "satisfies_pzs": True,
+        "maintenance_update_policy": {
+            "maintenance_windows": [{"day": 1, "start_time": {}}]
+        },
+        "maintenance_schedule": {"start_time": {}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15766,6 +15779,10 @@ def test_update_cluster_rest(request_type):
             ]
         },
         "satisfies_pzs": True,
+        "maintenance_update_policy": {
+            "maintenance_windows": [{"day": 1, "start_time": {}}]
+        },
+        "maintenance_schedule": {"start_time": {}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -17093,6 +17110,10 @@ def test_create_secondary_cluster_rest(request_type):
             ]
         },
         "satisfies_pzs": True,
+        "maintenance_update_policy": {
+            "maintenance_windows": [{"day": 1, "start_time": {}}]
+        },
+        "maintenance_schedule": {"start_time": {}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -17909,6 +17930,7 @@ def test_get_instance_rest(request_type):
             reconciling=True,
             etag="etag_value",
             satisfies_pzs=True,
+            outbound_public_ip_addresses=["outbound_public_ip_addresses_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -17936,6 +17958,9 @@ def test_get_instance_rest(request_type):
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.satisfies_pzs is True
+    assert response.outbound_public_ip_addresses == [
+        "outbound_public_ip_addresses_value"
+    ]
 
 
 def test_get_instance_rest_use_cached_wrapped_rpc():
@@ -18283,7 +18308,12 @@ def test_create_instance_rest(request_type):
         "network_config": {
             "authorized_external_networks": [{"cidr_range": "cidr_range_value"}],
             "enable_public_ip": True,
+            "enable_outbound_public_ip": True,
         },
+        "outbound_public_ip_addresses": [
+            "outbound_public_ip_addresses_value1",
+            "outbound_public_ip_addresses_value2",
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -18759,7 +18789,12 @@ def test_create_secondary_instance_rest(request_type):
         "network_config": {
             "authorized_external_networks": [{"cidr_range": "cidr_range_value"}],
             "enable_public_ip": True,
+            "enable_outbound_public_ip": True,
         },
+        "outbound_public_ip_addresses": [
+            "outbound_public_ip_addresses_value1",
+            "outbound_public_ip_addresses_value2",
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -19249,7 +19284,12 @@ def test_batch_create_instances_rest(request_type):
                             {"cidr_range": "cidr_range_value"}
                         ],
                         "enable_public_ip": True,
+                        "enable_outbound_public_ip": True,
                     },
+                    "outbound_public_ip_addresses": [
+                        "outbound_public_ip_addresses_value1",
+                        "outbound_public_ip_addresses_value2",
+                    ],
                 },
                 "request_id": "request_id_value",
                 "validate_only": True,
@@ -19654,7 +19694,12 @@ def test_update_instance_rest(request_type):
         "network_config": {
             "authorized_external_networks": [{"cidr_range": "cidr_range_value"}],
             "enable_public_ip": True,
+            "enable_outbound_public_ip": True,
         },
+        "outbound_public_ip_addresses": [
+            "outbound_public_ip_addresses_value1",
+            "outbound_public_ip_addresses_value2",
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
