@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+## [1.6.0](https://github.com/googleapis/python-crc32c/compare/v1.5.0...v1.6.0) (2024-08-29)
+
+
+### Features
+
+* Add support for python 3.12 ([#177](https://github.com/googleapis/python-crc32c/issues/177)) ([5ff1207](https://github.com/googleapis/python-crc32c/commit/5ff1207e7b60256e7a32932324ccb9ad4ec265d2))
+* Build using Visual Studio 17 2022 instead of Visual Studio 16 2019 ([c1c8c59](https://github.com/googleapis/python-crc32c/commit/c1c8c597d07e573406d76765022a837b007f9074))
+
+
+### Bug Fixes
+
+* Drop support for python 3.7 and 3.8 ([c1c8c59](https://github.com/googleapis/python-crc32c/commit/c1c8c597d07e573406d76765022a837b007f9074))
+* Drop support for Windows 32bit which is not supported in Visual Studio 17 2022 ([c1c8c59](https://github.com/googleapis/python-crc32c/commit/c1c8c597d07e573406d76765022a837b007f9074))
+* Remove manylinux1 which is no longer supported by PyPA ([#186](https://github.com/googleapis/python-crc32c/issues/186)) ([79edb3f](https://github.com/googleapis/python-crc32c/commit/79edb3fd3cda0e4193a6fb6a8346058398df43de))
+
 ## [1.5.0](https://github.com/googleapis/python-crc32c/compare/v1.4.0...v1.5.0) (2022-08-31)
 
 
