@@ -5976,6 +5976,8 @@ def test_get_index(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             state=warehouse.Index.State.CREATING,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
             entire_corpus=True,
         )
         response = client.get_index(request)
@@ -5992,6 +5994,8 @@ def test_get_index(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == warehouse.Index.State.CREATING
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_index_empty_call():
@@ -6094,6 +6098,8 @@ async def test_get_index_empty_call_async():
                 display_name="display_name_value",
                 description="description_value",
                 state=warehouse.Index.State.CREATING,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_index()
@@ -6164,6 +6170,8 @@ async def test_get_index_async(
                 display_name="display_name_value",
                 description="description_value",
                 state=warehouse.Index.State.CREATING,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_index(request)
@@ -6180,6 +6188,8 @@ async def test_get_index_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == warehouse.Index.State.CREATING
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -7656,6 +7666,8 @@ def test_get_corpus(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             type_=warehouse.Corpus.Type.STREAM_VIDEO,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_corpus(request)
 
@@ -7671,6 +7683,8 @@ def test_get_corpus(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.type_ == warehouse.Corpus.Type.STREAM_VIDEO
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_corpus_empty_call():
@@ -7773,6 +7787,8 @@ async def test_get_corpus_empty_call_async():
                 display_name="display_name_value",
                 description="description_value",
                 type_=warehouse.Corpus.Type.STREAM_VIDEO,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_corpus()
@@ -7843,6 +7859,8 @@ async def test_get_corpus_async(
                 display_name="display_name_value",
                 description="description_value",
                 type_=warehouse.Corpus.Type.STREAM_VIDEO,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_corpus(request)
@@ -7859,6 +7877,8 @@ async def test_get_corpus_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.type_ == warehouse.Corpus.Type.STREAM_VIDEO
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -8030,6 +8050,8 @@ def test_update_corpus(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             type_=warehouse.Corpus.Type.STREAM_VIDEO,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.update_corpus(request)
 
@@ -8045,6 +8067,8 @@ def test_update_corpus(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.type_ == warehouse.Corpus.Type.STREAM_VIDEO
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_update_corpus_empty_call():
@@ -8143,6 +8167,8 @@ async def test_update_corpus_empty_call_async():
                 display_name="display_name_value",
                 description="description_value",
                 type_=warehouse.Corpus.Type.STREAM_VIDEO,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.update_corpus()
@@ -8215,6 +8241,8 @@ async def test_update_corpus_async(
                 display_name="display_name_value",
                 description="description_value",
                 type_=warehouse.Corpus.Type.STREAM_VIDEO,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.update_corpus(request)
@@ -8231,6 +8259,8 @@ async def test_update_corpus_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.type_ == warehouse.Corpus.Type.STREAM_VIDEO
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -20567,6 +20597,8 @@ def test_get_index_endpoint(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             state=warehouse.IndexEndpoint.State.CREATING,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_index_endpoint(request)
 
@@ -20582,6 +20614,8 @@ def test_get_index_endpoint(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == warehouse.IndexEndpoint.State.CREATING
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_index_endpoint_empty_call():
@@ -20694,6 +20728,8 @@ async def test_get_index_endpoint_empty_call_async():
                 display_name="display_name_value",
                 description="description_value",
                 state=warehouse.IndexEndpoint.State.CREATING,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_index_endpoint()
@@ -20768,6 +20804,8 @@ async def test_get_index_endpoint_async(
                 display_name="display_name_value",
                 description="description_value",
                 state=warehouse.IndexEndpoint.State.CREATING,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_index_endpoint(request)
@@ -20784,6 +20822,8 @@ async def test_get_index_endpoint_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == warehouse.IndexEndpoint.State.CREATING
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -29750,6 +29790,8 @@ def test_create_index_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "deployed_indexes": [{"index_endpoint": "index_endpoint_value"}],
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -30141,6 +30183,8 @@ def test_update_index_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "deployed_indexes": [{"index_endpoint": "index_endpoint_value"}],
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -30530,6 +30574,8 @@ def test_get_index_rest(request_type):
             display_name="display_name_value",
             description="description_value",
             state=warehouse.Index.State.CREATING,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
             entire_corpus=True,
         )
 
@@ -30550,6 +30596,8 @@ def test_get_index_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == warehouse.Index.State.CREATING
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_index_rest_use_cached_wrapped_rpc():
@@ -31503,6 +31551,8 @@ def test_create_corpus_rest(request_type):
         "default_ttl": {"seconds": 751, "nanos": 543},
         "type_": 1,
         "search_capability_setting": {"search_capabilities": [{"type_": 1}]},
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -31884,6 +31934,8 @@ def test_get_corpus_rest(request_type):
             display_name="display_name_value",
             description="description_value",
             type_=warehouse.Corpus.Type.STREAM_VIDEO,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -31903,6 +31955,8 @@ def test_get_corpus_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.type_ == warehouse.Corpus.Type.STREAM_VIDEO
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_corpus_rest_use_cached_wrapped_rpc():
@@ -32183,6 +32237,8 @@ def test_update_corpus_rest(request_type):
         "default_ttl": {"seconds": 751, "nanos": 543},
         "type_": 1,
         "search_capability_setting": {"search_capabilities": [{"type_": 1}]},
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -32261,6 +32317,8 @@ def test_update_corpus_rest(request_type):
             display_name="display_name_value",
             description="description_value",
             type_=warehouse.Corpus.Type.STREAM_VIDEO,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -32280,6 +32338,8 @@ def test_update_corpus_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.type_ == warehouse.Corpus.Type.STREAM_VIDEO
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_update_corpus_rest_use_cached_wrapped_rpc():
@@ -41934,6 +41994,8 @@ def test_create_index_endpoint_rest(request_type):
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -42329,6 +42391,8 @@ def test_get_index_endpoint_rest(request_type):
             display_name="display_name_value",
             description="description_value",
             state=warehouse.IndexEndpoint.State.CREATING,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -42348,6 +42412,8 @@ def test_get_index_endpoint_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == warehouse.IndexEndpoint.State.CREATING
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_index_endpoint_rest_use_cached_wrapped_rpc():
@@ -43024,6 +43090,8 @@ def test_update_index_endpoint_rest(request_type):
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

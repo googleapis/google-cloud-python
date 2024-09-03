@@ -4057,11 +4057,12 @@ class WarehouseAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> warehouse.ClipAssetResponse:
-        r"""Generates clips for downloading. The api takes in a time range,
-        and generates a clip of the first content available after
-        start_time and before end_time, which may overflow beyond these
-        bounds. Returned clips are truncated if the total size of the
-        clips are larger than 100MB.
+        r"""Supported by STREAM_VIDEO corpus type. Generates clips for
+        downloading. The api takes in a time range, and generates a clip
+        of the first content available after start_time and before
+        end_time, which may overflow beyond these bounds. Returned clips
+        are truncated if the total size of the clips are larger than
+        100MB.
 
         .. code-block:: python
 
