@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.51.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.50.0...google-cloud-container-v2.51.0) (2024-09-03)
+
+
+### Features
+
+* add `EXTENDED` enum value for `ReleaseChannel.Channel` ([ea71725](https://github.com/googleapis/google-cloud-python/commit/ea71725d3fe3bde0afd775d20127bed958e8eb8e))
+* add ReleaseChannel EXTENDED value ([ea71725](https://github.com/googleapis/google-cloud-python/commit/ea71725d3fe3bde0afd775d20127bed958e8eb8e))
+
 ## [2.50.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.49.0...google-cloud-container-v2.50.0) (2024-07-30)
 
 

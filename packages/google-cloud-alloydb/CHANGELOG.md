@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.12...google-cloud-alloydb-v0.3.13) (2024-09-03)
+
+
+### Features
+
+* support for enabling outbound public IP on an instance ([4f468fa](https://github.com/googleapis/google-cloud-python/commit/4f468fa598c51426ef31ef878f9c3b61f79802f9))
+* support for getting maintenance schedule of a cluster ([4f468fa](https://github.com/googleapis/google-cloud-python/commit/4f468fa598c51426ef31ef878f9c3b61f79802f9))
+* support for getting outbound public IP addresses of an instance ([4f468fa](https://github.com/googleapis/google-cloud-python/commit/4f468fa598c51426ef31ef878f9c3b61f79802f9))
+* support for setting maintenance update policy on a cluster ([4f468fa](https://github.com/googleapis/google-cloud-python/commit/4f468fa598c51426ef31ef878f9c3b61f79802f9))
+
 ## [0.3.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.11...google-cloud-alloydb-v0.3.12) (2024-07-30)
 
 

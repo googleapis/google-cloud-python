@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.2...google-cloud-visionai-v0.1.3) (2024-09-03)
+
+
+### Features
+
+* add BatchOperationStatus to import metadata ([0321915](https://github.com/googleapis/google-cloud-python/commit/0321915e31c12f24e96b778b5b3814507ff547d6))
+* request client libraries for new languages ([0321915](https://github.com/googleapis/google-cloud-python/commit/0321915e31c12f24e96b778b5b3814507ff547d6))
+
+
+### Documentation
+
+* A comment for enum value `FAILED` in enum `State` is changed ([0321915](https://github.com/googleapis/google-cloud-python/commit/0321915e31c12f24e96b778b5b3814507ff547d6))
+* A comment for enum value `IN_PROGRESS` in enum `State` is changed ([0321915](https://github.com/googleapis/google-cloud-python/commit/0321915e31c12f24e96b778b5b3814507ff547d6))
+* A comment for enum value `SUCCEEDED` in enum `State` is changed ([0321915](https://github.com/googleapis/google-cloud-python/commit/0321915e31c12f24e96b778b5b3814507ff547d6))
+* A comment for field `relevance` in message `.google.cloud.visionai.v1.SearchResultItem` is changed ([0321915](https://github.com/googleapis/google-cloud-python/commit/0321915e31c12f24e96b778b5b3814507ff547d6))
+* A comment for method `ClipAsset` in service `Warehouse` is changed ([0321915](https://github.com/googleapis/google-cloud-python/commit/0321915e31c12f24e96b778b5b3814507ff547d6))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.1...google-cloud-visionai-v0.1.2) (2024-07-30)
 
 
