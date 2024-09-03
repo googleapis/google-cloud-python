@@ -344,7 +344,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 message.
             parent (:class:`str`):
                 Required. The name of the project in which the
-                assessment will be created, in the format
+                assessment is created, in the format
                 ``projects/{project}``.
 
                 This corresponds to the ``parent`` field
@@ -471,7 +471,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             annotation (:class:`google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Annotation`):
-                Optional. The annotation that will be
+                Optional. The annotation that is
                 assigned to the Event. This field can be
                 left empty to provide reasons that apply
                 to an event without concluding whether
@@ -587,8 +587,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
             request (Optional[Union[google.cloud.recaptchaenterprise_v1.types.CreateKeyRequest, dict]]):
                 The request object. The create key request message.
             parent (:class:`str`):
-                Required. The name of the project in which the key will
-                be created, in the format ``projects/{project}``.
+                Required. The name of the project in which the key is
+                created, in the format ``projects/{project}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -705,8 +705,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 The request object. The list keys request message.
             parent (:class:`str`):
                 Required. The name of the project that contains the keys
-                that will be listed, in the format
-                ``projects/{project}``.
+                that are listed, in the format ``projects/{project}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1052,7 +1051,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. The mask to control which
                 fields of the key get updated. If the
-                mask is not present, all fields will be
+                mask is not present, all fields are
                 updated.
 
                 This corresponds to the ``update_mask`` field
@@ -1316,7 +1315,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         -  The maximum number of IP overrides per key is 100.
         -  For any conflict (such as IP already exists or IP part of an
-           existing IP range), an error will be returned.
+           existing IP range), an error is returned.
 
         .. code-block:: python
 
@@ -1935,7 +1934,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. The mask to control which
                 fields of the policy get updated. If the
-                mask is not present, all fields will be
+                mask is not present, all fields are
                 updated.
 
                 This corresponds to the ``update_mask`` field
