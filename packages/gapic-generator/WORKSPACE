@@ -60,9 +60,9 @@ gapic_generator_python()
 
 gapic_generator_register_toolchains()
 
-_grpc_version = "1.60.0"
+_grpc_version = "1.64.2"
 
-_grpc_sha256 = "09640607a340ff0d97407ed22fe4adb177e5bb85329821122084359cd57c3dea"
+_grpc_sha256 = "8579095a31e280d0c5fcc81ea0a2a0efb2900dbfbac0eb018a961a5be22e076e"
 
 http_archive(
     name = "com_github_grpc_grpc",
@@ -73,9 +73,9 @@ http_archive(
 # instantiated in grpc_deps().
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "d19643d265b978383352b3143f04c0641eea75a75235c111cc01a1350173180e",
-    strip_prefix = "protobuf-25.3",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v25.3.tar.gz"],
+    sha256 = "13e7749c30bc24af6ee93e092422f9dc08491c7097efa69461f88eb5f61805ce",
+    strip_prefix = "protobuf-28.0",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v28.0.tar.gz"],
 )
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
