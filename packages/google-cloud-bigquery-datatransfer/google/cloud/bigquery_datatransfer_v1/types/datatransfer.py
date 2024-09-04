@@ -480,6 +480,12 @@ class CreateTransferConfigRequest(proto.Message):
     user id corresponding to the authorization info. Otherwise, the
     transfer configuration will be associated with the calling user.
 
+    When using a cross project service account for creating a transfer
+    config, you must enable cross project service account usage. For
+    more information, see `Disable attachment of service accounts to
+    resources in other
+    projects <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts>`__.
+
     Attributes:
         parent (str):
             Required. The BigQuery project id where the transfer
@@ -577,9 +583,15 @@ class CreateTransferConfigRequest(proto.Message):
 
 
 class UpdateTransferConfigRequest(proto.Message):
-    r"""A request to update a transfer configuration. To update the
-    user id of the transfer configuration, authorization info needs
-    to be provided.
+    r"""A request to update a transfer configuration. To update the user id
+    of the transfer configuration, authorization info needs to be
+    provided.
+
+    When using a cross project service account for updating a transfer
+    config, you must enable cross project service account usage. For
+    more information, see `Disable attachment of service accounts to
+    resources in other
+    projects <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts>`__.
 
     Attributes:
         transfer_config (google.cloud.bigquery_datatransfer_v1.types.TransferConfig):

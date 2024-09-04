@@ -1002,17 +1002,20 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest, dict]):
-                The request object. A request to create a data transfer
-                configuration. If new credentials are
-                needed for this transfer configuration,
-                authorization info must be provided. If
-                authorization info is provided, the
-                transfer configuration will be
-                associated with the user id
-                corresponding to the authorization info.
-                Otherwise, the transfer configuration
-                will be associated with the calling
-                user.
+                The request object. A request to create a data transfer configuration. If
+                new credentials are needed for this transfer
+                configuration, authorization info must be provided. If
+                authorization info is provided, the transfer
+                configuration will be associated with the user id
+                corresponding to the authorization info. Otherwise, the
+                transfer configuration will be associated with the
+                calling user.
+
+                When using a cross project service account for creating
+                a transfer config, you must enable cross project service
+                account usage. For more information, see `Disable
+                attachment of service accounts to resources in other
+                projects <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts>`__.
             parent (str):
                 Required. The BigQuery project id where the transfer
                 configuration should be created. Must be in the format
@@ -1138,10 +1141,15 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest, dict]):
-                The request object. A request to update a transfer
-                configuration. To update the user id of
-                the transfer configuration,
-                authorization info needs to be provided.
+                The request object. A request to update a transfer configuration. To update
+                the user id of the transfer configuration, authorization
+                info needs to be provided.
+
+                When using a cross project service account for updating
+                a transfer config, you must enable cross project service
+                account usage. For more information, see `Disable
+                attachment of service accounts to resources in other
+                projects <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts>`__.
             transfer_config (google.cloud.bigquery_datatransfer_v1.types.TransferConfig):
                 Required. Data transfer configuration
                 to create.
