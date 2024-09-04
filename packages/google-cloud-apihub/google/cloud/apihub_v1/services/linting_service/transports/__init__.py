@@ -17,20 +17,14 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import LintingServiceTransport
-from .grpc import LintingServiceGrpcTransport
-from .grpc_asyncio import LintingServiceGrpcAsyncIOTransport
 from .rest import LintingServiceRestInterceptor, LintingServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[LintingServiceTransport]]
-_transport_registry["grpc"] = LintingServiceGrpcTransport
-_transport_registry["grpc_asyncio"] = LintingServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = LintingServiceRestTransport
 
 __all__ = (
     "LintingServiceTransport",
-    "LintingServiceGrpcTransport",
-    "LintingServiceGrpcAsyncIOTransport",
     "LintingServiceRestTransport",
     "LintingServiceRestInterceptor",
 )

@@ -17,20 +17,14 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import ApiHubTransport
-from .grpc import ApiHubGrpcTransport
-from .grpc_asyncio import ApiHubGrpcAsyncIOTransport
 from .rest import ApiHubRestInterceptor, ApiHubRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ApiHubTransport]]
-_transport_registry["grpc"] = ApiHubGrpcTransport
-_transport_registry["grpc_asyncio"] = ApiHubGrpcAsyncIOTransport
 _transport_registry["rest"] = ApiHubRestTransport
 
 __all__ = (
     "ApiHubTransport",
-    "ApiHubGrpcTransport",
-    "ApiHubGrpcAsyncIOTransport",
     "ApiHubRestTransport",
     "ApiHubRestInterceptor",
 )

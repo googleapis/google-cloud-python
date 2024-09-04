@@ -55,8 +55,6 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.cloud.apihub_v1.types import common_fields, linting_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, LintingServiceTransport
-from .transports.grpc import LintingServiceGrpcTransport
-from .transports.grpc_asyncio import LintingServiceGrpcAsyncIOTransport
 from .transports.rest import LintingServiceRestTransport
 
 
@@ -71,8 +69,6 @@ class LintingServiceClientMeta(type):
     _transport_registry = (
         OrderedDict()
     )  # type: Dict[str, Type[LintingServiceTransport]]
-    _transport_registry["grpc"] = LintingServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = LintingServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = LintingServiceRestTransport
 
     def get_transport_class(

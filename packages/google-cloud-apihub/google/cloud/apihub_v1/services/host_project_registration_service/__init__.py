@@ -13,10 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import HostProjectRegistrationServiceAsyncClient
 from .client import HostProjectRegistrationServiceClient
 
-__all__ = (
-    "HostProjectRegistrationServiceClient",
-    "HostProjectRegistrationServiceAsyncClient",
-)
+__all__ = ("HostProjectRegistrationServiceClient",)

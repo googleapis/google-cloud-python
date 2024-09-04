@@ -59,8 +59,6 @@ from .transports.base import (
     DEFAULT_CLIENT_INFO,
     HostProjectRegistrationServiceTransport,
 )
-from .transports.grpc import HostProjectRegistrationServiceGrpcTransport
-from .transports.grpc_asyncio import HostProjectRegistrationServiceGrpcAsyncIOTransport
 from .transports.rest import HostProjectRegistrationServiceRestTransport
 
 
@@ -75,10 +73,6 @@ class HostProjectRegistrationServiceClientMeta(type):
     _transport_registry = (
         OrderedDict()
     )  # type: Dict[str, Type[HostProjectRegistrationServiceTransport]]
-    _transport_registry["grpc"] = HostProjectRegistrationServiceGrpcTransport
-    _transport_registry[
-        "grpc_asyncio"
-    ] = HostProjectRegistrationServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = HostProjectRegistrationServiceRestTransport
 
     def get_transport_class(

@@ -17,8 +17,6 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import HostProjectRegistrationServiceTransport
-from .grpc import HostProjectRegistrationServiceGrpcTransport
-from .grpc_asyncio import HostProjectRegistrationServiceGrpcAsyncIOTransport
 from .rest import (
     HostProjectRegistrationServiceRestInterceptor,
     HostProjectRegistrationServiceRestTransport,
@@ -28,14 +26,10 @@ from .rest import (
 _transport_registry = (
     OrderedDict()
 )  # type: Dict[str, Type[HostProjectRegistrationServiceTransport]]
-_transport_registry["grpc"] = HostProjectRegistrationServiceGrpcTransport
-_transport_registry["grpc_asyncio"] = HostProjectRegistrationServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = HostProjectRegistrationServiceRestTransport
 
 __all__ = (
     "HostProjectRegistrationServiceTransport",
-    "HostProjectRegistrationServiceGrpcTransport",
-    "HostProjectRegistrationServiceGrpcAsyncIOTransport",
     "HostProjectRegistrationServiceRestTransport",
     "HostProjectRegistrationServiceRestInterceptor",
 )

@@ -13,10 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import ProvisioningAsyncClient
 from .client import ProvisioningClient
 
-__all__ = (
-    "ProvisioningClient",
-    "ProvisioningAsyncClient",
-)
+__all__ = ("ProvisioningClient",)

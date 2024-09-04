@@ -13,10 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import ApiHubDependenciesAsyncClient
 from .client import ApiHubDependenciesClient
 
-__all__ = (
-    "ApiHubDependenciesClient",
-    "ApiHubDependenciesAsyncClient",
-)
+__all__ = ("ApiHubDependenciesClient",)
