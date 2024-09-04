@@ -433,7 +433,7 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
-    session.install("-e", ".[all, tests, tracing, testing]")
+    session.install("-e", ".[all, tests, tracing]")
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
     session.install(*unit_deps_all)
     system_deps_all = (

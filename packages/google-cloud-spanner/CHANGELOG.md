@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.49.0](https://github.com/googleapis/python-spanner/compare/v3.48.0...v3.49.0) (2024-08-27)
+
+
+### Features
+
+* Create a few code snippets as examples for using Spanner Graph in Python ([#1186](https://github.com/googleapis/python-spanner/issues/1186)) ([f886ebd](https://github.com/googleapis/python-spanner/commit/f886ebd80a6422c2167cd440a2a646f52701b684))
+* **spanner:** Add resource reference annotation to backup schedules ([#1176](https://github.com/googleapis/python-spanner/issues/1176)) ([b503fc9](https://github.com/googleapis/python-spanner/commit/b503fc95d8abd47869a24f0e824a227a281282d6))
+* **spanner:** Add samples for instance partitions ([#1168](https://github.com/googleapis/python-spanner/issues/1168)) ([55f83dc](https://github.com/googleapis/python-spanner/commit/55f83dc5f776d436b30da6056a9cdcad3971ce39))
+
+
+### Bug Fixes
+
+* JsonObject init when called on JsonObject of list ([#1166](https://github.com/googleapis/python-spanner/issues/1166)) ([c4af6f0](https://github.com/googleapis/python-spanner/commit/c4af6f09a449f293768f70a84e805ffe08c6c2fb))
+
 ## [3.48.0](https://github.com/googleapis/python-spanner/compare/v3.47.0...v3.48.0) (2024-07-30)
 
 
