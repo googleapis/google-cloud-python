@@ -24,6 +24,8 @@ API Reference
     bigquery_storage_v1beta2/library
     bigquery_storage_v1beta2/services_
     bigquery_storage_v1beta2/types_
+    bigquery_storage_v1alpha/services_
+    bigquery_storage_v1alpha/types_
 
 
 Migration Guide
