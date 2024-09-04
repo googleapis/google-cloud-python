@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.26.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.25.0...v2.26.0) (2024-09-04)
+
+
+### Features
+
+* **v1alpha:** Add BigQuery Metastore Partition Service API ([6ba2796](https://github.com/googleapis/python-bigquery-storage/commit/6ba2796090ca49e1ce16c1e7b3417f8f0139b9af))
+
+
+### Bug Fixes
+
+* Allow protobuf 5.x; require protobuf &gt;=3.20.2 ([#808](https://github.com/googleapis/python-bigquery-storage/issues/808)) ([0a644e3](https://github.com/googleapis/python-bigquery-storage/commit/0a644e31b0280adf751755381e3357435837467d))
+
 ## [2.25.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.24.0...v2.25.0) (2024-05-01)
 
 
