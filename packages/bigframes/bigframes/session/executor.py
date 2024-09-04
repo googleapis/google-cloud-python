@@ -102,6 +102,7 @@ class BigQueryCachingExecutor:
         *,
         ordered: bool = True,
         col_id_overrides: Mapping[str, str] = {},
+        use_explicit_destination: bool = False,
     ):
         """
         Execute the ArrayValue, storing the result to a temporary session-owned table.
@@ -113,6 +114,13 @@ class BigQueryCachingExecutor:
             array_value, ordered=ordered, col_id_overrides=col_id_overrides
         )
         job_config = bigquery.QueryJobConfig()
+        # Use explicit destination to avoid 10GB limit of temporary table
+        if use_explicit_destination:
+            schema = array_value.schema.to_bigquery()
+            destination_table = self.storage_manager.create_temp_table(
+                schema, cluster_cols=[]
+            )
+            job_config.destination = destination_table
         # TODO(swast): plumb through the api_name of the user-facing api that
         # caused this query.
         return self._run_execute_query(

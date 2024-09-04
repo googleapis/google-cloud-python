@@ -1324,6 +1324,7 @@ class Session(
         *,
         ordered: bool = True,
         col_id_overrides: Mapping[str, str] = {},
+        use_explicit_destination: bool = False,
     ) -> tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
         return self._executor.execute(
             array_value,

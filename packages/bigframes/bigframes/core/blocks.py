@@ -577,7 +577,9 @@ class Block:
         see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob#google_cloud_bigquery_job_QueryJob_result"""
         dtypes = dict(zip(self.index_columns, self.index.dtypes))
         dtypes.update(zip(self.value_columns, self.dtypes))
-        _, query_job = self.session._execute(self.expr, ordered=True)
+        _, query_job = self.session._executor.execute(
+            self.expr, ordered=True, use_explicit_destination=True
+        )
         results_iterator = query_job.result(
             page_size=page_size, max_results=max_results
         )
