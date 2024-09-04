@@ -6,6 +6,7 @@
     "schedule:weekly"
   ],
   "ignorePaths": [
-    ".kokoro/requirements.txt"
+    ".kokoro/requirements.txt",
+    ".kokoro/requirements-aoss.txt"
   ]
 }
