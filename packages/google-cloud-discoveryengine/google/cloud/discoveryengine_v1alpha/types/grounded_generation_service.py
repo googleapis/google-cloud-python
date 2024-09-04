@@ -180,8 +180,9 @@ class CheckGroundingResponse(proto.Message):
                 false. In that case, no grounding check was done for the
                 claim and therefore
                 [citation_indices][google.cloud.discoveryengine.v1alpha.CheckGroundingResponse.Claim.citation_indices],
+                [anti_citation_indices][google.cloud.discoveryengine.v1alpha.CheckGroundingResponse.Claim.anti_citation_indices],
                 and
-                [anti_citation_indices][google.cloud.discoveryengine.v1alpha.CheckGroundingResponse.Claim.anti_citation_indices]
+                [score][google.cloud.discoveryengine.v1alpha.CheckGroundingResponse.Claim.score]
                 should not be returned.
 
                 This field is a member of `oneof`_ ``_grounding_check_required``.

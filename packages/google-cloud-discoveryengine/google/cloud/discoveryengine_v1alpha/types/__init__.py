@@ -72,7 +72,7 @@ from .conversational_search_service import (
     UpdateSessionRequest,
 )
 from .custom_tuning_model import CustomTuningModel
-from .data_store import DataStore, LanguageInfo
+from .data_store import DataStore, LanguageInfo, WorkspaceConfig
 from .data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -88,6 +88,8 @@ from .data_store_service import (
 from .document import Document, ProcessedDocument
 from .document_processing_config import DocumentProcessingConfig
 from .document_service import (
+    BatchGetDocumentsMetadataRequest,
+    BatchGetDocumentsMetadataResponse,
     CreateDocumentRequest,
     DeleteDocumentRequest,
     GetDocumentRequest,
@@ -337,6 +339,7 @@ __all__ = (
     "CustomTuningModel",
     "DataStore",
     "LanguageInfo",
+    "WorkspaceConfig",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
     "DeleteDataStoreMetadata",
@@ -350,6 +353,8 @@ __all__ = (
     "Document",
     "ProcessedDocument",
     "DocumentProcessingConfig",
+    "BatchGetDocumentsMetadataRequest",
+    "BatchGetDocumentsMetadataResponse",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
     "GetDocumentRequest",

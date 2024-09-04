@@ -676,6 +676,9 @@ class DocumentInfo(proto.Message):
             The promotion IDs associated with this
             Document. Currently, this field is restricted to
             at most one ID.
+        joined (bool):
+            Output only. Whether the referenced Document
+            can be found in the data store.
     """
 
     id: str = proto.Field(
@@ -701,6 +704,10 @@ class DocumentInfo(proto.Message):
     promotion_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
+    )
+    joined: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 

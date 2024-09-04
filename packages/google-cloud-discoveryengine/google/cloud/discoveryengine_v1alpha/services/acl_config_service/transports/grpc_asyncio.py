@@ -248,7 +248,7 @@ class AclConfigServiceGrpcAsyncIOTransport(AclConfigServiceTransport):
     ]:
         r"""Return a callable for the update acl config method over gRPC.
 
-        Default Acl Configuration for use in a location of a
+        Default ACL configuration for use in a location of a
         customer's project. Updates will only reflect to new
         data stores. Existing data stores will still use the old
         value.

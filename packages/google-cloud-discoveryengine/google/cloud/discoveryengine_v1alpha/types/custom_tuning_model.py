@@ -74,6 +74,9 @@ class CustomTuningModel(proto.Message):
             NO_IMPROVEMENT (6):
                 The model training finished successfully but
                 metrics did not improve.
+            INPUT_VALIDATION_FAILED (7):
+                Input data validation failed. Model training
+                didn't start.
         """
         MODEL_STATE_UNSPECIFIED = 0
         TRAINING_PAUSED = 1
@@ -82,6 +85,7 @@ class CustomTuningModel(proto.Message):
         READY_FOR_SERVING = 4
         TRAINING_FAILED = 5
         NO_IMPROVEMENT = 6
+        INPUT_VALIDATION_FAILED = 7
 
     name: str = proto.Field(
         proto.STRING,

@@ -1605,7 +1605,8 @@ class SearchResponse(proto.Message):
             A unique search token. This should be included in the
             [UserEvent][google.cloud.discoveryengine.v1alpha.UserEvent]
             logs resulting from this search, which enables accurate
-            attribution of search model performance.
+            attribution of search model performance. This also helps to
+            identify a request during the customer support scenarios.
         redirect_uri (str):
             The URI of a customer-defined redirect page. If redirect
             action is triggered, no search is performed, and only
@@ -1876,6 +1877,18 @@ class SearchResponse(proto.Message):
                     CEO". Only used when
                     [SearchRequest.ContentSearchSpec.SummarySpec.ignore_jail_breaking_query]
                     is set to ``true``.
+                CUSTOMER_POLICY_VIOLATION (8):
+                    The customer policy violation case.
+
+                    Google skips the summary if there is a customer
+                    policy violation detected. The policy is defined
+                    by the customer.
+                NON_SUMMARY_SEEKING_QUERY_IGNORED_V2 (9):
+                    The non-answer seeking query ignored case.
+
+                    Only used when
+                    [SearchRequest.ContentSearchSpec.SummarySpec.ignore_non_answer_seeking_query]
+                    is set to ``true``.
             """
             SUMMARY_SKIPPED_REASON_UNSPECIFIED = 0
             ADVERSARIAL_QUERY_IGNORED = 1
@@ -1885,6 +1898,8 @@ class SearchResponse(proto.Message):
             LLM_ADDON_NOT_ENABLED = 5
             NO_RELEVANT_CONTENT = 6
             JAIL_BREAKING_QUERY_IGNORED = 7
+            CUSTOMER_POLICY_VIOLATION = 8
+            NON_SUMMARY_SEEKING_QUERY_IGNORED_V2 = 9
 
         class SafetyAttributes(proto.Message):
             r"""Safety Attribute categories and their associated confidence
@@ -2169,6 +2184,9 @@ class SearchResponse(proto.Message):
                         Values of the string field. The record will
                         only be returned if the field value matches one
                         of the values specified here.
+                    query_segment (str):
+                        Identifies the keywords within the search
+                        query that match a filter.
                 """
 
                 field_name: str = proto.Field(
@@ -2178,6 +2196,10 @@ class SearchResponse(proto.Message):
                 values: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=2,
+                )
+                query_segment: str = proto.Field(
+                    proto.STRING,
+                    number=3,
                 )
 
             class NumberConstraint(proto.Message):
@@ -2195,6 +2217,9 @@ class SearchResponse(proto.Message):
                     value (float):
                         The value specified in the numerical
                         constraint.
+                    query_segment (str):
+                        Identifies the keywords within the search
+                        query that match a filter.
                 """
 
                 class Comparison(proto.Enum):
@@ -2233,6 +2258,10 @@ class SearchResponse(proto.Message):
                 value: float = proto.Field(
                     proto.DOUBLE,
                     number=3,
+                )
+                query_segment: str = proto.Field(
+                    proto.STRING,
+                    number=4,
                 )
 
             class GeolocationConstraint(proto.Message):
