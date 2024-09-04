@@ -22,12 +22,12 @@ class StructAccessor:
             >>> bpd.options.display.progress_bar = None
             >>> s = bpd.Series(
             ...     [
-            ...         {"version": 1, "project": "pandas"},
-            ...         {"version": 2, "project": "pandas"},
-            ...         {"version": 1, "project": "numpy"},
+            ...         {"project": "pandas", "version": 1},
+            ...         {"project": "pandas", "version": 2},
+            ...         {"project": "numpy", "version": 1},
             ...     ],
             ...     dtype=bpd.ArrowDtype(pa.struct(
-            ...         [("version", pa.int64()), ("project", pa.string())]
+            ...         [("project", pa.string()), ("version", pa.int64())]
             ...     ))
             ... )
 
@@ -41,7 +41,7 @@ class StructAccessor:
 
         Extract by field index.
 
-            >>> s.struct.field(0)
+            >>> s.struct.field(1)
             0    1
             1    2
             2    1
@@ -68,22 +68,22 @@ class StructAccessor:
             >>> bpd.options.display.progress_bar = None
             >>> s = bpd.Series(
             ...     [
-            ...         {"version": 1, "project": "pandas"},
-            ...         {"version": 2, "project": "pandas"},
-            ...         {"version": 1, "project": "numpy"},
+            ...         {"project": "pandas", "version": 1},
+            ...         {"project": "pandas", "version": 2},
+            ...         {"project": "numpy", "version": 1},
             ...     ],
             ...     dtype=bpd.ArrowDtype(pa.struct(
-            ...         [("version", pa.int64()), ("project", pa.string())]
+            ...         [("project", pa.string()), ("version", pa.int64())]
             ...     ))
             ... )
 
         Extract all child fields.
 
             >>> s.struct.explode()
-               version project
-            0        1  pandas
-            1        2  pandas
-            2        1   numpy
+               project version
+            0   pandas       1
+            1   pandas       2
+            2    numpy       1
             <BLANKLINE>
             [3 rows x 2 columns]
 
@@ -113,8 +113,8 @@ class StructAccessor:
             ...     ))
             ... )
             >>> s.struct.dtypes()
-            version              Int64
             project    string[pyarrow]
+            version              Int64
             dtype: object
 
         Returns:
@@ -140,21 +140,21 @@ class StructFrameAccessor:
             >>> countries = bpd.Series(["cn", "es", "us"])
             >>> files = bpd.Series(
             ...     [
-            ...         {"version": 1, "project": "pandas"},
-            ...         {"version": 2, "project": "pandas"},
-            ...         {"version": 1, "project": "numpy"},
+            ...         {"project": "pandas", "version": 1},
+            ...         {"project": "pandas", "version": 2},
+            ...         {"project": "numpy", "version": 1},
             ...     ],
             ...     dtype=bpd.ArrowDtype(pa.struct(
-            ...         [("version", pa.int64()), ("project", pa.string())]
+            ...         [("project", pa.string()), ("version", pa.int64())]
             ...     ))
             ... )
             >>> downloads = bpd.Series([100, 200, 300])
             >>> df = bpd.DataFrame({"country": countries, "file": files, "download_count": downloads})
             >>> df.struct.explode("file")
-              country  file.version file.project  download_count
-            0      cn             1       pandas             100
-            1      es             2       pandas             200
-            2      us             1        numpy             300
+              country file.project  file.version  download_count
+            0      cn       pandas             1             100
+            1      es       pandas             2             200
+            2      us        numpy             1             300
             <BLANKLINE>
             [3 rows x 4 columns]
 
