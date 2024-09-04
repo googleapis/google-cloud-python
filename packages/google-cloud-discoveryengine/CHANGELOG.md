@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.12.1...google-cloud-discoveryengine-v0.12.2) (2024-09-04)
+
+
+### Features
+
+* **v1alpha:** return index status in document ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1alpha:** return joined status in user event ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1alpha:** return query segment in NL query understanding ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1alpha:** support batch get documents metadata by uri patterns ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1alpha:** support creating workspace search data stores ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1beta:** allow set relevance threshold on search ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1beta:** return index status in document ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1beta:** return joined status in user event ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1beta:** return structured document info in answers ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1beta:** support batch documents purge with GCS input ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1beta:** support batch get documents metadata by uri patterns ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1beta:** support natural language understanding in search ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1beta:** support one box search ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1:** promot user event purge to v1 ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1:** promote search tuning service to v1 ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1:** return index status in document ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1:** return joined status in user event ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1:** return structured document info in answers ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1:** support batch documents purge with GCS input ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1:** support batch get documents metadata by uri patterns ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+
+
+### Documentation
+
+* **v1alpha:** keep the API doc up-to-date with recent changes ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1beta:** keep the API doc up-to-date with recent changes ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+* **v1:** keep the API doc up-to-date with recent changes ([51947fb](https://github.com/googleapis/google-cloud-python/commit/51947fb5913a3859ee45cd66a0dbad51a84cebe9))
+
 ## [0.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.12.0...google-cloud-discoveryengine-v0.12.1) (2024-08-08)
 
 

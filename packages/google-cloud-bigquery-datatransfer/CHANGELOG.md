@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.15.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.15.6...google-cloud-bigquery-datatransfer-v3.15.7) (2024-09-04)
+
+
+### Documentation
+
+* [google-cloud-bigquery-datatransfer] add a note to the CreateTransferConfigRequest and UpdateTransferConfigRequest to disable restricting service account usage ([#13051](https://github.com/googleapis/google-cloud-python/issues/13051)) ([4136c10](https://github.com/googleapis/google-cloud-python/commit/4136c10fabc1df012b028a5d407aaec326e448b6))
+
 ## [3.15.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.15.5...google-cloud-bigquery-datatransfer-v3.15.6) (2024-08-20)
 
 
