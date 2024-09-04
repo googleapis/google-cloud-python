@@ -105,6 +105,18 @@ class Answer(proto.Message):
 
                 Google skips the answer if there is no relevant
                 content in the retrieved search results.
+            JAIL_BREAKING_QUERY_IGNORED (6):
+                The jail-breaking query ignored case.
+
+                For example, "Reply in the tone of a competing
+                company's CEO". Google skips the answer if the
+                query is classified as a jail-breaking query.
+            CUSTOMER_POLICY_VIOLATION (7):
+                The customer policy violation case.
+
+                Google skips the summary if there is a customer
+                policy violation detected. The policy is defined
+                by the customer.
         """
         ANSWER_SKIPPED_REASON_UNSPECIFIED = 0
         ADVERSARIAL_QUERY_IGNORED = 1
@@ -112,6 +124,8 @@ class Answer(proto.Message):
         OUT_OF_DOMAIN_QUERY_IGNORED = 3
         POTENTIAL_POLICY_VIOLATION = 4
         NO_RELEVANT_CONTENT = 5
+        JAIL_BREAKING_QUERY_IGNORED = 6
+        CUSTOMER_POLICY_VIOLATION = 7
 
     class Citation(proto.Message):
         r"""Citation info for a segment.
@@ -172,6 +186,10 @@ class Answer(proto.Message):
                 Chunk information.
 
                 This field is a member of `oneof`_ ``content``.
+            structured_document_info (google.cloud.discoveryengine_v1beta.types.Answer.Reference.StructuredDocumentInfo):
+                Structured document information.
+
+                This field is a member of `oneof`_ ``content``.
         """
 
         class UnstructuredDocumentInfo(proto.Message):
@@ -196,11 +214,22 @@ class Answer(proto.Message):
             class ChunkContent(proto.Message):
                 r"""Chunk content.
 
+                .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
                 Attributes:
                     content (str):
                         Chunk textual content.
                     page_identifier (str):
                         Page identifier.
+                    relevance_score (float):
+                        The relevance of the chunk for a given query.
+                        Values range from 0.0 (completely irrelevant) to
+                        1.0 (completely relevant). This value is for
+                        informational purpose only. It may change for
+                        the same query and chunk at any time due to a
+                        model retraining or change in implementation.
+
+                        This field is a member of `oneof`_ ``_relevance_score``.
                 """
 
                 content: str = proto.Field(
@@ -210,6 +239,11 @@ class Answer(proto.Message):
                 page_identifier: str = proto.Field(
                     proto.STRING,
                     number=2,
+                )
+                relevance_score: float = proto.Field(
+                    proto.FLOAT,
+                    number=3,
+                    optional=True,
                 )
 
             document: str = proto.Field(
@@ -248,7 +282,12 @@ class Answer(proto.Message):
                 content (str):
                     Chunk textual content.
                 relevance_score (float):
-                    Relevance score.
+                    The relevance of the chunk for a given query.
+                    Values range from 0.0 (completely irrelevant) to
+                    1.0 (completely relevant). This value is for
+                    informational purpose only. It may change for
+                    the same query and chunk at any time due to a
+                    model retraining or change in implementation.
 
                     This field is a member of `oneof`_ ``_relevance_score``.
                 document_metadata (google.cloud.discoveryengine_v1beta.types.Answer.Reference.ChunkInfo.DocumentMetadata):
@@ -316,6 +355,26 @@ class Answer(proto.Message):
                 )
             )
 
+        class StructuredDocumentInfo(proto.Message):
+            r"""Structured search information.
+
+            Attributes:
+                document (str):
+                    Document resource name.
+                struct_data (google.protobuf.struct_pb2.Struct):
+                    Structured search data.
+            """
+
+            document: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            struct_data: struct_pb2.Struct = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message=struct_pb2.Struct,
+            )
+
         unstructured_document_info: "Answer.Reference.UnstructuredDocumentInfo" = (
             proto.Field(
                 proto.MESSAGE,
@@ -329,6 +388,14 @@ class Answer(proto.Message):
             number=2,
             oneof="content",
             message="Answer.Reference.ChunkInfo",
+        )
+        structured_document_info: "Answer.Reference.StructuredDocumentInfo" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="content",
+                message="Answer.Reference.StructuredDocumentInfo",
+            )
         )
 
     class Step(proto.Message):
@@ -456,7 +523,12 @@ class Answer(proto.Message):
                             content (str):
                                 Chunk textual content.
                             relevance_score (float):
-                                Relevance score.
+                                The relevance of the chunk for a given query.
+                                Values range from 0.0 (completely irrelevant) to
+                                1.0 (completely relevant). This value is for
+                                informational purpose only. It may change for
+                                the same query and chunk at any time due to a
+                                model retraining or change in implementation.
 
                                 This field is a member of `oneof`_ ``_relevance_score``.
                         """
@@ -574,10 +646,13 @@ class Answer(proto.Message):
                         Adversarial query classification type.
                     NON_ANSWER_SEEKING_QUERY (2):
                         Non-answer-seeking query classification type.
+                    JAIL_BREAKING_QUERY (3):
+                        Jail-breaking query classification type.
                 """
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2
+                JAIL_BREAKING_QUERY = 3
 
             type_: "Answer.QueryUnderstandingInfo.QueryClassificationInfo.Type" = (
                 proto.Field(

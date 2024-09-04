@@ -21,12 +21,15 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1beta.types import import_config
+
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
     manifest={
         "PurgeUserEventsRequest",
         "PurgeUserEventsResponse",
         "PurgeUserEventsMetadata",
+        "PurgeErrorConfig",
         "PurgeDocumentsRequest",
         "PurgeDocumentsResponse",
         "PurgeDocumentsMetadata",
@@ -151,24 +154,100 @@ class PurgeUserEventsMetadata(proto.Message):
     )
 
 
+class PurgeErrorConfig(proto.Message):
+    r"""Configuration of destination for Purge related errors.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_prefix (str):
+            Cloud Storage prefix for purge errors. This must be an
+            empty, existing Cloud Storage directory. Purge errors are
+            written to sharded files in this directory, one per line, as
+            a JSON-encoded ``google.rpc.Status`` message.
+
+            This field is a member of `oneof`_ ``destination``.
+    """
+
+    gcs_prefix: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="destination",
+    )
+
+
 class PurgeDocumentsRequest(proto.Message):
     r"""Request message for
     [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1beta.DocumentService.PurgeDocuments]
     method.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        gcs_source (google.cloud.discoveryengine_v1beta.types.GcsSource):
+            Cloud Storage location for the input content. Supported
+            ``data_schema``:
+
+            -  ``document_id``: One valid
+               [Document.id][google.cloud.discoveryengine.v1beta.Document.id]
+               per line.
+
+            This field is a member of `oneof`_ ``source``.
+        inline_source (google.cloud.discoveryengine_v1beta.types.PurgeDocumentsRequest.InlineSource):
+            Inline source for the input content for
+            purge.
+
+            This field is a member of `oneof`_ ``source``.
         parent (str):
             Required. The parent resource name, such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
         filter (str):
             Required. Filter matching documents to purge. Only currently
             supported value is ``*`` (all items).
+        error_config (google.cloud.discoveryengine_v1beta.types.PurgeErrorConfig):
+            The desired location of errors incurred
+            during the purge.
         force (bool):
             Actually performs the purge. If ``force`` is set to false,
             return the expected purge count without deleting any
             documents.
     """
 
+    class InlineSource(proto.Message):
+        r"""The inline source for the input config for
+        [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1beta.DocumentService.PurgeDocuments]
+        method.
+
+        Attributes:
+            documents (MutableSequence[str]):
+                Required. A list of full resource name of documents to
+                purge. In the format
+                ``projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*``.
+                Recommended max of 100 items.
+        """
+
+        documents: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    gcs_source: import_config.GcsSource = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="source",
+        message=import_config.GcsSource,
+    )
+    inline_source: InlineSource = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="source",
+        message=InlineSource,
+    )
     parent: str = proto.Field(
         proto.STRING,
         number=1,
@@ -176,6 +255,11 @@ class PurgeDocumentsRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    error_config: "PurgeErrorConfig" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="PurgeErrorConfig",
     )
     force: bool = proto.Field(
         proto.BOOL,

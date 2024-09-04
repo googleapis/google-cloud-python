@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -91,6 +92,14 @@ class Document(proto.Message):
 
             This field is OUTPUT_ONLY. If this field is not populated,
             it means the document has never been indexed.
+        index_status (google.cloud.discoveryengine_v1beta.types.Document.IndexStatus):
+            Output only. The index status of the document.
+
+            -  If document is indexed successfully, the index_time field
+               is populated.
+            -  Otherwise, if document is not indexed due to errors, the
+               error_samples field is populated.
+            -  Otherwise, index_status is unset.
     """
 
     class Content(proto.Message):
@@ -154,6 +163,31 @@ class Document(proto.Message):
             number=1,
         )
 
+    class IndexStatus(proto.Message):
+        r"""Index status of the document.
+
+        Attributes:
+            index_time (google.protobuf.timestamp_pb2.Timestamp):
+                The time when the document was indexed.
+                If this field is populated, it means the
+                document has been indexed.
+            error_samples (MutableSequence[google.rpc.status_pb2.Status]):
+                A sample of errors encountered while indexing
+                the document. If this field is populated, the
+                document is not indexed due to errors.
+        """
+
+        index_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+        error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=status_pb2.Status,
+        )
+
     struct_data: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=4,
@@ -195,6 +229,11 @@ class Document(proto.Message):
         proto.MESSAGE,
         number=13,
         message=timestamp_pb2.Timestamp,
+    )
+    index_status: IndexStatus = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=IndexStatus,
     )
 
 

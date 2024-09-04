@@ -79,6 +79,8 @@ from .data_store_service import (
 from .document import Document
 from .document_processing_config import DocumentProcessingConfig
 from .document_service import (
+    BatchGetDocumentsMetadataRequest,
+    BatchGetDocumentsMetadataResponse,
     CreateDocumentRequest,
     DeleteDocumentRequest,
     GetDocumentRequest,
@@ -154,6 +156,7 @@ from .purge_config import (
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
     PurgeDocumentsResponse,
+    PurgeErrorConfig,
     PurgeSuggestionDenyListEntriesMetadata,
     PurgeSuggestionDenyListEntriesRequest,
     PurgeSuggestionDenyListEntriesResponse,
@@ -311,6 +314,8 @@ __all__ = (
     "UpdateDataStoreRequest",
     "Document",
     "DocumentProcessingConfig",
+    "BatchGetDocumentsMetadataRequest",
+    "BatchGetDocumentsMetadataResponse",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
     "GetDocumentRequest",
@@ -379,6 +384,7 @@ __all__ = (
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
+    "PurgeErrorConfig",
     "PurgeSuggestionDenyListEntriesMetadata",
     "PurgeSuggestionDenyListEntriesRequest",
     "PurgeSuggestionDenyListEntriesResponse",

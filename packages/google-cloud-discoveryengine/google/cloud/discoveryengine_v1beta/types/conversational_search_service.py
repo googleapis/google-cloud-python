@@ -924,10 +924,13 @@ class AnswerQueryRequest(proto.Message):
                         Adversarial query classification type.
                     NON_ANSWER_SEEKING_QUERY (2):
                         Non-answer-seeking query classification type.
+                    JAIL_BREAKING_QUERY (3):
+                        Jail-breaking query classification type.
                 """
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2
+                JAIL_BREAKING_QUERY = 3
 
             types: MutableSequence[
                 "AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type"
