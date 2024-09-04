@@ -61,6 +61,8 @@ class DocumentProcessingConfig(proto.Message):
                digital parsing and layout parsing are supported.
             -  ``pptx``: Override parsing config for PPTX files, only
                digital parsing and layout parsing are supported.
+            -  ``xlsx``: Override parsing config for XLSX files, only
+               digital parsing and layout parsing are supported.
     """
 
     class ChunkingConfig(proto.Message):

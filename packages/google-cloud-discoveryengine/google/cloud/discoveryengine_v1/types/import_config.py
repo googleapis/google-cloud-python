@@ -121,10 +121,10 @@ class BigQuerySource(proto.Message):
 
             This field is a member of `oneof`_ ``partition``.
         project_id (str):
-            The project ID (can be project # or ID) that
-            the BigQuery source is in with a length limit of
-            128 characters. If not specified, inherits the
-            project ID from the parent request.
+            The project ID or the project number that
+            contains the BigQuery source. Has a length limit
+            of 128 characters. If not specified, inherits
+            the project ID from the parent request.
         dataset_id (str):
             Required. The BigQuery data set to copy the
             data from with a length limit of 1,024
@@ -197,9 +197,9 @@ class SpannerSource(proto.Message):
 
     Attributes:
         project_id (str):
-            The project ID that the Spanner source is in
-            with a length limit of 128 characters. If not
-            specified, inherits the project ID from the
+            The project ID that contains the Spanner
+            source. Has a length limit of 128 characters. If
+            not specified, inherits the project ID from the
             parent request.
         instance_id (str):
             Required. The instance ID of the source
@@ -420,9 +420,9 @@ class BigtableSource(proto.Message):
 
     Attributes:
         project_id (str):
-            The project ID that the Bigtable source is in
-            with a length limit of 128 characters. If not
-            specified, inherits the project ID from the
+            The project ID that contains the Bigtable
+            source. Has a length limit of 128 characters. If
+            not specified, inherits the project ID from the
             parent request.
         instance_id (str):
             Required. The instance ID of the Cloud
@@ -470,6 +470,11 @@ class FhirStoreSource(proto.Message):
             characters. Can be specified if one wants to
             have the FhirStore export to a specific Cloud
             Storage directory.
+        resource_types (MutableSequence[str]):
+            The FHIR resource types to import. The resource types should
+            be a subset of all `supported FHIR resource
+            types <https://cloud.google.com/generative-ai-app-builder/docs/fhir-schema-reference#resource-level-specification>`__.
+            Default to all supported FHIR resource types if empty.
     """
 
     fhir_store: str = proto.Field(
@@ -480,6 +485,10 @@ class FhirStoreSource(proto.Message):
         proto.STRING,
         number=2,
     )
+    resource_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CloudSqlSource(proto.Message):
@@ -487,9 +496,9 @@ class CloudSqlSource(proto.Message):
 
     Attributes:
         project_id (str):
-            The project ID that the Cloud SQL source is
-            in with a length limit of 128 characters. If not
-            specified, inherits the project ID from the
+            The project ID that contains the Cloud SQL
+            source. Has a length limit of 128 characters. If
+            not specified, inherits the project ID from the
             parent request.
         instance_id (str):
             Required. The Cloud SQL instance to copy the
@@ -547,9 +556,9 @@ class AlloyDbSource(proto.Message):
 
     Attributes:
         project_id (str):
-            The project ID that the AlloyDB source is in
-            with a length limit of 128 characters. If not
-            specified, inherits the project ID from the
+            The project ID that contains the AlloyDB
+            source. Has a length limit of 128 characters. If
+            not specified, inherits the project ID from the
             parent request.
         location_id (str):
             Required. The AlloyDB location to copy the

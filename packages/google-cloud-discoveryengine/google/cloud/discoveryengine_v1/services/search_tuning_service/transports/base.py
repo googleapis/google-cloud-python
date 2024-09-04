@@ -25,24 +25,17 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1 import gapic_version as package_version
-from google.cloud.discoveryengine_v1.types import (
-    document_service,
-    import_config,
-    purge_config,
-)
-from google.cloud.discoveryengine_v1.types import document
-from google.cloud.discoveryengine_v1.types import document as gcd_document
+from google.cloud.discoveryengine_v1.types import search_tuning_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
 
-class DocumentServiceTransport(abc.ABC):
-    """Abstract transport class for DocumentService."""
+class SearchTuningServiceTransport(abc.ABC):
+    """Abstract transport class for SearchTuningService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -137,52 +130,13 @@ class DocumentServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.get_document: gapic_v1.method.wrap_method(
-                self.get_document,
+            self.train_custom_model: gapic_v1.method.wrap_method(
+                self.train_custom_model,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_documents: gapic_v1.method.wrap_method(
-                self.list_documents,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.create_document: gapic_v1.method.wrap_method(
-                self.create_document,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.update_document: gapic_v1.method.wrap_method(
-                self.update_document,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.delete_document: gapic_v1.method.wrap_method(
-                self.delete_document,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.import_documents: gapic_v1.method.wrap_method(
-                self.import_documents,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=30.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=300.0,
-                ),
-                default_timeout=300.0,
-                client_info=client_info,
-            ),
-            self.purge_documents: gapic_v1.method.wrap_method(
-                self.purge_documents,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.batch_get_documents_metadata: gapic_v1.method.wrap_method(
-                self.batch_get_documents_metadata,
+            self.list_custom_models: gapic_v1.method.wrap_method(
+                self.list_custom_models,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -203,79 +157,22 @@ class DocumentServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_document(
+    def train_custom_model(
         self,
     ) -> Callable[
-        [document_service.GetDocumentRequest],
-        Union[document.Document, Awaitable[document.Document]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_documents(
-        self,
-    ) -> Callable[
-        [document_service.ListDocumentsRequest],
-        Union[
-            document_service.ListDocumentsResponse,
-            Awaitable[document_service.ListDocumentsResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def create_document(
-        self,
-    ) -> Callable[
-        [document_service.CreateDocumentRequest],
-        Union[gcd_document.Document, Awaitable[gcd_document.Document]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_document(
-        self,
-    ) -> Callable[
-        [document_service.UpdateDocumentRequest],
-        Union[gcd_document.Document, Awaitable[gcd_document.Document]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_document(
-        self,
-    ) -> Callable[
-        [document_service.DeleteDocumentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def import_documents(
-        self,
-    ) -> Callable[
-        [import_config.ImportDocumentsRequest],
+        [search_tuning_service.TrainCustomModelRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def purge_documents(
+    def list_custom_models(
         self,
     ) -> Callable[
-        [purge_config.PurgeDocumentsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def batch_get_documents_metadata(
-        self,
-    ) -> Callable[
-        [document_service.BatchGetDocumentsMetadataRequest],
+        [search_tuning_service.ListCustomModelsRequest],
         Union[
-            document_service.BatchGetDocumentsMetadataResponse,
-            Awaitable[document_service.BatchGetDocumentsMetadataResponse],
+            search_tuning_service.ListCustomModelsResponse,
+            Awaitable[search_tuning_service.ListCustomModelsResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -312,4 +209,4 @@ class DocumentServiceTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("DocumentServiceTransport",)
+__all__ = ("SearchTuningServiceTransport",)

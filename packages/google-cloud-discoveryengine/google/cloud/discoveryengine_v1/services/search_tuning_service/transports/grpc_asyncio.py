@@ -16,7 +16,6 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api import httpbody_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -27,22 +26,16 @@ from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    import_config,
-    purge_config,
-    user_event,
-    user_event_service,
-)
+from google.cloud.discoveryengine_v1.types import search_tuning_service
 
-from .base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
-from .grpc import UserEventServiceGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, SearchTuningServiceTransport
+from .grpc import SearchTuningServiceGrpcTransport
 
 
-class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
-    """gRPC AsyncIO backend transport for UserEventService.
+class SearchTuningServiceGrpcAsyncIOTransport(SearchTuningServiceTransport):
+    """gRPC AsyncIO backend transport for SearchTuningService.
 
-    Service for ingesting end user actions on a website to
-    Discovery Engine API.
+    Service for search tuning.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -265,83 +258,18 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         return self._operations_client
 
     @property
-    def write_user_event(
+    def train_custom_model(
         self,
     ) -> Callable[
-        [user_event_service.WriteUserEventRequest], Awaitable[user_event.UserEvent]
+        [search_tuning_service.TrainCustomModelRequest],
+        Awaitable[operations_pb2.Operation],
     ]:
-        r"""Return a callable for the write user event method over gRPC.
+        r"""Return a callable for the train custom model method over gRPC.
 
-        Writes a single user event.
+        Trains a custom model.
 
         Returns:
-            Callable[[~.WriteUserEventRequest],
-                    Awaitable[~.UserEvent]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "write_user_event" not in self._stubs:
-            self._stubs["write_user_event"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.UserEventService/WriteUserEvent",
-                request_serializer=user_event_service.WriteUserEventRequest.serialize,
-                response_deserializer=user_event.UserEvent.deserialize,
-            )
-        return self._stubs["write_user_event"]
-
-    @property
-    def collect_user_event(
-        self,
-    ) -> Callable[
-        [user_event_service.CollectUserEventRequest], Awaitable[httpbody_pb2.HttpBody]
-    ]:
-        r"""Return a callable for the collect user event method over gRPC.
-
-        Writes a single user event from the browser. This
-        uses a GET request to due to browser restriction of
-        POST-ing to a third-party domain.
-
-        This method is used only by the Discovery Engine API
-        JavaScript pixel and Google Tag Manager. Users should
-        not call this method directly.
-
-        Returns:
-            Callable[[~.CollectUserEventRequest],
-                    Awaitable[~.HttpBody]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "collect_user_event" not in self._stubs:
-            self._stubs["collect_user_event"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.UserEventService/CollectUserEvent",
-                request_serializer=user_event_service.CollectUserEventRequest.serialize,
-                response_deserializer=httpbody_pb2.HttpBody.FromString,
-            )
-        return self._stubs["collect_user_event"]
-
-    @property
-    def purge_user_events(
-        self,
-    ) -> Callable[
-        [purge_config.PurgeUserEventsRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the purge user events method over gRPC.
-
-        Deletes permanently all user events specified by the
-        filter provided. Depending on the number of events
-        specified by the filter, this operation could take hours
-        or days to complete. To test a filter, use the list
-        command first.
-
-        Returns:
-            Callable[[~.PurgeUserEventsRequest],
+            Callable[[~.TrainCustomModelRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -350,34 +278,28 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "purge_user_events" not in self._stubs:
-            self._stubs["purge_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.UserEventService/PurgeUserEvents",
-                request_serializer=purge_config.PurgeUserEventsRequest.serialize,
+        if "train_custom_model" not in self._stubs:
+            self._stubs["train_custom_model"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.SearchTuningService/TrainCustomModel",
+                request_serializer=search_tuning_service.TrainCustomModelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["purge_user_events"]
+        return self._stubs["train_custom_model"]
 
     @property
-    def import_user_events(
+    def list_custom_models(
         self,
     ) -> Callable[
-        [import_config.ImportUserEventsRequest], Awaitable[operations_pb2.Operation]
+        [search_tuning_service.ListCustomModelsRequest],
+        Awaitable[search_tuning_service.ListCustomModelsResponse],
     ]:
-        r"""Return a callable for the import user events method over gRPC.
+        r"""Return a callable for the list custom models method over gRPC.
 
-        Bulk import of user events. Request processing might
-        be synchronous. Events that already exist are skipped.
-        Use this method for backfilling historical user events.
-
-        Operation.response is of type ImportResponse. Note that
-        it is possible for a subset of the items to be
-        successfully inserted. Operation.metadata is of type
-        ImportMetadata.
+        Gets a list of all the custom models.
 
         Returns:
-            Callable[[~.ImportUserEventsRequest],
-                    Awaitable[~.Operation]]:
+            Callable[[~.ListCustomModelsRequest],
+                    Awaitable[~.ListCustomModelsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -385,44 +307,25 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "import_user_events" not in self._stubs:
-            self._stubs["import_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.UserEventService/ImportUserEvents",
-                request_serializer=import_config.ImportUserEventsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "list_custom_models" not in self._stubs:
+            self._stubs["list_custom_models"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.SearchTuningService/ListCustomModels",
+                request_serializer=search_tuning_service.ListCustomModelsRequest.serialize,
+                response_deserializer=search_tuning_service.ListCustomModelsResponse.deserialize,
             )
-        return self._stubs["import_user_events"]
+        return self._stubs["list_custom_models"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.write_user_event: gapic_v1.method_async.wrap_method(
-                self.write_user_event,
+            self.train_custom_model: gapic_v1.method_async.wrap_method(
+                self.train_custom_model,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.collect_user_event: gapic_v1.method_async.wrap_method(
-                self.collect_user_event,
+            self.list_custom_models: gapic_v1.method_async.wrap_method(
+                self.list_custom_models,
                 default_timeout=None,
-                client_info=client_info,
-            ),
-            self.purge_user_events: gapic_v1.method_async.wrap_method(
-                self.purge_user_events,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.import_user_events: gapic_v1.method_async.wrap_method(
-                self.import_user_events,
-                default_retry=retries.AsyncRetry(
-                    initial=1.0,
-                    maximum=30.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=300.0,
-                ),
-                default_timeout=300.0,
                 client_info=client_info,
             ),
         }
@@ -484,4 +387,4 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         return self._stubs["list_operations"]
 
 
-__all__ = ("UserEventServiceGrpcAsyncIOTransport",)
+__all__ = ("SearchTuningServiceGrpcAsyncIOTransport",)

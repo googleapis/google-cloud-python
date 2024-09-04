@@ -45,6 +45,10 @@ from .services.recommendation_service import (
 )
 from .services.schema_service import SchemaServiceAsyncClient, SchemaServiceClient
 from .services.search_service import SearchServiceAsyncClient, SearchServiceClient
+from .services.search_tuning_service import (
+    SearchTuningServiceAsyncClient,
+    SearchTuningServiceClient,
+)
 from .services.site_search_engine_service import (
     SiteSearchEngineServiceAsyncClient,
     SiteSearchEngineServiceClient,
@@ -102,6 +106,7 @@ from .types.conversational_search_service import (
     UpdateConversationRequest,
     UpdateSessionRequest,
 )
+from .types.custom_tuning_model import CustomTuningModel
 from .types.data_store import DataStore
 from .types.data_store_service import (
     CreateDataStoreMetadata,
@@ -116,6 +121,8 @@ from .types.data_store_service import (
 from .types.document import Document
 from .types.document_processing_config import DocumentProcessingConfig
 from .types.document_service import (
+    BatchGetDocumentsMetadataRequest,
+    BatchGetDocumentsMetadataResponse,
     CreateDocumentRequest,
     DeleteDocumentRequest,
     GetDocumentRequest,
@@ -173,9 +180,13 @@ from .types.purge_config import (
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
     PurgeDocumentsResponse,
+    PurgeErrorConfig,
     PurgeSuggestionDenyListEntriesMetadata,
     PurgeSuggestionDenyListEntriesRequest,
     PurgeSuggestionDenyListEntriesResponse,
+    PurgeUserEventsMetadata,
+    PurgeUserEventsRequest,
+    PurgeUserEventsResponse,
 )
 from .types.rank_service import RankingRecord, RankRequest, RankResponse
 from .types.recommendation_service import RecommendRequest, RecommendResponse
@@ -192,6 +203,13 @@ from .types.schema_service import (
     UpdateSchemaRequest,
 )
 from .types.search_service import SearchRequest, SearchResponse
+from .types.search_tuning_service import (
+    ListCustomModelsRequest,
+    ListCustomModelsResponse,
+    TrainCustomModelMetadata,
+    TrainCustomModelRequest,
+    TrainCustomModelResponse,
+)
 from .types.session import Query, Session
 from .types.site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
 from .types.site_search_engine_service import (
@@ -248,6 +266,7 @@ __all__ = (
     "RecommendationServiceAsyncClient",
     "SchemaServiceAsyncClient",
     "SearchServiceAsyncClient",
+    "SearchTuningServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceAsyncClient",
     "AlloyDbSource",
@@ -257,6 +276,8 @@ __all__ = (
     "BatchCreateTargetSiteMetadata",
     "BatchCreateTargetSitesRequest",
     "BatchCreateTargetSitesResponse",
+    "BatchGetDocumentsMetadataRequest",
+    "BatchGetDocumentsMetadataResponse",
     "BatchVerifyTargetSitesMetadata",
     "BatchVerifyTargetSitesRequest",
     "BatchVerifyTargetSitesResponse",
@@ -296,6 +317,7 @@ __all__ = (
     "CreateTargetSiteMetadata",
     "CreateTargetSiteRequest",
     "CustomAttribute",
+    "CustomTuningModel",
     "DataStore",
     "DataStoreServiceClient",
     "DeleteControlRequest",
@@ -359,6 +381,8 @@ __all__ = (
     "ListControlsResponse",
     "ListConversationsRequest",
     "ListConversationsResponse",
+    "ListCustomModelsRequest",
+    "ListCustomModelsResponse",
     "ListDataStoresRequest",
     "ListDataStoresResponse",
     "ListDocumentsRequest",
@@ -384,9 +408,13 @@ __all__ = (
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
+    "PurgeErrorConfig",
     "PurgeSuggestionDenyListEntriesMetadata",
     "PurgeSuggestionDenyListEntriesRequest",
     "PurgeSuggestionDenyListEntriesResponse",
+    "PurgeUserEventsMetadata",
+    "PurgeUserEventsRequest",
+    "PurgeUserEventsResponse",
     "Query",
     "RankRequest",
     "RankResponse",
@@ -407,6 +435,7 @@ __all__ = (
     "SearchResponse",
     "SearchServiceClient",
     "SearchTier",
+    "SearchTuningServiceClient",
     "SearchUseCase",
     "Session",
     "SiteSearchEngine",
@@ -417,6 +446,9 @@ __all__ = (
     "SuggestionDenyListEntry",
     "TargetSite",
     "TextInput",
+    "TrainCustomModelMetadata",
+    "TrainCustomModelRequest",
+    "TrainCustomModelResponse",
     "TransactionInfo",
     "UpdateControlRequest",
     "UpdateConversationRequest",

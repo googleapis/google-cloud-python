@@ -358,8 +358,9 @@ class ControlServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.types.Control:
                 Defines a conditioned behavior to employ during serving.
-                   Must be attached to a [ServingConfig][] to be
-                   considered at serving time. Permitted actions
+                   Must be attached to a
+                   [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
+                   to be considered at serving time. Permitted actions
                    dependent on SolutionType.
 
         """
@@ -590,8 +591,9 @@ class ControlServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.types.Control:
                 Defines a conditioned behavior to employ during serving.
-                   Must be attached to a [ServingConfig][] to be
-                   considered at serving time. Permitted actions
+                   Must be attached to a
+                   [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
+                   to be considered at serving time. Permitted actions
                    dependent on SolutionType.
 
         """
@@ -702,8 +704,9 @@ class ControlServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.types.Control:
                 Defines a conditioned behavior to employ during serving.
-                   Must be attached to a [ServingConfig][] to be
-                   considered at serving time. Permitted actions
+                   Must be attached to a
+                   [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
+                   to be considered at serving time. Permitted actions
                    dependent on SolutionType.
 
         """

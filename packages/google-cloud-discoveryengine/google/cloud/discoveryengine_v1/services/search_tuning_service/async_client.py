@@ -42,70 +42,66 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api import httpbody_pb2  # type: ignore
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import (
-    common,
-    import_config,
-    purge_config,
-    user_event,
-    user_event_service,
+    custom_tuning_model,
+    search_tuning_service,
 )
 
-from .client import UserEventServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
-from .transports.grpc_asyncio import UserEventServiceGrpcAsyncIOTransport
+from .client import SearchTuningServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, SearchTuningServiceTransport
+from .transports.grpc_asyncio import SearchTuningServiceGrpcAsyncIOTransport
 
 
-class UserEventServiceAsyncClient:
-    """Service for ingesting end user actions on a website to
-    Discovery Engine API.
-    """
+class SearchTuningServiceAsyncClient:
+    """Service for search tuning."""
 
-    _client: UserEventServiceClient
+    _client: SearchTuningServiceClient
 
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = UserEventServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = UserEventServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = UserEventServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = UserEventServiceClient._DEFAULT_UNIVERSE
+    DEFAULT_ENDPOINT = SearchTuningServiceClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = SearchTuningServiceClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = SearchTuningServiceClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = SearchTuningServiceClient._DEFAULT_UNIVERSE
 
-    data_store_path = staticmethod(UserEventServiceClient.data_store_path)
-    parse_data_store_path = staticmethod(UserEventServiceClient.parse_data_store_path)
-    document_path = staticmethod(UserEventServiceClient.document_path)
-    parse_document_path = staticmethod(UserEventServiceClient.parse_document_path)
-    engine_path = staticmethod(UserEventServiceClient.engine_path)
-    parse_engine_path = staticmethod(UserEventServiceClient.parse_engine_path)
+    custom_tuning_model_path = staticmethod(
+        SearchTuningServiceClient.custom_tuning_model_path
+    )
+    parse_custom_tuning_model_path = staticmethod(
+        SearchTuningServiceClient.parse_custom_tuning_model_path
+    )
+    data_store_path = staticmethod(SearchTuningServiceClient.data_store_path)
+    parse_data_store_path = staticmethod(
+        SearchTuningServiceClient.parse_data_store_path
+    )
     common_billing_account_path = staticmethod(
-        UserEventServiceClient.common_billing_account_path
+        SearchTuningServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        UserEventServiceClient.parse_common_billing_account_path
+        SearchTuningServiceClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(UserEventServiceClient.common_folder_path)
+    common_folder_path = staticmethod(SearchTuningServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
-        UserEventServiceClient.parse_common_folder_path
+        SearchTuningServiceClient.parse_common_folder_path
     )
     common_organization_path = staticmethod(
-        UserEventServiceClient.common_organization_path
+        SearchTuningServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
-        UserEventServiceClient.parse_common_organization_path
+        SearchTuningServiceClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(UserEventServiceClient.common_project_path)
+    common_project_path = staticmethod(SearchTuningServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
-        UserEventServiceClient.parse_common_project_path
+        SearchTuningServiceClient.parse_common_project_path
     )
-    common_location_path = staticmethod(UserEventServiceClient.common_location_path)
+    common_location_path = staticmethod(SearchTuningServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
-        UserEventServiceClient.parse_common_location_path
+        SearchTuningServiceClient.parse_common_location_path
     )
 
     @classmethod
@@ -119,9 +115,9 @@ class UserEventServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            UserEventServiceAsyncClient: The constructed client.
+            SearchTuningServiceAsyncClient: The constructed client.
         """
-        return UserEventServiceClient.from_service_account_info.__func__(UserEventServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        return SearchTuningServiceClient.from_service_account_info.__func__(SearchTuningServiceAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -135,9 +131,9 @@ class UserEventServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            UserEventServiceAsyncClient: The constructed client.
+            SearchTuningServiceAsyncClient: The constructed client.
         """
-        return UserEventServiceClient.from_service_account_file.__func__(UserEventServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return SearchTuningServiceClient.from_service_account_file.__func__(SearchTuningServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -175,14 +171,14 @@ class UserEventServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return UserEventServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return SearchTuningServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
-    def transport(self) -> UserEventServiceTransport:
+    def transport(self) -> SearchTuningServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            UserEventServiceTransport: The transport used by the client instance.
+            SearchTuningServiceTransport: The transport used by the client instance.
         """
         return self._client.transport
 
@@ -205,7 +201,7 @@ class UserEventServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = UserEventServiceClient.get_transport_class
+    get_transport_class = SearchTuningServiceClient.get_transport_class
 
     def __init__(
         self,
@@ -213,13 +209,15 @@ class UserEventServiceAsyncClient:
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
             Union[
-                str, UserEventServiceTransport, Callable[..., UserEventServiceTransport]
+                str,
+                SearchTuningServiceTransport,
+                Callable[..., SearchTuningServiceTransport],
             ]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the user event service async client.
+        """Instantiates the search tuning service async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -227,10 +225,10 @@ class UserEventServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,UserEventServiceTransport,Callable[..., UserEventServiceTransport]]]):
+            transport (Optional[Union[str,SearchTuningServiceTransport,Callable[..., SearchTuningServiceTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the UserEventServiceTransport constructor.
+                arguments as used in the SearchTuningServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -268,249 +266,24 @@ class UserEventServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = UserEventServiceClient(
+        self._client = SearchTuningServiceClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
             client_info=client_info,
         )
 
-    async def write_user_event(
-        self,
-        request: Optional[Union[user_event_service.WriteUserEventRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> user_event.UserEvent:
-        r"""Writes a single user event.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1
-
-            async def sample_write_user_event():
-                # Create a client
-                client = discoveryengine_v1.UserEventServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1.WriteUserEventRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = await client.write_user_event(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1.types.WriteUserEventRequest, dict]]):
-                The request object. Request message for WriteUserEvent
-                method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.discoveryengine_v1.types.UserEvent:
-                UserEvent captures all metadata
-                information Discovery Engine API needs
-                to know about how end users interact
-                with your website.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, user_event_service.WriteUserEventRequest):
-            request = user_event_service.WriteUserEventRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.write_user_event
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def collect_user_event(
+    async def train_custom_model(
         self,
         request: Optional[
-            Union[user_event_service.CollectUserEventRequest, dict]
+            Union[search_tuning_service.TrainCustomModelRequest, dict]
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> httpbody_pb2.HttpBody:
-        r"""Writes a single user event from the browser. This
-        uses a GET request to due to browser restriction of
-        POST-ing to a third-party domain.
-
-        This method is used only by the Discovery Engine API
-        JavaScript pixel and Google Tag Manager. Users should
-        not call this method directly.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1
-
-            async def sample_collect_user_event():
-                # Create a client
-                client = discoveryengine_v1.UserEventServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1.CollectUserEventRequest(
-                    parent="parent_value",
-                    user_event="user_event_value",
-                )
-
-                # Make the request
-                response = await client.collect_user_event(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1.types.CollectUserEventRequest, dict]]):
-                The request object. Request message for CollectUserEvent
-                method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api.httpbody_pb2.HttpBody:
-                Message that represents an arbitrary HTTP body. It should only be used for
-                   payload formats that can't be represented as JSON,
-                   such as raw binary or an HTML page.
-
-                   This message can be used both in streaming and
-                   non-streaming API methods in the request as well as
-                   the response.
-
-                   It can be used as a top-level request field, which is
-                   convenient if one wants to extract parameters from
-                   either the URL or HTTP template into the request
-                   fields and also want access to the raw HTTP body.
-
-                   Example:
-
-                      message GetResourceRequest {
-                         // A unique request id. string request_id = 1;
-
-                         // The raw HTTP body is bound to this field.
-                         google.api.HttpBody http_body = 2;
-
-                      }
-
-                      service ResourceService {
-                         rpc GetResource(GetResourceRequest)
-                            returns (google.api.HttpBody);
-
-                         rpc UpdateResource(google.api.HttpBody)
-                            returns (google.protobuf.Empty);
-
-                      }
-
-                   Example with streaming methods:
-
-                      service CaldavService {
-                         rpc GetCalendar(stream google.api.HttpBody)
-                            returns (stream google.api.HttpBody);
-
-                         rpc UpdateCalendar(stream google.api.HttpBody)
-                            returns (stream google.api.HttpBody);
-
-                      }
-
-                   Use of this type only changes how the request and
-                   response bodies are handled, all other features will
-                   continue to work unchanged.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, user_event_service.CollectUserEventRequest):
-            request = user_event_service.CollectUserEventRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.collect_user_event
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def purge_user_events(
-        self,
-        request: Optional[Union[purge_config.PurgeUserEventsRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Deletes permanently all user events specified by the
-        filter provided. Depending on the number of events
-        specified by the filter, this operation could take hours
-        or days to complete. To test a filter, use the list
-        command first.
+        r"""Trains a custom model.
 
         .. code-block:: python
 
@@ -523,18 +296,17 @@ class UserEventServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import discoveryengine_v1
 
-            async def sample_purge_user_events():
+            async def sample_train_custom_model():
                 # Create a client
-                client = discoveryengine_v1.UserEventServiceAsyncClient()
+                client = discoveryengine_v1.SearchTuningServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = discoveryengine_v1.PurgeUserEventsRequest(
-                    parent="parent_value",
-                    filter="filter_value",
+                request = discoveryengine_v1.TrainCustomModelRequest(
+                    data_store="data_store_value",
                 )
 
                 # Make the request
-                operation = client.purge_user_events(request=request)
+                operation = client.train_custom_model(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -544,8 +316,9 @@ class UserEventServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1.types.PurgeUserEventsRequest, dict]]):
-                The request object. Request message for PurgeUserEvents
+            request (Optional[Union[google.cloud.discoveryengine_v1.types.TrainCustomModelRequest, dict]]):
+                The request object. Request message for
+                [SearchTuningService.TrainCustomModel][google.cloud.discoveryengine.v1.SearchTuningService.TrainCustomModel]
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -557,27 +330,30 @@ class UserEventServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.PurgeUserEventsResponse` Response of the PurgeUserEventsRequest. If the long running operation is
-                   successfully done, then this message is returned by
-                   the google.longrunning.Operations.response field.
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.TrainCustomModelResponse` Response of the
+                   [TrainCustomModelRequest][google.cloud.discoveryengine.v1.TrainCustomModelRequest].
+                   This message is returned by the
+                   google.longrunning.Operations.response field.
 
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, purge_config.PurgeUserEventsRequest):
-            request = purge_config.PurgeUserEventsRequest(request)
+        if not isinstance(request, search_tuning_service.TrainCustomModelRequest):
+            request = search_tuning_service.TrainCustomModelRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.purge_user_events
+            self._client._transport.train_custom_model
         ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("data_store", request.data_store),)
+            ),
         )
 
         # Validate the universe domain.
@@ -595,29 +371,24 @@ class UserEventServiceAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            purge_config.PurgeUserEventsResponse,
-            metadata_type=purge_config.PurgeUserEventsMetadata,
+            search_tuning_service.TrainCustomModelResponse,
+            metadata_type=search_tuning_service.TrainCustomModelMetadata,
         )
 
         # Done; return the response.
         return response
 
-    async def import_user_events(
+    async def list_custom_models(
         self,
-        request: Optional[Union[import_config.ImportUserEventsRequest, dict]] = None,
+        request: Optional[
+            Union[search_tuning_service.ListCustomModelsRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Bulk import of user events. Request processing might
-        be synchronous. Events that already exist are skipped.
-        Use this method for backfilling historical user events.
-
-        Operation.response is of type ImportResponse. Note that
-        it is possible for a subset of the items to be
-        successfully inserted. Operation.metadata is of type
-        ImportMetadata.
+    ) -> search_tuning_service.ListCustomModelsResponse:
+        r"""Gets a list of all the custom models.
 
         .. code-block:: python
 
@@ -630,34 +401,26 @@ class UserEventServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import discoveryengine_v1
 
-            async def sample_import_user_events():
+            async def sample_list_custom_models():
                 # Create a client
-                client = discoveryengine_v1.UserEventServiceAsyncClient()
+                client = discoveryengine_v1.SearchTuningServiceAsyncClient()
 
                 # Initialize request argument(s)
-                inline_source = discoveryengine_v1.InlineSource()
-                inline_source.user_events.event_type = "event_type_value"
-                inline_source.user_events.user_pseudo_id = "user_pseudo_id_value"
-
-                request = discoveryengine_v1.ImportUserEventsRequest(
-                    inline_source=inline_source,
-                    parent="parent_value",
+                request = discoveryengine_v1.ListCustomModelsRequest(
+                    data_store="data_store_value",
                 )
 
                 # Make the request
-                operation = client.import_user_events(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
+                response = await client.list_custom_models(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1.types.ImportUserEventsRequest, dict]]):
-                The request object. Request message for the
-                ImportUserEvents request.
+            request (Optional[Union[google.cloud.discoveryengine_v1.types.ListCustomModelsRequest, dict]]):
+                The request object. Request message for
+                [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1.SearchTuningService.ListCustomModels]
+                method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -665,32 +428,30 @@ class UserEventServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.ImportUserEventsResponse` Response of the ImportUserEventsRequest. If the long running
-                   operation was successful, then this message is
-                   returned by the
-                   google.longrunning.Operations.response field if the
-                   operation was successful.
+            google.cloud.discoveryengine_v1.types.ListCustomModelsResponse:
+                Response message for
+                   [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1.SearchTuningService.ListCustomModels]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, import_config.ImportUserEventsRequest):
-            request = import_config.ImportUserEventsRequest(request)
+        if not isinstance(request, search_tuning_service.ListCustomModelsRequest):
+            request = search_tuning_service.ListCustomModelsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.import_user_events
+            self._client._transport.list_custom_models
         ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("data_store", request.data_store),)
+            ),
         )
 
         # Validate the universe domain.
@@ -702,14 +463,6 @@ class UserEventServiceAsyncClient:
             retry=retry,
             timeout=timeout,
             metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            import_config.ImportUserEventsResponse,
-            metadata_type=import_config.ImportUserEventsMetadata,
         )
 
         # Done; return the response.
@@ -886,7 +639,7 @@ class UserEventServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self) -> "UserEventServiceAsyncClient":
+    async def __aenter__(self) -> "SearchTuningServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -898,4 +651,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("UserEventServiceAsyncClient",)
+__all__ = ("SearchTuningServiceAsyncClient",)

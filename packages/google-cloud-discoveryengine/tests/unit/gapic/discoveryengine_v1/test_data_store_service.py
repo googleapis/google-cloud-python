@@ -3556,6 +3556,7 @@ def test_create_data_store_rest_required_fields(
         (
             "create_advanced_site_search",
             "data_store_id",
+            "skip_default_schema_creation",
         )
     )
     jsonified_request.update(unset_fields)
@@ -3622,6 +3623,7 @@ def test_create_data_store_rest_unset_required_fields():
             (
                 "createAdvancedSiteSearch",
                 "dataStoreId",
+                "skipDefaultSchemaCreation",
             )
         )
         & set(

@@ -13,36 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api import httpbody_pb2  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
-from google.api_core import retry_async as retries
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    import_config,
-    purge_config,
-    user_event,
-    user_event_service,
-)
+from google.cloud.discoveryengine_v1.types import search_tuning_service
 
-from .base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
-from .grpc import UserEventServiceGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, SearchTuningServiceTransport
 
 
-class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
-    """gRPC AsyncIO backend transport for UserEventService.
+class SearchTuningServiceGrpcTransport(SearchTuningServiceTransport):
+    """gRPC backend transport for SearchTuningService.
 
-    Service for ingesting end user actions on a website to
-    Discovery Engine API.
+    Service for search tuning.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -52,50 +42,7 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _grpc_channel: aio.Channel
-    _stubs: Dict[str, Callable] = {}
-
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
-        """Create and return a gRPC AsyncIO channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            aio.Channel: A gRPC AsyncIO channel object.
-        """
-
-        return grpc_helpers_async.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
-            scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs,
-        )
+    _stubs: Dict[str, Callable]
 
     def __init__(
         self,
@@ -104,7 +51,7 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
+        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -128,10 +75,9 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if a ``channel`` instance is provided.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if a ``channel`` instance is provided.
+            channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]]):
                 A ``Channel`` instance through which to make calls, or a Callable
                 that constructs and returns one. If set to None, ``self.create_channel``
                 is used to create the channel. If a Callable is given, it will be called
@@ -161,7 +107,7 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
                 be used for service account credentials.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -169,20 +115,21 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
-        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
+        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if isinstance(channel, aio.Channel):
+        if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
             credentials = None
             self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
+
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -238,18 +185,60 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @property
-    def grpc_channel(self) -> aio.Channel:
-        """Create the channel designed to connect to this service.
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "discoveryengine.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
+        """Create and return a gRPC channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            grpc.Channel: A gRPC channel object.
 
-        This property caches on the instance; repeated calls return
-        the same channel.
+        Raises:
+            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
         """
-        # Return the channel from cache.
+
+        return grpc_helpers.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
+        )
+
+    @property
+    def grpc_channel(self) -> grpc.Channel:
+        """Return the channel designed to connect to this service."""
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsAsyncClient:
+    def operations_client(self) -> operations_v1.OperationsClient:
         """Create the client designed to process long-running operations.
 
         This property caches on the instance; repeated calls return the same
@@ -257,26 +246,24 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def write_user_event(
+    def train_custom_model(
         self,
     ) -> Callable[
-        [user_event_service.WriteUserEventRequest], Awaitable[user_event.UserEvent]
+        [search_tuning_service.TrainCustomModelRequest], operations_pb2.Operation
     ]:
-        r"""Return a callable for the write user event method over gRPC.
+        r"""Return a callable for the train custom model method over gRPC.
 
-        Writes a single user event.
+        Trains a custom model.
 
         Returns:
-            Callable[[~.WriteUserEventRequest],
-                    Awaitable[~.UserEvent]]:
+            Callable[[~.TrainCustomModelRequest],
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -284,100 +271,28 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "write_user_event" not in self._stubs:
-            self._stubs["write_user_event"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.UserEventService/WriteUserEvent",
-                request_serializer=user_event_service.WriteUserEventRequest.serialize,
-                response_deserializer=user_event.UserEvent.deserialize,
-            )
-        return self._stubs["write_user_event"]
-
-    @property
-    def collect_user_event(
-        self,
-    ) -> Callable[
-        [user_event_service.CollectUserEventRequest], Awaitable[httpbody_pb2.HttpBody]
-    ]:
-        r"""Return a callable for the collect user event method over gRPC.
-
-        Writes a single user event from the browser. This
-        uses a GET request to due to browser restriction of
-        POST-ing to a third-party domain.
-
-        This method is used only by the Discovery Engine API
-        JavaScript pixel and Google Tag Manager. Users should
-        not call this method directly.
-
-        Returns:
-            Callable[[~.CollectUserEventRequest],
-                    Awaitable[~.HttpBody]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "collect_user_event" not in self._stubs:
-            self._stubs["collect_user_event"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.UserEventService/CollectUserEvent",
-                request_serializer=user_event_service.CollectUserEventRequest.serialize,
-                response_deserializer=httpbody_pb2.HttpBody.FromString,
-            )
-        return self._stubs["collect_user_event"]
-
-    @property
-    def purge_user_events(
-        self,
-    ) -> Callable[
-        [purge_config.PurgeUserEventsRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the purge user events method over gRPC.
-
-        Deletes permanently all user events specified by the
-        filter provided. Depending on the number of events
-        specified by the filter, this operation could take hours
-        or days to complete. To test a filter, use the list
-        command first.
-
-        Returns:
-            Callable[[~.PurgeUserEventsRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "purge_user_events" not in self._stubs:
-            self._stubs["purge_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.UserEventService/PurgeUserEvents",
-                request_serializer=purge_config.PurgeUserEventsRequest.serialize,
+        if "train_custom_model" not in self._stubs:
+            self._stubs["train_custom_model"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.SearchTuningService/TrainCustomModel",
+                request_serializer=search_tuning_service.TrainCustomModelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["purge_user_events"]
+        return self._stubs["train_custom_model"]
 
     @property
-    def import_user_events(
+    def list_custom_models(
         self,
     ) -> Callable[
-        [import_config.ImportUserEventsRequest], Awaitable[operations_pb2.Operation]
+        [search_tuning_service.ListCustomModelsRequest],
+        search_tuning_service.ListCustomModelsResponse,
     ]:
-        r"""Return a callable for the import user events method over gRPC.
+        r"""Return a callable for the list custom models method over gRPC.
 
-        Bulk import of user events. Request processing might
-        be synchronous. Events that already exist are skipped.
-        Use this method for backfilling historical user events.
-
-        Operation.response is of type ImportResponse. Note that
-        it is possible for a subset of the items to be
-        successfully inserted. Operation.metadata is of type
-        ImportMetadata.
+        Gets a list of all the custom models.
 
         Returns:
-            Callable[[~.ImportUserEventsRequest],
-                    Awaitable[~.Operation]]:
+            Callable[[~.ListCustomModelsRequest],
+                    ~.ListCustomModelsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -385,50 +300,16 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "import_user_events" not in self._stubs:
-            self._stubs["import_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.UserEventService/ImportUserEvents",
-                request_serializer=import_config.ImportUserEventsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "list_custom_models" not in self._stubs:
+            self._stubs["list_custom_models"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.SearchTuningService/ListCustomModels",
+                request_serializer=search_tuning_service.ListCustomModelsRequest.serialize,
+                response_deserializer=search_tuning_service.ListCustomModelsResponse.deserialize,
             )
-        return self._stubs["import_user_events"]
-
-    def _prep_wrapped_messages(self, client_info):
-        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
-        self._wrapped_methods = {
-            self.write_user_event: gapic_v1.method_async.wrap_method(
-                self.write_user_event,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.collect_user_event: gapic_v1.method_async.wrap_method(
-                self.collect_user_event,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.purge_user_events: gapic_v1.method_async.wrap_method(
-                self.purge_user_events,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.import_user_events: gapic_v1.method_async.wrap_method(
-                self.import_user_events,
-                default_retry=retries.AsyncRetry(
-                    initial=1.0,
-                    maximum=30.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=300.0,
-                ),
-                default_timeout=300.0,
-                client_info=client_info,
-            ),
-        }
+        return self._stubs["list_custom_models"]
 
     def close(self):
-        return self.grpc_channel.close()
+        self.grpc_channel.close()
 
     @property
     def cancel_operation(
@@ -483,5 +364,9 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
             )
         return self._stubs["list_operations"]
 
+    @property
+    def kind(self) -> str:
+        return "grpc"
 
-__all__ = ("UserEventServiceGrpcAsyncIOTransport",)
+
+__all__ = ("SearchTuningServiceGrpcTransport",)

@@ -654,14 +654,8 @@ class AnswerQueryRequest(proto.Message):
                     returned.
                 search_result_mode (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SearchResultMode):
                     Specifies the search result mode. If unspecified, the search
-                    result mode is based on
-                    [DataStore.DocumentProcessingConfig.chunking_config][]:
-
-                    -  If [DataStore.DocumentProcessingConfig.chunking_config][]
-                       is specified, it defaults to ``CHUNKS``.
-                    -  Otherwise, it defaults to ``DOCUMENTS``. See `parse and
-                       chunk
-                       documents <https://cloud.google.com/generative-ai-app-builder/docs/parse-chunk-documents>`__
+                    result mode defaults to ``DOCUMENTS``. See `parse and chunk
+                    documents <https://cloud.google.com/generative-ai-app-builder/docs/parse-chunk-documents>`__
                 data_store_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.DataStoreSpec]):
                     Specs defining dataStores to filter on in a
                     search call and configurations for those
@@ -924,10 +918,13 @@ class AnswerQueryRequest(proto.Message):
                         Adversarial query classification type.
                     NON_ANSWER_SEEKING_QUERY (2):
                         Non-answer-seeking query classification type.
+                    JAIL_BREAKING_QUERY (3):
+                        Jail-breaking query classification type.
                 """
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2
+                JAIL_BREAKING_QUERY = 3
 
             types: MutableSequence[
                 "AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type"
@@ -1031,8 +1028,8 @@ class AnswerQueryResponse(proto.Message):
     Attributes:
         answer (google.cloud.discoveryengine_v1.types.Answer):
             Answer resource object. If
-            [AnswerQueryRequest.StepSpec.max_step_count][] is greater
-            than 1, use
+            [AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.max_rephrase_steps][google.cloud.discoveryengine.v1.AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.max_rephrase_steps]
+            is greater than 1, use
             [Answer.name][google.cloud.discoveryengine.v1.Answer.name]
             to fetch answer information using
             [ConversationalSearchService.GetAnswer][google.cloud.discoveryengine.v1.ConversationalSearchService.GetAnswer]

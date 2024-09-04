@@ -414,9 +414,10 @@ class ControlServiceRestTransport(ControlServiceTransport):
             Returns:
                 ~.gcd_control.Control:
                     Defines a conditioned behavior to employ during serving.
-                Must be attached to a [ServingConfig][] to be considered
-                at serving time. Permitted actions dependent on
-                ``SolutionType``.
+                Must be attached to a
+                [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
+                to be considered at serving time. Permitted actions
+                dependent on ``SolutionType``.
 
             """
 
@@ -601,9 +602,10 @@ class ControlServiceRestTransport(ControlServiceTransport):
             Returns:
                 ~.control.Control:
                     Defines a conditioned behavior to employ during serving.
-                Must be attached to a [ServingConfig][] to be considered
-                at serving time. Permitted actions dependent on
-                ``SolutionType``.
+                Must be attached to a
+                [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
+                to be considered at serving time. Permitted actions
+                dependent on ``SolutionType``.
 
             """
 
@@ -791,9 +793,10 @@ class ControlServiceRestTransport(ControlServiceTransport):
             Returns:
                 ~.gcd_control.Control:
                     Defines a conditioned behavior to employ during serving.
-                Must be attached to a [ServingConfig][] to be considered
-                at serving time. Permitted actions dependent on
-                ``SolutionType``.
+                Must be attached to a
+                [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
+                to be considered at serving time. Permitted actions
+                dependent on ``SolutionType``.
 
             """
 
@@ -1061,6 +1064,10 @@ class ControlServiceRestTransport(ControlServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                 },
                 {
@@ -1180,6 +1187,10 @@ class ControlServiceRestTransport(ControlServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*/dataStores/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                 },
                 {
                     "method": "get",

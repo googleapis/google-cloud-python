@@ -48,24 +48,24 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1.services.control_service import pagers
-from google.cloud.discoveryengine_v1.types import common
-from google.cloud.discoveryengine_v1.types import control
-from google.cloud.discoveryengine_v1.types import control as gcd_control
-from google.cloud.discoveryengine_v1.types import control_service
+from google.cloud.discoveryengine_v1.types import (
+    custom_tuning_model,
+    search_tuning_service,
+)
 
-from .transports.base import DEFAULT_CLIENT_INFO, ControlServiceTransport
-from .transports.grpc import ControlServiceGrpcTransport
-from .transports.grpc_asyncio import ControlServiceGrpcAsyncIOTransport
-from .transports.rest import ControlServiceRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, SearchTuningServiceTransport
+from .transports.grpc import SearchTuningServiceGrpcTransport
+from .transports.grpc_asyncio import SearchTuningServiceGrpcAsyncIOTransport
+from .transports.rest import SearchTuningServiceRestTransport
 
 
-class ControlServiceClientMeta(type):
-    """Metaclass for the ControlService client.
+class SearchTuningServiceClientMeta(type):
+    """Metaclass for the SearchTuningService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
@@ -74,15 +74,15 @@ class ControlServiceClientMeta(type):
 
     _transport_registry = (
         OrderedDict()
-    )  # type: Dict[str, Type[ControlServiceTransport]]
-    _transport_registry["grpc"] = ControlServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = ControlServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = ControlServiceRestTransport
+    )  # type: Dict[str, Type[SearchTuningServiceTransport]]
+    _transport_registry["grpc"] = SearchTuningServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = SearchTuningServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = SearchTuningServiceRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[ControlServiceTransport]:
+    ) -> Type[SearchTuningServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -101,12 +101,8 @@ class ControlServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class ControlServiceClient(metaclass=ControlServiceClientMeta):
-    """Service for performing CRUD operations on Controls.
-    Controls allow for custom logic to be implemented in the serving
-    path. Controls need to be attached to a Serving Config to be
-    considered during a request.
-    """
+class SearchTuningServiceClient(metaclass=SearchTuningServiceClientMeta):
+    """Service for search tuning."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -158,7 +154,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ControlServiceClient: The constructed client.
+            SearchTuningServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -176,7 +172,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ControlServiceClient: The constructed client.
+            SearchTuningServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -185,35 +181,35 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> ControlServiceTransport:
+    def transport(self) -> SearchTuningServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            ControlServiceTransport: The transport used by the client
+            SearchTuningServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
 
     @staticmethod
-    def control_path(
+    def custom_tuning_model_path(
         project: str,
         location: str,
         data_store: str,
-        control: str,
+        custom_tuning_model: str,
     ) -> str:
-        """Returns a fully-qualified control string."""
-        return "projects/{project}/locations/{location}/dataStores/{data_store}/controls/{control}".format(
+        """Returns a fully-qualified custom_tuning_model string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/customTuningModels/{custom_tuning_model}".format(
             project=project,
             location=location,
             data_store=data_store,
-            control=control,
+            custom_tuning_model=custom_tuning_model,
         )
 
     @staticmethod
-    def parse_control_path(path: str) -> Dict[str, str]:
-        """Parses a control path into its component segments."""
+    def parse_custom_tuning_model_path(path: str) -> Dict[str, str]:
+        """Parses a custom_tuning_model path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/controls/(?P<control>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/customTuningModels/(?P<custom_tuning_model>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -459,14 +455,14 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = ControlServiceClient._DEFAULT_UNIVERSE
+            _default_universe = SearchTuningServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = ControlServiceClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = SearchTuningServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = ControlServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            api_endpoint = SearchTuningServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
                 UNIVERSE_DOMAIN=universe_domain
             )
         return api_endpoint
@@ -487,7 +483,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = ControlServiceClient._DEFAULT_UNIVERSE
+        universe_domain = SearchTuningServiceClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -513,7 +509,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             ValueError: when client_universe does not match the universe in credentials.
         """
 
-        default_universe = ControlServiceClient._DEFAULT_UNIVERSE
+        default_universe = SearchTuningServiceClient._DEFAULT_UNIVERSE
         credentials_universe = getattr(credentials, "universe_domain", default_universe)
 
         if client_universe != credentials_universe:
@@ -537,7 +533,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
         """
         self._is_universe_domain_valid = (
             self._is_universe_domain_valid
-            or ControlServiceClient._compare_universes(
+            or SearchTuningServiceClient._compare_universes(
                 self.universe_domain, self.transport._credentials
             )
         )
@@ -566,12 +562,16 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[str, ControlServiceTransport, Callable[..., ControlServiceTransport]]
+            Union[
+                str,
+                SearchTuningServiceTransport,
+                Callable[..., SearchTuningServiceTransport],
+            ]
         ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the control service client.
+        """Instantiates the search tuning service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -579,10 +579,10 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,ControlServiceTransport,Callable[..., ControlServiceTransport]]]):
+            transport (Optional[Union[str,SearchTuningServiceTransport,Callable[..., SearchTuningServiceTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the ControlServiceTransport constructor.
+                arguments as used in the SearchTuningServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -635,11 +635,11 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = ControlServiceClient._read_environment_variables()
-        self._client_cert_source = ControlServiceClient._get_client_cert_source(
+        ) = SearchTuningServiceClient._read_environment_variables()
+        self._client_cert_source = SearchTuningServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = ControlServiceClient._get_universe_domain(
+        self._universe_domain = SearchTuningServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -656,9 +656,9 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, ControlServiceTransport)
+        transport_provided = isinstance(transport, SearchTuningServiceTransport)
         if transport_provided:
-            # transport is a ControlServiceTransport instance.
+            # transport is a SearchTuningServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -669,12 +669,12 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(ControlServiceTransport, transport)
+            self._transport = cast(SearchTuningServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
         self._api_endpoint = (
             self._api_endpoint
-            or ControlServiceClient._get_api_endpoint(
+            or SearchTuningServiceClient._get_api_endpoint(
                 self._client_options.api_endpoint,
                 self._client_cert_source,
                 self._universe_domain,
@@ -693,11 +693,12 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 )
 
             transport_init: Union[
-                Type[ControlServiceTransport], Callable[..., ControlServiceTransport]
+                Type[SearchTuningServiceTransport],
+                Callable[..., SearchTuningServiceTransport],
             ] = (
-                ControlServiceClient.get_transport_class(transport)
+                SearchTuningServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(Callable[..., ControlServiceTransport], transport)
+                else cast(Callable[..., SearchTuningServiceTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -712,23 +713,17 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 api_audience=self._client_options.api_audience,
             )
 
-    def create_control(
+    def train_custom_model(
         self,
-        request: Optional[Union[control_service.CreateControlRequest, dict]] = None,
+        request: Optional[
+            Union[search_tuning_service.TrainCustomModelRequest, dict]
+        ] = None,
         *,
-        parent: Optional[str] = None,
-        control: Optional[gcd_control.Control] = None,
-        control_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcd_control.Control:
-        r"""Creates a Control.
-
-        By default 1000 controls are allowed for a data store. A request
-        can be submitted to adjust this limit. If the
-        [Control][google.cloud.discoveryengine.v1.Control] to create
-        already exists, an ALREADY_EXISTS error is returned.
+    ) -> operation.Operation:
+        r"""Trains a custom model.
 
         .. code-block:: python
 
@@ -741,59 +736,30 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import discoveryengine_v1
 
-            def sample_create_control():
+            def sample_train_custom_model():
                 # Create a client
-                client = discoveryengine_v1.ControlServiceClient()
+                client = discoveryengine_v1.SearchTuningServiceClient()
 
                 # Initialize request argument(s)
-                control = discoveryengine_v1.Control()
-                control.boost_action.boost = 0.551
-                control.boost_action.filter = "filter_value"
-                control.boost_action.data_store = "data_store_value"
-                control.display_name = "display_name_value"
-                control.solution_type = "SOLUTION_TYPE_GENERATIVE_CHAT"
-
-                request = discoveryengine_v1.CreateControlRequest(
-                    parent="parent_value",
-                    control=control,
-                    control_id="control_id_value",
+                request = discoveryengine_v1.TrainCustomModelRequest(
+                    data_store="data_store_value",
                 )
 
                 # Make the request
-                response = client.create_control(request=request)
+                operation = client.train_custom_model(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1.types.CreateControlRequest, dict]):
-                The request object. Request for CreateControl method.
-            parent (str):
-                Required. Full resource name of parent data store.
-                Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}``
-                or
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``.
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            control (google.cloud.discoveryengine_v1.types.Control):
-                Required. The Control to create.
-                This corresponds to the ``control`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            control_id (str):
-                Required. The ID to use for the Control, which will
-                become the final component of the Control's resource
-                name.
-
-                This value must be within 1-63 characters. Valid
-                characters are /[a-z][0-9]-_/.
-
-                This corresponds to the ``control_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
+            request (Union[google.cloud.discoveryengine_v1.types.TrainCustomModelRequest, dict]):
+                The request object. Request message for
+                [SearchTuningService.TrainCustomModel][google.cloud.discoveryengine.v1.SearchTuningService.TrainCustomModel]
+                method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -801,45 +767,31 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.discoveryengine_v1.types.Control:
-                Defines a conditioned behavior to employ during serving.
-                   Must be attached to a
-                   [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
-                   to be considered at serving time. Permitted actions
-                   dependent on SolutionType.
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.TrainCustomModelResponse` Response of the
+                   [TrainCustomModelRequest][google.cloud.discoveryengine.v1.TrainCustomModelRequest].
+                   This message is returned by the
+                   google.longrunning.Operations.response field.
 
         """
         # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, control, control_id])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, control_service.CreateControlRequest):
-            request = control_service.CreateControlRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if control is not None:
-                request.control = control
-            if control_id is not None:
-                request.control_id = control_id
+        if not isinstance(request, search_tuning_service.TrainCustomModelRequest):
+            request = search_tuning_service.TrainCustomModelRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_control]
+        rpc = self._transport._wrapped_methods[self._transport.train_custom_model]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("data_store", request.data_store),)
+            ),
         )
 
         # Validate the universe domain.
@@ -853,22 +805,28 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             metadata=metadata,
         )
 
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            search_tuning_service.TrainCustomModelResponse,
+            metadata_type=search_tuning_service.TrainCustomModelMetadata,
+        )
+
         # Done; return the response.
         return response
 
-    def delete_control(
+    def list_custom_models(
         self,
-        request: Optional[Union[control_service.DeleteControlRequest, dict]] = None,
+        request: Optional[
+            Union[search_tuning_service.ListCustomModelsRequest, dict]
+        ] = None,
         *,
-        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes a Control.
-
-        If the [Control][google.cloud.discoveryengine.v1.Control] to
-        delete does not exist, a NOT_FOUND error is returned.
+    ) -> search_tuning_service.ListCustomModelsResponse:
+        r"""Gets a list of all the custom models.
 
         .. code-block:: python
 
@@ -881,146 +839,26 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import discoveryengine_v1
 
-            def sample_delete_control():
+            def sample_list_custom_models():
                 # Create a client
-                client = discoveryengine_v1.ControlServiceClient()
+                client = discoveryengine_v1.SearchTuningServiceClient()
 
                 # Initialize request argument(s)
-                request = discoveryengine_v1.DeleteControlRequest(
-                    name="name_value",
+                request = discoveryengine_v1.ListCustomModelsRequest(
+                    data_store="data_store_value",
                 )
 
                 # Make the request
-                client.delete_control(request=request)
-
-        Args:
-            request (Union[google.cloud.discoveryengine_v1.types.DeleteControlRequest, dict]):
-                The request object. Request for DeleteControl method.
-            name (str):
-                Required. The resource name of the Control to delete.
-                Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, control_service.DeleteControlRequest):
-            request = control_service.DeleteControlRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_control]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-    def update_control(
-        self,
-        request: Optional[Union[control_service.UpdateControlRequest, dict]] = None,
-        *,
-        control: Optional[gcd_control.Control] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcd_control.Control:
-        r"""Updates a Control.
-
-        [Control][google.cloud.discoveryengine.v1.Control] action type
-        cannot be changed. If the
-        [Control][google.cloud.discoveryengine.v1.Control] to update
-        does not exist, a NOT_FOUND error is returned.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1
-
-            def sample_update_control():
-                # Create a client
-                client = discoveryengine_v1.ControlServiceClient()
-
-                # Initialize request argument(s)
-                control = discoveryengine_v1.Control()
-                control.boost_action.boost = 0.551
-                control.boost_action.filter = "filter_value"
-                control.boost_action.data_store = "data_store_value"
-                control.display_name = "display_name_value"
-                control.solution_type = "SOLUTION_TYPE_GENERATIVE_CHAT"
-
-                request = discoveryengine_v1.UpdateControlRequest(
-                    control=control,
-                )
-
-                # Make the request
-                response = client.update_control(request=request)
+                response = client.list_custom_models(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1.types.UpdateControlRequest, dict]):
-                The request object. Request for UpdateControl method.
-            control (google.cloud.discoveryengine_v1.types.Control):
-                Required. The Control to update.
-                This corresponds to the ``control`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Indicates which fields in the provided
-                [Control][google.cloud.discoveryengine.v1.Control] to
-                update. The following are NOT supported:
-
-                -  [Control.name][google.cloud.discoveryengine.v1.Control.name]
-                -  [Control.solution_type][google.cloud.discoveryengine.v1.Control.solution_type]
-
-                If not set or empty, all supported fields are updated.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
+            request (Union[google.cloud.discoveryengine_v1.types.ListCustomModelsRequest, dict]):
+                The request object. Request message for
+                [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1.SearchTuningService.ListCustomModels]
+                method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1028,44 +866,27 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.discoveryengine_v1.types.Control:
-                Defines a conditioned behavior to employ during serving.
-                   Must be attached to a
-                   [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
-                   to be considered at serving time. Permitted actions
-                   dependent on SolutionType.
+            google.cloud.discoveryengine_v1.types.ListCustomModelsResponse:
+                Response message for
+                   [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1.SearchTuningService.ListCustomModels]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([control, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, control_service.UpdateControlRequest):
-            request = control_service.UpdateControlRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if control is not None:
-                request.control = control
-            if update_mask is not None:
-                request.update_mask = update_mask
+        if not isinstance(request, search_tuning_service.ListCustomModelsRequest):
+            request = search_tuning_service.ListCustomModelsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_control]
+        rpc = self._transport._wrapped_methods[self._transport.list_custom_models]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("control.name", request.control.name),)
+                (("data_store", request.data_store),)
             ),
         )
 
@@ -1083,233 +904,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_control(
-        self,
-        request: Optional[Union[control_service.GetControlRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> control.Control:
-        r"""Gets a Control.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1
-
-            def sample_get_control():
-                # Create a client
-                client = discoveryengine_v1.ControlServiceClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1.GetControlRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_control(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.discoveryengine_v1.types.GetControlRequest, dict]):
-                The request object. Request for GetControl method.
-            name (str):
-                Required. The resource name of the Control to get.
-                Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.discoveryengine_v1.types.Control:
-                Defines a conditioned behavior to employ during serving.
-                   Must be attached to a
-                   [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
-                   to be considered at serving time. Permitted actions
-                   dependent on SolutionType.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, control_service.GetControlRequest):
-            request = control_service.GetControlRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_control]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def list_controls(
-        self,
-        request: Optional[Union[control_service.ListControlsRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListControlsPager:
-        r"""Lists all Controls by their parent
-        [DataStore][google.cloud.discoveryengine.v1.DataStore].
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1
-
-            def sample_list_controls():
-                # Create a client
-                client = discoveryengine_v1.ControlServiceClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1.ListControlsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_controls(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.cloud.discoveryengine_v1.types.ListControlsRequest, dict]):
-                The request object. Request for ListControls method.
-            parent (str):
-                Required. The data store resource name. Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}``
-                or
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``.
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.discoveryengine_v1.services.control_service.pagers.ListControlsPager:
-                Response for ListControls method.
-
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, control_service.ListControlsRequest):
-            request = control_service.ListControlsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_controls]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListControlsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def __enter__(self) -> "ControlServiceClient":
+    def __enter__(self) -> "SearchTuningServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -1499,4 +1094,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("ControlServiceClient",)
+__all__ = ("SearchTuningServiceClient",)

@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import document as gcd_document
@@ -31,6 +32,8 @@ __protobuf__ = proto.module(
         "CreateDocumentRequest",
         "UpdateDocumentRequest",
         "DeleteDocumentRequest",
+        "BatchGetDocumentsMetadataRequest",
+        "BatchGetDocumentsMetadataResponse",
     },
 )
 
@@ -265,6 +268,175 @@ class DeleteDocumentRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class BatchGetDocumentsMetadataRequest(proto.Message):
+    r"""Request message for
+    [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1.DocumentService.BatchGetDocumentsMetadata]
+    method.
+
+    Attributes:
+        parent (str):
+            Required. The parent branch resource name, such as
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
+        matcher (google.cloud.discoveryengine_v1.types.BatchGetDocumentsMetadataRequest.Matcher):
+            Required. Matcher for the
+            [Document][google.cloud.discoveryengine.v1.Document]s.
+    """
+
+    class UrisMatcher(proto.Message):
+        r"""Matcher for the
+        [Document][google.cloud.discoveryengine.v1.Document]s by exact uris.
+
+        Attributes:
+            uris (MutableSequence[str]):
+                The exact URIs to match by.
+        """
+
+        uris: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    class Matcher(proto.Message):
+        r"""Matcher for the
+        [Document][google.cloud.discoveryengine.v1.Document]s. Currently
+        supports matching by exact URIs.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            uris_matcher (google.cloud.discoveryengine_v1.types.BatchGetDocumentsMetadataRequest.UrisMatcher):
+                Matcher by exact URIs.
+
+                This field is a member of `oneof`_ ``matcher``.
+        """
+
+        uris_matcher: "BatchGetDocumentsMetadataRequest.UrisMatcher" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="matcher",
+            message="BatchGetDocumentsMetadataRequest.UrisMatcher",
+        )
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    matcher: Matcher = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=Matcher,
+    )
+
+
+class BatchGetDocumentsMetadataResponse(proto.Message):
+    r"""Response message for
+    [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1.DocumentService.BatchGetDocumentsMetadata]
+    method.
+
+    Attributes:
+        documents_metadata (MutableSequence[google.cloud.discoveryengine_v1.types.BatchGetDocumentsMetadataResponse.DocumentMetadata]):
+            The metadata of the
+            [Document][google.cloud.discoveryengine.v1.Document]s.
+    """
+
+    class State(proto.Enum):
+        r"""The state of the
+        [Document][google.cloud.discoveryengine.v1.Document].
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Should never be set.
+            INDEXED (1):
+                The [Document][google.cloud.discoveryengine.v1.Document] is
+                indexed.
+            NOT_IN_TARGET_SITE (2):
+                The [Document][google.cloud.discoveryengine.v1.Document] is
+                not indexed because its URI is not in the
+                [TargetSite][google.cloud.discoveryengine.v1.TargetSite].
+            NOT_IN_INDEX (3):
+                The [Document][google.cloud.discoveryengine.v1.Document] is
+                not indexed.
+        """
+        STATE_UNSPECIFIED = 0
+        INDEXED = 1
+        NOT_IN_TARGET_SITE = 2
+        NOT_IN_INDEX = 3
+
+    class DocumentMetadata(proto.Message):
+        r"""The metadata of a
+        [Document][google.cloud.discoveryengine.v1.Document].
+
+        Attributes:
+            matcher_value (google.cloud.discoveryengine_v1.types.BatchGetDocumentsMetadataResponse.DocumentMetadata.MatcherValue):
+                The value of the matcher that was used to match the
+                [Document][google.cloud.discoveryengine.v1.Document].
+            state (google.cloud.discoveryengine_v1.types.BatchGetDocumentsMetadataResponse.State):
+                The state of the document.
+            last_refreshed_time (google.protobuf.timestamp_pb2.Timestamp):
+                The timestamp of the last time the
+                [Document][google.cloud.discoveryengine.v1.Document] was
+                last indexed.
+            data_ingestion_source (str):
+                The data ingestion source of the
+                [Document][google.cloud.discoveryengine.v1.Document].
+
+                Allowed values are:
+
+                -  ``batch``: Data ingested via Batch API, e.g.,
+                   ImportDocuments.
+                -  ``streaming`` Data ingested via Streaming API, e.g., FHIR
+                   streaming.
+        """
+
+        class MatcherValue(proto.Message):
+            r"""The value of the matcher that was used to match the
+            [Document][google.cloud.discoveryengine.v1.Document].
+
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                uri (str):
+                    If match by URI, the URI of the
+                    [Document][google.cloud.discoveryengine.v1.Document].
+
+                    This field is a member of `oneof`_ ``matcher_value``.
+            """
+
+            uri: str = proto.Field(
+                proto.STRING,
+                number=1,
+                oneof="matcher_value",
+            )
+
+        matcher_value: "BatchGetDocumentsMetadataResponse.DocumentMetadata.MatcherValue" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="BatchGetDocumentsMetadataResponse.DocumentMetadata.MatcherValue",
+        )
+        state: "BatchGetDocumentsMetadataResponse.State" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="BatchGetDocumentsMetadataResponse.State",
+        )
+        last_refreshed_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=timestamp_pb2.Timestamp,
+        )
+        data_ingestion_source: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+
+    documents_metadata: MutableSequence[DocumentMetadata] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=DocumentMetadata,
     )
 
 
