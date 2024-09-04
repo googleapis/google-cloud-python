@@ -4,6 +4,43 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.16.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.15.0...v1.16.0) (2024-09-04)
+
+
+### Features
+
+* Add `DataFrame.struct.explode` to add struct subfields to a DataFrame ([#916](https://github.com/googleapis/python-bigquery-dataframes/issues/916)) ([ad2f75e](https://github.com/googleapis/python-bigquery-dataframes/commit/ad2f75ecbc3660459814716eec7d1f88d1188942))
+* Implement `bigframes.bigquery.json_extract_array` ([#910](https://github.com/googleapis/python-bigquery-dataframes/issues/910)) ([575a29e](https://github.com/googleapis/python-bigquery-dataframes/commit/575a29e77d50d60d7e9a84ebb87abcdb993adef1))
+* Recover struct column from exploded Series ([#904](https://github.com/googleapis/python-bigquery-dataframes/issues/904)) ([7dd304c](https://github.com/googleapis/python-bigquery-dataframes/commit/7dd304cc7168fac222fa1330f868677818d10903))
+
+
+### Bug Fixes
+
+* Fix issue with iterating on &gt;10gb dataframes ([#949](https://github.com/googleapis/python-bigquery-dataframes/issues/949)) ([2b0f0fa](https://github.com/googleapis/python-bigquery-dataframes/commit/2b0f0faf840a1ec43d007827bbbf908df62ce9d3))
+* Improve `Series.replace` for dict input ([#907](https://github.com/googleapis/python-bigquery-dataframes/issues/907)) ([4208044](https://github.com/googleapis/python-bigquery-dataframes/commit/4208044222c6a8494004ec6f511a3b85f4eb4180))
+* NullIndex in ML model.predict error ([#917](https://github.com/googleapis/python-bigquery-dataframes/issues/917)) ([612271d](https://github.com/googleapis/python-bigquery-dataframes/commit/612271d35675353effa465a797d6e3a1285d4d37))
+* Struct field non-nullable type issue. ([#914](https://github.com/googleapis/python-bigquery-dataframes/issues/914)) ([149d5ff](https://github.com/googleapis/python-bigquery-dataframes/commit/149d5ff822da3d7fda18dbed4814e0406708cf07))
+* Unordered mode errors in ml train_test_split ([#925](https://github.com/googleapis/python-bigquery-dataframes/issues/925)) ([85d7c21](https://github.com/googleapis/python-bigquery-dataframes/commit/85d7c21b4bd5dc669098342fc60d66d89ef06b2b))
+
+
+### Performance Improvements
+
+* Improve repr performance ([#918](https://github.com/googleapis/python-bigquery-dataframes/issues/918)) ([46f2dd7](https://github.com/googleapis/python-bigquery-dataframes/commit/46f2dd79f59131bbb98fe4ae3780b98cb4d50646))
+
+
+### Dependencies
+
+* Re-introduce support for numpy 1.24.x ([#931](https://github.com/googleapis/python-bigquery-dataframes/issues/931)) ([3d71913](https://github.com/googleapis/python-bigquery-dataframes/commit/3d71913b3cf357fc9e94304ca0c94070e0a16f92))
+* Update minimum support to Pandas 1.5.3 and Pyarrow 10.0.1 ([#903](https://github.com/googleapis/python-bigquery-dataframes/issues/903)) ([7ed3962](https://github.com/googleapis/python-bigquery-dataframes/commit/7ed39629c638874d8e9cc3c7a9b3ec92ad480eca))
+
+
+### Documentation
+
+* Add Claude3 ML and RemoteFunc notebooks ([#930](https://github.com/googleapis/python-bigquery-dataframes/issues/930)) ([cfd16c1](https://github.com/googleapis/python-bigquery-dataframes/commit/cfd16c1278023bd2c3dce9c0cb378615aa00e58d))
+* Create sample notebook to manipulate struct and array data ([#883](https://github.com/googleapis/python-bigquery-dataframes/issues/883)) ([3031903](https://github.com/googleapis/python-bigquery-dataframes/commit/303190331d3194562c5ed44fefc2c9fd1d73bedd))
+* Update struct examples. ([#953](https://github.com/googleapis/python-bigquery-dataframes/issues/953)) ([d632cd0](https://github.com/googleapis/python-bigquery-dataframes/commit/d632cd03e3e3ea6dfa7c56dd459c422e95be906e))
+* Use unstack() from BigQuery DataFrames instead of pandas in the PyPI sample notebook ([#890](https://github.com/googleapis/python-bigquery-dataframes/issues/890)) ([d1883cc](https://github.com/googleapis/python-bigquery-dataframes/commit/d1883cc04ce5b2944d87a00c79b99a406001ba8f))
+
 ## [1.15.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.14.0...v1.15.0) (2024-08-20)
 
 
