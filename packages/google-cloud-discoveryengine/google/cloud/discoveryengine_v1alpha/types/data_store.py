@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
     manifest={
         "DataStore",
         "LanguageInfo",
+        "WorkspaceConfig",
     },
 )
 
@@ -100,6 +101,12 @@ class DataStore(proto.Message):
 
             Currently ACL is only supported in ``GENERIC`` industry
             vertical with non-\ ``PUBLIC_WEBSITE`` content config.
+        workspace_config (google.cloud.discoveryengine_v1alpha.types.WorkspaceConfig):
+            Config to store data store type configuration for workspace
+            data. This must be set when
+            [DataStore.content_config][google.cloud.discoveryengine.v1alpha.DataStore.content_config]
+            is set as
+            [DataStore.ContentConfig.GOOGLE_WORKSPACE][google.cloud.discoveryengine.v1alpha.DataStore.ContentConfig.GOOGLE_WORKSPACE].
         document_processing_config (google.cloud.discoveryengine_v1alpha.types.DocumentProcessingConfig):
             Configuration for Document understanding and
             enrichment.
@@ -138,11 +145,16 @@ class DataStore(proto.Message):
             PUBLIC_WEBSITE (3):
                 The data store is used for public website
                 search.
+            GOOGLE_WORKSPACE (4):
+                The data store is used for workspace search. Details of
+                workspace data store are specified in the
+                [WorkspaceConfig][google.cloud.discoveryengine.v1alpha.WorkspaceConfig].
         """
         CONTENT_CONFIG_UNSPECIFIED = 0
         NO_CONTENT = 1
         CONTENT_REQUIRED = 2
         PUBLIC_WEBSITE = 3
+        GOOGLE_WORKSPACE = 4
 
     name: str = proto.Field(
         proto.STRING,
@@ -189,6 +201,11 @@ class DataStore(proto.Message):
     acl_enabled: bool = proto.Field(
         proto.BOOL,
         number=24,
+    )
+    workspace_config: "WorkspaceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message="WorkspaceConfig",
     )
     document_processing_config: gcd_document_processing_config.DocumentProcessingConfig = proto.Field(
         proto.MESSAGE,
@@ -237,6 +254,59 @@ class LanguageInfo(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class WorkspaceConfig(proto.Message):
+    r"""Config to store data store type configuration for workspace
+    data
+
+    Attributes:
+        type_ (google.cloud.discoveryengine_v1alpha.types.WorkspaceConfig.Type):
+            The Google Workspace data source.
+        dasher_customer_id (str):
+            Obfuscated Dasher customer ID.
+    """
+
+    class Type(proto.Enum):
+        r"""Specifies the type of Workspace App supported by this
+        DataStore
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Defaults to an unspecified Workspace type.
+            GOOGLE_DRIVE (1):
+                Workspace Data Store contains Drive data
+            GOOGLE_MAIL (2):
+                Workspace Data Store contains Mail data
+            GOOGLE_SITES (3):
+                Workspace Data Store contains Sites data
+            GOOGLE_CALENDAR (4):
+                Workspace Data Store contains Calendar data
+            GOOGLE_CHAT (5):
+                Workspace Data Store contains Chat data
+            GOOGLE_GROUPS (6):
+                Workspace Data Store contains Groups data
+            GOOGLE_KEEP (7):
+                Workspace Data Store contains Keep data
+        """
+        TYPE_UNSPECIFIED = 0
+        GOOGLE_DRIVE = 1
+        GOOGLE_MAIL = 2
+        GOOGLE_SITES = 3
+        GOOGLE_CALENDAR = 4
+        GOOGLE_CHAT = 5
+        GOOGLE_GROUPS = 6
+        GOOGLE_KEEP = 7
+
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    dasher_customer_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

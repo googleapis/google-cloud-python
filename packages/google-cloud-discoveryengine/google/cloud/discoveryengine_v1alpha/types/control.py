@@ -154,7 +154,7 @@ class Control(proto.Message):
         associated_serving_config_ids (MutableSequence[str]):
             Output only. List of all
             [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig]
-            ids this control is attached to. May take up to 10 minutes
+            IDs this control is attached to. May take up to 10 minutes
             to update after changes.
         solution_type (google.cloud.discoveryengine_v1alpha.types.SolutionType):
             Required. Immutable. What solution the

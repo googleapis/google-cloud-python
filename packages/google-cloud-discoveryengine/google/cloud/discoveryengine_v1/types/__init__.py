@@ -62,6 +62,7 @@ from .conversational_search_service import (
     UpdateConversationRequest,
     UpdateSessionRequest,
 )
+from .custom_tuning_model import CustomTuningModel
 from .data_store import DataStore
 from .data_store_service import (
     CreateDataStoreMetadata,
@@ -76,6 +77,8 @@ from .data_store_service import (
 from .document import Document
 from .document_processing_config import DocumentProcessingConfig
 from .document_service import (
+    BatchGetDocumentsMetadataRequest,
+    BatchGetDocumentsMetadataResponse,
     CreateDocumentRequest,
     DeleteDocumentRequest,
     GetDocumentRequest,
@@ -133,9 +136,13 @@ from .purge_config import (
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
     PurgeDocumentsResponse,
+    PurgeErrorConfig,
     PurgeSuggestionDenyListEntriesMetadata,
     PurgeSuggestionDenyListEntriesRequest,
     PurgeSuggestionDenyListEntriesResponse,
+    PurgeUserEventsMetadata,
+    PurgeUserEventsRequest,
+    PurgeUserEventsResponse,
 )
 from .rank_service import RankingRecord, RankRequest, RankResponse
 from .recommendation_service import RecommendRequest, RecommendResponse
@@ -152,6 +159,13 @@ from .schema_service import (
     UpdateSchemaRequest,
 )
 from .search_service import SearchRequest, SearchResponse
+from .search_tuning_service import (
+    ListCustomModelsRequest,
+    ListCustomModelsResponse,
+    TrainCustomModelMetadata,
+    TrainCustomModelRequest,
+    TrainCustomModelResponse,
+)
 from .session import Query, Session
 from .site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
 from .site_search_engine_service import (
@@ -240,6 +254,7 @@ __all__ = (
     "ListSessionsResponse",
     "UpdateConversationRequest",
     "UpdateSessionRequest",
+    "CustomTuningModel",
     "DataStore",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
@@ -251,6 +266,8 @@ __all__ = (
     "UpdateDataStoreRequest",
     "Document",
     "DocumentProcessingConfig",
+    "BatchGetDocumentsMetadataRequest",
+    "BatchGetDocumentsMetadataResponse",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
     "GetDocumentRequest",
@@ -302,9 +319,13 @@ __all__ = (
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
+    "PurgeErrorConfig",
     "PurgeSuggestionDenyListEntriesMetadata",
     "PurgeSuggestionDenyListEntriesRequest",
     "PurgeSuggestionDenyListEntriesResponse",
+    "PurgeUserEventsMetadata",
+    "PurgeUserEventsRequest",
+    "PurgeUserEventsResponse",
     "RankingRecord",
     "RankRequest",
     "RankResponse",
@@ -322,6 +343,11 @@ __all__ = (
     "UpdateSchemaRequest",
     "SearchRequest",
     "SearchResponse",
+    "ListCustomModelsRequest",
+    "ListCustomModelsResponse",
+    "TrainCustomModelMetadata",
+    "TrainCustomModelRequest",
+    "TrainCustomModelResponse",
     "Query",
     "Session",
     "SiteSearchEngine",

@@ -186,6 +186,11 @@ class DocumentServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.batch_get_documents_metadata: gapic_v1.method.wrap_method(
+                self.batch_get_documents_metadata,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -274,6 +279,18 @@ class DocumentServiceTransport(abc.ABC):
     ) -> Callable[
         [document_service.GetProcessedDocumentRequest],
         Union[document.ProcessedDocument, Awaitable[document.ProcessedDocument]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_get_documents_metadata(
+        self,
+    ) -> Callable[
+        [document_service.BatchGetDocumentsMetadataRequest],
+        Union[
+            document_service.BatchGetDocumentsMetadataResponse,
+            Awaitable[document_service.BatchGetDocumentsMetadataResponse],
+        ],
     ]:
         raise NotImplementedError()
 

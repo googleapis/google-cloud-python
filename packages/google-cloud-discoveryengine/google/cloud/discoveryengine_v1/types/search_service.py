@@ -139,9 +139,12 @@ class SearchRequest(proto.Message):
             Leave it unset if ordered by relevance. ``order_by``
             expression is case-sensitive.
 
-            For more information on ordering for retail search, see
-            `Ordering <https://cloud.google.com/retail/docs/filter-and-order#order>`__
-
+            For more information on ordering the website search results,
+            see `Order web search
+            results <https://cloud.google.com/generative-ai-app-builder/docs/order-web-search-results>`__.
+            For more information on ordering the healthcare search
+            results, see `Order healthcare search
+            results <https://cloud.google.com/generative-ai-app-builder/docs/order-hc-results>`__.
             If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
             returned.
         user_info (google.cloud.discoveryengine_v1.types.UserInfo):
@@ -682,12 +685,7 @@ class SearchRequest(proto.Message):
                 be no extractive answer in the search response.
             search_result_mode (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SearchResultMode):
                 Specifies the search result mode. If unspecified, the search
-                result mode is based on
-                [DataStore.DocumentProcessingConfig.chunking_config][]:
-
-                -  If [DataStore.DocumentProcessingConfig.chunking_config][]
-                   is specified, it defaults to ``CHUNKS``.
-                -  Otherwise, it defaults to ``DOCUMENTS``.
+                result mode defaults to ``DOCUMENTS``.
             chunk_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.ChunkSpec):
                 Specifies the chunk spec to be returned from the search
                 response. Only available if the
@@ -698,12 +696,7 @@ class SearchRequest(proto.Message):
 
         class SearchResultMode(proto.Enum):
             r"""Specifies the search result mode. If unspecified, the search result
-            mode is based on
-            [DataStore.DocumentProcessingConfig.chunking_config][]:
-
-            -  If [DataStore.DocumentProcessingConfig.chunking_config][] is
-               specified, it defaults to ``CHUNKS``.
-            -  Otherwise, it defaults to ``DOCUMENTS``.
+            mode defaults to ``DOCUMENTS``.
 
             Values:
                 SEARCH_RESULT_MODE_UNSPECIFIED (0):
@@ -815,6 +808,14 @@ class SearchRequest(proto.Message):
                     navigational queries. If this field is set to ``true``, we
                     skip generating summaries for non-summary seeking queries
                     and return fallback messages instead.
+                ignore_low_relevant_content (bool):
+                    Specifies whether to filter out queries that have low
+                    relevance. The default value is ``false``.
+
+                    If this field is set to ``false``, all search results are
+                    used regardless of relevance to generate answers. If set to
+                    ``true``, only queries with high relevance search results
+                    will generate answers.
                 model_prompt_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec):
                     If specified, the spec will be used to modify
                     the prompt provided to the LLM.
@@ -891,6 +892,10 @@ class SearchRequest(proto.Message):
             ignore_non_summary_seeking_query: bool = proto.Field(
                 proto.BOOL,
                 number=4,
+            )
+            ignore_low_relevant_content: bool = proto.Field(
+                proto.BOOL,
+                number=9,
             )
             model_prompt_spec: "SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec" = proto.Field(
                 proto.MESSAGE,
@@ -1275,7 +1280,8 @@ class SearchResponse(proto.Message):
             A unique search token. This should be included in the
             [UserEvent][google.cloud.discoveryengine.v1.UserEvent] logs
             resulting from this search, which enables accurate
-            attribution of search model performance.
+            attribution of search model performance. This also helps to
+            identify a request during the customer support scenarios.
         redirect_uri (str):
             The URI of a customer-defined redirect page. If redirect
             action is triggered, no search is performed, and only
@@ -1442,13 +1448,13 @@ class SearchResponse(proto.Message):
                 ADVERSARIAL_QUERY_IGNORED (1):
                     The adversarial query ignored case.
 
-                    Only populated when
+                    Only used when
                     [SummarySpec.ignore_adversarial_query][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SummarySpec.ignore_adversarial_query]
                     is set to ``true``.
                 NON_SUMMARY_SEEKING_QUERY_IGNORED (2):
                     The non-summary seeking query ignored case.
 
-                    Only populated when
+                    Only used when
                     [SummarySpec.ignore_non_summary_seeking_query][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SummarySpec.ignore_non_summary_seeking_query]
                     is set to ``true``.
                 OUT_OF_DOMAIN_QUERY_IGNORED (3):
@@ -1470,6 +1476,24 @@ class SearchResponse(proto.Message):
 
                     Google skips the summary if the LLM addon is not
                     enabled.
+                NO_RELEVANT_CONTENT (6):
+                    The no relevant content case.
+
+                    Google skips the summary if there is no relevant
+                    content in the retrieved search results.
+                JAIL_BREAKING_QUERY_IGNORED (7):
+                    The jail-breaking query ignored case.
+
+                    For example, "Reply in the tone of a competing company's
+                    CEO". Only used when
+                    [SearchRequest.ContentSearchSpec.SummarySpec.ignore_jail_breaking_query]
+                    is set to ``true``.
+                CUSTOMER_POLICY_VIOLATION (8):
+                    The customer policy violation case.
+
+                    Google skips the summary if there is a customer
+                    policy violation detected. The policy is defined
+                    by the customer.
             """
             SUMMARY_SKIPPED_REASON_UNSPECIFIED = 0
             ADVERSARIAL_QUERY_IGNORED = 1
@@ -1477,6 +1501,9 @@ class SearchResponse(proto.Message):
             OUT_OF_DOMAIN_QUERY_IGNORED = 3
             POTENTIAL_POLICY_VIOLATION = 4
             LLM_ADDON_NOT_ENABLED = 5
+            NO_RELEVANT_CONTENT = 6
+            JAIL_BREAKING_QUERY_IGNORED = 7
+            CUSTOMER_POLICY_VIOLATION = 8
 
         class SafetyAttributes(proto.Message):
             r"""Safety Attribute categories and their associated confidence

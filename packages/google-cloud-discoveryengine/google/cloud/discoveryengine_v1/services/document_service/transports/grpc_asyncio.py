@@ -484,6 +484,37 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
             )
         return self._stubs["purge_documents"]
 
+    @property
+    def batch_get_documents_metadata(
+        self,
+    ) -> Callable[
+        [document_service.BatchGetDocumentsMetadataRequest],
+        Awaitable[document_service.BatchGetDocumentsMetadataResponse],
+    ]:
+        r"""Return a callable for the batch get documents metadata method over gRPC.
+
+        Gets index freshness metadata for
+        [Document][google.cloud.discoveryengine.v1.Document]s. Supported
+        for website search only.
+
+        Returns:
+            Callable[[~.BatchGetDocumentsMetadataRequest],
+                    Awaitable[~.BatchGetDocumentsMetadataResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_get_documents_metadata" not in self._stubs:
+            self._stubs["batch_get_documents_metadata"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.DocumentService/BatchGetDocumentsMetadata",
+                request_serializer=document_service.BatchGetDocumentsMetadataRequest.serialize,
+                response_deserializer=document_service.BatchGetDocumentsMetadataResponse.deserialize,
+            )
+        return self._stubs["batch_get_documents_metadata"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -528,6 +559,11 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
             ),
             self.purge_documents: gapic_v1.method_async.wrap_method(
                 self.purge_documents,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_get_documents_metadata: gapic_v1.method_async.wrap_method(
+                self.batch_get_documents_metadata,
                 default_timeout=None,
                 client_info=client_info,
             ),

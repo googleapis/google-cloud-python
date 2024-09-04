@@ -2455,6 +2455,7 @@ def test_write_user_event_rest(request_type):
                 "uri": "uri_value",
                 "quantity": 895,
                 "promotion_ids": ["promotion_ids_value1", "promotion_ids_value2"],
+                "joined": True,
             }
         ],
         "panel": {

@@ -503,6 +503,37 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
             )
         return self._stubs["get_processed_document"]
 
+    @property
+    def batch_get_documents_metadata(
+        self,
+    ) -> Callable[
+        [document_service.BatchGetDocumentsMetadataRequest],
+        document_service.BatchGetDocumentsMetadataResponse,
+    ]:
+        r"""Return a callable for the batch get documents metadata method over gRPC.
+
+        Gets index freshness metadata for
+        [Document][google.cloud.discoveryengine.v1alpha.Document]s.
+        Supported for website search only.
+
+        Returns:
+            Callable[[~.BatchGetDocumentsMetadataRequest],
+                    ~.BatchGetDocumentsMetadataResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_get_documents_metadata" not in self._stubs:
+            self._stubs["batch_get_documents_metadata"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.DocumentService/BatchGetDocumentsMetadata",
+                request_serializer=document_service.BatchGetDocumentsMetadataRequest.serialize,
+                response_deserializer=document_service.BatchGetDocumentsMetadataResponse.deserialize,
+            )
+        return self._stubs["batch_get_documents_metadata"]
+
     def close(self):
         self.grpc_channel.close()
 

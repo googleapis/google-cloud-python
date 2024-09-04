@@ -4181,6 +4181,10 @@ def test_create_data_store_rest(request_type):
             "external_idp_config": {"workforce_pool_name": "workforce_pool_name_value"},
         },
         "acl_enabled": True,
+        "workspace_config": {
+            "type_": 1,
+            "dasher_customer_id": "dasher_customer_id_value",
+        },
         "document_processing_config": {
             "name": "name_value",
             "chunking_config": {
@@ -5653,6 +5657,10 @@ def test_update_data_store_rest(request_type):
             "external_idp_config": {"workforce_pool_name": "workforce_pool_name_value"},
         },
         "acl_enabled": True,
+        "workspace_config": {
+            "type_": 1,
+            "dasher_customer_id": "dasher_customer_id_value",
+        },
         "document_processing_config": {
             "name": "name_value",
             "chunking_config": {

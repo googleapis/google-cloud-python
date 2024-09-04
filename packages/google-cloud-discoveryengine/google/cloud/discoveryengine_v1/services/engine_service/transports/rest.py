@@ -479,6 +479,10 @@ class EngineServiceRestTransport(EngineServiceTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                     },
                     {
@@ -538,6 +542,10 @@ class EngineServiceRestTransport(EngineServiceTransport):
                     {
                         "method": "get",
                         "uri": "/v1/{name=projects/*/locations/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                     },
                     {
                         "method": "get",
@@ -1226,6 +1234,10 @@ class EngineServiceRestTransport(EngineServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                 },
                 {
@@ -1345,6 +1357,10 @@ class EngineServiceRestTransport(EngineServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*/dataStores/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                 },
                 {
                     "method": "get",

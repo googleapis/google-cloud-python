@@ -506,6 +506,11 @@
         "grpc": {
           "libraryClient": "DocumentServiceClient",
           "rpcs": {
+            "BatchGetDocumentsMetadata": {
+              "methods": [
+                "batch_get_documents_metadata"
+              ]
+            },
             "CreateDocument": {
               "methods": [
                 "create_document"
@@ -546,6 +551,11 @@
         "grpc-async": {
           "libraryClient": "DocumentServiceAsyncClient",
           "rpcs": {
+            "BatchGetDocumentsMetadata": {
+              "methods": [
+                "batch_get_documents_metadata"
+              ]
+            },
             "CreateDocument": {
               "methods": [
                 "create_document"
@@ -586,6 +596,11 @@
         "rest": {
           "libraryClient": "DocumentServiceClient",
           "rpcs": {
+            "BatchGetDocumentsMetadata": {
+              "methods": [
+                "batch_get_documents_metadata"
+              ]
+            },
             "CreateDocument": {
               "methods": [
                 "create_document"

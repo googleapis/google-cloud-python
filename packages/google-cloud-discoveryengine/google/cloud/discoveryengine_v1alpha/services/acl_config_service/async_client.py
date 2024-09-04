@@ -272,7 +272,7 @@ class AclConfigServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> acl_config.AclConfig:
-        r"""Default Acl Configuration for use in a location of a
+        r"""Default ACL configuration for use in a location of a
         customer's project. Updates will only reflect to new
         data stores. Existing data stores will still use the old
         value.

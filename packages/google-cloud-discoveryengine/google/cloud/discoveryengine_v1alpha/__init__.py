@@ -141,7 +141,7 @@ from .types.conversational_search_service import (
     UpdateSessionRequest,
 )
 from .types.custom_tuning_model import CustomTuningModel
-from .types.data_store import DataStore, LanguageInfo
+from .types.data_store import DataStore, LanguageInfo, WorkspaceConfig
 from .types.data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -157,6 +157,8 @@ from .types.data_store_service import (
 from .types.document import Document, ProcessedDocument
 from .types.document_processing_config import DocumentProcessingConfig
 from .types.document_service import (
+    BatchGetDocumentsMetadataRequest,
+    BatchGetDocumentsMetadataResponse,
     CreateDocumentRequest,
     DeleteDocumentRequest,
     GetDocumentRequest,
@@ -378,6 +380,8 @@ __all__ = (
     "BatchCreateTargetSiteMetadata",
     "BatchCreateTargetSitesRequest",
     "BatchCreateTargetSitesResponse",
+    "BatchGetDocumentsMetadataRequest",
+    "BatchGetDocumentsMetadataResponse",
     "BatchVerifyTargetSitesMetadata",
     "BatchVerifyTargetSitesRequest",
     "BatchVerifyTargetSitesResponse",
@@ -632,5 +636,6 @@ __all__ = (
     "UserEvent",
     "UserEventServiceClient",
     "UserInfo",
+    "WorkspaceConfig",
     "WriteUserEventRequest",
 )

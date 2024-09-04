@@ -111,6 +111,12 @@ class Answer(proto.Message):
                 For example, "Reply in the tone of a competing
                 company's CEO". Google skips the answer if the
                 query is classified as a jail-breaking query.
+            CUSTOMER_POLICY_VIOLATION (7):
+                The customer policy violation case.
+
+                Google skips the summary if there is a customer
+                policy violation detected. The policy is defined
+                by the customer.
         """
         ANSWER_SKIPPED_REASON_UNSPECIFIED = 0
         ADVERSARIAL_QUERY_IGNORED = 1
@@ -119,6 +125,7 @@ class Answer(proto.Message):
         POTENTIAL_POLICY_VIOLATION = 4
         NO_RELEVANT_CONTENT = 5
         JAIL_BREAKING_QUERY_IGNORED = 6
+        CUSTOMER_POLICY_VIOLATION = 7
 
     class Citation(proto.Message):
         r"""Citation info for a segment.

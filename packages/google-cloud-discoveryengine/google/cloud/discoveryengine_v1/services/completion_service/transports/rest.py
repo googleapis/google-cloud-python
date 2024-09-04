@@ -492,6 +492,10 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                     },
                     {
@@ -551,6 +555,10 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
                     {
                         "method": "get",
                         "uri": "/v1/{name=projects/*/locations/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                     },
                     {
                         "method": "get",
@@ -1304,6 +1312,10 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                 },
                 {
@@ -1423,6 +1435,10 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*/dataStores/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
                 },
                 {
                     "method": "get",

@@ -1065,7 +1065,11 @@ class DocumentServiceAsyncClient:
                 client = discoveryengine_v1.DocumentServiceAsyncClient()
 
                 # Initialize request argument(s)
+                gcs_source = discoveryengine_v1.GcsSource()
+                gcs_source.input_uris = ['input_uris_value1', 'input_uris_value2']
+
                 request = discoveryengine_v1.PurgeDocumentsRequest(
+                    gcs_source=gcs_source,
                     parent="parent_value",
                     filter="filter_value",
                 )
@@ -1137,6 +1141,118 @@ class DocumentServiceAsyncClient:
             self._client._transport.operations_client,
             purge_config.PurgeDocumentsResponse,
             metadata_type=purge_config.PurgeDocumentsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def batch_get_documents_metadata(
+        self,
+        request: Optional[
+            Union[document_service.BatchGetDocumentsMetadataRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> document_service.BatchGetDocumentsMetadataResponse:
+        r"""Gets index freshness metadata for
+        [Document][google.cloud.discoveryengine.v1.Document]s. Supported
+        for website search only.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1
+
+            async def sample_batch_get_documents_metadata():
+                # Create a client
+                client = discoveryengine_v1.DocumentServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1.BatchGetDocumentsMetadataRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.batch_get_documents_metadata(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1.types.BatchGetDocumentsMetadataRequest, dict]]):
+                The request object. Request message for
+                [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1.DocumentService.BatchGetDocumentsMetadata]
+                method.
+            parent (:class:`str`):
+                Required. The parent branch resource name, such as
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1.types.BatchGetDocumentsMetadataResponse:
+                Response message for
+                   [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1.DocumentService.BatchGetDocumentsMetadata]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, document_service.BatchGetDocumentsMetadataRequest):
+            request = document_service.BatchGetDocumentsMetadataRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_get_documents_metadata
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.

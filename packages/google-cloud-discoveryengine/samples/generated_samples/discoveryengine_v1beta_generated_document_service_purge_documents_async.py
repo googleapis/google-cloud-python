@@ -39,7 +39,11 @@ async def sample_purge_documents():
     client = discoveryengine_v1beta.DocumentServiceAsyncClient()
 
     # Initialize request argument(s)
+    gcs_source = discoveryengine_v1beta.GcsSource()
+    gcs_source.input_uris = ['input_uris_value1', 'input_uris_value2']
+
     request = discoveryengine_v1beta.PurgeDocumentsRequest(
+        gcs_source=gcs_source,
         parent="parent_value",
         filter="filter_value",
     )

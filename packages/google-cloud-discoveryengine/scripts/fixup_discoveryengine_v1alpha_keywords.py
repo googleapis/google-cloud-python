@@ -41,6 +41,7 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'answer_query': ('serving_config', 'query', 'session', 'safety_spec', 'related_questions_spec', 'answer_generation_spec', 'search_spec', 'query_understanding_spec', 'asynchronous_mode', 'user_pseudo_id', 'user_labels', ),
         'batch_create_target_sites': ('parent', 'requests', ),
+        'batch_get_documents_metadata': ('parent', 'matcher', ),
         'batch_verify_target_sites': ('parent', ),
         'check_grounding': ('grounding_config', 'answer_candidate', 'facts', 'grounding_spec', 'user_labels', ),
         'collect_user_event': ('parent', 'user_event', 'uri', 'ets', ),
