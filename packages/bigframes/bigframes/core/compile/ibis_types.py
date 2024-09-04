@@ -144,10 +144,12 @@ def cast_ibis_value(
         ),
         ibis_dtypes.Decimal(precision=38, scale=9): (
             ibis_dtypes.float64,
+            ibis_dtypes.int64,
             ibis_dtypes.Decimal(precision=76, scale=38),
         ),
         ibis_dtypes.Decimal(precision=76, scale=38): (
             ibis_dtypes.float64,
+            ibis_dtypes.int64,
             ibis_dtypes.Decimal(precision=38, scale=9),
         ),
         ibis_dtypes.time: (
