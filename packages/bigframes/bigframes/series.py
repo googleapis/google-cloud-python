@@ -53,6 +53,7 @@ import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.base
 import bigframes.operations.datetimes as dt
+import bigframes.operations.lists as lists
 import bigframes.operations.plotting as plotting
 import bigframes.operations.strings as strings
 import bigframes.operations.structs as structs
@@ -65,6 +66,8 @@ _remote_function_recommendation_message = (
     "Your functions could not be applied directly to the Series."
     " Try converting it to a remote function."
 )
+
+_list = list  # Type alias to escape Series.list property
 
 
 @log_adapter.class_logger
@@ -160,6 +163,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     @property
     def struct(self) -> structs.StructAccessor:
         return structs.StructAccessor(self._block)
+
+    @property
+    def list(self) -> lists.ListAccessor:
+        return lists.ListAccessor(self._block)
 
     @property
     @validations.requires_ordering()
@@ -1708,7 +1715,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             buf, columns=columns, header=header, index=index, **kwargs
         )
 
-    def tolist(self) -> list:
+    def tolist(self) -> _list:
         return self.to_pandas().to_list()
 
     to_list = tolist

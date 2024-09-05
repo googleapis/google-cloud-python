@@ -6,6 +6,71 @@ from __future__ import annotations
 from bigframes import constants
 
 
+class ListAccessor:
+    """Accessor object for list data properties of the Series values."""
+
+    def len(self):
+        """Compute the length of each list in the Series.
+
+        **See Also:**
+
+            - :func:`StringMethods.len` : Compute the length of each element in the Series/Index.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import pyarrow as pa
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series(
+            ...     [
+            ...         [1, 2, 3],
+            ...         [3],
+            ...     ],
+            ...     dtype=bpd.ArrowDtype(pa.list_(pa.int64())),
+            ... )
+            >>> s.list.len()
+            0    3
+            1    1
+            dtype: Int64
+
+        Returns:
+            bigframes.series.Series: A Series or Index of integer values indicating
+                the length of each element in the Series or Index.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def __getitem__(self, key: int | slice):
+        """Index or slice lists in the Series.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import pyarrow as pa
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series(
+            ...     [
+            ...         [1, 2, 3],
+            ...         [3],
+            ...     ],
+            ...     dtype=bpd.ArrowDtype(pa.list_(pa.int64())),
+            ... )
+            >>> s.list[0]
+            0    1
+            1    3
+            dtype: Int64
+
+        Args:
+            key (int | slice): Index or slice of indices to access from each list.
+                For integer indices, only non-negative values are accepted. For
+                slices, you must use a non-negative start, a non-negative end, and
+                a step of 1.
+
+        Returns:
+            bigframes.series.Series: The list at requested index.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+
 class StructAccessor:
     """
     Accessor object for structured data properties of the Series values.

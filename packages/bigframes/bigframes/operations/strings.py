@@ -23,6 +23,7 @@ import bigframes.constants as constants
 from bigframes.core import log_adapter
 import bigframes.dataframe as df
 import bigframes.operations as ops
+from bigframes.operations._op_converters import convert_index, convert_slice
 import bigframes.operations.base
 import bigframes.series as series
 
@@ -40,28 +41,9 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
 
     def __getitem__(self, key: Union[int, slice]) -> series.Series:
         if isinstance(key, int):
-            if key < 0:
-                raise NotImplementedError("Negative indexing is not supported.")
-            return self._apply_unary_op(ops.ArrayIndexOp(index=key))
+            return self._apply_unary_op(convert_index(key))
         elif isinstance(key, slice):
-            if key.step is not None and key.step != 1:
-                raise NotImplementedError(
-                    f"Only a step of 1 is allowed, got {key.step}"
-                )
-            if (key.start is not None and key.start < 0) or (
-                key.stop is not None and key.stop < 0
-            ):
-                raise NotImplementedError(
-                    "Slicing with negative numbers is not allowed."
-                )
-
-            return self._apply_unary_op(
-                ops.ArraySliceOp(
-                    start=key.start if key.start is not None else 0,
-                    stop=key.stop,
-                    step=key.step,
-                )
-            )
+            return self._apply_unary_op(convert_slice(key))
         else:
             raise ValueError(f"key must be an int or slice, got {type(key).__name__}")
 
