@@ -1,0 +1,17 @@
+{
+    "name": "google-marketingplatform-admin",
+    "name_pretty": "",
+    "api_description": "",
+    "product_documentation": "",
+    "client_documentation": "https://googleapis.dev/python/google-marketingplatform-admin/latest",
+    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-marketingplatform-admin",
+    "api_id": "admin.googleapis.com",
+    "default_version": "v1alpha",
+    "codeowner_team": "",
+    "api_shortname": "admin"
+}
