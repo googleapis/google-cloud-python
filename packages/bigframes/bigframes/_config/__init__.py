@@ -73,7 +73,12 @@ class Options:
 
     @property
     def bigquery(self) -> bigquery_options.BigQueryOptions:
-        """Options to use with the BigQuery engine."""
+        """Options to use with the BigQuery engine.
+
+        Returns:
+            bigframes._config.bigquery_options.BigQueryOptions:
+                Options for BigQuery engine.
+        """
         if self._local.bigquery_options is not None:
             # The only way we can get here is if someone called
             # _init_bigquery_thread_local.
@@ -83,7 +88,12 @@ class Options:
 
     @property
     def display(self) -> display_options.DisplayOptions:
-        """Options controlling object representation."""
+        """Options controlling object representation.
+
+        Returns:
+            bigframes._config.display_options.DisplayOptions:
+                Options for controlling object representation.
+        """
         return self._local.display_options
 
     @property
@@ -95,12 +105,21 @@ class Options:
         (e.g., to_pandas, to_numpy, values) or implicitly (e.g.,
         matplotlib plotting). This option can be overriden by
         parameters in specific functions.
+
+        Returns:
+            bigframes._config.sampling_options.SamplingOptions:
+                Options for controlling downsampling.
         """
         return self._local.sampling_options
 
     @property
     def compute(self) -> compute_options.ComputeOptions:
-        """Thread-local options controlling object computation."""
+        """Thread-local options controlling object computation.
+
+        Returns:
+            bigframes._config.compute_options.ComputeOptions:
+                Thread-local options for controlling object computation
+        """
         return self._local.compute_options
 
     @property
@@ -109,6 +128,11 @@ class Options:
 
         A thread-local session can be started by using
         `with bigframes.option_context("bigquery.some_option", "some-value"):`.
+
+        Returns:
+            bool:
+                A boolean value, where a value is True if a thread-local session
+                is in use; otherwise False.
         """
         return self._local.bigquery_options is not None
 
