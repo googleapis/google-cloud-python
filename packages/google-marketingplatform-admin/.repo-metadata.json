@@ -1,5 +1,5 @@
 {
-    "name": "google-marketingplatform-admin",
+    "name": "google-ads-marketingplatform-admin",
     "name_pretty": "",
     "api_description": "",
     "product_documentation": "",
@@ -9,9 +9,9 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",
-    "distribution_name": "google-marketingplatform-admin",
-    "api_id": "admin.googleapis.com",
+    "distribution_name": "google-ads-marketingplatform-admin",
+    "api_id": "marketingplatformadmin.googleapis.com",
     "default_version": "v1alpha",
     "codeowner_team": "",
-    "api_shortname": "admin"
+    "api_shortname": "marketingplatformadmin"
 }
