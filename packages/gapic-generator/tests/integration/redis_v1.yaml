@@ -68,3 +68,12 @@ authentication:
     oauth:
       canonical_scopes: |-
         https://www.googleapis.com/auth/cloud-platform
+
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this section
+# when async rest is GA.
+publishing:
+  library_settings:
+  - version: 'google.cloud.redis.v1'
+    python_settings:
+      experimental_features:
+        rest_async_io_enabled: true

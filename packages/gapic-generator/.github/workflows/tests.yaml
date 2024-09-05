@@ -140,7 +140,8 @@ jobs:
     strategy:
       matrix:
         python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
-        variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins]
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `_w_rest_async` variant when async rest is GA.
+        variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins, _w_rest_async]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

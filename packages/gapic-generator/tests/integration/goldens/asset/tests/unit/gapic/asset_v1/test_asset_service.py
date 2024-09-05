@@ -16405,26 +16405,25 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
-@pytest.mark.parametrize("transport_name", [
-    "grpc",
-    "rest",
-])
-def test_transport_kind(transport_name):
-    transport = AssetServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_transport_kind_grpc():
+    transport = AssetServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc"
 
 
-@pytest.mark.parametrize("transport_name", [
-    "grpc_asyncio",
-])
-@pytest.mark.asyncio
-async def test_transport_kind_async(transport_name):
-    transport = AssetServiceAsyncClient.get_transport_class(transport_name)(
-        credentials=async_anonymous_credentials(),
+def test_transport_kind_grpc_asyncio():
+    transport = AssetServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_transport_kind_rest():
+    transport = AssetServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
 
 
 def test_transport_grpc_default():

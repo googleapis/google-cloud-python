@@ -1,3 +1,5 @@
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
 {% extends '_base.py.j2' %}
 
 {% block content %}
@@ -62,6 +64,10 @@ from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
 {% endif %}
 {% if 'rest' in opts.transport %}
 from .transports.rest import {{ service.name }}RestTransport
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
+{% if rest_async_io_enabled %}
+from .transports.rest_asyncio import Async{{ service.name }}RestTransport
+{% endif %}{# if rest_async_io_enabled #}
 {% endif %}
 
 
@@ -79,6 +85,10 @@ class {{ service.client_name }}Meta(type):
     {% endif %}
     {% if "rest" in opts.transport %}
     _transport_registry["rest"] = {{ service.name }}RestTransport
+    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
+    {% if rest_async_io_enabled %}
+    _transport_registry["rest_asyncio"] = Async{{ service.name }}RestTransport
+    {% endif %}{# if rest_async_io_enabled #}
     {% endif %}
 
     def get_transport_class(cls,

@@ -294,8 +294,7 @@ class Generator:
                         ('transport' in template_name
                          and not self._is_desired_transport(template_name, opts))
                         or
-                        # TODO: Remove the following conditions once support for async rest transport is GA:
-                        # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2121.
+                        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA.
                         ('async_client' in template_name and 'grpc' not in opts.transport and
                          not api_schema.all_library_settings[api_schema.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled)
                         or

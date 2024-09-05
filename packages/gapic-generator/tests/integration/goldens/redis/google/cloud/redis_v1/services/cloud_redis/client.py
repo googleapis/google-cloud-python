@@ -49,6 +49,7 @@ from .transports.base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import CloudRedisGrpcTransport
 from .transports.grpc_asyncio import CloudRedisGrpcAsyncIOTransport
 from .transports.rest import CloudRedisRestTransport
+from .transports.rest_asyncio import AsyncCloudRedisRestTransport
 
 
 class CloudRedisClientMeta(type):
@@ -62,6 +63,7 @@ class CloudRedisClientMeta(type):
     _transport_registry["grpc"] = CloudRedisGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudRedisGrpcAsyncIOTransport
     _transport_registry["rest"] = CloudRedisRestTransport
+    _transport_registry["rest_asyncio"] = AsyncCloudRedisRestTransport
 
     def get_transport_class(cls,
             label: Optional[str] = None,
