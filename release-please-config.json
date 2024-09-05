@@ -15,6 +15,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-ads-marketingplatform-admin": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-ads-marketingplatform-admin",
+            "extra-files": [
+                "google/ads/marketingplatform_admin/gapic_version.py",
+                "google/ads/marketingplatform_admin_v1alpha/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.marketingplatform.admin.v1alpha.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-ai-generativelanguage": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
