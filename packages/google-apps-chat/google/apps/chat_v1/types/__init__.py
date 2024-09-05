@@ -17,6 +17,7 @@ from .action_status import ActionStatus
 from .annotation import (
     Annotation,
     AnnotationType,
+    ChatSpaceLinkData,
     DriveLinkData,
     RichLinkMetadata,
     SlashCommandMetadata,
@@ -123,6 +124,7 @@ from .widgets import WidgetMarkup
 __all__ = (
     "ActionStatus",
     "Annotation",
+    "ChatSpaceLinkData",
     "DriveLinkData",
     "RichLinkMetadata",
     "SlashCommandMetadata",

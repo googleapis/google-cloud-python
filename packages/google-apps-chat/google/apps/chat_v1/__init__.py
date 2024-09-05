@@ -23,6 +23,7 @@ from .types.action_status import ActionStatus
 from .types.annotation import (
     Annotation,
     AnnotationType,
+    ChatSpaceLinkData,
     DriveLinkData,
     RichLinkMetadata,
     SlashCommandMetadata,
@@ -138,6 +139,7 @@ __all__ = (
     "AttachmentDataRef",
     "CardWithId",
     "ChatServiceClient",
+    "ChatSpaceLinkData",
     "CompleteImportSpaceRequest",
     "CompleteImportSpaceResponse",
     "ContextualAddOnMarkup",
