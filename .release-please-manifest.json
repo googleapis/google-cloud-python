@@ -1,5 +1,6 @@
 {
     "packages/google-ads-admanager": "0.1.2",
+    "packages/google-ads-marketingplatform-admin": "0.0.0",
     "packages/google-ai-generativelanguage": "0.6.9",
     "packages/google-analytics-admin": "0.23.0",
     "packages/google-analytics-data": "0.18.11",
