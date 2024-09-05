@@ -390,6 +390,7 @@ class DataFrame(generic.NDFrame):
         index: bool = True,
         ordering_id: Optional[str] = None,
         clustering_columns: Union[pd.Index, Iterable[Hashable]] = (),
+        labels: dict[str, str] = {},
     ) -> str:
         """Write a DataFrame to a BigQuery table.
 
@@ -466,6 +467,9 @@ class DataFrame(generic.NDFrame):
                 if included, precede DataFrame columns in the clustering order. The
                 clustering order within the Index/DataFrame columns follows the order
                 specified in `clustering_columns`.
+
+            labels (dict[str, str], default None):
+                Specifies table labels within BigQuery
 
         Returns:
             str:

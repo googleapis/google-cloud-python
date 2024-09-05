@@ -3027,6 +3027,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         index: bool = True,
         ordering_id: Optional[str] = None,
         clustering_columns: Union[pandas.Index, Iterable[typing.Hashable]] = (),
+        labels: dict[str, str] = {},
     ) -> str:
         temp_table_ref = None
 
@@ -3081,9 +3082,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         export_array, id_overrides = self._prepare_export(
             index=index and self._has_index, ordering_id=ordering_id
         )
-        destination = bigquery.table.TableReference.from_string(
-            destination_table,
-            default_project=default_project,
+        destination: bigquery.table.TableReference = (
+            bigquery.table.TableReference.from_string(
+                destination_table,
+                default_project=default_project,
+            )
         )
         _, query_job = self._session._export(
             export_array,
@@ -3105,6 +3108,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 datetime.datetime.now(datetime.timezone.utc)
                 + constants.DEFAULT_EXPIRATION,
             )
+
+        if len(labels) != 0:
+            table = bigquery.Table(result_table)
+            table.labels = labels
+            self._session.bqclient.update_table(table, ["labels"])
 
         return destination_table
 

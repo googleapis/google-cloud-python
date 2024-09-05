@@ -4657,6 +4657,17 @@ def test_to_gbq_and_create_dataset(session, scalars_df_index, dataset_id_not_cre
     assert not loaded_scalars_df_index.empty
 
 
+def test_to_gbq_table_labels(scalars_df_index):
+    destination_table = "bigframes-dev.bigframes_tests_sys.table_labels"
+    result_table = scalars_df_index.to_gbq(
+        destination_table, labels={"test": "labels"}, if_exists="replace"
+    )
+    client = scalars_df_index._session.bqclient
+    table = client.get_table(result_table)
+    assert table.labels
+    assert table.labels["test"] == "labels"
+
+
 @pytest.mark.parametrize(
     ("col_names", "ignore_index"),
     [
