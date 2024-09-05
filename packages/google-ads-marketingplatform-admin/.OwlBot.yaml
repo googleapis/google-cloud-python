@@ -14,5 +14,5 @@
 
 deep-copy-regex:
     - source: /google/marketingplatform/admin/(v.*)/.*-py
-      dest: /owl-bot-staging/google-marketingplatform-admin/$1
-api-name: google-marketingplatform-admin
+      dest: /owl-bot-staging/google-ads-marketingplatform-admin/$1
+api-name: google-ads-marketingplatform-admin

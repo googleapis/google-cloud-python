@@ -10,8 +10,8 @@
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-ads-marketingplatform-admin",
-    "api_id": "admin.googleapis.com",
+    "api_id": "marketingplatformadmin.googleapis.com",
     "default_version": "v1alpha",
     "codeowner_team": "",
-    "api_shortname": "admin"
+    "api_shortname": "marketingplatformadmin"
 }
