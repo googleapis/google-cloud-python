@@ -15,7 +15,7 @@ API Reference
 Changelog
 ---------
 
-For a list of all ``google-marketingplatform-admin`` releases:
+For a list of all ``google-ads-marketingplatform-admin`` releases:
 
 .. toctree::
     :maxdepth: 2

@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# google-marketingplatform-admin documentation build configuration file
+# google-ads-marketingplatform-admin documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -80,7 +80,7 @@ source_suffix = [".rst", ".md"]
 root_doc = "index"
 
 # General information about the project.
-project = "google-marketingplatform-admin"
+project = "google-ads-marketingplatform-admin"
 copyright = "2019, Google"
 author = "Google APIs"
 
@@ -154,7 +154,7 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-marketingplatform-admin",
+    "description": "Google Cloud Client Libraries for google-ads-marketingplatform-admin",
     "github_user": "googleapis",
     "github_repo": "google-cloud-python",
     "github_banner": True,
@@ -248,7 +248,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-marketingplatform-admin-doc"
+htmlhelp_basename = "google-ads-marketingplatform-admin-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -281,8 +281,8 @@ latex_elements = {
 latex_documents = [
     (
         root_doc,
-        "google-marketingplatform-admin.tex",
-        "google-marketingplatform-admin Documentation",
+        "google-ads-marketingplatform-admin.tex",
+        "google-ads-marketingplatform-admin Documentation",
         author,
         "manual",
     )
@@ -316,8 +316,8 @@ latex_documents = [
 man_pages = [
     (
         root_doc,
-        "google-marketingplatform-admin",
-        "google-marketingplatform-admin Documentation",
+        "google-ads-marketingplatform-admin",
+        "google-ads-marketingplatform-admin Documentation",
         [author],
         1,
     )
@@ -335,11 +335,11 @@ man_pages = [
 texinfo_documents = [
     (
         root_doc,
-        "google-marketingplatform-admin",
-        "google-marketingplatform-admin Documentation",
+        "google-ads-marketingplatform-admin",
+        "google-ads-marketingplatform-admin Documentation",
         author,
-        "google-marketingplatform-admin",
-        "google-marketingplatform-admin Library",
+        "google-ads-marketingplatform-admin",
+        "google-ads-marketingplatform-admin Library",
         "APIs",
     )
 ]

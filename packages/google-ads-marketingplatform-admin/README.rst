@@ -1,22 +1,22 @@
-Python Client for 
-==================
+Python Client for Google Marketing Platform Admin API
+=====================================================
 
 |preview| |pypi| |versions|
 
-``_: 
+`Google Marketing Platform Admin API`_: The Google Marketing Platform Admin API allows for programmatic access to the Google Marketing Platform configuration data. You can use the Google Marketing Platform Admin API to manage links between your Google Marketing Platform organization and Google Analytics accounts, and to set the service level of your GA4 properties.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
 .. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
-.. |pypi| image:: https://img.shields.io/pypi/v/google-marketingplatform-admin.svg
-   :target: https://pypi.org/project/google-marketingplatform-admin/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-marketingplatform-admin.svg
-   :target: https://pypi.org/project/google-marketingplatform-admin/
-.. _: 
-.. _Client Library Documentation: https://googleapis.dev/python/google-marketingplatform-admin/latest
-.. _Product Documentation:  
+.. |pypi| image:: https://img.shields.io/pypi/v/google-ads-marketingplatform-admin.svg
+   :target: https://pypi.org/project/google-ads-marketingplatform-admin/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-ads-marketingplatform-admin.svg
+   :target: https://pypi.org/project/google-ads-marketingplatform-admin/
+.. _Google Marketing Platform Admin API: https://developers.google.com/analytics/devguides/config/gmp/v1
+.. _Client Library Documentation: https://googleapis.dev/python/google-ads-marketingplatform-admin/latest
+.. _Product Documentation:  https://developers.google.com/analytics/devguides/config/gmp/v1
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Google Marketing Platform Admin API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the Google Marketing Platform Admin API.:  https://developers.google.com/analytics/devguides/config/gmp/v1
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-marketingplatform-admin/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-marketingplatform-admin/samples
 
 
 Supported Python Versions
@@ -82,7 +82,7 @@ Mac/Linux
 
     python3 -m venv <your-env>
     source <your-env>/bin/activate
-    pip install google-marketingplatform-admin
+    pip install google-ads-marketingplatform-admin
 
 
 Windows
@@ -92,17 +92,17 @@ Windows
 
     py -m venv <your-env>
     .\<your-env>\Scripts\activate
-    pip install google-marketingplatform-admin
+    pip install google-ads-marketingplatform-admin
 
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Google Marketing Platform Admin API
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Google Marketing Platform Admin API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _Google Marketing Platform Admin API Product documentation:  https://developers.google.com/analytics/devguides/config/gmp/v1
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
