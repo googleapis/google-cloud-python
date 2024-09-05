@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "SlashCommandMetadata",
         "RichLinkMetadata",
         "DriveLinkData",
+        "ChatSpaceLinkData",
     },
 )
 
@@ -247,6 +248,11 @@ class SlashCommandMetadata(proto.Message):
 class RichLinkMetadata(proto.Message):
     r"""A rich link to a resource.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -256,6 +262,10 @@ class RichLinkMetadata(proto.Message):
             The rich link type.
         drive_link_data (google.apps.chat_v1.types.DriveLinkData):
             Data for a drive link.
+
+            This field is a member of `oneof`_ ``data``.
+        chat_space_link_data (google.apps.chat_v1.types.ChatSpaceLinkData):
+            Data for a chat space link.
 
             This field is a member of `oneof`_ ``data``.
     """
@@ -268,9 +278,13 @@ class RichLinkMetadata(proto.Message):
                 Default value for the enum. Don't use.
             DRIVE_FILE (1):
                 A Google Drive rich link type.
+            CHAT_SPACE (2):
+                A Chat space rich link type. For example, a
+                space smart chip.
         """
         RICH_LINK_TYPE_UNSPECIFIED = 0
         DRIVE_FILE = 1
+        CHAT_SPACE = 2
 
     uri: str = proto.Field(
         proto.STRING,
@@ -286,6 +300,12 @@ class RichLinkMetadata(proto.Message):
         number=3,
         oneof="data",
         message="DriveLinkData",
+    )
+    chat_space_link_data: "ChatSpaceLinkData" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="data",
+        message="ChatSpaceLinkData",
     )
 
 
@@ -310,6 +330,38 @@ class DriveLinkData(proto.Message):
     mime_type: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class ChatSpaceLinkData(proto.Message):
+    r"""Data for Chat space links.
+
+    Attributes:
+        space (str):
+            The space of the linked Chat space resource.
+
+            Format: ``spaces/{space}``
+        thread (str):
+            The thread of the linked Chat space resource.
+
+            Format: ``spaces/{space}/threads/{thread}``
+        message (str):
+            The message of the linked Chat space resource.
+
+            Format: ``spaces/{space}/messages/{message}``
+    """
+
+    space: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    thread: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    message: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

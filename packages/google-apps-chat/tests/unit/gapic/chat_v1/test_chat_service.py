@@ -12657,6 +12657,11 @@ def test_create_message_rest(request_type):
                         "drive_data_ref": {"drive_file_id": "drive_file_id_value"},
                         "mime_type": "mime_type_value",
                     },
+                    "chat_space_link_data": {
+                        "space": "space_value",
+                        "thread": "thread_value",
+                        "message": "message_value",
+                    },
                 },
             }
         ],
@@ -14789,6 +14794,11 @@ def test_update_message_rest(request_type):
                     "drive_link_data": {
                         "drive_data_ref": {"drive_file_id": "drive_file_id_value"},
                         "mime_type": "mime_type_value",
+                    },
+                    "chat_space_link_data": {
+                        "space": "space_value",
+                        "thread": "thread_value",
+                        "message": "message_value",
                     },
                 },
             }
