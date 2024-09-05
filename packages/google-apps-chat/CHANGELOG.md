@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.9...google-apps-chat-v0.1.10) (2024-09-05)
+
+
+### Features
+
+* [google-apps-chat] Add CHAT_SPACE link type support for GA launch ([#13064](https://github.com/googleapis/google-cloud-python/issues/13064)) ([0ee300a](https://github.com/googleapis/google-cloud-python/commit/0ee300a0497968aa2c85969924b37f95f67675f0))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.8...google-apps-chat-v0.1.9) (2024-07-30)
 
 
