@@ -1039,6 +1039,25 @@ def test_read_csv_local_w_usecols(session, scalars_pandas_df_index, engine):
 @pytest.mark.parametrize(
     "engine",
     [
+        pytest.param(
+            "bigquery",
+            id="bq_engine",
+            marks=pytest.mark.xfail(
+                raises=NotImplementedError,
+            ),
+        ),
+        pytest.param(None, id="default_engine"),
+    ],
+)
+def test_read_csv_others(session, engine):
+    uri = "https://raw.githubusercontent.com/googleapis/python-bigquery-dataframes/main/tests/data/people.csv"
+    df = session.read_csv(uri, engine=engine)
+    assert len(df.columns) == 3
+
+
+@pytest.mark.parametrize(
+    "engine",
+    [
         pytest.param("bigquery", id="bq_engine"),
         pytest.param(None, id="default_engine"),
     ],

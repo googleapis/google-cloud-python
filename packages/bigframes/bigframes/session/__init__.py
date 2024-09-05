@@ -1008,10 +1008,12 @@ class Session(
             blob = bucket.blob(blob_name)
             blob.reload()
             file_size = blob.size
-        else:  # local file path
+        elif os.path.exists(filepath):  # local file path
             file_size = os.path.getsize(filepath)
+        else:
+            file_size = None
 
-        if file_size > max_size:
+        if file_size is not None and file_size > max_size:
             # Convert to GB
             file_size = round(file_size / (1024**3), 1)
             max_size = int(max_size / 1024**3)

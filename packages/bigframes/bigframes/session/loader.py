@@ -18,6 +18,7 @@ import copy
 import dataclasses
 import datetime
 import itertools
+import os
 import typing
 from typing import Dict, Hashable, IO, Iterable, List, Optional, Sequence, Tuple, Union
 
@@ -421,11 +422,16 @@ class GbqDataLoader:
                 load_job = self._bqclient.load_table_from_uri(
                     filepath_or_buffer, table, job_config=job_config
                 )
-            else:
+            elif os.path.exists(filepath_or_buffer):  # local file path
                 with open(filepath_or_buffer, "rb") as source_file:
                     load_job = self._bqclient.load_table_from_file(
                         source_file, table, job_config=job_config
                     )
+            else:
+                raise NotImplementedError(
+                    f"BigQuery engine only supports a local file path or GCS path. "
+                    f"{constants.FEEDBACK_LINK}"
+                )
         else:
             load_job = self._bqclient.load_table_from_file(
                 filepath_or_buffer, table, job_config=job_config

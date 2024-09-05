@@ -51,8 +51,7 @@ class ReaderIOMixin:
         encoding: Optional[str] = None,
         **kwargs,
     ):
-        """Loads DataFrame from comma-separated values (csv) file locally or from
-        Cloud Storage.
+        """Loads data from a comma-separated values (csv) file into a DataFrame.
 
         The CSV file data will be persisted as a temporary BigQuery table, which can be
         automatically recycled after the Session is closed.
@@ -60,7 +59,8 @@ class ReaderIOMixin:
         .. note::
             using `engine="bigquery"` will not guarantee the same ordering as the
             file. Instead, set a serialized index column as the index and sort by
-            that in the resulting DataFrame.
+            that in the resulting DataFrame. Only files stored on your local machine
+            or in Google Cloud Storage are supported.
 
         .. note::
             For non-bigquery engine, data is inlined in the query SQL if it is
