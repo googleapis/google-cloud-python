@@ -63,7 +63,7 @@ class OrderingExpression:
         self, mapping: Mapping[str, expression.Expression]
     ) -> OrderingExpression:
         return OrderingExpression(
-            self.scalar_expression.bind_all_variables(mapping),
+            self.scalar_expression.bind_variables(mapping),
             self.direction,
             self.na_last,
         )

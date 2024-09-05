@@ -134,9 +134,22 @@ class BaseIbisIR(abc.ABC):
     ) -> T:
         """Apply an expression to the ArrayValue and assign the output to a column."""
         bindings = {col: self._get_ibis_column(col) for col in self.column_ids}
-        values = [
+        new_values = [
             op_compiler.compile_expression(expression, bindings).name(id)
             for expression, id in expression_id_pairs
+        ]
+        result = self._select(tuple([*self._columns, *new_values]))  # type: ignore
+        return result
+
+    def selection(
+        self: T,
+        input_output_pairs: typing.Tuple[typing.Tuple[str, str], ...],
+    ) -> T:
+        """Apply an expression to the ArrayValue and assign the output to a column."""
+        bindings = {col: self._get_ibis_column(col) for col in self.column_ids}
+        values = [
+            op_compiler.compile_expression(ex.free_var(input), bindings).name(id)
+            for input, id in input_output_pairs
         ]
         result = self._select(tuple(values))  # type: ignore
         return result

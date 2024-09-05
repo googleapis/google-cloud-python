@@ -265,6 +265,11 @@ class Compiler:
             return self.compile_unordered_ir(node.child)
 
     @_compile_node.register
+    def compile_selection(self, node: nodes.SelectionNode, ordered: bool = True):
+        result = self.compile_node(node.child, ordered)
+        return result.selection(node.input_output_pairs)
+
+    @_compile_node.register
     def compile_projection(self, node: nodes.ProjectionNode, ordered: bool = True):
         result = self.compile_node(node.child, ordered)
         return result.projection(node.assignments)

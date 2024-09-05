@@ -457,9 +457,7 @@ def generate_head_plan(node: nodes.BigFrameNode, n: int):
     predicate = ops.lt_op.as_expr(ex.free_var(offsets_id), ex.const(n))
     plan_w_head = nodes.FilterNode(plan_w_offsets, predicate)
     # Finally, drop the offsets column
-    return nodes.ProjectionNode(
-        plan_w_head, tuple((ex.free_var(i), i) for i in node.schema.names)
-    )
+    return nodes.SelectionNode(plan_w_head, tuple((i, i) for i in node.schema.names))
 
 
 def generate_row_count_plan(node: nodes.BigFrameNode):

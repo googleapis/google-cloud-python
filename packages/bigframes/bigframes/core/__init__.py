@@ -192,20 +192,15 @@ class ArrayValue:
         )
 
     def project_to_id(self, expression: ex.Expression, output_id: str):
-        if output_id in self.column_ids:  # Mutate case
-            exprs = [
-                ((expression if (col_id == output_id) else ex.free_var(col_id)), col_id)
-                for col_id in self.column_ids
-            ]
-        else:  # append case
-            self_projection = (
-                (ex.free_var(col_id), col_id) for col_id in self.column_ids
-            )
-            exprs = [*self_projection, (expression, output_id)]
         return ArrayValue(
             nodes.ProjectionNode(
                 child=self.node,
-                assignments=tuple(exprs),
+                assignments=(
+                    (
+                        expression,
+                        output_id,
+                    ),
+                ),
             )
         )
 
@@ -213,28 +208,22 @@ class ArrayValue:
         if destination_id in self.column_ids:  # Mutate case
             exprs = [
                 (
-                    (
-                        ex.free_var(source_id)
-                        if (col_id == destination_id)
-                        else ex.free_var(col_id)
-                    ),
+                    (source_id if (col_id == destination_id) else col_id),
                     col_id,
                 )
                 for col_id in self.column_ids
             ]
         else:  # append case
-            self_projection = (
-                (ex.free_var(col_id), col_id) for col_id in self.column_ids
-            )
-            exprs = [*self_projection, (ex.free_var(source_id), destination_id)]
+            self_projection = ((col_id, col_id) for col_id in self.column_ids)
+            exprs = [*self_projection, (source_id, destination_id)]
         return ArrayValue(
-            nodes.ProjectionNode(
+            nodes.SelectionNode(
                 child=self.node,
-                assignments=tuple(exprs),
+                input_output_pairs=tuple(exprs),
             )
         )
 
-    def assign_constant(
+    def create_constant(
         self,
         destination_id: str,
         value: typing.Any,
@@ -244,49 +233,31 @@ class ArrayValue:
             # Need to assign a data type when value is NaN.
             dtype = dtype or bigframes.dtypes.DEFAULT_DTYPE
 
-        if destination_id in self.column_ids:  # Mutate case
-            exprs = [
-                (
-                    (
-                        ex.const(value, dtype)
-                        if (col_id == destination_id)
-                        else ex.free_var(col_id)
-                    ),
-                    col_id,
-                )
-                for col_id in self.column_ids
-            ]
-        else:  # append case
-            self_projection = (
-                (ex.free_var(col_id), col_id) for col_id in self.column_ids
-            )
-            exprs = [*self_projection, (ex.const(value, dtype), destination_id)]
         return ArrayValue(
             nodes.ProjectionNode(
                 child=self.node,
-                assignments=tuple(exprs),
+                assignments=((ex.const(value, dtype), destination_id),),
             )
         )
 
     def select_columns(self, column_ids: typing.Sequence[str]) -> ArrayValue:
-        selections = ((ex.free_var(col_id), col_id) for col_id in column_ids)
+        # This basically just drops and reorders columns - logically a no-op except as a final step
+        selections = ((col_id, col_id) for col_id in column_ids)
         return ArrayValue(
-            nodes.ProjectionNode(
+            nodes.SelectionNode(
                 child=self.node,
-                assignments=tuple(selections),
+                input_output_pairs=tuple(selections),
             )
         )
 
     def drop_columns(self, columns: Iterable[str]) -> ArrayValue:
         new_projection = (
-            (ex.free_var(col_id), col_id)
-            for col_id in self.column_ids
-            if col_id not in columns
+            (col_id, col_id) for col_id in self.column_ids if col_id not in columns
         )
         return ArrayValue(
-            nodes.ProjectionNode(
+            nodes.SelectionNode(
                 child=self.node,
-                assignments=tuple(new_projection),
+                input_output_pairs=tuple(new_projection),
             )
         )
 
@@ -422,15 +393,13 @@ class ArrayValue:
             col_expr = ops.case_when_op.as_expr(*cases)
             unpivot_exprs.append((col_expr, col_id))
 
-        label_exprs = ((ex.free_var(id), id) for id in index_col_ids)
-        # passthrough columns are unchanged, just repeated N times each
-        passthrough_exprs = ((ex.free_var(id), id) for id in passthrough_columns)
+        unpivot_col_ids = [id for id, _ in unpivot_columns]
         return ArrayValue(
             nodes.ProjectionNode(
                 child=joined_array.node,
-                assignments=(*label_exprs, *unpivot_exprs, *passthrough_exprs),
+                assignments=(*unpivot_exprs,),
             )
-        )
+        ).select_columns([*index_col_ids, *unpivot_col_ids, *passthrough_columns])
 
     def _cross_join_w_labels(
         self, labels_array: ArrayValue, join_side: typing.Literal["left", "right"]

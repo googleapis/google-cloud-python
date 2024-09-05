@@ -623,7 +623,31 @@ class ReversedNode(UnaryNode):
 
 
 @dataclass(frozen=True)
+class SelectionNode(UnaryNode):
+    input_output_pairs: typing.Tuple[typing.Tuple[str, str], ...]
+
+    def __hash__(self):
+        return self._node_hash
+
+    @functools.cached_property
+    def schema(self) -> schemata.ArraySchema:
+        input_types = self.child.schema._mapping
+        items = tuple(
+            schemata.SchemaItem(output, input_types[input])
+            for input, output in self.input_output_pairs
+        )
+        return schemata.ArraySchema(items)
+
+    @property
+    def variables_introduced(self) -> int:
+        # This operation only renames variables, doesn't actually create new ones
+        return 0
+
+
+@dataclass(frozen=True)
 class ProjectionNode(UnaryNode):
+    """Assigns new variables (without modifying existing ones)"""
+
     assignments: typing.Tuple[typing.Tuple[ex.Expression, str], ...]
 
     def __post_init__(self):
@@ -631,6 +655,8 @@ class ProjectionNode(UnaryNode):
         for expression, id in self.assignments:
             # throws TypeError if invalid
             _ = expression.output_type(input_types)
+        # Cannot assign to existing variables - append only!
+        assert all(name not in self.child.schema.names for _, name in self.assignments)
 
     def __hash__(self):
         return self._node_hash
@@ -644,7 +670,10 @@ class ProjectionNode(UnaryNode):
             )
             for ex, id in self.assignments
         )
-        return schemata.ArraySchema(items)
+        schema = self.child.schema
+        for item in items:
+            schema = schema.append(item)
+        return schema
 
     @property
     def variables_introduced(self) -> int:

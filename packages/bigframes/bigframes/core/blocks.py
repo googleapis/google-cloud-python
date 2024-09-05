@@ -939,7 +939,7 @@ class Block:
         for col_id in columns:
             label = self.col_id_to_label[col_id]
             block, result_id = block.project_expr(
-                expr.bind_all_variables({input_varname: ex.free_var(col_id)}),
+                expr.bind_variables({input_varname: ex.free_var(col_id)}),
                 label=label,
             )
             block = block.copy_values(result_id, col_id)
@@ -1006,7 +1006,7 @@ class Block:
         dtype: typing.Optional[bigframes.dtypes.Dtype] = None,
     ) -> typing.Tuple[Block, str]:
         result_id = guid.generate_guid()
-        expr = self.expr.assign_constant(result_id, scalar_constant, dtype=dtype)
+        expr = self.expr.create_constant(result_id, scalar_constant, dtype=dtype)
         # Create index copy with label inserted
         # See: https://pandas.pydata.org/docs/reference/api/pandas.Index.insert.html
         labels = self.column_labels.insert(len(self.column_labels), label)
@@ -1067,7 +1067,7 @@ class Block:
             index_id = guid.generate_guid()
             result_expr = self.expr.aggregate(
                 aggregations, dropna=dropna
-            ).assign_constant(index_id, None, None)
+            ).create_constant(index_id, None, None)
             # Transpose as last operation so that final block has valid transpose cache
             return Block(
                 result_expr,
@@ -1222,7 +1222,7 @@ class Block:
         names: typing.List[Label] = []
         if len(by_column_ids) == 0:
             label_id = guid.generate_guid()
-            result_expr = result_expr.assign_constant(label_id, 0, pd.Int64Dtype())
+            result_expr = result_expr.create_constant(label_id, 0, pd.Int64Dtype())
             index_columns = (label_id,)
             names = [None]
         else:
@@ -1614,17 +1614,22 @@ class Block:
         axis_number = utils.get_axis_number("rows" if (axis is None) else axis)
         if axis_number == 0:
             expr = self._expr
+            new_index_cols = []
             for index_col in self._index_columns:
+                new_col = guid.generate_guid()
                 expr = expr.project_to_id(
                     expression=ops.add_op.as_expr(
                         ex.const(prefix),
                         ops.AsTypeOp(to_type="string").as_expr(index_col),
                     ),
-                    output_id=index_col,
+                    output_id=new_col,
                 )
+                new_index_cols.append(new_col)
+            expr = expr.select_columns((*new_index_cols, *self.value_columns))
+
             return Block(
                 expr,
-                index_columns=self.index_columns,
+                index_columns=new_index_cols,
                 column_labels=self.column_labels,
                 index_labels=self.index.names,
             )
@@ -1635,17 +1640,21 @@ class Block:
         axis_number = utils.get_axis_number("rows" if (axis is None) else axis)
         if axis_number == 0:
             expr = self._expr
+            new_index_cols = []
             for index_col in self._index_columns:
+                new_col = guid.generate_guid()
                 expr = expr.project_to_id(
                     expression=ops.add_op.as_expr(
                         ops.AsTypeOp(to_type="string").as_expr(index_col),
                         ex.const(suffix),
                     ),
-                    output_id=index_col,
+                    output_id=new_col,
                 )
+                new_index_cols.append(new_col)
+            expr = expr.select_columns((*new_index_cols, *self.value_columns))
             return Block(
                 expr,
-                index_columns=self.index_columns,
+                index_columns=new_index_cols,
                 column_labels=self.column_labels,
                 index_labels=self.index.names,
             )

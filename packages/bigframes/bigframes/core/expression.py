@@ -110,8 +110,13 @@ class Expression(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def bind_all_variables(self, bindings: Mapping[str, Expression]) -> Expression:
-        """Replace all variables with expression given in `bindings`."""
+    def bind_variables(
+        self, bindings: Mapping[str, Expression], check_bind_all: bool = True
+    ) -> Expression:
+        """Replace variables with expression given in `bindings`.
+
+        If check_bind_all is True, validate that all free variables are bound to a new value.
+        """
         ...
 
     @property
@@ -141,7 +146,9 @@ class ScalarConstantExpression(Expression):
     ) -> dtypes.ExpressionType:
         return self.dtype
 
-    def bind_all_variables(self, bindings: Mapping[str, Expression]) -> Expression:
+    def bind_variables(
+        self, bindings: Mapping[str, Expression], check_bind_all: bool = True
+    ) -> Expression:
         return self
 
     @property
@@ -178,11 +185,14 @@ class UnboundVariableExpression(Expression):
         else:
             raise ValueError(f"Type of variable {self.id} has not been fixed.")
 
-    def bind_all_variables(self, bindings: Mapping[str, Expression]) -> Expression:
+    def bind_variables(
+        self, bindings: Mapping[str, Expression], check_bind_all: bool = True
+    ) -> Expression:
         if self.id in bindings.keys():
             return bindings[self.id]
-        else:
+        elif check_bind_all:
             raise ValueError(f"Variable {self.id} remains unbound")
+        return self
 
     @property
     def is_bijective(self) -> bool:
@@ -225,10 +235,15 @@ class OpExpression(Expression):
         )
         return self.op.output_type(*operand_types)
 
-    def bind_all_variables(self, bindings: Mapping[str, Expression]) -> Expression:
+    def bind_variables(
+        self, bindings: Mapping[str, Expression], check_bind_all: bool = True
+    ) -> Expression:
         return OpExpression(
             self.op,
-            tuple(input.bind_all_variables(bindings) for input in self.inputs),
+            tuple(
+                input.bind_variables(bindings, check_bind_all=check_bind_all)
+                for input in self.inputs
+            ),
         )
 
     @property
