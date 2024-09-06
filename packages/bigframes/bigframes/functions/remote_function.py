@@ -108,6 +108,7 @@ def read_gbq_function(
     function_name: str,
     *,
     session: Session,
+    is_row_processor: bool = False,
 ):
     """
     Read an existing BigQuery function and prepare it for use in future queries.
@@ -194,5 +195,6 @@ def read_gbq_function(
     func.output_dtype = bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(  # type: ignore
         ibis_signature.output_type
     )
+    func.is_row_processor = is_row_processor  # type: ignore
     func.ibis_node = node  # type: ignore
     return func

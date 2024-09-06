@@ -692,10 +692,11 @@ def remote_function(
 remote_function.__doc__ = inspect.getdoc(bigframes.session.Session.remote_function)
 
 
-def read_gbq_function(function_name: str):
+def read_gbq_function(function_name: str, is_row_processor: bool = False):
     return global_session.with_default_session(
         bigframes.session.Session.read_gbq_function,
         function_name=function_name,
+        is_row_processor=is_row_processor,
     )
 
 
