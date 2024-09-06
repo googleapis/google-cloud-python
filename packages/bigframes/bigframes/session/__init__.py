@@ -1241,11 +1241,21 @@ class Session(
 
         **Examples:**
 
-        Use the ``cw_lower_case_ascii_only`` function from Community UDFs.
-        (https://github.com/GoogleCloudPlatform/bigquery-utils/blob/master/udfs/community/cw_lower_case_ascii_only.sqlx)
-
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
+
+        Use the [cw_lower_case_ascii_only](https://github.com/GoogleCloudPlatform/bigquery-utils/blob/master/udfs/community/README.md#cw_lower_case_ascii_onlystr-string)
+        function from Community UDFs.
+
+            >>> func = bpd.read_gbq_function("bqutil.fn.cw_lower_case_ascii_only")
+
+        You can run it on scalar input. Usually you would do so to verify that
+        it works as expected before applying to all values in a Series.
+
+            >>> func('AURÉLIE')
+            'aurÉlie'
+
+        You can apply it to a BigQuery DataFrame Series.
 
             >>> df = bpd.DataFrame({'id': [1, 2, 3], 'name': ['AURÉLIE', 'CÉLESTINE', 'DAPHNÉ']})
             >>> df
@@ -1256,7 +1266,6 @@ class Session(
             <BLANKLINE>
             [3 rows x 2 columns]
 
-            >>> func = bpd.read_gbq_function("bqutil.fn.cw_lower_case_ascii_only")
             >>> df1 = df.assign(new_name=df['name'].apply(func))
             >>> df1
                id       name   new_name
@@ -1266,9 +1275,17 @@ class Session(
             <BLANKLINE>
             [3 rows x 3 columns]
 
+        You can even use a function with multiple inputs. For example, let's use
+        [cw_instr4](https://github.com/GoogleCloudPlatform/bigquery-utils/blob/master/udfs/community/README.md#cw_instr4source-string-search-string-position-int64-ocurrence-int64)
+        from Community UDFs.
+
+            >>> func = bpd.read_gbq_function("bqutil.fn.cw_instr4")
+            >>> func('TestStr123456Str', 'Str', 1, 2)
+            14
+
         Args:
             function_name (str):
-                the function's name in BigQuery in the format
+                The function's name in BigQuery in the format
                 `project_id.dataset_id.function_name`, or
                 `dataset_id.function_name` to load from the default project, or
                 `function_name` to load from the default project and the dataset

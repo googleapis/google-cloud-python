@@ -671,10 +671,17 @@ def test_read_gbq_function_like_original(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_read_gbq_function_runs_existing_udf(session, bigquery_client, dataset_id):
+def test_read_gbq_function_runs_existing_udf(session):
     func = session.read_gbq_function("bqutil.fn.cw_lower_case_ascii_only")
     got = func("AURÉLIE")
     assert got == "aurÉlie"
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_read_gbq_function_runs_existing_udf_4_params(session):
+    func = session.read_gbq_function("bqutil.fn.cw_instr4")
+    got = func("TestStr123456Str", "Str", 1, 2)
+    assert got == 14
 
 
 @pytest.mark.flaky(retries=2, delay=120)

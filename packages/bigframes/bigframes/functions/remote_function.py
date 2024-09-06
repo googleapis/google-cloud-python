@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+import inspect
 import logging
 from typing import cast, Optional, TYPE_CHECKING
 import warnings
@@ -148,6 +149,13 @@ def read_gbq_function(
 
         expr = node(*ignored_args, **ignored_kwargs)  # type: ignore
         return ibis_client.execute(expr)
+
+    func.__signature__ = inspect.signature(func).replace(  # type: ignore
+        parameters=[
+            inspect.Parameter(name, inspect.Parameter.POSITIONAL_OR_KEYWORD)
+            for name in ibis_signature.parameter_names
+        ]
+    )
 
     # TODO: Move ibis logic to compiler step
 
