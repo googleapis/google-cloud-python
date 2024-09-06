@@ -379,6 +379,28 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def operation_path(
+        project: str,
+        database: str,
+        operation: str,
+    ) -> str:
+        """Returns a fully-qualified operation string."""
+        return "projects/{project}/databases/{database}/operations/{operation}".format(
+            project=project,
+            database=database,
+            operation=operation,
+        )
+
+    @staticmethod
+    def parse_operation_path(path: str) -> Dict[str, str]:
+        """Parses a operation path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/databases/(?P<database>.+?)/operations/(?P<operation>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
@@ -1354,7 +1376,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
                 database.
                 Fields are grouped by their "Collection
                 Group", which represent all collections
-                in the database with the same id.
+                in the database with the same ID.
 
         """
         # Create or coerce a protobuf request object.
@@ -1484,7 +1506,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
                    Fields are grouped by their "Collection Group", which
                    represent all collections in the database with the
-                   same id.
+                   same ID.
 
         """
         # Create or coerce a protobuf request object.
@@ -2134,7 +2156,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
                 last a letter or a number. Must not be UUID-like
                 /[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/.
 
-                "(default)" database id is also valid.
+                "(default)" database ID is also valid.
 
                 This corresponds to the ``database_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3026,7 +3048,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.RestoreDatabaseRequest, dict]):
                 The request object. The request message for
-                [FirestoreAdmin.RestoreDatabase][google.firestore.admin.v1.RestoreDatabase].
+                [FirestoreAdmin.RestoreDatabase][google.firestore.admin.v1.FirestoreAdmin.RestoreDatabase].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

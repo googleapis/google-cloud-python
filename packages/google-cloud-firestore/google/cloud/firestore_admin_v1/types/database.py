@@ -50,6 +50,10 @@ class Database(proto.Message):
             database was most recently updated. Note this
             only includes updates to the database resource
             and not data contained by the database.
+        delete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp at which this
+            database was deleted. Only set if the database
+            has been deleted.
         location_id (str):
             The location of the database. Available
             locations are listed at
@@ -93,8 +97,8 @@ class Database(proto.Message):
             this database.
         key_prefix (str):
             Output only. The key_prefix for this database. This
-            key_prefix is used, in combination with the project id ("~")
-            to construct the application id that is returned from the
+            key_prefix is used, in combination with the project ID ("~")
+            to construct the application ID that is returned from the
             Cloud Datastore APIs in Google App Engine first generation
             runtimes.
 
@@ -103,6 +107,16 @@ class Database(proto.Message):
             v~foo).
         delete_protection_state (google.cloud.firestore_admin_v1.types.Database.DeleteProtectionState):
             State of delete protection for the database.
+        cmek_config (google.cloud.firestore_admin_v1.types.Database.CmekConfig):
+            Optional. Presence indicates CMEK is enabled
+            for this database.
+        previous_id (str):
+            Output only. The database resource's prior
+            database ID. This field is only populated for
+            deleted databases.
+        source_info (google.cloud.firestore_admin_v1.types.Database.SourceInfo):
+            Output only. Information about the provenance
+            of this database.
         etag (str):
             This checksum is computed by the server based
             on the value of other fields, and may be sent on
@@ -120,8 +134,7 @@ class Database(proto.Message):
 
         Values:
             DATABASE_TYPE_UNSPECIFIED (0):
-                The default value. This value is used if the
-                database type is omitted.
+                Not used.
             FIRESTORE_NATIVE (1):
                 Firestore Native Mode
             DATASTORE_MODE (2):
@@ -225,6 +238,173 @@ class Database(proto.Message):
         DELETE_PROTECTION_DISABLED = 1
         DELETE_PROTECTION_ENABLED = 2
 
+    class CmekConfig(proto.Message):
+        r"""The CMEK (Customer Managed Encryption Key) configuration for
+        a Firestore database. If not present, the database is secured by
+        the default Google encryption key.
+
+        Attributes:
+            kms_key_name (str):
+                Required. Only keys in the same location as this database
+                are allowed to be used for encryption.
+
+                For Firestore's nam5 multi-region, this corresponds to Cloud
+                KMS multi-region us. For Firestore's eur3 multi-region, this
+                corresponds to Cloud KMS multi-region europe. See
+                https://cloud.google.com/kms/docs/locations.
+
+                The expected format is
+                ``projects/{project_id}/locations/{kms_location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
+            active_key_version (MutableSequence[str]):
+                Output only. Currently in-use `KMS key
+                versions <https://cloud.google.com/kms/docs/resource-hierarchy#key_versions>`__.
+                During `key
+                rotation <https://cloud.google.com/kms/docs/key-rotation>`__,
+                there can be multiple in-use key versions.
+
+                The expected format is
+                ``projects/{project_id}/locations/{kms_location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{key_version}``.
+        """
+
+        kms_key_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        active_key_version: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+
+    class SourceInfo(proto.Message):
+        r"""Information about the provenance of this database.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            backup (google.cloud.firestore_admin_v1.types.Database.SourceInfo.BackupSource):
+                If set, this database was restored from the
+                specified backup (or a snapshot thereof).
+
+                This field is a member of `oneof`_ ``source``.
+            operation (str):
+                The associated long-running operation. This field may not be
+                set after the operation has completed. Format:
+                ``projects/{project}/databases/{database}/operations/{operation}``.
+        """
+
+        class BackupSource(proto.Message):
+            r"""Information about a backup that was used to restore a
+            database.
+
+            Attributes:
+                backup (str):
+                    The resource name of the backup that was used to restore
+                    this database. Format:
+                    ``projects/{project}/locations/{location}/backups/{backup}``.
+            """
+
+            backup: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        backup: "Database.SourceInfo.BackupSource" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="source",
+            message="Database.SourceInfo.BackupSource",
+        )
+        operation: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    class EncryptionConfig(proto.Message):
+        r"""Encryption configuration for a new database being created from
+        another source.
+
+        The source could be a [Backup][google.firestore.admin.v1.Backup] .
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            google_default_encryption (google.cloud.firestore_admin_v1.types.Database.EncryptionConfig.GoogleDefaultEncryptionOptions):
+                Use Google default encryption.
+
+                This field is a member of `oneof`_ ``encryption_type``.
+            use_source_encryption (google.cloud.firestore_admin_v1.types.Database.EncryptionConfig.SourceEncryptionOptions):
+                The database will use the same encryption
+                configuration as the source.
+
+                This field is a member of `oneof`_ ``encryption_type``.
+            customer_managed_encryption (google.cloud.firestore_admin_v1.types.Database.EncryptionConfig.CustomerManagedEncryptionOptions):
+                Use Customer Managed Encryption Keys (CMEK)
+                for encryption.
+
+                This field is a member of `oneof`_ ``encryption_type``.
+        """
+
+        class GoogleDefaultEncryptionOptions(proto.Message):
+            r"""The configuration options for using Google default
+            encryption.
+
+            """
+
+        class SourceEncryptionOptions(proto.Message):
+            r"""The configuration options for using the same encryption
+            method as the source.
+
+            """
+
+        class CustomerManagedEncryptionOptions(proto.Message):
+            r"""The configuration options for using CMEK (Customer Managed
+            Encryption Key) encryption.
+
+            Attributes:
+                kms_key_name (str):
+                    Required. Only keys in the same location as the database are
+                    allowed to be used for encryption.
+
+                    For Firestore's nam5 multi-region, this corresponds to Cloud
+                    KMS multi-region us. For Firestore's eur3 multi-region, this
+                    corresponds to Cloud KMS multi-region europe. See
+                    https://cloud.google.com/kms/docs/locations.
+
+                    The expected format is
+                    ``projects/{project_id}/locations/{kms_location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
+            """
+
+            kms_key_name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        google_default_encryption: "Database.EncryptionConfig.GoogleDefaultEncryptionOptions" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="encryption_type",
+            message="Database.EncryptionConfig.GoogleDefaultEncryptionOptions",
+        )
+        use_source_encryption: "Database.EncryptionConfig.SourceEncryptionOptions" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="encryption_type",
+                message="Database.EncryptionConfig.SourceEncryptionOptions",
+            )
+        )
+        customer_managed_encryption: "Database.EncryptionConfig.CustomerManagedEncryptionOptions" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="encryption_type",
+            message="Database.EncryptionConfig.CustomerManagedEncryptionOptions",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -241,6 +421,11 @@ class Database(proto.Message):
     update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
         message=timestamp_pb2.Timestamp,
     )
     location_id: str = proto.Field(
@@ -285,6 +470,20 @@ class Database(proto.Message):
         proto.ENUM,
         number=22,
         enum=DeleteProtectionState,
+    )
+    cmek_config: CmekConfig = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        message=CmekConfig,
+    )
+    previous_id: str = proto.Field(
+        proto.STRING,
+        number=25,
+    )
+    source_info: SourceInfo = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        message=SourceInfo,
     )
     etag: str = proto.Field(
         proto.STRING,

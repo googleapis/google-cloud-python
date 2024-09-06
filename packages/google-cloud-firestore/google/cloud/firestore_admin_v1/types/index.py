@@ -43,12 +43,12 @@ class Index(proto.Message):
             specified allow queries against a collection
             that is the child of a specific document,
             specified at query time, and that has the same
-            collection id.
+            collection ID.
 
             Indexes with a collection group query scope
             specified allow queries against all collections
             descended from a specific document, specified at
-            query time, and that have the same collection id
+            query time, and that have the same collection ID
             as this index.
         api_scope (google.cloud.firestore_admin_v1.types.Index.ApiScope):
             The API scope supported by this index.
@@ -84,11 +84,11 @@ class Index(proto.Message):
                 specified allow queries against a collection
                 that is the child of a specific document,
                 specified at query time, and that has the
-                collection id specified by the index.
+                collection ID specified by the index.
             COLLECTION_GROUP (2):
                 Indexes with a collection group query scope
                 specified allow queries against all collections
-                that has the collection id specified by the
+                that has the collection ID specified by the
                 index.
             COLLECTION_RECURSIVE (3):
                 Include all the collections's ancestor in the

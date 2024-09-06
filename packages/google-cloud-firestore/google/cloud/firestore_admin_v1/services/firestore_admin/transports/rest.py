@@ -2157,7 +2157,7 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                 database.
                 Fields are grouped by their "Collection
                 Group", which represent all collections
-                in the database with the same id.
+                in the database with the same ID.
 
             """
 
@@ -2861,7 +2861,7 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
             Args:
                 request (~.firestore_admin.RestoreDatabaseRequest):
                     The request object. The request message for
-                [FirestoreAdmin.RestoreDatabase][google.firestore.admin.v1.RestoreDatabase].
+                [FirestoreAdmin.RestoreDatabase][google.firestore.admin.v1.FirestoreAdmin.RestoreDatabase].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

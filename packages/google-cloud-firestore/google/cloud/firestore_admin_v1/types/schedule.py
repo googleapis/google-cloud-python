@@ -71,6 +71,9 @@ class BackupSchedule(proto.Message):
             At what relative time in the future, compared
             to its creation time, the backup should be
             deleted, e.g. keep backups for 7 days.
+
+            The maximum supported retention period is 14
+            weeks.
         daily_recurrence (google.cloud.firestore_admin_v1.types.DailyRecurrence):
             For a schedule that runs daily.
 
@@ -116,8 +119,8 @@ class BackupSchedule(proto.Message):
 
 
 class DailyRecurrence(proto.Message):
-    r"""Represents a recurring schedule that runs at a specific time
-    every day.
+    r"""Represents a recurring schedule that runs every day.
+
     The time zone is UTC.
 
     """

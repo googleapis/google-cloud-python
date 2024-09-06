@@ -291,11 +291,11 @@ class ExportDocumentsMetadata(proto.Message):
         progress_bytes (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in bytes, of this operation.
         collection_ids (MutableSequence[str]):
-            Which collection ids are being exported.
+            Which collection IDs are being exported.
         output_uri_prefix (str):
             Where the documents are being exported to.
         namespace_ids (MutableSequence[str]):
-            Which namespace ids are being exported.
+            Which namespace IDs are being exported.
         snapshot_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp that corresponds to the version
             of the database that is being exported. If
@@ -367,11 +367,11 @@ class ImportDocumentsMetadata(proto.Message):
         progress_bytes (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in bytes, of this operation.
         collection_ids (MutableSequence[str]):
-            Which collection ids are being imported.
+            Which collection IDs are being imported.
         input_uri_prefix (str):
             The location of the documents being imported.
         namespace_ids (MutableSequence[str]):
-            Which namespace ids are being imported.
+            Which namespace IDs are being imported.
     """
 
     start_time: timestamp_pb2.Timestamp = proto.Field(
@@ -433,10 +433,10 @@ class BulkDeleteDocumentsMetadata(proto.Message):
         progress_bytes (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in bytes, of this operation.
         collection_ids (MutableSequence[str]):
-            The ids of the collection groups that are
+            The IDs of the collection groups that are
             being deleted.
         namespace_ids (MutableSequence[str]):
-            Which namespace ids are being deleted.
+            Which namespace IDs are being deleted.
         snapshot_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp that corresponds to the version
             of the database that is being read to get the

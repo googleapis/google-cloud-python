@@ -109,7 +109,7 @@ class CreateDatabaseRequest(proto.Message):
             letter or a number. Must not be UUID-like
             /[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/.
 
-            "(default)" database id is also valid.
+            "(default)" database ID is also valid.
     """
 
     parent: str = proto.Field(
@@ -588,8 +588,8 @@ class ExportDocumentsRequest(proto.Message):
             Required. Database to export. Should be of the form:
             ``projects/{project_id}/databases/{database_id}``.
         collection_ids (MutableSequence[str]):
-            Which collection ids to export. Unspecified
-            means all collections. Each collection id in
+            Which collection IDs to export. Unspecified
+            means all collections. Each collection ID in
             this list must be unique.
         output_uri_prefix (str):
             The output URI. Currently only supports Google Cloud Storage
@@ -654,9 +654,9 @@ class ImportDocumentsRequest(proto.Message):
             Required. Database to import into. Should be of the form:
             ``projects/{project_id}/databases/{database_id}``.
         collection_ids (MutableSequence[str]):
-            Which collection ids to import. Unspecified
+            Which collection IDs to import. Unspecified
             means all collections included in the import.
-            Each collection id in this list must be unique.
+            Each collection ID in this list must be unique.
         input_uri_prefix (str):
             Location of the exported files. This must match the
             output_uri_prefix of an ExportDocumentsResponse from an
@@ -837,7 +837,7 @@ class DeleteBackupRequest(proto.Message):
 
 class RestoreDatabaseRequest(proto.Message):
     r"""The request message for
-    [FirestoreAdmin.RestoreDatabase][google.firestore.admin.v1.RestoreDatabase].
+    [FirestoreAdmin.RestoreDatabase][google.firestore.admin.v1.FirestoreAdmin.RestoreDatabase].
 
     Attributes:
         parent (str):
@@ -846,7 +846,7 @@ class RestoreDatabaseRequest(proto.Message):
         database_id (str):
             Required. The ID to use for the database, which will become
             the final component of the database's resource name. This
-            database id must not be associated with an existing
+            database ID must not be associated with an existing
             database.
 
             This value should be 4-63 characters. Valid characters are
@@ -854,13 +854,23 @@ class RestoreDatabaseRequest(proto.Message):
             letter or a number. Must not be UUID-like
             /[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/.
 
-            "(default)" database id is also valid.
+            "(default)" database ID is also valid.
         backup (str):
             Required. Backup to restore from. Must be from the same
             project as the parent.
 
+            The restored database will be created in the same location
+            as the source backup.
+
             Format is:
             ``projects/{project_id}/locations/{location}/backups/{backup}``
+        encryption_config (google.cloud.firestore_admin_v1.types.Database.EncryptionConfig):
+            Optional. Encryption configuration for the restored
+            database.
+
+            If this field is not specified, the restored database will
+            use the same encryption configuration as the backup, namely
+            [use_source_encryption][google.firestore.admin.v1.Database.EncryptionConfig.use_source_encryption].
     """
 
     parent: str = proto.Field(
@@ -874,6 +884,11 @@ class RestoreDatabaseRequest(proto.Message):
     backup: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    encryption_config: gfa_database.Database.EncryptionConfig = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=gfa_database.Database.EncryptionConfig,
     )
 
 

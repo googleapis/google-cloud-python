@@ -65,7 +65,7 @@ class firestore_adminCallTransformer(cst.CSTTransformer):
         'list_databases': ('parent', 'show_deleted', ),
         'list_fields': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_indexes': ('parent', 'filter', 'page_size', 'page_token', ),
-        'restore_database': ('parent', 'database_id', 'backup', ),
+        'restore_database': ('parent', 'database_id', 'backup', 'encryption_config', ),
         'update_backup_schedule': ('backup_schedule', 'update_mask', ),
         'update_database': ('database', 'update_mask', ),
         'update_field': ('field', 'update_mask', ),

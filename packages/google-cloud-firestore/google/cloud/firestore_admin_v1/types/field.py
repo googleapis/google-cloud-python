@@ -34,7 +34,7 @@ class Field(proto.Message):
     r"""Represents a single field in the database.
 
     Fields are grouped by their "Collection Group", which represent
-    all collections in the database with the same id.
+    all collections in the database with the same ID.
 
     Attributes:
         name (str):

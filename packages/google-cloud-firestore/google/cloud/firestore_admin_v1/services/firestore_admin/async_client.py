@@ -128,6 +128,8 @@ class FirestoreAdminAsyncClient:
     parse_index_path = staticmethod(FirestoreAdminClient.parse_index_path)
     location_path = staticmethod(FirestoreAdminClient.location_path)
     parse_location_path = staticmethod(FirestoreAdminClient.parse_location_path)
+    operation_path = staticmethod(FirestoreAdminClient.operation_path)
+    parse_operation_path = staticmethod(FirestoreAdminClient.parse_operation_path)
     common_billing_account_path = staticmethod(
         FirestoreAdminClient.common_billing_account_path
     )
@@ -834,7 +836,7 @@ class FirestoreAdminAsyncClient:
                 database.
                 Fields are grouped by their "Collection
                 Group", which represent all collections
-                in the database with the same id.
+                in the database with the same ID.
 
         """
         # Create or coerce a protobuf request object.
@@ -967,7 +969,7 @@ class FirestoreAdminAsyncClient:
 
                    Fields are grouped by their "Collection Group", which
                    represent all collections in the database with the
-                   same id.
+                   same ID.
 
         """
         # Create or coerce a protobuf request object.
@@ -1632,7 +1634,7 @@ class FirestoreAdminAsyncClient:
                 last a letter or a number. Must not be UUID-like
                 /[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/.
 
-                "(default)" database id is also valid.
+                "(default)" database ID is also valid.
 
                 This corresponds to the ``database_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2548,7 +2550,7 @@ class FirestoreAdminAsyncClient:
         Args:
             request (Optional[Union[google.cloud.firestore_admin_v1.types.RestoreDatabaseRequest, dict]]):
                 The request object. The request message for
-                [FirestoreAdmin.RestoreDatabase][google.firestore.admin.v1.RestoreDatabase].
+                [FirestoreAdmin.RestoreDatabase][google.firestore.admin.v1.FirestoreAdmin.RestoreDatabase].
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

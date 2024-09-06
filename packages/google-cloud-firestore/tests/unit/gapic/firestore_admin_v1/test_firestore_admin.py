@@ -5647,6 +5647,7 @@ def test_get_database(request_type, transport: str = "grpc"):
             app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
             key_prefix="key_prefix_value",
             delete_protection_state=database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED,
+            previous_id="previous_id_value",
             etag="etag_value",
         )
         response = client.get_database(request)
@@ -5677,6 +5678,7 @@ def test_get_database(request_type, transport: str = "grpc"):
         response.delete_protection_state
         == database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED
     )
+    assert response.previous_id == "previous_id_value"
     assert response.etag == "etag_value"
 
 
@@ -5785,6 +5787,7 @@ async def test_get_database_empty_call_async():
                 app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
                 key_prefix="key_prefix_value",
                 delete_protection_state=database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED,
+                previous_id="previous_id_value",
                 etag="etag_value",
             )
         )
@@ -5863,6 +5866,7 @@ async def test_get_database_async(
                 app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
                 key_prefix="key_prefix_value",
                 delete_protection_state=database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED,
+                previous_id="previous_id_value",
                 etag="etag_value",
             )
         )
@@ -5894,6 +5898,7 @@ async def test_get_database_async(
         response.delete_protection_state
         == database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED
     )
+    assert response.previous_id == "previous_id_value"
     assert response.etag == "etag_value"
 
 
@@ -13867,6 +13872,7 @@ def test_create_database_rest(request_type):
         "uid": "uid_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "delete_time": {},
         "location_id": "location_id_value",
         "type_": 1,
         "concurrency_mode": 1,
@@ -13876,6 +13882,18 @@ def test_create_database_rest(request_type):
         "app_engine_integration_mode": 1,
         "key_prefix": "key_prefix_value",
         "delete_protection_state": 1,
+        "cmek_config": {
+            "kms_key_name": "kms_key_name_value",
+            "active_key_version": [
+                "active_key_version_value1",
+                "active_key_version_value2",
+            ],
+        },
+        "previous_id": "previous_id_value",
+        "source_info": {
+            "backup": {"backup": "backup_value"},
+            "operation": "operation_value",
+        },
         "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -14286,6 +14304,7 @@ def test_get_database_rest(request_type):
             app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
             key_prefix="key_prefix_value",
             delete_protection_state=database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED,
+            previous_id="previous_id_value",
             etag="etag_value",
         )
 
@@ -14320,6 +14339,7 @@ def test_get_database_rest(request_type):
         response.delete_protection_state
         == database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED
     )
+    assert response.previous_id == "previous_id_value"
     assert response.etag == "etag_value"
 
 
@@ -14905,6 +14925,7 @@ def test_update_database_rest(request_type):
         "uid": "uid_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "delete_time": {},
         "location_id": "location_id_value",
         "type_": 1,
         "concurrency_mode": 1,
@@ -14914,6 +14935,18 @@ def test_update_database_rest(request_type):
         "app_engine_integration_mode": 1,
         "key_prefix": "key_prefix_value",
         "delete_protection_state": 1,
+        "cmek_config": {
+            "kms_key_name": "kms_key_name_value",
+            "active_key_version": [
+                "active_key_version_value1",
+                "active_key_version_value2",
+            ],
+        },
+        "previous_id": "previous_id_value",
+        "source_info": {
+            "backup": {"backup": "backup_value"},
+            "operation": "operation_value",
+        },
         "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -19305,8 +19338,34 @@ def test_parse_location_path():
     assert expected == actual
 
 
+def test_operation_path():
+    project = "cuttlefish"
+    database = "mussel"
+    operation = "winkle"
+    expected = "projects/{project}/databases/{database}/operations/{operation}".format(
+        project=project,
+        database=database,
+        operation=operation,
+    )
+    actual = FirestoreAdminClient.operation_path(project, database, operation)
+    assert expected == actual
+
+
+def test_parse_operation_path():
+    expected = {
+        "project": "nautilus",
+        "database": "scallop",
+        "operation": "abalone",
+    }
+    path = FirestoreAdminClient.operation_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FirestoreAdminClient.parse_operation_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -19316,7 +19375,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "clam",
     }
     path = FirestoreAdminClient.common_billing_account_path(**expected)
 
@@ -19326,7 +19385,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -19336,7 +19395,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "octopus",
     }
     path = FirestoreAdminClient.common_folder_path(**expected)
 
@@ -19346,7 +19405,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -19356,7 +19415,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "nudibranch",
     }
     path = FirestoreAdminClient.common_organization_path(**expected)
 
@@ -19366,7 +19425,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -19376,7 +19435,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "mussel",
     }
     path = FirestoreAdminClient.common_project_path(**expected)
 
@@ -19386,8 +19445,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -19398,8 +19457,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = FirestoreAdminClient.common_location_path(**expected)
 
