@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.49.1](https://github.com/googleapis/python-spanner/compare/v3.49.0...v3.49.1) (2024-09-06)
+
+
+### Bug Fixes
+
+* Revert "chore(spanner): Issue[#1143](https://github.com/googleapis/python-spanner/issues/1143) - Update dependency" ([92f05ed](https://github.com/googleapis/python-spanner/commit/92f05ed04e49adfe0ad68bfa52e855baf8b17643))
+
 ## [3.49.0](https://github.com/googleapis/python-spanner/compare/v3.48.0...v3.49.0) (2024-08-27)
 
 
