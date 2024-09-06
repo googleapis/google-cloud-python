@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.2](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.2.1...v3.2.2) (2024-09-06)
+
+
+### Bug Fixes
+
+* Ignore disambiguation for repeated entries ([#390](https://github.com/googleapis/sphinx-docfx-yaml/issues/390)) ([917c89b](https://github.com/googleapis/sphinx-docfx-yaml/commit/917c89bece5492dd8cbb09348d05af2a5fec82aa))
+* Retrieve keyword arguments for docstrings ([#389](https://github.com/googleapis/sphinx-docfx-yaml/issues/389)) ([bb6898e](https://github.com/googleapis/sphinx-docfx-yaml/commit/bb6898e054f6c53509f6394ba08eb44a36b8661b))
+
 ## [3.2.1](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.2.0...v3.2.1) (2024-05-07)
 
 
