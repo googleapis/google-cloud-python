@@ -6117,10 +6117,12 @@ def test_update_dataset_schema_rest(request_type):
                     "enum_values": {"values": ["values_value1", "values_value2"]},
                     "display_name": "display_name_value",
                     "name": "name_value",
+                    "description": "description_value",
                     "base_types": ["base_types_value1", "base_types_value2"],
                     "properties": [
                         {
                             "name": "name_value",
+                            "description": "description_value",
                             "display_name": "display_name_value",
                             "value_type": "value_type_value",
                             "occurrence_type": 1,

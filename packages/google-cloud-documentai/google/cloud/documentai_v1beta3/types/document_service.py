@@ -396,10 +396,8 @@ class ListDocumentsRequest(proto.Message):
             https://google.aip.dev/160.
 
             Currently support query strings are:
-            ------------------------------------
 
-            ``SplitType=DATASET_SPLIT_TEST|DATASET_SPLIT_TRAIN|DATASET_SPLIT_UNASSIGNED``
-
+            - ``SplitType=DATASET_SPLIT_TEST|DATASET_SPLIT_TRAIN|DATASET_SPLIT_UNASSIGNED``
             -  ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``
             -  ``DisplayName=\"file_name.pdf\"``
             -  ``EntityType=abc/def``
