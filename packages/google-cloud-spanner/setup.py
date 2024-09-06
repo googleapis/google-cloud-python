@@ -22,6 +22,7 @@ package_root = os.path.abspath(os.path.dirname(__file__))
 
 name = "google-cloud-spanner"
 
+
 description = "Google Cloud Spanner API client library"
 
 version = {}
@@ -42,6 +43,7 @@ dependencies = [
     "sqlparse >= 0.4.4",
     "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
     "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "grpc-interceptor >= 0.15.4",
 ]
 extras = {
     "tracing": [
@@ -50,7 +52,6 @@ extras = {
         "opentelemetry-instrumentation >= 0.20b0, < 0.23dev",
     ],
     "libcst": "libcst >= 0.2.5",
-    "testing": "grpc-interceptor >= 0.15.4",
 }
 
 url = "https://github.com/googleapis/python-spanner"

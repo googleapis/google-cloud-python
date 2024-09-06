@@ -128,7 +128,7 @@ templated_files = common.py_library(
     samples=True,
     cov_level=98,
     split_system_tests=True,
-    system_test_extras=["tracing", "testing"],
+    system_test_extras=["tracing"],
 )
 s.move(
     templated_files,
@@ -180,7 +180,7 @@ open_telemetry_test = """
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    session.install("-e", ".[tracing, testing]", "-c", constraints_path)
+    session.install("-e", ".[tracing]", "-c", constraints_path)
     # XXX: Dump installed versions to debug OT issue
     session.run("pip", "list")
 
@@ -229,7 +229,7 @@ place_before(
 s.replace(
     "noxfile.py",
     r"""session.install\("-e", "."\)""",
-    """session.install("-e", ".[tracing, testing]")""",
+    """session.install("-e", ".[tracing]")""",
 )
 
 # Apply manual changes from PR https://github.com/googleapis/python-spanner/pull/759

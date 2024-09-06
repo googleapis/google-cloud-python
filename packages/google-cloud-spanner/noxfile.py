@@ -59,7 +59,6 @@ SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_EXTRAS: List[str] = [
     "tracing",
-    "testing",
 ]
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
@@ -166,7 +165,7 @@ def install_unittest_dependencies(session, *constraints):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    session.install("-e", ".[tracing, testing]", "-c", constraints_path)
+    session.install("-e", ".[tracing]", "-c", constraints_path)
     # XXX: Dump installed versions to debug OT issue
     session.run("pip", "list")
 
@@ -337,7 +336,7 @@ def cover(session):
 def docs(session):
     """Build the docs for this library."""
 
-    session.install("-e", ".[tracing, testing]")
+    session.install("-e", ".[tracing]")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -372,7 +371,7 @@ def docs(session):
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
-    session.install("-e", ".[tracing, testing]")
+    session.install("-e", ".[tracing]")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
