@@ -2429,9 +2429,11 @@ class Block:
         block, last_notna_id = self.apply_unary_op(column_ids[0], ops.notnull_op)
         for column_id in column_ids[1:]:
             block, notna_id = block.apply_unary_op(column_id, ops.notnull_op)
+            old_last_notna_id = last_notna_id
             block, last_notna_id = block.apply_binary_op(
-                last_notna_id, notna_id, ops.and_op
+                old_last_notna_id, notna_id, ops.and_op
             )
+            block.drop_columns([notna_id, old_last_notna_id])
 
         # loop over all columns to check monotonicity
         last_result_id = None
@@ -2443,21 +2445,27 @@ class Block:
                 column_id, lag_result_id, ops.gt_op if increasing else ops.lt_op
             )
             block, equal_id = block.apply_binary_op(column_id, lag_result_id, ops.eq_op)
+            block = block.drop_columns([lag_result_id])
             if last_result_id is None:
                 block, last_result_id = block.apply_binary_op(
                     equal_id, strict_monotonic_id, ops.or_op
                 )
-                continue
-            block, equal_monotonic_id = block.apply_binary_op(
-                equal_id, last_result_id, ops.and_op
-            )
-            block, last_result_id = block.apply_binary_op(
-                equal_monotonic_id, strict_monotonic_id, ops.or_op
-            )
+                block = block.drop_columns([equal_id, strict_monotonic_id])
+            else:
+                block, equal_monotonic_id = block.apply_binary_op(
+                    equal_id, last_result_id, ops.and_op
+                )
+                block = block.drop_columns([equal_id, last_result_id])
+                block, last_result_id = block.apply_binary_op(
+                    equal_monotonic_id, strict_monotonic_id, ops.or_op
+                )
+                block = block.drop_columns([equal_monotonic_id, strict_monotonic_id])
 
         block, monotonic_result_id = block.apply_binary_op(
             last_result_id, last_notna_id, ops.and_op  # type: ignore
         )
+        if last_result_id is not None:
+            block = block.drop_columns([last_result_id, last_notna_id])
         result = block.get_stat(monotonic_result_id, agg_ops.all_op)
         self._stats_cache[column_name].update({op_name: result})
         return result
