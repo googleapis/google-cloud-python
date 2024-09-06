@@ -398,7 +398,8 @@ class ListDocumentsRequest(proto.Message):
             Currently support query strings are:
 
             - ``SplitType=DATASET_SPLIT_TEST|DATASET_SPLIT_TRAIN|DATASET_SPLIT_UNASSIGNED``
-            -  ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``            -  ``DisplayName=\"file_name.pdf\"``
+            -  ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``
+            -  ``DisplayName=\"file_name.pdf\"``
             -  ``EntityType=abc/def``
             -  ``TagName=\"auto-labeling-running\"|\"sampled\"``
 

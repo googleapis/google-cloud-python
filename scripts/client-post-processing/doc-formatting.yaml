@@ -161,7 +161,7 @@ replacements:
     after: "                  'ingestionTime': DOUBLE; (UNIX timestamp)\n                  'application': STRING;\n"
     count: 2
   - paths: [
-      packagespackages/google-cloud-visionai/google/cloud/visionai_v1/types/platform.py,
+      packages/google-cloud-visionai/google/cloud/visionai_v1/types/platform.py,
     ]
     before: "'processor': STRING;\n             }\n        dynamic_config_input_topic "
     after:  "'processor': STRING;\n\n             }\n\n        dynamic_config_input_topic "
@@ -176,5 +176,5 @@ replacements:
       \            ``SplitType=DATASET_SPLIT_TEST\|DATASET_SPLIT_TRAIN\|DATASET_SPLIT_UNASSIGNED``
       \
       \            -  ``LabelingState=DOCUMENT_LABELED\|DOCUMENT_UNLABELED\|DOCUMENT_AUTO_LABELED``
-    after:  "\n            Currently support query strings are:\n\n            - ``SplitType=DATASET_SPLIT_TEST|DATASET_SPLIT_TRAIN|DATASET_SPLIT_UNASSIGNED``\n            -  ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``"
+    after:  "\n            Currently support query strings are:\n\n            - ``SplitType=DATASET_SPLIT_TEST|DATASET_SPLIT_TRAIN|DATASET_SPLIT_UNASSIGNED``\n            -  ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``\n"
     count: 1
