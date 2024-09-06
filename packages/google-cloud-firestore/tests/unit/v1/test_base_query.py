@@ -1962,11 +1962,12 @@ def _make_order_pb(field_path, direction):
 
 
 def _make_query_response(**kwargs):
-    # kwargs supported are ``skipped_results``, ``name`` and ``data``
+    # kwargs supported are ``skipped_results``, ``name``, ``data``
+    # and ``explain_metrics``
     from google.cloud._helpers import _datetime_to_pb_timestamp
 
     from google.cloud.firestore_v1 import _helpers
-    from google.cloud.firestore_v1.types import document, firestore
+    from google.cloud.firestore_v1.types import document, firestore, query_profile
 
     now = datetime.datetime.now(tz=datetime.timezone.utc)
     read_time = _datetime_to_pb_timestamp(now)
@@ -1983,6 +1984,10 @@ def _make_query_response(**kwargs):
         document_pb._pb.create_time.CopyFrom(create_time)
 
         kwargs["document"] = document_pb
+
+    explain_metrics = kwargs.pop("explain_metrics", None)
+    if explain_metrics is not None:
+        kwargs["explain_metrics"] = query_profile.ExplainMetrics(explain_metrics)
 
     return firestore.RunQueryResponse(**kwargs)
 

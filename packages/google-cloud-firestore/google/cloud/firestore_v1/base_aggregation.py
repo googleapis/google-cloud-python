@@ -24,17 +24,7 @@ from __future__ import annotations
 
 import abc
 from abc import ABC
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    AsyncGenerator,
-    Coroutine,
-    Generator,
-    List,
-    Optional,
-    Tuple,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Coroutine, List, Optional, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -47,8 +37,14 @@ from google.cloud.firestore_v1.types import (
 )
 
 # Types needed only for Type Hints
-if TYPE_CHECKING:
-    from google.cloud.firestore_v1 import transaction  # pragma: NO COVER
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.firestore_v1 import transaction
+    from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+    from google.cloud.firestore_v1.query_results import QueryResultsList
+    from google.cloud.firestore_v1.stream_generator import (
+        StreamGenerator,
+    )
 
 
 class AggregationResult(object):
@@ -62,7 +58,7 @@ class AggregationResult(object):
     :param value: The resulting read_time
     """
 
-    def __init__(self, alias: str, value: int, read_time=None):
+    def __init__(self, alias: str, value: float, read_time=None):
         self.alias = alias
         self.value = value
         self.read_time = read_time
@@ -211,6 +207,7 @@ class BaseAggregationQuery(ABC):
         transaction=None,
         retry: Union[retries.Retry, None, gapic_v1.method._MethodDefault] = None,
         timeout: float | None = None,
+        explain_options: Optional[ExplainOptions] = None,
     ) -> Tuple[dict, dict]:
         parent_path, expected_prefix = self._collection_ref._parent_info()
         request = {
@@ -218,6 +215,8 @@ class BaseAggregationQuery(ABC):
             "structured_aggregation_query": self._to_protobuf(),
             "transaction": _helpers.get_transaction_id(transaction),
         }
+        if explain_options:
+            request["explain_options"] = explain_options._to_dict()
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
         return request, kwargs
@@ -230,10 +229,17 @@ class BaseAggregationQuery(ABC):
             retries.Retry, None, gapic_v1.method._MethodDefault
         ] = gapic_v1.method.DEFAULT,
         timeout: float | None = None,
-    ) -> List[AggregationResult] | Coroutine[Any, Any, List[AggregationResult]]:
+        *,
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> (
+        QueryResultsList[AggregationResult]
+        | Coroutine[Any, Any, List[List[AggregationResult]]]
+    ):
         """Runs the aggregation query.
 
-        This sends a ``RunAggregationQuery`` RPC and returns a list of aggregation results in the stream of ``RunAggregationQueryResponse`` messages.
+        This sends a ``RunAggregationQuery`` RPC and returns a list of
+        aggregation results in the stream of ``RunAggregationQueryResponse``
+        messages.
 
         Args:
             transaction
@@ -246,22 +252,27 @@ class BaseAggregationQuery(ABC):
                 should be retried.  Defaults to a system-specified policy.
             timeout (float): The timeout for this request.  Defaults to a
                 system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
 
         Returns:
-            list: The aggregation query results
-
+            (QueryResultsList[List[AggregationResult]] | Coroutine[Any, Any, List[List[AggregationResult]]]):
+            The aggregation query results.
         """
 
     @abc.abstractmethod
     def stream(
         self,
         transaction: Optional[transaction.Transaction] = None,
-        retry: Optional[retries.Retry] = gapic_v1.method.DEFAULT,
+        retry: Union[
+            retries.Retry, None, gapic_v1.method._MethodDefault
+        ] = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
-    ) -> (
-        Generator[List[AggregationResult], Any, None]
-        | AsyncGenerator[List[AggregationResult], None]
-    ):
+        *,
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> StreamGenerator[List[AggregationResult]] | AsyncStreamGenerator:
         """Runs the aggregation query.
 
         This sends a``RunAggregationQuery`` RPC and returns a generator in the stream of ``RunAggregationQueryResponse`` messages.
@@ -274,8 +285,13 @@ class BaseAggregationQuery(ABC):
                 errors, if any, should be retried.  Defaults to a
                 system-specified policy.
             timeout (Optinal[float]): The timeout for this request.  Defaults
-            to a system-specified value.
+                to a system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
 
         Returns:
+            StreamGenerator[List[AggregationResult]] | AsyncStreamGenerator:
             A generator of the query results.
         """

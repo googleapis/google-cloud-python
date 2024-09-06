@@ -61,6 +61,7 @@ from google.cloud.firestore_v1.vector import Vector
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.base_vector_query import BaseVectorQuery
     from google.cloud.firestore_v1.field_path import FieldPath
+    from google.cloud.firestore_v1.query_profile import ExplainMetrics, ExplainOptions
 
 _BAD_DIR_STRING: str
 _BAD_OP_NAN_NULL: str
@@ -1008,6 +1009,8 @@ class BaseQuery(object):
         transaction=None,
         retry: Optional[retries.Retry] = None,
         timeout: Optional[float] = None,
+        *,
+        explain_options: Optional[ExplainOptions] = None,
     ) -> Iterable[DocumentSnapshot]:
         raise NotImplementedError
 
@@ -1016,6 +1019,7 @@ class BaseQuery(object):
         transaction=None,
         retry: Optional[retries.Retry] = None,
         timeout: Optional[float] = None,
+        explain_options: Optional[ExplainOptions] = None,
     ) -> Tuple[dict, str, dict]:
         """Shared setup for async / sync :meth:`stream`"""
         if self._limit_to_last:
@@ -1030,6 +1034,8 @@ class BaseQuery(object):
             "structured_query": self._to_protobuf(),
             "transaction": _helpers.get_transaction_id(transaction),
         }
+        if explain_options is not None:
+            request["explain_options"] = explain_options._to_dict()
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
         return request, expected_prefix, kwargs
@@ -1039,7 +1045,9 @@ class BaseQuery(object):
         transaction=None,
         retry: Optional[retries.Retry] = None,
         timeout: Optional[float] = None,
-    ) -> Generator[document.DocumentSnapshot, Any, None]:
+        *,
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> Generator[document.DocumentSnapshot, Any, Optional[ExplainMetrics]]:
         raise NotImplementedError
 
     def on_snapshot(self, callback) -> NoReturn:

@@ -38,6 +38,7 @@ from google.cloud.firestore_v1 import DocumentReference
 from google.cloud.firestore_v1 import DocumentSnapshot
 from google.cloud.firestore_v1 import DocumentTransform
 from google.cloud.firestore_v1 import ExistsOption
+from google.cloud.firestore_v1 import ExplainOptions
 from google.cloud.firestore_v1 import FieldFilter
 from google.cloud.firestore_v1 import GeoPoint
 from google.cloud.firestore_v1 import Increment
@@ -78,6 +79,7 @@ __all__: List[str] = [
     "DocumentSnapshot",
     "DocumentTransform",
     "ExistsOption",
+    "ExplainOptions",
     "FieldFilter",
     "GeoPoint",
     "Increment",

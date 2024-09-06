@@ -102,7 +102,7 @@ class _NumericValue(object):
     """Hold a single integer / float value.
 
     Args:
-        value (int | float): value held in the helper.
+        value (float): value held in the helper.
     """
 
     def __init__(self, value) -> None:
@@ -116,7 +116,7 @@ class _NumericValue(object):
         """Value used by the transform.
 
         Returns:
-            (Integer | Float) value passed in the constructor.
+            (Lloat) value passed in the constructor.
         """
         return self._value
 
@@ -133,7 +133,7 @@ class Increment(_NumericValue):
     https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.increment
 
     Args:
-        value (int | float): value used to increment the field.
+        value (float): value used to increment the field.
     """
 
 
@@ -144,7 +144,7 @@ class Maximum(_NumericValue):
     https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.maximum
 
     Args:
-        value (int | float): value used to bound the field.
+        value (float): value used to bound the field.
     """
 
 
@@ -155,5 +155,5 @@ class Minimum(_NumericValue):
     https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.minimum
 
     Args:
-        value (int | float): value used to bound the field.
+        value (float): value used to bound the field.
     """

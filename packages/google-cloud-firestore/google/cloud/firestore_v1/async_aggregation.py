@@ -53,7 +53,7 @@ class AsyncAggregationQuery(BaseAggregationQuery):
             retries.AsyncRetry, None, gapic_v1.method._MethodDefault
         ] = gapic_v1.method.DEFAULT,
         timeout: float | None = None,
-    ) -> List[AggregationResult]:
+    ) -> List[List[AggregationResult]]:
         """Runs the aggregation query.
 
         This sends a ``RunAggregationQuery`` RPC and returns a list of aggregation results in the stream of ``RunAggregationQueryResponse`` messages.
@@ -71,7 +71,7 @@ class AsyncAggregationQuery(BaseAggregationQuery):
                 system-specified value.
 
         Returns:
-            list: The aggregation query results
+            List[List[AggregationResult]]: The aggregation query results
 
         """
         stream_result = self.stream(

@@ -386,6 +386,24 @@ def test_get_with_transaction(query_class):
 
 
 @mock.patch("google.cloud.firestore_v1.query.Query", autospec=True)
+def test_get_w_explain_options(query_class):
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+
+    explain_options = ExplainOptions(analyze=True)
+    collection = _make_collection_reference("collection")
+    get_response = collection.get(explain_options=explain_options)
+
+    query_class.assert_called_once_with(collection)
+    query_instance = query_class.return_value
+
+    assert get_response is query_instance.get.return_value
+    query_instance.get.assert_called_once_with(
+        transaction=None,
+        explain_options=explain_options,
+    )
+
+
+@mock.patch("google.cloud.firestore_v1.query.Query", autospec=True)
 def test_stream(query_class):
     collection = _make_collection_reference("collection")
     stream_response = collection.stream()
@@ -425,6 +443,24 @@ def test_stream_with_transaction(query_class):
     query_instance = query_class.return_value
     assert stream_response is query_instance.stream.return_value
     query_instance.stream.assert_called_once_with(transaction=transaction)
+
+
+@mock.patch("google.cloud.firestore_v1.query.Query", autospec=True)
+def test_stream_w_explain_options(query_class):
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+
+    explain_options = ExplainOptions(analyze=True)
+    collection = _make_collection_reference("collection")
+    get_response = collection.stream(explain_options=explain_options)
+
+    query_class.assert_called_once_with(collection)
+    query_instance = query_class.return_value
+
+    assert get_response is query_instance.stream.return_value
+    query_instance.stream.assert_called_once_with(
+        transaction=None,
+        explain_options=explain_options,
+    )
 
 
 @mock.patch("google.cloud.firestore_v1.collection.Watch", autospec=True)

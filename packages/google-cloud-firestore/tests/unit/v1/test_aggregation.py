@@ -23,6 +23,9 @@ from google.cloud.firestore_v1.base_aggregation import (
     CountAggregation,
     SumAggregation,
 )
+from google.cloud.firestore_v1.query_profile import ExplainMetrics, QueryExplainError
+from google.cloud.firestore_v1.query_results import QueryResultsList
+from google.cloud.firestore_v1.stream_generator import StreamGenerator
 from tests.unit.v1._test_helpers import (
     make_aggregation_query,
     make_aggregation_query_response,
@@ -355,10 +358,45 @@ def test_aggregation_query_prep_stream_with_transaction():
     assert kwargs == {"retry": None}
 
 
-def _aggregation_query_get_helper(retry=None, timeout=None, read_time=None):
+def test_aggregation_query_prep_stream_with_explain_options():
+    from google.cloud.firestore_v1 import query_profile
+
+    client = make_client()
+    parent = client.collection("dee")
+    query = make_query(parent)
+    aggregation_query = make_aggregation_query(query)
+
+    aggregation_query.count(alias="all")
+    aggregation_query.sum("someref", alias="sumall")
+    aggregation_query.avg("anotherref", alias="avgall")
+
+    explain_options = query_profile.ExplainOptions(analyze=True)
+    request, kwargs = aggregation_query._prep_stream(explain_options=explain_options)
+
+    parent_path, _ = parent._parent_info()
+    expected_request = {
+        "parent": parent_path,
+        "structured_aggregation_query": aggregation_query._to_protobuf(),
+        "transaction": None,
+        "explain_options": explain_options._to_dict(),
+    }
+    assert request == expected_request
+    assert kwargs == {"retry": None}
+
+
+def _aggregation_query_get_helper(
+    retry=None,
+    timeout=None,
+    read_time=None,
+    explain_options=None,
+):
     from google.cloud._helpers import _datetime_to_pb_timestamp
 
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.query_profile import (
+        ExplainMetrics,
+        QueryExplainError,
+    )
 
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_aggregation_query"])
@@ -375,15 +413,21 @@ def _aggregation_query_get_helper(retry=None, timeout=None, read_time=None):
 
     aggregation_result = AggregationResult(alias="total", value=5, read_time=read_time)
 
+    if explain_options is not None:
+        explain_metrics = {"execution_stats": {"results_returned": 1}}
+    else:
+        explain_metrics = None
     response_pb = make_aggregation_query_response(
-        [aggregation_result], read_time=read_time
+        [aggregation_result],
+        read_time=read_time,
+        explain_metrics=explain_metrics,
     )
     firestore_api.run_aggregation_query.return_value = iter([response_pb])
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
     # Execute the query and check the response.
-    returned = aggregation_query.get(**kwargs)
-    assert isinstance(returned, list)
+    returned = aggregation_query.get(**kwargs, explain_options=explain_options)
+    assert isinstance(returned, QueryResultsList)
     assert len(returned) == 1
 
     for result in returned:
@@ -394,14 +438,29 @@ def _aggregation_query_get_helper(retry=None, timeout=None, read_time=None):
                 result_datetime = _datetime_to_pb_timestamp(r.read_time)
                 assert result_datetime == read_time
 
-    # Verify the mock call.
+    assert returned._explain_options == explain_options
+    assert returned.explain_options == explain_options
+
+    if explain_options is None:
+        with pytest.raises(QueryExplainError, match="explain_options not set"):
+            returned.get_explain_metrics()
+    else:
+        actual_explain_metrics = returned.get_explain_metrics()
+        assert isinstance(actual_explain_metrics, ExplainMetrics)
+        assert actual_explain_metrics.execution_stats.results_returned == 1
+
     parent_path, _ = parent._parent_info()
+    expected_request = {
+        "parent": parent_path,
+        "structured_aggregation_query": aggregation_query._to_protobuf(),
+        "transaction": None,
+    }
+    if explain_options is not None:
+        expected_request["explain_options"] = explain_options._to_dict()
+
+    # Verify the mock call.
     firestore_api.run_aggregation_query.assert_called_once_with(
-        request={
-            "parent": parent_path,
-            "structured_aggregation_query": aggregation_query._to_protobuf(),
-            "transaction": None,
-        },
+        request=expected_request,
         metadata=client._rpc_metadata,
         **kwargs,
     )
@@ -480,6 +539,12 @@ def test_aggregation_query_get_transaction():
         metadata=client._rpc_metadata,
         **kwargs,
     )
+
+
+def test_aggregation_query_get_w_explain_options():
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+
+    _aggregation_query_get_helper(explain_options=ExplainOptions(analyze=True))
 
 
 _not_passed = object()
@@ -602,6 +667,113 @@ def test_aggregation_query_stream_w_retriable_exc_w_transaction():
     txn = transaction.Transaction(client=mock.Mock(spec=[]))
     txn._id = b"DEADBEEF"
     _aggregation_query_stream_w_retriable_exc_helper(transaction=txn)
+
+
+def _aggregation_query_stream_helper(
+    retry=None,
+    timeout=None,
+    read_time=None,
+    explain_options=None,
+):
+    from google.cloud._helpers import _datetime_to_pb_timestamp
+
+    from google.cloud.firestore_v1 import _helpers
+
+    # Create a minimal fake GAPIC.
+    firestore_api = mock.Mock(spec=["run_aggregation_query"])
+
+    # Attach the fake GAPIC to a real client.
+    client = make_client()
+    client._firestore_api_internal = firestore_api
+
+    # Make a **real** collection reference as parent.
+    parent = client.collection("dee")
+    query = make_query(parent)
+    aggregation_query = make_aggregation_query(query)
+    aggregation_query.count(alias="all")
+
+    if explain_options is not None and explain_options.analyze is False:
+        results_list = []
+    else:
+        aggregation_result = AggregationResult(
+            alias="total", value=5, read_time=read_time
+        )
+        results_list = [aggregation_result]
+
+    if explain_options is not None:
+        explain_metrics = {"execution_stats": {"results_returned": 1}}
+    else:
+        explain_metrics = None
+    response_pb = make_aggregation_query_response(
+        results_list,
+        read_time=read_time,
+        explain_metrics=explain_metrics,
+    )
+    firestore_api.run_aggregation_query.return_value = iter([response_pb])
+    kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+    # Execute the query and check the response.
+    returned = aggregation_query.stream(**kwargs, explain_options=explain_options)
+    assert isinstance(returned, StreamGenerator)
+
+    results = []
+    for result in returned:
+        for r in result:
+            assert r.alias == aggregation_result.alias
+            assert r.value == aggregation_result.value
+            if read_time is not None:
+                result_datetime = _datetime_to_pb_timestamp(r.read_time)
+                assert result_datetime == read_time
+        results.append(result)
+    assert len(results) == len(results_list)
+
+    if explain_options is None:
+        with pytest.raises(QueryExplainError, match="explain_options not set"):
+            returned.get_explain_metrics()
+    else:
+        explain_metrics = returned.get_explain_metrics()
+        assert isinstance(explain_metrics, ExplainMetrics)
+        assert explain_metrics.execution_stats.results_returned == 1
+
+    parent_path, _ = parent._parent_info()
+    expected_request = {
+        "parent": parent_path,
+        "structured_aggregation_query": aggregation_query._to_protobuf(),
+        "transaction": None,
+    }
+    if explain_options is not None:
+        expected_request["explain_options"] = explain_options._to_dict()
+
+    # Verify the mock call.
+    firestore_api.run_aggregation_query.assert_called_once_with(
+        request=expected_request,
+        metadata=client._rpc_metadata,
+        **kwargs,
+    )
+
+
+def test_aggregation_query_stream():
+    _aggregation_query_stream_helper()
+
+
+def test_aggregation_query_stream_with_readtime():
+    from google.cloud._helpers import _datetime_to_pb_timestamp
+
+    one_hour_ago = datetime.now(tz=timezone.utc) - timedelta(hours=1)
+    read_time = _datetime_to_pb_timestamp(one_hour_ago)
+    _aggregation_query_stream_helper(read_time=read_time)
+
+
+def test_aggregation_query_stream_w_explain_options_analyze_true():
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+
+    _aggregation_query_stream_helper(explain_options=ExplainOptions(analyze=True))
+
+
+def test_aggregation_query_stream_w_explain_options_analyze_false():
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+
+    _aggregation_query_stream_helper(explain_options=ExplainOptions(analyze=False))
 
 
 def test_aggregation_from_query():

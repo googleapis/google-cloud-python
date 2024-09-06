@@ -50,6 +50,7 @@ from google.cloud.firestore_v1.client import Client
 from google.cloud.firestore_v1.collection import CollectionReference
 from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.query import CollectionGroup, Query
+from google.cloud.firestore_v1.query_profile import ExplainOptions
 from google.cloud.firestore_v1.transaction import Transaction, transactional
 from google.cloud.firestore_v1.transforms import (
     DELETE_FIELD,
@@ -131,6 +132,7 @@ __all__: List[str] = [
     "DocumentSnapshot",
     "DocumentTransform",
     "ExistsOption",
+    "ExplainOptions",
     "FieldFilter",
     "GeoPoint",
     "Increment",

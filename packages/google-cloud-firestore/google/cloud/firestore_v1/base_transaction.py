@@ -13,12 +13,17 @@
 # limitations under the License.
 
 """Helpers for applying Google Cloud Firestore changes in a transaction."""
+from __future__ import annotations
 
-from typing import Any, Coroutine, NoReturn, Optional, Union
+from typing import TYPE_CHECKING, Any, Coroutine, NoReturn, Optional, Union
 
 from google.api_core import retry as retries
 
 from google.cloud.firestore_v1 import types
+
+# Types needed only for Type Hints
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
 
 _CANT_BEGIN: str
 _CANT_COMMIT: str
@@ -150,6 +155,8 @@ class BaseTransaction(object):
         ref_or_query,
         retry: retries.Retry = None,
         timeout: float = None,
+        *,
+        explain_options: Optional[ExplainOptions] = None,
     ) -> NoReturn:
         raise NotImplementedError
 

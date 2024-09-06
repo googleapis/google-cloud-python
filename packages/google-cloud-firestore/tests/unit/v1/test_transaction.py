@@ -328,7 +328,11 @@ def test_transaction_get_all_w_retry_timeout():
     _transaction_get_all_helper(retry=retry, timeout=timeout)
 
 
-def _transaction_get_w_document_ref_helper(retry=None, timeout=None):
+def _transaction_get_w_document_ref_helper(
+    retry=None,
+    timeout=None,
+    explain_options=None,
+):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.document import DocumentReference
 
@@ -337,7 +341,13 @@ def _transaction_get_w_document_ref_helper(retry=None, timeout=None):
     ref = DocumentReference("documents", "doc-id")
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
+    if explain_options is not None:
+        kwargs["explain_options"] = explain_options
+
     result = transaction.get(ref, **kwargs)
+
+    # explain_options should not be in the request even if it's provided.
+    kwargs.pop("explain_options", None)
 
     assert result is client.get_all.return_value
     client.get_all.assert_called_once_with([ref], transaction=transaction, **kwargs)
@@ -355,7 +365,22 @@ def test_transaction_get_w_document_ref_w_retry_timeout():
     _transaction_get_w_document_ref_helper(retry=retry, timeout=timeout)
 
 
-def _transaction_get_w_query_helper(retry=None, timeout=None):
+def test_transaction_get_w_document_ref_w_explain_options():
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+
+    with pytest.warns(UserWarning) as warned:
+        _transaction_get_w_document_ref_helper(
+            explain_options=ExplainOptions(analyze=True),
+        )
+    assert len(warned) == 1
+    assert "not supported in transanction with document" in str(warned[0])
+
+
+def _transaction_get_w_query_helper(
+    retry=None,
+    timeout=None,
+    explain_options=None,
+):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.query import Query
 
@@ -364,6 +389,8 @@ def _transaction_get_w_query_helper(retry=None, timeout=None):
     query = Query(parent=mock.Mock(spec=[]))
     query.stream = mock.MagicMock()
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+    if explain_options is not None:
+        kwargs["explain_options"] = explain_options
 
     result = transaction.get(query, **kwargs)
 
@@ -381,6 +408,12 @@ def test_transaction_get_w_query_w_retry_timeout():
     retry = Retry(predicate=object())
     timeout = 123.0
     _transaction_get_w_query_helper(retry=retry, timeout=timeout)
+
+
+def test_transaction_get_w_query_w_explain_options():
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+
+    _transaction_get_w_query_helper(explain_options=ExplainOptions(analyze=True))
 
 
 @pytest.mark.parametrize("database", [None, "somedb"])

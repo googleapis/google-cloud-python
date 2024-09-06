@@ -18,6 +18,8 @@ import mock
 import pytest
 
 from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
+from google.cloud.firestore_v1.query_profile import ExplainMetrics, QueryExplainError
+from google.cloud.firestore_v1.query_results import QueryResultsList
 from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT, make_client, make_query
 from tests.unit.v1.test_base_query import _make_cursor_pb, _make_query_response
 
@@ -35,7 +37,12 @@ def test_query_constructor():
     assert not query._all_descendants
 
 
-def _query_get_helper(retry=None, timeout=None, database=None):
+def _query_get_helper(
+    retry=None,
+    timeout=None,
+    database=None,
+    explain_options=None,
+):
     from google.cloud.firestore_v1 import _helpers
 
     # Create a minimal fake GAPIC.
@@ -52,30 +59,48 @@ def _query_get_helper(retry=None, timeout=None, database=None):
     _, expected_prefix = parent._parent_info()
     name = "{}/sleep".format(expected_prefix)
     data = {"snooze": 10}
+    explain_metrics = {"execution_stats": {"results_returned": 1}}
 
-    response_pb = _make_query_response(name=name, data=data)
+    response_pb = _make_query_response(
+        name=name,
+        data=data,
+        explain_metrics=explain_metrics,
+    )
     firestore_api.run_query.return_value = iter([response_pb])
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
     # Execute the query and check the response.
     query = make_query(parent)
-    returned = query.get(**kwargs)
+    returned = query.get(**kwargs, explain_options=explain_options)
 
-    assert isinstance(returned, list)
+    assert isinstance(returned, QueryResultsList)
     assert len(returned) == 1
 
     snapshot = returned[0]
     assert snapshot.reference._path, "dee" == "sleep"
     assert snapshot.to_dict() == data
 
-    # Verify the mock call.
+    if explain_options is None:
+        with pytest.raises(QueryExplainError, match="explain_options not set"):
+            returned.get_explain_metrics()
+    else:
+        actual_explain_metrics = returned.get_explain_metrics()
+        assert isinstance(actual_explain_metrics, ExplainMetrics)
+        assert actual_explain_metrics.execution_stats.results_returned == 1
+
+    # Create expected request body.
     parent_path, _ = parent._parent_info()
+    request = {
+        "parent": parent_path,
+        "structured_query": query._to_protobuf(),
+        "transaction": None,
+    }
+    if explain_options:
+        request["explain_options"] = explain_options._to_dict()
+
+    # Verify the mock call.
     firestore_api.run_query.assert_called_once_with(
-        request={
-            "parent": parent_path,
-            "structured_query": query._to_protobuf(),
-            "transaction": None,
-        },
+        request=request,
         metadata=client._rpc_metadata,
         **kwargs,
     )
@@ -147,6 +172,13 @@ def test_query_get_limit_to_last(database):
         },
         metadata=client._rpc_metadata,
     )
+
+
+def test_query_get_w_explain_options():
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+
+    explain_options = ExplainOptions(analyze=True)
+    _query_get_helper(explain_options=explain_options)
 
 
 @pytest.mark.parametrize("database", [None, "somedb"])
@@ -301,7 +333,12 @@ def test_query_chunkify_w_chunksize_gt_limit(database, expected):
     assert chunk_ids == expected_ids
 
 
-def _query_stream_helper(retry=None, timeout=None, database=None):
+def _query_stream_helper(
+    retry=None,
+    timeout=None,
+    database=None,
+    explain_options=None,
+):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.stream_generator import StreamGenerator
 
@@ -319,14 +356,20 @@ def _query_stream_helper(retry=None, timeout=None, database=None):
     _, expected_prefix = parent._parent_info()
     name = "{}/sleep".format(expected_prefix)
     data = {"snooze": 10}
-    response_pb = _make_query_response(name=name, data=data)
+    if explain_options is not None:
+        explain_metrics = {"execution_stats": {"results_returned": 1}}
+    else:
+        explain_metrics = None
+    response_pb = _make_query_response(
+        name=name, data=data, explain_metrics=explain_metrics
+    )
     firestore_api.run_query.return_value = iter([response_pb])
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
     # Execute the query and check the response.
     query = make_query(parent)
 
-    get_response = query.stream(**kwargs)
+    get_response = query.stream(**kwargs, explain_options=explain_options)
 
     assert isinstance(get_response, StreamGenerator)
     returned = list(get_response)
@@ -335,14 +378,27 @@ def _query_stream_helper(retry=None, timeout=None, database=None):
     assert snapshot.reference._path == ("dee", "sleep")
     assert snapshot.to_dict() == data
 
-    # Verify the mock call.
+    if explain_options is None:
+        with pytest.raises(QueryExplainError, match="explain_options not set"):
+            get_response.get_explain_metrics()
+    else:
+        explain_metrics = get_response.get_explain_metrics()
+        assert isinstance(explain_metrics, ExplainMetrics)
+        assert explain_metrics.execution_stats.results_returned == 1
+
+    # Create expected request body.
     parent_path, _ = parent._parent_info()
+    request = {
+        "parent": parent_path,
+        "structured_query": query._to_protobuf(),
+        "transaction": None,
+    }
+    if explain_options is not None:
+        request["explain_options"] = explain_options._to_dict()
+
+    # Verify the mock call.
     firestore_api.run_query.assert_called_once_with(
-        request={
-            "parent": parent_path,
-            "structured_query": query._to_protobuf(),
-            "transaction": None,
-        },
+        request=request,
         metadata=client._rpc_metadata,
         **kwargs,
     )
@@ -745,6 +801,13 @@ def test_query_stream_w_retriable_exc_w_transaction():
     txn = transaction.Transaction(client=mock.Mock(spec=[]))
     txn._id = b"DEADBEEF"
     _query_stream_w_retriable_exc_helper(transaction=txn)
+
+
+def test_query_stream_w_explain_options():
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+
+    explain_options = ExplainOptions(analyze=True)
+    _query_stream_helper(explain_options=explain_options)
 
 
 @mock.patch("google.cloud.firestore_v1.query.Watch", autospec=True)

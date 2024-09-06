@@ -16,25 +16,28 @@
 Firestore API.
 """
 
-from collections import abc
+from typing import Any, AsyncGenerator, Awaitable, TypeVar
 
 
-class AsyncStreamGenerator(abc.AsyncGenerator):
+T = TypeVar("T")
+
+
+class AsyncStreamGenerator(AsyncGenerator[T, Any]):
     """Asynchronous generator for the streamed results."""
 
-    def __init__(self, response_generator):
+    def __init__(self, response_generator: AsyncGenerator[T, Any]):
         self._generator = response_generator
 
-    def __aiter__(self):
-        return self._generator
+    def __aiter__(self) -> AsyncGenerator[T, Any]:
+        return self
 
-    def __anext__(self):
+    def __anext__(self) -> Awaitable[T]:
         return self._generator.__anext__()
 
-    def asend(self, value=None):
+    def asend(self, value=None) -> Awaitable[Any]:
         return self._generator.asend(value)
 
-    def athrow(self, exp=None):
+    def athrow(self, exp=None) -> Awaitable[Any]:
         return self._generator.athrow(exp)
 
     def aclose(self):
