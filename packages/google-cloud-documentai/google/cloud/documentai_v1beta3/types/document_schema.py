@@ -189,6 +189,10 @@ class DocumentSchema(proto.Message):
                    type. For example ``line_item/amount``. This convention
                    is deprecated, but will still be honored for backward
                    compatibility.
+            description (str):
+                The description of the entity type. Could be
+                used to provide more information about the
+                entity type for model calls.
             base_types (MutableSequence[str]):
                 The entity type that this type is derived
                 from.  For now, one and only one should be set.
@@ -220,6 +224,10 @@ class DocumentSchema(proto.Message):
                 name (str):
                     The name of the property.  Follows the same
                     guidelines as the EntityType name.
+                description (str):
+                    The description of the property. Could be
+                    used to provide more information about the
+                    property for model calls.
                 display_name (str):
                     User defined name for the property.
                 value_type (str):
@@ -274,6 +282,10 @@ class DocumentSchema(proto.Message):
                 proto.STRING,
                 number=1,
             )
+            description: str = proto.Field(
+                proto.STRING,
+                number=7,
+            )
             display_name: str = proto.Field(
                 proto.STRING,
                 number=6,
@@ -308,6 +320,10 @@ class DocumentSchema(proto.Message):
         name: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        description: str = proto.Field(
+            proto.STRING,
+            number=15,
         )
         base_types: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
