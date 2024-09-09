@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.3...google-maps-fleetengine-delivery-v0.2.4) (2024-09-06)
+
+
+### Documentation
+
+* [google-maps-fleetengine-delivery] update comment link for ListTasks filter ([#13066](https://github.com/googleapis/google-cloud-python/issues/13066)) ([a7f0dbf](https://github.com/googleapis/google-cloud-python/commit/a7f0dbfb8a5f3518cf1acec86b7bc3a6151a811b))
+
 ## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.2...google-maps-fleetengine-delivery-v0.2.3) (2024-07-30)
 
 

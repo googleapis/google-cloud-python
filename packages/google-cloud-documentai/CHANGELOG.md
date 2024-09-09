@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.31.0...google-cloud-documentai-v2.32.0) (2024-09-06)
+
+
+### Features
+
+* [google-cloud-documentai] Add API fields for the descriptions of entity type and property in the document schema ([#13067](https://github.com/googleapis/google-cloud-python/issues/13067)) ([1a2b325](https://github.com/googleapis/google-cloud-python/commit/1a2b325c0da966131072673e06d17015b16c7a1a))
+
 ## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.30.0...google-cloud-documentai-v2.31.0) (2024-08-08)
 
 
