@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.23.1](https://github.com/googleapis/python-pubsub/compare/v2.23.0...v2.23.1) (2024-09-09)
+
+
+### Bug Fixes
+
+* Replace asserts with None checks for graceful shutdown ([#1244](https://github.com/googleapis/python-pubsub/issues/1244)) ([ced4f52](https://github.com/googleapis/python-pubsub/commit/ced4f527c7f918a87d1b89c2b5da59dbdf00e2c3))
+
 ## [2.23.0](https://github.com/googleapis/python-pubsub/compare/v2.22.0...v2.23.0) (2024-07-29)
 
 
