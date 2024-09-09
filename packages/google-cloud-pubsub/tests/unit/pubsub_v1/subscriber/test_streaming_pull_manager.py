@@ -1375,6 +1375,62 @@ def test_close_blocking_scheduler_shutdown():
     scheduler.shutdown.assert_called_once_with(await_msg_callbacks=True)
 
 
+def test__on_response_none_scheduler():
+    manager, _, _, _, _, _ = make_running_manager()
+
+    manager._callback = mock.sentinel.callback
+    manager._scheduler = None
+    # Set up the messages.
+    response = gapic_types.StreamingPullResponse(
+        received_messages=[
+            gapic_types.ReceivedMessage(
+                ack_id="ack1",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="1"),
+            ),
+            gapic_types.ReceivedMessage(
+                ack_id="ack2",
+                message=gapic_types.PubsubMessage(data=b"bar", message_id="2"),
+                delivery_attempt=6,
+            ),
+        ]
+    )
+
+    manager._maybe_release_messages = mock.Mock()
+
+    # adjust message bookkeeping in leaser
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=42)
+    manager._on_response(response)
+
+    manager._maybe_release_messages.assert_not_called
+
+
+def test__on_response_none_leaser():
+    manager, _, _, _, _, _ = make_running_manager()
+
+    manager._callback = mock.sentinel.callback
+    manager._leaser = None
+    # Set up the messages.
+    response = gapic_types.StreamingPullResponse(
+        received_messages=[
+            gapic_types.ReceivedMessage(
+                ack_id="ack1",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="1"),
+            ),
+            gapic_types.ReceivedMessage(
+                ack_id="ack2",
+                message=gapic_types.PubsubMessage(data=b"bar", message_id="2"),
+                delivery_attempt=6,
+            ),
+        ]
+    )
+
+    manager._maybe_release_messages = mock.Mock()
+
+    manager._on_response(response)
+
+    manager._maybe_release_messages.assert_not_called
+
+
 def test_close_nonblocking_scheduler_shutdown():
     manager, _, _, _, _, _ = make_running_manager(await_callbacks_on_shutdown=False)
     scheduler = manager._scheduler

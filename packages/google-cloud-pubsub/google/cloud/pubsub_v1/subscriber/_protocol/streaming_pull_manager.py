@@ -1104,8 +1104,11 @@ class StreamingPullManager(object):
         )
 
         with self._pause_resume_lock:
-            assert self._scheduler is not None
-            assert self._leaser is not None
+            if self._scheduler is None or self._leaser is None:
+                _LOGGER.debug(
+                    f"self._scheduler={self._scheduler} or self._leaser={self._leaser} is None. Stopping further processing."
+                )
+                return
 
             for received_message in received_messages:
                 if (
