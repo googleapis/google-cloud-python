@@ -467,11 +467,44 @@ class EncryptionConfig(proto.Message):
             Optional. The Cloud KMS key name to use for
             PD disk encryption for all instances in the
             cluster.
+        kms_key (str):
+            Optional. The Cloud KMS key resource name to use for cluster
+            persistent disk and job argument encryption. See [Use CMEK
+            with cluster data]
+            (https://cloud.google.com//dataproc/docs/concepts/configuring-clusters/customer-managed-encryption#use_cmek_with_cluster_data)
+            for more information.
+
+            When this key resource name is provided, the following job
+            arguments of the following job types submitted to the
+            cluster are encrypted using CMEK:
+
+            -  `FlinkJob
+               args <https://cloud.google.com/dataproc/docs/reference/rest/v1/FlinkJob>`__
+            -  `HadoopJob
+               args <https://cloud.google.com/dataproc/docs/reference/rest/v1/HadoopJob>`__
+            -  `SparkJob
+               args <https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkJob>`__
+            -  `SparkRJob
+               args <https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkRJob>`__
+            -  `PySparkJob
+               args <https://cloud.google.com/dataproc/docs/reference/rest/v1/PySparkJob>`__
+            -  `SparkSqlJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkSqlJob>`__
+               scriptVariables and queryList.queries
+            -  `HiveJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/HiveJob>`__
+               scriptVariables and queryList.queries
+            -  `PigJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/PigJob>`__
+               scriptVariables and queryList.queries
+            -  `PrestoJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/PrestoJob>`__
+               scriptVariables and queryList.queries
     """
 
     gce_pd_kms_key_name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    kms_key: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1834,6 +1867,8 @@ class DataprocMetricConfig(proto.Message):
                 Hiveserver2 metric source.
             HIVEMETASTORE (7):
                 hivemetastore metric source
+            FLINK (8):
+                flink metric source
         """
         METRIC_SOURCE_UNSPECIFIED = 0
         MONITORING_AGENT_DEFAULTS = 1
@@ -1843,6 +1878,7 @@ class DataprocMetricConfig(proto.Message):
         SPARK_HISTORY_SERVER = 5
         HIVESERVER2 = 6
         HIVEMETASTORE = 7
+        FLINK = 8
 
     class Metric(proto.Message):
         r"""A Dataproc custom metric.

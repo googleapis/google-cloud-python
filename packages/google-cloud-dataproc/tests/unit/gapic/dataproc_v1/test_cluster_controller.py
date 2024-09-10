@@ -4476,7 +4476,10 @@ def test_create_cluster_rest(request_type):
                     "execution_timeout": {"seconds": 751, "nanos": 543},
                 }
             ],
-            "encryption_config": {"gce_pd_kms_key_name": "gce_pd_kms_key_name_value"},
+            "encryption_config": {
+                "gce_pd_kms_key_name": "gce_pd_kms_key_name_value",
+                "kms_key": "kms_key_value",
+            },
             "autoscaling_config": {"policy_uri": "policy_uri_value"},
             "security_config": {
                 "kerberos_config": {
@@ -5082,7 +5085,10 @@ def test_update_cluster_rest(request_type):
                     "execution_timeout": {"seconds": 751, "nanos": 543},
                 }
             ],
-            "encryption_config": {"gce_pd_kms_key_name": "gce_pd_kms_key_name_value"},
+            "encryption_config": {
+                "gce_pd_kms_key_name": "gce_pd_kms_key_name_value",
+                "kms_key": "kms_key_value",
+            },
             "autoscaling_config": {"policy_uri": "policy_uri_value"},
             "security_config": {
                 "kerberos_config": {

@@ -3238,6 +3238,7 @@ def test_list_workflow_templates(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = workflow_templates.ListWorkflowTemplatesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_workflow_templates(request)
 
@@ -3250,6 +3251,7 @@ def test_list_workflow_templates(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkflowTemplatesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_workflow_templates_empty_call():
@@ -3362,6 +3364,7 @@ async def test_list_workflow_templates_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workflow_templates.ListWorkflowTemplatesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_workflow_templates()
@@ -3434,6 +3437,7 @@ async def test_list_workflow_templates_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workflow_templates.ListWorkflowTemplatesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_workflow_templates(request)
@@ -3447,6 +3451,7 @@ async def test_list_workflow_templates_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkflowTemplatesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -4307,7 +4312,8 @@ def test_create_workflow_template_rest(request_type):
                         }
                     ],
                     "encryption_config": {
-                        "gce_pd_kms_key_name": "gce_pd_kms_key_name_value"
+                        "gce_pd_kms_key_name": "gce_pd_kms_key_name_value",
+                        "kms_key": "kms_key_value",
                     },
                     "autoscaling_config": {"policy_uri": "policy_uri_value"},
                     "security_config": {
@@ -4448,6 +4454,24 @@ def test_create_workflow_template_rest(request_type):
                     "properties": {},
                     "logging_config": {},
                 },
+                "trino_job": {
+                    "query_file_uri": "query_file_uri_value",
+                    "query_list": {},
+                    "continue_on_failure": True,
+                    "output_format": "output_format_value",
+                    "client_tags": ["client_tags_value1", "client_tags_value2"],
+                    "properties": {},
+                    "logging_config": {},
+                },
+                "flink_job": {
+                    "main_jar_file_uri": "main_jar_file_uri_value",
+                    "main_class": "main_class_value",
+                    "args": ["args_value1", "args_value2"],
+                    "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
+                    "savepoint_uri": "savepoint_uri_value",
+                    "properties": {},
+                    "logging_config": {},
+                },
                 "labels": {},
                 "scheduling": {
                     "max_failures_per_hour": 2243,
@@ -4471,6 +4495,7 @@ def test_create_workflow_template_rest(request_type):
             }
         ],
         "dag_timeout": {},
+        "encryption_config": {"kms_key": "kms_key_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5615,7 +5640,8 @@ def test_instantiate_inline_workflow_template_rest(request_type):
                         }
                     ],
                     "encryption_config": {
-                        "gce_pd_kms_key_name": "gce_pd_kms_key_name_value"
+                        "gce_pd_kms_key_name": "gce_pd_kms_key_name_value",
+                        "kms_key": "kms_key_value",
                     },
                     "autoscaling_config": {"policy_uri": "policy_uri_value"},
                     "security_config": {
@@ -5756,6 +5782,24 @@ def test_instantiate_inline_workflow_template_rest(request_type):
                     "properties": {},
                     "logging_config": {},
                 },
+                "trino_job": {
+                    "query_file_uri": "query_file_uri_value",
+                    "query_list": {},
+                    "continue_on_failure": True,
+                    "output_format": "output_format_value",
+                    "client_tags": ["client_tags_value1", "client_tags_value2"],
+                    "properties": {},
+                    "logging_config": {},
+                },
+                "flink_job": {
+                    "main_jar_file_uri": "main_jar_file_uri_value",
+                    "main_class": "main_class_value",
+                    "args": ["args_value1", "args_value2"],
+                    "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
+                    "savepoint_uri": "savepoint_uri_value",
+                    "properties": {},
+                    "logging_config": {},
+                },
                 "labels": {},
                 "scheduling": {
                     "max_failures_per_hour": 2243,
@@ -5779,6 +5823,7 @@ def test_instantiate_inline_workflow_template_rest(request_type):
             }
         ],
         "dag_timeout": {},
+        "encryption_config": {"kms_key": "kms_key_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6289,7 +6334,8 @@ def test_update_workflow_template_rest(request_type):
                         }
                     ],
                     "encryption_config": {
-                        "gce_pd_kms_key_name": "gce_pd_kms_key_name_value"
+                        "gce_pd_kms_key_name": "gce_pd_kms_key_name_value",
+                        "kms_key": "kms_key_value",
                     },
                     "autoscaling_config": {"policy_uri": "policy_uri_value"},
                     "security_config": {
@@ -6430,6 +6476,24 @@ def test_update_workflow_template_rest(request_type):
                     "properties": {},
                     "logging_config": {},
                 },
+                "trino_job": {
+                    "query_file_uri": "query_file_uri_value",
+                    "query_list": {},
+                    "continue_on_failure": True,
+                    "output_format": "output_format_value",
+                    "client_tags": ["client_tags_value1", "client_tags_value2"],
+                    "properties": {},
+                    "logging_config": {},
+                },
+                "flink_job": {
+                    "main_jar_file_uri": "main_jar_file_uri_value",
+                    "main_class": "main_class_value",
+                    "args": ["args_value1", "args_value2"],
+                    "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
+                    "savepoint_uri": "savepoint_uri_value",
+                    "properties": {},
+                    "logging_config": {},
+                },
                 "labels": {},
                 "scheduling": {
                     "max_failures_per_hour": 2243,
@@ -6453,6 +6517,7 @@ def test_update_workflow_template_rest(request_type):
             }
         ],
         "dag_timeout": {},
+        "encryption_config": {"kms_key": "kms_key_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6849,6 +6914,7 @@ def test_list_workflow_templates_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = workflow_templates.ListWorkflowTemplatesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -6865,6 +6931,7 @@ def test_list_workflow_templates_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkflowTemplatesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_workflow_templates_rest_use_cached_wrapped_rpc():
