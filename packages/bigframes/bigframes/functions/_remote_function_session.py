@@ -387,7 +387,7 @@ class RemoteFunctionSession:
                 # https://docs.python.org/3/library/inspect.html#inspect.signature
                 signature_kwargs: Mapping[str, Any] = {"eval_str": True}
             else:
-                signature_kwargs = {}
+                signature_kwargs = {}  # type: ignore
 
             signature = inspect.signature(
                 func,
