@@ -47,6 +47,7 @@ jobs:
       with:
         name: coverage-artifact-${{ matrix.option }}-${{ matrix.python }}
         path: .coverage${{ matrix.option }}-${{ matrix.python }}
+        include-hidden-files: true
 
   report-coverage:
     name: cover
