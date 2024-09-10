@@ -304,6 +304,7 @@ def run_system(
     print_duration=False,
     extra_pytest_options=(),
     timeout_seconds=900,
+    num_workers=20,
 ):
     """Run the system test suite."""
     constraints_path = str(
@@ -323,7 +324,7 @@ def run_system(
     pytest_cmd = [
         "py.test",
         "--quiet",
-        "-n=20",
+        f"-n={num_workers}",
         # Any individual test taking longer than 15 mins will be terminated.
         f"--timeout={timeout_seconds}",
         # Log 20 slowest tests
@@ -392,6 +393,7 @@ def doctest(session: nox.sessions.Session):
         ),
         test_folder="bigframes",
         check_cov=True,
+        num_workers=5,
     )
 
 
