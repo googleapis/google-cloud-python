@@ -442,6 +442,12 @@ class DeadlineExceeded(GatewayTimeout):
     grpc_status_code = grpc.StatusCode.DEADLINE_EXCEEDED if grpc is not None else None
 
 
+class AsyncRestUnsupportedParameterError(NotImplementedError):
+    """Raised when an unsupported parameter is configured against async rest transport."""
+
+    pass
+
+
 def exception_class_for_http_status(status_code):
     """Return the exception class for a specific HTTP status code.
 
