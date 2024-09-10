@@ -39,4 +39,5 @@ repos:
     hooks:
     -   id: mypy
         additional_dependencies: [types-requests, types-tabulate, pandas-stubs]
-        args: ["--check-untyped-defs", "--explicit-package-bases", '--exclude="^third_party"', "--ignore-missing-imports"]
+        exclude: "^third_party"
+        args: ["--check-untyped-defs", "--explicit-package-bases", "--ignore-missing-imports"]

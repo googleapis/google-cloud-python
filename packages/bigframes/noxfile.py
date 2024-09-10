@@ -384,7 +384,12 @@ def doctest(session: nox.sessions.Session):
     run_system(
         session=session,
         prefix_name="doctest",
-        extra_pytest_options=("--doctest-modules", "third_party"),
+        extra_pytest_options=(
+            "--doctest-modules",
+            "third_party",
+            "--ignore",
+            "third_party/bigframes_vendored/ibis",
+        ),
         test_folder="bigframes",
         check_cov=True,
     )
