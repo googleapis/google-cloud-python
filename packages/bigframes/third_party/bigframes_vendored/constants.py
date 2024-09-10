@@ -16,10 +16,14 @@
 
 This module should not depend on any others in the package.
 """
+import bigframes.version
+
+BF_VERSION = bigframes.version.__version__
 
 FEEDBACK_LINK = (
     "Share your usecase with the BigQuery DataFrames team at the "
     "https://bit.ly/bigframes-feedback survey."
+    f"You are currently running BigFrames version {BF_VERSION}"
 )
 
 ABSTRACT_METHOD_ERROR_MESSAGE = (

@@ -21,6 +21,7 @@ import datetime
 
 import bigframes_vendored.constants
 
+BF_VERSION = bigframes_vendored.constants.BF_VERSION
 FEEDBACK_LINK = bigframes_vendored.constants.FEEDBACK_LINK
 ABSTRACT_METHOD_ERROR_MESSAGE = (
     bigframes_vendored.constants.ABSTRACT_METHOD_ERROR_MESSAGE

@@ -44,3 +44,14 @@ def test_wait_for_job_error_includes_feedback_link():
 
     cap_exc.match("Test message 123.")
     cap_exc.match(constants.FEEDBACK_LINK)
+
+
+def test_wait_for_job_error_includes_version():
+    mock_job = mock.create_autospec(bigquery.LoadJob)
+    mock_job.result.side_effect = api_core_exceptions.BadRequest("Test message 123.")
+
+    with pytest.raises(api_core_exceptions.BadRequest) as cap_exc:
+        formatting_helpers.wait_for_job(mock_job)
+
+    cap_exc.match("Test message 123.")
+    cap_exc.match(constants.BF_VERSION)
