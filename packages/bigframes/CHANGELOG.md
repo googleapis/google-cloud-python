@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.17.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.16.0...v1.17.0) (2024-09-11)
+
+
+### Features
+
+* Add `__version__` alias to bigframes.pandas ([#967](https://github.com/googleapis/python-bigquery-dataframes/issues/967)) ([9ce10b4](https://github.com/googleapis/python-bigquery-dataframes/commit/9ce10b4248f106ac9e09fc0fe686cece86827337))
+* Add Gemini 1.5 stable models support ([#945](https://github.com/googleapis/python-bigquery-dataframes/issues/945)) ([c1cde19](https://github.com/googleapis/python-bigquery-dataframes/commit/c1cde19769c169b962b58b25f0be61c8c41edb95))
+* Allow setting table labels in `to_gbq` ([#941](https://github.com/googleapis/python-bigquery-dataframes/issues/941)) ([cccc6ca](https://github.com/googleapis/python-bigquery-dataframes/commit/cccc6ca8c1271097bbe15e3d9ccdcfd7c633227a))
+* Define list accessor for bigframes Series ([#946](https://github.com/googleapis/python-bigquery-dataframes/issues/946)) ([8e8279d](https://github.com/googleapis/python-bigquery-dataframes/commit/8e8279d4da90feb5766f266b49cb417f8cbec6c9))
+* Enable read_csv() to process other files ([#940](https://github.com/googleapis/python-bigquery-dataframes/issues/940)) ([3b35860](https://github.com/googleapis/python-bigquery-dataframes/commit/3b35860776033fc8e71e471422c6d2b9366a7c9f))
+* Include the bigframes package version alongside the feedback link in error messages ([#936](https://github.com/googleapis/python-bigquery-dataframes/issues/936)) ([7b59b6d](https://github.com/googleapis/python-bigquery-dataframes/commit/7b59b6dc6f0cedfee713b5b273d46fa84b70bfa4))
+
+
+### Bug Fixes
+
+* Astype Decimal to Int64 conversion. ([#957](https://github.com/googleapis/python-bigquery-dataframes/issues/957)) ([27764a6](https://github.com/googleapis/python-bigquery-dataframes/commit/27764a64f90092374458fafbe393bc6c30c85681))
+* Make `read_gbq_function` work for multi-param functions ([#947](https://github.com/googleapis/python-bigquery-dataframes/issues/947)) ([c750be6](https://github.com/googleapis/python-bigquery-dataframes/commit/c750be6093941677572a10c36a92984e954de32c))
+* Support `read_gbq_function` for axis=1 application ([#950](https://github.com/googleapis/python-bigquery-dataframes/issues/950)) ([86e54b1](https://github.com/googleapis/python-bigquery-dataframes/commit/86e54b13d2b91517b1df2d9c1f852a8e1925309a))
+
+
+### Documentation
+
+* Add docstring returns section to Options ([#937](https://github.com/googleapis/python-bigquery-dataframes/issues/937)) ([a2640a2](https://github.com/googleapis/python-bigquery-dataframes/commit/a2640a2d731c8d0aba1307311092f5e85b8ba077))
+* Update title of pypi notebook example to reflect use of the PyPI public dataset ([#952](https://github.com/googleapis/python-bigquery-dataframes/issues/952)) ([cd62e60](https://github.com/googleapis/python-bigquery-dataframes/commit/cd62e604967adac0c2f8600408bd9ce7886f2f98))
+
 ## [1.16.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.15.0...v1.16.0) (2024-09-04)
 
 
