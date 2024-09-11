@@ -2,7 +2,7 @@
     "name": "google-maps-areainsights",
     "name_pretty": "",
     "api_description": "",
-    "product_documentation": "",
+    "product_documentation": "https://developers.google.com/maps/documentation/places-insights",
     "client_documentation": "https://googleapis.dev/python/google-maps-areainsights/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
