@@ -56,14 +56,6 @@ def q(dataset_id: str, session: bigframes.Session):
 
     total = bpd.concat([df1, df2])
 
-    # TODO(huanc): TEMPORARY CODE to force a fresh start. Currently,
-    # combining everything into a single query seems to trigger a bug
-    # causing incorrect results. This workaround involves writing to and
-    # then reading from BigQuery. Remove this once b/355714291 is
-    # resolved.
-    dest = total.to_gbq()
-    total = bpd.read_gbq(dest)
-
     total = total[(total["L_SHIPDATE"] >= var3) & (total["L_SHIPDATE"] <= var4)]
     total["VOLUME"] = total["L_EXTENDEDPRICE"] * (1.0 - total["L_DISCOUNT"])
     total["L_YEAR"] = total["L_SHIPDATE"].dt.year
