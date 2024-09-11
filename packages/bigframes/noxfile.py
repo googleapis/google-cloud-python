@@ -16,10 +16,13 @@
 
 from __future__ import absolute_import
 
+import multiprocessing
 import os
 import pathlib
 import re
 import shutil
+import time
+import traceback
 from typing import Dict, List
 import warnings
 
@@ -754,6 +757,12 @@ def notebook(session: nox.Session):
     for nb in notebooks + list(notebooks_reg):
         assert os.path.exists(nb), nb
 
+    # Determine whether to enable multi-process mode based on the environment
+    # variable. If BENCHMARK_AND_PUBLISH is "true", it indicates we're running
+    # a benchmark, so we disable multi-process mode. If BENCHMARK_AND_PUBLISH
+    # is "false", we enable multi-process mode for faster execution.
+    multi_process_mode = os.getenv("BENCHMARK_AND_PUBLISH", "false") == "false"
+
     try:
         # Populate notebook parameters and make a backup so that the notebooks
         # are runnable.
@@ -762,23 +771,65 @@ def notebook(session: nox.Session):
             CURRENT_DIRECTORY / "scripts" / "notebooks_fill_params.py",
             *notebooks,
         )
+
+        # Shared flag using multiprocessing.Manager() to indicate if
+        # any process encounters an error. This flag may be updated
+        # across different processes.
+        error_flag = multiprocessing.Manager().Value("i", False)
+        processes = []
         for notebook in notebooks:
-            session.run(
+            args = (
                 "python",
                 "scripts/run_and_publish_benchmark.py",
                 "--notebook",
                 f"--benchmark-path={notebook}",
             )
+            if multi_process_mode:
+                process = multiprocessing.Process(
+                    target=_run_process,
+                    args=(session, args, error_flag),
+                )
+                process.start()
+                processes.append(process)
+                # Adding a small delay between starting each
+                # process to avoid potential race conditions。
+                time.sleep(1)
+            else:
+                session.run(*args)
 
+        for process in processes:
+            process.join()
+
+        processes = []
         for notebook, regions in notebooks_reg.items():
             for region in regions:
-                session.run(
+                args = (
                     "python",
                     "scripts/run_and_publish_benchmark.py",
                     "--notebook",
                     f"--benchmark-path={notebook}",
                     f"--region={region}",
                 )
+                if multi_process_mode:
+                    process = multiprocessing.Process(
+                        target=_run_process,
+                        args=(session, args, error_flag),
+                    )
+                    process.start()
+                    processes.append(process)
+                    # Adding a small delay between starting each
+                    # process to avoid potential race conditions。
+                    time.sleep(1)
+                else:
+                    session.run(*args)
+
+        for process in processes:
+            process.join()
+
+        # Check the shared error flag and raise an exception if any process
+        # reported an error
+        if error_flag.value:
+            raise Exception("Errors occurred in one or more subprocesses.")
     finally:
         # Prevent our notebook changes from getting checked in to git
         # accidentally.
@@ -793,6 +844,15 @@ def notebook(session: nox.Session):
             "--notebook",
             "--publish-benchmarks=notebooks/",
         )
+
+
+def _run_process(session: nox.Session, args, error_flag):
+    try:
+        session.run(*args)
+    except Exception:
+        traceback_str = traceback.format_exc()
+        print(traceback_str)
+        error_flag.value = True
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
