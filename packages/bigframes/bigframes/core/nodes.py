@@ -42,6 +42,9 @@ if typing.TYPE_CHECKING:
 OVERHEAD_VARIABLES = 5
 
 
+COL_OFFSET = int
+
+
 @dataclass(frozen=True)
 class BigFrameNode:
     """
@@ -826,7 +829,7 @@ class RandomSampleNode(UnaryNode):
 
 @dataclass(frozen=True)
 class ExplodeNode(UnaryNode):
-    column_ids: typing.Tuple[str, ...]
+    column_ids: typing.Tuple[COL_OFFSET, ...]
 
     @property
     def row_preserving(self) -> bool:
@@ -844,9 +847,9 @@ class ExplodeNode(UnaryNode):
                     self.child.schema.get_type(name).pyarrow_dtype.value_type
                 ),
             )
-            if name in self.column_ids
+            if offset in self.column_ids
             else schemata.SchemaItem(name, self.child.schema.get_type(name))
-            for name in self.child.schema.names
+            for offset, name in enumerate(self.child.schema.names)
         )
         return schemata.ArraySchema(items)
 

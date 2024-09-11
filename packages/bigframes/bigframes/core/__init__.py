@@ -382,9 +382,8 @@ class ArrayValue:
         for column_id in column_ids:
             assert bigframes.dtypes.is_array_like(self.get_column_type(column_id))
 
-        return ArrayValue(
-            nodes.ExplodeNode(child=self.node, column_ids=tuple(column_ids))
-        )
+        offsets = tuple(self.get_offset_for_name(id) for id in column_ids)
+        return ArrayValue(nodes.ExplodeNode(child=self.node, column_ids=offsets))
 
     def _uniform_sampling(self, fraction: float) -> ArrayValue:
         """Sampling the table on given fraction.
@@ -393,3 +392,6 @@ class ArrayValue:
             The row numbers of result is non-deterministic, avoid to use.
         """
         return ArrayValue(nodes.RandomSampleNode(self.node, fraction))
+
+    def get_offset_for_name(self, name: str):
+        return self.schema.names.index(name)

@@ -401,8 +401,9 @@ class UnorderedIR(BaseIbisIR):
             columns=columns,
         )
 
-    def explode(self, column_ids: typing.Sequence[str]) -> UnorderedIR:
+    def explode(self, offsets: typing.Sequence[int]) -> UnorderedIR:
         table = self._to_ibis_expr()
+        column_ids = tuple(table.columns[offset] for offset in offsets)
 
         # The offset array ensures null represents empty arrays after unnesting.
         offset_array_id = bigframes.core.guid.generate_guid("offset_array_")
@@ -712,8 +713,9 @@ class OrderedIR(BaseIbisIR):
             ordering=self._ordering,
         )
 
-    def explode(self, column_ids: typing.Sequence[str]) -> OrderedIR:
+    def explode(self, offsets: typing.Sequence[int]) -> OrderedIR:
         table = self._to_ibis_expr(ordering_mode="unordered", expose_hidden_cols=True)
+        column_ids = tuple(table.columns[offset] for offset in offsets)
 
         offset_array_id = bigframes.core.guid.generate_guid("offset_array_")
         offset_array = (
@@ -721,7 +723,10 @@ class OrderedIR(BaseIbisIR):
                 ibis.greatest(
                     0,
                     ibis.least(
-                        *[table[column_id].length() - 1 for column_id in column_ids]
+                        *[
+                            table[table.columns[offset]].length() - 1
+                            for offset in offsets
+                        ]
                     ),
                 )
             )
