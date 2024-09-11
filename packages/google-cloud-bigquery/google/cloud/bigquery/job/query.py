@@ -476,6 +476,11 @@ class QueryJobConfig(_JobConfig):
           ID, each separated by ``.``. For example:
           ``your-project.your_dataset.your_table``.
 
+        .. note::
+
+            Only table ID is passed to the backend, so any configuration
+            in `~google.cloud.bigquery.table.Table` is discarded.
+
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.destination_table
         """
