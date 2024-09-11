@@ -92,3 +92,6 @@ class ArraySchema:
 
     def get_type(self, id: ColumnIdentifierType):
         return self._mapping[id]
+
+    def __len__(self) -> int:
+        return len(self.items)

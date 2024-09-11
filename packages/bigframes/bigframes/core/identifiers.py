@@ -12,10 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-_GUID_COUNTER = 0
+# Later, plan on migrating ids to use integers to reduce memory usage allow use of bitmaps to represent column sets
+
+from typing import Generator
+
+ID_TYPE = str
 
 
-def generate_guid(prefix="col_"):
-    global _GUID_COUNTER
-    _GUID_COUNTER += 1
-    return f"bfuid_{prefix}{_GUID_COUNTER}"
+def standard_identifiers() -> Generator[ID_TYPE, None, None]:
+    i = 0
+    while True:
+        yield f"col_{i}"
+        i = i + 1

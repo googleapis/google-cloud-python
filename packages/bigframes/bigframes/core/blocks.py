@@ -44,6 +44,7 @@ import bigframes.core.compile.googlesql as googlesql
 import bigframes.core.expression as ex
 import bigframes.core.expression as scalars
 import bigframes.core.guid as guid
+import bigframes.core.identifiers
 import bigframes.core.join_def as join_defs
 import bigframes.core.ordering as ordering
 import bigframes.core.schema as bf_schema
@@ -1050,7 +1051,6 @@ class Block:
         operation: typing.Union[agg_ops.UnaryAggregateOp, agg_ops.NullaryAggregateOp],
         *,
         axis: int | str = 0,
-        value_col_id: str = "values",
         dropna: bool = True,
     ) -> Block:
         axis_n = utils.get_axis_number(axis)
@@ -1080,15 +1080,18 @@ class Block:
             # TODO: Allow to promote identity/total_order columns instead for better perf
             offset_col = guid.generate_guid()
             expr_with_offsets = self.expr.promote_offsets(offset_col)
-            stacked_expr = expr_with_offsets.unpivot(
-                row_labels=self.column_labels.to_list(),
-                index_col_ids=[guid.generate_guid()],
-                unpivot_columns=[(value_col_id, tuple(self.value_columns))],
+            stacked_expr, (_, value_col_ids, passthrough_cols,) = unpivot(
+                expr_with_offsets,
+                row_labels=self.column_labels,
+                unpivot_columns=[tuple(self.value_columns)],
                 passthrough_columns=[*self.index_columns, offset_col],
             )
+            # these corresponed to passthrough_columns provided to unpivot
+            index_cols = passthrough_cols[:-1]
+            og_offset_col = passthrough_cols[-1]
             index_aggregations = [
                 (ex.UnaryAggregation(agg_ops.AnyValueOp(), ex.free_var(col_id)), col_id)
-                for col_id in [*self.index_columns]
+                for col_id in index_cols
             ]
             # TODO: may need add NullaryAggregation in main_aggregation
             # when agg add support for axis=1, needed for agg("size", axis=1)
@@ -1096,17 +1099,18 @@ class Block:
                 operation, agg_ops.UnaryAggregateOp
             ), f"Expected a unary operation, but got {operation}. Please report this error and how you got here to the BigQuery DataFrames team (bit.ly/bigframes-feedback)."
             main_aggregation = (
-                ex.UnaryAggregation(operation, ex.free_var(value_col_id)),
-                value_col_id,
+                ex.UnaryAggregation(operation, ex.free_var(value_col_ids[0])),
+                value_col_ids[0],
             )
+            # Drop row identity after aggregating over it
             result_expr = stacked_expr.aggregate(
                 [*index_aggregations, main_aggregation],
-                by_column_ids=[offset_col],
+                by_column_ids=[og_offset_col],
                 dropna=dropna,
-            )
+            ).drop_columns([og_offset_col])
             return Block(
-                result_expr.drop_columns([offset_col]),
-                self.index_columns,
+                result_expr,
+                index_columns=index_cols,
                 column_labels=[None],
                 index_labels=self.index.names,
             )
@@ -1318,8 +1322,7 @@ class Block:
         ],
     ):
         """Get a list of stats as a deferred block object."""
-        label_col_id = guid.generate_guid()
-        labels = [stat.name for stat in stats]
+        labels = pd.Index([stat.name for stat in stats])
         aggregations = [
             (
                 ex.UnaryAggregation(stat, ex.free_var(col_id))
@@ -1331,18 +1334,17 @@ class Block:
             for col_id in column_ids
         ]
         columns = [
-            (col_id, tuple(f"{col_id}-{stat.name}" for stat in stats))
-            for col_id in column_ids
+            (tuple(f"{col_id}-{stat.name}" for stat in stats)) for col_id in column_ids
         ]
-        expr = self.expr.aggregate(aggregations).unpivot(
+        expr, (index_cols, _, _) = unpivot(
+            self.expr.aggregate(aggregations),
             labels,
             unpivot_columns=tuple(columns),
-            index_col_ids=tuple([label_col_id]),
         )
         return Block(
             expr,
             column_labels=self._get_labels_for_columns(column_ids),
-            index_columns=[label_col_id],
+            index_columns=index_cols,
         )
 
     def calculate_pairwise_metric(self, op=agg_ops.CorrOp()):
@@ -1368,23 +1370,17 @@ class Block:
         ]
         expr = self.expr.aggregate(aggregations)
 
-        index_col_ids = [
-            guid.generate_guid() for i in range(self.column_labels.nlevels)
-        ]
         input_count = len(self.value_columns)
         unpivot_columns = tuple(
-            (
-                guid.generate_guid(),
-                tuple(expr.column_ids[input_count * i : input_count * (i + 1)]),
-            )
+            tuple(expr.column_ids[input_count * i : input_count * (i + 1)])
             for i in range(input_count)
         )
         labels = self._get_labels_for_columns(self.value_columns)
 
         # TODO(b/340896143): fix type error
-        expr = expr.unpivot(
-            row_labels=labels,  # type: ignore
-            index_col_ids=index_col_ids,
+        expr, (index_col_ids, _, _) = unpivot(
+            expr,
+            row_labels=labels,
             unpivot_columns=unpivot_columns,
         )
 
@@ -1604,7 +1600,7 @@ class Block:
             Block(
                 expr,
                 index_columns=self.index_columns,
-                column_labels=self.column_labels.insert(0, label),
+                column_labels=self.column_labels.insert(len(self.column_labels), label),
                 index_labels=self._index_labels,
             ),
             result_id,
@@ -1722,8 +1718,6 @@ class Block:
         col_labels, row_labels = utils.split_index(self.column_labels, levels=levels)
         row_labels = row_labels.drop_duplicates()
 
-        row_label_tuples = utils.index_as_tuples(row_labels)
-
         if col_labels is None:
             result_index: pd.Index = pd.Index([None])
             result_col_labels: Sequence[Tuple] = list([()])
@@ -1737,26 +1731,24 @@ class Block:
             result_col_labels = utils.index_as_tuples(result_index)
 
         # Get matching columns
-        unpivot_columns: List[Tuple[str, List[str]]] = []
+        unpivot_columns: List[Tuple[Optional[str], ...]] = []
         for val in result_col_labels:
-            col_id = guid.generate_guid("unpivot_")
-            input_columns, dtype = self._create_stack_column(val, row_label_tuples)
-            unpivot_columns.append((col_id, input_columns))
+            input_columns, _ = self._create_stack_column(val, row_labels)
+            unpivot_columns.append(input_columns)
 
-        added_index_columns = [guid.generate_guid() for _ in range(row_labels.nlevels)]
-        unpivot_expr = self._expr.unpivot(
-            row_labels=row_label_tuples,
+        unpivot_expr, (added_index_columns, _, passthrough_cols) = unpivot(
+            self._expr,
+            row_labels=row_labels,
             passthrough_columns=self.index_columns,
             unpivot_columns=unpivot_columns,
-            index_col_ids=added_index_columns,
             join_side=how,
         )
         new_index_level_names = self.column_labels.names[-levels:]
         if how == "left":
-            index_columns = [*self.index_columns, *added_index_columns]
+            index_columns = [*passthrough_cols, *added_index_columns]
             index_labels = [*self._index_labels, *new_index_level_names]
         else:
-            index_columns = [*added_index_columns, *self.index_columns]
+            index_columns = [*added_index_columns, *passthrough_cols]
             index_labels = [*new_index_level_names, *self._index_labels]
 
         return Block(
@@ -1780,18 +1772,16 @@ class Block:
         Arguments correspond to pandas.melt arguments.
         """
         # TODO: Implement col_level and ignore_index
-        unpivot_col_id = guid.generate_guid()
-        var_col_ids = tuple([guid.generate_guid() for _ in var_names])
-        # single unpivot col
-        unpivot_col = (unpivot_col_id, tuple(value_vars))
-        value_labels = [self.col_id_to_label[col_id] for col_id in value_vars]
+        value_labels: pd.Index = pd.Index(
+            [self.col_id_to_label[col_id] for col_id in value_vars]
+        )
         id_labels = [self.col_id_to_label[col_id] for col_id in id_vars]
 
-        unpivot_expr = self._expr.unpivot(
+        unpivot_expr, (var_col_ids, unpivot_out, passthrough_cols) = unpivot(
+            self._expr,
             row_labels=value_labels,
             passthrough_columns=id_vars,
-            unpivot_columns=(unpivot_col,),
-            index_col_ids=var_col_ids,
+            unpivot_columns=(tuple(value_vars),),  # single unpivot col
             join_side="right",
         )
 
@@ -1804,7 +1794,7 @@ class Block:
 
         # Need to reorder to get id_vars before var_col and unpivot_col
         unpivot_expr = unpivot_expr.select_columns(
-            [*index_cols, *id_vars, *var_col_ids, unpivot_col_id]
+            [*index_cols, *passthrough_cols, *var_col_ids, *unpivot_out]
         )
 
         return Block(
@@ -1859,6 +1849,7 @@ class Block:
             value_vars=block.value_columns,
             create_offsets_index=False,
         )
+        row_offset = stacked_block.value_columns[0]
         col_labels = stacked_block.value_columns[-2 - original_col_index.nlevels : -2]
         col_offset = stacked_block.value_columns[-2]  # disambiguator we created earlier
         cell_values = stacked_block.value_columns[-1]
@@ -1867,7 +1858,7 @@ class Block:
             [*col_labels, col_offset]
         )  # col index is now row index
         result = stacked_block.pivot(
-            columns=[offsets],
+            columns=[row_offset],
             values=[cell_values],
             columns_unique_values=tuple(range(original_row_count)),
         )
@@ -1879,12 +1870,10 @@ class Block:
             .with_transpose_cache(self)
         )
 
-    def _create_stack_column(
-        self, col_label: typing.Tuple, stack_labels: typing.Sequence[typing.Tuple]
-    ):
+    def _create_stack_column(self, col_label: typing.Tuple, stack_labels: pd.Index):
         dtype = None
         input_columns: list[Optional[str]] = []
-        for uvalue in stack_labels:
+        for uvalue in utils.index_as_tuples(stack_labels):
             label_to_match = (*col_label, *uvalue)
             label_to_match = (
                 label_to_match[0] if len(label_to_match) == 1 else label_to_match
@@ -2013,38 +2002,16 @@ class Block:
         sort: bool,
         suffixes: tuple[str, str] = ("_x", "_y"),
     ) -> Block:
-        left_mappings = [
-            join_defs.JoinColumnMapping(
-                source_table=join_defs.JoinSide.LEFT,
-                source_id=id,
-                destination_id=guid.generate_guid(),
-            )
-            for id in self.expr.column_ids
-        ]
-        right_mappings = [
-            join_defs.JoinColumnMapping(
-                source_table=join_defs.JoinSide.RIGHT,
-                source_id=id,
-                destination_id=guid.generate_guid(),
-            )
-            for id in other.expr.column_ids
-        ]
-
-        join_def = join_defs.JoinDefinition(
-            conditions=tuple(
-                join_defs.JoinCondition(left, right)
-                for left, right in zip(left_join_ids, right_join_ids)
-            ),
-            mappings=(*left_mappings, *right_mappings),
-            type=how,
+        conditions = tuple(
+            (lid, rid) for lid, rid in zip(left_join_ids, right_join_ids)
         )
-        joined_expr = self.expr.relational_join(other.expr, join_def=join_def)
+        joined_expr, (get_column_left, get_column_right) = self.expr.relational_join(
+            other.expr, type=how, conditions=conditions
+        )
         result_columns = []
         matching_join_labels = []
 
         coalesced_ids = []
-        get_column_left = join_def.get_left_mapping()
-        get_column_right = join_def.get_right_mapping()
         for left_id, right_id in zip(left_join_ids, right_join_ids):
             coalesced_id = guid.generate_guid()
             joined_expr = joined_expr.project_to_id(
@@ -2748,34 +2715,10 @@ def join_with_single_row(
     left_expr = left.expr
     # ignore index columns by dropping them
     right_expr = single_row_block.expr.select_columns(single_row_block.value_columns)
-    left_mappings = [
-        join_defs.JoinColumnMapping(
-            source_table=join_defs.JoinSide.LEFT,
-            source_id=id,
-            destination_id=guid.generate_guid(),
-        )
-        for id in left_expr.column_ids
-    ]
-    right_mappings = [
-        join_defs.JoinColumnMapping(
-            source_table=join_defs.JoinSide.RIGHT,
-            source_id=id,
-            destination_id=guid.generate_guid(),
-        )
-        for id in right_expr.column_ids  # skip index column
-    ]
-
-    join_def = join_defs.JoinDefinition(
-        conditions=(),
-        mappings=(*left_mappings, *right_mappings),
+    combined_expr, (get_column_left, get_column_right) = left_expr.relational_join(
+        right_expr,
         type="cross",
     )
-    combined_expr = left_expr.relational_join(
-        right_expr,
-        join_def=join_def,
-    )
-    get_column_left = join_def.get_left_mapping()
-    get_column_right = join_def.get_right_mapping()
     # Drop original indices from each side. and used the coalesced combination generated by the join.
     index_cols_post_join = [get_column_left[id] for id in left.index_columns]
 
@@ -2800,38 +2743,15 @@ def join_mono_indexed(
 ) -> Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]:
     left_expr = left.expr
     right_expr = right.expr
-    left_mappings = [
-        join_defs.JoinColumnMapping(
-            source_table=join_defs.JoinSide.LEFT,
-            source_id=id,
-            destination_id=guid.generate_guid(),
-        )
-        for id in left_expr.column_ids
-    ]
-    right_mappings = [
-        join_defs.JoinColumnMapping(
-            source_table=join_defs.JoinSide.RIGHT,
-            source_id=id,
-            destination_id=guid.generate_guid(),
-        )
-        for id in right_expr.column_ids
-    ]
 
-    join_def = join_defs.JoinDefinition(
+    combined_expr, (get_column_left, get_column_right) = left_expr.relational_join(
+        right_expr,
+        type=how,
         conditions=(
             join_defs.JoinCondition(left.index_columns[0], right.index_columns[0]),
         ),
-        mappings=(*left_mappings, *right_mappings),
-        type=how,
     )
 
-    combined_expr = left_expr.relational_join(
-        right_expr,
-        join_def=join_def,
-    )
-
-    get_column_left = join_def.get_left_mapping()
-    get_column_right = join_def.get_right_mapping()
     left_index = get_column_left[left.index_columns[0]]
     right_index = get_column_right[right.index_columns[0]]
     # Drop original indices from each side. and used the coalesced combination generated by the join.
@@ -2886,39 +2806,15 @@ def join_multi_indexed(
     left_expr = left.expr
     right_expr = right.expr
 
-    left_mappings = [
-        join_defs.JoinColumnMapping(
-            source_table=join_defs.JoinSide.LEFT,
-            source_id=id,
-            destination_id=guid.generate_guid(),
-        )
-        for id in left_expr.column_ids
-    ]
-    right_mappings = [
-        join_defs.JoinColumnMapping(
-            source_table=join_defs.JoinSide.RIGHT,
-            source_id=id,
-            destination_id=guid.generate_guid(),
-        )
-        for id in right_expr.column_ids
-    ]
-
-    join_def = join_defs.JoinDefinition(
+    combined_expr, (get_column_left, get_column_right) = left_expr.relational_join(
+        right_expr,
+        type=how,
         conditions=tuple(
             join_defs.JoinCondition(left, right)
             for left, right in zip(left_join_ids, right_join_ids)
         ),
-        mappings=(*left_mappings, *right_mappings),
-        type=how,
     )
 
-    combined_expr = left_expr.relational_join(
-        right_expr,
-        join_def=join_def,
-    )
-
-    get_column_left = join_def.get_left_mapping()
-    get_column_right = join_def.get_right_mapping()
     left_ids_post_join = [get_column_left[id] for id in left_join_ids]
     right_ids_post_join = [get_column_right[id] for id in right_join_ids]
     # Drop original indices from each side. and used the coalesced combination generated by the join.
@@ -3114,3 +3010,94 @@ def _get_block_schema(
     for label, dtype in zip(block.column_labels, block.dtypes):
         result[label] = typing.cast(bigframes.dtypes.Dtype, dtype)
     return result
+
+
+## Unpivot helpers
+def unpivot(
+    array_value: core.ArrayValue,
+    row_labels: pd.Index,
+    unpivot_columns: Sequence[Tuple[Optional[str], ...]],
+    *,
+    passthrough_columns: typing.Sequence[str] = (),
+    join_side: Literal["left", "right"] = "left",
+) -> Tuple[core.ArrayValue, Tuple[Tuple[str, ...], Tuple[str, ...], Tuple[str, ...]]]:
+    """
+    Unpivot ArrayValue columns.
+
+    Args:
+        row_labels: Identifies the source of the row. Must be equal to length to source column list in unpivot_columns argument.
+        unpivot_columns: Sequence of column ids tuples. Each tuple of columns will be combined into a single output column
+        passthrough_columns: Columns that will not be unpivoted. Column id will be preserved.
+        index_col_id (str): The column id to be used for the row labels.
+
+    Returns:
+        ArrayValue, (index_cols, unpivot_cols, passthrough_cols): The unpivoted ArrayValue and resulting column ids.
+    """
+    # There will be N labels, used to disambiguate which of N source columns produced each output row
+    labels_array = _pd_index_to_array_value(
+        session=array_value.session, index=row_labels
+    )
+
+    # Unpivot creates N output rows for each input row, labels disambiguate these N rows
+    # Join_side is necessary to produce desired row ordering
+    if join_side == "left":
+        joined_array, (column_mapping, labels_mapping) = array_value.relational_join(
+            labels_array, type="cross"
+        )
+    else:
+        joined_array, (labels_mapping, column_mapping) = labels_array.relational_join(
+            array_value, type="cross"
+        )
+    new_passthrough_cols = [column_mapping[col] for col in passthrough_columns]
+    # Last column is offsets
+    index_col_ids = [labels_mapping[col] for col in labels_array.column_ids[:-1]]
+    explode_offsets_id = labels_mapping[labels_array.column_ids[-1]]
+
+    # Build the output rows as a case statment that selects between the N input columns
+    unpivot_exprs: List[Tuple[ex.Expression, str]] = []
+    # Supports producing multiple stacked ouput columns for stacking only part of hierarchical index
+    for input_ids in unpivot_columns:
+        # row explode offset used to choose the input column
+        # we use offset instead of label as labels are not necessarily unique
+        cases = itertools.chain(
+            *(
+                (
+                    ops.eq_op.as_expr(explode_offsets_id, ex.const(i)),
+                    ex.free_var(column_mapping[id_or_null])
+                    if (id_or_null is not None)
+                    else ex.const(None),
+                )
+                for i, id_or_null in enumerate(input_ids)
+            )
+        )
+        col_expr = ops.case_when_op.as_expr(*cases)
+        unpivot_exprs.append((col_expr, guid.generate_guid()))
+
+    unpivot_col_ids = [id for _, id in unpivot_exprs]
+
+    return joined_array.compute_values(unpivot_exprs).select_columns(
+        [*index_col_ids, *unpivot_col_ids, *new_passthrough_cols]
+    ), (tuple(index_col_ids), tuple(unpivot_col_ids), tuple(new_passthrough_cols))
+
+
+def _pd_index_to_array_value(
+    session: core.Session,
+    index: pd.Index,
+) -> core.ArrayValue:
+    """
+    Create an ArrayValue from a list of label tuples.
+    The last column will be row offsets.
+    """
+    rows = []
+    labels_as_tuples = utils.index_as_tuples(index)
+    for row_offset in range(len(index)):
+        id_gen = bigframes.core.identifiers.standard_identifiers()
+        row_label = labels_as_tuples[row_offset]
+        row_label = (row_label,) if not isinstance(row_label, tuple) else row_label
+        row = {}
+        for label_part, id in zip(row_label, id_gen):
+            row[id] = label_part if pd.notnull(label_part) else None
+        row[next(id_gen)] = row_offset
+        rows.append(row)
+
+    return core.ArrayValue.from_pyarrow(pa.Table.from_pylist(rows), session=session)

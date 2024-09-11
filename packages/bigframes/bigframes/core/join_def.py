@@ -15,7 +15,9 @@ from __future__ import annotations
 
 import dataclasses
 import enum
-from typing import Literal, Mapping, NamedTuple, Tuple
+from typing import Literal, NamedTuple
+
+import bigframes.core.identifiers as ids
 
 
 class JoinSide(enum.Enum):
@@ -32,42 +34,21 @@ JoinType = Literal["inner", "outer", "left", "right", "cross"]
 
 
 class JoinCondition(NamedTuple):
-    left_id: str
-    right_id: str
+    left_id: ids.ID_TYPE
+    right_id: ids.ID_TYPE
 
 
 @dataclasses.dataclass(frozen=True)
 class JoinColumnMapping:
     source_table: JoinSide
-    source_id: str
-    destination_id: str
+    source_id: ids.ID_TYPE
+    destination_id: ids.ID_TYPE
 
 
 @dataclasses.dataclass(frozen=True)
 class CoalescedColumnMapping:
     """Special column mapping used only by implicit joiner only"""
 
-    left_source_id: str
-    right_source_id: str
-    destination_id: str
-
-
-@dataclasses.dataclass(frozen=True)
-class JoinDefinition:
-    conditions: Tuple[JoinCondition, ...]
-    mappings: Tuple[JoinColumnMapping, ...]
-    type: JoinType
-
-    def get_left_mapping(self) -> Mapping[str, str]:
-        return {
-            i.source_id: i.destination_id
-            for i in self.mappings
-            if i.source_table == JoinSide.LEFT
-        }
-
-    def get_right_mapping(self) -> Mapping[str, str]:
-        return {
-            i.source_id: i.destination_id
-            for i in self.mappings
-            if i.source_table == JoinSide.RIGHT
-        }
+    left_source_id: ids.ID_TYPE
+    right_source_id: ids.ID_TYPE
+    destination_id: ids.ID_TYPE

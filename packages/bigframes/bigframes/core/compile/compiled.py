@@ -791,10 +791,10 @@ class OrderedIR(BaseIbisIR):
         if ordering.is_sequential and (ordering.total_order_col is not None):
             expr_builder = self.builder()
             expr_builder.columns = [
+                *self.columns,
                 self._compile_expression(
                     ordering.total_order_col.scalar_expression
                 ).name(col_id),
-                *self.columns,
             ]
             return expr_builder.build()
         # Cannot nest analytic expressions, so reproject to cte first if needed.
