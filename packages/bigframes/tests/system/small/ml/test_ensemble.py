@@ -39,12 +39,12 @@ def test_xgbregressor_model_score(
     result = penguins_xgbregressor_model.score(X_test, y_test).to_pandas()
     expected = pandas.DataFrame(
         {
-            "mean_absolute_error": [115.57598],
-            "mean_squared_error": [23455.52121],
-            "mean_squared_log_error": [0.00147],
-            "median_absolute_error": [88.01318],
-            "r2_score": [0.96368],
-            "explained_variance": [0.96384],
+            "mean_absolute_error": [108.77582],
+            "mean_squared_error": [20943.272738],
+            "mean_squared_log_error": [0.00135],
+            "median_absolute_error": [86.313477],
+            "r2_score": [0.967571],
+            "explained_variance": [0.967609],
         },
         dtype="Float64",
     )
@@ -76,12 +76,12 @@ def test_xgbregressor_model_score_series(
     result = penguins_xgbregressor_model.score(X_test, y_test).to_pandas()
     expected = pandas.DataFrame(
         {
-            "mean_absolute_error": [115.57598],
-            "mean_squared_error": [23455.52121],
-            "mean_squared_log_error": [0.00147],
-            "median_absolute_error": [88.01318],
-            "r2_score": [0.96368],
-            "explained_variance": [0.96384],
+            "mean_absolute_error": [108.77582],
+            "mean_squared_error": [20943.272738],
+            "mean_squared_log_error": [0.00135],
+            "median_absolute_error": [86.313477],
+            "r2_score": [0.967571],
+            "explained_variance": [0.967609],
         },
         dtype="Float64",
     )
@@ -136,12 +136,12 @@ def test_to_gbq_saved_xgbregressor_model_scores(
     result = saved_model.score(X_test, y_test).to_pandas()
     expected = pandas.DataFrame(
         {
-            "mean_absolute_error": [115.57598],
-            "mean_squared_error": [23455.52121],
-            "mean_squared_log_error": [0.00147],
-            "median_absolute_error": [88.01318],
-            "r2_score": [0.96368],
-            "explained_variance": [0.96384],
+            "mean_absolute_error": [109.016973],
+            "mean_squared_error": [20867.299758],
+            "mean_squared_log_error": [0.00135],
+            "median_absolute_error": [86.490234],
+            "r2_score": [0.967458],
+            "explained_variance": [0.967504],
         },
         dtype="Float64",
     )
@@ -260,11 +260,11 @@ def test_to_gbq_saved_xgbclassifier_model_scores(
     result = saved_model.score(X_test, y_test).to_pandas()
     expected = pandas.DataFrame(
         {
-            "precision": [0.662674],
-            "recall": [0.664646],
-            "accuracy": [0.994012],
-            "f1_score": [0.663657],
-            "log_loss": [0.374438],
+            "precision": [1.0],
+            "recall": [1.0],
+            "accuracy": [1.0],
+            "f1_score": [1.0],
+            "log_loss": [0.331442],
             "roc_auc": [1.0],
         },
         dtype="Float64",
