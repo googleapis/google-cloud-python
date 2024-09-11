@@ -189,18 +189,18 @@ DtypeString = Literal[
     "binary[pyarrow]",
 ]
 
-BOOL_BIGFRAMES_TYPES = [pd.BooleanDtype()]
+BOOL_BIGFRAMES_TYPES = [BOOL_DTYPE]
 
 # Corresponds to the pandas concept of numeric type (such as when 'numeric_only' is specified in an operation)
 # Pandas is inconsistent, so two definitions are provided, each used in different contexts
 NUMERIC_BIGFRAMES_TYPES_RESTRICTIVE = [
-    pd.Float64Dtype(),
-    pd.Int64Dtype(),
+    FLOAT_DTYPE,
+    INT_DTYPE,
 ]
 NUMERIC_BIGFRAMES_TYPES_PERMISSIVE = NUMERIC_BIGFRAMES_TYPES_RESTRICTIVE + [
-    pd.BooleanDtype(),
-    pd.ArrowDtype(pa.decimal128(38, 9)),
-    pd.ArrowDtype(pa.decimal256(76, 38)),
+    BOOL_DTYPE,
+    NUMERIC_DTYPE,
+    BIGNUMERIC_DTYPE,
 ]
 
 
@@ -308,10 +308,10 @@ BIGFRAMES_STRING_TO_BIGFRAMES: Dict[DtypeString, Dtype] = {
 
 # special case - string[pyarrow] doesn't include the storage in its name, and both
 # "string" and "string[pyarrow]" are accepted
-BIGFRAMES_STRING_TO_BIGFRAMES["string[pyarrow]"] = pd.StringDtype(storage="pyarrow")
+BIGFRAMES_STRING_TO_BIGFRAMES["string[pyarrow]"] = STRING_DTYPE
 
 # special case - both "Int64" and "int64[pyarrow]" are accepted
-BIGFRAMES_STRING_TO_BIGFRAMES["int64[pyarrow]"] = pd.Int64Dtype()
+BIGFRAMES_STRING_TO_BIGFRAMES["int64[pyarrow]"] = INT_DTYPE
 
 # For the purposes of dataframe.memory_usage
 DTYPE_BYTE_SIZES = {
@@ -552,14 +552,14 @@ def is_compatible(scalar: typing.Any, dtype: Dtype) -> typing.Optional[Dtype]:
     elif pd.api.types.is_numeric_dtype(dtype):
         # Implicit conversion currently only supported for numeric types
         if pd.api.types.is_bool(scalar):
-            return lcd_type(pd.BooleanDtype(), dtype)
+            return lcd_type(BOOL_DTYPE, dtype)
         if pd.api.types.is_float(scalar):
-            return lcd_type(pd.Float64Dtype(), dtype)
+            return lcd_type(FLOAT_DTYPE, dtype)
         if pd.api.types.is_integer(scalar):
-            return lcd_type(pd.Int64Dtype(), dtype)
+            return lcd_type(INT_DTYPE, dtype)
         if isinstance(scalar, decimal.Decimal):
             # TODO: Check context to see if can use NUMERIC instead of BIGNUMERIC
-            return lcd_type(pd.ArrowDtype(pa.decimal256(76, 38)), dtype)
+            return lcd_type(BIGNUMERIC_DTYPE, dtype)
     return None
 
 
@@ -573,11 +573,11 @@ def lcd_type(*dtypes: Dtype) -> Dtype:
         return unique_dtypes.pop()
     # Implicit conversion currently only supported for numeric types
     hierarchy: list[Dtype] = [
-        pd.BooleanDtype(),
-        pd.Int64Dtype(),
-        pd.ArrowDtype(pa.decimal128(38, 9)),
-        pd.ArrowDtype(pa.decimal256(76, 38)),
-        pd.Float64Dtype(),
+        BOOL_DTYPE,
+        INT_DTYPE,
+        NUMERIC_DTYPE,
+        BIGNUMERIC_DTYPE,
+        FLOAT_DTYPE,
     ]
     if any([dtype not in hierarchy for dtype in dtypes]):
         return None
