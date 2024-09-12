@@ -304,6 +304,20 @@ class ChatServiceTransport(abc.ABC):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+            self.search_spaces: gapic_v1.method.wrap_method(
+                self.search_spaces,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
             self.get_space: gapic_v1.method.wrap_method(
                 self.get_space,
                 default_retry=retries.Retry(
@@ -659,6 +673,15 @@ class ChatServiceTransport(abc.ABC):
     ) -> Callable[
         [space.ListSpacesRequest],
         Union[space.ListSpacesResponse, Awaitable[space.ListSpacesResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def search_spaces(
+        self,
+    ) -> Callable[
+        [space.SearchSpacesRequest],
+        Union[space.SearchSpacesResponse, Awaitable[space.SearchSpacesResponse]],
     ]:
         raise NotImplementedError()
 
