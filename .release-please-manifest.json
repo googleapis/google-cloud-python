@@ -178,6 +178,7 @@
     "packages/google-cloud-workstations": "0.5.8",
     "packages/google-geo-type": "0.3.9",
     "packages/google-maps-addressvalidation": "0.3.13",
+    "packages/google-maps-areainsights": "0.0.0",
     "packages/google-maps-fleetengine": "0.2.2",
     "packages/google-maps-fleetengine-delivery": "0.2.4",
     "packages/google-maps-mapsplatformdatasets": "0.4.2",
