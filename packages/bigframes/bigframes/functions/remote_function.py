@@ -144,16 +144,21 @@ def read_gbq_function(
 
     # The name "args" conflicts with the Ibis operator, so we use
     # non-standard names for the arguments here.
-    def func(*ignored_args, **ignored_kwargs):
+    def func(*bigframes_args, **bigframes_kwargs):
         f"""Remote function {str(routine_ref)}."""
         nonlocal node  # type: ignore
 
-        expr = node(*ignored_args, **ignored_kwargs)  # type: ignore
+        expr = node(*bigframes_args, **bigframes_kwargs)  # type: ignore
         return ibis_client.execute(expr)
 
     func.__signature__ = inspect.signature(func).replace(  # type: ignore
         parameters=[
-            inspect.Parameter(name, inspect.Parameter.POSITIONAL_OR_KEYWORD)
+            # TODO(shobs): Find a better way to support functions with param
+            # named "name". This causes an issue in the ibis compilation.
+            inspect.Parameter(
+                f"bigframes_{name}",
+                inspect.Parameter.POSITIONAL_OR_KEYWORD,
+            )
             for name in ibis_signature.parameter_names
         ]
     )

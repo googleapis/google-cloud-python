@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import inspect
 import re
 
 import google.api_core.exceptions
@@ -972,3 +973,112 @@ def test_df_apply_axis_1_unsupported_dtype(session, scalars_dfs, dataset_id_perm
             bigframes.exceptions.PreviewWarning, match="axis=1 scenario is in preview."
         ):
             scalars_df[[column]].apply(echo_len_remote, axis=1)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_application_repr(session, dataset_id_permanent):
+    # This function deliberately has a param with name "name", this is to test
+    # a specific ibis' internal handling of object names
+    def should_mask(name: str) -> bool:
+        hash = 0
+        for char_ in name:
+            hash += ord(char_)
+        return hash % 2 == 0
+
+    assert "name" in inspect.signature(should_mask).parameters
+
+    should_mask = session.remote_function(
+        dataset=dataset_id_permanent, name=get_rf_name(should_mask)
+    )(should_mask)
+
+    s = bigframes.series.Series(["Alice", "Bob", "Caroline"])
+
+    repr(s.apply(should_mask))
+    repr(s.where(s.apply(should_mask)))
+    repr(s.where(~s.apply(should_mask)))
+    repr(s.mask(should_mask))
+    repr(s.mask(should_mask, "REDACTED"))
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_read_gbq_function_application_repr(session, dataset_id, scalars_df_index):
+    gbq_function = f"{dataset_id}.should_mask"
+
+    # This function deliberately has a param with name "name", this is to test
+    # a specific ibis' internal handling of object names
+    session.bqclient.query_and_wait(
+        f"CREATE OR REPLACE FUNCTION `{gbq_function}`(name STRING) RETURNS BOOL AS (MOD(LENGTH(name), 2) = 1)"
+    )
+    routine = session.bqclient.get_routine(gbq_function)
+    assert "name" in [arg.name for arg in routine.arguments]
+
+    # read the function and apply to dataframe
+    should_mask = session.read_gbq_function(gbq_function)
+
+    s = scalars_df_index["string_col"]
+
+    repr(s.apply(should_mask))
+    repr(s.where(s.apply(should_mask)))
+    repr(s.where(~s.apply(should_mask)))
+    repr(s.mask(should_mask))
+    repr(s.mask(should_mask, "REDACTED"))
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_apply_after_filter(session, dataset_id_permanent, scalars_dfs):
+
+    # This function is deliberately written to not work with NA input
+    def plus_one(x: int) -> int:
+        return x + 1
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+    int_col_name_with_nulls = "int64_col"
+
+    # make sure there are NA values in the test column
+    assert any([pd.isna(val) for val in scalars_df[int_col_name_with_nulls]])
+
+    # create a remote function
+    plus_one_remote = session.remote_function(
+        dataset=dataset_id_permanent, name=get_rf_name(plus_one)
+    )(plus_one)
+
+    # with nulls in the series the remote function application would fail
+    with pytest.raises(
+        google.api_core.exceptions.BadRequest, match="unsupported operand"
+    ):
+        scalars_df[int_col_name_with_nulls].apply(plus_one_remote).to_pandas()
+
+    # after filtering out nulls the remote function application should works
+    # similar to pandas
+    pd_result = scalars_pandas_df[scalars_pandas_df[int_col_name_with_nulls].notnull()][
+        int_col_name_with_nulls
+    ].apply(plus_one)
+    bf_result = (
+        scalars_df[scalars_df[int_col_name_with_nulls].notnull()][
+            int_col_name_with_nulls
+        ]
+        .apply(plus_one_remote)
+        .to_pandas()
+    )
+
+    # ignore pandas "int64" vs bigframes "Int64" dtype difference
+    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_apply_assign_partial_ordering_mode(dataset_id_permanent):
+    session = bigframes.Session(bigframes.BigQueryOptions(ordering_mode="partial"))
+
+    df = session.read_gbq("bigquery-public-data.baseball.schedules")[
+        ["duration_minutes"]
+    ]
+
+    def plus_one(x: int) -> int:
+        return x + 1
+
+    plus_one = session.remote_function(
+        dataset=dataset_id_permanent, name=get_rf_name(plus_one)
+    )(plus_one)
+
+    df1 = df.assign(duration_cat=df["duration_minutes"].apply(plus_one))
+    repr(df1)

@@ -1481,12 +1481,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                     ex.message += f"\n{_remote_function_recommendation_message}"
                 raise
 
-        # We are working with remote function at this point.
-        # Reproject as workaround to applying filter too late. This forces the
-        # filter to be applied before passing data to remote function,
-        # protecting from bad inputs causing errors.
-        reprojected_series = Series(self._block._force_reproject())
-        result_series = reprojected_series._apply_unary_op(
+        # We are working with remote function at this point
+        result_series = self._apply_unary_op(
             ops.RemoteFunctionOp(func=func, apply_on_null=True)
         )
 
