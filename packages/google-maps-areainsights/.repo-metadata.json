@@ -1,6 +1,6 @@
 {
     "name": "google-maps-areainsights",
-    "name_pretty": "",
+    "name_pretty": "Places Insights API",
     "api_description": "",
     "product_documentation": "https://developers.google.com/maps/documentation/places-insights",
     "client_documentation": "https://googleapis.dev/python/google-maps-areainsights/latest",
