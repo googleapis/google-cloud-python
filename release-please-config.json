@@ -3490,6 +3490,16 @@
                 }
             ],
             "release-type": "python"
+        },
+        "packages/google-maps-areainsights": {
+            "extra-files": [
+                "google/maps/areainsights_v1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.areainsights.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
         }
     }
 }
