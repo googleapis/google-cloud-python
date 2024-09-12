@@ -135,6 +135,23 @@ class TestImpersonatedCredentials(object):
             iam_endpoint_override=iam_endpoint_override,
         )
 
+    def test_get_cred_info(self):
+        credentials = self.make_credentials()
+        assert not credentials.get_cred_info()
+
+        credentials._cred_file_path = "/path/to/file"
+        assert credentials.get_cred_info() == {
+            "credential_source": "/path/to/file",
+            "credential_type": "impersonated credentials",
+            "principal": "impersonated@project.iam.gserviceaccount.com",
+        }
+
+    def test__make_copy_get_cred_info(self):
+        credentials = self.make_credentials()
+        credentials._cred_file_path = "/path/to/file"
+        cred_copy = credentials._make_copy()
+        assert cred_copy._cred_file_path == "/path/to/file"
+
     def test_make_from_user_credentials(self):
         credentials = self.make_credentials(
             source_credentials=self.USER_SOURCE_CREDENTIALS

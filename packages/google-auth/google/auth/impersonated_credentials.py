@@ -226,6 +226,7 @@ class Credentials(
         self.expiry = _helpers.utcnow()
         self._quota_project_id = quota_project_id
         self._iam_endpoint_override = iam_endpoint_override
+        self._cred_file_path = None
 
     def _metric_header_for_usage(self):
         return metrics.CRED_TYPE_SA_IMPERSONATE
@@ -316,29 +317,40 @@ class Credentials(
     def requires_scopes(self):
         return not self._target_scopes
 
-    @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
-    def with_quota_project(self, quota_project_id):
-        return self.__class__(
+    @_helpers.copy_docstring(credentials.Credentials)
+    def get_cred_info(self):
+        if self._cred_file_path:
+            return {
+                "credential_source": self._cred_file_path,
+                "credential_type": "impersonated credentials",
+                "principal": self._target_principal,
+            }
+        return None
+
+    def _make_copy(self):
+        cred = self.__class__(
             self._source_credentials,
             target_principal=self._target_principal,
             target_scopes=self._target_scopes,
             delegates=self._delegates,
             lifetime=self._lifetime,
-            quota_project_id=quota_project_id,
-            iam_endpoint_override=self._iam_endpoint_override,
-        )
-
-    @_helpers.copy_docstring(credentials.Scoped)
-    def with_scopes(self, scopes, default_scopes=None):
-        return self.__class__(
-            self._source_credentials,
-            target_principal=self._target_principal,
-            target_scopes=scopes or default_scopes,
-            delegates=self._delegates,
-            lifetime=self._lifetime,
             quota_project_id=self._quota_project_id,
             iam_endpoint_override=self._iam_endpoint_override,
         )
+        cred._cred_file_path = self._cred_file_path
+        return cred
+
+    @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
+    def with_quota_project(self, quota_project_id):
+        cred = self._make_copy()
+        cred._quota_project_id = quota_project_id
+        return cred
+
+    @_helpers.copy_docstring(credentials.Scoped)
+    def with_scopes(self, scopes, default_scopes=None):
+        cred = self._make_copy()
+        cred._target_scopes = scopes or default_scopes
+        return cred
 
 
 class IDTokenCredentials(credentials.CredentialsWithQuotaProject):

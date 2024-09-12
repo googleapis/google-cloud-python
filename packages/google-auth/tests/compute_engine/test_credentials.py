@@ -72,6 +72,13 @@ class TestCredentials(object):
             universe_domain=FAKE_UNIVERSE_DOMAIN,
         )
 
+    def test_get_cred_info(self):
+        assert self.credentials.get_cred_info() == {
+            "credential_source": "metadata server",
+            "credential_type": "VM credentials",
+            "principal": "default",
+        }
+
     def test_default_state(self):
         assert not self.credentials.valid
         # Expiration hasn't been set yet

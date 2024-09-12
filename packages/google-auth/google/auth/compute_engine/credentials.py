@@ -157,6 +157,14 @@ class Credentials(
         self._universe_domain_cached = True
         return self._universe_domain
 
+    @_helpers.copy_docstring(credentials.Credentials)
+    def get_cred_info(self):
+        return {
+            "credential_source": "metadata server",
+            "credential_type": "VM credentials",
+            "principal": self.service_account_email,
+        }
+
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
         creds = self.__class__(

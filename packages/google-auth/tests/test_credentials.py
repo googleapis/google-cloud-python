@@ -52,6 +52,11 @@ def test_credentials_constructor():
     assert not credentials._use_non_blocking_refresh
 
 
+def test_credentials_get_cred_info():
+    credentials = CredentialsImpl()
+    assert not credentials.get_cred_info()
+
+
 def test_with_non_blocking_refresh():
     c = CredentialsImpl()
     c.with_non_blocking_refresh()

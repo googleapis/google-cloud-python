@@ -883,6 +883,38 @@ def test_default_early_out(unused_get):
 
 
 @mock.patch(
+    "google.auth._default.load_credentials_from_file",
+    return_value=(MOCK_CREDENTIALS, mock.sentinel.project_id),
+    autospec=True,
+)
+def test_default_cred_file_path_env_var(unused_load_cred, monkeypatch):
+    monkeypatch.setenv(environment_vars.CREDENTIALS, "/path/to/file")
+    cred, _ = _default.default()
+    assert (
+        cred._cred_file_path
+        == "/path/to/file file via the GOOGLE_APPLICATION_CREDENTIALS environment variable"
+    )
+
+
+@mock.patch("os.path.isfile", return_value=True, autospec=True)
+@mock.patch(
+    "google.auth._cloud_sdk.get_application_default_credentials_path",
+    return_value="/path/to/adc/file",
+    autospec=True,
+)
+@mock.patch(
+    "google.auth._default.load_credentials_from_file",
+    return_value=(MOCK_CREDENTIALS, mock.sentinel.project_id),
+    autospec=True,
+)
+def test_default_cred_file_path_gcloud(
+    unused_load_cred, unused_get_adc_file, unused_isfile
+):
+    cred, _ = _default.default()
+    assert cred._cred_file_path == "/path/to/adc/file"
+
+
+@mock.patch(
     "google.auth._default._get_explicit_environ_credentials",
     return_value=(MOCK_CREDENTIALS, mock.sentinel.project_id),
     autospec=True,

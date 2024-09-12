@@ -275,6 +275,31 @@ class TestCredentials(object):
         assert request_kwargs["headers"] == headers
         assert "body" not in request_kwargs
 
+    def test_get_cred_info(self):
+        credentials = self.make_credentials()
+        assert not credentials.get_cred_info()
+
+        credentials._cred_file_path = "/path/to/file"
+        assert credentials.get_cred_info() == {
+            "credential_source": "/path/to/file",
+            "credential_type": "external account credentials",
+        }
+
+        credentials._service_account_impersonation_url = (
+            self.SERVICE_ACCOUNT_IMPERSONATION_URL
+        )
+        assert credentials.get_cred_info() == {
+            "credential_source": "/path/to/file",
+            "credential_type": "external account credentials",
+            "principal": SERVICE_ACCOUNT_EMAIL,
+        }
+
+    def test__make_copy_get_cred_info(self):
+        credentials = self.make_credentials()
+        credentials._cred_file_path = "/path/to/file"
+        cred_copy = credentials._make_copy()
+        assert cred_copy._cred_file_path == "/path/to/file"
+
     def test_default_state(self):
         credentials = self.make_credentials(
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL
@@ -469,25 +494,29 @@ class TestCredentials(object):
         with mock.patch.object(
             external_account.Credentials, "__init__", return_value=None
         ) as mock_init:
-            credentials.with_quota_project("project-foo")
+            new_cred = credentials.with_quota_project("project-foo")
 
-        # Confirm with_quota_project initialized the credential with the
-        # expected parameters and quota project ID.
-        mock_init.assert_called_once_with(
-            audience=self.AUDIENCE,
-            subject_token_type=self.SUBJECT_TOKEN_TYPE,
-            token_url=self.TOKEN_URL,
-            token_info_url=self.TOKEN_INFO_URL,
-            credential_source=self.CREDENTIAL_SOURCE,
-            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
-            service_account_impersonation_options={"token_lifetime_seconds": 2800},
-            client_id=CLIENT_ID,
-            client_secret=CLIENT_SECRET,
-            quota_project_id="project-foo",
-            scopes=self.SCOPES,
-            default_scopes=["default1"],
-            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
-        )
+            # Confirm with_quota_project initialized the credential with the
+            # expected parameters.
+            mock_init.assert_called_once_with(
+                audience=self.AUDIENCE,
+                subject_token_type=self.SUBJECT_TOKEN_TYPE,
+                token_url=self.TOKEN_URL,
+                token_info_url=self.TOKEN_INFO_URL,
+                credential_source=self.CREDENTIAL_SOURCE,
+                service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+                service_account_impersonation_options={"token_lifetime_seconds": 2800},
+                client_id=CLIENT_ID,
+                client_secret=CLIENT_SECRET,
+                quota_project_id=self.QUOTA_PROJECT_ID,
+                scopes=self.SCOPES,
+                default_scopes=["default1"],
+                universe_domain=DEFAULT_UNIVERSE_DOMAIN,
+            )
+
+            # Confirm with_quota_project sets the correct quota project after
+            # initialization.
+            assert new_cred.quota_project_id == "project-foo"
 
     def test_info(self):
         credentials = self.make_credentials(universe_domain="dummy_universe.com")

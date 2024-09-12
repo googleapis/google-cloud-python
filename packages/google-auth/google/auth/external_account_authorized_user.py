@@ -120,6 +120,7 @@ class Credentials(
         self._quota_project_id = quota_project_id
         self._scopes = scopes
         self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
+        self._cred_file_path = None
 
         if not self.valid and not self.can_refresh:
             raise exceptions.InvalidOperation(
@@ -290,23 +291,38 @@ class Credentials(
     def _make_sts_request(self, request):
         return self._sts_client.refresh_token(request, self._refresh_token)
 
+    @_helpers.copy_docstring(credentials.Credentials)
+    def get_cred_info(self):
+        if self._cred_file_path:
+            return {
+                "credential_source": self._cred_file_path,
+                "credential_type": "external account authorized user credentials",
+            }
+        return None
+
+    def _make_copy(self):
+        kwargs = self.constructor_args()
+        cred = self.__class__(**kwargs)
+        cred._cred_file_path = self._cred_file_path
+        return cred
+
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
-        kwargs = self.constructor_args()
-        kwargs.update(quota_project_id=quota_project_id)
-        return self.__class__(**kwargs)
+        cred = self._make_copy()
+        cred._quota_project_id = quota_project_id
+        return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
     def with_token_uri(self, token_uri):
-        kwargs = self.constructor_args()
-        kwargs.update(token_url=token_uri)
-        return self.__class__(**kwargs)
+        cred = self._make_copy()
+        cred._token_url = token_uri
+        return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
     def with_universe_domain(self, universe_domain):
-        kwargs = self.constructor_args()
-        kwargs.update(universe_domain=universe_domain)
-        return self.__class__(**kwargs)
+        cred = self._make_copy()
+        cred._universe_domain = universe_domain
+        return cred
 
     @classmethod
     def from_info(cls, info, **kwargs):
