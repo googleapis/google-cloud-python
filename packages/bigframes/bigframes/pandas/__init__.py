@@ -36,6 +36,7 @@ from typing import (
     Union,
 )
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.reshape.concat as vendored_pandas_concat
 import bigframes_vendored.pandas.core.reshape.encoding as vendored_pandas_encoding
 import bigframes_vendored.pandas.core.reshape.merge as vendored_pandas_merge
@@ -53,7 +54,6 @@ from pandas._typing import (
 )
 
 import bigframes._config as config
-import bigframes.constants as constants
 import bigframes.core.blocks
 import bigframes.core.expression as ex
 import bigframes.core.global_session as global_session

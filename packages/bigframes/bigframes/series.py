@@ -24,6 +24,7 @@ import textwrap
 import typing
 from typing import Any, cast, Literal, Mapping, Optional, Sequence, Tuple, Union
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.series as vendored_pandas_series
 import google.cloud.bigquery as bigquery
 import numpy
@@ -31,7 +32,6 @@ import pandas
 import pandas.core.dtypes.common
 import typing_extensions
 
-import bigframes.constants as constants
 import bigframes.core
 from bigframes.core import log_adapter
 import bigframes.core.block_transforms as block_ops

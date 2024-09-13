@@ -36,6 +36,7 @@ from typing import (
 )
 import warnings
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.frame as vendored_pandas_frame
 import bigframes_vendored.pandas.pandas._typing as vendored_pandas_typing
 import google.api_core.exceptions
@@ -49,7 +50,6 @@ import tabulate
 import bigframes
 import bigframes._config.display_options as display_options
 import bigframes.constants
-import bigframes.constants as constants
 import bigframes.core
 from bigframes.core import log_adapter
 import bigframes.core.block_transforms as block_ops
@@ -3106,7 +3106,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 self._session.bqclient,
                 temp_table_ref,
                 datetime.datetime.now(datetime.timezone.utc)
-                + constants.DEFAULT_EXPIRATION,
+                + bigframes.constants.DEFAULT_EXPIRATION,
             )
 
         if len(labels) != 0:

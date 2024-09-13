@@ -17,6 +17,7 @@ from __future__ import annotations
 import functools
 import typing
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 import ibis
 import ibis.common.exceptions
@@ -26,7 +27,6 @@ import ibis.expr.types as ibis_types
 import numpy as np
 import pandas as pd
 
-import bigframes.constants as constants
 import bigframes.core.compile.ibis_types
 import bigframes.core.expression as ex
 import bigframes.dtypes

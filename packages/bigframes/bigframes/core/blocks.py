@@ -32,13 +32,13 @@ import typing
 from typing import Iterable, List, Literal, Mapping, Optional, Sequence, Tuple, Union
 import warnings
 
+import bigframes_vendored.constants as constants
 import google.cloud.bigquery as bigquery
 import pandas as pd
 import pyarrow as pa
 
 import bigframes._config.sampling_options as sampling_options
 import bigframes.constants
-import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.compile.googlesql as googlesql
 import bigframes.core.expression as ex

@@ -15,9 +15,9 @@
 import abc
 import typing
 
+import bigframes_vendored.constants as constants
 import pandas as pd
 
-import bigframes.constants as constants
 import bigframes.dtypes as dtypes
 
 DEFAULT_SAMPLING_N = 1000

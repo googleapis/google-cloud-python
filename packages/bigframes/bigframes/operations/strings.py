@@ -17,9 +17,9 @@ from __future__ import annotations
 import re
 from typing import cast, Literal, Optional, Union
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.strings.accessor as vendorstr
 
-import bigframes.constants as constants
 from bigframes.core import log_adapter
 import bigframes.dataframe as df
 import bigframes.operations as ops

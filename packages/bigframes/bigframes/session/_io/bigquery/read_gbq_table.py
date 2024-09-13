@@ -23,12 +23,12 @@ import typing
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 import warnings
 
+import bigframes_vendored.constants as constants
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 
 import bigframes
 import bigframes.clients
-import bigframes.constants
 import bigframes.core.compile
 import bigframes.core.compile.default_ordering
 import bigframes.core.sql
@@ -241,7 +241,7 @@ def get_index_cols(
             # test, as it's not possible to subclass enums in Python. See:
             # https://stackoverflow.com/a/33680021/101923
             raise NotImplementedError(
-                f"Got unexpected index_col {repr(index_col)}. {bigframes.constants.FEEDBACK_LINK}"
+                f"Got unexpected index_col {repr(index_col)}. {constants.FEEDBACK_LINK}"
             )
     elif isinstance(index_col, str):
         index_cols: List[str] = [index_col]

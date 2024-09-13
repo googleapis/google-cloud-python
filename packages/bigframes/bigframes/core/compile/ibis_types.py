@@ -17,6 +17,7 @@ import textwrap
 from typing import Any, cast, Dict, Iterable, Optional, Tuple, Union
 import warnings
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
 import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 import geopandas as gpd  # type: ignore
@@ -29,7 +30,6 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa
 
-import bigframes.constants as constants
 import bigframes.dtypes
 
 # Type hints for Ibis data types supported by BigQuery DataFrame

@@ -14,6 +14,7 @@
 
 from typing import Dict, Union
 
+import bigframes_vendored.constants as constants
 import geopandas  # type: ignore
 import pandas
 import pandas.arrays
@@ -21,7 +22,6 @@ import pyarrow  # type: ignore
 import pyarrow.compute  # type: ignore
 import pyarrow.types  # type: ignore
 
-import bigframes.constants
 import bigframes.features
 
 
@@ -54,7 +54,7 @@ def arrow_to_pandas(
     if len(dtypes) != arrow_table.num_columns:
         raise ValueError(
             f"Number of types {len(dtypes)} doesn't match number of columns "
-            f"{arrow_table.num_columns}. {bigframes.constants.FEEDBACK_LINK}"
+            f"{arrow_table.num_columns}. {constants.FEEDBACK_LINK}"
         )
 
     serieses = {}

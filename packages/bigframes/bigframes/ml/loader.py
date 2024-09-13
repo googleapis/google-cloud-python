@@ -17,10 +17,10 @@ from __future__ import annotations
 from types import MappingProxyType
 from typing import Union
 
+import bigframes_vendored.constants as constants
 from google.cloud import bigquery
 
 import bigframes
-import bigframes.constants as constants
 from bigframes.ml import (
     cluster,
     compose,

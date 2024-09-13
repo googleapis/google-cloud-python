@@ -15,10 +15,10 @@
 import itertools
 from typing import Literal
 
+import bigframes_vendored.constants as constants
 import numpy as np
 import pandas as pd
 
-import bigframes.constants as constants
 import bigframes.operations._matplotlib.core as bfplt
 
 

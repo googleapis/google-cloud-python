@@ -18,9 +18,8 @@ Generates SQL queries needed for BigQuery DataFrames ML
 
 from typing import Iterable, Literal, Mapping, Optional, Union
 
+import bigframes_vendored.constants as constants
 import google.cloud.bigquery
-
-import bigframes.constants as constants
 
 
 # TODO: Add proper escaping logic from core/compile module

@@ -25,9 +25,9 @@ import sys
 import tempfile
 from typing import cast, Tuple, TYPE_CHECKING
 
+from bigframes_vendored import constants
 import requests
 
-from bigframes import constants
 import bigframes.functions.remote_function_template
 
 if TYPE_CHECKING:

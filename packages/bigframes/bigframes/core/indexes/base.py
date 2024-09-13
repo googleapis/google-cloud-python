@@ -19,12 +19,12 @@ from __future__ import annotations
 import typing
 from typing import Hashable, Optional, Sequence, Union
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.indexes.base as vendored_pandas_index
 import google.cloud.bigquery as bigquery
 import numpy as np
 import pandas
 
-import bigframes.constants as constants
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.expression as ex

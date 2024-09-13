@@ -16,10 +16,10 @@ from collections.abc import Mapping
 from datetime import datetime
 from typing import Optional, Union
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetimes
 import pandas as pd
 
-import bigframes.constants as constants
 import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.operations as ops

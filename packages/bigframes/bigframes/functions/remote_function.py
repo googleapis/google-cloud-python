@@ -24,12 +24,12 @@ import ibis
 if TYPE_CHECKING:
     from bigframes.session import Session
 
+import bigframes_vendored.constants as constants
 import google.api_core.exceptions
 import google.api_core.retry
 from google.cloud import bigquery
 import google.iam.v1
 
-import bigframes.constants as constants
 import bigframes.core.compile.ibis_types
 import bigframes.dtypes
 import bigframes.functions.remote_function_template

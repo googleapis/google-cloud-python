@@ -16,9 +16,9 @@ from __future__ import annotations
 import typing
 from typing import Iterable, Literal, Optional, Union
 
+import bigframes_vendored.constants as constants
 import pandas as pd
 
-import bigframes.constants as constants
 import bigframes.core.expression as ex
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils

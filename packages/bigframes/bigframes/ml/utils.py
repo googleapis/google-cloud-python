@@ -15,9 +15,9 @@
 import typing
 from typing import Any, Iterable, Literal, Mapping, Optional, Union
 
+import bigframes_vendored.constants as constants
 from google.cloud import bigquery
 
-import bigframes.constants as constants
 from bigframes.core import blocks
 import bigframes.pandas as bpd
 

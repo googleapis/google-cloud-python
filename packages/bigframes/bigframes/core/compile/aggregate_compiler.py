@@ -15,13 +15,13 @@ import functools
 import typing
 from typing import cast, Optional
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 import ibis
 import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
 import pandas as pd
 
-import bigframes.constants as constants
 import bigframes.core.compile.ibis_types as compile_ibis_types
 import bigframes.core.compile.scalar_op_compiler as scalar_compilers
 import bigframes.core.expression as ex

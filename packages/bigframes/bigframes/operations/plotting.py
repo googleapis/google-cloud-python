@@ -14,9 +14,9 @@
 
 import typing
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.plotting._core as vendordt
 
-import bigframes.constants as constants
 import bigframes.operations._matplotlib as bfplt
 
 

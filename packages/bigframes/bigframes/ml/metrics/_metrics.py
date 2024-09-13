@@ -19,6 +19,7 @@ import inspect
 import typing
 from typing import Tuple, Union
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.sklearn.metrics._classification as vendored_metrics_classification
 import bigframes_vendored.sklearn.metrics._ranking as vendored_metrics_ranking
 import bigframes_vendored.sklearn.metrics._regression as vendored_metrics_regression
@@ -26,7 +27,6 @@ import numpy as np
 import pandas as pd
 import sklearn.metrics as sklearn_metrics  # type: ignore
 
-import bigframes.constants as constants
 from bigframes.ml import utils
 import bigframes.pandas as bpd
 

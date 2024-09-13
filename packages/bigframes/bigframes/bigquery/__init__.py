@@ -23,7 +23,8 @@ from __future__ import annotations
 import typing
 from typing import Literal, Optional, Union
 
-import bigframes.constants as constants
+import bigframes_vendored.constants as constants
+
 import bigframes.core.groupby as groupby
 import bigframes.core.sql
 import bigframes.ml.utils as utils

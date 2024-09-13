@@ -19,14 +19,6 @@ This module should not depend on any others in the package.
 
 import datetime
 
-import bigframes_vendored.constants
-
-BF_VERSION = bigframes_vendored.constants.BF_VERSION
-FEEDBACK_LINK = bigframes_vendored.constants.FEEDBACK_LINK
-ABSTRACT_METHOD_ERROR_MESSAGE = (
-    bigframes_vendored.constants.ABSTRACT_METHOD_ERROR_MESSAGE
-)
-
 DEFAULT_EXPIRATION = datetime.timedelta(days=7)
 
 # https://cloud.google.com/bigquery/docs/locations

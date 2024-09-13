@@ -19,14 +19,13 @@ import datetime
 import random
 from typing import Any, Optional, Union
 
+import bigframes_vendored.constants as constants
 import google.api_core.exceptions as api_core_exceptions
 import google.cloud.bigquery as bigquery
 import humanize
 import IPython
 import IPython.display as display
 import ipywidgets as widgets
-
-import bigframes.constants as constants
 
 GenericJob = Union[
     bigquery.LoadJob, bigquery.ExtractJob, bigquery.QueryJob, bigquery.CopyJob

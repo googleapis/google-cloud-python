@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import bigframes_vendored.constants
-
-import bigframes.version
-
-
-def test_feedback_link_includes_version():
-    version = bigframes.version.__version__
-    assert len(version) > 0
-    assert version in bigframes_vendored.constants.FEEDBACK_LINK
+__version__ = "1.17.0"

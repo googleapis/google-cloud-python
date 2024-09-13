@@ -19,7 +19,8 @@ from __future__ import annotations
 import functools
 from typing import Optional, Protocol, TYPE_CHECKING, Union
 
-import bigframes.constants
+import bigframes_vendored.constants as constants
+
 import bigframes.exceptions
 
 if TYPE_CHECKING:
@@ -72,9 +73,9 @@ def enforce_ordered(
     if not session._allows_ambiguity:
         suggestion_substr = suggestion + " " if suggestion else ""
         raise bigframes.exceptions.OrderRequiredError(
-            f"Op {opname} not supported when strict ordering is disabled. {suggestion_substr}{bigframes.constants.FEEDBACK_LINK}"
+            f"Op {opname} not supported when strict ordering is disabled. {suggestion_substr}{constants.FEEDBACK_LINK}"
         )
     if not object._block.explicitly_ordered:
         raise bigframes.exceptions.OrderRequiredError(
-            f"Op {opname} requires an ordering. Use .sort_values or .sort_index to provide an ordering. {bigframes.constants.FEEDBACK_LINK}"
+            f"Op {opname} requires an ordering. Use .sort_values or .sort_index to provide an ordering. {constants.FEEDBACK_LINK}"
         )

@@ -37,6 +37,7 @@ from typing import (
 import warnings
 import weakref
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.backends.bigquery  # noqa
 import bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import bigframes_vendored.pandas.io.parquet as third_party_pandas_parquet
@@ -58,7 +59,6 @@ import pyarrow as pa
 
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes.clients
-import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.compile

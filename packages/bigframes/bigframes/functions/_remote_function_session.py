@@ -22,6 +22,7 @@ import threading
 from typing import Any, cast, Dict, Mapping, Optional, Sequence, TYPE_CHECKING, Union
 import warnings
 
+import bigframes_vendored.constants as constants
 import cloudpickle
 import google.api_core.exceptions
 from google.cloud import (
@@ -31,7 +32,7 @@ from google.cloud import (
     resourcemanager_v3,
 )
 
-from bigframes import clients, constants
+from bigframes import clients
 
 if TYPE_CHECKING:
     from bigframes.session import Session

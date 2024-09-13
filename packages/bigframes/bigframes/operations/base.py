@@ -17,10 +17,10 @@ from __future__ import annotations
 import typing
 from typing import List, Sequence
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.pandas._typing as vendored_pandas_typing
 import pandas as pd
 
-import bigframes.constants as constants
 import bigframes.core.blocks as blocks
 import bigframes.core.convert
 import bigframes.core.expression as ex

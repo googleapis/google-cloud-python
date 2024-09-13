@@ -19,10 +19,11 @@ from __future__ import annotations
 from typing import cast, Literal, Optional, Union
 import warnings
 
+import bigframes_vendored.constants as constants
 from google.cloud import bigquery
 
 import bigframes
-from bigframes import clients, constants
+from bigframes import clients
 from bigframes.core import blocks, log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd

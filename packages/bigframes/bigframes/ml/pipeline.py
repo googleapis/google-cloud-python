@@ -20,11 +20,11 @@ from __future__ import annotations
 
 from typing import List, Optional, Tuple, Union
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.sklearn.pipeline
 from google.cloud import bigquery
 
 import bigframes
-import bigframes.constants as constants
 from bigframes.core import log_adapter
 from bigframes.ml import (
     base,

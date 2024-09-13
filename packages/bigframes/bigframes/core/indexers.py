@@ -17,10 +17,10 @@ from __future__ import annotations
 import typing
 from typing import Tuple, Union
 
+import bigframes_vendored.constants as constants
 import ibis
 import pandas as pd
 
-import bigframes.constants as constants
 import bigframes.core.blocks
 import bigframes.core.expression as ex
 import bigframes.core.guid as guid

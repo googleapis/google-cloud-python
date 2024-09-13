@@ -17,10 +17,10 @@ from __future__ import annotations
 import typing
 from typing import Sequence, Union
 
+import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.groupby as vendored_pandas_groupby
 import pandas as pd
 
-import bigframes.constants as constants
 from bigframes.core import log_adapter
 import bigframes.core as core
 import bigframes.core.block_transforms as block_ops

@@ -20,13 +20,12 @@ import decimal
 import typing
 from typing import Dict, Literal, Union
 
+import bigframes_vendored.constants as constants
 import geopandas as gpd  # type: ignore
 import google.cloud.bigquery
 import numpy as np
 import pandas as pd
 import pyarrow as pa
-
-import bigframes.constants as constants
 
 # Type hints for Pandas dtypes supported by BigQuery DataFrame
 Dtype = Union[
