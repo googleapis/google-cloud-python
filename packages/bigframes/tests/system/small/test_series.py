@@ -2346,8 +2346,13 @@ def test_value_counts(scalars_dfs, kwargs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "int64_too"
 
-    bf_result = scalars_df[col_name].value_counts(**kwargs).to_pandas()
-    pd_result = scalars_pandas_df[col_name].value_counts(**kwargs)
+    # Pandas `value_counts` can produce non-deterministic results with tied counts.
+    # Remove duplicates to enforce a consistent output.
+    s = scalars_df[col_name].drop(0)
+    pd_s = scalars_pandas_df[col_name].drop(0)
+
+    bf_result = s.value_counts(**kwargs).to_pandas()
+    pd_result = pd_s.value_counts(**kwargs)
 
     pd.testing.assert_series_equal(
         bf_result,

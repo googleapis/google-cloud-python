@@ -307,6 +307,7 @@ class KBinsDiscretizer(
             for column in columns:
                 min_value = X[column].min()
                 max_value = X[column].max()
+
                 bin_size = (max_value - min_value) / self.n_bins
                 array_split_points[column] = [
                     min_value + i * bin_size for i in range(self.n_bins - 1)

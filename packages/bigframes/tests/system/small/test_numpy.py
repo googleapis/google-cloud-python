@@ -70,6 +70,13 @@ def test_df_ufuncs(scalars_dfs, opname):
     ).to_pandas()
     pd_result = getattr(np, opname)(scalars_pandas_df[["float64_col", "int64_col"]])
 
+    # In NumPy versions 2 and later, `np.floor` and `np.ceil` now produce integer
+    # outputs for the "int64_col" column.
+    if opname in ["floor", "ceil"] and isinstance(
+        pd_result["int64_col"].dtypes, pd.Int64Dtype
+    ):
+        pd_result["int64_col"] = pd_result["int64_col"].astype(pd.Float64Dtype())
+
     pd.testing.assert_frame_equal(bf_result, pd_result)
 
 

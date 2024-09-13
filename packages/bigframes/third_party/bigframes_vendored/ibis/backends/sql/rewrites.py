@@ -1,367 +1,516 @@
 # Contains code from https://github.com/ibis-project/ibis/blob/main/ibis/backends/sql/rewrites.py
 
-"""Some common rewrite functions to be shared between backends."""
+"""Lower the ibis expression graph to a SQL-like relational algebra."""
 
 from __future__ import annotations
 
-from collections import defaultdict
+from collections.abc import Mapping
+from functools import reduce
+import operator
+from typing import Any, TYPE_CHECKING
 
+from ibis.common.annotations import attribute
 from ibis.common.collections import FrozenDict  # noqa: TCH001
-from ibis.common.deferred import _, deferred, Item, var
-from ibis.common.exceptions import ExpressionError, IbisInputError
-from ibis.common.graph import Node as Traversable
-from ibis.common.graph import traverse
-from ibis.common.grounds import Concrete
-from ibis.common.patterns import Check, pattern, replace
+from ibis.common.deferred import var
+import ibis.common.exceptions as com
+from ibis.common.graph import Graph
+from ibis.common.patterns import InstanceOf, Object, Pattern, replace
 from ibis.common.typing import VarTuple  # noqa: TCH001
+import ibis.expr.datatypes as dt
 import ibis.expr.operations as ops
-from ibis.util import Namespace, promote_list
+from ibis.expr.rewrites import d, p, replace_parameter
+from ibis.expr.schema import Schema
+from public import public
 import toolz
 
-p = Namespace(pattern, module=ops)
-d = Namespace(deferred, module=ops)
-
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 x = var("x")
 y = var("y")
-name = var("name")
 
 
-class DerefMap(Concrete, Traversable):
-    """Trace and replace fields from earlier relations in the hierarchy.
-    In order to provide a nice user experience, we need to allow expressions
-    from earlier relations in the hierarchy. Consider the following example:
-    t = ibis.table([('a', 'int64'), ('b', 'string')], name='t')
-    t1 = t.select([t.a, t.b])
-    t2 = t1.filter(t.a > 0)  # note that not t1.a is referenced here
-    t3 = t2.select(t.a)  # note that not t2.a is referenced here
-    However the relational operations in the IR are strictly enforcing that
-    the expressions are referencing the immediate parent only. So we need to
-    track fields upwards the hierarchy to replace `t.a` with `t1.a` and `t2.a`
-    in the example above. This is called dereferencing.
-    Whether we can treat or not a field of a relation semantically equivalent
-    with a field of an earlier relation in the hierarchy depends on the
-    `.values` mapping of the relation. Leaf relations, like `t` in the example
-    above, have an empty `.values` mapping, so we cannot dereference fields
-    from them. On the other hand a projection, like `t1` in the example above,
-    has a `.values` mapping like `{'a': t.a, 'b': t.b}`, so we can deduce that
-    `t1.a` is semantically equivalent with `t.a` and so on.
-    """
+@public
+class CTE(ops.Relation):
+    """Common table expression."""
 
-    """The relations we want the values to point to."""
-    rels: VarTuple[ops.Relation]
+    parent: ops.Relation
 
-    """Substitution mapping from values of earlier relations to the fields of `rels`."""
-    subs: FrozenDict[ops.Value, ops.Field]
+    @attribute
+    def schema(self):
+        return self.parent.schema
 
-    """Ambiguous field references."""
-    ambigs: FrozenDict[ops.Value, VarTuple[ops.Value]]
-
-    @classmethod
-    def from_targets(cls, rels, extra=None):
-        """Create a dereference map from a list of target relations.
-        Usually a single relation is passed except for joins where multiple
-        relations are involved.
-        Parameters
-        ----------
-        rels : list of ops.Relation
-            The target relations to dereference to.
-        extra : dict, optional
-            Extra substitutions to be added to the dereference map.
-        Returns
-        -------
-        DerefMap
-        """
-        rels = promote_list(rels)
-        mapping = defaultdict(dict)
-        for rel in rels:
-            for field in rel.fields.values():
-                for value, distance in cls.backtrack(field):
-                    mapping[value][field] = distance
-
-        subs, ambigs = {}, {}
-        for from_, to in mapping.items():
-            mindist = min(to.values())
-            minkeys = [k for k, v in to.items() if v == mindist]
-            # if all the closest fields are from the same relation, then we
-            # can safely substitute them and we pick the first one arbitrarily
-            if all(minkeys[0].relations == k.relations for k in minkeys):
-                subs[from_] = minkeys[0]
-            else:
-                ambigs[from_] = minkeys
-
-        if extra is not None:
-            subs.update(extra)
-
-        return cls(rels, subs, ambigs)
-
-    @classmethod
-    def backtrack(cls, value):
-        """Backtrack the field in the relation hierarchy.
-        The field is traced back until no modification is made, so only follow
-        ops.Field nodes not arbitrary values.
-        Parameters
-        ----------
-        value : ops.Value
-            The value to backtrack.
-        Yields
-        ------
-        tuple[ops.Field, int]
-            The value node and the distance from the original value.
-        """
-        distance = 0
-        # track down the field in the hierarchy until no modification
-        # is made so only follow ops.Field nodes not arbitrary values;
-        while isinstance(value, ops.Field):
-            yield value, distance
-            value = value.rel.values.get(value.name)
-            distance += 1
-        if (
-            value is not None
-            and value.relations
-            and not value.find(ops.Impure, filter=ops.Value)
-        ):
-            yield value, distance
-
-    def dereference(self, value):
-        """Dereference a value to the target relations.
-        Also check for ambiguous field references. If a field reference is found
-        which is marked as ambiguous, then raise an error.
-        Parameters
-        ----------
-        value : ops.Value
-            The value to dereference.
-        Returns
-        -------
-        ops.Value
-            The dereferenced value.
-        """
-        ambigs = value.find(lambda x: x in self.ambigs, filter=ops.Value)
-        if ambigs:
-            raise IbisInputError(
-                f"Ambiguous field reference {ambigs!r} in expression {value!r}"
-            )
-        return value.replace(self.subs, filter=ops.Value)
+    @attribute
+    def values(self):
+        return self.parent.values
 
 
-def flatten_predicates(node):
-    """Yield the expressions corresponding to the `And` nodes of a predicate.
-    Examples
-    --------
-    >>> import ibis
-    >>> t = ibis.table([("a", "int64"), ("b", "string")], name="t")
-    >>> filt = (t.a == 1) & (t.b == "foo")
-    >>> predicates = flatten_predicates(filt.op())
-    >>> len(predicates)
-    2
-    >>> predicates[0].to_expr().name("left")
-    r0 := UnboundTable: t
-      a int64
-      b string
-    left: r0.a == 1
-    >>> predicates[1].to_expr().name("right")
-    r0 := UnboundTable: t
-      a int64
-      b string
-    right: r0.b == 'foo'
-    """
+@public
+class Select(ops.Relation):
+    """Relation modelled after SQL's SELECT statement."""
 
-    def predicate(node):
-        if isinstance(node, ops.And):
-            # proceed and don't yield the node
-            return True, None
+    parent: ops.Relation
+    selections: FrozenDict[str, ops.Value] = {}
+    predicates: VarTuple[ops.Value[dt.Boolean]] = ()
+    qualified: VarTuple[ops.Value[dt.Boolean]] = ()
+    sort_keys: VarTuple[ops.SortKey] = ()
+
+    def is_star_selection(self):
+        return tuple(self.values.items()) == tuple(self.parent.fields.items())
+
+    @attribute
+    def values(self):
+        return self.selections
+
+    @attribute
+    def schema(self):
+        return Schema({k: v.dtype for k, v in self.selections.items()})
+
+
+@public
+class FirstValue(ops.Analytic):
+    """Retrieve the first element."""
+
+    arg: ops.Column[dt.Any]
+
+    @attribute
+    def dtype(self):
+        return self.arg.dtype
+
+
+@public
+class LastValue(ops.Analytic):
+    """Retrieve the last element."""
+
+    arg: ops.Column[dt.Any]
+
+    @attribute
+    def dtype(self):
+        return self.arg.dtype
+
+
+# TODO(kszucs): there is a better strategy to rewrite the relational operations
+# to Select nodes by wrapping the leaf nodes in a Select node and then merging
+# Project, Filter, Sort, etc. incrementally into the Select node. This way we
+# can have tighter control over simplification logic.
+
+
+@replace(p.Project)
+def project_to_select(_, **kwargs):
+    """Convert a Project node to a Select node."""
+    return Select(_.parent, selections=_.values)
+
+
+def partition_predicates(predicates):
+    qualified = []
+    unqualified = []
+
+    for predicate in predicates:
+        if predicate.find(ops.WindowFunction, filter=ops.Value):
+            qualified.append(predicate)
         else:
-            # halt and yield the node
-            return False, node
+            unqualified.append(predicate)
 
-    return list(traverse(predicate, node))
-
-
-@replace(p.Field(p.JoinChain))
-def peel_join_field(_):
-    return _.rel.values[_.name]
+    return unqualified, qualified
 
 
-@replace(p.ScalarParameter)
-def replace_parameter(_, params, **kwargs):
-    """Replace scalar parameters with their values."""
-    return ops.Literal(value=params[_], dtype=_.dtype)
-
-
-@replace(p.StringSlice)
-def lower_stringslice(_, **kwargs):
-    """Rewrite StringSlice in terms of Substring."""
-    if _.end is None:
-        return ops.Substring(_.arg, start=_.start)
-    if _.start is None:
-        return ops.Substring(_.arg, start=0, length=_.end)
-    if (
-        isinstance(_.start, ops.Literal)
-        and isinstance(_.start.value, int)
-        and isinstance(_.end, ops.Literal)
-        and isinstance(_.end.value, int)
-    ):
-        # optimization for constant values
-        length = _.end.value - _.start.value
-    else:
-        length = ops.Subtract(_.end, _.start)
-    return ops.Substring(_.arg, start=_.start, length=length)
-
-
-@replace(p.Analytic)
-def wrap_analytic(_, **__):
-    # Wrap analytic functions in a window function
-    return ops.WindowFunction(_)
-
-
-@replace(p.Reduction)
-def project_wrap_reduction(_, rel):
-    # Query all the tables that the reduction depends on
-    if _.relations == {rel}:
-        # The reduction is fully originating from the `rel`, so turn
-        # it into a window function of `rel`
-        return ops.WindowFunction(_)
-    else:
-        # 1. The reduction doesn't depend on any table, constructed from
-        #    scalar values, so turn it into a scalar subquery.
-        # 2. The reduction is originating from `rel` and other tables,
-        #    so this is a correlated scalar subquery.
-        # 3. The reduction is originating entirely from other tables,
-        #    so this is an uncorrelated scalar subquery.
-        return ops.ScalarSubquery(_.to_expr().as_table())
-
-
-def rewrite_project_input(value, relation):
-    # we need to detect reductions which are either turned into window functions
-    # or scalar subqueries depending on whether they are originating from the
-    # relation
-    return value.replace(
-        wrap_analytic | project_wrap_reduction,
-        filter=p.Value & ~p.WindowFunction,
-        context={"rel": relation},
+@replace(p.Filter)
+def filter_to_select(_, **kwargs):
+    """Convert a Filter node to a Select node."""
+    predicates, qualified = partition_predicates(_.predicates)
+    return Select(
+        _.parent, selections=_.values, predicates=predicates, qualified=qualified
     )
 
 
-ReductionLike = p.Reduction | p.Field(p.Aggregate(groups={}))
+@replace(p.Sort)
+def sort_to_select(_, **kwargs):
+    """Convert a Sort node to a Select node."""
+    return Select(_.parent, selections=_.values, sort_keys=_.keys)
 
 
-@replace(ReductionLike)
-def filter_wrap_reduction(_):
-    # Wrap reductions or fields referencing an aggregation without a group by -
-    # which are scalar fields - in a scalar subquery. In the latter case we
-    # use the reduction value from the aggregation.
-    if isinstance(_, ops.Field):
-        value = _.rel.values[_.name]
-    else:
-        value = _
-    return ops.ScalarSubquery(value.to_expr().as_table())
+if hasattr(p, "DropColumns"):
+
+    @replace(p.DropColumns)
+    def drop_columns_to_select(_, **kwargs):
+        """Convert a DropColumns node to a Select node."""
+        # if we're dropping fewer than 50% of the parent table's columns then the
+        # compiled query will likely be smaller than if we list everything *NOT*
+        # being dropped
+        if len(_.columns_to_drop) < len(_.schema) // 2:
+            return _
+        return Select(_.parent, selections=_.values)
 
 
-def rewrite_filter_input(value):
-    return value.replace(
-        wrap_analytic | filter_wrap_reduction, filter=p.Value & ~p.WindowFunction
-    )
+if hasattr(p, "FillNull"):
+
+    @replace(p.FillNull)
+    def fill_null_to_select(_, **kwargs):
+        """Rewrite FillNull to a Select node."""
+        if isinstance(_.replacements, Mapping):
+            mapping = _.replacements
+        else:
+            mapping = {
+                name: _.replacements
+                for name, type in _.parent.schema.items()
+                if type.nullable
+            }
+
+        if not mapping:
+            return _.parent
+
+        selections = {}
+        for name in _.parent.schema.names:
+            col = ops.Field(_.parent, name)
+            if (value := mapping.get(name)) is not None:
+                col = ops.Alias(ops.Coalesce((col, value)), name)
+            selections[name] = col
+
+        return Select(_.parent, selections=selections)
 
 
-@replace(p.Analytic | p.Reduction)
-def window_wrap_reduction(_, window):
-    # Wrap analytic and reduction functions in a window function. Used in the
-    # value.over() API.
-    return ops.WindowFunction(
-        _,
-        how=window.how,
-        start=window.start,
-        end=window.end,
-        group_by=window.groupings,
-        order_by=window.orderings,
-    )
+if hasattr(p, "DropNull"):
+
+    @replace(p.DropNull)
+    def drop_null_to_select(_, **kwargs):
+        """Rewrite DropNull to a Select node."""
+        if _.subset is None:
+            columns = [ops.Field(_.parent, name) for name in _.parent.schema.names]
+        else:
+            columns = _.subset
+
+        if columns:
+            preds = [
+                reduce(
+                    ops.And if _.how == "any" else ops.Or,
+                    [ops.NotNull(c) for c in columns],
+                )
+            ]
+        elif _.how == "all":
+            preds = [ops.Literal(False, dtype=dt.bool)]
+        else:
+            return _.parent
+
+        return Select(_.parent, selections=_.values, predicates=tuple(preds))
 
 
-@replace(p.WindowFunction)
-def window_merge_frames(_, window):
-    # Merge window frames, used in the value.over() and groupby.select() APIs.
-    if _.how != window.how:
-        raise ExpressionError(
-            f"Unable to merge {_.how} window with {window.how} window"
+@replace(p.WindowFunction(p.First | p.Last))
+def first_to_firstvalue(_, **kwargs):
+    """Convert a First or Last node to a FirstValue or LastValue node."""
+    if _.func.where is not None:
+        raise com.UnsupportedOperationError(
+            f"`{type(_.func).__name__.lower()}` with `where` is unsupported "
+            "in a window function"
         )
-    elif _.start and window.start and _.start != window.start:
-        raise ExpressionError(
-            "Unable to merge windows with conflicting `start` boundary"
-        )
-    elif _.end and window.end and _.end != window.end:
-        raise ExpressionError("Unable to merge windows with conflicting `end` boundary")
+    klass = FirstValue if isinstance(_.func, ops.First) else LastValue
+    return _.copy(func=klass(_.func.arg))
 
-    start = _.start or window.start
-    end = _.end or window.end
-    group_by = tuple(toolz.unique(_.group_by + window.groupings))
 
-    order_keys = {}
-    for sort_key in window.orderings + _.order_by:
-        order_keys[sort_key.expr] = sort_key.ascending, sort_key.nulls_first
+def complexity(node):
+    """Assign a complexity score to a node.
 
-    order_by = (
-        ops.SortKey(expr, ascending=ascending, nulls_first=nulls_first)
-        for expr, (ascending, nulls_first) in order_keys.items()
+    Subsequent projections can be merged into a single projection by replacing
+    the fields referenced in the outer projection with the computed expressions
+    from the inner projection. This inlining can result in very complex value
+    expressions depending on the projections. In order to prevent excessive
+    inlining, we assign a complexity score to each node.
+
+    The complexity score assigns 1 to each value expression and adds up in the
+    tree hierarchy unless there is a Field node where we don't add up the
+    complexity of the referenced relation. This way we treat fields kind of like
+    reusable variables considering them less complex than they were inlined.
+    """
+
+    def accum(node, *args):
+        if isinstance(node, ops.Field):
+            return 1
+        else:
+            return 1 + sum(args)
+
+    return node.map_nodes(accum)[node]
+
+
+@replace(Object(Select, Object(Select)))
+def merge_select_select(_, **kwargs):
+    """Merge subsequent Select relations into one.
+
+    This rewrites eliminates `_.parent` by merging the outer and the inner
+    `predicates`, `sort_keys` and keeping the outer `selections`. All selections
+    from the inner Select are inlined into the outer Select.
+    """
+    # don't merge if either the outer or the inner select has window functions
+    blocking = (
+        ops.WindowFunction,
+        ops.ExistsSubquery,
+        ops.InSubquery,
+        ops.Unnest,
+        ops.Impure,
     )
-    return _.copy(start=start, end=end, group_by=group_by, order_by=order_by)
+    if _.find_below(blocking, filter=ops.Value):
+        return _
+    if _.parent.find_below(blocking, filter=ops.Value):
+        return _
+
+    subs = {ops.Field(_.parent, k): v for k, v in _.parent.values.items()}
+    selections = {k: v.replace(subs, filter=ops.Value) for k, v in _.selections.items()}
+
+    predicates = tuple(p.replace(subs, filter=ops.Value) for p in _.predicates)
+    unique_predicates = toolz.unique(_.parent.predicates + predicates)
+
+    qualified = tuple(p.replace(subs, filter=ops.Value) for p in _.qualified)
+    unique_qualified = toolz.unique(_.parent.qualified + qualified)
+
+    sort_keys = tuple(s.replace(subs, filter=ops.Value) for s in _.sort_keys)
+    sort_key_exprs = {s.expr for s in sort_keys}
+    parent_sort_keys = tuple(
+        k for k in _.parent.sort_keys if k.expr not in sort_key_exprs
+    )
+    unique_sort_keys = sort_keys + parent_sort_keys
+
+    result = Select(
+        _.parent.parent,
+        selections=selections,
+        predicates=unique_predicates,
+        qualified=unique_qualified,
+        sort_keys=unique_sort_keys,
+    )
+    return result if complexity(result) <= complexity(_) else _
 
 
-def rewrite_window_input(value, window):
-    context = {"window": window}
-    # if self is a reduction or analytic function, wrap it in a window function
-    node = value.replace(
-        window_wrap_reduction,
-        filter=p.Value & ~p.WindowFunction,
+def extract_ctes(node: ops.Relation) -> set[ops.Relation]:
+    cte_types = (Select, ops.Aggregate, ops.JoinChain, ops.Set, ops.Limit, ops.Sample)
+    dont_count = (ops.Field, ops.CountStar, ops.CountDistinctStar)
+
+    g = Graph.from_bfs(node, filter=~InstanceOf(dont_count))
+    result = set()
+    for op, dependents in g.invert().items():
+        if isinstance(op, ops.View) or (
+            len(dependents) > 1 and isinstance(op, cte_types)
+        ):
+            result.add(op)
+
+    return result
+
+
+def sqlize(
+    node: ops.Node,
+    params: Mapping[ops.ScalarParameter, Any],
+    rewrites: Sequence[Pattern] = (),
+    fuse_selects: bool = True,
+) -> tuple[ops.Node, list[ops.Node]]:
+    """Lower the ibis expression graph to a SQL-like relational algebra.
+
+    Parameters
+    ----------
+    node
+        The root node of the expression graph.
+    params
+        A mapping of scalar parameters to their values.
+    rewrites
+        Supplementary rewrites to apply to the expression graph.
+    fuse_selects
+        Whether to merge subsequent Select nodes into one where possible.
+
+    Returns
+    -------
+    Tuple of the rewritten expression graph and a list of CTEs.
+
+    """
+    assert isinstance(node, ops.Relation)
+
+    # apply the backend specific rewrites
+    if rewrites:
+        node = node.replace(reduce(operator.or_, rewrites))
+
+    # lower the expression graph to a SQL-like relational algebra
+    context = {"params": params}
+    replacements = (
+        replace_parameter | project_to_select | filter_to_select | sort_to_select
+    )
+
+    if hasattr(p, "FillNull"):
+        replacements = replacements | fill_null_to_select
+
+    if hasattr(p, "DropNull"):
+        replacements = replacements | drop_null_to_select
+
+    if hasattr(p, "DropColumns"):
+        replacements = replacements | drop_columns_to_select
+
+    replacements = replacements | first_to_firstvalue
+    sqlized = node.replace(
+        replacements,
         context=context,
     )
-    # if self is already a window function, merge the existing window frame
-    # with the requested window frame
-    return node.replace(window_merge_frames, filter=p.Value, context=context)
+
+    # squash subsequent Select nodes into one
+    if fuse_selects:
+        simplified = sqlized.replace(merge_select_select)
+    else:
+        simplified = sqlized
+
+    # extract common table expressions while wrapping them in a CTE node
+    ctes = extract_ctes(simplified)
+
+    def wrap(node, _, **kwargs):
+        new = node.__recreate__(kwargs)
+        return CTE(new) if node in ctes else new
+
+    result = simplified.replace(wrap)
+    ctes = reversed([cte.parent for cte in result.find(CTE)])
+
+    return result, ctes
 
 
-# TODO(kszucs): schema comparison should be updated to not distinguish between
-# different column order
-@replace(p.Project(y @ p.Relation) & Check(_.schema == y.schema))
-def complete_reprojection(_, y):
-    # TODO(kszucs): this could be moved to the pattern itself but not sure how
-    # to express it, especially in a shorter way then the following check
-    for name in _.schema:
-        if _.values[name] != ops.Field(y, name):
-            return _
-    return y
+# supplemental rewrites selectively used on a per-backend basis
 
 
-@replace(p.Project(y @ p.Project))
-def subsequent_projects(_, y):
-    rule = p.Field(y, name) >> Item(y.values, name)
-    values = {k: v.replace(rule, filter=ops.Value) for k, v in _.values.items()}
-    return ops.Project(y.parent, values)
+@replace(p.WindowFunction(func=p.NTile(y), order_by=()))
+def add_order_by_to_empty_ranking_window_functions(_, **kwargs):
+    """Add an ORDER BY clause to rank window functions that don't have one."""
+    return _.copy(order_by=(y,))
 
 
-@replace(p.Filter(y @ p.Filter))
-def subsequent_filters(_, y):
-    rule = p.Field(y, name) >> d.Field(y.parent, name)
-    preds = tuple(v.replace(rule, filter=ops.Value) for v in _.predicates)
-    return ops.Filter(y.parent, y.predicates + preds)
+"""Replace checks against an empty right side with `False`."""
+empty_in_values_right_side = p.InValues(options=()) >> d.Literal(False, dtype=dt.bool)
 
 
-@replace(p.Filter(y @ p.Project))
-def reorder_filter_project(_, y):
-    rule = p.Field(y, name) >> Item(y.values, name)
-    preds = tuple(v.replace(rule, filter=ops.Value) for v in _.predicates)
+@replace(
+    p.WindowFunction(p.RankBase | p.NTile)
+    | p.StringFind
+    | p.FindInSet
+    | p.ArrayPosition
+)
+def one_to_zero_index(_, **kwargs):
+    """Subtract one from one-index functions."""
+    return ops.Subtract(_, 1)
 
-    inner = ops.Filter(y.parent, preds)
-    rule = p.Field(y.parent, name) >> d.Field(inner, name)
-    projs = {k: v.replace(rule, filter=ops.Value) for k, v in y.values.items()}
 
-    return ops.Project(inner, projs)
+@replace(ops.NthValue)
+def add_one_to_nth_value_input(_, **kwargs):
+    if isinstance(_.nth, ops.Literal):
+        nth = ops.Literal(_.nth.value + 1, dtype=_.nth.dtype)
+    else:
+        nth = ops.Add(_.nth, 1)
+    return _.copy(nth=nth)
 
 
-def simplify(node):
-    # TODO(kszucs): add a utility to the graph module to do rewrites in multiple
-    # passes after each other
-    node = node.replace(reorder_filter_project)
-    node = node.replace(reorder_filter_project)
-    node = node.replace(subsequent_projects | subsequent_filters)
-    node = node.replace(complete_reprojection)
-    return node
+@replace(p.WindowFunction(order_by=()))
+def rewrite_empty_order_by_window(_, **kwargs):
+    return _.copy(order_by=(ops.NULL,))
+
+
+@replace(p.WindowFunction(p.RowNumber | p.NTile))
+def exclude_unsupported_window_frame_from_row_number(_, **kwargs):
+    return ops.Subtract(_.copy(start=None, end=0), 1)
+
+
+@replace(p.WindowFunction(p.MinRank | p.DenseRank, start=None))
+def exclude_unsupported_window_frame_from_rank(_, **kwargs):
+    return ops.Subtract(
+        _.copy(start=None, end=0, order_by=_.order_by or (ops.NULL,)), 1
+    )
+
+
+@replace(
+    p.WindowFunction(
+        p.Lag | p.Lead | p.PercentRank | p.CumeDist | p.Any | p.All, start=None
+    )
+)
+def exclude_unsupported_window_frame_from_ops(_, **kwargs):
+    return _.copy(start=None, end=0, order_by=_.order_by or (ops.NULL,))
+
+
+# Rewrite rules for lowering a high-level operation into one composed of more
+# primitive operations.
+
+
+@replace(p.Log2)
+def lower_log2(_, **kwargs):
+    """Rewrite `log2` as `log`."""
+    return ops.Log(_.arg, base=2)
+
+
+@replace(p.Log10)
+def lower_log10(_, **kwargs):
+    """Rewrite `log10` as `log`."""
+    return ops.Log(_.arg, base=10)
+
+
+@replace(p.Bucket)
+def lower_bucket(_, **kwargs):
+    """Rewrite `Bucket` as `SearchedCase`."""
+    cases = []
+    results = []
+
+    if _.closed == "left":
+        l_cmp = ops.LessEqual
+        r_cmp = ops.Less
+    else:
+        l_cmp = ops.Less
+        r_cmp = ops.LessEqual
+
+    user_num_buckets = len(_.buckets) - 1
+
+    bucket_id = 0
+    if _.include_under:
+        if user_num_buckets > 0:
+            cmp = ops.Less if _.close_extreme else r_cmp
+        else:
+            cmp = ops.LessEqual if _.closed == "right" else ops.Less
+        cases.append(cmp(_.arg, _.buckets[0]))
+        results.append(bucket_id)
+        bucket_id += 1
+
+    for j, (lower, upper) in enumerate(zip(_.buckets, _.buckets[1:])):
+        if _.close_extreme and (
+            (_.closed == "right" and j == 0)
+            or (_.closed == "left" and j == (user_num_buckets - 1))
+        ):
+            cases.append(
+                ops.And(ops.LessEqual(lower, _.arg), ops.LessEqual(_.arg, upper))
+            )
+            results.append(bucket_id)
+        else:
+            cases.append(ops.And(l_cmp(lower, _.arg), r_cmp(_.arg, upper)))
+            results.append(bucket_id)
+        bucket_id += 1
+
+    if _.include_over:
+        if user_num_buckets > 0:
+            cmp = ops.Less if _.close_extreme else l_cmp
+        else:
+            cmp = ops.Less if _.closed == "right" else ops.LessEqual
+
+        cases.append(cmp(_.buckets[-1], _.arg))
+        results.append(bucket_id)
+        bucket_id += 1
+
+    return ops.SearchedCase(
+        cases=tuple(cases), results=tuple(results), default=ops.NULL
+    )
+
+
+@replace(p.Capitalize)
+def lower_capitalize(_, **kwargs):
+    """Rewrite Capitalize in terms of substring, concat, upper, and lower."""
+    first = ops.Uppercase(ops.Substring(_.arg, start=0, length=1))
+    # use length instead of length - 1 to avoid backends complaining about
+    # asking for negative length
+    #
+    # there are at most length - 1 characters, so asking for length is fine
+    rest = ops.Lowercase(ops.Substring(_.arg, start=1, length=ops.StringLength(_.arg)))
+    return ops.StringConcat((first, rest))
+
+
+@replace(p.Sample)
+def lower_sample(_, **kwargs):
+    """Rewrite Sample as `t.filter(random() <= fraction)`.
+
+    Errors as unsupported if a `seed` is specified.
+    """
+    if _.seed is not None:
+        raise com.UnsupportedOperationError(
+            "`Table.sample` with a random seed is unsupported"
+        )
+    return ops.Filter(_.parent, (ops.LessEqual(ops.RandomScalar(), _.fraction),))

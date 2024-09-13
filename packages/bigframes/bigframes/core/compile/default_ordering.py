@@ -49,7 +49,12 @@ def _convert_to_nonnull_string(column: ibis_types.Column) -> ibis_types.StringVa
         # Needed for JSON, STRUCT and ARRAY datatypes
         result = vendored_ibis_ops.ToJsonString(column).to_expr()  # type: ignore
     # Escape backslashes and use backslash as delineator
-    escaped = cast(ibis_types.StringColumn, result.fillna("")).replace("\\", "\\\\")  # type: ignore
+    escaped = cast(
+        ibis_types.StringColumn,
+        result.fill_null("") if hasattr(result, "fill_null") else result.fillna(""),
+    ).replace(
+        "\\", "\\\\"
+    )  # type: ignore
     return cast(ibis_types.StringColumn, ibis.literal("\\")).concat(escaped)
 
 

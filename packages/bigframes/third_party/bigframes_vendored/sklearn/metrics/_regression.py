@@ -52,7 +52,7 @@ def r2_score(y_true, y_pred, force_finite=True) -> float:
         >>> y_pred = bpd.DataFrame([2.5, 0.0, 2, 8])
         >>> r2_score = bigframes.ml.metrics.r2_score(y_true, y_pred)
         >>> r2_score
-        0.9486081370449679
+        np.float64(0.9486081370449679)
 
     Args:
         y_true (Series or DataFrame of shape (n_samples,)):
@@ -79,7 +79,7 @@ def mean_squared_error(y_true, y_pred) -> float:
         >>> y_pred = bpd.DataFrame([2.5, 0.0, 2, 8])
         >>> mse = bigframes.ml.metrics.mean_squared_error(y_true, y_pred)
         >>> mse
-        0.375
+        np.float64(0.375)
 
     Args:
         y_true (Series or DataFrame of shape (n_samples,)):

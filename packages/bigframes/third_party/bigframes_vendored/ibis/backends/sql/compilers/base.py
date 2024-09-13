@@ -610,7 +610,6 @@ class SQLGlotCompiler(abc.ABC):
             op,
             params=params,
             rewrites=self.rewrites,
-            post_rewrites=self.post_rewrites,
             fuse_selects=options.sql.fuse_selects,
         )
 
@@ -1125,7 +1124,7 @@ class SQLGlotCompiler(abc.ABC):
 
     ### Ordering and window functions
 
-    def visit_SortKey(self, op, *, expr, ascending: bool, nulls_first: bool):
+    def visit_SortKey(self, op, *, expr, ascending: bool, nulls_first: bool = False):
         return sge.Ordered(this=expr, desc=not ascending, nulls_first=nulls_first)
 
     def visit_ApproxMedian(self, op, *, arg, where):
@@ -1262,11 +1261,9 @@ class SQLGlotCompiler(abc.ABC):
             else:
                 yield value.as_(name, quoted=self.quoted, copy=False)
 
-    def visit_Select(
-        self, op, *, parent, selections, predicates, qualified, sort_keys, distinct
-    ):
+    def visit_Select(self, op, *, parent, selections, predicates, qualified, sort_keys):
         # if we've constructed a useless projection return the parent relation
-        if not (selections or predicates or qualified or sort_keys or distinct):
+        if not (selections or predicates or qualified or sort_keys):
             return parent
 
         result = parent
@@ -1292,9 +1289,6 @@ class SQLGlotCompiler(abc.ABC):
 
         if sort_keys:
             result = result.order_by(*sort_keys, copy=False)
-
-        if distinct:
-            result = result.distinct()
 
         return result
 
@@ -1392,7 +1386,10 @@ class SQLGlotCompiler(abc.ABC):
 
     @classmethod
     def _add_parens(cls, op, sg_expr):
-        if isinstance(op, cls.NEEDS_PARENS):
+        # Patch for https://github.com/ibis-project/ibis/issues/9975
+        if isinstance(op, cls.NEEDS_PARENS) or (
+            isinstance(op, ops.Alias) and isinstance(op.arg, cls.NEEDS_PARENS)
+        ):
             return sge.paren(sg_expr, copy=False)
         return sg_expr
 
@@ -1479,6 +1476,11 @@ class SQLGlotCompiler(abc.ABC):
         if alias is not None:
             return result.subquery(alias, copy=False)
         return result
+
+    def visit_Distinct(self, op, *, parent):
+        return (
+            sg.select(STAR, copy=False).distinct(copy=False).from_(parent, copy=False)
+        )
 
     def visit_CTE(self, op, *, parent):
         return sg.table(parent.alias_or_name, quoted=self.quoted)

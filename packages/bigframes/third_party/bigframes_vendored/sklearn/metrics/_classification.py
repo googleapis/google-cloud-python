@@ -36,13 +36,13 @@ def accuracy_score(y_true, y_pred, normalize=True) -> float:
         >>> y_pred = bpd.DataFrame([0, 1, 2, 3])
         >>> accuracy_score = bigframes.ml.metrics.accuracy_score(y_true, y_pred)
         >>> accuracy_score
-        0.5
+        np.float64(0.5)
 
     If False, return the number of correctly classified samples:
 
         >>> accuracy_score = bigframes.ml.metrics.accuracy_score(y_true, y_pred, normalize=False)
         >>> accuracy_score
-        2
+        np.int64(2)
 
     Args:
         y_true (Series or DataFrame of shape (n_samples,)):

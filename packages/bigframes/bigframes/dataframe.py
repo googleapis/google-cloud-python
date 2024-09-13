@@ -65,7 +65,7 @@ import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.core.validations as validations
 import bigframes.core.window
-import bigframes.core.window_spec as window_spec
+import bigframes.core.window_spec as windows
 import bigframes.dtypes
 import bigframes.exceptions
 import bigframes.formatting_helpers as formatter
@@ -1958,12 +1958,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     @validations.requires_ordering()
     def ffill(self, *, limit: typing.Optional[int] = None) -> DataFrame:
-        window = window_spec.rows(preceding=limit, following=0)
+        window = windows.rows(preceding=limit, following=0)
         return self._apply_window_op(agg_ops.LastNonNullOp(), window)
 
     @validations.requires_ordering()
     def bfill(self, *, limit: typing.Optional[int] = None) -> DataFrame:
-        window = window_spec.rows(preceding=0, following=limit)
+        window = windows.rows(preceding=0, following=limit)
         return self._apply_window_op(agg_ops.FirstNonNullOp(), window)
 
     def isin(self, values) -> DataFrame:
@@ -2670,7 +2670,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     @validations.requires_ordering()
     def rolling(self, window: int, min_periods=None) -> bigframes.core.window.Window:
         # To get n size window, need current row and n-1 preceding rows.
-        window_def = window_spec.rows(
+        window_def = windows.rows(
             preceding=window - 1, following=0, min_periods=min_periods or window
         )
         return bigframes.core.window.Window(
@@ -2679,7 +2679,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     @validations.requires_ordering()
     def expanding(self, min_periods: int = 1) -> bigframes.core.window.Window:
-        window = window_spec.cumulative_rows(min_periods=min_periods)
+        window = windows.cumulative_rows(min_periods=min_periods)
         return bigframes.core.window.Window(
             self._block, window, self._block.value_columns
         )
@@ -2790,7 +2790,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise ValueError("All values must be numeric to apply cumsum.")
         return self._apply_window_op(
             agg_ops.sum_op,
-            window_spec.cumulative_rows(),
+            windows.cumulative_rows(),
         )
 
     @validations.requires_ordering()
@@ -2803,38 +2803,32 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise ValueError("All values must be numeric to apply cumsum.")
         return self._apply_window_op(
             agg_ops.product_op,
-            window_spec.cumulative_rows(),
+            windows.cumulative_rows(),
         )
 
     @validations.requires_ordering()
     def cummin(self) -> DataFrame:
         return self._apply_window_op(
             agg_ops.min_op,
-            window_spec.cumulative_rows(),
+            windows.cumulative_rows(),
         )
 
     @validations.requires_ordering()
     def cummax(self) -> DataFrame:
         return self._apply_window_op(
             agg_ops.max_op,
-            window_spec.cumulative_rows(),
+            windows.cumulative_rows(),
         )
 
     @validations.requires_ordering()
     def shift(self, periods: int = 1) -> DataFrame:
-        window = window_spec.rows(
-            preceding=periods if periods > 0 else None,
-            following=-periods if periods < 0 else None,
-        )
-        return self._apply_window_op(agg_ops.ShiftOp(periods), window)
+        window_spec = windows.rows()
+        return self._apply_window_op(agg_ops.ShiftOp(periods), window_spec)
 
     @validations.requires_ordering()
     def diff(self, periods: int = 1) -> DataFrame:
-        window = window_spec.rows(
-            preceding=periods if periods > 0 else None,
-            following=-periods if periods < 0 else None,
-        )
-        return self._apply_window_op(agg_ops.DiffOp(periods), window)
+        window_spec = windows.rows()
+        return self._apply_window_op(agg_ops.DiffOp(periods), window_spec)
 
     @validations.requires_ordering()
     def pct_change(self, periods: int = 1) -> DataFrame:
@@ -2845,7 +2839,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _apply_window_op(
         self,
         op: agg_ops.WindowOp,
-        window_spec: window_spec.WindowSpec,
+        window_spec: windows.WindowSpec,
     ):
         block, result_ids = self._block.multi_apply_window_op(
             self._block.value_columns,

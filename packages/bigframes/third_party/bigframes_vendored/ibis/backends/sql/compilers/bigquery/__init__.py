@@ -1,5 +1,4 @@
 # Contains code from https://github.com/ibis-project/ibis/blob/main/ibis/backends/sql/compilers/bigquery/__init__.py
-
 """Module to convert from Ibis expression to SQL string."""
 
 from __future__ import annotations
@@ -9,28 +8,25 @@ import math
 import re
 from typing import Any, TYPE_CHECKING
 
-from bigframes_vendored.ibis.backends.bigquery.datatypes import (
-    BigQueryType,
-    BigQueryUDFType,
-)
+import bigframes_vendored.ibis.backends.bigquery.datatypes as bq_datatypes
 from bigframes_vendored.ibis.backends.sql.compilers.base import (
     AggGen,
     NULL,
     SQLGlotCompiler,
     STAR,
 )
-from bigframes_vendored.ibis.backends.sql.rewrites import (
+from ibis import util
+from ibis.backends.sql.datatypes import BigQueryType, BigQueryUDFType
+from ibis.backends.sql.rewrites import (
     exclude_unsupported_window_frame_from_ops,
     exclude_unsupported_window_frame_from_rank,
     exclude_unsupported_window_frame_from_row_number,
-    split_select_distinct_with_order_by,
 )
-from ibis import util
-from ibis.backends.sql.compilers.bigquery.udf.core import PythonToJavaScriptTranslator
 import ibis.common.exceptions as com
 from ibis.common.temporal import DateUnit, IntervalUnit, TimestampUnit, TimeUnit
 import ibis.expr.datatypes as dt
 import ibis.expr.operations as ops
+import numpy as np
 import sqlglot as sg
 from sqlglot.dialects import BigQuery
 import sqlglot.expressions as sge
@@ -39,6 +35,7 @@ if TYPE_CHECKING:
     from collections.abc import Mapping
 
     import ibis.expr.types as ir
+
 
 _NAME_REGEX = re.compile(r'[^!"$()*,./;?@[\\\]^`{}~\n]+')
 
@@ -55,8 +52,6 @@ def _qualify_memtable(
     if isinstance(node, sge.Table) and _MEMTABLE_PATTERN.match(node.name) is not None:
         node.args["db"] = dataset
         node.args["catalog"] = project
-        # make sure to quote table location
-        node = _force_quote_table(node)
     return node
 
 
@@ -64,12 +59,9 @@ def _remove_null_ordering_from_unsupported_window(
     node: sge.Expression,
 ) -> sge.Expression:
     """Remove null ordering in window frame clauses not supported by BigQuery.
-
     BigQuery has only partial support for NULL FIRST/LAST in RANGE windows so
     we remove it from any window frame clause that doesn't support it.
-
     Here's the support matrix:
-
     ✅ sum(x) over (order by y desc nulls last)
     🚫 sum(x) over (order by y asc nulls last)
     ✅ sum(x) over (order by y asc nulls first)
@@ -89,27 +81,6 @@ def _remove_null_ordering_from_unsupported_window(
     return node
 
 
-def _force_quote_table(table: sge.Table) -> sge.Table:
-    """Force quote all the parts of a bigquery path.
-
-    The BigQuery identifier quoting semantics are bonkers
-    https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#identifiers
-
-    my-table is OK, but not mydataset.my-table
-
-    mytable-287 is OK, but not mytable-287a
-
-    Just quote everything.
-    """
-    for key in ("this", "db", "catalog"):
-        if (val := table.args[key]) is not None:
-            if isinstance(val, sg.exp.Identifier) and not val.quoted:
-                val.args["quoted"] = True
-            else:
-                table.args[key] = sg.to_identifier(val, quoted=True)
-    return table
-
-
 class BigQueryCompiler(SQLGlotCompiler):
     dialect = BigQuery
     type_mapper = BigQueryType
@@ -123,7 +94,6 @@ class BigQueryCompiler(SQLGlotCompiler):
         exclude_unsupported_window_frame_from_rank,
         *SQLGlotCompiler.rewrites,
     )
-    post_rewrites = (split_select_distinct_with_order_by,)
 
     supports_qualify = True
 
@@ -214,7 +184,6 @@ class BigQueryCompiler(SQLGlotCompiler):
         session_project: str | None = None,
     ) -> Any:
         """Compile an Ibis expression.
-
         Parameters
         ----------
         expr
@@ -228,18 +197,16 @@ class BigQueryCompiler(SQLGlotCompiler):
             Optional dataset ID to qualify memtable references.
         session_project
             Optional project ID to qualify memtable references.
-
         Returns
         -------
         Any
             The output of compilation. The type of this value depends on the
             backend.
-
         """
         sql = super().to_sqlglot(expr, limit=limit, params=params)
 
         table_expr = expr.as_table()
-        geocols = table_expr.schema().geospatial
+        geocols = getattr(table_expr.schema(), "geospatial", None)
 
         result = sql.transform(
             _qualify_memtable,
@@ -279,64 +246,6 @@ class BigQueryCompiler(SQLGlotCompiler):
 
         sources.append(result)
         return sources
-
-    def _compile_python_udf(self, udf_node: ops.ScalarUDF) -> sge.Create:
-        name = type(udf_node).__name__
-        type_mapper = self.udf_type_mapper
-
-        body = PythonToJavaScriptTranslator(udf_node.__func__).compile()
-        config = udf_node.__config__
-        libraries = config.get("libraries", [])
-
-        signature = [
-            sge.ColumnDef(
-                this=sg.to_identifier(name, quoted=self.quoted),
-                kind=type_mapper.from_ibis(param.annotation.pattern.dtype),
-            )
-            for name, param in udf_node.__signature__.parameters.items()
-        ]
-
-        lines = ['"""']
-
-        if config.get("strict", True):
-            lines.append('"use strict";')
-
-        lines += [
-            body,
-            "",
-            f"return {udf_node.__func_name__}({', '.join(udf_node.argnames)});",
-            '"""',
-        ]
-
-        func = sge.Create(
-            kind="FUNCTION",
-            this=sge.UserDefinedFunction(
-                this=sg.to_identifier(name), expressions=signature, wrapped=True
-            ),
-            # not exactly what I had in mind, but it works
-            #
-            # quoting is too simplistic to handle multiline strings
-            expression=sge.Var(this="\n".join(lines)),
-            exists=False,
-            properties=sge.Properties(
-                expressions=[
-                    sge.TemporaryProperty(),
-                    sge.ReturnsProperty(this=type_mapper.from_ibis(udf_node.dtype)),
-                    sge.StabilityProperty(
-                        this="IMMUTABLE" if config.get("determinism") else "VOLATILE"
-                    ),
-                    sge.LanguageProperty(this=sg.to_identifier("js")),
-                ]
-                + [
-                    sge.Property(
-                        this=sg.to_identifier("library"), value=self.f.array(*libraries)
-                    )
-                ]
-                * bool(libraries)
-            ),
-        )
-
-        return func
 
     @staticmethod
     def _minimize_spec(start, end, spec):
@@ -528,7 +437,7 @@ class BigQueryCompiler(SQLGlotCompiler):
     def visit_StringContains(self, op, *, haystack, needle):
         return self.f.strpos(haystack, needle) > 0
 
-    def visti_StringFind(self, op, *, arg, substr, start, end):
+    def visit_StringFind(self, op, *, arg, substr, start, end):
         if start is not None:
             raise NotImplementedError(
                 "`start` not implemented for BigQuery string find"
@@ -573,6 +482,9 @@ class BigQueryCompiler(SQLGlotCompiler):
                 )
         elif dtype.is_uuid():
             return sge.convert(str(value))
+
+        elif dtype.is_int64():
+            return sge.convert(np.int64(value))
         return None
 
     def visit_IntervalFromInteger(self, op, *, arg, unit):
@@ -1109,6 +1021,117 @@ class BigQueryCompiler(SQLGlotCompiler):
 
     def visit_ArrayAll(self, op, *, arg):
         return self._array_reduction(arg=arg, reduction="logical_and")
+
+    # Customized ops for bigframes
+
+    def visit_InMemoryTable(self, op, *, name, schema, data):
+        # Avoid creating temp tables for small data, which is how memtable is
+        # used in BigQuery DataFrames. Inspired by:
+        # https://github.com/ibis-project/ibis/blob/efa6fb72bf4c790450d00a926d7bd809dade5902/ibis/backends/druid/compiler.py#L95
+        tuples = data.to_frame().itertuples(index=False)
+        quoted = self.quoted
+        columns = [sg.column(col, quoted=quoted) for col in schema.names]
+        array_expr = sge.DataType(
+            this=sge.DataType.Type.STRUCT,
+            expressions=[
+                sge.ColumnDef(
+                    this=sge.to_identifier(field, quoted=self.quoted),
+                    kind=bq_datatypes.BigQueryType.from_ibis(type_),
+                )
+                for field, type_ in zip(schema.names, schema.types)
+            ],
+            nested=True,
+        )
+        array_values = [
+            sge.Tuple(
+                expressions=tuple(
+                    self.visit_Literal(None, value=value, dtype=type_)
+                    for value, type_ in zip(row, schema.types)
+                )
+            )
+            for row in tuples
+        ]
+        expr = sge.Unnest(
+            expressions=[
+                sge.DataType(
+                    this=sge.DataType.Type.ARRAY,
+                    expressions=[array_expr],
+                    nested=True,
+                    values=array_values,
+                ),
+            ],
+            alias=sge.TableAlias(
+                this=sg.to_identifier(name, quoted=quoted),
+                columns=columns,
+            ),
+        )
+        # return expr
+        return sg.select(sge.Star()).from_(expr)
+
+    def visit_ArrayAggregate(self, op, *, arg, order_by, where):
+        if len(order_by) > 0:
+            expr = sge.Order(
+                this=arg,
+                expressions=[
+                    # Avoid adding NULLS FIRST / NULLS LAST in SQL, which is
+                    # unsupported in ARRAY_AGG by reconstructing the node as
+                    # plain SQL text.
+                    f"({order_column.args['this'].sql(dialect='bigquery')}) {'DESC' if order_column.args.get('desc') else 'ASC'}"
+                    for order_column in order_by
+                ],
+            )
+        else:
+            expr = arg
+        return sge.IgnoreNulls(this=self.agg.array_agg(expr, where=where))
+
+    def visit_FirstNonNullValue(self, op, *, arg):
+        return sge.IgnoreNulls(this=sge.FirstValue(this=arg))
+
+    def visit_LastNonNullValue(self, op, *, arg):
+        return sge.IgnoreNulls(this=sge.LastValue(this=arg))
+
+    def visit_ToJsonString(self, op, *, arg):
+        return self.f.to_json_string(arg)
+
+    def visit_Quantile(self, op, *, arg, quantile, where):
+        return sge.PercentileCont(this=arg, expression=quantile)
+
+    def visit_WindowFunction(self, op, *, how, func, start, end, group_by, order_by):
+        # Patch for https://github.com/ibis-project/ibis/issues/9872
+        if start is None and end is None:
+            spec = None
+        else:
+            if start is None:
+                start = {}
+            if end is None:
+                end = {}
+
+            start_value = start.get("value", "UNBOUNDED")
+            start_side = start.get("side", "PRECEDING")
+            end_value = end.get("value", "UNBOUNDED")
+            end_side = end.get("side", "FOLLOWING")
+
+            if getattr(start_value, "this", None) == "0":
+                start_value = "CURRENT ROW"
+                start_side = None
+
+            if getattr(end_value, "this", None) == "0":
+                end_value = "CURRENT ROW"
+                end_side = None
+
+            spec = sge.WindowSpec(
+                kind=how.upper(),
+                start=start_value,
+                start_side=start_side,
+                end=end_value,
+                end_side=end_side,
+                over="OVER",
+            )
+            spec = self._minimize_spec(op.start, op.end, spec)
+
+        order = sge.Order(expressions=order_by) if order_by else None
+
+        return sge.Window(this=func, partition_by=group_by, order=order, spec=spec)
 
 
 compiler = BigQueryCompiler()

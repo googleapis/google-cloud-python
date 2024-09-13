@@ -29,7 +29,7 @@ import google.cloud.exceptions
 import google.cloud.functions_v2 as functions_v2
 import google.cloud.resourcemanager_v3 as resourcemanager_v3
 import google.cloud.storage as storage  # type: ignore
-import ibis.backends.base
+import ibis.backends
 import numpy as np
 import pandas as pd
 import pytest
@@ -105,7 +105,7 @@ def bigquery_client_tokyo(session_tokyo: bigframes.Session) -> bigquery.Client:
 
 
 @pytest.fixture(scope="session")
-def ibis_client(session: bigframes.Session) -> ibis.backends.base.BaseBackend:
+def ibis_client(session: bigframes.Session) -> ibis.backends.BaseBackend:
     return session.ibis_client
 
 

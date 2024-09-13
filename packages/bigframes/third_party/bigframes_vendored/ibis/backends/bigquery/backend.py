@@ -8,10 +8,10 @@ import concurrent.futures
 import contextlib
 import glob
 import os
-import re
 from typing import Any, Optional, TYPE_CHECKING
 
 from bigframes_vendored.ibis.backends.bigquery.datatypes import BigQueryType
+import bigframes_vendored.ibis.backends.sql.compilers as sc
 import google.api_core.exceptions
 import google.auth.credentials
 import google.cloud.bigquery as bq
@@ -27,7 +27,6 @@ from ibis.backends.bigquery.client import (
 )
 from ibis.backends.bigquery.datatypes import BigQuerySchema
 from ibis.backends.sql import SQLBackend
-import ibis.backends.sql.compilers as sc
 import ibis.common.exceptions as com
 import ibis.expr.operations as ops
 import ibis.expr.schema as sch
@@ -81,52 +80,6 @@ def _create_client_info_gapic(application_name):
     return ClientInfo(user_agent=_create_user_agent(application_name))
 
 
-_MEMTABLE_PATTERN = re.compile(
-    r"^_?ibis_(?:[A-Za-z_][A-Za-z_0-9]*)_memtable_[a-z0-9]{26}$"
-)
-
-
-def _qualify_memtable(
-    node: sge.Expression, *, dataset: str | None, project: str | None
-) -> sge.Expression:
-    """Add a BigQuery dataset and project to memtable references."""
-    if isinstance(node, sge.Table) and _MEMTABLE_PATTERN.match(node.name) is not None:
-        node.args["db"] = dataset
-        node.args["catalog"] = project
-        # make sure to quote table location
-        node = _force_quote_table(node)
-    return node
-
-
-def _remove_null_ordering_from_unsupported_window(
-    node: sge.Expression,
-) -> sge.Expression:
-    """Remove null ordering in window frame clauses not supported by BigQuery.
-
-    BigQuery has only partial support for NULL FIRST/LAST in RANGE windows so
-    we remove it from any window frame clause that doesn't support it.
-
-    Here's the support matrix:
-
-    ✅ sum(x) over (order by y desc nulls last)
-    🚫 sum(x) over (order by y asc nulls last)
-    ✅ sum(x) over (order by y asc nulls first)
-    🚫 sum(x) over (order by y desc nulls first)
-    """
-    if isinstance(node, sge.Window):
-        order = node.args.get("order")
-        if order is not None:
-            for key in order.args["expressions"]:
-                kargs = key.args
-                if kargs.get("desc") is True and kargs.get("nulls_first", False):
-                    kargs["nulls_first"] = False
-                elif kargs.get("desc") is False and not kargs.setdefault(
-                    "nulls_first", True
-                ):
-                    kargs["nulls_first"] = True
-    return node
-
-
 def _force_quote_table(table: sge.Table) -> sge.Table:
     """Force quote all the parts of a bigquery path.
 
@@ -156,38 +109,16 @@ class Backend(SQLBackend, CanCreateDatabase, CanCreateSchema):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.__session_dataset: bq.DatasetReference | None = None
+        self._query_cache.lookup = lambda name: self.table(
+            name,
+            database=(self._session_dataset.project, self._session_dataset.dataset_id),
+        ).op()
 
     @property
     def _session_dataset(self):
         if self.__session_dataset is None:
             self.__session_dataset = self._make_session()
         return self.__session_dataset
-
-    def _register_in_memory_table(self, op: ops.InMemoryTable) -> None:
-        raw_name = op.name
-
-        session_dataset = self._session_dataset
-        project = session_dataset.project
-        dataset = session_dataset.dataset_id
-
-        table_ref = bq.TableReference(session_dataset, raw_name)
-        try:
-            self.client.get_table(table_ref)
-        except google.api_core.exceptions.NotFound:
-            table_id = sg.table(
-                raw_name, db=dataset, catalog=project, quoted=False
-            ).sql(dialect=self.name)
-            bq_schema = BigQuerySchema.from_ibis(op.schema)
-            load_job = self.client.load_table_from_dataframe(
-                op.data.to_frame(),
-                table_id,
-                job_config=bq.LoadJobConfig(
-                    # fail if the table already exists and contains data
-                    write_disposition=bq.WriteDisposition.WRITE_EMPTY,
-                    schema=bq_schema,
-                ),
-            )
-            load_job.result()
 
     def _read_file(
         self,
@@ -793,7 +724,6 @@ class Backend(SQLBackend, CanCreateDatabase, CanCreateSchema):
         **kwargs: Any,
     ) -> pa.Table:
         self._import_pyarrow()
-        self._register_in_memory_tables(expr)
         sql = self.compile(expr, limit=limit, params=params, **kwargs)
         self._log(sql)
         query = self.raw_sql(sql, params=params, **kwargs)
@@ -816,7 +746,6 @@ class Backend(SQLBackend, CanCreateDatabase, CanCreateSchema):
 
         schema = expr.as_table().schema()
 
-        self._register_in_memory_tables(expr)
         sql = self.compile(expr, limit=limit, params=params, **kwargs)
         self._log(sql)
         query = self.raw_sql(sql, params=params, page_size=chunk_size, **kwargs)
@@ -1009,9 +938,6 @@ class Backend(SQLBackend, CanCreateDatabase, CanCreateSchema):
         if obj is not None and not isinstance(obj, ir.Table):
             obj = ibis.memtable(obj, schema=schema)
 
-        if obj is not None:
-            self._register_in_memory_tables(obj)
-
         if temp:
             dataset = self._session_dataset.dataset_id
             if database is not None:
@@ -1107,7 +1033,6 @@ class Backend(SQLBackend, CanCreateDatabase, CanCreateSchema):
             expression=self.compile(obj),
             replace=overwrite,
         )
-        self._register_in_memory_tables(obj)
         self.raw_sql(stmt.sql(self.name))
         return self.table(name, database=(catalog, database))
 

@@ -13,7 +13,7 @@
 # limitations under the License.
 import functools
 import typing
-from typing import cast, Optional
+from typing import cast, List, Optional
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
@@ -29,6 +29,17 @@ import bigframes.core.window_spec as window_spec
 import bigframes.operations.aggregations as agg_ops
 
 scalar_compiler = scalar_compilers.scalar_op_compiler
+
+
+# TODO(swast): We can remove this if ibis adds general approx_quantile
+# See: https://github.com/ibis-project/ibis/issues/9541
+@ibis.udf.agg.builtin
+def approx_quantiles(expression: float, number) -> List[float]:
+    """APPROX_QUANTILES
+
+    https://cloud.google.com/bigquery/docs/reference/standard-sql/approximate_aggregate_functions#approx_quantiles
+    """
+    return []  # pragma: NO COVER
 
 
 def compile_aggregate(
@@ -176,15 +187,12 @@ def _(
     column: ibis_types.NumericColumn,
     window=None,
 ) -> ibis_types.NumericValue:
-    # PERCENTILE_CONT has very few allowed windows. For example, "window
-    # framing clause is not allowed for analytic function percentile_cont".
+    # APPROX_QUANTILES has very few allowed windows.
     if window is not None:
         raise NotImplementedError(
             f"Approx Quartiles with windowing is not supported. {constants.FEEDBACK_LINK}"
         )
-    value = vendored_ibis_ops.ApproximateMultiQuantile(
-        column, num_bins=4  # type: ignore
-    ).to_expr()[op.quartile]
+    value = approx_quantiles(column, 4)[op.quartile]  # type: ignore
     return cast(ibis_types.NumericValue, value)
 
 
@@ -513,11 +521,15 @@ def _(
     column: ibis_types.Column,
     window=None,
 ) -> ibis_types.BooleanValue:
-    # BQ will return null for empty column, result would be true in pandas.
-    result = _is_true(column).all()
+    # BQ will return null for empty column, result would be false in pandas.
+    result = _apply_window_if_present(_is_true(column).all(), window)
+    literal = ibis_types.literal(True)
+
     return cast(
         ibis_types.BooleanScalar,
-        _apply_window_if_present(result, window).fillna(ibis_types.literal(True)),
+        result.fill_null(literal)
+        if hasattr(result, "fill_null")
+        else result.fillna(literal),
     )
 
 
@@ -528,10 +540,14 @@ def _(
     window=None,
 ) -> ibis_types.BooleanValue:
     # BQ will return null for empty column, result would be false in pandas.
-    result = _is_true(column).any()
+    result = _apply_window_if_present(_is_true(column).any(), window)
+    literal = ibis_types.literal(False)
+
     return cast(
         ibis_types.BooleanScalar,
-        _apply_window_if_present(result, window).fillna(ibis_types.literal(False)),
+        result.fill_null(literal)
+        if hasattr(result, "fill_null")
+        else result.fillna(literal),
     )
 
 

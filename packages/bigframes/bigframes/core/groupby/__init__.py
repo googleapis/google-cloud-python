@@ -255,19 +255,17 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
 
     @validations.requires_ordering()
     def shift(self, periods=1) -> series.Series:
-        window = window_specs.rows(
+        # Window framing clause is not allowed for analytic function lag.
+        window = window_specs.unbound(
             grouping_keys=tuple(self._by_col_ids),
-            preceding=periods if periods > 0 else None,
-            following=-periods if periods < 0 else None,
         )
         return self._apply_window_op(agg_ops.ShiftOp(periods), window=window)
 
     @validations.requires_ordering()
     def diff(self, periods=1) -> series.Series:
+        # Window framing clause is not allowed for analytic function lag.
         window = window_specs.rows(
             grouping_keys=tuple(self._by_col_ids),
-            preceding=periods if periods > 0 else None,
-            following=-periods if periods < 0 else None,
         )
         return self._apply_window_op(agg_ops.DiffOp(periods), window=window)
 
@@ -685,10 +683,9 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
     @validations.requires_ordering()
     def shift(self, periods=1) -> series.Series:
         """Shift index by desired number of periods."""
+        # Window framing clause is not allowed for analytic function lag.
         window = window_specs.rows(
             grouping_keys=tuple(self._by_col_ids),
-            preceding=periods if periods > 0 else None,
-            following=-periods if periods < 0 else None,
         )
         return self._apply_window_op(agg_ops.ShiftOp(periods), window=window)
 
@@ -696,8 +693,6 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
     def diff(self, periods=1) -> series.Series:
         window = window_specs.rows(
             grouping_keys=tuple(self._by_col_ids),
-            preceding=periods if periods > 0 else None,
-            following=-periods if periods < 0 else None,
         )
         return self._apply_window_op(agg_ops.DiffOp(periods), window=window)
 

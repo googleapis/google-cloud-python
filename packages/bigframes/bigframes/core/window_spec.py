@@ -70,7 +70,6 @@ def rows(
     Returns:
         WindowSpec
     """
-    assert (preceding is not None) or (following is not None)
     bounds = RowsWindowBounds(preceding=preceding, following=following)
     return WindowSpec(
         grouping_keys=grouping_keys,

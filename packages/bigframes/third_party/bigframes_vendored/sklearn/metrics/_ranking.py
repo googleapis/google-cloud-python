@@ -37,7 +37,7 @@ def auc(x, y) -> float:
         >>> y = bpd.DataFrame([2, 3, 4, 5])
         >>> auc = bigframes.ml.metrics.auc(x, y)
         >>> auc
-        3.5
+        np.float64(3.5)
 
         The input can be Series:
 
@@ -47,7 +47,7 @@ def auc(x, y) -> float:
         ... )
         >>> auc = bigframes.ml.metrics.auc(df["x"], df["y"])
         >>> auc
-        3.5
+        np.float64(3.5)
 
 
     Args:
@@ -77,7 +77,7 @@ def roc_auc_score(y_true, y_score) -> float:
         >>> y_score = bpd.DataFrame([0.1, 0.4, 0.35, 0.8, 0.65, 0.9, 0.5, 0.3, 0.6, 0.45])
         >>> roc_auc_score = bigframes.ml.metrics.roc_auc_score(y_true, y_score)
         >>> roc_auc_score
-        0.625
+        np.float64(0.625)
 
     The input can be Series:
 
@@ -87,7 +87,7 @@ def roc_auc_score(y_true, y_score) -> float:
         ... )
         >>> roc_auc_score = bigframes.ml.metrics.roc_auc_score(df["y_true"], df["y_score"])
         >>> roc_auc_score
-        0.625
+        np.float64(0.625)
 
     Args:
         y_true (Series or DataFrame of shape (n_samples,)):

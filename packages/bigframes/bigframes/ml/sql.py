@@ -123,7 +123,12 @@ class BaseSqlGenerator:
         name: str,
     ) -> str:
         """Encode ML.BUCKETIZE for BQML"""
-        return f"""ML.BUCKETIZE({numeric_expr_sql}, {array_split_points}, FALSE) AS {name}"""
+        # Use Python value rather than Numpy value to serialization.
+        points = [
+            point.item() if hasattr(point, "item") else point
+            for point in array_split_points
+        ]
+        return f"""ML.BUCKETIZE({numeric_expr_sql}, {points}, FALSE) AS {name}"""
 
     def ml_quantile_bucketize(
         self,

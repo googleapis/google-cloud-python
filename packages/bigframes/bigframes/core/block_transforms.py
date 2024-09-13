@@ -387,10 +387,9 @@ def value_counts(
 
 def pct_change(block: blocks.Block, periods: int = 1) -> blocks.Block:
     column_labels = block.column_labels
-    window_spec = windows.rows(
-        preceding=periods if periods > 0 else None,
-        following=-periods if periods < 0 else None,
-    )
+
+    # Window framing clause is not allowed for analytic function lag.
+    window_spec = windows.unbound()
 
     original_columns = block.value_columns
     block, shift_columns = block.multi_apply_window_op(

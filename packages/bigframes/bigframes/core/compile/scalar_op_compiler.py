@@ -842,7 +842,7 @@ def isin_op_impl(x: ibis_types.Value, op: ops.IsInOp):
 @scalar_op_compiler.register_unary_op(ops.ToDatetimeOp, pass_op=True)
 def to_datetime_op_impl(x: ibis_types.Value, op: ops.ToDatetimeOp):
     if x.type() == ibis_dtypes.str:
-        return vendored_ibis_ops.SafeCastToDatetime(x).to_expr()
+        return x.try_cast(ibis_dtypes.Timestamp(None))
     else:
         # Numerical inputs.
         if op.format:
@@ -995,8 +995,14 @@ def eq_nulls_match_op(
     y: ibis_types.Value,
 ):
     """Variant of eq_op where nulls match each other. Only use where dtypes are known to be same."""
-    left = x.cast(ibis_dtypes.str).fillna(ibis_types.literal("$NULL_SENTINEL$"))
-    right = y.cast(ibis_dtypes.str).fillna(ibis_types.literal("$NULL_SENTINEL$"))
+    literal = ibis_types.literal("$NULL_SENTINEL$")
+    if hasattr(x, "fill_null"):
+        left = x.cast(ibis_dtypes.str).fill_null(literal)
+        right = y.cast(ibis_dtypes.str).fill_null(literal)
+    else:
+        left = x.cast(ibis_dtypes.str).fillna(literal)
+        right = y.cast(ibis_dtypes.str).fillna(literal)
+
     return left == right
 
 
@@ -1379,7 +1385,10 @@ def fillna_op(
     x: ibis_types.Value,
     y: ibis_types.Value,
 ):
-    return x.fillna(typing.cast(ibis_types.Scalar, y))
+    if hasattr(x, "fill_null"):
+        return x.fill_null(typing.cast(ibis_types.Scalar, y))
+    else:
+        return x.fillna(typing.cast(ibis_types.Scalar, y))
 
 
 @scalar_op_compiler.register_binary_op(ops.round_op)
