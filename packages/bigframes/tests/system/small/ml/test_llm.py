@@ -439,6 +439,7 @@ def test_claude3_text_generator_create_load(
     assert reloaded_model.model_name == model_name
 
 
+@pytest.mark.skip("b/366290533 too many requests are exhausting bqml capacity")
 @pytest.mark.parametrize(
     "model_name",
     ("claude-3-sonnet", "claude-3-haiku", "claude-3-5-sonnet", "claude-3-opus"),
@@ -458,6 +459,7 @@ def test_claude3_text_generator_predict_default_params_success(
     )
 
 
+@pytest.mark.skip("b/366290533 too many requests are exhausting bqml capacity")
 @pytest.mark.parametrize(
     "model_name",
     ("claude-3-sonnet", "claude-3-haiku", "claude-3-5-sonnet", "claude-3-opus"),
