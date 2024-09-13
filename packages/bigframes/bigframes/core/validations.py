@@ -66,7 +66,7 @@ def enforce_ordered(
     object: HasSession, opname: str, suggestion: Optional[str] = None
 ) -> None:
     session = object._session
-    if session._strictly_ordered or not object._block.expr.node.order_ambiguous:
+    if session._strictly_ordered or not object._block.expr.order_ambiguous:
         # No ambiguity for how to calculate ordering, so no error or warning
         return None
     if not session._allows_ambiguity:

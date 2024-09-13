@@ -36,6 +36,7 @@ from bigframes.core.ordering import OrderingExpression
 import bigframes.core.ordering as orderings
 import bigframes.core.rewrite
 import bigframes.core.schema as schemata
+import bigframes.core.tree_properties
 import bigframes.core.utils
 from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
@@ -123,6 +124,20 @@ class ArrayValue:
     @functools.cached_property
     def _compiled_schema(self) -> schemata.ArraySchema:
         return bigframes.core.compile.test_only_ibis_inferred_schema(self.node)
+
+    @property
+    def explicitly_ordered(self) -> bool:
+        # see BigFrameNode.explicitly_ordered
+        return self.node.explicitly_ordered
+
+    @property
+    def order_ambiguous(self) -> bool:
+        # see BigFrameNode.order_ambiguous
+        return self.node.order_ambiguous
+
+    @property
+    def supports_fast_peek(self) -> bool:
+        return bigframes.core.tree_properties.can_fast_peek(self.node)
 
     def as_cached(
         self: ArrayValue,

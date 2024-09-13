@@ -49,7 +49,6 @@ import bigframes.core.join_def as join_defs
 import bigframes.core.ordering as ordering
 import bigframes.core.schema as bf_schema
 import bigframes.core.sql as sql
-import bigframes.core.tree_properties as tree_properties
 import bigframes.core.utils as utils
 import bigframes.core.window_spec as window_specs
 import bigframes.dtypes
@@ -205,7 +204,7 @@ class Block:
         row_count_expr = self.expr.row_count()
 
         # Support in-memory engines for hermetic unit tests.
-        if self.expr.node.session is None:
+        if self.expr.session is None:
             try:
                 row_count = row_count_expr._try_evaluate_local().squeeze()
                 return (row_count, len(self.value_columns))
@@ -283,7 +282,7 @@ class Block:
 
     @property
     def explicitly_ordered(self) -> bool:
-        return self.expr.node.explicitly_ordered
+        return self.expr.explicitly_ordered
 
     def cols_matching_label(self, partial_label: Label) -> typing.Sequence[str]:
         """
@@ -466,7 +465,7 @@ class Block:
     ):
         actual_schema = tuple(bq_result_schema)
         ibis_schema = self.expr._compiled_schema
-        internal_schema = self.expr.node.schema
+        internal_schema = self.expr.schema
         if not bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable:
             return
         if internal_schema.to_bigquery() != actual_schema:
@@ -561,7 +560,7 @@ class Block:
     def try_peek(
         self, n: int = 20, force: bool = False
     ) -> typing.Optional[pd.DataFrame]:
-        if force or tree_properties.can_fast_peek(self.expr.node):
+        if force or self.expr.supports_fast_peek:
             iterator, _ = self.session._peek(self.expr, n)
             df = self._to_dataframe(iterator)
             self._copy_index_to_pandas(df)
@@ -2365,10 +2364,7 @@ class Block:
         if (not force) and self.session._executor._is_trivially_executable(self.expr):
             return
         elif session_aware:
-            bfet_roots = [obj._block._expr.node for obj in self.session.objects]
-            self.session._executor._cache_with_session_awareness(
-                self.expr, session_forest=bfet_roots
-            )
+            self.session._executor._cache_with_session_awareness(self.expr)
         else:
             self.session._executor._cache_with_cluster_cols(
                 self.expr, cluster_cols=self.index_columns
