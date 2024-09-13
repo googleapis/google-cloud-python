@@ -8201,11 +8201,42 @@ def test_workflow_template_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_node_group_path():
+def test_crypto_key_path():
     project = "squid"
-    region = "clam"
-    cluster = "whelk"
-    node_group = "octopus"
+    location = "clam"
+    key_ring = "whelk"
+    crypto_key = "octopus"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = WorkflowTemplateServiceClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "key_ring": "cuttlefish",
+        "crypto_key": "mussel",
+    }
+    path = WorkflowTemplateServiceClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = WorkflowTemplateServiceClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_node_group_path():
+    project = "winkle"
+    region = "nautilus"
+    cluster = "scallop"
+    node_group = "abalone"
     expected = "projects/{project}/regions/{region}/clusters/{cluster}/nodeGroups/{node_group}".format(
         project=project,
         region=region,
@@ -8220,10 +8251,10 @@ def test_node_group_path():
 
 def test_parse_node_group_path():
     expected = {
-        "project": "oyster",
-        "region": "nudibranch",
-        "cluster": "cuttlefish",
-        "node_group": "mussel",
+        "project": "squid",
+        "region": "clam",
+        "cluster": "whelk",
+        "node_group": "octopus",
     }
     path = WorkflowTemplateServiceClient.node_group_path(**expected)
 
@@ -8233,9 +8264,9 @@ def test_parse_node_group_path():
 
 
 def test_service_path():
-    project = "winkle"
-    location = "nautilus"
-    service = "scallop"
+    project = "oyster"
+    location = "nudibranch"
+    service = "cuttlefish"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project,
         location=location,
@@ -8247,9 +8278,9 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "service": "clam",
+        "project": "mussel",
+        "location": "winkle",
+        "service": "nautilus",
     }
     path = WorkflowTemplateServiceClient.service_path(**expected)
 
@@ -8259,9 +8290,9 @@ def test_parse_service_path():
 
 
 def test_workflow_template_path():
-    project = "whelk"
-    region = "octopus"
-    workflow_template = "oyster"
+    project = "scallop"
+    region = "abalone"
+    workflow_template = "squid"
     expected = "projects/{project}/regions/{region}/workflowTemplates/{workflow_template}".format(
         project=project,
         region=region,
@@ -8275,9 +8306,9 @@ def test_workflow_template_path():
 
 def test_parse_workflow_template_path():
     expected = {
-        "project": "nudibranch",
-        "region": "cuttlefish",
-        "workflow_template": "mussel",
+        "project": "clam",
+        "region": "whelk",
+        "workflow_template": "octopus",
     }
     path = WorkflowTemplateServiceClient.workflow_template_path(**expected)
 
@@ -8287,7 +8318,7 @@ def test_parse_workflow_template_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -8297,7 +8328,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "nudibranch",
     }
     path = WorkflowTemplateServiceClient.common_billing_account_path(**expected)
 
@@ -8307,7 +8338,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -8317,7 +8348,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "mussel",
     }
     path = WorkflowTemplateServiceClient.common_folder_path(**expected)
 
@@ -8327,7 +8358,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -8337,7 +8368,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nautilus",
     }
     path = WorkflowTemplateServiceClient.common_organization_path(**expected)
 
@@ -8347,7 +8378,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -8357,7 +8388,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "abalone",
     }
     path = WorkflowTemplateServiceClient.common_project_path(**expected)
 
@@ -8367,8 +8398,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -8379,8 +8410,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = WorkflowTemplateServiceClient.common_location_path(**expected)
 
