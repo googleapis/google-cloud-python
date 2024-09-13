@@ -414,12 +414,10 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
                 raise NotImplementedError(
                     f"Only string aggregate names supported. {constants.FEEDBACK_LINK}"
                 )
-            if not hasattr(v, "column") or not hasattr(v, "aggfunc"):
-                import bigframes.pandas as bpd
-
-                raise TypeError(f"kwargs values must be {bpd.NamedAgg.__qualname__}")
-            col_id = self._resolve_label(v.column)
-            aggregations.append((col_id, agg_ops.lookup_agg_func(v.aggfunc)))
+            if not isinstance(v, tuple) or (len(v) != 2):
+                raise TypeError("kwargs values must be 2-tuples of column, aggfunc")
+            col_id = self._resolve_label(v[0])
+            aggregations.append((col_id, agg_ops.lookup_agg_func(v[1])))
             column_labels.append(k)
         agg_block, _ = self._block.aggregate(
             by_column_ids=self._by_col_ids,
