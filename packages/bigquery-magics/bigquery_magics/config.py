@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from dataclasses import dataclass
+
 import google.api_core.client_options as client_options
 import google.cloud.bigquery as bigquery
 import pydata_google_auth
@@ -23,6 +25,7 @@ def _get_default_credentials_with_project():
     return pydata_google_auth.default(scopes=_SCOPES, use_local_webserver=False)
 
 
+@dataclass
 class Context(object):
     """Storage for objects to be used throughout an IPython notebook session.
 
@@ -30,14 +33,75 @@ class Context(object):
     and can be found at ``bigquery_magics.context``.
     """
 
-    def __init__(self):
-        self._credentials = None
-        self._project = None
-        self._connection = None
-        self._default_query_job_config = bigquery.QueryJobConfig()
-        self._bigquery_client_options = client_options.ClientOptions()
-        self._bqstorage_client_options = client_options.ClientOptions()
-        self._progress_bar_type = "tqdm_notebook"
+    _credentials = None
+    _project = None
+    _connection = None
+
+    default_query_job_config = bigquery.QueryJobConfig()
+    """google.cloud.bigquery.job.QueryJobConfig: Default job
+        configuration for queries.
+
+        The context's :class:`~google.cloud.bigquery.job.QueryJobConfig` is
+        used for queries. Some properties can be overridden with arguments to
+        the magics.
+
+        Example:
+            Manually setting the default value for ``maximum_bytes_billed``
+            to 100 MB:
+
+            >>> from google.cloud.bigquery import magics
+            >>> bigquery_magics.context.default_query_job_config.maximum_bytes_billed = 100000000
+    """
+
+    bigquery_client_options = client_options.ClientOptions()
+    """google.api_core.client_options.ClientOptions: client options to be
+        used through IPython magics.
+
+        Note::
+            The client options do not need to be explicitly defined if no
+            special network connections are required. Normally you would be
+            using the https://bigquery.googleapis.com/ end point.
+
+        Example:
+            Manually setting the endpoint:
+
+            >>> from google.cloud.bigquery import magics
+            >>> client_options = {}
+            >>> client_options['api_endpoint'] = "https://some.special.url"
+            >>> bigquery_magics.context.bigquery_client_options = client_options
+    """
+
+    bqstorage_client_options = client_options.ClientOptions()
+    """google.api_core.client_options.ClientOptions: client options to be
+        used through IPython magics for the storage client.
+
+        Note::
+            The client options do not need to be explicitly defined if no
+            special network connections are required. Normally you would be
+            using the https://bigquerystorage.googleapis.com/ end point.
+
+        Example:
+            Manually setting the endpoint:
+
+            >>> from google.cloud.bigquery import magics
+            >>> client_options = {}
+            >>> client_options['api_endpoint'] = "https://some.special.url"
+            >>> bigquery_magics.context.bqstorage_client_options = client_options
+    """
+
+    progress_bar_type = "tqdm_notebook"
+    """str: Default progress bar type to use to display progress bar while
+        executing queries through IPython magics.
+
+        Note::
+            Install the ``tqdm`` package to use this feature.
+
+        Example:
+            Manually setting the progress_bar_type:
+
+            >>> from google.cloud.bigquery import magics
+            >>> bigquery_magics.context.progress_bar_type = "tqdm_notebook"
+    """
 
     @property
     def credentials(self):
@@ -98,96 +162,6 @@ class Context(object):
     @project.setter
     def project(self, value):
         self._project = value
-
-    @property
-    def bigquery_client_options(self):
-        """google.api_core.client_options.ClientOptions: client options to be
-        used through IPython magics.
-
-        Note::
-            The client options do not need to be explicitly defined if no
-            special network connections are required. Normally you would be
-            using the https://bigquery.googleapis.com/ end point.
-
-        Example:
-            Manually setting the endpoint:
-
-            >>> from google.cloud.bigquery import magics
-            >>> client_options = {}
-            >>> client_options['api_endpoint'] = "https://some.special.url"
-            >>> bigquery_magics.context.bigquery_client_options = client_options
-        """
-        return self._bigquery_client_options
-
-    @bigquery_client_options.setter
-    def bigquery_client_options(self, value):
-        self._bigquery_client_options = value
-
-    @property
-    def bqstorage_client_options(self):
-        """google.api_core.client_options.ClientOptions: client options to be
-        used through IPython magics for the storage client.
-
-        Note::
-            The client options do not need to be explicitly defined if no
-            special network connections are required. Normally you would be
-            using the https://bigquerystorage.googleapis.com/ end point.
-
-        Example:
-            Manually setting the endpoint:
-
-            >>> from google.cloud.bigquery import magics
-            >>> client_options = {}
-            >>> client_options['api_endpoint'] = "https://some.special.url"
-            >>> bigquery_magics.context.bqstorage_client_options = client_options
-        """
-        return self._bqstorage_client_options
-
-    @bqstorage_client_options.setter
-    def bqstorage_client_options(self, value):
-        self._bqstorage_client_options = value
-
-    @property
-    def default_query_job_config(self):
-        """google.cloud.bigquery.job.QueryJobConfig: Default job
-        configuration for queries.
-
-        The context's :class:`~google.cloud.bigquery.job.QueryJobConfig` is
-        used for queries. Some properties can be overridden with arguments to
-        the magics.
-
-        Example:
-            Manually setting the default value for ``maximum_bytes_billed``
-            to 100 MB:
-
-            >>> from google.cloud.bigquery import magics
-            >>> bigquery_magics.context.default_query_job_config.maximum_bytes_billed = 100000000
-        """
-        return self._default_query_job_config
-
-    @default_query_job_config.setter
-    def default_query_job_config(self, value):
-        self._default_query_job_config = value
-
-    @property
-    def progress_bar_type(self):
-        """str: Default progress bar type to use to display progress bar while
-        executing queries through IPython magics.
-
-        Note::
-            Install the ``tqdm`` package to use this feature.
-
-        Example:
-            Manually setting the progress_bar_type:
-
-            >>> from google.cloud.bigquery import magics
-            >>> bigquery_magics.context.progress_bar_type = "tqdm_notebook"
-        """
-        return self._progress_bar_type
-
-    @progress_bar_type.setter
-    def progress_bar_type(self, value):
-        self._progress_bar_type = value
 
 
 context = Context()

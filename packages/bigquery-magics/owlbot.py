@@ -57,6 +57,7 @@ s.move(
         # creating clients, not the end user.
         "docs/multiprocessing.rst",
         "README.rst",
+        ".github/workflows/unittest.yml",
     ],
 )
 
