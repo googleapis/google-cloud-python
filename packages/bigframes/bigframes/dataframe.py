@@ -1913,6 +1913,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _reindex_columns(self, columns):
         block = self._block
         new_column_index, indexer = self.columns.reindex(columns)
+
+        if indexer is None:
+            # The new index is the same as the old one. Do nothing.
+            return self
+
         result_cols = []
         for label, index in zip(columns, indexer):
             if index >= 0:
