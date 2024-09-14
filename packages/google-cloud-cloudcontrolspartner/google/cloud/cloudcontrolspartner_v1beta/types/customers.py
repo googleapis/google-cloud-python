@@ -45,13 +45,13 @@ class Customer(proto.Message):
             Identifier. Format:
             ``organizations/{organization}/locations/{location}/customers/{customer}``
         display_name (str):
-            The customer organization's display name.
-            E.g. "google.com".
+            Required. Display name for the customer
         customer_onboarding_state (google.cloud.cloudcontrolspartner_v1beta.types.CustomerOnboardingState):
-            Container for customer onboarding steps
+            Output only. Container for customer
+            onboarding steps
         is_onboarded (bool):
-            Indicates whether a customer is fully
-            onboarded
+            Output only. Indicates whether a customer is
+            fully onboarded
     """
 
     name: str = proto.Field(
