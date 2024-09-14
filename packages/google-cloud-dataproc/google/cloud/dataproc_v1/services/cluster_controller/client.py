@@ -216,6 +216,30 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def crypto_key_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+        )
+
+    @staticmethod
+    def parse_crypto_key_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def node_group_path(
         project: str,
         region: str,
@@ -1686,10 +1710,11 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 label key. **value** can be ``*`` to match all values.
                 ``status.state`` can be one of the following:
                 ``ACTIVE``, ``INACTIVE``, ``CREATING``, ``RUNNING``,
-                ``ERROR``, ``DELETING``, or ``UPDATING``. ``ACTIVE``
-                contains the ``CREATING``, ``UPDATING``, and ``RUNNING``
-                states. ``INACTIVE`` contains the ``DELETING`` and
-                ``ERROR`` states. ``clusterName`` is the name of the
+                ``ERROR``, ``DELETING``, ``UPDATING``, ``STOPPING``, or
+                ``STOPPED``. ``ACTIVE`` contains the ``CREATING``,
+                ``UPDATING``, and ``RUNNING`` states. ``INACTIVE``
+                contains the ``DELETING``, ``ERROR``, ``STOPPING``, and
+                ``STOPPED`` states. ``clusterName`` is the name of the
                 cluster provided at creation time. Only the logical
                 ``AND`` operator is supported; space-separated items are
                 treated as having an implicit ``AND`` operator.
