@@ -57,12 +57,16 @@ class PartnerPermissions(proto.Message):
             ASSURED_WORKLOADS_EKM_CONNECTION_STATUS (4):
                 Permission for External Key Manager
                 connection status
+            ACCESS_TRANSPARENCY_LOGS_SUPPORT_CASE_VIEWER (5):
+                Permission for support case details for
+                Access Transparency log entries
         """
         PERMISSION_UNSPECIFIED = 0
         ACCESS_TRANSPARENCY_AND_EMERGENCY_ACCESS_LOGS = 1
         ASSURED_WORKLOADS_MONITORING = 2
         ACCESS_APPROVAL_REQUESTS = 3
         ASSURED_WORKLOADS_EKM_CONNECTION_STATUS = 4
+        ACCESS_TRANSPARENCY_LOGS_SUPPORT_CASE_VIEWER = 5
 
     name: str = proto.Field(
         proto.STRING,
