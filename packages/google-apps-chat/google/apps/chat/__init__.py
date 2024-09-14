@@ -111,6 +111,8 @@ from google.apps.chat_v1.types.space import (
     GetSpaceRequest,
     ListSpacesRequest,
     ListSpacesResponse,
+    SearchSpacesRequest,
+    SearchSpacesResponse,
     Space,
     UpdateSpaceRequest,
 )
@@ -212,6 +214,8 @@ __all__ = (
     "GetSpaceRequest",
     "ListSpacesRequest",
     "ListSpacesResponse",
+    "SearchSpacesRequest",
+    "SearchSpacesResponse",
     "Space",
     "UpdateSpaceRequest",
     "GetSpaceEventRequest",

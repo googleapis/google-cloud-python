@@ -102,6 +102,8 @@ from .space import (
     GetSpaceRequest,
     ListSpacesRequest,
     ListSpacesResponse,
+    SearchSpacesRequest,
+    SearchSpacesResponse,
     Space,
     UpdateSpaceRequest,
 )
@@ -198,6 +200,8 @@ __all__ = (
     "GetSpaceRequest",
     "ListSpacesRequest",
     "ListSpacesResponse",
+    "SearchSpacesRequest",
+    "SearchSpacesResponse",
     "Space",
     "UpdateSpaceRequest",
     "GetSpaceEventRequest",
