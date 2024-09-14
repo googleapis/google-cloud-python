@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "EnvironmentsClient",
           "rpcs": {
+            "CheckUpgrade": {
+              "methods": [
+                "check_upgrade"
+              ]
+            },
             "CreateEnvironment": {
               "methods": [
                 "create_environment"
@@ -130,6 +135,11 @@
         "grpc-async": {
           "libraryClient": "EnvironmentsAsyncClient",
           "rpcs": {
+            "CheckUpgrade": {
+              "methods": [
+                "check_upgrade"
+              ]
+            },
             "CreateEnvironment": {
               "methods": [
                 "create_environment"
@@ -250,6 +260,11 @@
         "rest": {
           "libraryClient": "EnvironmentsClient",
           "rpcs": {
+            "CheckUpgrade": {
+              "methods": [
+                "check_upgrade"
+              ]
+            },
             "CreateEnvironment": {
               "methods": [
                 "create_environment"

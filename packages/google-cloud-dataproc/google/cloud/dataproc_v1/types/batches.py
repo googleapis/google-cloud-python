@@ -183,6 +183,11 @@ class ListBatchesResponse(proto.Message):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
+        unreachable (MutableSequence[str]):
+            Output only. List of Batches that could not
+            be included in the response. Attempting to get
+            one of these resources may indicate why it was
+            not included in the list response.
     """
 
     @property
@@ -197,6 +202,10 @@ class ListBatchesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

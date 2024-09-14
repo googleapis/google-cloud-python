@@ -75,6 +75,10 @@ class WorkflowTemplateServiceAsyncClient:
     )
     _DEFAULT_UNIVERSE = WorkflowTemplateServiceClient._DEFAULT_UNIVERSE
 
+    crypto_key_path = staticmethod(WorkflowTemplateServiceClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(
+        WorkflowTemplateServiceClient.parse_crypto_key_path
+    )
     node_group_path = staticmethod(WorkflowTemplateServiceClient.node_group_path)
     parse_node_group_path = staticmethod(
         WorkflowTemplateServiceClient.parse_node_group_path
