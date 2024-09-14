@@ -2957,6 +2957,8 @@ class Environment(proto.Message):
                <= 128 bytes in size.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
         storage_config (google.cloud.orchestration.airflow.service_v1beta1.types.StorageConfig):
             Optional. Storage configuration for this
             environment.
@@ -3028,6 +3030,10 @@ class Environment(proto.Message):
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=10,
     )
     storage_config: "StorageConfig" = proto.Field(
         proto.MESSAGE,

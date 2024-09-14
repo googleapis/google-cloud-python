@@ -1534,6 +1534,7 @@ def test_get_environment(request_type, transport: str = "grpc"):
             uuid="uuid_value",
             state=environments.Environment.State.CREATING,
             satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_environment(request)
 
@@ -1549,6 +1550,7 @@ def test_get_environment(request_type, transport: str = "grpc"):
     assert response.uuid == "uuid_value"
     assert response.state == environments.Environment.State.CREATING
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_environment_empty_call():
@@ -1651,6 +1653,7 @@ async def test_get_environment_empty_call_async():
                 uuid="uuid_value",
                 state=environments.Environment.State.CREATING,
                 satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_environment()
@@ -1723,6 +1726,7 @@ async def test_get_environment_async(
                 uuid="uuid_value",
                 state=environments.Environment.State.CREATING,
                 satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_environment(request)
@@ -1739,6 +1743,7 @@ async def test_get_environment_async(
     assert response.uuid == "uuid_value"
     assert response.state == environments.Environment.State.CREATING
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -11008,6 +11013,7 @@ def test_create_environment_rest(request_type):
         "update_time": {},
         "labels": {},
         "satisfies_pzs": True,
+        "satisfies_pzi": True,
         "storage_config": {"bucket": "bucket_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -11312,6 +11318,7 @@ def test_get_environment_rest(request_type):
             uuid="uuid_value",
             state=environments.Environment.State.CREATING,
             satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -11331,6 +11338,7 @@ def test_get_environment_rest(request_type):
     assert response.uuid == "uuid_value"
     assert response.state == environments.Environment.State.CREATING
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_environment_rest_use_cached_wrapped_rpc():
@@ -11938,6 +11946,7 @@ def test_update_environment_rest(request_type):
         "update_time": {},
         "labels": {},
         "satisfies_pzs": True,
+        "satisfies_pzi": True,
         "storage_config": {"bucket": "bucket_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

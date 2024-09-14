@@ -31,6 +31,8 @@ from google.cloud.orchestration.airflow.service_v1.services.image_versions.clien
     ImageVersionsClient,
 )
 from google.cloud.orchestration.airflow.service_v1.types.environments import (
+    AirflowMetadataRetentionPolicyConfig,
+    CheckUpgradeRequest,
     CheckUpgradeResponse,
     CloudDataLineageIntegration,
     CreateEnvironmentRequest,
@@ -104,6 +106,8 @@ __all__ = (
     "EnvironmentsAsyncClient",
     "ImageVersionsClient",
     "ImageVersionsAsyncClient",
+    "AirflowMetadataRetentionPolicyConfig",
+    "CheckUpgradeRequest",
     "CheckUpgradeResponse",
     "CloudDataLineageIntegration",
     "CreateEnvironmentRequest",
