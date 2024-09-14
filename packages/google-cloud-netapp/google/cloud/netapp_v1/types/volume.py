@@ -466,6 +466,9 @@ class Volume(proto.Message):
         zone (str):
             Output only. Specifies the active zone for
             regional volume.
+        cold_tier_size_gib (int):
+            Output only. Size of the volume cold tier
+            data in GiB.
     """
 
     class State(proto.Enum):
@@ -658,6 +661,10 @@ class Volume(proto.Message):
     zone: str = proto.Field(
         proto.STRING,
         number=37,
+    )
+    cold_tier_size_gib: int = proto.Field(
+        proto.INT64,
+        number=39,
     )
 
 

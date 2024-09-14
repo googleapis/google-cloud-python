@@ -189,6 +189,11 @@ class NetAppTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.switch_active_replica_zone: gapic_v1.method.wrap_method(
+                self.switch_active_replica_zone,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_volumes: gapic_v1.method.wrap_method(
                 self.list_volumes,
                 default_retry=retries.Retry(
@@ -623,6 +628,15 @@ class NetAppTransport(abc.ABC):
         self,
     ) -> Callable[
         [storage_pool.DeleteStoragePoolRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def switch_active_replica_zone(
+        self,
+    ) -> Callable[
+        [storage_pool.SwitchActiveReplicaZoneRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
