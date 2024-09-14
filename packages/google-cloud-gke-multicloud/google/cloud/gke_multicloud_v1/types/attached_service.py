@@ -211,7 +211,7 @@ class ImportAttachedClusterRequest(proto.Message):
             Required. The Kubernetes distribution of the underlying
             attached cluster.
 
-            Supported values: ["eks", "aks"].
+            Supported values: ["eks", "aks", "generic"].
         proxy_config (google.cloud.gke_multicloud_v1.types.AttachedProxyConfig):
             Optional. Proxy configuration for outbound
             HTTP(S) traffic.
@@ -272,6 +272,7 @@ class UpdateAttachedClusterRequest(proto.Message):
             -  ``platform_version``.
             -  ``proxy_config.kubernetes_secret.name``.
             -  ``proxy_config.kubernetes_secret.namespace``.
+            -  ``security_posture_config.vulnerability_mode``
     """
 
     attached_cluster: attached_resources.AttachedCluster = proto.Field(
