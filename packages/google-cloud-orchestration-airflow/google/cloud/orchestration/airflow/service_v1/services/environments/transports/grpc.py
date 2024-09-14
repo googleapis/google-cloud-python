@@ -503,6 +503,35 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         return self._stubs["list_workloads"]
 
     @property
+    def check_upgrade(
+        self,
+    ) -> Callable[[environments.CheckUpgradeRequest], operations_pb2.Operation]:
+        r"""Return a callable for the check upgrade method over gRPC.
+
+        Check if an upgrade operation on the environment will
+        succeed.
+        In case of problems detailed info can be found in the
+        returned Operation.
+
+        Returns:
+            Callable[[~.CheckUpgradeRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "check_upgrade" not in self._stubs:
+            self._stubs["check_upgrade"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1.Environments/CheckUpgrade",
+                request_serializer=environments.CheckUpgradeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["check_upgrade"]
+
+    @property
     def create_user_workloads_secret(
         self,
     ) -> Callable[
