@@ -630,6 +630,36 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["list_spaces"]
 
     @property
+    def search_spaces(
+        self,
+    ) -> Callable[[space.SearchSpacesRequest], Awaitable[space.SearchSpacesResponse]]:
+        r"""Return a callable for the search spaces method over gRPC.
+
+        Returns a list of spaces in a Google Workspace organization
+        based on an administrator's search. Requires `user
+        authentication with administrator
+        privileges <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges>`__.
+        In the request, set ``use_admin_access`` to ``true``.
+
+        Returns:
+            Callable[[~.SearchSpacesRequest],
+                    Awaitable[~.SearchSpacesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_spaces" not in self._stubs:
+            self._stubs["search_spaces"] = self.grpc_channel.unary_unary(
+                "/google.chat.v1.ChatService/SearchSpaces",
+                request_serializer=space.SearchSpacesRequest.serialize,
+                response_deserializer=space.SearchSpacesResponse.deserialize,
+            )
+        return self._stubs["search_spaces"]
+
+    @property
     def get_space(self) -> Callable[[space.GetSpaceRequest], Awaitable[space.Space]]:
         r"""Return a callable for the get space method over gRPC.
 
@@ -1473,6 +1503,20 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
             ),
             self.list_spaces: gapic_v1.method_async.wrap_method(
                 self.list_spaces,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.search_spaces: gapic_v1.method_async.wrap_method(
+                self.search_spaces,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=10.0,

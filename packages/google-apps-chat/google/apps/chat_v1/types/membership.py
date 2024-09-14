@@ -208,6 +208,20 @@ class CreateMembershipRequest(proto.Message):
             relation for itself, it must use the
             ``chat.memberships.app`` scope, set ``user.type`` to
             ``BOT``, and set ``user.name`` to ``users/app``.
+        use_admin_access (bool):
+            When ``true``, the method runs using the user's Google
+            Workspace administrator privileges.
+
+            The calling user must be a Google Workspace administrator
+            with the `manage chat and spaces conversations
+            privilege <https://support.google.com/a/answer/13369245>`__.
+
+            Requires the ``chat.admin.memberships`` `OAuth 2.0
+            scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__.
+
+            Creating app memberships or creating memberships for users
+            outside the administrator's Google Workspace organization
+            isn't supported using admin access.
     """
 
     parent: str = proto.Field(
@@ -218,6 +232,10 @@ class CreateMembershipRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message="Membership",
+    )
+    use_admin_access: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 
@@ -235,6 +253,16 @@ class UpdateMembershipRequest(proto.Message):
             Currently supported field paths:
 
             -  ``role``
+        use_admin_access (bool):
+            When ``true``, the method runs using the user's Google
+            Workspace administrator privileges.
+
+            The calling user must be a Google Workspace administrator
+            with the `manage chat and spaces conversations
+            privilege <https://support.google.com/a/answer/13369245>`__.
+
+            Requires the ``chat.admin.memberships`` `OAuth 2.0
+            scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__.
     """
 
     membership: "Membership" = proto.Field(
@@ -246,6 +274,10 @@ class UpdateMembershipRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+    use_admin_access: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -289,8 +321,8 @@ class ListMembershipsRequest(proto.Message):
             ``ROLE_MANAGER``.
 
             To filter by type, set ``member.type`` to ``HUMAN`` or
-            ``BOT``. Developer Preview: You can also filter for
-            ``member.type`` using the ``!=`` operator.
+            ``BOT``. You can also filter for ``member.type`` using the
+            ``!=`` operator.
 
             To filter by both role and type, use the ``AND`` operator.
             To filter by either role or type, use the ``OR`` operator.
@@ -338,6 +370,20 @@ class ListMembershipsRequest(proto.Message):
 
             Currently requires `user
             authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        use_admin_access (bool):
+            When ``true``, the method runs using the user's Google
+            Workspace administrator privileges.
+
+            The calling user must be a Google Workspace administrator
+            with the `manage chat and spaces conversations
+            privilege <https://support.google.com/a/answer/13369245>`__.
+
+            Requires either the ``chat.admin.memberships.readonly`` or
+            ``chat.admin.memberships`` `OAuth 2.0
+            scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__.
+
+            Listing app memberships in a space isn't supported when
+            using admin access.
     """
 
     parent: str = proto.Field(
@@ -363,6 +409,10 @@ class ListMembershipsRequest(proto.Message):
     show_invited: bool = proto.Field(
         proto.BOOL,
         number=7,
+    )
+    use_admin_access: bool = proto.Field(
+        proto.BOOL,
+        number=8,
     )
 
 
@@ -414,11 +464,29 @@ class GetMembershipRequest(proto.Message):
             For example, ``spaces/{space}/members/example@gmail.com``
             where ``example@gmail.com`` is the email of the Google Chat
             user.
+        use_admin_access (bool):
+            When ``true``, the method runs using the user's Google
+            Workspace administrator privileges.
+
+            The calling user must be a Google Workspace administrator
+            with the `manage chat and spaces conversations
+            privilege <https://support.google.com/a/answer/13369245>`__.
+
+            Requires the ``chat.admin.memberships`` or
+            ``chat.admin.memberships.readonly`` `OAuth 2.0
+            scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__.
+
+            Getting app memberships in a space isn't supported when
+            using admin access.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    use_admin_access: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -444,11 +512,28 @@ class DeleteMembershipRequest(proto.Message):
 
             Format: ``spaces/{space}/members/{member}`` or
             ``spaces/{space}/members/app``.
+        use_admin_access (bool):
+            When ``true``, the method runs using the user's Google
+            Workspace administrator privileges.
+
+            The calling user must be a Google Workspace administrator
+            with the `manage chat and spaces conversations
+            privilege <https://support.google.com/a/answer/13369245>`__.
+
+            Requires the ``chat.admin.memberships`` `OAuth 2.0
+            scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__.
+
+            Deleting app memberships in a space isn't supported using
+            admin access.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    use_admin_access: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
