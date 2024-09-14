@@ -177,6 +177,11 @@ class EnvironmentsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.check_upgrade: gapic_v1.method.wrap_method(
+                self.check_upgrade,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_user_workloads_secret: gapic_v1.method.wrap_method(
                 self.create_user_workloads_secret,
                 default_timeout=None,
@@ -356,6 +361,15 @@ class EnvironmentsTransport(abc.ABC):
             environments.ListWorkloadsResponse,
             Awaitable[environments.ListWorkloadsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def check_upgrade(
+        self,
+    ) -> Callable[
+        [environments.CheckUpgradeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
