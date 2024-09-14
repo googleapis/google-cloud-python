@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
         "SparkRJob",
         "PrestoJob",
         "TrinoJob",
+        "FlinkJob",
         "JobPlacement",
         "JobStatus",
         "JobReference",
@@ -60,7 +61,7 @@ class LoggingConfig(proto.Message):
     Attributes:
         driver_log_levels (MutableMapping[str, google.cloud.dataproc_v1.types.LoggingConfig.Level]):
             The per-package log levels for the driver.
-            This may include "root" package name to
+            This can include "root" package name to
             configure rootLogger. Examples:
 
             - 'com.google = FATAL'
@@ -144,7 +145,7 @@ class HadoopJob(proto.Message):
         args (MutableSequence[str]):
             Optional. The arguments to pass to the driver. Do not
             include arguments, such as ``-libjars`` or ``-Dfoo=bar``,
-            that can be set as job properties, since a collision may
+            that can be set as job properties, since a collision might
             occur that causes an incorrect job submission.
         jar_file_uris (MutableSequence[str]):
             Optional. Jar file URIs to add to the
@@ -163,7 +164,7 @@ class HadoopJob(proto.Message):
         properties (MutableMapping[str, str]):
             Optional. A mapping of property names to values, used to
             configure Hadoop. Properties that conflict with values set
-            by the Dataproc API may be overwritten. Can include
+            by the Dataproc API might be overwritten. Can include
             properties set in ``/etc/hadoop/conf/*-site`` and classes in
             user code.
         logging_config (google.cloud.dataproc_v1.types.LoggingConfig):
@@ -229,7 +230,7 @@ class SparkJob(proto.Message):
         main_class (str):
             The name of the driver's main class. The jar file that
             contains the class must be in the default CLASSPATH or
-            specified in ``jar_file_uris``.
+            specified in SparkJob.jar_file_uris.
 
             This field is a member of `oneof`_ ``driver``.
         args (MutableSequence[str]):
@@ -253,8 +254,9 @@ class SparkJob(proto.Message):
         properties (MutableMapping[str, str]):
             Optional. A mapping of property names to
             values, used to configure Spark. Properties that
-            conflict with values set by the Dataproc API may
-            be overwritten. Can include properties set in
+            conflict with values set by the Dataproc API
+            might be overwritten. Can include properties set
+            in
             /etc/spark/conf/spark-defaults.conf and classes
             in user code.
         logging_config (google.cloud.dataproc_v1.types.LoggingConfig):
@@ -335,7 +337,7 @@ class PySparkJob(proto.Message):
             Optional. A mapping of property names to
             values, used to configure PySpark. Properties
             that conflict with values set by the Dataproc
-            API may be overwritten. Can include properties
+            API might be overwritten. Can include properties
             set in
             /etc/spark/conf/spark-defaults.conf and classes
             in user code.
@@ -441,8 +443,8 @@ class HiveJob(proto.Message):
         properties (MutableMapping[str, str]):
             Optional. A mapping of property names and values, used to
             configure Hive. Properties that conflict with values set by
-            the Dataproc API may be overwritten. Can include properties
-            set in ``/etc/hadoop/conf/*-site.xml``,
+            the Dataproc API might be overwritten. Can include
+            properties set in ``/etc/hadoop/conf/*-site.xml``,
             /etc/hive/conf/hive-site.xml, and classes in user code.
         jar_file_uris (MutableSequence[str]):
             Optional. HCFS URIs of jar files to add to
@@ -511,7 +513,7 @@ class SparkSqlJob(proto.Message):
             Optional. A mapping of property names to
             values, used to configure Spark SQL's SparkConf.
             Properties that conflict with values set by the
-            Dataproc API may be overwritten.
+            Dataproc API might be overwritten.
         jar_file_uris (MutableSequence[str]):
             Optional. HCFS URIs of jar files to be added
             to the Spark CLASSPATH.
@@ -583,8 +585,8 @@ class PigJob(proto.Message):
         properties (MutableMapping[str, str]):
             Optional. A mapping of property names to values, used to
             configure Pig. Properties that conflict with values set by
-            the Dataproc API may be overwritten. Can include properties
-            set in ``/etc/hadoop/conf/*-site.xml``,
+            the Dataproc API might be overwritten. Can include
+            properties set in ``/etc/hadoop/conf/*-site.xml``,
             /etc/pig/conf/pig.properties, and classes in user code.
         jar_file_uris (MutableSequence[str]):
             Optional. HCFS URIs of jar files to add to
@@ -659,7 +661,7 @@ class SparkRJob(proto.Message):
             Optional. A mapping of property names to
             values, used to configure SparkR. Properties
             that conflict with values set by the Dataproc
-            API may be overwritten. Can include properties
+            API might be overwritten. Can include properties
             set in
             /etc/spark/conf/spark-defaults.conf and classes
             in user code.
@@ -856,6 +858,86 @@ class TrinoJob(proto.Message):
     )
 
 
+class FlinkJob(proto.Message):
+    r"""A Dataproc job for running Apache Flink applications on YARN.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        main_jar_file_uri (str):
+            The HCFS URI of the jar file that contains
+            the main class.
+
+            This field is a member of `oneof`_ ``driver``.
+        main_class (str):
+            The name of the driver's main class. The jar file that
+            contains the class must be in the default CLASSPATH or
+            specified in
+            [jarFileUris][google.cloud.dataproc.v1.FlinkJob.jar_file_uris].
+
+            This field is a member of `oneof`_ ``driver``.
+        args (MutableSequence[str]):
+            Optional. The arguments to pass to the driver. Do not
+            include arguments, such as ``--conf``, that can be set as
+            job properties, since a collision might occur that causes an
+            incorrect job submission.
+        jar_file_uris (MutableSequence[str]):
+            Optional. HCFS URIs of jar files to add to
+            the CLASSPATHs of the Flink driver and tasks.
+        savepoint_uri (str):
+            Optional. HCFS URI of the savepoint, which
+            contains the last saved progress for starting
+            the current job.
+        properties (MutableMapping[str, str]):
+            Optional. A mapping of property names to values, used to
+            configure Flink. Properties that conflict with values set by
+            the Dataproc API might be overwritten. Can include
+            properties set in ``/etc/flink/conf/flink-defaults.conf``
+            and classes in user code.
+        logging_config (google.cloud.dataproc_v1.types.LoggingConfig):
+            Optional. The runtime log config for job
+            execution.
+    """
+
+    main_jar_file_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="driver",
+    )
+    main_class: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="driver",
+    )
+    args: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    jar_file_uris: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    savepoint_uri: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    properties: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
+    )
+    logging_config: "LoggingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="LoggingConfig",
+    )
+
+
 class JobPlacement(proto.Message):
     r"""Dataproc job config.
 
@@ -894,9 +976,8 @@ class JobStatus(proto.Message):
             Output only. A state message specifying the
             overall job state.
         details (str):
-            Optional. Output only. Job state details,
-            such as an error description if the state is
-            <code>ERROR</code>.
+            Optional. Output only. Job state details, such as an error
+            description if the state is ``ERROR``.
         state_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when this state was
             entered.
@@ -963,14 +1044,14 @@ class JobStatus(proto.Message):
                 Applies to RUNNING state.
             QUEUED (2):
                 The Job has been received and is awaiting
-                execution (it may be waiting for a condition to
-                be met). See the "details" field for the reason
-                for the delay.
+                execution (it might be waiting for a condition
+                to be met). See the "details" field for the
+                reason for the delay.
 
                 Applies to RUNNING state.
             STALE_STATUS (3):
                 The agent-reported status is out of date,
-                which may be caused by a loss of communication
+                which can be caused by a loss of communication
                 between the agent and Dataproc. If the agent
                 does not send a timely update, the job will
                 fail.
@@ -1166,9 +1247,13 @@ class Job(proto.Message):
             Optional. Job is a Trino job.
 
             This field is a member of `oneof`_ ``type_job``.
+        flink_job (google.cloud.dataproc_v1.types.FlinkJob):
+            Optional. Job is a Flink job.
+
+            This field is a member of `oneof`_ ``type_job``.
         status (google.cloud.dataproc_v1.types.JobStatus):
             Output only. The job status. Additional application-specific
-            status information may be contained in the type_job and
+            status information might be contained in the type_job and
             yarn_applications fields.
         status_history (MutableSequence[google.cloud.dataproc_v1.types.JobStatus]):
             Output only. The previous job status.
@@ -1177,20 +1262,20 @@ class Job(proto.Message):
             this job.
 
             **Beta** Feature: This report is available for testing
-            purposes only. It may be changed before final release.
+            purposes only. It might be changed before final release.
         driver_output_resource_uri (str):
             Output only. A URI pointing to the location
             of the stdout of the job's driver program.
         driver_control_files_uri (str):
             Output only. If present, the location of miscellaneous
-            control files which may be used as part of job setup and
-            handling. If not present, control files may be placed in the
-            same location as ``driver_output_uri``.
+            control files which can be used as part of job setup and
+            handling. If not present, control files might be placed in
+            the same location as ``driver_output_uri``.
         labels (MutableMapping[str, str]):
             Optional. The labels to associate with this job. Label
             **keys** must contain 1 to 63 characters, and must conform
             to `RFC 1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
-            Label **values** may be empty, but, if present, must contain
+            Label **values** can be empty, but, if present, must contain
             1 to 63 characters, and must conform to `RFC
             1035 <https://www.ietf.org/rfc/rfc1035.txt>`__. No more than
             32 labels can be associated with a job.
@@ -1199,7 +1284,8 @@ class Job(proto.Message):
         job_uuid (str):
             Output only. A UUID that uniquely identifies a job within
             the project over time. This is in contrast to a
-            user-settable reference.job_id that may be reused over time.
+            user-settable reference.job_id that might be reused over
+            time.
         done (bool):
             Output only. Indicates whether the job is completed. If the
             value is ``false``, the job is still in progress. If
@@ -1272,6 +1358,12 @@ class Job(proto.Message):
         number=28,
         oneof="type_job",
         message="TrinoJob",
+    )
+    flink_job: "FlinkJob" = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        oneof="type_job",
+        message="FlinkJob",
     )
     status: "JobStatus" = proto.Field(
         proto.MESSAGE,
@@ -1348,12 +1440,12 @@ class JobScheduling(proto.Message):
 
     Attributes:
         max_failures_per_hour (int):
-            Optional. Maximum number of times per hour a driver may be
+            Optional. Maximum number of times per hour a driver can be
             restarted as a result of driver exiting with non-zero code
             before job is reported failed.
 
-            A job may be reported as thrashing if the driver exits with
-            a non-zero code four times within a 10-minute window.
+            A job might be reported as thrashing if the driver exits
+            with a non-zero code four times within a 10-minute window.
 
             Maximum value is 10.
 
@@ -1361,7 +1453,7 @@ class JobScheduling(proto.Message):
             Dataproc [workflow templates]
             (https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template).
         max_failures_total (int):
-            Optional. Maximum total number of times a driver may be
+            Optional. Maximum total number of times a driver can be
             restarted as a result of the driver exiting with a non-zero
             code. After the maximum number is reached, the job will be
             reported as failed.
@@ -1644,6 +1736,12 @@ class ListJobsResponse(proto.Message):
             are more results to fetch. To fetch additional results,
             provide this value as the ``page_token`` in a subsequent
             ListJobsRequest.
+        unreachable (MutableSequence[str]):
+            Output only. List of jobs with
+            [kms_key][google.cloud.dataproc.v1.EncryptionConfig.kms_key]-encrypted
+            parameters that could not be decrypted. A response to a
+            ``jobs.get`` request may indicate the reason for the
+            decryption failure for a specific job.
     """
 
     @property
@@ -1658,6 +1756,10 @@ class ListJobsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

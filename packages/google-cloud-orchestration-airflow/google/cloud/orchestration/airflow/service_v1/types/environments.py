@@ -79,9 +79,11 @@ __protobuf__ = proto.module(
         "MasterAuthorizedNetworksConfig",
         "CloudDataLineageIntegration",
         "Environment",
+        "CheckUpgradeRequest",
         "CheckUpgradeResponse",
         "DataRetentionConfig",
         "TaskLogsRetentionConfig",
+        "AirflowMetadataRetentionPolicyConfig",
     },
 )
 
@@ -1392,8 +1394,10 @@ class EnvironmentConfig(proto.Message):
             hours.
 
             If this value is omitted, the default value for
-            maintenance window will be applied. The default
-            value is Saturday and Sunday 00-06 GMT.
+            maintenance window is applied. By default,
+            maintenance windows are from 00:00:00 to
+            04:00:00 (GMT) on Friday, Saturday, and Sunday
+            every week.
         workloads_config (google.cloud.orchestration.airflow.service_v1.types.WorkloadsConfig):
             Optional. The workloads configuration settings for the GKE
             cluster associated with the Cloud Composer environment. The
@@ -2559,6 +2563,9 @@ class WorkloadsConfig(proto.Message):
     class DagProcessorResource(proto.Message):
         r"""Configuration for resources used by Airflow DAG processors.
 
+        This field is supported for Cloud Composer environments in versions
+        composer-3.\ *.*-airflow-*.*.\* and newer.
+
         Attributes:
             cpu (float):
                 Optional. CPU request and limit for a single
@@ -2778,6 +2785,8 @@ class Environment(proto.Message):
                <= 128 bytes in size.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
         storage_config (google.cloud.orchestration.airflow.service_v1.types.StorageConfig):
             Optional. Storage configuration for this
             environment.
@@ -2850,10 +2859,66 @@ class Environment(proto.Message):
         proto.BOOL,
         number=8,
     )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
     storage_config: "StorageConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="StorageConfig",
+    )
+
+
+class CheckUpgradeRequest(proto.Message):
+    r"""Request to check whether image upgrade will succeed.
+
+    Attributes:
+        environment (str):
+            Required. The resource name of the
+            environment to check upgrade for, in the form:
+
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+        image_version (str):
+            Optional. The version of the software running in the
+            environment. This encapsulates both the version of Cloud
+            Composer functionality and the version of Apache Airflow. It
+            must match the regular expression
+            ``composer-([0-9]+(\.[0-9]+\.[0-9]+(-preview\.[0-9]+)?)?|latest)-airflow-([0-9]+(\.[0-9]+(\.[0-9]+)?)?)``.
+            When used as input, the server also checks if the provided
+            version is supported and denies the request for an
+            unsupported version.
+
+            The Cloud Composer portion of the image version is a full
+            `semantic version <https://semver.org>`__, or an alias in
+            the form of major version number or ``latest``. When an
+            alias is provided, the server replaces it with the current
+            Cloud Composer version that satisfies the alias.
+
+            The Apache Airflow portion of the image version is a full
+            semantic version that points to one of the supported Apache
+            Airflow versions, or an alias in the form of only major or
+            major.minor versions specified. When an alias is provided,
+            the server replaces it with the latest Apache Airflow
+            version that satisfies the alias and is supported in the
+            given Cloud Composer version.
+
+            In all cases, the resolved image version is stored in the
+            same field.
+
+            See also `version
+            list </composer/docs/concepts/versioning/composer-versions>`__
+            and `versioning
+            overview </composer/docs/concepts/versioning/composer-versioning-overview>`__.
+    """
+
+    environment: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    image_version: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -2927,11 +2992,21 @@ class DataRetentionConfig(proto.Message):
     mechanism.
 
     Attributes:
+        airflow_metadata_retention_config (google.cloud.orchestration.airflow.service_v1.types.AirflowMetadataRetentionPolicyConfig):
+            Optional. The retention policy for airflow
+            metadata database.
         task_logs_retention_config (google.cloud.orchestration.airflow.service_v1.types.TaskLogsRetentionConfig):
             Optional. The configuration settings for task
             logs retention
     """
 
+    airflow_metadata_retention_config: "AirflowMetadataRetentionPolicyConfig" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="AirflowMetadataRetentionPolicyConfig",
+        )
+    )
     task_logs_retention_config: "TaskLogsRetentionConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -2945,8 +3020,7 @@ class TaskLogsRetentionConfig(proto.Message):
     Attributes:
         storage_mode (google.cloud.orchestration.airflow.service_v1.types.TaskLogsRetentionConfig.TaskLogsStorageMode):
             Optional. The mode of storage for Airflow
-            workers task logs. For details, see
-            go/composer-store-task-logs-in-cloud-logging-only-design-doc
+            workers task logs.
     """
 
     class TaskLogsStorageMode(proto.Enum):
@@ -2970,6 +3044,45 @@ class TaskLogsRetentionConfig(proto.Message):
         proto.ENUM,
         number=2,
         enum=TaskLogsStorageMode,
+    )
+
+
+class AirflowMetadataRetentionPolicyConfig(proto.Message):
+    r"""The policy for airflow metadata database retention.
+
+    Attributes:
+        retention_mode (google.cloud.orchestration.airflow.service_v1.types.AirflowMetadataRetentionPolicyConfig.RetentionMode):
+            Optional. Retention can be either enabled or
+            disabled.
+        retention_days (int):
+            Optional. How many days data should be
+            retained for.
+    """
+
+    class RetentionMode(proto.Enum):
+        r"""Describes retention policy.
+
+        Values:
+            RETENTION_MODE_UNSPECIFIED (0):
+                Default mode doesn't change environment
+                parameters.
+            RETENTION_MODE_ENABLED (1):
+                Retention policy is enabled.
+            RETENTION_MODE_DISABLED (2):
+                Retention policy is disabled.
+        """
+        RETENTION_MODE_UNSPECIFIED = 0
+        RETENTION_MODE_ENABLED = 1
+        RETENTION_MODE_DISABLED = 2
+
+    retention_mode: RetentionMode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=RetentionMode,
+    )
+    retention_days: int = proto.Field(
+        proto.INT32,
+        number=2,
     )
 
 

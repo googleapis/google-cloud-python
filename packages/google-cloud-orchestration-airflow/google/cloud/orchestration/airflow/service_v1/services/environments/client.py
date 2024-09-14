@@ -1884,6 +1884,107 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         # Done; return the response.
         return response
 
+    def check_upgrade(
+        self,
+        request: Optional[Union[environments.CheckUpgradeRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Check if an upgrade operation on the environment will
+        succeed.
+        In case of problems detailed info can be found in the
+        returned Operation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            def sample_check_upgrade():
+                # Create a client
+                client = service_v1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1.CheckUpgradeRequest(
+                    environment="environment_value",
+                )
+
+                # Make the request
+                operation = client.check_upgrade(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.CheckUpgradeRequest, dict]):
+                The request object. Request to check whether image
+                upgrade will succeed.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.orchestration.airflow.service_v1.types.CheckUpgradeResponse` Message containing information about the result of an upgrade check
+                   operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, environments.CheckUpgradeRequest):
+            request = environments.CheckUpgradeRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.check_upgrade]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("environment", request.environment),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            environments.CheckUpgradeResponse,
+            metadata_type=operations.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def create_user_workloads_secret(
         self,
         request: Optional[
