@@ -2368,6 +2368,7 @@ def test_list_jobs(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = jobs.ListJobsResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_jobs(request)
 
@@ -2380,6 +2381,7 @@ def test_list_jobs(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobsPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_jobs_empty_call():
@@ -2487,6 +2489,7 @@ async def test_list_jobs_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             jobs.ListJobsResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_jobs()
@@ -2554,6 +2557,7 @@ async def test_list_jobs_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             jobs.ListJobsResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_jobs(request)
@@ -2567,6 +2571,7 @@ async def test_list_jobs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -5008,6 +5013,7 @@ def test_list_jobs_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = jobs.ListJobsResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -5024,6 +5030,7 @@ def test_list_jobs_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobsPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_jobs_rest_use_cached_wrapped_rpc():
@@ -5474,6 +5481,15 @@ def test_update_job_rest(request_type):
             "continue_on_failure": True,
             "output_format": "output_format_value",
             "client_tags": ["client_tags_value1", "client_tags_value2"],
+            "properties": {},
+            "logging_config": {},
+        },
+        "flink_job": {
+            "main_jar_file_uri": "main_jar_file_uri_value",
+            "main_class": "main_class_value",
+            "args": ["args_value1", "args_value2"],
+            "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
+            "savepoint_uri": "savepoint_uri_value",
             "properties": {},
             "logging_config": {},
         },

@@ -464,14 +464,49 @@ class EncryptionConfig(proto.Message):
 
     Attributes:
         gce_pd_kms_key_name (str):
-            Optional. The Cloud KMS key name to use for
-            PD disk encryption for all instances in the
-            cluster.
+            Optional. The Cloud KMS key resource name to use for
+            persistent disk encryption for all instances in the cluster.
+            See [Use CMEK with cluster data]
+            (https://cloud.google.com//dataproc/docs/concepts/configuring-clusters/customer-managed-encryption#use_cmek_with_cluster_data)
+            for more information.
+        kms_key (str):
+            Optional. The Cloud KMS key resource name to use for cluster
+            persistent disk and job argument encryption. See [Use CMEK
+            with cluster data]
+            (https://cloud.google.com//dataproc/docs/concepts/configuring-clusters/customer-managed-encryption#use_cmek_with_cluster_data)
+            for more information.
+
+            When this key resource name is provided, the following job
+            arguments of the following job types submitted to the
+            cluster are encrypted using CMEK:
+
+            -  `FlinkJob
+               args <https://cloud.google.com/dataproc/docs/reference/rest/v1/FlinkJob>`__
+            -  `HadoopJob
+               args <https://cloud.google.com/dataproc/docs/reference/rest/v1/HadoopJob>`__
+            -  `SparkJob
+               args <https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkJob>`__
+            -  `SparkRJob
+               args <https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkRJob>`__
+            -  `PySparkJob
+               args <https://cloud.google.com/dataproc/docs/reference/rest/v1/PySparkJob>`__
+            -  `SparkSqlJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkSqlJob>`__
+               scriptVariables and queryList.queries
+            -  `HiveJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/HiveJob>`__
+               scriptVariables and queryList.queries
+            -  `PigJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/PigJob>`__
+               scriptVariables and queryList.queries
+            -  `PrestoJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/PrestoJob>`__
+               scriptVariables and queryList.queries
     """
 
     gce_pd_kms_key_name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    kms_key: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -519,14 +554,25 @@ class GceClusterConfig(proto.Message):
             -  ``projects/[project_id]/regions/[region]/subnetworks/sub0``
             -  ``sub0``
         internal_ip_only (bool):
-            Optional. If true, all instances in the cluster will only
-            have internal IP addresses. By default, clusters are not
-            restricted to internal IP addresses, and will have ephemeral
-            external IP addresses assigned to each instance. This
-            ``internal_ip_only`` restriction can only be enabled for
-            subnetwork enabled networks, and all off-cluster
-            dependencies must be configured to be accessible without
-            external IP addresses.
+            Optional. This setting applies to subnetwork-enabled
+            networks. It is set to ``true`` by default in clusters
+            created with image versions 2.2.x.
+
+            When set to ``true``:
+
+            -  All cluster VMs have internal IP addresses.
+            -  [Google Private Access]
+               (https://cloud.google.com/vpc/docs/private-google-access)
+               must be enabled to access Dataproc and other Google Cloud
+               APIs.
+            -  Off-cluster dependencies must be configured to be
+               accessible without external IP addresses.
+
+            When set to ``false``:
+
+            -  Cluster VMs are not restricted to internal IP addresses.
+            -  Ephemeral external IP addresses are assigned to each
+               cluster VM.
 
             This field is a member of `oneof`_ ``_internal_ip_only``.
         private_ipv6_google_access (google.cloud.dataproc_v1.types.GceClusterConfig.PrivateIpv6GoogleAccess):
@@ -560,9 +606,9 @@ class GceClusterConfig(proto.Message):
             -  https://www.googleapis.com/auth/bigtable.data
             -  https://www.googleapis.com/auth/devstorage.full_control
         tags (MutableSequence[str]):
-            The Compute Engine tags to add to all instances (see
+            The Compute Engine network tags to add to all instances (see
             `Tagging
-            instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
+            instances <https://cloud.google.com/vpc/docs/add-remove-network-tags>`__).
         metadata (MutableMapping[str, str]):
             Optional. The Compute Engine metadata entries to add to all
             instances (see `Project and instance
@@ -1156,15 +1202,15 @@ class AcceleratorConfig(proto.Message):
 
             Examples:
 
-            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-k80``
-            -  ``projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-k80``
-            -  ``nvidia-tesla-k80``
+            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4``
+            -  ``projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4``
+            -  ``nvidia-tesla-t4``
 
             **Auto Zone Exception**: If you are using the Dataproc `Auto
             Zone
             Placement <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement>`__
             feature, you must use the short name of the accelerator type
-            resource, for example, ``nvidia-tesla-k80``.
+            resource, for example, ``nvidia-tesla-t4``.
         accelerator_count (int):
             The number of the accelerator cards of this
             type exposed to this instance.
@@ -1501,8 +1547,8 @@ class KerberosConfig(proto.Message):
             encrypted file containing the root principal
             password.
         kms_key_uri (str):
-            Optional. The uri of the KMS key used to
-            encrypt various sensitive files.
+            Optional. The URI of the KMS key used to
+            encrypt sensitive files.
         keystore_uri (str):
             Optional. The Cloud Storage URI of the
             keystore file used for SSL encryption. If not
@@ -1649,7 +1695,7 @@ class SoftwareConfig(proto.Message):
         image_version (str):
             Optional. The version of software inside the cluster. It
             must be one of the supported `Dataproc
-            Versions <https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions>`__,
+            Versions <https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported-dataproc-image-versions>`__,
             such as "1.2" (including a subminor version, such as
             "1.2.29"), or the `"preview"
             version <https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions>`__.
@@ -1834,6 +1880,8 @@ class DataprocMetricConfig(proto.Message):
                 Hiveserver2 metric source.
             HIVEMETASTORE (7):
                 hivemetastore metric source
+            FLINK (8):
+                flink metric source
         """
         METRIC_SOURCE_UNSPECIFIED = 0
         MONITORING_AGENT_DEFAULTS = 1
@@ -1843,6 +1891,7 @@ class DataprocMetricConfig(proto.Message):
         SPARK_HISTORY_SERVER = 5
         HIVESERVER2 = 6
         HIVEMETASTORE = 7
+        FLINK = 8
 
     class Metric(proto.Message):
         r"""A Dataproc custom metric.
@@ -2312,11 +2361,12 @@ class ListClustersRequest(proto.Message):
             or ``labels.[KEY]``, and ``[KEY]`` is a label key. **value**
             can be ``*`` to match all values. ``status.state`` can be
             one of the following: ``ACTIVE``, ``INACTIVE``,
-            ``CREATING``, ``RUNNING``, ``ERROR``, ``DELETING``, or
-            ``UPDATING``. ``ACTIVE`` contains the ``CREATING``,
-            ``UPDATING``, and ``RUNNING`` states. ``INACTIVE`` contains
-            the ``DELETING`` and ``ERROR`` states. ``clusterName`` is
-            the name of the cluster provided at creation time. Only the
+            ``CREATING``, ``RUNNING``, ``ERROR``, ``DELETING``,
+            ``UPDATING``, ``STOPPING``, or ``STOPPED``. ``ACTIVE``
+            contains the ``CREATING``, ``UPDATING``, and ``RUNNING``
+            states. ``INACTIVE`` contains the ``DELETING``, ``ERROR``,
+            ``STOPPING``, and ``STOPPED`` states. ``clusterName`` is the
+            name of the cluster provided at creation time. Only the
             logical ``AND`` operator is supported; space-separated items
             are treated as having an implicit ``AND`` operator.
 
@@ -2393,10 +2443,10 @@ class DiagnoseClusterRequest(proto.Message):
         cluster_name (str):
             Required. The cluster name.
         tarball_gcs_dir (str):
-            Optional. The output Cloud Storage directory
-            for the diagnostic tarball. If not specified, a
-            task-specific directory in the cluster's staging
-            bucket will be used.
+            Optional. (Optional) The output Cloud Storage
+            directory for the diagnostic tarball. If not
+            specified, a task-specific directory in the
+            cluster's staging bucket will be used.
         tarball_access (google.cloud.dataproc_v1.types.DiagnoseClusterRequest.TarballAccess):
             Optional. (Optional) The access type to the
             diagnostic tarball. If not specified, falls back

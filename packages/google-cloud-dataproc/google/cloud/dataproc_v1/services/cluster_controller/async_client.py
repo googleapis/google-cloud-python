@@ -74,6 +74,8 @@ class ClusterControllerAsyncClient:
 
     cluster_path = staticmethod(ClusterControllerClient.cluster_path)
     parse_cluster_path = staticmethod(ClusterControllerClient.parse_cluster_path)
+    crypto_key_path = staticmethod(ClusterControllerClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(ClusterControllerClient.parse_crypto_key_path)
     node_group_path = staticmethod(ClusterControllerClient.node_group_path)
     parse_node_group_path = staticmethod(ClusterControllerClient.parse_node_group_path)
     service_path = staticmethod(ClusterControllerClient.service_path)
@@ -1236,10 +1238,11 @@ class ClusterControllerAsyncClient:
                 label key. **value** can be ``*`` to match all values.
                 ``status.state`` can be one of the following:
                 ``ACTIVE``, ``INACTIVE``, ``CREATING``, ``RUNNING``,
-                ``ERROR``, ``DELETING``, or ``UPDATING``. ``ACTIVE``
-                contains the ``CREATING``, ``UPDATING``, and ``RUNNING``
-                states. ``INACTIVE`` contains the ``DELETING`` and
-                ``ERROR`` states. ``clusterName`` is the name of the
+                ``ERROR``, ``DELETING``, ``UPDATING``, ``STOPPING``, or
+                ``STOPPED``. ``ACTIVE`` contains the ``CREATING``,
+                ``UPDATING``, and ``RUNNING`` states. ``INACTIVE``
+                contains the ``DELETING``, ``ERROR``, ``STOPPING``, and
+                ``STOPPED`` states. ``clusterName`` is the name of the
                 cluster provided at creation time. Only the logical
                 ``AND`` operator is supported; space-separated items are
                 treated as having an implicit ``AND`` operator.
