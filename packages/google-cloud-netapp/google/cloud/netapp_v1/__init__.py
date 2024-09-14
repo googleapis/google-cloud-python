@@ -99,6 +99,7 @@ from .types.storage_pool import (
     ListStoragePoolsRequest,
     ListStoragePoolsResponse,
     StoragePool,
+    SwitchActiveReplicaZoneRequest,
     UpdateStoragePoolRequest,
 )
 from .types.volume import (
@@ -208,6 +209,7 @@ __all__ = (
     "SnapshotPolicy",
     "StopReplicationRequest",
     "StoragePool",
+    "SwitchActiveReplicaZoneRequest",
     "TieringPolicy",
     "TransferStats",
     "UpdateActiveDirectoryRequest",

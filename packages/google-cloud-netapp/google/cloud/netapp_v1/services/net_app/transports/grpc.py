@@ -408,6 +408,35 @@ class NetAppGrpcTransport(NetAppTransport):
         return self._stubs["delete_storage_pool"]
 
     @property
+    def switch_active_replica_zone(
+        self,
+    ) -> Callable[
+        [storage_pool.SwitchActiveReplicaZoneRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the switch active replica zone method over gRPC.
+
+        This operation will switch the active/replica zone
+        for a regional storagePool.
+
+        Returns:
+            Callable[[~.SwitchActiveReplicaZoneRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "switch_active_replica_zone" not in self._stubs:
+            self._stubs["switch_active_replica_zone"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/SwitchActiveReplicaZone",
+                request_serializer=storage_pool.SwitchActiveReplicaZoneRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["switch_active_replica_zone"]
+
+    @property
     def list_volumes(
         self,
     ) -> Callable[[volume.ListVolumesRequest], volume.ListVolumesResponse]:

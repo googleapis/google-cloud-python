@@ -80,6 +80,7 @@ class netappCallTransformer(cst.CSTTransformer):
         'reverse_replication_direction': ('name', ),
         'revert_volume': ('name', 'snapshot_id', ),
         'stop_replication': ('name', 'force', ),
+        'switch_active_replica_zone': ('name', ),
         'update_active_directory': ('update_mask', 'active_directory', ),
         'update_backup': ('update_mask', 'backup', ),
         'update_backup_policy': ('update_mask', 'backup_policy', ),

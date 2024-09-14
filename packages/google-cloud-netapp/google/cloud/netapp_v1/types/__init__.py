@@ -93,6 +93,7 @@ from .storage_pool import (
     ListStoragePoolsRequest,
     ListStoragePoolsResponse,
     StoragePool,
+    SwitchActiveReplicaZoneRequest,
     UpdateStoragePoolRequest,
 )
 from .volume import (
@@ -190,6 +191,7 @@ __all__ = (
     "ListStoragePoolsRequest",
     "ListStoragePoolsResponse",
     "StoragePool",
+    "SwitchActiveReplicaZoneRequest",
     "UpdateStoragePoolRequest",
     "BackupConfig",
     "CreateVolumeRequest",
