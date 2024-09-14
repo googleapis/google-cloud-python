@@ -930,7 +930,7 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
 {% endfor -%} {#- method in methods for rest #}
 
 {% for method in service.methods.values() if 'rest' in opts.transport and
-    not method.http_options %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
+    not method.http_options %}{% with method_name = (method.name + ("_unary" if method.operation_service else "")) | snake_case %}
 def test_{{ method_name }}_rest_error():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1045,14 +1045,16 @@ def test_transport_adc(transport_class):
 
 {% set configs = [] %}
 {% for transport in opts.transport %}
-    {% do configs.append({'service':service, 'transport':transport, 'is_async':false}) %}
+    {% do configs.append({'service':service, 'api':api, 'transport':transport, 'is_async':false}) %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
 {% if 'grpc' in transport or rest_async_io_enabled %}
-    {% do configs.append({'service':service, 'transport':transport, 'is_async':true}) %}
+    {% do configs.append({'service':service, 'api':api, 'transport':transport, 'is_async':true}) %}
 {% endif %}
 {% endfor %}
 {% for conf in configs %}
 {{ test_macros.transport_kind_test(**conf) }}
+
+{{ test_macros.empty_call_test(**conf) }}
 {% endfor %}
 
 {% if 'grpc' in opts.transport %}
