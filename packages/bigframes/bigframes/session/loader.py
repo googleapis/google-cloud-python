@@ -383,8 +383,7 @@ class GbqDataLoader:
 
         index_names: Sequence[Hashable] = index_cols
         if index_col == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64:
-            sequential_index_col = bigframes.core.guid.generate_guid("index_")
-            array_value = array_value.promote_offsets(sequential_index_col)
+            array_value, sequential_index_col = array_value.promote_offsets()
             index_cols = [sequential_index_col]
             index_names = [None]
 

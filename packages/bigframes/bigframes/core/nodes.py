@@ -178,6 +178,25 @@ class BigFrameNode:
         """Apply a function to each child node."""
         ...
 
+    @property
+    def defines_namespace(self) -> bool:
+        """
+        If true, this node establishes a new column id namespace.
+
+        If false, this node consumes and produces ids in the namespace
+        """
+        return False
+
+    @functools.cached_property
+    def defined_variables(self) -> set[str]:
+        """Full set of variables defined in the namespace, even if not selected."""
+        self_defined_variables = set(self.schema.names)
+        if self.defines_namespace:
+            return self_defined_variables
+        return self_defined_variables.union(
+            *(child.defined_variables for child in self.child_nodes)
+        )
+
 
 @dataclass(frozen=True)
 class UnaryNode(BigFrameNode):
@@ -261,6 +280,10 @@ class JoinNode(BigFrameNode):
         return replace(
             self, left_child=t(self.left_child), right_child=t(self.right_child)
         )
+
+    @property
+    def defines_namespace(self) -> bool:
+        return True
 
 
 @dataclass(frozen=True)
@@ -477,9 +500,9 @@ class CachedTableNode(LeafNode):
             raise ValueError(
                 f"Requested schema {logical_names} cannot be derived from table schema {self.table.physical_schema}"
             )
-        if not set(self.hidden_columns).issubset(physical_names):
+        if not set(self._hidden_columns).issubset(physical_names):
             raise ValueError(
-                f"Requested hidden columns {self.hidden_columns} cannot be derived from table schema {self.table.physical_schema}"
+                f"Requested hidden columns {self._hidden_columns} cannot be derived from table schema {self.table.physical_schema}"
             )
 
     @property
@@ -498,7 +521,7 @@ class CachedTableNode(LeafNode):
         return len(self.schema.items) + OVERHEAD_VARIABLES
 
     @property
-    def hidden_columns(self) -> typing.Tuple[str, ...]:
+    def _hidden_columns(self) -> typing.Tuple[str, ...]:
         """Physical columns used to define ordering but not directly exposed as value columns."""
         if self.ordering is None:
             return ()
@@ -646,6 +669,13 @@ class SelectionNode(UnaryNode):
         # This operation only renames variables, doesn't actually create new ones
         return 0
 
+    # TODO: Reuse parent namespace
+    # Currently, Selection node allows renaming an reusing existing names, so it must establish a
+    # new namespace.
+    @property
+    def defines_namespace(self) -> bool:
+        return True
+
 
 @dataclass(frozen=True)
 class ProjectionNode(UnaryNode):
@@ -707,6 +737,10 @@ class RowCountNode(UnaryNode):
     def variables_introduced(self) -> int:
         return 1
 
+    @property
+    def defines_namespace(self) -> bool:
+        return True
+
 
 @dataclass(frozen=True)
 class AggregateNode(UnaryNode):
@@ -752,13 +786,17 @@ class AggregateNode(UnaryNode):
     def explicitly_ordered(self) -> bool:
         return True
 
+    @property
+    def defines_namespace(self) -> bool:
+        return True
+
 
 @dataclass(frozen=True)
 class WindowOpNode(UnaryNode):
     column_name: str
     op: agg_ops.UnaryWindowOp
     window_spec: window.WindowSpec
-    output_name: typing.Optional[str] = None
+    output_name: str
     never_skip_nulls: bool = False
     skip_reproject_unsafe: bool = False
 
@@ -773,10 +811,6 @@ class WindowOpNode(UnaryNode):
     def schema(self) -> schemata.ArraySchema:
         input_type = self.child.schema.get_type(self.column_name)
         new_item_dtype = self.op.output_type(input_type)
-        if self.output_name is None:
-            return self.child.schema.update_dtype(self.column_name, new_item_dtype)
-        if self.output_name in self.child.schema.names:
-            return self.child.schema.update_dtype(self.output_name, new_item_dtype)
         return self.child.schema.append(
             schemata.SchemaItem(self.output_name, new_item_dtype)
         )
@@ -860,3 +894,7 @@ class ExplodeNode(UnaryNode):
     @functools.cached_property
     def variables_introduced(self) -> int:
         return len(self.column_ids) + 1
+
+    @property
+    def defines_namespace(self) -> bool:
+        return True

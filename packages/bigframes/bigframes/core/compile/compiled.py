@@ -814,7 +814,7 @@ class OrderedIR(BaseIbisIR):
         column_name: str,
         op: agg_ops.UnaryWindowOp,
         window_spec: WindowSpec,
-        output_name=None,
+        output_name: str,
         *,
         never_skip_nulls=False,
     ) -> OrderedIR:
@@ -823,7 +823,7 @@ class OrderedIR(BaseIbisIR):
         column_name: the id of the input column present in the expression
         op: the windowable operator to apply to the input column
         window_spec: a specification of the window over which to apply the operator
-        output_name: the id to assign to the output of the operator, by default will replace input col if distinct output id not provided
+        output_name: the id to assign to the output of the operator
         never_skip_nulls: will disable null skipping for operators that would otherwise do so
         """
         # Cannot nest analytic expressions, so reproject to cte first if needed.

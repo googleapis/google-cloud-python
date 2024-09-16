@@ -18,7 +18,7 @@ import datetime
 import functools
 import io
 import typing
-from typing import Iterable, Optional, Sequence, Tuple
+from typing import Iterable, List, Optional, Sequence, Tuple
 import warnings
 
 import google.cloud.bigquery
@@ -106,6 +106,7 @@ class ArrayValue:
 
     @property
     def column_ids(self) -> typing.Sequence[str]:
+        """Returns column ids as strings."""
         return self.schema.names
 
     @property
@@ -182,10 +183,11 @@ class ArrayValue:
     def reversed(self) -> ArrayValue:
         return ArrayValue(nodes.ReversedNode(child=self.node))
 
-    def promote_offsets(self, col_id: str) -> ArrayValue:
+    def promote_offsets(self) -> Tuple[ArrayValue, str]:
         """
         Convenience function to promote copy of column offsets to a value column. Can be used to reset index.
         """
+        col_id = self._gen_namespaced_uid()
         if self.node.order_ambiguous and not (self.session._strictly_ordered):
             if not self.session._allows_ambiguity:
                 raise ValueError(
@@ -197,7 +199,10 @@ class ArrayValue:
                     bigframes.exceptions.AmbiguousWindowWarning,
                 )
 
-        return ArrayValue(nodes.PromoteOffsetsNode(child=self.node, col_id=col_id))
+        return (
+            ArrayValue(nodes.PromoteOffsetsNode(child=self.node, col_id=col_id)),
+            col_id,
+        )
 
     def concat(self, other: typing.Sequence[ArrayValue]) -> ArrayValue:
         """Append together multiple ArrayValue objects."""
@@ -205,13 +210,19 @@ class ArrayValue:
             nodes.ConcatNode(children=tuple([self.node, *[val.node for val in other]]))
         )
 
-    def compute_values(self, assignments: Sequence[Tuple[ex.Expression, str]]):
-        return ArrayValue(
-            nodes.ProjectionNode(child=self.node, assignments=tuple(assignments))
+    def compute_values(self, assignments: Sequence[ex.Expression]):
+        col_ids = self._gen_namespaced_uids(len(assignments))
+        ex_id_pairs = tuple((ex, id) for ex, id in zip(assignments, col_ids))
+        return (
+            ArrayValue(nodes.ProjectionNode(child=self.node, assignments=ex_id_pairs)),
+            col_ids,
         )
 
-    def project_to_id(self, expression: ex.Expression, output_id: str):
-        return self.compute_values(((expression, output_id),))
+    def project_to_id(self, expression: ex.Expression):
+        array_val, ids = self.compute_values(
+            [expression],
+        )
+        return array_val, ids[0]
 
     def assign(self, source_id: str, destination_id: str) -> ArrayValue:
         if destination_id in self.column_ids:  # Mutate case
@@ -234,19 +245,22 @@ class ArrayValue:
 
     def create_constant(
         self,
-        destination_id: str,
         value: typing.Any,
         dtype: typing.Optional[bigframes.dtypes.Dtype],
-    ) -> ArrayValue:
+    ) -> Tuple[ArrayValue, str]:
+        destination_id = self._gen_namespaced_uid()
         if pandas.isna(value):
             # Need to assign a data type when value is NaN.
             dtype = dtype or bigframes.dtypes.DEFAULT_DTYPE
 
-        return ArrayValue(
-            nodes.ProjectionNode(
-                child=self.node,
-                assignments=((ex.const(value, dtype), destination_id),),
-            )
+        return (
+            ArrayValue(
+                nodes.ProjectionNode(
+                    child=self.node,
+                    assignments=((ex.const(value, dtype), destination_id),),
+                )
+            ),
+            destination_id,
         )
 
     def select_columns(self, column_ids: typing.Sequence[str]) -> ArrayValue:
@@ -297,11 +311,10 @@ class ArrayValue:
         column_name: str,
         op: agg_ops.UnaryWindowOp,
         window_spec: WindowSpec,
-        output_name=None,
         *,
         never_skip_nulls=False,
         skip_reproject_unsafe: bool = False,
-    ) -> ArrayValue:
+    ) -> Tuple[ArrayValue, str]:
         """
         Creates a new expression based on this expression with unary operation applied to one column.
         column_name: the id of the input column present in the expression
@@ -324,16 +337,20 @@ class ArrayValue:
                         bigframes.exceptions.AmbiguousWindowWarning,
                     )
 
-        return ArrayValue(
-            nodes.WindowOpNode(
-                child=self.node,
-                column_name=column_name,
-                op=op,
-                window_spec=window_spec,
-                output_name=output_name,
-                never_skip_nulls=never_skip_nulls,
-                skip_reproject_unsafe=skip_reproject_unsafe,
-            )
+        output_name = self._gen_namespaced_uid()
+        return (
+            ArrayValue(
+                nodes.WindowOpNode(
+                    child=self.node,
+                    column_name=column_name,
+                    op=op,
+                    window_spec=window_spec,
+                    output_name=output_name,
+                    never_skip_nulls=never_skip_nulls,
+                    skip_reproject_unsafe=skip_reproject_unsafe,
+                )
+            ),
+            output_name,
         )
 
     def _reproject_to_table(self) -> ArrayValue:
@@ -410,3 +427,21 @@ class ArrayValue:
 
     def get_offset_for_name(self, name: str):
         return self.schema.names.index(name)
+
+    # Deterministically generate namespaced ids for new variables
+    # These new ids are only unique within the current namespace.
+    # Many operations, such as joins, create new namespaces. See: BigFrameNode.defines_namespace
+    # When migrating to integer ids, these will generate the next available integer, in order to densely pack ids
+    # this will help represent variables sets as compact bitsets
+    def _gen_namespaced_uid(self) -> str:
+        return self._gen_namespaced_uids(1)[0]
+
+    def _gen_namespaced_uids(self, n: int) -> List[str]:
+        i = len(self.node.defined_variables)
+        genned_ids: List[str] = []
+        while len(genned_ids) < n:
+            attempted_id = f"col_{i}"
+            if attempted_id not in self.node.defined_variables:
+                genned_ids.append(attempted_id)
+            i = i + 1
+        return genned_ids

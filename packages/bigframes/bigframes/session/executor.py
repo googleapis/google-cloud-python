@@ -84,7 +84,9 @@ class BigQueryCachingExecutor:
         Convert an ArrayValue to a sql query that will yield its value.
         """
         if offset_column:
-            array_value = array_value.promote_offsets(offset_column)
+            array_value, internal_offset_col = array_value.promote_offsets()
+            col_id_overrides = dict(col_id_overrides)
+            col_id_overrides[internal_offset_col] = offset_column
         node = (
             self._get_optimized_plan(array_value.node)
             if enable_cache
@@ -364,12 +366,12 @@ class BigQueryCachingExecutor:
                 "Caching with offsets only supported in strictly ordered mode."
             )
         offset_column = bigframes.core.guid.generate_guid("bigframes_offsets")
-        node_w_offsets = array_value.promote_offsets(offset_column).node
-        sql = self.compiler.compile_unordered(self._get_optimized_plan(node_w_offsets))
+        w_offsets, offset_column = array_value.promote_offsets()
+        sql = self.compiler.compile_unordered(self._get_optimized_plan(w_offsets.node))
 
         tmp_table = self._sql_as_cached_temp_table(
             sql,
-            node_w_offsets.schema.to_bigquery(),
+            w_offsets.schema.to_bigquery(),
             cluster_cols=[offset_column],
         )
         cached_replacement = array_value.as_cached(

@@ -46,10 +46,9 @@ def test_session_aware_caching_project_filter():
     """
     Test that if a node is filtered by a column, the node is cached pre-filter and clustered by the filter column.
     """
-    session_objects = [LEAF, LEAF.create_constant("col_c", 4, pd.Int64Dtype())]
-    target = LEAF.create_constant("col_c", 4, pd.Int64Dtype()).filter(
-        ops.gt_op.as_expr("col_a", ex.const(3))
-    )
+    session_objects = [LEAF, LEAF.create_constant(4, pd.Int64Dtype())[0]]
+    target, _ = LEAF.create_constant(4, pd.Int64Dtype())
+    target = target.filter(ops.gt_op.as_expr("col_a", ex.const(3)))
     result, cluster_cols = planner.session_aware_cache_plan(
         target.node, [obj.node for obj in session_objects]
     )
@@ -61,14 +60,16 @@ def test_session_aware_caching_project_multi_filter():
     """
     Test that if a node is filtered by multiple columns, all of them are in the cluster cols
     """
-    session_objects = [LEAF, LEAF.create_constant("col_c", 4, pd.Int64Dtype())]
+    obj1 = LEAF
+    obj2, _ = LEAF.create_constant(4, pd.Int64Dtype())
+    session_objects = [obj1, obj2]
     predicate_1a = ops.gt_op.as_expr("col_a", ex.const(3))
     predicate_1b = ops.lt_op.as_expr("col_a", ex.const(55))
     predicate_1 = ops.and_op.as_expr(predicate_1a, predicate_1b)
     predicate_3 = ops.eq_op.as_expr("col_b", ex.const(1))
     target = (
         LEAF.filter(predicate_1)
-        .create_constant("col_c", 4, pd.Int64Dtype())
+        .create_constant(4, pd.Int64Dtype())[0]
         .filter(predicate_3)
     )
     result, cluster_cols = planner.session_aware_cache_plan(
@@ -84,8 +85,8 @@ def test_session_aware_caching_unusable_filter():
 
     Most filters with multiple column references cannot be used for scan pruning, as they cannot be converted to fixed value ranges.
     """
-    session_objects = [LEAF, LEAF.create_constant("col_c", 4, pd.Int64Dtype())]
-    target = LEAF.create_constant("col_c", 4, pd.Int64Dtype()).filter(
+    session_objects = [LEAF, LEAF.create_constant(4, pd.Int64Dtype())[0]]
+    target = LEAF.create_constant(4, pd.Int64Dtype())[0].filter(
         ops.gt_op.as_expr("col_a", "col_b")
     )
     result, cluster_cols = planner.session_aware_cache_plan(
@@ -101,12 +102,10 @@ def test_session_aware_caching_fork_after_window_op():
 
     Windowing is expensive, so caching should always compute the window function, in order to avoid later recomputation.
     """
-    other = LEAF.promote_offsets("offsets_col").create_constant(
-        "col_d", 5, pd.Int64Dtype()
-    )
+    other = LEAF.promote_offsets()[0].create_constant(5, pd.Int64Dtype())[0]
     target = (
-        LEAF.promote_offsets("offsets_col")
-        .create_constant("col_c", 4, pd.Int64Dtype())
+        LEAF.promote_offsets()[0]
+        .create_constant(4, pd.Int64Dtype())[0]
         .filter(
             ops.eq_op.as_expr("col_a", ops.add_op.as_expr(ex.const(4), ex.const(3)))
         )
@@ -117,5 +116,5 @@ def test_session_aware_caching_fork_after_window_op():
             other.node,
         ],
     )
-    assert result == LEAF.promote_offsets("offsets_col").node
+    assert result == LEAF.promote_offsets()[0].node
     assert cluster_cols == ["col_a"]

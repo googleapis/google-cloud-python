@@ -3457,7 +3457,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         }
 
         if ordering_id is not None:
-            array_value = array_value.promote_offsets(ordering_id)
+            array_value, internal_ordering_id = array_value.promote_offsets()
+            id_overrides[internal_ordering_id] = ordering_id
         return array_value, id_overrides
 
     def map(self, func, na_action: Optional[str] = None) -> DataFrame:

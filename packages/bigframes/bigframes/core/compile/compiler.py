@@ -110,7 +110,7 @@ class Compiler:
         )
         used_columns = (
             *node.schema.names,
-            *node.hidden_columns,
+            *node._hidden_columns,
         )
         # Physical schema might include unused columns, unsupported datatypes like JSON
         physical_schema = ibis.backends.bigquery.BigQuerySchema.to_ibis(
@@ -127,18 +127,20 @@ class Compiler:
                 raise ValueError(
                     "Cannot use partially ordered cached value. Result requires total ordering information."
                 )
-            return compiled.OrderedIR(
+            ir = compiled.OrderedIR(
                 ibis_table,
                 columns=tuple(
                     bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
                         ibis_table[col]
                     )
-                    for col in node.schema.names
+                    for col in [*node.schema.names, *node._hidden_columns]
                 ),
                 ordering=node.ordering,
-                hidden_ordering_columns=[ibis_table[c] for c in node.hidden_columns],
             )
-
+            ir = ir._select(
+                tuple(ir._get_ibis_column(name) for name in node.schema.names)
+            )
+            return ir
         else:
             return compiled.UnorderedIR(
                 ibis_table,
