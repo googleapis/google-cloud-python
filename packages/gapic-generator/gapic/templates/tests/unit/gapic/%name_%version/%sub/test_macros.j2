@@ -414,12 +414,11 @@ def test_{{ method.name|snake_case }}_routing_parameters():
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
+        _, args, kw = call.mock_calls[0]
         assert args[0] == request
 
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw['metadata']
+        expected_headers = {{ method.routing_rule.resolve(method.routing_rule, routing_param.sample_request) }}
+        assert gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw['metadata']
     {% endfor %}
 {% endif %}
 
