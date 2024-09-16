@@ -28,12 +28,14 @@ __protobuf__ = proto.module(
         "MaxPodsConstraint",
         "OperationMetadata",
         "NodeTaint",
+        "NodeKubeletConfig",
         "Fleet",
         "LoggingConfig",
         "LoggingComponentConfig",
         "MonitoringConfig",
         "ManagedPrometheusConfig",
         "BinaryAuthorization",
+        "SecurityPostureConfig",
     },
 )
 
@@ -263,6 +265,96 @@ class NodeTaint(proto.Message):
     )
 
 
+class NodeKubeletConfig(proto.Message):
+    r"""Configuration for node pool kubelet options.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        insecure_kubelet_readonly_port_enabled (bool):
+            Optional. Enable the insecure kubelet read
+            only port.
+        cpu_manager_policy (str):
+            Optional. Control the CPU management policy on the node. See
+            https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/
+
+            The following values are allowed.
+
+            -  "none": the default, which represents the existing
+               scheduling behavior.
+            -  "static": allows pods with certain resource
+               characteristics to be granted increased CPU affinity and
+               exclusivity on the node. The default value is 'none' if
+               unspecified.
+
+            This field is a member of `oneof`_ ``_cpu_manager_policy``.
+        cpu_cfs_quota (bool):
+            Optional. Enable CPU CFS quota enforcement
+            for containers that specify CPU limits.
+
+            This option is enabled by default which makes
+            kubelet use CFS quota
+            (https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt)
+            to enforce container CPU limits. Otherwise, CPU
+            limits will not be enforced at all.
+
+            Disable this option to mitigate CPU throttling
+            problems while still having your pods to be in
+            Guaranteed QoS class by specifying the CPU
+            limits.
+
+            The default value is 'true' if unspecified.
+
+            This field is a member of `oneof`_ ``_cpu_cfs_quota``.
+        cpu_cfs_quota_period (str):
+            Optional. Set the CPU CFS quota period value
+            'cpu.cfs_period_us'.
+
+            The string must be a sequence of decimal numbers, each with
+            optional fraction and a unit suffix, such as "300ms". Valid
+            time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+            The value must be a positive duration.
+
+            The default value is '100ms' if unspecified.
+
+            This field is a member of `oneof`_ ``_cpu_cfs_quota_period``.
+        pod_pids_limit (int):
+            Optional. Set the Pod PID limits. See
+            https://kubernetes.io/docs/concepts/policy/pid-limiting/#pod-pid-limits
+
+            Controls the maximum number of processes allowed
+            to run in a pod. The value must be greater than
+            or equal to 1024 and less than 4194304.
+
+            This field is a member of `oneof`_ ``_pod_pids_limit``.
+    """
+
+    insecure_kubelet_readonly_port_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    cpu_manager_policy: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    cpu_cfs_quota: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+        optional=True,
+    )
+    cpu_cfs_quota_period: str = proto.Field(
+        proto.STRING,
+        number=4,
+        optional=True,
+    )
+    pod_pids_limit: int = proto.Field(
+        proto.INT64,
+        number=5,
+        optional=True,
+    )
+
+
 class Fleet(proto.Message):
     r"""Fleet related configuration.
 
@@ -411,6 +503,41 @@ class BinaryAuthorization(proto.Message):
         proto.ENUM,
         number=1,
         enum=EvaluationMode,
+    )
+
+
+class SecurityPostureConfig(proto.Message):
+    r"""SecurityPostureConfig defines the flags needed to
+    enable/disable features for the Security Posture API.
+
+    Attributes:
+        vulnerability_mode (google.cloud.gke_multicloud_v1.types.SecurityPostureConfig.VulnerabilityMode):
+            Sets which mode to use for vulnerability
+            scanning.
+    """
+
+    class VulnerabilityMode(proto.Enum):
+        r"""VulnerabilityMode defines enablement mode for vulnerability
+        scanning.
+
+        Values:
+            VULNERABILITY_MODE_UNSPECIFIED (0):
+                Default value not specified.
+            VULNERABILITY_DISABLED (1):
+                Disables vulnerability scanning on the
+                cluster.
+            VULNERABILITY_ENTERPRISE (2):
+                Applies the Security Posture's vulnerability
+                on cluster Enterprise level features.
+        """
+        VULNERABILITY_MODE_UNSPECIFIED = 0
+        VULNERABILITY_DISABLED = 1
+        VULNERABILITY_ENTERPRISE = 2
+
+    vulnerability_mode: VulnerabilityMode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=VulnerabilityMode,
     )
 
 

@@ -152,8 +152,10 @@ from .common_resources import (
     ManagedPrometheusConfig,
     MaxPodsConstraint,
     MonitoringConfig,
+    NodeKubeletConfig,
     NodeTaint,
     OperationMetadata,
+    SecurityPostureConfig,
     WorkloadIdentityConfig,
 )
 
@@ -284,7 +286,9 @@ __all__ = (
     "ManagedPrometheusConfig",
     "MaxPodsConstraint",
     "MonitoringConfig",
+    "NodeKubeletConfig",
     "NodeTaint",
     "OperationMetadata",
+    "SecurityPostureConfig",
     "WorkloadIdentityConfig",
 )

@@ -4992,6 +4992,7 @@ def test_create_attached_cluster_rest(request_type):
             "kubernetes_secret": {"name": "name_value", "namespace": "namespace_value"}
         },
         "binary_authorization": {"evaluation_mode": 1},
+        "security_posture_config": {"vulnerability_mode": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5440,6 +5441,7 @@ def test_update_attached_cluster_rest(request_type):
             "kubernetes_secret": {"name": "name_value", "namespace": "namespace_value"}
         },
         "binary_authorization": {"evaluation_mode": 1},
+        "security_posture_config": {"vulnerability_mode": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

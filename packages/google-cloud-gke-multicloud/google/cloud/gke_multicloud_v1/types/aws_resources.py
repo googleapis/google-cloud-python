@@ -735,6 +735,8 @@ class AwsNodePool(proto.Message):
         management (google.cloud.gke_multicloud_v1.types.AwsNodeManagement):
             Optional. The Management configuration for
             this node pool.
+        kubelet_config (google.cloud.gke_multicloud_v1.types.NodeKubeletConfig):
+            Optional. Node kubelet configs.
         update_settings (google.cloud.gke_multicloud_v1.types.UpdateSettings):
             Optional. Update settings control the speed
             and disruption of the update.
@@ -842,6 +844,11 @@ class AwsNodePool(proto.Message):
         proto.MESSAGE,
         number=30,
         message="AwsNodeManagement",
+    )
+    kubelet_config: common_resources.NodeKubeletConfig = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message=common_resources.NodeKubeletConfig,
     )
     update_settings: "UpdateSettings" = proto.Field(
         proto.MESSAGE,
@@ -1279,7 +1286,7 @@ class AwsProxyConfig(proto.Message):
 
             The secret must be a JSON encoded proxy configuration as
             described in
-            https://cloud.google.com/anthos/clusters/docs/multi-cloud/aws/how-to/use-a-proxy#create_a_proxy_configuration_file
+            https://cloud.google.com/kubernetes-engine/multi-cloud/docs/aws/how-to/use-a-proxy#create_a_proxy_configuration_file
         secret_version (str):
             The version string of the AWS Secret Manager
             secret that contains the HTTP(S) proxy
