@@ -98,3 +98,11 @@ class InvalidType(DefaultCredentialsError, TypeError):
 
 class OSError(DefaultCredentialsError, EnvironmentError):
     """Used to wrap EnvironmentError(OSError after python3.3)."""
+
+
+class TimeoutError(GoogleAuthError):
+    """Used to indicate a timeout error occurred during an HTTP request."""
+
+
+class ResponseError(GoogleAuthError):
+    """Used to indicate an error occurred when reading an HTTP response."""

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import random
 import time
 
@@ -38,9 +39,8 @@ an HTTP request.
 """
 
 
-class ExponentialBackoff:
-    """An exponential backoff iterator. This can be used in a for loop to
-    perform requests with exponential backoff.
+class _BaseExponentialBackoff:
+    """An exponential backoff iterator base class.
 
     Args:
         total_attempts Optional[int]:
@@ -84,9 +84,40 @@ class ExponentialBackoff:
         self._multiplier = multiplier
         self._backoff_count = 0
 
-    def __iter__(self):
+    @property
+    def total_attempts(self):
+        """The total amount of backoff attempts that will be made."""
+        return self._total_attempts
+
+    @property
+    def backoff_count(self):
+        """The current amount of backoff attempts that have been made."""
+        return self._backoff_count
+
+    def _reset(self):
         self._backoff_count = 0
         self._current_wait_in_seconds = self._initial_wait_seconds
+
+    def _calculate_jitter(self):
+        jitter_variance = self._current_wait_in_seconds * self._randomization_factor
+        jitter = random.uniform(
+            self._current_wait_in_seconds - jitter_variance,
+            self._current_wait_in_seconds + jitter_variance,
+        )
+
+        return jitter
+
+
+class ExponentialBackoff(_BaseExponentialBackoff):
+    """An exponential backoff iterator. This can be used in a for loop to
+    perform requests with exponential backoff.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(ExponentialBackoff, self).__init__(*args, **kwargs)
+
+    def __iter__(self):
+        self._reset()
         return self
 
     def __next__(self):
@@ -97,23 +128,37 @@ class ExponentialBackoff:
         if self._backoff_count <= 1:
             return self._backoff_count
 
-        jitter_variance = self._current_wait_in_seconds * self._randomization_factor
-        jitter = random.uniform(
-            self._current_wait_in_seconds - jitter_variance,
-            self._current_wait_in_seconds + jitter_variance,
-        )
+        jitter = self._calculate_jitter()
 
         time.sleep(jitter)
 
         self._current_wait_in_seconds *= self._multiplier
         return self._backoff_count
 
-    @property
-    def total_attempts(self):
-        """The total amount of backoff attempts that will be made."""
-        return self._total_attempts
 
-    @property
-    def backoff_count(self):
-        """The current amount of backoff attempts that have been made."""
+class AsyncExponentialBackoff(_BaseExponentialBackoff):
+    """An async exponential backoff iterator. This can be used in a for loop to
+    perform async requests with exponential backoff.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(AsyncExponentialBackoff, self).__init__(*args, **kwargs)
+
+    def __aiter__(self):
+        self._reset()
+        return self
+
+    async def __anext__(self):
+        if self._backoff_count >= self._total_attempts:
+            raise StopAsyncIteration
+        self._backoff_count += 1
+
+        if self._backoff_count <= 1:
+            return self._backoff_count
+
+        jitter = self._calculate_jitter()
+
+        await asyncio.sleep(jitter)
+
+        self._current_wait_in_seconds *= self._multiplier
         return self._backoff_count
