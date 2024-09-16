@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-routeoptimization-v0.1.2...google-maps-routeoptimization-v0.1.3) (2024-09-16)
+
+
+### Features
+
+* [google-maps-routeoptimization] minor fields and documentation update ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+* A new field `cost_per_kilometer_below_soft_max` is added to message `.google.maps.routeoptimization.v1.DistanceLimit` ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+* A new field `route_modifiers` is added to message `.google.maps.routeoptimization.v1.Vehicle` ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+* A new message `RouteModifiers` is added ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+
+
+### Documentation
+
+* A comment for enum value `CODE_UNSPECIFIED` in enum `Code` is changed ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+* A comment for enum value `DEFAULT_SOLVE` in enum `SolvingMode` is changed ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+* A comment for enum value `RELAX_VISIT_TIMES_AND_SEQUENCE_AFTER_THRESHOLD` in enum `Level` is changed ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+* A comment for field `code` in message `.google.maps.routeoptimization.v1.OptimizeToursValidationError` is changed ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+* A comment for field `reasons` in message `.google.maps.routeoptimization.v1.SkippedShipment` is changed ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+* A comment for field `validation_errors` in message `.google.maps.routeoptimization.v1.OptimizeToursResponse` is changed ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+* A comment for message `OptimizeToursValidationError` is changed ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+* A comment for message `TimeWindow` is changed ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+* A comment for method `BatchOptimizeTours` in service `RouteOptimization` is changed ([366f6f1](https://github.com/googleapis/google-cloud-python/commit/366f6f10e29a9d9cc307cbd1f16deb4decf26050))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-routeoptimization-v0.1.1...google-maps-routeoptimization-v0.1.2) (2024-07-30)
 
 

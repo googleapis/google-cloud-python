@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.11.0...google-cloud-dataproc-v5.12.0) (2024-09-16)
+
+
+### Features
+
+* [google-cloud-dataproc] Add FLINK metric source for Dataproc Metric Source ([2402404](https://github.com/googleapis/google-cloud-python/commit/2402404a5ac48c8289a2dbc24fcc85a1eebe4224))
+* [google-cloud-dataproc] Add kms key input for create cluster API ([2402404](https://github.com/googleapis/google-cloud-python/commit/2402404a5ac48c8289a2dbc24fcc85a1eebe4224))
+* [google-cloud-dataproc] add resource reference for KMS keys and fix comments ([2402404](https://github.com/googleapis/google-cloud-python/commit/2402404a5ac48c8289a2dbc24fcc85a1eebe4224))
+* [google-cloud-dataproc] Add unreachable output field for LIST batch templates API ([2402404](https://github.com/googleapis/google-cloud-python/commit/2402404a5ac48c8289a2dbc24fcc85a1eebe4224))
+* [google-cloud-dataproc] Add unreachable output field for LIST jobs API ([2402404](https://github.com/googleapis/google-cloud-python/commit/2402404a5ac48c8289a2dbc24fcc85a1eebe4224))
+* [google-cloud-dataproc] Add unreachable output field for LIST workflow template API ([2402404](https://github.com/googleapis/google-cloud-python/commit/2402404a5ac48c8289a2dbc24fcc85a1eebe4224))
+* [google-cloud-dataproc] Allow flink and trino job support for workflow templates API ([2402404](https://github.com/googleapis/google-cloud-python/commit/2402404a5ac48c8289a2dbc24fcc85a1eebe4224))
+* [google-cloud-dataproc] Allow flink job support for jobs ([2402404](https://github.com/googleapis/google-cloud-python/commit/2402404a5ac48c8289a2dbc24fcc85a1eebe4224))
+
 ## [5.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.10.2...google-cloud-dataproc-v5.11.0) (2024-09-03)
 
 

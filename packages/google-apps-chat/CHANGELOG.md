@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.10...google-apps-chat-v0.1.11) (2024-09-16)
+
+
+### Features
+
+* If you're a domain administrator or a delegated administrator, you can now include the `useAdminAccess` parameter when you call the Chat API with your administrator privileges with the following methods to manage Chat spaces and memberships in your Workspace organization: ([a20b1e5](https://github.com/googleapis/google-cloud-python/commit/a20b1e508068845c36b1701836ba17a699cb10ac))
+
+
+### Documentation
+
+* A comment for field `filter` in message `.google.chat.v1.ListMembershipsRequest` is updated to support `!=` operator ([a20b1e5](https://github.com/googleapis/google-cloud-python/commit/a20b1e508068845c36b1701836ba17a699cb10ac))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.9...google-apps-chat-v0.1.10) (2024-09-05)
 
 

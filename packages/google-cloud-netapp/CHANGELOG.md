@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.13...google-cloud-netapp-v0.3.14) (2024-09-16)
+
+
+### Features
+
+* A new field 'allow_auto_tiering' in message 'google.cloud.netapp.v1.StoragePool' is added ([5e3f4ae](https://github.com/googleapis/google-cloud-python/commit/5e3f4aebeb2f79efb1992ae623eb1aea86de2b0c))
+* A new field 'cold_tier_size_gib' in message 'google.cloud.netapp.v1.Volume' is added ([5e3f4ae](https://github.com/googleapis/google-cloud-python/commit/5e3f4aebeb2f79efb1992ae623eb1aea86de2b0c))
+* A new message 'google.cloud.netapp.v1.SwitchActiveReplicaZoneRequest' is added ([5e3f4ae](https://github.com/googleapis/google-cloud-python/commit/5e3f4aebeb2f79efb1992ae623eb1aea86de2b0c))
+* **api:** [google-cloud-netapp] A new rpc 'SwitchActiveReplicaZone' is added to service 'google.cloud.netapp.v1.NetApp' ([5e3f4ae](https://github.com/googleapis/google-cloud-python/commit/5e3f4aebeb2f79efb1992ae623eb1aea86de2b0c))
+
 ## [0.3.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.12...google-cloud-netapp-v0.3.13) (2024-07-31)
 
 
