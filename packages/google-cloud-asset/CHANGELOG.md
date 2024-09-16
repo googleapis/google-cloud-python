@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.26.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.26.3...google-cloud-asset-v3.26.4) (2024-09-16)
+
+
+### Documentation
+
+* [google-cloud-asset] Comments are clarified for certain fields in messages `QueryAssetsResponse` and `ResourceSearchResult` ([#13076](https://github.com/googleapis/google-cloud-python/issues/13076)) ([35b2c45](https://github.com/googleapis/google-cloud-python/commit/35b2c456c6791bc47ffe894f3ef966558cb6c98e))
+
 ## [3.26.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.26.2...google-cloud-asset-v3.26.3) (2024-07-30)
 
 

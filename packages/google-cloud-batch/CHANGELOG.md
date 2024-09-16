@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.28](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.27...google-cloud-batch-v0.17.28) (2024-09-16)
+
+
+### Features
+
+* [google-cloud-batch] A new value `CANCELLATION_IN_PROGRESS` is added to enum `State` ([#13074](https://github.com/googleapis/google-cloud-python/issues/13074)) ([76267b2](https://github.com/googleapis/google-cloud-python/commit/76267b2b8998fd2a3602ebf4d12d2aaa30a90cde))
+
 ## [0.17.27](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.26...google-cloud-batch-v0.17.27) (2024-09-03)
 
 
