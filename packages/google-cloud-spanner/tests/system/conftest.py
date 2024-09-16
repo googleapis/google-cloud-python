@@ -66,6 +66,15 @@ def not_google_standard_sql(database_dialect):
 
 
 @pytest.fixture(scope="session")
+def not_postgres_emulator(database_dialect):
+    if database_dialect == DatabaseDialect.POSTGRESQL and _helpers.USE_EMULATOR:
+        pytest.skip(
+            f"{_helpers.DATABASE_DIALECT_ENVVAR} set to POSTGRESQL and {_helpers.USE_EMULATOR_ENVVAR} set in "
+            "environment."
+        )
+
+
+@pytest.fixture(scope="session")
 def database_dialect():
     return (
         DatabaseDialect[_helpers.DATABASE_DIALECT]

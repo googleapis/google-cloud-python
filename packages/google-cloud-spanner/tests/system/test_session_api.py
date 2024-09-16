@@ -1195,7 +1195,9 @@ def test_transaction_batch_update_w_parent_span(
         assert span.parent.span_id == span_list[-1].context.span_id
 
 
-def test_execute_partitioned_dml(sessions_database, database_dialect):
+def test_execute_partitioned_dml(
+    not_postgres_emulator, sessions_database, database_dialect
+):
     # [START spanner_test_dml_partioned_dml_update]
     sd = _sample_data
     param_types = spanner_v1.param_types
@@ -2420,7 +2422,7 @@ def test_execute_sql_w_json_bindings(
 
 
 def test_execute_sql_w_jsonb_bindings(
-    not_emulator, not_google_standard_sql, sessions_database, database_dialect
+    not_google_standard_sql, sessions_database, database_dialect
 ):
     _bind_test_helper(
         sessions_database,
@@ -2432,7 +2434,7 @@ def test_execute_sql_w_jsonb_bindings(
 
 
 def test_execute_sql_w_oid_bindings(
-    not_emulator, not_google_standard_sql, sessions_database, database_dialect
+    not_google_standard_sql, sessions_database, database_dialect
 ):
     _bind_test_helper(
         sessions_database,

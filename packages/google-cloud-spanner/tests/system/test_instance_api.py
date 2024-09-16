@@ -84,7 +84,6 @@ def test_create_instance(
 
 
 def test_create_instance_with_processing_units(
-    not_emulator,
     if_create_instance,
     spanner_client,
     instance_config,

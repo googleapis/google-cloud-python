@@ -525,7 +525,9 @@ class Database(object):
         self._encryption_config = response.encryption_config
         self._encryption_info = response.encryption_info
         self._default_leader = response.default_leader
-        self._database_dialect = response.database_dialect
+        # Only update if the data is specific to avoid losing specificity.
+        if response.database_dialect != DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED:
+            self._database_dialect = response.database_dialect
         self._enable_drop_protection = response.enable_drop_protection
         self._reconciling = response.reconciling
 
