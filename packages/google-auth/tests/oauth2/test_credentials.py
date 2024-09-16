@@ -71,48 +71,6 @@ class TestCredentials(object):
         assert credentials.rapt_token == self.RAPT_TOKEN
         assert credentials.refresh_handler is None
 
-    def test__set_account_from_access_token_no_token(self):
-        credentials = self.make_credentials()
-        assert not credentials.token
-        assert not credentials.account
-
-        credentials._set_account_from_access_token(mock.Mock())
-        assert not credentials.account
-
-    def test__set_account_from_access_token_account_already_set(self):
-        credentials = self.make_credentials()
-        credentials.token = "fake-token"
-        credentials._account = "fake-account"
-
-        credentials._set_account_from_access_token(mock.Mock())
-        assert credentials.account == "fake-account"
-
-    def test__set_account_from_access_token_error_response(self):
-        credentials = self.make_credentials()
-        credentials.token = "fake-token"
-        assert not credentials.account
-
-        mock_response = mock.Mock()
-        mock_response.status = 400
-        mock_request = mock.Mock(return_value=mock_response)
-        credentials._set_account_from_access_token(mock_request)
-        assert not credentials.account
-
-    def test__set_account_from_access_token_success(self):
-        credentials = self.make_credentials()
-        credentials.token = "fake-token"
-        assert not credentials.account
-
-        mock_response = mock.Mock()
-        mock_response.status = 200
-        mock_response.data = (
-            b'{"aud": "aud", "sub": "sub", "scope": "scope", "email": "fake-account"}'
-        )
-
-        mock_request = mock.Mock(return_value=mock_response)
-        credentials._set_account_from_access_token(mock_request)
-        assert credentials.account == "fake-account"
-
     def test_get_cred_info(self):
         credentials = self.make_credentials()
         credentials._account = "fake-account"
@@ -205,15 +163,12 @@ class TestCredentials(object):
             "refresh is only supported in the default googleapis.com universe domain"
         )
 
-    @mock.patch.object(
-        credentials.Credentials, "_set_account_from_access_token", autospec=True
-    )
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
-    def test_refresh_success(self, unused_utcnow, refresh_grant, set_account):
+    def test_refresh_success(self, unused_utcnow, refresh_grant):
         token = "token"
         new_rapt_token = "new_rapt_token"
         expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
@@ -259,8 +214,6 @@ class TestCredentials(object):
         # expired)
         assert credentials.valid
 
-        set_account.assert_called_once()
-
     def test_refresh_no_refresh_token(self):
         request = mock.create_autospec(transport.Request)
         credentials_ = credentials.Credentials(token=None, refresh_token=None)
@@ -270,16 +223,13 @@ class TestCredentials(object):
 
         request.assert_not_called()
 
-    @mock.patch.object(
-        credentials.Credentials, "_set_account_from_access_token", autospec=True
-    )
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     def test_refresh_with_refresh_token_and_refresh_handler(
-        self, unused_utcnow, refresh_grant, set_account
+        self, unused_utcnow, refresh_grant
     ):
         token = "token"
         new_rapt_token = "new_rapt_token"
@@ -339,15 +289,8 @@ class TestCredentials(object):
         # higher priority.
         refresh_handler.assert_not_called()
 
-        set_account.assert_called_once()
-
-    @mock.patch.object(
-        credentials.Credentials, "_set_account_from_access_token", autospec=True
-    )
     @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
-    def test_refresh_with_refresh_handler_success_scopes(
-        self, unused_utcnow, set_account
-    ):
+    def test_refresh_with_refresh_handler_success_scopes(self, unused_utcnow):
         expected_expiry = datetime.datetime.min + datetime.timedelta(seconds=2800)
         refresh_handler = mock.Mock(return_value=("ACCESS_TOKEN", expected_expiry))
         scopes = ["email", "profile"]
@@ -371,17 +314,11 @@ class TestCredentials(object):
         assert creds.expiry == expected_expiry
         assert creds.valid
         assert not creds.expired
-        set_account.assert_called_once()
         # Confirm refresh handler called with the expected arguments.
         refresh_handler.assert_called_with(request, scopes=scopes)
 
-    @mock.patch.object(
-        credentials.Credentials, "_set_account_from_access_token", autospec=True
-    )
     @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
-    def test_refresh_with_refresh_handler_success_default_scopes(
-        self, unused_utcnow, set_account
-    ):
+    def test_refresh_with_refresh_handler_success_default_scopes(self, unused_utcnow):
         expected_expiry = datetime.datetime.min + datetime.timedelta(seconds=2800)
         original_refresh_handler = mock.Mock(
             return_value=("UNUSED_TOKEN", expected_expiry)
@@ -409,7 +346,6 @@ class TestCredentials(object):
         assert creds.expiry == expected_expiry
         assert creds.valid
         assert not creds.expired
-        set_account.assert_called_once()
         # default_scopes should be used since no developer provided scopes
         # are provided.
         refresh_handler.assert_called_with(request, scopes=default_scopes)
@@ -503,16 +439,13 @@ class TestCredentials(object):
         # Confirm refresh handler called with the expected arguments.
         refresh_handler.assert_called_with(request, scopes=scopes)
 
-    @mock.patch.object(
-        credentials.Credentials, "_set_account_from_access_token", autospec=True
-    )
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     def test_credentials_with_scopes_requested_refresh_success(
-        self, unused_utcnow, refresh_grant, set_account
+        self, unused_utcnow, refresh_grant
     ):
         scopes = ["email", "profile"]
         default_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
@@ -568,22 +501,18 @@ class TestCredentials(object):
         assert creds.has_scopes(scopes)
         assert creds.rapt_token == new_rapt_token
         assert creds.granted_scopes == scopes
-        set_account.assert_called_once()
 
         # Check that the credentials are valid (have a token and are not
         # expired.)
         assert creds.valid
 
-    @mock.patch.object(
-        credentials.Credentials, "_set_account_from_access_token", autospec=True
-    )
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     def test_credentials_with_only_default_scopes_requested(
-        self, unused_utcnow, refresh_grant, set_account
+        self, unused_utcnow, refresh_grant
     ):
         default_scopes = ["email", "profile"]
         token = "token"
@@ -637,22 +566,18 @@ class TestCredentials(object):
         assert creds.has_scopes(default_scopes)
         assert creds.rapt_token == new_rapt_token
         assert creds.granted_scopes == default_scopes
-        set_account.assert_called_once()
 
         # Check that the credentials are valid (have a token and are not
         # expired.)
         assert creds.valid
 
-    @mock.patch.object(
-        credentials.Credentials, "_set_account_from_access_token", autospec=True
-    )
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     def test_credentials_with_scopes_returned_refresh_success(
-        self, unused_utcnow, refresh_grant, set_account
+        self, unused_utcnow, refresh_grant
     ):
         scopes = ["email", "profile"]
         token = "token"
@@ -706,22 +631,18 @@ class TestCredentials(object):
         assert creds.has_scopes(scopes)
         assert creds.rapt_token == new_rapt_token
         assert creds.granted_scopes == scopes
-        set_account.assert_called_once()
 
         # Check that the credentials are valid (have a token and are not
         # expired.)
         assert creds.valid
 
-    @mock.patch.object(
-        credentials.Credentials, "_set_account_from_access_token", autospec=True
-    )
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     def test_credentials_with_only_default_scopes_requested_different_granted_scopes(
-        self, unused_utcnow, refresh_grant, set_account
+        self, unused_utcnow, refresh_grant
     ):
         default_scopes = ["email", "profile"]
         token = "token"
@@ -775,22 +696,18 @@ class TestCredentials(object):
         assert creds.has_scopes(default_scopes)
         assert creds.rapt_token == new_rapt_token
         assert creds.granted_scopes == ["email"]
-        set_account.assert_called_once()
 
         # Check that the credentials are valid (have a token and are not
         # expired.)
         assert creds.valid
 
-    @mock.patch.object(
-        credentials.Credentials, "_set_account_from_access_token", autospec=True
-    )
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     def test_credentials_with_scopes_refresh_different_granted_scopes(
-        self, unused_utcnow, refresh_grant, set_account
+        self, unused_utcnow, refresh_grant
     ):
         scopes = ["email", "profile"]
         scopes_returned = ["email"]
@@ -848,7 +765,6 @@ class TestCredentials(object):
         assert creds.has_scopes(scopes)
         assert creds.rapt_token == new_rapt_token
         assert creds.granted_scopes == scopes_returned
-        set_account.assert_called_once()
 
         # Check that the credentials are valid (have a token and are not
         # expired.)
