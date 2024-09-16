@@ -2027,8 +2027,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         self,
         *,
         axis: int | str = 0,
-        inplace: bool = False,
         how: str = "any",
+        subset: typing.Union[None, blocks.Label, Sequence[blocks.Label]] = None,
+        inplace: bool = False,
         ignore_index=False,
     ) -> DataFrame:
         if inplace:
@@ -2040,8 +2041,25 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         axis_n = utils.get_axis_number(axis)
 
+        if subset is not None and axis_n != 0:
+            raise NotImplementedError(
+                f"subset only supported when axis=0. {constants.FEEDBACK_LINK}"
+            )
+
         if axis_n == 0:
-            result = block_ops.dropna(self._block, self._block.value_columns, how=how)  # type: ignore
+            # subset needs to be converted into column IDs, not column labels.
+            if subset is None:
+                subset_ids = None
+            elif not utils.is_list_like(subset):
+                subset_ids = [id_ for id_ in self._block.label_to_col_id[subset]]
+            else:
+                subset_ids = [
+                    id_
+                    for label in subset
+                    for id_ in self._block.label_to_col_id[label]
+                ]
+
+            result = block_ops.dropna(self._block, self._block.value_columns, how=how, subset=subset_ids)  # type: ignore
             if ignore_index:
                 result = result.reset_index()
             return DataFrame(result)

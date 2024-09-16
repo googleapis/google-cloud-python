@@ -936,19 +936,24 @@ def test_assign_callable_lambda(scalars_dfs):
 
 @skip_legacy_pandas
 @pytest.mark.parametrize(
-    ("axis", "how", "ignore_index"),
+    ("axis", "how", "ignore_index", "subset"),
     [
-        (0, "any", False),
-        (0, "any", True),
-        (1, "any", False),
-        (1, "all", False),
+        (0, "any", False, None),
+        (0, "any", True, None),
+        (0, "all", False, ["bool_col", "time_col"]),
+        (0, "any", False, ["bool_col", "time_col"]),
+        (0, "all", False, "time_col"),
+        (1, "any", False, None),
+        (1, "all", False, None),
     ],
 )
-def test_df_dropna(scalars_dfs, axis, how, ignore_index):
+def test_df_dropna(scalars_dfs, axis, how, ignore_index, subset):
     scalars_df, scalars_pandas_df = scalars_dfs
-    df = scalars_df.dropna(axis=axis, how=how, ignore_index=ignore_index)
+    df = scalars_df.dropna(axis=axis, how=how, ignore_index=ignore_index, subset=subset)
     bf_result = df.to_pandas()
-    pd_result = scalars_pandas_df.dropna(axis=axis, how=how, ignore_index=ignore_index)
+    pd_result = scalars_pandas_df.dropna(
+        axis=axis, how=how, ignore_index=ignore_index, subset=subset
+    )
 
     # Pandas uses int64 instead of Int64 (nullable) dtype.
     pd_result.index = pd_result.index.astype(pd.Int64Dtype())

@@ -1614,6 +1614,8 @@ class DataFrame(generic.NDFrame):
         *,
         axis: int | str = 0,
         how: str = "any",
+        subset=None,
+        inplace: bool = False,
         ignore_index=False,
     ) -> DataFrame:
         """Remove missing values.
@@ -1662,6 +1664,15 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [3 rows x 3 columns]
 
+        Define in which columns to look for missing values.
+
+            >>> df.dropna(subset=['name', 'toy'])
+                   name        toy        born
+            1    Batman  Batmobile  1940-04-25
+            2  Catwoman   Bullwhip        <NA>
+            <BLANKLINE>
+            [2 rows x 3 columns]
+
         Args:
             axis ({0 or 'index', 1 or 'columns'}, default 'columns'):
                 Determine if rows or columns which contain missing values are
@@ -1675,6 +1686,12 @@ class DataFrame(generic.NDFrame):
 
                 * 'any' : If any NA values are present, drop that row or column.
                 * 'all' : If all values are NA, drop that row or column.
+            subset (column label or sequence of labels, optional):
+                Labels along other axis to consider, e.g. if you are dropping
+                rows these would be a list of columns to include.
+                Only supports axis=0.
+            inplace (bool, default ``False``):
+                Not supported.
             ignore_index (bool, default ``False``):
                 If ``True``, the resulting axis will be labeled 0, 1, …, n - 1.
 

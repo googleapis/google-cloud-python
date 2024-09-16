@@ -20,6 +20,15 @@ import bigframes.dataframe
 from . import resources
 
 
+def test_dataframe_dropna_axis_1_subset_not_implememented(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    dataframe = resources.create_dataframe(monkeypatch)
+
+    with pytest.raises(NotImplementedError, match="subset"):
+        dataframe.dropna(axis=1, subset=["col1", "col2"])
+
+
 def test_dataframe_repr_with_uninitialized_object():
     """Ensures DataFrame.__init__ can be paused in a visual debugger without crashing.
 
