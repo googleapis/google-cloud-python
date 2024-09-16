@@ -108,6 +108,8 @@ from .types.space import (
     GetSpaceRequest,
     ListSpacesRequest,
     ListSpacesResponse,
+    SearchSpacesRequest,
+    SearchSpacesResponse,
     Space,
     UpdateSpaceRequest,
 )
@@ -201,6 +203,8 @@ __all__ = (
     "ReactionCreatedEventData",
     "ReactionDeletedEventData",
     "RichLinkMetadata",
+    "SearchSpacesRequest",
+    "SearchSpacesResponse",
     "SetUpSpaceRequest",
     "SlashCommand",
     "SlashCommandMetadata",

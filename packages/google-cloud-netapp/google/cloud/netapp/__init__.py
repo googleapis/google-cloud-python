@@ -104,6 +104,7 @@ from google.cloud.netapp_v1.types.storage_pool import (
     ListStoragePoolsRequest,
     ListStoragePoolsResponse,
     StoragePool,
+    SwitchActiveReplicaZoneRequest,
     UpdateStoragePoolRequest,
 )
 from google.cloud.netapp_v1.types.volume import (
@@ -203,6 +204,7 @@ __all__ = (
     "ListStoragePoolsRequest",
     "ListStoragePoolsResponse",
     "StoragePool",
+    "SwitchActiveReplicaZoneRequest",
     "UpdateStoragePoolRequest",
     "BackupConfig",
     "CreateVolumeRequest",

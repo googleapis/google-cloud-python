@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
         "CreateStoragePoolRequest",
         "UpdateStoragePoolRequest",
         "DeleteStoragePoolRequest",
+        "SwitchActiveReplicaZoneRequest",
         "StoragePool",
     },
 )
@@ -199,6 +200,21 @@ class DeleteStoragePoolRequest(proto.Message):
     )
 
 
+class SwitchActiveReplicaZoneRequest(proto.Message):
+    r"""SwitchActiveReplicaZoneRequest switch the active/replica zone
+    for a regional storagePool.
+
+    Attributes:
+        name (str):
+            Required. Name of the storage pool
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class StoragePool(proto.Message):
     r"""StoragePool is a container for volumes with a service level
     and capacity. Volumes can be created in a pool of sufficient
@@ -255,6 +271,11 @@ class StoragePool(proto.Message):
             AD or DNS server from other regions.
 
             This field is a member of `oneof`_ ``_global_access_allowed``.
+        allow_auto_tiering (bool):
+            Optional. True if the storage pool supports
+            Auto Tiering enabled volumes. Default is false.
+            Auto-tiering can be enabled after storage pool
+            creation but it can't be disabled once enabled.
         replica_zone (str):
             Optional. Specifies the replica zone for
             regional storagePool.
@@ -366,6 +387,10 @@ class StoragePool(proto.Message):
         proto.BOOL,
         number=17,
         optional=True,
+    )
+    allow_auto_tiering: bool = proto.Field(
+        proto.BOOL,
+        number=18,
     )
     replica_zone: str = proto.Field(
         proto.STRING,

@@ -39,6 +39,7 @@ def partition(
 class serviceCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'check_upgrade': ('environment', 'image_version', ),
         'create_environment': ('parent', 'environment', ),
         'create_user_workloads_config_map': ('parent', 'user_workloads_config_map', ),
         'create_user_workloads_secret': ('parent', 'user_workloads_secret', ),

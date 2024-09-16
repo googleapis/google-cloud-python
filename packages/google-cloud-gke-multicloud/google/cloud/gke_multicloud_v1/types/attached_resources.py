@@ -134,6 +134,9 @@ class AttachedCluster(proto.Message):
         binary_authorization (google.cloud.gke_multicloud_v1.types.BinaryAuthorization):
             Optional. Binary Authorization configuration
             for this cluster.
+        security_posture_config (google.cloud.gke_multicloud_v1.types.SecurityPostureConfig):
+            Optional. Security Posture configuration for
+            this cluster.
     """
 
     class State(proto.Enum):
@@ -271,6 +274,11 @@ class AttachedCluster(proto.Message):
         proto.MESSAGE,
         number=25,
         message=common_resources.BinaryAuthorization,
+    )
+    security_posture_config: common_resources.SecurityPostureConfig = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        message=common_resources.SecurityPostureConfig,
     )
 
 

@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
         "Shipment",
         "ShipmentTypeIncompatibility",
         "ShipmentTypeRequirement",
+        "RouteModifiers",
         "Vehicle",
         "TimeWindow",
         "DistanceLimit",
@@ -382,7 +383,8 @@ class OptimizeToursRequest(proto.Message):
 
         Values:
             DEFAULT_SOLVE (0):
-                Solve the model.
+                Solve the model. Warnings may be issued in
+                [OptimizeToursResponse.validation_errors][google.cloud.optimization.v1.OptimizeToursResponse.validation_errors].
             VALIDATE_ONLY (1):
                 Only validates the model without solving it: populates as
                 many
@@ -531,7 +533,8 @@ class OptimizeToursResponse(proto.Message):
             detect independently. See the "MULTIPLE ERRORS" explanation
             for the
             [OptimizeToursValidationError][google.maps.routeoptimization.v1.OptimizeToursValidationError]
-            message.
+            message. Instead of errors, this will include warnings in
+            the case ``solving_mode`` is ``DEFAULT_SOLVE``.
         metrics (google.maps.routeoptimization_v1.types.OptimizeToursResponse.Metrics):
             Duration, distance and usage metrics for this
             solution.
@@ -1524,6 +1527,53 @@ class ShipmentTypeRequirement(proto.Message):
     )
 
 
+class RouteModifiers(proto.Message):
+    r"""Encapsulates a set of optional conditions to satisfy when
+    calculating vehicle routes. This is similar to ``RouteModifiers`` in
+    the Google Maps Platform Routes Preferred API; see:
+    https://developers.google.com/maps/documentation/routes/reference/rest/v2/RouteModifiers.
+
+    Attributes:
+        avoid_tolls (bool):
+            Specifies whether to avoid toll roads where
+            reasonable. Preference will be given to routes
+            not containing toll roads. Applies only to
+            motorized travel modes.
+        avoid_highways (bool):
+            Specifies whether to avoid highways where
+            reasonable. Preference will be given to routes
+            not containing highways. Applies only to
+            motorized travel modes.
+        avoid_ferries (bool):
+            Specifies whether to avoid ferries where
+            reasonable. Preference will be given to routes
+            not containing travel by ferries. Applies only
+            to motorized travel modes.
+        avoid_indoor (bool):
+            Optional. Specifies whether to avoid navigating indoors
+            where reasonable. Preference will be given to routes not
+            containing indoor navigation. Applies only to the
+            ``WALKING`` travel mode.
+    """
+
+    avoid_tolls: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    avoid_highways: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    avoid_ferries: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    avoid_indoor: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
 class Vehicle(proto.Message):
     r"""Models a vehicle in a shipment problem. Solving a shipment problem
     will build a route starting from ``start_location`` and ending at
@@ -1542,6 +1592,10 @@ class Vehicle(proto.Message):
             The travel mode which affects the roads usable by the
             vehicle and its speed. See also
             ``travel_duration_multiple``.
+        route_modifiers (google.maps.routeoptimization_v1.types.RouteModifiers):
+            A set of conditions to satisfy that affect
+            the way routes are calculated for the given
+            vehicle.
         start_location (google.type.latlng_pb2.LatLng):
             Geographic location where the vehicle starts before picking
             up any shipments. If not specified, the vehicle starts at
@@ -1964,6 +2018,11 @@ class Vehicle(proto.Message):
         number=1,
         enum=TravelMode,
     )
+    route_modifiers: "RouteModifiers" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RouteModifiers",
+    )
     start_location: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=3,
@@ -2098,8 +2157,9 @@ class TimeWindow(proto.Message):
 
     ::
 
-         0 <= `start_time` <= `soft_start_time` <= `end_time` and
-         0 <= `start_time` <= `soft_end_time` <= `end_time`.
+         0 <= `start_time` <= `end_time` and
+         0 <= `start_time` <= `soft_start_time` and
+         0 <= `soft_end_time` <= `end_time`.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -2203,6 +2263,18 @@ class DistanceLimit(proto.Message):
             must be nonnegative.
 
             This field is a member of `oneof`_ ``_soft_max_meters``.
+        cost_per_kilometer_below_soft_max (float):
+            Cost per kilometer incurred, increasing up to
+            ``soft_max_meters``, with formula:
+
+            ::
+
+                 min(distance_meters, soft_max_meters) / 1000.0 *
+                 cost_per_kilometer_below_soft_max.
+
+            This cost is not supported in ``route_distance_limit``.
+
+            This field is a member of `oneof`_ ``_cost_per_kilometer_below_soft_max``.
         cost_per_kilometer_above_soft_max (float):
             Cost per kilometer incurred if distance is above
             ``soft_max_meters`` limit. The additional cost is 0 if the
@@ -2227,6 +2299,11 @@ class DistanceLimit(proto.Message):
     soft_max_meters: int = proto.Field(
         proto.INT64,
         number=2,
+        optional=True,
+    )
+    cost_per_kilometer_below_soft_max: float = proto.Field(
+        proto.DOUBLE,
+        number=4,
         optional=True,
     )
     cost_per_kilometer_above_soft_max: float = proto.Field(
@@ -3056,7 +3133,8 @@ class SkippedShipment(proto.Message):
             if specified in the ``Shipment``.
         reasons (MutableSequence[google.maps.routeoptimization_v1.types.SkippedShipment.Reason]):
             A list of reasons that explain why the shipment was skipped.
-            See comment above ``Reason``.
+            See comment above ``Reason``. If we are unable to understand
+            why a shipment was skipped, reasons will not be set.
     """
 
     class Reason(proto.Message):
@@ -3115,9 +3193,7 @@ class SkippedShipment(proto.Message):
 
             Values:
                 CODE_UNSPECIFIED (0):
-                    This should never be used. If we are unable
-                    to understand why a shipment was skipped, we
-                    simply return an empty set of reasons.
+                    This should never be used.
                 NO_VEHICLE (1):
                     There is no vehicle in the model making all
                     shipments infeasible.
@@ -3420,8 +3496,8 @@ class InjectedSolutionConstraint(proto.Message):
                         or before them.
                     RELAX_VISIT_TIMES_AND_SEQUENCE_AFTER_THRESHOLD (2):
                         Same as ``RELAX_VISIT_TIMES_AFTER_THRESHOLD``, but the visit
-                        sequence is also relaxed: visits remain simply bound to
-                        their vehicle.
+                        sequence is also relaxed: visits can only be performed by
+                        this vehicle, but can potentially become unperformed.
                     RELAX_ALL_AFTER_THRESHOLD (3):
                         Same as ``RELAX_VISIT_TIMES_AND_SEQUENCE_AFTER_THRESHOLD``,
                         but the vehicle is also relaxed: visits are completely free
@@ -3478,7 +3554,7 @@ class InjectedSolutionConstraint(proto.Message):
 
 
 class OptimizeToursValidationError(proto.Message):
-    r"""Describes an error encountered when validating an
+    r"""Describes an error or warning encountered when validating an
     ``OptimizeToursRequest``.
 
     Attributes:
@@ -3592,8 +3668,10 @@ class OptimizeToursValidationError(proto.Message):
                -  TIME_WINDOW_OVERLAPPING_ADJACENT_OR_EARLIER_THAN_PREVIOUS
                   = 2812;
                -  TIME_WINDOW_START_TIME_AFTER_SOFT_START_TIME = 2813;
-               -  TIME_WINDOW_SOFT_START_TIME_AFTER_END_TIME = 2814;
-               -  TIME_WINDOW_START_TIME_AFTER_SOFT_END_TIME = 2815;
+               -  TIME_WINDOW_SOFT_START_TIME_OUTSIDE_GLOBAL_TIME_WINDOW
+                  = 2819;
+               -  TIME_WINDOW_SOFT_END_TIME_OUTSIDE_GLOBAL_TIME_WINDOW =
+                  2820;
                -  TIME_WINDOW_SOFT_END_TIME_AFTER_END_TIME = 2816;
                -  TIME_WINDOW_COST_BEFORE_SOFT_START_TIME_SET_AND_MULTIPLE_WINDOWS
                   = 2817;
@@ -3754,6 +3832,15 @@ class OptimizeToursValidationError(proto.Message):
 
             -  PRECEDENCE_ERROR = 46;
 
+               -  PRECEDENCE_RULE_MISSING_FIRST_INDEX = 4600;
+               -  PRECEDENCE_RULE_MISSING_SECOND_INDEX = 4601;
+               -  PRECEDENCE_RULE_FIRST_INDEX_OUT_OF_BOUNDS = 4602;
+               -  PRECEDENCE_RULE_SECOND_INDEX_OUT_OF_BOUNDS = 4603;
+               -  PRECEDENCE_RULE_DUPLICATE_INDEX = 4604;
+               -  PRECEDENCE_RULE_INEXISTENT_FIRST_VISIT_REQUEST = 4605;
+               -  PRECEDENCE_RULE_INEXISTENT_SECOND_VISIT_REQUEST =
+                  4606;
+
             -  BREAK_ERROR = 48;
 
                -  BREAK_RULE_EMPTY = 4800;
@@ -3826,6 +3913,15 @@ class OptimizeToursValidationError(proto.Message):
                   5600;
                -  DURATION_SECONDS_MATRIX_DURATION_EXCEEDS_GLOBAL_DURATION
                   = 5601;
+
+            -  WARNING = 9;
+
+               -  WARNING_INJECTED_FIRST_SOLUTION = 90;
+
+                  -  WARNING_INJECTED_FIRST_SOLUTION_INFEASIBLE_SHIPMENTS_REMOVED
+                     = 9000;
+                  -  WARNING_INJECTED_FIRST_SOLUTION_INFEASIBLE_AFTER_GETTING_TRAVEL_TIMES
+                     = 9001;
         display_name (str):
             The error display name.
         fields (MutableSequence[google.maps.routeoptimization_v1.types.OptimizeToursValidationError.FieldReference]):

@@ -1953,6 +1953,7 @@ def test_list_batches(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = batches.ListBatchesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_batches(request)
 
@@ -1965,6 +1966,7 @@ def test_list_batches(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBatchesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_batches_empty_call():
@@ -2070,6 +2072,7 @@ async def test_list_batches_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             batches.ListBatchesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_batches()
@@ -2139,6 +2142,7 @@ async def test_list_batches_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             batches.ListBatchesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_batches(request)
@@ -2152,6 +2156,7 @@ async def test_list_batches_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBatchesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -3648,6 +3653,7 @@ def test_list_batches_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = batches.ListBatchesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -3664,6 +3670,7 @@ def test_list_batches_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBatchesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_batches_rest_use_cached_wrapped_rpc():

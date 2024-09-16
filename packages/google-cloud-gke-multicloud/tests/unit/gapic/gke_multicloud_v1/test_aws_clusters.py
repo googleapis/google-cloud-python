@@ -10124,6 +10124,13 @@ def test_create_aws_node_pool_rest(request_type):
         "max_pods_constraint": {"max_pods_per_node": 1798},
         "errors": [{"message": "message_value"}],
         "management": {"auto_repair": True},
+        "kubelet_config": {
+            "insecure_kubelet_readonly_port_enabled": True,
+            "cpu_manager_policy": "cpu_manager_policy_value",
+            "cpu_cfs_quota": True,
+            "cpu_cfs_quota_period": "cpu_cfs_quota_period_value",
+            "pod_pids_limit": 1488,
+        },
         "update_settings": {
             "surge_settings": {"max_surge": 971, "max_unavailable": 1577}
         },
@@ -10590,6 +10597,13 @@ def test_update_aws_node_pool_rest(request_type):
         "max_pods_constraint": {"max_pods_per_node": 1798},
         "errors": [{"message": "message_value"}],
         "management": {"auto_repair": True},
+        "kubelet_config": {
+            "insecure_kubelet_readonly_port_enabled": True,
+            "cpu_manager_policy": "cpu_manager_policy_value",
+            "cpu_cfs_quota": True,
+            "cpu_cfs_quota_period": "cpu_cfs_quota_period_value",
+            "pod_pids_limit": 1488,
+        },
         "update_settings": {
             "surge_settings": {"max_surge": 971, "max_unavailable": 1577}
         },

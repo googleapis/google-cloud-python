@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 from .environments import (
+    AirflowMetadataRetentionPolicyConfig,
+    CheckUpgradeRequest,
     CheckUpgradeResponse,
     CloudDataLineageIntegration,
     CreateEnvironmentRequest,
@@ -81,6 +83,8 @@ from .image_versions import (
 from .operations import OperationMetadata
 
 __all__ = (
+    "AirflowMetadataRetentionPolicyConfig",
+    "CheckUpgradeRequest",
     "CheckUpgradeResponse",
     "CloudDataLineageIntegration",
     "CreateEnvironmentRequest",
