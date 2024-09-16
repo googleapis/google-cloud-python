@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import datetime
 import inspect
+import itertools
 import re
 import sys
 import textwrap
@@ -70,6 +71,7 @@ import bigframes.dtypes
 import bigframes.exceptions
 import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
+import bigframes.operations.aggregations
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.plotting as plotting
 import bigframes.operations.structs
@@ -2207,14 +2209,17 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         self, func: str | typing.Sequence[str]
     ) -> DataFrame | bigframes.series.Series:
         if utils.is_list_like(func):
-            if any(
-                dtype not in bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE
-                for dtype in self.dtypes
-            ):
-                raise NotImplementedError(
-                    f"Multiple aggregations only supported on numeric columns. {constants.FEEDBACK_LINK}"
-                )
             aggregations = [agg_ops.lookup_agg_func(f) for f in func]
+
+            for dtype, agg in itertools.product(self.dtypes, aggregations):
+                if not bigframes.operations.aggregations.is_agg_op_supported(
+                    dtype, agg
+                ):
+                    raise NotImplementedError(
+                        f"Type {dtype} does not support aggregation {agg}. "
+                        f"Share your usecase with the BigQuery DataFrames team at the {constants.FEEDBACK_LINK}"
+                    )
+
             return DataFrame(
                 self._block.summarize(
                     self._block.value_columns,
@@ -2280,16 +2285,55 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             self._block.melt(id_col_ids, val_col_ids, var_name, value_name)
         )
 
-    def describe(self) -> DataFrame:
-        df_numeric = self._drop_non_numeric(permissive=False)
-        if len(df_numeric.columns) == 0:
-            raise NotImplementedError(
-                f"df.describe() currently only supports numeric values. {constants.FEEDBACK_LINK}"
+    _NUMERICAL_DISCRIBE_AGGS = (
+        "count",
+        "mean",
+        "std",
+        "min",
+        "25%",
+        "50%",
+        "75%",
+        "max",
+    )
+    _NON_NUMERICAL_DESCRIBE_AGGS = ("count", "nunique")
+
+    def describe(self, include: None | Literal["all"] = None) -> DataFrame:
+        if include is None:
+            numeric_df = self._drop_non_numeric(permissive=False)
+            if len(numeric_df.columns) == 0:
+                # Describe eligible non-numerical columns
+                result = self._drop_non_string().agg(self._NON_NUMERICAL_DESCRIBE_AGGS)
+            else:
+                # Otherwise, only describe numerical columns
+                result = numeric_df.agg(self._NUMERICAL_DISCRIBE_AGGS)
+            return typing.cast(DataFrame, result)
+
+        elif include == "all":
+            numeric_result = typing.cast(
+                DataFrame,
+                self._drop_non_numeric(permissive=False).agg(
+                    self._NUMERICAL_DISCRIBE_AGGS
+                ),
             )
-        result = df_numeric.agg(
-            ["count", "mean", "std", "min", "25%", "50%", "75%", "max"]
-        )
-        return typing.cast(DataFrame, result)
+            string_result = typing.cast(
+                DataFrame,
+                self._drop_non_string().agg(self._NON_NUMERICAL_DESCRIBE_AGGS),
+            )
+
+            if len(numeric_result.columns) == 0:
+                return string_result
+            elif len(string_result.columns) == 0:
+                return numeric_result
+            else:
+                import bigframes.core.reshape as rs
+
+                # Use reindex after join to preserve the original column order.
+                return rs.concat(
+                    [numeric_result, string_result], axis=1
+                )._reindex_columns(self.columns)
+
+        else:
+            raise ValueError(f"Unsupported include type: {include}")
 
     def skew(self, *, numeric_only: bool = False):
         if not numeric_only:
@@ -2487,7 +2531,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return DataFrame(pivot_block)
 
     def _drop_non_numeric(self, permissive=True) -> DataFrame:
-        types_to_keep = (
+        numerical_types = (
             set(bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE)
             if permissive
             else set(bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES_RESTRICTIVE)
@@ -2495,9 +2539,17 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         non_numeric_cols = [
             col_id
             for col_id, dtype in zip(self._block.value_columns, self._block.dtypes)
-            if dtype not in types_to_keep
+            if dtype not in numerical_types
         ]
         return DataFrame(self._block.drop_columns(non_numeric_cols))
+
+    def _drop_non_string(self) -> DataFrame:
+        string_cols = [
+            col_id
+            for col_id, dtype in zip(self._block.value_columns, self._block.dtypes)
+            if dtype == bigframes.dtypes.STRING_DTYPE
+        ]
+        return DataFrame(self._block.select_columns(string_cols))
 
     def _drop_non_bool(self) -> DataFrame:
         non_bool_cols = [

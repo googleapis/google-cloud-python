@@ -562,3 +562,14 @@ def lookup_agg_func(key: str) -> typing.Union[UnaryAggregateOp, NullaryAggregate
         return _AGGREGATIONS_LOOKUP[key]
     else:
         raise ValueError(f"Unrecognize aggregate function: {key}")
+
+
+def is_agg_op_supported(dtype: dtypes.Dtype, op: AggregateOp) -> bool:
+    if dtype in dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE:
+        return True
+
+    if dtype == dtypes.STRING_DTYPE:
+        return isinstance(op, (CountOp, NuniqueOp))
+
+    # For all other types, support no aggregation
+    return False
