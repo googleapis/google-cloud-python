@@ -174,6 +174,9 @@ class PublisherOptions(NamedTuple):
         "compatible with :class:`~.pubsub_v1.types.TimeoutType`."
     )
 
+    enable_open_telemetry_tracing: bool = False  # disabled by default
+    """Open Telemetry tracing is enabled if this is set to True."""
+
 
 # Define the type class and default values for flow control settings.
 #

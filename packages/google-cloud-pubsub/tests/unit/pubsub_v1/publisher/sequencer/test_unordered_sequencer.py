@@ -27,10 +27,15 @@ from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher._batch import base
 from google.cloud.pubsub_v1.publisher._sequencer import unordered_sequencer
 from google.pubsub_v1 import types as gapic_types
+from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
+    PublishMessageWrapper,
+)
 
 
 def create_message():
-    return gapic_types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})
+    return PublishMessageWrapper(
+        message=gapic_types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})
+    )
 
 
 def create_client():
@@ -140,7 +145,9 @@ def test_publish_after_batch_error():
     batch = client._batch_class(
         client, "topic_name", types.BatchSettings(max_latency=float("inf"))
     )
-    batch._messages.append(mock.Mock(name="message"))  # Make batch truthy (non-empty).
+    batch._message_wrappers.append(
+        mock.Mock(name="message")
+    )  # Make batch truthy (non-empty).
 
     sequencer = unordered_sequencer.UnorderedSequencer(client, "topic_name")
     sequencer._set_batch(batch)

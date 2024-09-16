@@ -45,6 +45,8 @@ dependencies = [
     "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",
     "grpcio-status >= 1.33.2",
+    "opentelemetry-api",
+    "opentelemetry-sdk",
 ]
 extras = {"libcst": "libcst >= 0.3.10"}
 url = "https://github.com/googleapis/python-pubsub"

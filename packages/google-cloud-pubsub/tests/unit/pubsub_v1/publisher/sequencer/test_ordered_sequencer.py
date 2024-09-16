@@ -27,12 +27,17 @@ from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1.publisher._sequencer import ordered_sequencer
 from google.pubsub_v1 import types as gapic_types
+from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
+    PublishMessageWrapper,
+)
 
 _ORDERING_KEY = "ordering_key_1"
 
 
 def create_message():
-    return gapic_types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})
+    return PublishMessageWrapper(
+        message=gapic_types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})
+    )
 
 
 def create_client():

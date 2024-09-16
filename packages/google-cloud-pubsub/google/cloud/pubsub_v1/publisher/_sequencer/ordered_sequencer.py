@@ -23,7 +23,9 @@ from google.cloud.pubsub_v1.publisher import futures
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher._sequencer import base as sequencer_base
 from google.cloud.pubsub_v1.publisher._batch import base as batch_base
-from google.pubsub_v1 import types as gapic_types
+from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
+    PublishMessageWrapper,
+)
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.pubsub_v1 import types
@@ -262,15 +264,15 @@ class OrderedSequencer(sequencer_base.Sequencer):
 
     def publish(
         self,
-        message: gapic_types.PubsubMessage,
+        wrapper: PublishMessageWrapper,
         retry: "OptionalRetry" = gapic_v1.method.DEFAULT,
         timeout: "types.OptionalTimeout" = gapic_v1.method.DEFAULT,
     ) -> futures.Future:
         """Publish message for this ordering key.
 
         Args:
-            message:
-                The Pub/Sub message.
+            wrapper:
+                The Pub/Sub message wrapper.
             retry:
                 The retry settings to apply when publishing the message.
             timeout:
@@ -317,11 +319,11 @@ class OrderedSequencer(sequencer_base.Sequencer):
                 self._ordered_batches.append(new_batch)
 
             batch = self._ordered_batches[-1]
-            future = batch.publish(message)
+            future = batch.publish(wrapper)
             while future is None:
                 batch = self._create_batch(commit_retry=retry, commit_timeout=timeout)
                 self._ordered_batches.append(batch)
-                future = batch.publish(message)
+                future = batch.publish(wrapper)
 
             return future
 

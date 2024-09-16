@@ -18,7 +18,9 @@ from typing import Optional
 from google.api_core import gapic_v1
 
 from google.cloud.pubsub_v1.publisher._sequencer import base
-from google.pubsub_v1 import types as gapic_types
+from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
+    PublishMessageWrapper,
+)
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.pubsub_v1.publisher import _batch
@@ -115,15 +117,15 @@ class UnorderedSequencer(base.Sequencer):
 
     def publish(
         self,
-        message: gapic_types.PubsubMessage,
+        wrapper: PublishMessageWrapper,
         retry: "OptionalRetry" = gapic_v1.method.DEFAULT,
         timeout: "types.OptionalTimeout" = gapic_v1.method.DEFAULT,
     ) -> "futures.Future":
         """Batch message into existing or new batch.
 
         Args:
-            message:
-                The Pub/Sub message.
+            wrapper:
+                The Pub/Sub message wrapper.
             retry:
                 The retry settings to apply when publishing the message.
             timeout:
@@ -151,7 +153,7 @@ class UnorderedSequencer(base.Sequencer):
         future = None
         while future is None:
             # Might throw MessageTooLargeError
-            future = batch.publish(message)
+            future = batch.publish(wrapper)
             # batch is full, triggering commit_when_full
             if future is None:
                 batch = self._create_batch(commit_retry=retry, commit_timeout=timeout)

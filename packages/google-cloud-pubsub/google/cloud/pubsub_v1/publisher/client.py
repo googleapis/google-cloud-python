@@ -22,6 +22,7 @@ import time
 import typing
 from typing import Any, Dict, Optional, Sequence, Tuple, Type, Union
 import warnings
+import sys
 
 from google.api_core import gapic_v1
 from google.auth.credentials import AnonymousCredentials  # type: ignore
@@ -37,6 +38,9 @@ from google.cloud.pubsub_v1.publisher.flow_controller import FlowController
 from google.pubsub_v1 import gapic_version as package_version
 from google.pubsub_v1 import types as gapic_types
 from google.pubsub_v1.services.publisher import client as publisher_client
+from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
+    PublishMessageWrapper,
+)
 
 __version__ = package_version.__version__
 
@@ -153,6 +157,22 @@ class Client(publisher_client.PublisherClient):
         # The object controlling the message publishing flow
         self._flow_controller = FlowController(self.publisher_options.flow_control)
 
+        self._open_telemetry_enabled = (
+            self.publisher_options.enable_open_telemetry_tracing
+        )
+        # OpenTelemetry features used by the library are not supported in Python versions <= 3.7.
+        # Refer https://github.com/open-telemetry/opentelemetry-python/issues/3993#issuecomment-2211976389
+        if (
+            self.publisher_options.enable_open_telemetry_tracing
+            and sys.version_info.major == 3
+            and sys.version_info.minor < 8
+        ):
+            warnings.warn(
+                message="Open Telemetry for Python version 3.7 or lower is not supported. Disabling Open Telemetry tracing.",
+                category=RuntimeWarning,
+            )
+            self._open_telemetry_enabled = False
+
     @classmethod
     def from_service_account_file(  # type: ignore[override]
         cls,
@@ -208,6 +228,10 @@ class Client(publisher_client.PublisherClient):
         )
         warnings.warn(msg, category=DeprecationWarning)
         return super()
+
+    @property
+    def open_telemetry_enabled(self) -> bool:
+        return self._open_telemetry_enabled
 
     def _get_or_create_sequencer(self, topic: str, ordering_key: str) -> SequencerType:
         """Get an existing sequencer or create a new one given the (topic,
@@ -368,11 +392,41 @@ class Client(publisher_client.PublisherClient):
         )
         message = gapic_types.PubsubMessage.wrap(vanilla_pb)
 
+        wrapper: PublishMessageWrapper = PublishMessageWrapper(message)
+        if self._open_telemetry_enabled:
+            wrapper.start_create_span(topic=topic, ordering_key=ordering_key)
+
         # Messages should go through flow control to prevent excessive
         # queuing on the client side (depending on the settings).
         try:
+            if self._open_telemetry_enabled:
+                if wrapper:
+                    wrapper.start_publisher_flow_control_span()
+                else:  # pragma: NO COVER
+                    warnings.warn(
+                        message="PubSubMessageWrapper is None. Not starting publisher flow control span.",
+                        category=RuntimeWarning,
+                    )
             self._flow_controller.add(message)
+            if self._open_telemetry_enabled:
+                if wrapper:
+                    wrapper.end_publisher_flow_control_span()
+                else:  # pragma: NO COVER
+                    warnings.warn(
+                        message="PubSubMessageWrapper is None. Not ending publisher flow control span.",
+                        category=RuntimeWarning,
+                    )
         except exceptions.FlowControlLimitError as exc:
+            if self._open_telemetry_enabled:
+                if wrapper:
+                    wrapper.end_publisher_flow_control_span(exc)
+                    wrapper.end_create_span(exc)
+                else:  # pragma: NO COVER
+                    warnings.warn(
+                        message="PubSubMessageWrapper is None. Not ending publisher create and flow control spans on FlowControlLimitError.",
+                        category=RuntimeWarning,
+                    )
+
             future = futures.Future()
             future.set_exception(exc)
             return future
@@ -386,31 +440,68 @@ class Client(publisher_client.PublisherClient):
         if timeout is gapic_v1.method.DEFAULT:  # if custom timeout not passed in
             timeout = self.publisher_options.timeout
 
+        if self._open_telemetry_enabled:
+            if wrapper:
+                wrapper.start_publisher_batching_span()
+            else:  # pragma: NO COVER
+                warnings.warn(
+                    message="PublishMessageWrapper is None. Hence, not starting publisher batching span",
+                    category=RuntimeWarning,
+                )
         with self._batch_lock:
-            if self._is_stopped:
-                raise RuntimeError("Cannot publish on a stopped publisher.")
+            try:
+                if self._is_stopped:
+                    raise RuntimeError("Cannot publish on a stopped publisher.")
 
-            # Set retry timeout to "infinite" when message ordering is enabled.
-            # Note that this then also impacts messages added with an empty
-            # ordering key.
-            if self._enable_message_ordering:
-                if retry is gapic_v1.method.DEFAULT:
-                    # use the default retry for the publish GRPC method as a base
-                    transport = self._transport
-                    base_retry = transport._wrapped_methods[transport.publish]._retry
-                    retry = base_retry.with_deadline(2.0**32)
-                    # timeout needs to be overridden and set to infinite in
-                    # addition to the retry deadline since both determine
-                    # the duration for which retries are attempted.
-                    timeout = 2.0**32
-                elif retry is not None:
-                    retry = retry.with_deadline(2.0**32)
-                    timeout = 2.0**32
+                # Set retry timeout to "infinite" when message ordering is enabled.
+                # Note that this then also impacts messages added with an empty
+                # ordering key.
+                if self._enable_message_ordering:
+                    if retry is gapic_v1.method.DEFAULT:
+                        # use the default retry for the publish GRPC method as a base
+                        transport = self._transport
+                        base_retry = transport._wrapped_methods[
+                            transport.publish
+                        ]._retry
+                        retry = base_retry.with_deadline(2.0**32)
+                        # timeout needs to be overridden and set to infinite in
+                        # addition to the retry deadline since both determine
+                        # the duration for which retries are attempted.
+                        timeout = 2.0**32
+                    elif retry is not None:
+                        retry = retry.with_deadline(2.0**32)
+                        timeout = 2.0**32
 
-            # Delegate the publishing to the sequencer.
-            sequencer = self._get_or_create_sequencer(topic, ordering_key)
-            future = sequencer.publish(message, retry=retry, timeout=timeout)
-            future.add_done_callback(on_publish_done)
+                # Delegate the publishing to the sequencer.
+                sequencer = self._get_or_create_sequencer(topic, ordering_key)
+                future = sequencer.publish(
+                    wrapper=wrapper, retry=retry, timeout=timeout
+                )
+                future.add_done_callback(on_publish_done)
+            except BaseException as be:
+                # Exceptions can be thrown when attempting to add messages to
+                # the batch. If they're thrown, record them in publisher
+                # batching and create span, end the spans and bubble the
+                # exception up.
+                if self._open_telemetry_enabled:
+                    if wrapper:
+                        wrapper.end_publisher_batching_span(be)
+                        wrapper.end_create_span(be)
+                    else:  # pragma: NO COVER
+                        warnings.warn(
+                            message="PublishMessageWrapper is None. Hence, not recording exception and ending publisher batching span and create span",
+                            category=RuntimeWarning,
+                        )
+                raise be
+
+            if self._open_telemetry_enabled:
+                if wrapper:
+                    wrapper.end_publisher_batching_span()
+                else:  # pragma: NO COVER
+                    warnings.warn(
+                        message="PublishMessageWrapper is None. Hence, not ending publisher batching span",
+                        category=RuntimeWarning,
+                    )
 
             # Create a timer thread if necessary to enforce the batching
             # timeout.
