@@ -407,6 +407,11 @@ class GDCHardwareManagementTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.record_action_on_comment: gapic_v1.method.wrap_method(
+                self.record_action_on_comment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_change_log_entries: gapic_v1.method.wrap_method(
                 self.list_change_log_entries,
                 default_retry=retries.Retry(
@@ -750,6 +755,15 @@ class GDCHardwareManagementTransport(abc.ABC):
     ) -> Callable[
         [service.CreateCommentRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def record_action_on_comment(
+        self,
+    ) -> Callable[
+        [service.RecordActionOnCommentRequest],
+        Union[resources.Comment, Awaitable[resources.Comment]],
     ]:
         raise NotImplementedError()
 

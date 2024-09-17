@@ -140,6 +140,11 @@
                 "list_zones"
               ]
             },
+            "RecordActionOnComment": {
+              "methods": [
+                "record_action_on_comment"
+              ]
+            },
             "SignalZoneState": {
               "methods": [
                 "signal_zone_state"
@@ -310,6 +315,11 @@
                 "list_zones"
               ]
             },
+            "RecordActionOnComment": {
+              "methods": [
+                "record_action_on_comment"
+              ]
+            },
             "SignalZoneState": {
               "methods": [
                 "signal_zone_state"
@@ -478,6 +488,11 @@
             "ListZones": {
               "methods": [
                 "list_zones"
+              ]
+            },
+            "RecordActionOnComment": {
+              "methods": [
+                "record_action_on_comment"
               ]
             },
             "SignalZoneState": {
