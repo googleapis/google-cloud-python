@@ -47,7 +47,7 @@ dependencies = [
     "google-cloud-iam >=2.12.1",
     "google-cloud-resource-manager >=1.10.3",
     "google-cloud-storage >=2.0.0",
-    "ibis-framework[bigquery] >=9.0.0,<=9.3.0",
+    "ibis-framework[bigquery] >=9.0.0,<=9.2.0",
     "jellyfish >=0.8.9",
     "numpy >=1.24.0",
     "pandas >=1.5.3",

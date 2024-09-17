@@ -1,3 +1,0 @@
-# Some internal modules have moved,
-# so make sure we test on all ibis-framework 9.x versions.
-ibis-framework==9.2.0
