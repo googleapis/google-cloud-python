@@ -26,11 +26,4 @@ s.move(
     templated_files / "renovate.json",
 )
 
-
-assert 1 == s.replace(
-    ".kokoro/docs/docs-presubmit.cfg",
-    'value: "docs docfx"',
-    'value: "docs"',
-)
-
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
