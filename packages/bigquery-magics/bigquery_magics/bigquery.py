@@ -85,20 +85,23 @@ from __future__ import print_function
 import ast
 from concurrent import futures
 import copy
-import functools
 import re
 import sys
 import time
+from typing import Any, List, Tuple
 import warnings
 
 import IPython  # type: ignore
 from IPython import display  # type: ignore
 from IPython.core import magic_arguments  # type: ignore
+from IPython.core.getipython import get_ipython
 from google.api_core import client_info
 from google.api_core.exceptions import NotFound
 from google.cloud import bigquery
 from google.cloud.bigquery import exceptions
+from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.dbapi import _helpers
+from google.cloud.bigquery.job import QueryJobConfig
 
 from bigquery_magics import line_arg_parser as lap
 import bigquery_magics._versions_helpers
@@ -128,7 +131,7 @@ def _handle_error(error, destination_var=None):
         query_job = getattr(error, "query_job", None)
 
         if query_job is not None:
-            IPython.get_ipython().push({destination_var: query_job})
+            get_ipython().push({destination_var: query_job})
         else:
             # this is the case when previewing table rows by providing just
             # table ID to cell magic
@@ -194,7 +197,7 @@ def _create_dataset_if_necessary(client, dataset_id):
         dataset_id (str):
             Dataset id.
     """
-    dataset_reference = bigquery.dataset.DatasetReference(client.project, dataset_id)
+    dataset_reference = DatasetReference(client.project, dataset_id)
     try:
         dataset = client.get_dataset(dataset_reference)
         return
@@ -363,36 +366,50 @@ def _cell_magic(line, query):
     Returns:
         pandas.DataFrame: the query results.
     """
+
+    params, args = _parse_magic_args(line)
+
+    query = query.strip()
+    if not query:
+        error = ValueError("Query is missing.")
+        _handle_error(error, args.destination_var)
+        return
+    query = _validate_and_resolve_query(query, args)
+
+    bq_client, bqstorage_client = _create_clients(args)
+
+    try:
+        return _make_bq_query(
+            query,
+            args=args,
+            params=params,
+            bq_client=bq_client,
+            bqstorage_client=bqstorage_client,
+        )
+    finally:
+        _close_transports(bq_client, bqstorage_client)
+
+
+def _parse_magic_args(line: str) -> Tuple[List[Any], Any]:
     # The built-in parser does not recognize Python structures such as dicts, thus
     # we extract the "--params" option and inteprpret it separately.
     try:
         params_option_value, rest_of_args = _split_args_line(line)
-    except lap.exceptions.QueryParamsParseError as exc:
-        rebranded_error = SyntaxError(
+
+    except lap.QueryParamsParseError as exc:
+        raise SyntaxError(
             "--params is not a correctly formatted JSON string or a JSON "
             "serializable dictionary"
-        )
-        raise rebranded_error from exc
-    except lap.exceptions.DuplicateQueryParamsError as exc:
-        rebranded_error = ValueError("Duplicate --params option.")
-        raise rebranded_error from exc
-    except lap.exceptions.ParseError as exc:
-        rebranded_error = ValueError(
+        ) from exc
+
+    except lap.DuplicateQueryParamsError as exc:
+        raise ValueError("Duplicate --params option.") from exc
+
+    except lap.ParseError as exc:
+        raise ValueError(
             "Unrecognized input, are option values correct? "
             "Error details: {}".format(exc.args[0])
-        )
-        raise rebranded_error from exc
-
-    args = magic_arguments.parse_argstring(_cell_magic, rest_of_args)
-
-    if args.use_bqstorage_api is not None:
-        warnings.warn(
-            "Deprecated option --use_bqstorage_api, the BigQuery "
-            "Storage API is already used by default.",
-            category=DeprecationWarning,
-        )
-    use_bqstorage_api = not args.use_rest_api and (bigquery_storage is not None)
-    location = args.location
+        ) from exc
 
     params = []
     if params_option_value:
@@ -406,8 +423,28 @@ def _cell_magic(line, query):
 
         params = _helpers.to_query_parameters(ast.literal_eval(params_option_value), {})
 
-    project = args.project or context.project
+    return params, magic_arguments.parse_argstring(_cell_magic, rest_of_args)
 
+
+def _split_args_line(line: str) -> Tuple[str, str]:
+    """Split out the --params option value from the input line arguments.
+
+    Args:
+        line: The line arguments passed to the cell magic.
+
+    Returns:
+        A tuple of two strings. The first is param option value and
+        the second is the rest of the arguments.
+    """
+    tree = lap.Parser(lap.Lexer(line)).input_line()
+
+    extractor = lap.QueryParamsExtractor()
+    params_option_value, rest_of_args = extractor.visit(tree)
+
+    return params_option_value, rest_of_args
+
+
+def _create_clients(args: Any) -> Tuple[bigquery.Client, Any]:
     bigquery_client_options = copy.deepcopy(context.bigquery_client_options)
     if args.bigquery_api_endpoint:
         if isinstance(bigquery_client_options, dict):
@@ -415,16 +452,28 @@ def _cell_magic(line, query):
         else:
             bigquery_client_options.api_endpoint = args.bigquery_api_endpoint
 
-    client = bigquery.Client(
-        project=project,
+    bq_client = bigquery.Client(
+        project=args.project or context.project,
         credentials=context.credentials,
         default_query_job_config=context.default_query_job_config,
         client_info=client_info.ClientInfo(user_agent=USER_AGENT),
         client_options=bigquery_client_options,
-        location=location,
+        location=args.location,
     )
     if context._connection:
-        client._connection = context._connection
+        bq_client._connection = context._connection
+
+    # Check and instantiate bq storage client
+    if args.use_bqstorage_api is not None:
+        warnings.warn(
+            "Deprecated option --use_bqstorage_api, the BigQuery "
+            "Storage API is already used by default.",
+            category=DeprecationWarning,
+        )
+    use_bqstorage_api = not args.use_rest_api and (bigquery_storage is not None)
+
+    if not use_bqstorage_api:
+        return bq_client, None
 
     bqstorage_client_options = copy.deepcopy(context.bqstorage_client_options)
     if args.bqstorage_api_endpoint:
@@ -434,111 +483,71 @@ def _cell_magic(line, query):
             bqstorage_client_options.api_endpoint = args.bqstorage_api_endpoint
 
     bqstorage_client = _make_bqstorage_client(
-        client,
-        use_bqstorage_api,
+        bq_client,
         bqstorage_client_options,
     )
 
-    close_transports = functools.partial(_close_transports, client, bqstorage_client)
+    return bq_client, bqstorage_client
 
-    try:
-        if args.max_results:
-            max_results = int(args.max_results)
-        else:
-            max_results = None
 
-        query = query.strip()
+def _make_bq_query(
+    query: str,
+    args: Any,
+    params: List[Any],
+    bq_client: bigquery.Client,
+    bqstorage_client: Any,
+):
+    max_results = int(args.max_results) if args.max_results else None
 
-        if not query:
-            error = ValueError("Query is missing.")
-            _handle_error(error, args.destination_var)
-            return
-
-        # Check if query is given as a reference to a variable.
-        if query.startswith("$"):
-            query_var_name = query[1:]
-
-            if not query_var_name:
-                missing_msg = 'Missing query variable name, empty "$" is not allowed.'
-                raise NameError(missing_msg)
-
-            if query_var_name.isidentifier():
-                ip = IPython.get_ipython()
-                query = ip.user_ns.get(query_var_name, ip)  # ip serves as a sentinel
-
-                if query is ip:
-                    raise NameError(
-                        f"Unknown query, variable {query_var_name} does not exist."
-                    )
-                else:
-                    if not isinstance(query, (str, bytes)):
-                        raise TypeError(
-                            f"Query variable {query_var_name} must be a string "
-                            "or a bytes-like value."
-                        )
-
-        # Any query that does not contain whitespace (aside from leading and trailing whitespace)
-        # is assumed to be a table id
-        if not re.search(r"\s", query):
-            try:
-                rows = client.list_rows(query, max_results=max_results)
-            except Exception as ex:
-                _handle_error(ex, args.destination_var)
-                return
-
-            result = rows.to_dataframe(
-                bqstorage_client=bqstorage_client,
-                create_bqstorage_client=False,
-            )
-            if args.destination_var:
-                IPython.get_ipython().push({args.destination_var: result})
-                return
-            else:
-                return result
-
-        job_config = bigquery.job.QueryJobConfig()
-        job_config.query_parameters = params
-        job_config.use_legacy_sql = args.use_legacy_sql
-        job_config.dry_run = args.dry_run
-
-        # Don't override context job config unless --no_query_cache is explicitly set.
-        if args.no_query_cache:
-            job_config.use_query_cache = False
-
-        if args.destination_table:
-            split = args.destination_table.split(".")
-            if len(split) != 2:
-                raise ValueError(
-                    "--destination_table should be in a <dataset_id>.<table_id> format."
-                )
-            dataset_id, table_id = split
-            job_config.allow_large_results = True
-            dataset_ref = bigquery.dataset.DatasetReference(client.project, dataset_id)
-            destination_table_ref = dataset_ref.table(table_id)
-            job_config.destination = destination_table_ref
-            job_config.create_disposition = "CREATE_IF_NEEDED"
-            job_config.write_disposition = "WRITE_TRUNCATE"
-            _create_dataset_if_necessary(client, dataset_id)
-
-        if args.maximum_bytes_billed == "None":
-            job_config.maximum_bytes_billed = 0
-        elif args.maximum_bytes_billed is not None:
-            value = int(args.maximum_bytes_billed)
-            job_config.maximum_bytes_billed = value
-
+    # Any query that does not contain whitespace (aside from leading and trailing whitespace)
+    # is assumed to be a table id
+    if not re.search(r"\s", query):
         try:
-            query_job = _run_query(client, query, job_config=job_config)
+            rows = bq_client.list_rows(query, max_results=max_results)
         except Exception as ex:
             _handle_error(ex, args.destination_var)
             return
 
-        if not args.verbose:
-            display.clear_output()
-
-        if args.dry_run and args.destination_var:
-            IPython.get_ipython().push({args.destination_var: query_job})
+        result = rows.to_dataframe(
+            bqstorage_client=bqstorage_client,
+            create_bqstorage_client=False,
+        )
+        if args.destination_var:
+            get_ipython().push({args.destination_var: result})
             return
-        elif args.dry_run:
+        else:
+            return result
+
+    job_config = _create_job_config(args, params)
+    if args.destination_table:
+        split = args.destination_table.split(".")
+        if len(split) != 2:
+            raise ValueError(
+                "--destination_table should be in a <dataset_id>.<table_id> format."
+            )
+        dataset_id, table_id = split
+        job_config.allow_large_results = True
+        dataset_ref = DatasetReference(bq_client.project, dataset_id)
+        destination_table_ref = dataset_ref.table(table_id)
+        job_config.destination = destination_table_ref
+        job_config.create_disposition = "CREATE_IF_NEEDED"
+        job_config.write_disposition = "WRITE_TRUNCATE"
+        _create_dataset_if_necessary(bq_client, dataset_id)
+
+    try:
+        query_job = _run_query(bq_client, query, job_config=job_config)
+    except Exception as ex:
+        _handle_error(ex, args.destination_var)
+        return
+
+    if not args.verbose:
+        display.clear_output()
+
+    if args.dry_run:
+        if args.destination_var:
+            get_ipython().push({args.destination_var: query_job})
+            return
+        else:
             print(
                 "Query validated. This query will process {} bytes.".format(
                     query_job.total_bytes_processed
@@ -546,54 +555,76 @@ def _cell_magic(line, query):
             )
             return query_job
 
-        progress_bar = context.progress_bar_type or args.progress_bar_type
+    progress_bar = context.progress_bar_type or args.progress_bar_type
 
-        if max_results:
-            result = query_job.result(max_results=max_results).to_dataframe(
-                bqstorage_client=None,
-                create_bqstorage_client=False,
-                progress_bar_type=progress_bar,
+    if max_results:
+        result = query_job.result(max_results=max_results).to_dataframe(
+            bqstorage_client=None,
+            create_bqstorage_client=False,
+            progress_bar_type=progress_bar,
+        )
+    else:
+        result = query_job.to_dataframe(
+            bqstorage_client=bqstorage_client,
+            create_bqstorage_client=False,
+            progress_bar_type=progress_bar,
+        )
+
+    if args.destination_var:
+        get_ipython().push({args.destination_var: result})
+    else:
+        return result
+
+
+def _validate_and_resolve_query(query: str, args: Any) -> str:
+    # Check if query is given as a reference to a variable.
+    if not query.startswith("$"):
+        return query
+
+    query_var_name = query[1:]
+
+    if not query_var_name:
+        missing_msg = 'Missing query variable name, empty "$" is not allowed.'
+        raise NameError(missing_msg)
+
+    if query_var_name.isidentifier():
+        ip = get_ipython()
+        query = ip.user_ns.get(query_var_name, ip)  # ip serves as a sentinel
+
+        if query is ip:
+            raise NameError(f"Unknown query, variable {query_var_name} does not exist.")
+        elif not isinstance(query, (str, bytes)):
+            raise TypeError(
+                f"Query variable {query_var_name} must be a string "
+                "or a bytes-like value."
             )
-        else:
-            result = query_job.to_dataframe(
-                bqstorage_client=bqstorage_client,
-                create_bqstorage_client=False,
-                progress_bar_type=progress_bar,
-            )
-
-        if args.destination_var:
-            IPython.get_ipython().push({args.destination_var: result})
-        else:
-            return result
-    finally:
-        close_transports()
+    return query
 
 
-def _split_args_line(line):
-    """Split out the --params option value from the input line arguments.
+def _create_job_config(args: Any, params: List[Any]) -> QueryJobConfig:
+    job_config = QueryJobConfig()
+    job_config.query_parameters = params
+    job_config.use_legacy_sql = args.use_legacy_sql
+    job_config.dry_run = args.dry_run
 
-    Args:
-        line (str): The line arguments passed to the cell magic.
+    # Don't override context job config unless --no_query_cache is explicitly set.
+    if args.no_query_cache:
+        job_config.use_query_cache = False
 
-    Returns:
-        Tuple[str, str]
-    """
-    lexer = lap.Lexer(line)
-    scanner = lap.Parser(lexer)
-    tree = scanner.input_line()
+    if args.maximum_bytes_billed == "None":
+        job_config.maximum_bytes_billed = 0
+    elif args.maximum_bytes_billed is not None:
+        value = int(args.maximum_bytes_billed)
+        job_config.maximum_bytes_billed = value
 
-    extractor = lap.QueryParamsExtractor()
-    params_option_value, rest_of_args = extractor.visit(tree)
-
-    return params_option_value, rest_of_args
+    return job_config
 
 
-def _make_bqstorage_client(client, use_bqstorage_api, client_options):
+def _make_bqstorage_client(client, client_options):
     """Creates a BigQuery Storage client.
 
     Args:
         client (:class:`~google.cloud.bigquery.client.Client`): BigQuery client.
-        use_bqstorage_api (bool): whether BigQuery Storage API is used or not.
         client_options (:class:`google.api_core.client_options.ClientOptions`):
             Custom options used with a new BigQuery Storage client instance
             if one is created.
@@ -608,9 +639,6 @@ def _make_bqstorage_client(client, use_bqstorage_api, client_options):
             is outdated.
         BigQuery Storage Client:
     """
-    if not use_bqstorage_api:
-        return None
-
     try:
         bigquery_magics._versions_helpers.BQ_STORAGE_VERSIONS.try_import(
             raise_if_error=True

@@ -289,28 +289,17 @@ def test__run_query_dry_run_without_errors_is_silent():
     assert len(captured.stdout) == 0
 
 
-def test__make_bqstorage_client_false():
-    credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
-    )
-    test_client = bigquery.Client(
-        project="test_project", credentials=credentials_mock, location="test_location"
-    )
-    got = magics._make_bqstorage_client(test_client, False, {})
-    assert got is None
-
-
 @pytest.mark.skipif(
     bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
-def test__make_bqstorage_client_true():
+def test__make_bqstorage_client():
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
     test_client = bigquery.Client(
         project="test_project", credentials=credentials_mock, location="test_location"
     )
-    got = magics._make_bqstorage_client(test_client, True, {})
+    got = magics._make_bqstorage_client(test_client, {})
     assert isinstance(got, bigquery_storage.BigQueryReadClient)
 
 
@@ -326,7 +315,7 @@ def test__make_bqstorage_client_true_raises_import_error(missing_bq_storage):
     )
 
     with pytest.raises(ImportError) as exc_context, missing_bq_storage:
-        magics._make_bqstorage_client(test_client, True, {})
+        magics._make_bqstorage_client(test_client, {})
 
     error_msg = str(exc_context.value)
     assert "google-cloud-bigquery-storage" in error_msg
@@ -356,19 +345,15 @@ def test__make_bqstorage_client_true_obsolete_dependency():
     with patcher, pytest.raises(
         google.cloud.bigquery.exceptions.LegacyBigQueryStorageError
     ):
-        magics._make_bqstorage_client(test_client, True, {})
+        magics._make_bqstorage_client(test_client, {})
 
 
 @pytest.mark.skipif(
     bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test__make_bqstorage_client_true_missing_gapic(missing_grpcio_lib):
-    credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
-    )
-
     with pytest.raises(ImportError) as exc_context, missing_grpcio_lib:
-        magics._make_bqstorage_client(True, credentials_mock, {})
+        magics._make_bqstorage_client(True, {})
 
     assert "grpcio" in str(exc_context.value)
 
