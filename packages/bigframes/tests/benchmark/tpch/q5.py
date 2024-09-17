@@ -14,7 +14,7 @@
 import pathlib
 
 import benchmark.utils as utils
-import bigframes_vendored.tpch.queries.q1 as vendored_tpch_q5
+import bigframes_vendored.tpch.queries.q5 as vendored_tpch_q5
 
 if __name__ == "__main__":
     dataset_id, session, suffix = utils.get_tpch_configuration()
