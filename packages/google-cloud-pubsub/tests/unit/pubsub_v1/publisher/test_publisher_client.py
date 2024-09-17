@@ -332,21 +332,26 @@ def test_opentelemetry_publish(creds, span_exporter):
     client.publish(TOPIC, b"message")
     spans = span_exporter.get_finished_spans()
 
-    # Span 1: Publisher Flow control span
-    # Span 2: Publisher Batching span
-    # Publish Create Span would still be active, and hence not exported.
-    flow_control_span = spans[0]
-    assert flow_control_span.name == "publisher flow control"
-    assert flow_control_span.kind == trace.SpanKind.INTERNAL
-    # Assert the Publisher Flow Control Span has a parent(the Publish Create
-    # span is still active, and hence unexported. So, the value of parent cannot
-    # be asserted)
-    assert flow_control_span.parent is not None
+    # Publisher Flow control and batching spans would be ended in the
+    # publish() function and are deterministically expected to be in the
+    # list of exported spans. The Publish Create span and Publish RPC span
+    # are run async and end at a non-deterministic time. Hence,
+    # asserting that we have atleast two spans(flow control and batching span)
+    assert len(spans) >= 2
+    flow_control_span = None
+    batching_span = None
+    for span in spans:
+        if span.name == "publisher flow control":
+            flow_control_span = span
+            assert flow_control_span.kind == trace.SpanKind.INTERNAL
+            assert flow_control_span.parent is not None
+        if span.name == "publisher batching":
+            batching_span = span
+            assert batching_span.kind == trace.SpanKind.INTERNAL
+            assert batching_span.parent is not None
 
-    batching_span = spans[1]
-    assert batching_span.name == "publisher batching"
-    assert batching_span.kind == trace.SpanKind.INTERNAL
-    assert batching_span.parent is not None
+    assert flow_control_span is not None
+    assert batching_span is not None
 
 
 def test_init_w_api_endpoint(creds):
