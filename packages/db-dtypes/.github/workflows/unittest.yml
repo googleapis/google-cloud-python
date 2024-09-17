@@ -30,6 +30,7 @@ jobs:
       with:
         name: coverage-artifact-${{ matrix.python }}
         path: .coverage-${{ matrix.python }}
+        include-hidden-files: true
 
   unit-prerelease:
     runs-on: ubuntu-latest
@@ -57,6 +58,7 @@ jobs:
       with:
         name: coverage-artifact-prerelease-${{ matrix.python }}
         path: .coverage-prerelease-${{ matrix.python }}
+        include-hidden-files: true
 
   compliance:
     runs-on: ubuntu-latest
@@ -84,6 +86,7 @@ jobs:
       with:
         name: coverage-artifact-compliance-${{ matrix.python }}
         path: .coverage-compliance-${{ matrix.python }}
+        include-hidden-files: true
 
   cover:
     runs-on: ubuntu-latest
