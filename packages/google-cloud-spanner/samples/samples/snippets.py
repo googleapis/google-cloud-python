@@ -62,6 +62,7 @@ def create_instance(instance_id):
                 "sample_name": "snippets-create_instance-explicit",
                 "created": str(int(time.time())),
             },
+            edition=spanner_instance_admin.Instance.Edition.STANDARD,  # Optional
         ),
     )
 
@@ -72,6 +73,35 @@ def create_instance(instance_id):
 
 
 # [END spanner_create_instance]
+
+# [START spanner_update_instance]
+def update_instance(instance_id):
+    """Updates an instance."""
+    from google.cloud.spanner_admin_instance_v1.types import \
+        spanner_instance_admin
+
+    spanner_client = spanner.Client()
+
+    name = "{}/instances/{}".format(spanner_client.project_name, instance_id)
+
+    operation = spanner_client.instance_admin_api.update_instance(
+        instance=spanner_instance_admin.Instance(
+            name=name,
+            labels={
+                "sample_name": "snippets-update_instance-explicit",
+            },
+            edition=spanner_instance_admin.Instance.Edition.ENTERPRISE,  # Optional
+        ),
+        field_mask=field_mask_pb2.FieldMask(paths=["labels", "edition"]),
+    )
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print("Updated instance {}".format(instance_id))
+
+
+# [END spanner_update_instance]
 
 
 # [START spanner_create_instance_with_processing_units]
@@ -3421,6 +3451,7 @@ if __name__ == "__main__":  # noqa: C901
 
     subparsers = parser.add_subparsers(dest="command")
     subparsers.add_parser("create_instance", help=create_instance.__doc__)
+    subparsers.add_parser("update_instance", help=update_instance.__doc__)
     subparsers.add_parser("create_database", help=create_database.__doc__)
     subparsers.add_parser("insert_data", help=insert_data.__doc__)
     subparsers.add_parser("batch_write", help=batch_write.__doc__)
@@ -3571,6 +3602,8 @@ if __name__ == "__main__":  # noqa: C901
 
     if args.command == "create_instance":
         create_instance(args.instance_id)
+    if args.command == "update_instance":
+        update_instance(args.instance_id)
     elif args.command == "create_database":
         create_database(args.instance_id, args.database_id)
     elif args.command == "insert_data":
