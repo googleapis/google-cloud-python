@@ -19,11 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.maps.places.v1',
+    package="google.maps.places.v1",
     manifest={
-        'Polyline',
+        "Polyline",
     },
 )
 
@@ -55,7 +54,7 @@ class Polyline(proto.Message):
     encoded_polyline: str = proto.Field(
         proto.STRING,
         number=1,
-        oneof='polyline_type',
+        oneof="polyline_type",
     )
 
 

@@ -60,6 +60,7 @@ from google.maps.places_v1.types import (
     place,
     places_service,
     review,
+    routing_summary,
 )
 
 from .transports.base import DEFAULT_CLIENT_INFO, PlacesTransport
