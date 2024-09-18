@@ -55,6 +55,47 @@ except ImportError:  # pragma: NO COVER
 {% endif %}{# service_version #}
 {% endmacro %}
 
+{% macro create_metadata(method) %}
+    {% if method.explicit_routing %}
+        header_params = {}
+        {% if not method.client_streaming %}
+        {% for routing_param in method.routing_rule.routing_parameters %}
+        {% if routing_param.path_template %} {# Need to match. #}
+
+        routing_param_regex = {{ routing_param.to_regex() }}
+        regex_match = routing_param_regex.match(request.{{ routing_param.field }})
+        if regex_match and regex_match.group("{{ routing_param.key }}"):
+            header_params["{{ routing_param.key }}"] = regex_match.group("{{ routing_param.key }}")
+
+    {% else %}
+
+        if request.{{ routing_param.field }}:
+            header_params["{{ routing_param.key }}"] = request.{{ routing_param.field }}
+
+        {% endif %}
+        {% endfor %} {# method.routing_rule.routing_parameters #}
+        {% endif %} {# if not method.client_streaming #}
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
+    {% elif method.field_headers %}{# implicit routing #}
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((
+                {% if not method.client_streaming %}
+                {% for field_header in method.field_headers %}
+                ("{{ field_header.raw }}", request.{{ field_header.disambiguated }}),
+                {% endfor %}{# for field_header in method.field_headers #}
+                {% endif %}{# not method.client_streaming #}
+            )),
+        )
+    {% endif %}{# method.explicit_routing #}
+{% endmacro %}{# create_metadata #}
+
 {% macro add_api_version_header_to_metadata(service_version) %}
 {#
     Add API Version to metadata as per https://github.com/aip-dev/google.aip.dev/pull/1331.

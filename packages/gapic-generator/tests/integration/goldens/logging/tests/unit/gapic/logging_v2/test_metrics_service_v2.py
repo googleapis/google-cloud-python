@@ -926,7 +926,6 @@ async def test_list_log_metrics_async(transport: str = 'grpc_asyncio', request_t
 async def test_list_log_metrics_async_from_dict():
     await test_list_log_metrics_async(request_type=dict)
 
-
 def test_list_log_metrics_field_headers():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1456,7 +1455,6 @@ async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_typ
 async def test_get_log_metric_async_from_dict():
     await test_get_log_metric_async(request_type=dict)
 
-
 def test_get_log_metric_field_headers():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1789,7 +1787,6 @@ async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_
 @pytest.mark.asyncio
 async def test_create_log_metric_async_from_dict():
     await test_create_log_metric_async(request_type=dict)
-
 
 def test_create_log_metric_field_headers():
     client = MetricsServiceV2Client(
@@ -2134,7 +2131,6 @@ async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_
 async def test_update_log_metric_async_from_dict():
     await test_update_log_metric_async(request_type=dict)
 
-
 def test_update_log_metric_field_headers():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2448,7 +2444,6 @@ async def test_delete_log_metric_async(transport: str = 'grpc_asyncio', request_
 async def test_delete_log_metric_async_from_dict():
     await test_delete_log_metric_async(request_type=dict)
 
-
 def test_delete_log_metric_field_headers():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2704,7 +2699,10 @@ def test_list_log_metrics_empty_call_grpc():
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.ListLogMetricsRequest()
+        request_msg = logging_metrics.ListLogMetricsRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -2723,7 +2721,10 @@ def test_get_log_metric_empty_call_grpc():
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.GetLogMetricRequest()
+        request_msg = logging_metrics.GetLogMetricRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -2742,7 +2743,10 @@ def test_create_log_metric_empty_call_grpc():
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.CreateLogMetricRequest()
+        request_msg = logging_metrics.CreateLogMetricRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -2761,7 +2765,10 @@ def test_update_log_metric_empty_call_grpc():
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.UpdateLogMetricRequest()
+        request_msg = logging_metrics.UpdateLogMetricRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -2780,7 +2787,9 @@ def test_delete_log_metric_empty_call_grpc():
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.DeleteLogMetricRequest()
+        request_msg = logging_metrics.DeleteLogMetricRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_kind_grpc_asyncio():
@@ -2811,7 +2820,10 @@ async def test_list_log_metrics_empty_call_grpc_asyncio():
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.ListLogMetricsRequest()
+        request_msg = logging_metrics.ListLogMetricsRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -2840,7 +2852,10 @@ async def test_get_log_metric_empty_call_grpc_asyncio():
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.GetLogMetricRequest()
+        request_msg = logging_metrics.GetLogMetricRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -2869,7 +2884,10 @@ async def test_create_log_metric_empty_call_grpc_asyncio():
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.CreateLogMetricRequest()
+        request_msg = logging_metrics.CreateLogMetricRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -2898,7 +2916,10 @@ async def test_update_log_metric_empty_call_grpc_asyncio():
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.UpdateLogMetricRequest()
+        request_msg = logging_metrics.UpdateLogMetricRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -2919,7 +2940,9 @@ async def test_delete_log_metric_empty_call_grpc_asyncio():
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.DeleteLogMetricRequest()
+        request_msg = logging_metrics.DeleteLogMetricRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():

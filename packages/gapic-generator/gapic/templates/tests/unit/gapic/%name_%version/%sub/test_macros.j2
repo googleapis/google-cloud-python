@@ -386,43 +386,6 @@ async def test_{{ method_name }}_async_from_dict():
     await test_{{ method_name }}_async(request_type=dict)
 {% endif %}{# full_extended_lro #}
 
-{% if method.explicit_routing %}
-def test_{{ method.name|snake_case }}_routing_parameters():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    {% for routing_param in method.routing_rule.routing_parameters %}
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = {{ method.input.ident }}(**{{ routing_param.sample_request }})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.{{ method.transport_safe_name|snake_case }}),
-            '__call__') as call:
-        {% if method.void %}
-        call.return_value = None
-        {% elif method.lro %}
-        call.return_value = operations_pb2.Operation(name='operations/op')
-        {% elif method.server_streaming %}
-        call.return_value = iter([{{ method.output.ident }}()])
-        {% else %}
-        call.return_value = {{ method.output.ident }}()
-        {% endif %}
-        client.{{ method.safe_name|snake_case }}(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, kw = call.mock_calls[0]
-        assert args[0] == request
-
-        expected_headers = {{ method.routing_rule.resolve(method.routing_rule, routing_param.sample_request) }}
-        assert gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw['metadata']
-    {% endfor %}
-{% endif %}
-
-
 {% if method.field_headers and not method.client_streaming and not method.explicit_routing %}
 def test_{{ method_name }}_field_headers():
     client = {{ service.client_name }}(
@@ -1797,14 +1760,13 @@ def test_{{ method_name }}_rest_no_http_options():
 {% endwith %}{# method_name #}
 {% endmacro %}
 
-
 {#
     This is a generic macro for testing method calls. Ideally this macro can be used to avoid duplication
     in Jinja templates. If this macro cannot be custimized for a specific method call test, consider
     creating a new macro with the name `method_call_test_<with_customization>` for the macro which supports
     a more customized method call.
 #}
-{% macro method_call_test_generic(test_name, method, service, api, transport, request, is_async=False) %}
+{% macro method_call_test_generic(test_name, method, service, api, transport, request_dict, is_async=False, routing_param=None) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
 {% with method_name = (method.name + ("_unary" if method.operation_service else "")) | snake_case %}
 {% set async_method_prefix = "async " if is_async else "" %}
@@ -1844,7 +1806,7 @@ def test_{{ method_name }}_rest_no_http_options():
             {% endfor %}
         ))
         {% endif %}{# method.void #}
-        await client.{{ method_name }}(request={{ request }})
+        await client.{{ method_name }}(request={{ request_dict }})
         {% else %}{# if not is_async #}
         {% if method.void %}
         call.return_value = None
@@ -1855,12 +1817,12 @@ def test_{{ method_name }}_rest_no_http_options():
         {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
-        client.{{ method_name }}(request={{ request }})
+        client.{{ method_name }}(request={{ request_dict }})
         {% endif %}{# is_async #}
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
+        _, args, {% if routing_param %}kw{% else %}_{% endif %} = call.mock_calls[0]
         {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
         {% if method_settings is not none %}
         {% for auto_populated_field in method_settings.auto_populated_fields %}
@@ -1871,11 +1833,17 @@ def test_{{ method_name }}_rest_no_http_options():
         {% endfor %}{# for auto_populated_field in method_settings.auto_populated_fields #}
         {% endif %}{# if method_settings is not none #}
         {% endwith %}{# method_settings #}
-        {% if request %}
-        assert args[0] == {{ request }}
+        {% if request_dict %}
+        request_msg = {{ method.input.ident }}(**{{ request_dict }})
         {% else %}
-        assert args[0] == {{ method.input.ident }}()
-        {% endif %}{# request #}
+        request_msg = {{ method.input.ident }}()
+        {% endif %}{# request_dict #}      
+        assert args[0] == request_msg
+
+        {% if routing_param %}
+        expected_headers = {{ method.routing_rule.resolve(method.routing_rule, routing_param.sample_request) }}
+        assert gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw['metadata']
+        {% endif %}
 {% endwith %}{# method_name #}
 {% endmacro %}
 
@@ -1910,7 +1878,7 @@ def test_transport_kind_{{ transport_name }}():
 {% if not method.client_streaming %}
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-{{ method_call_test_generic("empty_call", method, service, api, transport, request=None, is_async=is_async) }}
+{{ method_call_test_generic("empty_call", method, service, api, transport, request_dict=None, is_async=is_async) }}
 {% endif %}{# not method.client_streaming #}
 {% endfor %}{# method in service.methods.values() #}
 {% endif %}{# 'rest' not in transport #}
@@ -1919,3 +1887,21 @@ def test_transport_kind_{{ transport_name }}():
 {% macro get_uuid4_re() -%}
 [a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}
 {%- endmacro %}{# uuid_re #}
+
+{% macro routing_parameter_test(service, api, transport, is_async) %}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2159):
+  Currently this macro only supports gRPC. It should be updated to support REST
+  transport as well.
+#}
+{% if 'rest' not in transport %}
+{% for method in service.methods.values() %}{# method #}
+{% if method.explicit_routing %}
+{# Any value that is part of the HTTP/1.1 URI should be sent as #}
+{# a field header. Set these to a non-empty value. #}
+{% for routing_param in method.routing_rule.routing_parameters %}
+{{ method_call_test_generic("routing_parameters_request_" + loop.index|string, method, service, api, transport, request_dict=routing_param.sample_request, is_async=is_async, routing_param=routing_param) }}
+{% endfor %}{# routing_param in method.routing_rule.routing_parameters #}
+{% endif %}{# method.explicit_routing #}
+{% endfor %}{# method in service.methods.values() #}
+{% endif %}
+{% endmacro %}{# routing_parameter_test #}

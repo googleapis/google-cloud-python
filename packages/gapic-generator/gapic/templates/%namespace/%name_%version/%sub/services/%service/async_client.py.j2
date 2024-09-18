@@ -364,20 +364,7 @@ class {{ service.async_client_name }}:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.{{ method.transport_safe_name|snake_case }}]
 
-        {% if method.field_headers %}
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                {% for field_header in method.field_headers %}
-                {% if not method.client_streaming %}
-                ("{{ field_header.raw }}", request.{{ field_header.disambiguated }}),
-                {% endif %}
-                {% endfor %}
-            )),
-        )
-        {% endif %}
-
+{{ shared_macros.create_metadata(method) }}
 {{ shared_macros.add_api_version_header_to_metadata(service.version) }}
 {{ shared_macros.auto_populate_uuid4_fields(api, method) }}
 

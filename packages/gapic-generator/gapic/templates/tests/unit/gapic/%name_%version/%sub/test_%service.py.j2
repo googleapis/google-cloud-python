@@ -1055,6 +1055,8 @@ def test_transport_adc(transport_class):
 {{ test_macros.transport_kind_test(**conf) }}
 
 {{ test_macros.empty_call_test(**conf) }}
+
+{{ test_macros.routing_parameter_test(**conf) }}
 {% endfor %}
 
 {% if 'grpc' in opts.transport %}

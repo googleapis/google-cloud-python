@@ -770,7 +770,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_trigger]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -875,7 +875,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_triggers]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1024,7 +1024,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_trigger]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1162,7 +1162,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_trigger]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1291,7 +1291,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_trigger]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1407,7 +1407,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_channel]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1512,7 +1512,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_channels]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1661,7 +1661,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_channel_]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1791,7 +1791,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_channel]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1912,7 +1912,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_channel]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2022,7 +2022,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_provider]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2127,7 +2127,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_providers]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2245,7 +2245,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_channel_connection]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2351,7 +2351,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_channel_connections]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2500,7 +2500,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_channel_connection]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2619,7 +2619,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_channel_connection]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2735,7 +2735,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_google_channel_config]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2856,7 +2856,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_google_channel_config]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
