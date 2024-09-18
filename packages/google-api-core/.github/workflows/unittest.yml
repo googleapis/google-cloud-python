@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        option: ["", "_grpc_gcp", "_wo_grpc", "_with_prerelease_deps"]
+        option: ["", "_grpc_gcp", "_wo_grpc", "_with_prerelease_deps", "_with_auth_aio"]
         python:
           - "3.7"
           - "3.8"

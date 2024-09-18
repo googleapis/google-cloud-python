@@ -38,6 +38,7 @@ nox.options.sessions = [
     "unit",
     "unit_grpc_gcp",
     "unit_wo_grpc",
+    "unit_with_auth_aio",
     "cover",
     "pytype",
     "mypy",
@@ -109,7 +110,7 @@ def install_prerelease_dependencies(session, constraints_path):
         session.install(*other_deps)
 
 
-def default(session, install_grpc=True, prerelease=False):
+def default(session, install_grpc=True, prerelease=False, install_auth_aio=False):
     """Default unit test session.
 
     This is intended to be run **without** an interpreter set, so
@@ -142,6 +143,11 @@ def default(session, install_grpc=True, prerelease=False):
             ".[grpc]" if install_grpc else ".",
             "-c",
             f"{constraints_dir}/constraints-{session.python}.txt",
+        )
+
+    if install_auth_aio:
+        session.install(
+            "google-auth @ git+https://git@github.com/googleapis/google-auth-library-python@8833ad6f92c3300d6645355994c7db2356bd30ad"
         )
 
     # Print out package versions of dependencies
@@ -227,6 +233,12 @@ def unit_grpc_gcp(session):
 def unit_wo_grpc(session):
     """Run the unit test suite w/o grpcio installed"""
     default(session, install_grpc=False)
+
+
+@nox.session(python=PYTHON_VERSIONS)
+def unit_with_auth_aio(session):
+    """Run the unit test suite with google.auth.aio installed"""
+    default(session, install_auth_aio=True)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,21 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Helpers for server-side streaming in REST."""
+"""Helpers for asynchronous server-side streaming in REST."""
 
 from typing import Union
 
 import proto
-import requests
+
+try:
+    import google.auth.aio.transport
+except ImportError as e:  # pragma: NO COVER
+    raise ImportError(
+        "google-auth>=2.35.0 is required to use asynchronous rest streaming."
+    ) from e
+
 import google.protobuf.message
 from google.api_core._rest_streaming_base import BaseResponseIterator
 
 
-class ResponseIterator(BaseResponseIterator):
-    """Iterator over REST API responses.
+class AsyncResponseIterator(BaseResponseIterator):
+    """Asynchronous Iterator over REST API responses.
 
     Args:
-        response (requests.Response): An API response object.
+        response (google.auth.aio.transport.Response): An API response object.
         response_message_cls (Union[proto.Message, google.protobuf.message.Message]): A response
         class expected to be returned from an API.
 
@@ -37,30 +44,40 @@ class ResponseIterator(BaseResponseIterator):
 
     def __init__(
         self,
-        response: requests.Response,
+        response: google.auth.aio.transport.Response,
         response_message_cls: Union[proto.Message, google.protobuf.message.Message],
     ):
         self._response = response
-        # Inner iterator over HTTP response's content.
-        self._response_itr = self._response.iter_content(decode_unicode=True)
-        super(ResponseIterator, self).__init__(
+        self._chunk_size = 1024
+        self._response_itr = self._response.content().__aiter__()
+        super(AsyncResponseIterator, self).__init__(
             response_message_cls=response_message_cls
         )
 
-    def cancel(self):
-        """Cancel existing streaming operation."""
-        self._response.close()
+    async def __aenter__(self):
+        return self
 
-    def __next__(self):
+    async def cancel(self):
+        """Cancel existing streaming operation."""
+        await self._response.close()
+
+    async def __anext__(self):
         while not self._ready_objs:
             try:
-                chunk = next(self._response_itr)
+                chunk = await self._response_itr.__anext__()
+                chunk = chunk.decode("utf-8")
                 self._process_chunk(chunk)
-            except StopIteration as e:
+            except StopAsyncIteration as e:
                 if self._level > 0:
-                    raise ValueError("Unfinished stream: %s" % self._obj)
+                    raise ValueError("i Unfinished stream: %s" % self._obj)
+                raise e
+            except ValueError as e:
                 raise e
         return self._grab()
 
-    def __iter__(self):
+    def __aiter__(self):
         return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        """Cancel existing async streaming operation."""
+        await self._response.close()

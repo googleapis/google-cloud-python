@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,47 +12,73 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: set random.seed explicitly in each test function.
+# See related issue: https://github.com/googleapis/python-api-core/issues/689.
+
+import pytest  # noqa: I202
+import mock
+
 import datetime
 import logging
 import random
 import time
-from typing import List
-from unittest.mock import patch
+from typing import List, AsyncIterator
 
 import proto
-import pytest
-import requests
 
-from google.api_core import rest_streaming
+try:
+    from google.auth.aio.transport import Response
+
+    AUTH_AIO_INSTALLED = True
+except ImportError:
+    AUTH_AIO_INSTALLED = False
+
+if not AUTH_AIO_INSTALLED:  # pragma: NO COVER
+    pytest.skip(
+        "google-auth>=2.35.0 is required to use asynchronous rest streaming.",
+        allow_module_level=True,
+    )
+
+from google.api_core import rest_streaming_async
 from google.api import http_pb2
 from google.api import httpbody_pb2
+
 
 from ..helpers import Composer, Song, EchoResponse, parse_responses
 
 
 __protobuf__ = proto.module(package=__name__)
 SEED = int(time.time())
-logging.info(f"Starting sync rest streaming tests with random seed: {SEED}")
+logging.info(f"Starting async rest streaming tests with random seed: {SEED}")
 random.seed(SEED)
 
 
-class ResponseMock(requests.Response):
-    class _ResponseItr:
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
+class ResponseMock(Response):
+    class _ResponseItr(AsyncIterator[bytes]):
         def __init__(self, _response_bytes: bytes, random_split=False):
             self._responses_bytes = _response_bytes
-            self._i = 0
+            self._idx = 0
             self._random_split = random_split
 
-        def __next__(self):
-            if self._i == len(self._responses_bytes):
-                raise StopIteration
+        def __aiter__(self):
+            return self
+
+        async def __anext__(self):
+            if self._idx >= len(self._responses_bytes):
+                raise StopAsyncIteration
             if self._random_split:
-                n = random.randint(1, len(self._responses_bytes[self._i :]))
+                n = random.randint(1, len(self._responses_bytes[self._idx :]))
             else:
                 n = 1
-            x = self._responses_bytes[self._i : self._i + n]
-            self._i += n
-            return x.decode("utf-8")
+            x = self._responses_bytes[self._idx : self._idx + n]
+            self._idx += n
+            return x
 
     def __init__(
         self,
@@ -60,7 +86,6 @@ class ResponseMock(requests.Response):
         response_cls,
         random_split=False,
     ):
-        super().__init__()
         self._responses = responses
         self._random_split = random_split
         self._response_message_cls = response_cls
@@ -68,21 +93,34 @@ class ResponseMock(requests.Response):
     def _parse_responses(self):
         return parse_responses(self._response_message_cls, self._responses)
 
-    def close(self):
+    @property
+    async def headers(self):
         raise NotImplementedError()
 
-    def iter_content(self, *args, **kwargs):
-        return self._ResponseItr(
-            self._parse_responses(),
-            random_split=self._random_split,
+    @property
+    async def status_code(self):
+        raise NotImplementedError()
+
+    async def close(self):
+        raise NotImplementedError()
+
+    async def content(self, chunk_size=None):
+        itr = self._ResponseItr(
+            self._parse_responses(), random_split=self._random_split
         )
+        async for chunk in itr:
+            yield chunk
+
+    async def read(self):
+        raise NotImplementedError()
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "random_split,resp_message_is_proto_plus",
     [(False, True), (False, False)],
 )
-def test_next_simple(random_split, resp_message_is_proto_plus):
+async def test_next_simple(random_split, resp_message_is_proto_plus):
     if resp_message_is_proto_plus:
         response_type = EchoResponse
         responses = [EchoResponse(content="hello world"), EchoResponse(content="yes")]
@@ -96,10 +134,14 @@ def test_next_simple(random_split, resp_message_is_proto_plus):
     resp = ResponseMock(
         responses=responses, random_split=random_split, response_cls=response_type
     )
-    itr = rest_streaming.ResponseIterator(resp, response_type)
-    assert list(itr) == responses
+    itr = rest_streaming_async.AsyncResponseIterator(resp, response_type)
+    idx = 0
+    async for response in itr:
+        assert response == responses[idx]
+        idx += 1
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "random_split,resp_message_is_proto_plus",
     [
@@ -109,7 +151,7 @@ def test_next_simple(random_split, resp_message_is_proto_plus):
         (False, False),
     ],
 )
-def test_next_nested(random_split, resp_message_is_proto_plus):
+async def test_next_nested(random_split, resp_message_is_proto_plus):
     if resp_message_is_proto_plus:
         response_type = Song
         responses = [
@@ -133,10 +175,15 @@ def test_next_nested(random_split, resp_message_is_proto_plus):
     resp = ResponseMock(
         responses=responses, random_split=random_split, response_cls=response_type
     )
-    itr = rest_streaming.ResponseIterator(resp, response_type)
-    assert list(itr) == responses
+    itr = rest_streaming_async.AsyncResponseIterator(resp, response_type)
+    idx = 0
+    async for response in itr:
+        assert response == responses[idx]
+        idx += 1
+    assert idx == len(responses)
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "random_split,resp_message_is_proto_plus",
     [
@@ -146,7 +193,7 @@ def test_next_nested(random_split, resp_message_is_proto_plus):
         (False, False),
     ],
 )
-def test_next_stress(random_split, resp_message_is_proto_plus):
+async def test_next_stress(random_split, resp_message_is_proto_plus):
     n = 50
     if resp_message_is_proto_plus:
         response_type = Song
@@ -166,10 +213,15 @@ def test_next_stress(random_split, resp_message_is_proto_plus):
     resp = ResponseMock(
         responses=responses, random_split=random_split, response_cls=response_type
     )
-    itr = rest_streaming.ResponseIterator(resp, response_type)
-    assert list(itr) == responses
+    itr = rest_streaming_async.AsyncResponseIterator(resp, response_type)
+    idx = 0
+    async for response in itr:
+        assert response == responses[idx]
+        idx += 1
+    assert idx == n
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "random_split,resp_message_is_proto_plus",
     [
@@ -179,7 +231,9 @@ def test_next_stress(random_split, resp_message_is_proto_plus):
         (False, False),
     ],
 )
-def test_next_escaped_characters_in_string(random_split, resp_message_is_proto_plus):
+async def test_next_escaped_characters_in_string(
+    random_split, resp_message_is_proto_plus
+):
     if resp_message_is_proto_plus:
         response_type = Song
         composer_with_relateds = Composer()
@@ -227,31 +281,54 @@ def test_next_escaped_characters_in_string(random_split, resp_message_is_proto_p
     resp = ResponseMock(
         responses=responses, random_split=random_split, response_cls=response_type
     )
-    itr = rest_streaming.ResponseIterator(resp, response_type)
-    assert list(itr) == responses
+    itr = rest_streaming_async.AsyncResponseIterator(resp, response_type)
+    idx = 0
+    async for response in itr:
+        assert response == responses[idx]
+        idx += 1
+    assert idx == len(responses)
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize("response_type", [EchoResponse, httpbody_pb2.HttpBody])
-def test_next_not_array(response_type):
-    with patch.object(
-        ResponseMock, "iter_content", return_value=iter('{"hello": 0}')
+async def test_next_not_array(response_type):
+
+    data = '{"hello": 0}'
+    with mock.patch.object(
+        ResponseMock, "content", return_value=mock_async_gen(data)
     ) as mock_method:
         resp = ResponseMock(responses=[], response_cls=response_type)
-        itr = rest_streaming.ResponseIterator(resp, response_type)
+        itr = rest_streaming_async.AsyncResponseIterator(resp, response_type)
         with pytest.raises(ValueError):
-            next(itr)
+            await itr.__anext__()
         mock_method.assert_called_once()
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize("response_type", [EchoResponse, httpbody_pb2.HttpBody])
-def test_cancel(response_type):
-    with patch.object(ResponseMock, "close", return_value=None) as mock_method:
+async def test_cancel(response_type):
+    with mock.patch.object(
+        ResponseMock, "close", new_callable=mock.AsyncMock
+    ) as mock_method:
         resp = ResponseMock(responses=[], response_cls=response_type)
-        itr = rest_streaming.ResponseIterator(resp, response_type)
-        itr.cancel()
+        itr = rest_streaming_async.AsyncResponseIterator(resp, response_type)
+        await itr.cancel()
         mock_method.assert_called_once()
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize("response_type", [EchoResponse, httpbody_pb2.HttpBody])
+async def test_iterator_as_context_manager(response_type):
+    with mock.patch.object(
+        ResponseMock, "close", new_callable=mock.AsyncMock
+    ) as mock_method:
+        resp = ResponseMock(responses=[], response_cls=response_type)
+        async with rest_streaming_async.AsyncResponseIterator(resp, response_type):
+            pass
+        mock_method.assert_called_once()
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "response_type,return_value",
     [
@@ -259,32 +336,37 @@ def test_cancel(response_type):
         (httpbody_pb2.HttpBody, bytes('[{"content_type": "hello"}, {', "utf-8")),
     ],
 )
-def test_check_buffer(response_type, return_value):
-    with patch.object(
+async def test_check_buffer(response_type, return_value):
+    with mock.patch.object(
         ResponseMock,
         "_parse_responses",
         return_value=return_value,
     ):
         resp = ResponseMock(responses=[], response_cls=response_type)
-        itr = rest_streaming.ResponseIterator(resp, response_type)
+        itr = rest_streaming_async.AsyncResponseIterator(resp, response_type)
         with pytest.raises(ValueError):
-            next(itr)
-            next(itr)
+            await itr.__anext__()
+            await itr.__anext__()
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize("response_type", [EchoResponse, httpbody_pb2.HttpBody])
-def test_next_html(response_type):
-    with patch.object(
-        ResponseMock, "iter_content", return_value=iter("<!DOCTYPE html><html></html>")
+async def test_next_html(response_type):
+
+    data = "<!DOCTYPE html><html></html>"
+    with mock.patch.object(
+        ResponseMock, "content", return_value=mock_async_gen(data)
     ) as mock_method:
         resp = ResponseMock(responses=[], response_cls=response_type)
-        itr = rest_streaming.ResponseIterator(resp, response_type)
+
+        itr = rest_streaming_async.AsyncResponseIterator(resp, response_type)
         with pytest.raises(ValueError):
-            next(itr)
+            await itr.__anext__()
         mock_method.assert_called_once()
 
 
-def test_invalid_response_class():
+@pytest.mark.asyncio
+async def test_invalid_response_class():
     class SomeClass:
         pass
 
@@ -293,4 +375,4 @@ def test_invalid_response_class():
         ValueError,
         match="Response message class must be a subclass of proto.Message or google.protobuf.message.Message",
     ):
-        rest_streaming.ResponseIterator(resp, SomeClass)
+        rest_streaming_async.AsyncResponseIterator(resp, SomeClass)
