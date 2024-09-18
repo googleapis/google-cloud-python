@@ -14,7 +14,11 @@
 
 
 import unittest
-from tests._helpers import OpenTelemetryBase, StatusCode
+from tests._helpers import (
+    OpenTelemetryBase,
+    StatusCode,
+    enrich_with_otel_scope,
+)
 from google.cloud.spanner_v1 import RequestOptions
 
 TABLE_NAME = "citizens"
@@ -29,6 +33,7 @@ BASE_ATTRIBUTES = {
     "db.instance": "testing",
     "net.host.name": "spanner.googleapis.com",
 }
+enrich_with_otel_scope(BASE_ATTRIBUTES)
 
 
 class _BaseTest(unittest.TestCase):

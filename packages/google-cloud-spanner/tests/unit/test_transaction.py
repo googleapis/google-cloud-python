@@ -21,7 +21,11 @@ from google.cloud.spanner_v1 import TypeCode
 from google.api_core.retry import Retry
 from google.api_core import gapic_v1
 
-from tests._helpers import OpenTelemetryBase, StatusCode
+from tests._helpers import (
+    OpenTelemetryBase,
+    StatusCode,
+    enrich_with_otel_scope,
+)
 
 TABLE_NAME = "citizens"
 COLUMNS = ["email", "first_name", "last_name", "age"]
@@ -58,6 +62,7 @@ class TestTransaction(OpenTelemetryBase):
         "db.instance": "testing",
         "net.host.name": "spanner.googleapis.com",
     }
+    enrich_with_otel_scope(BASE_ATTRIBUTES)
 
     def _getTargetClass(self):
         from google.cloud.spanner_v1.transaction import Transaction

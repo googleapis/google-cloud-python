@@ -1,6 +1,10 @@
 import unittest
 import mock
 
+from google.cloud.spanner_v1 import gapic_version
+
+LIB_VERSION = gapic_version.__version__
+
 try:
     from opentelemetry import trace
     from opentelemetry.sdk.trace import TracerProvider
@@ -8,6 +12,11 @@ try:
     from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
         InMemorySpanExporter,
     )
+    from opentelemetry.semconv.attributes.otel_attributes import (
+        OTEL_SCOPE_NAME,
+        OTEL_SCOPE_VERSION,
+    )
+
     from opentelemetry.trace.status import StatusCode
 
     trace.set_tracer_provider(TracerProvider())
@@ -28,6 +37,18 @@ def get_test_ot_exporter():
     if _TEST_OT_EXPORTER is None:
         _TEST_OT_EXPORTER = InMemorySpanExporter()
     return _TEST_OT_EXPORTER
+
+
+def enrich_with_otel_scope(attrs):
+    """
+    This helper enriches attrs with OTEL_SCOPE_NAME and OTEL_SCOPE_VERSION
+    for the purpose of avoiding cumbersome duplicated imports.
+    """
+    if HAS_OPENTELEMETRY_INSTALLED:
+        attrs[OTEL_SCOPE_NAME] = "cloud.google.com/python/spanner"
+        attrs[OTEL_SCOPE_VERSION] = LIB_VERSION
+
+    return attrs
 
 
 def use_test_ot_exporter():

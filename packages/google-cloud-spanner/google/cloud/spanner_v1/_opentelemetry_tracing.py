@@ -16,16 +16,38 @@
 
 from contextlib import contextmanager
 
-from google.api_core.exceptions import GoogleAPICallError
 from google.cloud.spanner_v1 import SpannerClient
+from google.cloud.spanner_v1 import gapic_version
 
 try:
     from opentelemetry import trace
     from opentelemetry.trace.status import Status, StatusCode
+    from opentelemetry.semconv.attributes.otel_attributes import (
+        OTEL_SCOPE_NAME,
+        OTEL_SCOPE_VERSION,
+    )
 
     HAS_OPENTELEMETRY_INSTALLED = True
 except ImportError:
     HAS_OPENTELEMETRY_INSTALLED = False
+
+TRACER_NAME = "cloud.google.com/python/spanner"
+TRACER_VERSION = gapic_version.__version__
+
+
+def get_tracer(tracer_provider=None):
+    """
+    get_tracer is a utility to unify and simplify retrieval of the tracer, without
+    leaking implementation details given that retrieving a tracer requires providing
+    the full qualified library name and version.
+    When the tracer_provider is set, it'll retrieve the tracer from it, otherwise
+    it'll fall back to the global tracer provider and use this library's specific semantics.
+    """
+    if not tracer_provider:
+        # Acquire the global tracer provider.
+        tracer_provider = trace.get_tracer_provider()
+
+    return tracer_provider.get_tracer(TRACER_NAME, TRACER_VERSION)
 
 
 @contextmanager
@@ -35,7 +57,7 @@ def trace_call(name, session, extra_attributes=None):
         yield None
         return
 
-    tracer = trace.get_tracer(__name__)
+    tracer = get_tracer()
 
     # Set base attributes that we know for every trace created
     attributes = {
@@ -43,6 +65,8 @@ def trace_call(name, session, extra_attributes=None):
         "db.url": SpannerClient.DEFAULT_ENDPOINT,
         "db.instance": session._database.name,
         "net.host.name": SpannerClient.DEFAULT_ENDPOINT,
+        OTEL_SCOPE_NAME: TRACER_NAME,
+        OTEL_SCOPE_VERSION: TRACER_VERSION,
     }
 
     if extra_attributes:
@@ -52,9 +76,10 @@ def trace_call(name, session, extra_attributes=None):
         name, kind=trace.SpanKind.CLIENT, attributes=attributes
     ) as span:
         try:
-            span.set_status(Status(StatusCode.OK))
             yield span
-        except GoogleAPICallError as error:
-            span.set_status(Status(StatusCode.ERROR))
+        except Exception as error:
+            span.set_status(Status(StatusCode.ERROR, str(error)))
             span.record_exception(error)
             raise
+        else:
+            span.set_status(Status(StatusCode.OK))

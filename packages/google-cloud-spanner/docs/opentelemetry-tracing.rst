@@ -8,10 +8,8 @@ To take advantage of these traces, we first need to install OpenTelemetry:
 
 .. code-block:: sh
 
-    pip install opentelemetry-api opentelemetry-sdk opentelemetry-instrumentation
-
-    # [Optional] Installs the cloud monitoring exporter, however you can use any exporter of your choice
-    pip install opentelemetry-exporter-google-cloud
+    pip install opentelemetry-api opentelemetry-sdk
+    pip install opentelemetry-exporter-gcp-trace
 
 We also need to tell OpenTelemetry which exporter to use. To export Spanner traces to `Cloud Tracing <https://cloud.google.com/trace>`_, add the following lines to your application:
 
@@ -19,20 +17,36 @@ We also need to tell OpenTelemetry which exporter to use. To export Spanner trac
 
     from opentelemetry import trace
     from opentelemetry.sdk.trace import TracerProvider
-    from opentelemetry.trace.sampling import ProbabilitySampler
+    from opentelemetry.sdk.trace.sampling import TraceIdRatioBased
     from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
-    # BatchExportSpanProcessor exports spans to Cloud Trace 
+    # BatchSpanProcessor exports spans to Cloud Trace
     # in a seperate thread to not block on the main thread
-    from opentelemetry.sdk.trace.export import BatchExportSpanProcessor
+    from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
     # Create and export one trace every 1000 requests
-    sampler = ProbabilitySampler(1/1000)
+    sampler = TraceIdRatioBased(1/1000)
     # Use the default tracer provider
     trace.set_tracer_provider(TracerProvider(sampler=sampler))
     trace.get_tracer_provider().add_span_processor(
         # Initialize the cloud tracing exporter
-        BatchExportSpanProcessor(CloudTraceSpanExporter())
+        BatchSpanProcessor(CloudTraceSpanExporter())
     )
+
+
+To get more fine-grained traces from gRPC, you can enable the gRPC instrumentation by the following
+
+.. code-block:: sh
+
+    pip install opentelemetry-instrumentation opentelemetry-instrumentation-grpc
+
+and then in your Python code, please add the following lines:
+
+.. code:: python
+
+   from opentelemetry.instrumentation.grpc import GrpcInstrumentorClient
+   grpc_client_instrumentor = GrpcInstrumentorClient()
+   grpc_client_instrumentor.instrument()
+
 
 Generated spanner traces should now be available on `Cloud Trace <https://console.cloud.google.com/traces>`_.
 

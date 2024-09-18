@@ -346,6 +346,8 @@ def _make_attributes(db_instance, **kwargs):
         "net.host.name": "spanner.googleapis.com",
         "db.instance": db_instance,
     }
+    ot_helpers.enrich_with_otel_scope(attributes)
+
     attributes.update(kwargs)
 
     return attributes

@@ -12,7 +12,11 @@ except ImportError:
 from google.api_core.exceptions import GoogleAPICallError
 from google.cloud.spanner_v1 import _opentelemetry_tracing
 
-from tests._helpers import OpenTelemetryBase, HAS_OPENTELEMETRY_INSTALLED
+from tests._helpers import (
+    OpenTelemetryBase,
+    HAS_OPENTELEMETRY_INSTALLED,
+    enrich_with_otel_scope,
+)
 
 
 def _make_rpc_error(error_cls, trailing_metadata=None):
@@ -55,11 +59,13 @@ if HAS_OPENTELEMETRY_INSTALLED:
                 "db.instance": "database_name",
             }
 
-            expected_attributes = {
-                "db.type": "spanner",
-                "db.url": "spanner.googleapis.com",
-                "net.host.name": "spanner.googleapis.com",
-            }
+            expected_attributes = enrich_with_otel_scope(
+                {
+                    "db.type": "spanner",
+                    "db.url": "spanner.googleapis.com",
+                    "net.host.name": "spanner.googleapis.com",
+                }
+            )
             expected_attributes.update(extra_attributes)
 
             with _opentelemetry_tracing.trace_call(
@@ -80,11 +86,13 @@ if HAS_OPENTELEMETRY_INSTALLED:
         def test_trace_error(self):
             extra_attributes = {"db.instance": "database_name"}
 
-            expected_attributes = {
-                "db.type": "spanner",
-                "db.url": "spanner.googleapis.com",
-                "net.host.name": "spanner.googleapis.com",
-            }
+            expected_attributes = enrich_with_otel_scope(
+                {
+                    "db.type": "spanner",
+                    "db.url": "spanner.googleapis.com",
+                    "net.host.name": "spanner.googleapis.com",
+                }
+            )
             expected_attributes.update(extra_attributes)
 
             with self.assertRaises(GoogleAPICallError):
@@ -106,11 +114,13 @@ if HAS_OPENTELEMETRY_INSTALLED:
         def test_trace_grpc_error(self):
             extra_attributes = {"db.instance": "database_name"}
 
-            expected_attributes = {
-                "db.type": "spanner",
-                "db.url": "spanner.googleapis.com:443",
-                "net.host.name": "spanner.googleapis.com:443",
-            }
+            expected_attributes = enrich_with_otel_scope(
+                {
+                    "db.type": "spanner",
+                    "db.url": "spanner.googleapis.com:443",
+                    "net.host.name": "spanner.googleapis.com:443",
+                }
+            )
             expected_attributes.update(extra_attributes)
 
             with self.assertRaises(GoogleAPICallError):
@@ -129,11 +139,13 @@ if HAS_OPENTELEMETRY_INSTALLED:
         def test_trace_codeless_error(self):
             extra_attributes = {"db.instance": "database_name"}
 
-            expected_attributes = {
-                "db.type": "spanner",
-                "db.url": "spanner.googleapis.com:443",
-                "net.host.name": "spanner.googleapis.com:443",
-            }
+            expected_attributes = enrich_with_otel_scope(
+                {
+                    "db.type": "spanner",
+                    "db.url": "spanner.googleapis.com:443",
+                    "net.host.name": "spanner.googleapis.com:443",
+                }
+            )
             expected_attributes.update(extra_attributes)
 
             with self.assertRaises(GoogleAPICallError):

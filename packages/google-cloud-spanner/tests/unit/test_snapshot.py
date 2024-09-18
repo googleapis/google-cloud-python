@@ -21,6 +21,7 @@ from tests._helpers import (
     OpenTelemetryBase,
     StatusCode,
     HAS_OPENTELEMETRY_INSTALLED,
+    enrich_with_otel_scope,
 )
 from google.cloud.spanner_v1.param_types import INT64
 from google.api_core.retry import Retry
@@ -46,6 +47,8 @@ BASE_ATTRIBUTES = {
     "db.instance": "testing",
     "net.host.name": "spanner.googleapis.com",
 }
+enrich_with_otel_scope(BASE_ATTRIBUTES)
+
 DIRECTED_READ_OPTIONS = {
     "include_replicas": {
         "replica_selections": [
@@ -530,12 +533,14 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
                 self.assertEqual(span.name, name)
                 self.assertEqual(
                     dict(span.attributes),
-                    {
-                        "db.type": "spanner",
-                        "db.url": "spanner.googleapis.com",
-                        "db.instance": "testing",
-                        "net.host.name": "spanner.googleapis.com",
-                    },
+                    enrich_with_otel_scope(
+                        {
+                            "db.type": "spanner",
+                            "db.url": "spanner.googleapis.com",
+                            "db.instance": "testing",
+                            "net.host.name": "spanner.googleapis.com",
+                        }
+                    ),
                 )
 
 
