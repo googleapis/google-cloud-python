@@ -23,7 +23,7 @@ release_status = "Development Status :: 4 - Beta"
 dependencies = [
     "setuptools",
     "db-dtypes >=1.0.4,<2.0.0",
-    "numpy >=1.16.6",
+    "numpy >=1.18.1",
     "pandas >=1.1.4",
     "pyarrow >=3.0.0",
     "pydata-google-auth >=1.5.0",
@@ -35,8 +35,8 @@ dependencies = [
     "google-auth-oauthlib >=0.7.0",
     # Please also update the minimum version in pandas_gbq/features.py to
     # allow pandas-gbq to detect invalid package versions at runtime.
-    "google-cloud-bigquery >=3.3.5,<4.0.0dev",
-    "packaging >=20.0.0",
+    "google-cloud-bigquery >=3.4.2,<4.0.0dev",
+    "packaging >=22.0.0",
 ]
 extras = {
     "bqstorage": [

@@ -5,7 +5,7 @@
 """Module for checking dependency versions and supported features."""
 
 # https://github.com/googleapis/python-bigquery/blob/main/CHANGELOG.md
-BIGQUERY_MINIMUM_VERSION = "3.3.5"
+BIGQUERY_MINIMUM_VERSION = "3.4.2"
 BIGQUERY_QUERY_AND_WAIT_VERSION = "3.14.0"
 PANDAS_VERBOSITY_DEPRECATION_VERSION = "0.23.0"
 PANDAS_BOOLEAN_DTYPE_VERSION = "1.0.0"
