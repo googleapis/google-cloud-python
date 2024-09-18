@@ -49,7 +49,6 @@ s.move(
         "README.rst",
         "CONTRIBUTING.rst",
         ".github/release-trigger.yml",
-        ".github/workflows/unittest.yml",
         # BigQuery DataFrames manages its own Kokoro cluster for presubmit & continuous tests.
         ".kokoro/build.sh",
         ".kokoro/continuous/common.cfg",
