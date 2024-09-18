@@ -16,6 +16,7 @@
 
 from __future__ import absolute_import
 
+import argparse
 import multiprocessing
 import os
 import pathlib
@@ -804,7 +805,7 @@ def notebook(session: nox.Session):
         processes = []
         for notebook, regions in notebooks_reg.items():
             for region in regions:
-                args = (
+                region_args = (
                     "python",
                     "scripts/run_and_publish_benchmark.py",
                     "--notebook",
@@ -814,7 +815,7 @@ def notebook(session: nox.Session):
                 if multi_process_mode:
                     process = multiprocessing.Process(
                         target=_run_process,
-                        args=(session, args, error_flag),
+                        args=(session, region_args, error_flag),
                     )
                     process.start()
                     processes.append(process)
@@ -822,7 +823,7 @@ def notebook(session: nox.Session):
                     # process to avoid potential race conditions。
                     time.sleep(1)
                 else:
-                    session.run(*args)
+                    session.run(*region_args)
 
         for process in processes:
             process.join()
@@ -861,7 +862,51 @@ def benchmark(session: nox.Session):
     session.install("-e", ".[all]")
     base_path = os.path.join("tests", "benchmark")
 
-    benchmark_script_list = list(pathlib.Path(base_path).rglob("*.py"))
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-i",
+        "--iterations",
+        type=int,
+        default=1,
+        help="Number of iterations to run each benchmark.",
+    )
+    parser.add_argument(
+        "-o",
+        "--output-csv",
+        nargs="?",
+        const=True,
+        default=False,
+        help=(
+            "Determines whether to output results to a CSV file. If no location is provided, "
+            "a temporary location is automatically generated."
+        ),
+    )
+    parser.add_argument(
+        "-b",
+        "--benchmark-filter",
+        nargs="+",
+        help=(
+            "List of file or directory names to include in the benchmarks. If not provided, "
+            "all benchmarks are run."
+        ),
+    )
+
+    args = parser.parse_args(session.posargs)
+
+    benchmark_script_list: List[pathlib.Path] = []
+    if args.benchmark_filter:
+        for filter_item in args.benchmark_filter:
+            full_path = os.path.join(base_path, filter_item)
+            if os.path.isdir(full_path):
+                benchmark_script_list.extend(pathlib.Path(full_path).rglob("*.py"))
+            elif os.path.isfile(full_path) and full_path.endswith(".py"):
+                benchmark_script_list.append(pathlib.Path(full_path))
+            else:
+                raise ValueError(
+                    f"Item {filter_item} does not match any valid file or directory"
+                )
+    else:
+        benchmark_script_list = list(pathlib.Path(base_path).rglob("*.py"))
 
     try:
         for benchmark in benchmark_script_list:
@@ -871,12 +916,15 @@ def benchmark(session: nox.Session):
                 "python",
                 "scripts/run_and_publish_benchmark.py",
                 f"--benchmark-path={benchmark}",
+                f"--iterations={args.iterations}",
             )
     finally:
         session.run(
             "python",
             "scripts/run_and_publish_benchmark.py",
             f"--publish-benchmarks={base_path}",
+            f"--iterations={args.iterations}",
+            f"--output-csv={args.output_csv}",
         )
 
 

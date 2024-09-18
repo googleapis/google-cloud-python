@@ -7,21 +7,21 @@ import bigframes
 import bigframes.pandas as bpd
 
 
-def q(dataset_id: str, session: bigframes.Session):
+def q(project_id: str, dataset_id: str, session: bigframes.Session):
     customer = session.read_gbq(
-        f"bigframes-dev-perf.{dataset_id}.CUSTOMER",
+        f"{project_id}.{dataset_id}.CUSTOMER",
         index_col=bigframes.enums.DefaultIndexKind.NULL,
     )
     lineitem = session.read_gbq(
-        f"bigframes-dev-perf.{dataset_id}.LINEITEM",
+        f"{project_id}.{dataset_id}.LINEITEM",
         index_col=bigframes.enums.DefaultIndexKind.NULL,
     )
     nation = session.read_gbq(
-        f"bigframes-dev-perf.{dataset_id}.NATION",
+        f"{project_id}.{dataset_id}.NATION",
         index_col=bigframes.enums.DefaultIndexKind.NULL,
     )
     orders = session.read_gbq(
-        f"bigframes-dev-perf.{dataset_id}.ORDERS",
+        f"{project_id}.{dataset_id}.ORDERS",
         index_col=bigframes.enums.DefaultIndexKind.NULL,
     )
 

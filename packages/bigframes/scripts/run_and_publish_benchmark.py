@@ -19,6 +19,7 @@ import os
 import pathlib
 import subprocess
 import sys
+import tempfile
 from typing import Dict, List, Union
 
 import numpy as np
@@ -50,7 +51,7 @@ def run_benchmark_subprocess(args, log_env_name_var, filename=None, region=None)
     subprocess.run(args, env=env, check=True)
 
 
-def collect_benchmark_result(benchmark_path: str) -> pd.DataFrame:
+def collect_benchmark_result(benchmark_path: str, iterations: int) -> pd.DataFrame:
     """Generate a DataFrame report on HTTP queries, bytes processed, slot time and execution time from log files."""
     path = pathlib.Path(benchmark_path)
     try:
@@ -100,28 +101,23 @@ def collect_benchmark_result(benchmark_path: str) -> pd.DataFrame:
 
             with open(bytes_file, "r") as file:
                 lines = file.read().splitlines()
-                query_count = len(lines)
-                total_bytes = sum(int(line) for line in lines)
+                query_count = len(lines) / iterations
+                total_bytes = sum(int(line) for line in lines) / iterations
 
             with open(millis_file, "r") as file:
                 lines = file.read().splitlines()
-                total_slot_millis = sum(int(line) for line in lines)
+                total_slot_millis = sum(int(line) for line in lines) / iterations
 
             if has_local_seconds:
-                # 'local_seconds' captures the total execution time for a benchmark as it
-                # starts timing immediately before the benchmark code begins and stops
-                # immediately after it ends. Unlike other metrics that might accumulate
-                # values proportional to the number of queries executed, 'local_seconds' is
-                # a singular measure of the time taken for the complete execution of the
-                # benchmark, from start to finish.
                 with open(local_seconds_file, "r") as file:
-                    local_seconds = float(file.readline().strip())
+                    lines = file.read().splitlines()
+                    local_seconds = sum(float(line) for line in lines) / iterations
             else:
                 local_seconds = None
 
             with open(bq_seconds_file, "r") as file:
                 lines = file.read().splitlines()
-                bq_seconds = sum(float(line) for line in lines)
+                bq_seconds = sum(float(line) for line in lines) / iterations
 
             results_dict[str(filename)] = [
                 query_count,
@@ -154,7 +150,12 @@ def collect_benchmark_result(benchmark_path: str) -> pd.DataFrame:
         columns=columns,
     )
 
-    print("---BIGQUERY USAGE REPORT---")
+    report_title = (
+        "---BIGQUERY USAGE REPORT---"
+        if iterations == 1
+        else f"---BIGQUERY USAGE REPORT (Averages over {iterations} Iterations)---"
+    )
+    print(report_title)
     for index, row in benchmark_metrics.iterrows():
         formatted_local_exec_time = (
             f"{round(row['Local_Execution_Time_Sec'], 1)} seconds"
@@ -259,7 +260,26 @@ def find_config(start_path):
     return None
 
 
-def run_benchmark_from_config(benchmark: str):
+def publish_to_bigquery(dataframe, notebook, project_name="bigframes-metrics"):
+    bigquery_table = (
+        f"{project_name}.benchmark_report.notebook_benchmark"
+        if notebook
+        else f"{project_name}.benchmark_report.benchmark"
+    )
+
+    repo_status = get_repository_status()
+    for idx, col in enumerate(repo_status.keys()):
+        dataframe.insert(idx, col, repo_status[col])
+
+    pandas_gbq.to_gbq(
+        dataframe=dataframe,
+        destination_table=bigquery_table,
+        if_exists="append",
+    )
+    print(f"Results have been successfully uploaded to {bigquery_table}.")
+
+
+def run_benchmark_from_config(benchmark: str, iterations: int):
     print(benchmark)
     config_path = find_config(benchmark)
 
@@ -267,24 +287,26 @@ def run_benchmark_from_config(benchmark: str):
         benchmark_configs = []
         with open(config_path, "r") as f:
             for line in f:
-                config = json.loads(line)
-                python_args = [f"--{key}={value}" for key, value in config.items()]
-                suffix = (
-                    config["benchmark_suffix"]
-                    if "benchmark_suffix" in config
-                    else "_".join(f"{key}_{value}" for key, value in config.items())
-                )
-                benchmark_configs.append((suffix, python_args))
+                if line.strip():
+                    config = json.loads(line)
+                    python_args = [f"--{key}={value}" for key, value in config.items()]
+                    suffix = (
+                        config["benchmark_suffix"]
+                        if "benchmark_suffix" in config
+                        else "_".join(f"{key}_{value}" for key, value in config.items())
+                    )
+                    benchmark_configs.append((suffix, python_args))
     else:
         benchmark_configs = [(None, [])]
 
-    for benchmark_config in benchmark_configs:
-        args = ["python", str(benchmark)]
-        args.extend(benchmark_config[1])
-        log_env_name_var = str(benchmark)
-        if benchmark_config[0] is not None:
-            log_env_name_var += f"_{benchmark_config[0]}"
-        run_benchmark_subprocess(args=args, log_env_name_var=log_env_name_var)
+    for _ in range(iterations):
+        for benchmark_config in benchmark_configs:
+            args = ["python", str(benchmark)]
+            args.extend(benchmark_config[1])
+            log_env_name_var = str(benchmark)
+            if benchmark_config[0] is not None:
+                log_env_name_var += f"_{benchmark_config[0]}"
+            run_benchmark_subprocess(args=args, log_env_name_var=log_env_name_var)
 
 
 def run_notebook_benchmark(benchmark_file: str, region: str):
@@ -341,6 +363,19 @@ def parse_arguments():
         help="Set the benchmarks to be published to BigQuery.",
     )
 
+    parser.add_argument(
+        "--iterations",
+        type=int,
+        default=1,
+        help="Number of iterations to run each benchmark.",
+    )
+    parser.add_argument(
+        "--output-csv",
+        type=str,
+        default=None,
+        help="Determines whether to output results to a CSV file. If no location is provided, a temporary location is automatically generated.",
+    )
+
     return parser.parse_args()
 
 
@@ -348,28 +383,39 @@ def main():
     args = parse_arguments()
 
     if args.publish_benchmarks:
-        bigquery_table = (
-            "bigframes-metrics.benchmark_report.notebook_benchmark"
-            if args.notebook
-            else "bigframes-metrics.benchmark_report.benchmark"
+        benchmark_metrics = collect_benchmark_result(
+            args.publish_benchmarks, args.iterations
         )
-        benchmark_metrics = collect_benchmark_result(args.publish_benchmarks)
-
-        if os.getenv("BENCHMARK_AND_PUBLISH", "false") == "true":
-            repo_status = get_repository_status()
-            for idx, col in enumerate(repo_status.keys()):
-                benchmark_metrics.insert(idx, col, repo_status[col])
-
-            pandas_gbq.to_gbq(
-                dataframe=benchmark_metrics,
-                destination_table=bigquery_table,
-                if_exists="append",
+        # Output results to CSV without specifying a location
+        if args.output_csv == "True":
+            current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+            temp_file = tempfile.NamedTemporaryFile(
+                prefix=f"benchmark_{current_time}_", delete=False, suffix=".csv"
             )
-            print("Results have been successfully uploaded to BigQuery.")
+            benchmark_metrics.to_csv(temp_file.name, index=False)
+            print(
+                f"Benchmark result is saved to a temporary location: {temp_file.name}"
+            )
+            temp_file.close()
+        # Output results to CSV with specified a custom location
+        elif args.output_csv != "False":
+            benchmark_metrics.to_csv(args.output_csv, index=False)
+            print(f"Benchmark result is saved to: {args.output_csv}")
+
+        # Publish the benchmark metrics to BigQuery under the 'bigframes-metrics' project.
+        # The 'BENCHMARK_AND_PUBLISH' environment variable should be set to 'true' only
+        # in specific Kokoro sessions.
+        if os.getenv("BENCHMARK_AND_PUBLISH", "false") == "true":
+            publish_to_bigquery(benchmark_metrics, args.notebook)
+        # If the 'GCLOUD_BENCH_PUBLISH_PROJECT' environment variable is set, publish the
+        # benchmark metrics to a specified BigQuery table in the provided project. This is
+        # intended for local testing where the default behavior is not to publish results.
+        elif project := os.getenv("GCLOUD_BENCH_PUBLISH_PROJECT", ""):
+            publish_to_bigquery(benchmark_metrics, args.notebook, project)
     elif args.notebook:
         run_notebook_benchmark(args.benchmark_path, args.region)
     else:
-        run_benchmark_from_config(args.benchmark_path)
+        run_benchmark_from_config(args.benchmark_path, args.iterations)
 
 
 if __name__ == "__main__":

@@ -4,17 +4,17 @@ import bigframes
 import bigframes.pandas as bpd
 
 
-def q(dataset_id: str, session: bigframes.Session):
+def q(project_id: str, dataset_id: str, session: bigframes.Session):
     part = session.read_gbq(
-        f"bigframes-dev-perf.{dataset_id}.PART",
+        f"{project_id}.{dataset_id}.PART",
         index_col=bigframes.enums.DefaultIndexKind.NULL,
     )
     partsupp = session.read_gbq(
-        f"bigframes-dev-perf.{dataset_id}.PARTSUPP",
+        f"{project_id}.{dataset_id}.PARTSUPP",
         index_col=bigframes.enums.DefaultIndexKind.NULL,
     )
     supplier = session.read_gbq(
-        f"bigframes-dev-perf.{dataset_id}.SUPPLIER",
+        f"{project_id}.{dataset_id}.SUPPLIER",
         index_col=bigframes.enums.DefaultIndexKind.NULL,
     )
 
