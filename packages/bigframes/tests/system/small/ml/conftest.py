@@ -35,11 +35,6 @@ from bigframes.ml import (
 
 
 @pytest.fixture(scope="session")
-def bq_connection(bigquery_client) -> str:
-    return f"{bigquery_client.project}.us.bigframes-rf-conn"
-
-
-@pytest.fixture(scope="session")
 def penguins_bqml_linear_model(session, penguins_linear_model_name) -> core.BqmlModel:
     model = session.bqclient.get_model(penguins_linear_model_name)
     return core.BqmlModel(session, model)
@@ -158,20 +153,6 @@ def penguins_pca_model(
 
 
 @pytest.fixture(scope="session")
-def llm_text_pandas_df():
-    """Additional data matching the penguins dataset, with a new index"""
-    return pd.DataFrame(
-        {
-            "prompt": [
-                "What is BigQuery?",
-                "What is BQML?",
-                "What is BigQuery DataFrame?",
-            ],
-        }
-    )
-
-
-@pytest.fixture(scope="session")
 def onnx_iris_pandas_df():
     """Data matching the iris dataset."""
     return pd.DataFrame(
@@ -210,11 +191,6 @@ def onnx_iris_df(session, onnx_iris_pandas_df):
 @pytest.fixture(scope="session")
 def xgboost_iris_df(session, xgboost_iris_pandas_df):
     return session.read_pandas(xgboost_iris_pandas_df)
-
-
-@pytest.fixture(scope="session")
-def llm_text_df(session, llm_text_pandas_df):
-    return session.read_pandas(llm_text_pandas_df)
 
 
 @pytest.fixture(scope="session")

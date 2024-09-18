@@ -147,16 +147,6 @@ def session() -> Generator[bigframes.Session, None, None]:
 
 
 @pytest.fixture(scope="session")
-def session_us_east5() -> Generator[bigframes.Session, None, None]:
-    context = bigframes.BigQueryOptions(
-        location="us-east5",
-    )
-    session = bigframes.Session(context=context)
-    yield session
-    session.close()  # close generated session at cleanup time
-
-
-@pytest.fixture(scope="session")
 def session_load() -> Generator[bigframes.Session, None, None]:
     context = bigframes.BigQueryOptions(location="US", project="bigframes-load-testing")
     session = bigframes.Session(context=context)
@@ -186,6 +176,11 @@ def session_tokyo(tokyo_location: str) -> Generator[bigframes.Session, None, Non
     session = bigframes.Session(context=context)
     yield session
     session.close()  # close generated session at cleanup type
+
+
+@pytest.fixture(scope="session")
+def bq_connection(bigquery_client: bigquery.Client) -> str:
+    return f"{bigquery_client.project}.{bigquery_client.location}.bigframes-rf-conn"
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -726,6 +721,25 @@ def missing_values_penguins_df():
 @pytest.fixture(scope="session")
 def new_penguins_df(session, new_penguins_pandas_df):
     return session.read_pandas(new_penguins_pandas_df)
+
+
+@pytest.fixture(scope="session")
+def llm_text_pandas_df():
+    """Additional data matching the penguins dataset, with a new index"""
+    return pd.DataFrame(
+        {
+            "prompt": [
+                "What is BigQuery?",
+                "What is BQML?",
+                "What is BigQuery DataFrame?",
+            ],
+        }
+    )
+
+
+@pytest.fixture(scope="session")
+def llm_text_df(session, llm_text_pandas_df):
+    return session.read_pandas(llm_text_pandas_df)
 
 
 @pytest.fixture(scope="session")
