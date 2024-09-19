@@ -2619,15 +2619,15 @@ def test_df_describe(scalars_dfs):
 
 @skip_legacy_pandas
 @pytest.mark.parametrize("include", [None, "all"])
-def test_df_describe_non_numerical(scalars_dfs, include):
+def test_df_describe_non_numeric(scalars_dfs, include):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    non_numerical_columns = ["string_col"]
+    non_numeric_columns = ["string_col", "bytes_col", "bool_col"]
 
-    modified_bf = scalars_df[non_numerical_columns]
+    modified_bf = scalars_df[non_numeric_columns]
     bf_result = modified_bf.describe(include=include).to_pandas()
 
-    modified_pd_df = scalars_pandas_df[non_numerical_columns]
+    modified_pd_df = scalars_pandas_df[non_numeric_columns]
     pd_result = modified_pd_df.describe(include=include)
 
     # Reindex results with the specified keys and their order, because
@@ -2639,8 +2639,8 @@ def test_df_describe_non_numerical(scalars_dfs, include):
     ).rename(index={"unique": "nunique"})
 
     pd.testing.assert_frame_equal(
-        pd_result[non_numerical_columns].astype("Int64"),
-        bf_result[non_numerical_columns],
+        pd_result[non_numeric_columns].astype("Int64"),
+        bf_result[non_numeric_columns],
         check_index_type=False,
     )
 
@@ -2649,12 +2649,12 @@ def test_df_describe_non_numerical(scalars_dfs, include):
 def test_df_describe_mixed_types_include_all(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    numerical_columns = [
+    numeric_columns = [
         "int64_col",
         "float64_col",
     ]
-    non_numerical_columns = ["string_col"]
-    supported_columns = numerical_columns + non_numerical_columns
+    non_numeric_columns = ["string_col"]
+    supported_columns = numeric_columns + non_numeric_columns
 
     modified_bf = scalars_df[supported_columns]
     bf_result = modified_bf.describe(include="all").to_pandas()
@@ -2678,14 +2678,14 @@ def test_df_describe_mixed_types_include_all(scalars_dfs):
     ).rename(index={"unique": "nunique"})
 
     pd.testing.assert_frame_equal(
-        pd_result[numerical_columns].astype("Float64"),
-        bf_result[numerical_columns],
+        pd_result[numeric_columns].astype("Float64"),
+        bf_result[numeric_columns],
         check_index_type=False,
     )
 
     pd.testing.assert_frame_equal(
-        pd_result[non_numerical_columns].astype("Int64"),
-        bf_result[non_numerical_columns],
+        pd_result[non_numeric_columns].astype("Int64"),
+        bf_result[non_numeric_columns],
         check_index_type=False,
     )
 

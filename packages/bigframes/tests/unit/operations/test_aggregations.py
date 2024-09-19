@@ -55,38 +55,29 @@ _ALL_OPS = set(
         first_op,
     ]
 )
-_STRING_SUPPORTED_OPS = set([count_op, nunique_op])
 
 
 @pytest.mark.parametrize("dtype", dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE)
 @pytest.mark.parametrize("op", _ALL_OPS)
-def test_is_agg_op_supported_numerical_support_all(dtype, op):
+def test_is_agg_op_supported_numeric_support_all(dtype, op):
     assert is_agg_op_supported(dtype, op) is True
-
-
-@pytest.mark.parametrize("dtype", [dtypes.STRING_DTYPE])
-@pytest.mark.parametrize("op", _STRING_SUPPORTED_OPS)
-def test_is_agg_op_supported_string_support_ops(dtype, op):
-    assert is_agg_op_supported(dtype, op) is True
-
-
-@pytest.mark.parametrize("dtype", [dtypes.STRING_DTYPE])
-@pytest.mark.parametrize("op", _ALL_OPS - _STRING_SUPPORTED_OPS)
-def test_is_agg_op_supported_string_not_support_ops(dtype, op):
-    assert is_agg_op_supported(dtype, op) is False
 
 
 @pytest.mark.parametrize(
-    "dtype",
+    ("dtype", "supported_ops"),
     [
-        dtypes.BYTES_DTYPE,
-        dtypes.DATE_DTYPE,
-        dtypes.TIME_DTYPE,
-        dtypes.DATETIME_DTYPE,
-        dtypes.TIMESTAMP_DTYPE,
-        dtypes.GEO_DTYPE,
+        (dtypes.STRING_DTYPE, {count_op, nunique_op}),
+        (dtypes.BYTES_DTYPE, {count_op, nunique_op}),
+        (dtypes.DATE_DTYPE, set()),
+        (dtypes.TIME_DTYPE, set()),
+        (dtypes.DATETIME_DTYPE, set()),
+        (dtypes.TIMESTAMP_DTYPE, set()),
+        (dtypes.GEO_DTYPE, set()),
     ],
 )
-@pytest.mark.parametrize("op", _ALL_OPS)
-def test_is_agg_op_supported_non_numerical_no_support(dtype, op):
-    assert is_agg_op_supported(dtype, op) is False
+def test_is_agg_op_supported_non_numeric(dtype, supported_ops):
+    for op in supported_ops:
+        assert is_agg_op_supported(dtype, op) is True
+
+    for op in _ALL_OPS - supported_ops:
+        assert is_agg_op_supported(dtype, op) is False

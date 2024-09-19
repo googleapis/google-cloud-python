@@ -568,7 +568,7 @@ def is_agg_op_supported(dtype: dtypes.Dtype, op: AggregateOp) -> bool:
     if dtype in dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE:
         return True
 
-    if dtype == dtypes.STRING_DTYPE:
+    if dtype in (dtypes.STRING_DTYPE, dtypes.BOOL_DTYPE, dtypes.BYTES_DTYPE):
         return isinstance(op, (CountOp, NuniqueOp))
 
     # For all other types, support no aggregation
