@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.20.0](https://github.com/googleapis/python-api-core/compare/v2.19.2...v2.20.0) (2024-09-18)
+
+
+### Features
+
+* Add async unsupported paramater exception ([#694](https://github.com/googleapis/python-api-core/issues/694)) ([8c137fe](https://github.com/googleapis/python-api-core/commit/8c137feb6e880fdd93d1248d9b6c10002dc3c096))
+* Add support for asynchronous rest streaming ([#686](https://github.com/googleapis/python-api-core/issues/686)) ([1b7bb6d](https://github.com/googleapis/python-api-core/commit/1b7bb6d1b721e4ee1561e8e4a347846d7fdd7c27))
+* Add support for creating exceptions from an asynchronous response ([#688](https://github.com/googleapis/python-api-core/issues/688)) ([1c4b0d0](https://github.com/googleapis/python-api-core/commit/1c4b0d079f2103a7b5562371a7bd1ada92528de3))
+
 ## [2.19.2](https://github.com/googleapis/python-api-core/compare/v2.19.1...v2.19.2) (2024-08-16)
 
 
