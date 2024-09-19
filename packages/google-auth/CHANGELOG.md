@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.35.0](https://github.com/googleapis/google-auth-library-python/compare/v2.34.0...v2.35.0) (2024-09-17)
+
+
+### Features
+
+* Add cred info to ADC creds ([#1587](https://github.com/googleapis/google-auth-library-python/issues/1587)) ([6f75dd5](https://github.com/googleapis/google-auth-library-python/commit/6f75dd5de9ee1da4509306ff2e6420b3d88f9d00))
+* Add support for asynchronous `AuthorizedSession` api ([#1577](https://github.com/googleapis/google-auth-library-python/issues/1577)) ([2910b6b](https://github.com/googleapis/google-auth-library-python/commit/2910b6b56f8b82ad6b2e78befb7d0b3fbe96042d))
+
+
+### Bug Fixes
+
+* Remove token_info call from token refresh path ([#1595](https://github.com/googleapis/google-auth-library-python/issues/1595)) ([afb9e5a](https://github.com/googleapis/google-auth-library-python/commit/afb9e5ac889ec7599976cf3cf8516d17f6b59633))
+
 ## [2.34.0](https://github.com/googleapis/google-auth-library-python/compare/v2.33.0...v2.34.0) (2024-08-13)
 
 
