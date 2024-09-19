@@ -34,8 +34,9 @@ from .base import DEFAULT_CLIENT_INFO, AutokeyTransport
 class AutokeyGrpcTransport(AutokeyTransport):
     """gRPC backend transport for Autokey.
 
-    Provides interfaces for using Cloud KMS Autokey to provision new
-    [CryptoKeys][google.cloud.kms.v1.CryptoKey], ready for Customer
+    Provides interfaces for using `Cloud KMS
+    Autokey <https://cloud.google.com/kms/help/autokey>`__ to provision
+    new [CryptoKeys][google.cloud.kms.v1.CryptoKey], ready for Customer
     Managed Encryption Key (CMEK) use, on-demand. To support certain
     client tooling, this feature is modeled around a
     [KeyHandle][google.cloud.kms.v1.KeyHandle] resource: creating a

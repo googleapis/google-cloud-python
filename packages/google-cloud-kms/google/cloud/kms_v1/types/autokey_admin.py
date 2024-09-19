@@ -97,7 +97,32 @@ class AutokeyConfig(proto.Message):
             for this key project must be granted the ``cloudkms.admin``
             role (or pertinent permissions). A request with an empty key
             project field will clear the configuration.
+        state (google.cloud.kms_v1.types.AutokeyConfig.State):
+            Output only. The state for the AutokeyConfig.
     """
+
+    class State(proto.Enum):
+        r"""The states AutokeyConfig can be in.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state of the AutokeyConfig is
+                unspecified.
+            ACTIVE (1):
+                The AutokeyConfig is currently active.
+            KEY_PROJECT_DELETED (2):
+                A previously configured key project has been
+                deleted and the current AutokeyConfig is
+                unusable.
+            UNINITIALIZED (3):
+                The AutokeyConfig is not yet initialized or
+                has been reset to its default uninitialized
+                state.
+        """
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        KEY_PROJECT_DELETED = 2
+        UNINITIALIZED = 3
 
     name: str = proto.Field(
         proto.STRING,
@@ -106,6 +131,11 @@ class AutokeyConfig(proto.Message):
     key_project: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
     )
 
 

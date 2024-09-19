@@ -1127,6 +1127,7 @@ def test_update_autokey_config(request_type, transport: str = "grpc"):
         call.return_value = autokey_admin.AutokeyConfig(
             name="name_value",
             key_project="key_project_value",
+            state=autokey_admin.AutokeyConfig.State.ACTIVE,
         )
         response = client.update_autokey_config(request)
 
@@ -1140,6 +1141,7 @@ def test_update_autokey_config(request_type, transport: str = "grpc"):
     assert isinstance(response, autokey_admin.AutokeyConfig)
     assert response.name == "name_value"
     assert response.key_project == "key_project_value"
+    assert response.state == autokey_admin.AutokeyConfig.State.ACTIVE
 
 
 def test_update_autokey_config_empty_call():
@@ -1247,6 +1249,7 @@ async def test_update_autokey_config_empty_call_async():
             autokey_admin.AutokeyConfig(
                 name="name_value",
                 key_project="key_project_value",
+                state=autokey_admin.AutokeyConfig.State.ACTIVE,
             )
         )
         response = await client.update_autokey_config()
@@ -1320,6 +1323,7 @@ async def test_update_autokey_config_async(
             autokey_admin.AutokeyConfig(
                 name="name_value",
                 key_project="key_project_value",
+                state=autokey_admin.AutokeyConfig.State.ACTIVE,
             )
         )
         response = await client.update_autokey_config(request)
@@ -1334,6 +1338,7 @@ async def test_update_autokey_config_async(
     assert isinstance(response, autokey_admin.AutokeyConfig)
     assert response.name == "name_value"
     assert response.key_project == "key_project_value"
+    assert response.state == autokey_admin.AutokeyConfig.State.ACTIVE
 
 
 @pytest.mark.asyncio
@@ -1527,6 +1532,7 @@ def test_get_autokey_config(request_type, transport: str = "grpc"):
         call.return_value = autokey_admin.AutokeyConfig(
             name="name_value",
             key_project="key_project_value",
+            state=autokey_admin.AutokeyConfig.State.ACTIVE,
         )
         response = client.get_autokey_config(request)
 
@@ -1540,6 +1546,7 @@ def test_get_autokey_config(request_type, transport: str = "grpc"):
     assert isinstance(response, autokey_admin.AutokeyConfig)
     assert response.name == "name_value"
     assert response.key_project == "key_project_value"
+    assert response.state == autokey_admin.AutokeyConfig.State.ACTIVE
 
 
 def test_get_autokey_config_empty_call():
@@ -1650,6 +1657,7 @@ async def test_get_autokey_config_empty_call_async():
             autokey_admin.AutokeyConfig(
                 name="name_value",
                 key_project="key_project_value",
+                state=autokey_admin.AutokeyConfig.State.ACTIVE,
             )
         )
         response = await client.get_autokey_config()
@@ -1722,6 +1730,7 @@ async def test_get_autokey_config_async(
             autokey_admin.AutokeyConfig(
                 name="name_value",
                 key_project="key_project_value",
+                state=autokey_admin.AutokeyConfig.State.ACTIVE,
             )
         )
         response = await client.get_autokey_config(request)
@@ -1736,6 +1745,7 @@ async def test_get_autokey_config_async(
     assert isinstance(response, autokey_admin.AutokeyConfig)
     assert response.name == "name_value"
     assert response.key_project == "key_project_value"
+    assert response.state == autokey_admin.AutokeyConfig.State.ACTIVE
 
 
 @pytest.mark.asyncio
@@ -2301,6 +2311,7 @@ def test_update_autokey_config_rest(request_type):
     request_init["autokey_config"] = {
         "name": "folders/sample1/autokeyConfig",
         "key_project": "key_project_value",
+        "state": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -2377,6 +2388,7 @@ def test_update_autokey_config_rest(request_type):
         return_value = autokey_admin.AutokeyConfig(
             name="name_value",
             key_project="key_project_value",
+            state=autokey_admin.AutokeyConfig.State.ACTIVE,
         )
 
         # Wrap the value into a proper Response obj
@@ -2394,6 +2406,7 @@ def test_update_autokey_config_rest(request_type):
     assert isinstance(response, autokey_admin.AutokeyConfig)
     assert response.name == "name_value"
     assert response.key_project == "key_project_value"
+    assert response.state == autokey_admin.AutokeyConfig.State.ACTIVE
 
 
 def test_update_autokey_config_rest_use_cached_wrapped_rpc():
@@ -2695,6 +2708,7 @@ def test_get_autokey_config_rest(request_type):
         return_value = autokey_admin.AutokeyConfig(
             name="name_value",
             key_project="key_project_value",
+            state=autokey_admin.AutokeyConfig.State.ACTIVE,
         )
 
         # Wrap the value into a proper Response obj
@@ -2712,6 +2726,7 @@ def test_get_autokey_config_rest(request_type):
     assert isinstance(response, autokey_admin.AutokeyConfig)
     assert response.name == "name_value"
     assert response.key_project == "key_project_value"
+    assert response.state == autokey_admin.AutokeyConfig.State.ACTIVE
 
 
 def test_get_autokey_config_rest_use_cached_wrapped_rpc():

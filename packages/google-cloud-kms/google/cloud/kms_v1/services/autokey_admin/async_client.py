@@ -56,7 +56,8 @@ from .transports.grpc_asyncio import AutokeyAdminGrpcAsyncIOTransport
 
 
 class AutokeyAdminAsyncClient:
-    """Provides interfaces for managing Cloud KMS Autokey folder-level
+    """Provides interfaces for managing `Cloud KMS
+    Autokey <https://cloud.google.com/kms/help/autokey>`__ folder-level
     configurations. A configuration is inherited by all descendent
     projects. A configuration at one folder overrides any other
     configurations in its ancestry. Setting a configuration on a folder

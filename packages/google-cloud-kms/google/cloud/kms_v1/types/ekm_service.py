@@ -348,7 +348,7 @@ class EkmConnection(proto.Message):
             [EkmConnection][google.cloud.kms.v1.EkmConnection] was
             created.
         service_resolvers (MutableSequence[google.cloud.kms_v1.types.EkmConnection.ServiceResolver]):
-            A list of
+            Optional. A list of
             [ServiceResolvers][google.cloud.kms.v1.EkmConnection.ServiceResolver]
             where the EKM can be reached. There should be one
             ServiceResolver per EKM replica. Currently, only a single

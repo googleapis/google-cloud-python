@@ -879,7 +879,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.kms_v1.types.ListKeyHandlesResponse",
+        "resultType": "google.cloud.kms_v1.services.autokey.pagers.ListKeyHandlesAsyncPager",
         "shortName": "list_key_handles"
       },
       "description": "Sample for ListKeyHandles",
@@ -889,12 +889,12 @@
       "regionTag": "cloudkms_v1_generated_Autokey_ListKeyHandles_async",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -914,7 +914,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -959,7 +959,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.kms_v1.types.ListKeyHandlesResponse",
+        "resultType": "google.cloud.kms_v1.services.autokey.pagers.ListKeyHandlesPager",
         "shortName": "list_key_handles"
       },
       "description": "Sample for ListKeyHandles",
@@ -969,12 +969,12 @@
       "regionTag": "cloudkms_v1_generated_Autokey_ListKeyHandles_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -994,7 +994,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }

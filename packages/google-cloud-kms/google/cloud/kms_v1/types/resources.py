@@ -276,7 +276,7 @@ class CryptoKey(proto.Message):
             state before transitioning to
             [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED].
             If not specified at creation time, the default duration is
-            24 hours.
+            30 days.
         crypto_key_backend (str):
             Immutable. The resource name of the backend environment
             where the key material for all
