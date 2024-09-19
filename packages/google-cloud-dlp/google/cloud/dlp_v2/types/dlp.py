@@ -206,7 +206,21 @@ __protobuf__ = proto.module(
         "DiscoveryCloudStorageGenerationCadence",
         "DiscoveryCloudStorageConditions",
         "DiscoveryFileStoreConditions",
+        "OtherCloudDiscoveryTarget",
+        "DiscoveryOtherCloudFilter",
+        "OtherCloudResourceCollection",
+        "OtherCloudResourceRegexes",
+        "OtherCloudResourceRegex",
+        "AwsAccountRegex",
+        "AmazonS3BucketRegex",
+        "OtherCloudSingleResourceReference",
+        "AwsAccount",
+        "AmazonS3Bucket",
+        "DiscoveryOtherCloudConditions",
+        "AmazonS3BucketConditions",
+        "DiscoveryOtherCloudGenerationCadence",
         "DiscoveryStartingLocation",
+        "OtherCloudDiscoveryStartingLocation",
         "AllOtherResources",
         "DlpJob",
         "GetDlpJobRequest",
@@ -7828,6 +7842,18 @@ class DataProfileAction(proto.Message):
             Publish a message into the Pub/Sub topic.
 
             This field is a member of `oneof`_ ``action``.
+        publish_to_chronicle (google.cloud.dlp_v2.types.DataProfileAction.PublishToChronicle):
+            Publishes generated data profiles to Google Security
+            Operations. For more information, see `Use Sensitive Data
+            Protection data in context-aware
+            analytics <https://cloud.google.com/chronicle/docs/detection/usecase-dlp-high-risk-user-download>`__.
+
+            This field is a member of `oneof`_ ``action``.
+        publish_to_scc (google.cloud.dlp_v2.types.DataProfileAction.PublishToSecurityCommandCenter):
+            Publishes findings to SCC for each data
+            profile.
+
+            This field is a member of `oneof`_ ``action``.
         tag_resources (google.cloud.dlp_v2.types.DataProfileAction.TagResources):
             Tags the profiled resources with the
             specified tag values.
@@ -7947,6 +7973,18 @@ class DataProfileAction(proto.Message):
             )
         )
 
+    class PublishToChronicle(proto.Message):
+        r"""Message expressing intention to publish to Google Security
+        Operations.
+
+        """
+
+    class PublishToSecurityCommandCenter(proto.Message):
+        r"""If set, a summary finding will be created/updated in SCC for
+        each profile.
+
+        """
+
     class TagResources(proto.Message):
         r"""If set, attaches the [tags]
         (https://cloud.google.com/resource-manager/docs/tags/tags-overview)
@@ -8062,6 +8100,18 @@ class DataProfileAction(proto.Message):
         oneof="action",
         message=PubSubNotification,
     )
+    publish_to_chronicle: PublishToChronicle = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="action",
+        message=PublishToChronicle,
+    )
+    publish_to_scc: PublishToSecurityCommandCenter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="action",
+        message=PublishToSecurityCommandCenter,
+    )
     tag_resources: TagResources = proto.Field(
         proto.MESSAGE,
         number=8,
@@ -8087,6 +8137,8 @@ class DataProfileJobConfig(proto.Message):
             service account that exists within this project
             must have access to all resources that are
             profiled, and the Cloud DLP API must be enabled.
+        other_cloud_starting_location (google.cloud.dlp_v2.types.OtherCloudDiscoveryStartingLocation):
+            Must be set only when scanning other clouds.
         inspect_templates (MutableSequence[str]):
             Detection logic for profile generation.
 
@@ -8118,6 +8170,11 @@ class DataProfileJobConfig(proto.Message):
     project_id: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    other_cloud_starting_location: "OtherCloudDiscoveryStartingLocation" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="OtherCloudDiscoveryStartingLocation",
     )
     inspect_templates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -8251,6 +8308,8 @@ class DiscoveryConfig(proto.Message):
             Display name (max 100 chars)
         org_config (google.cloud.dlp_v2.types.DiscoveryConfig.OrgConfig):
             Only set when the parent is an org.
+        other_cloud_starting_location (google.cloud.dlp_v2.types.OtherCloudDiscoveryStartingLocation):
+            Must be set only when scanning other clouds.
         inspect_templates (MutableSequence[str]):
             Detection logic for profile generation.
 
@@ -8348,6 +8407,11 @@ class DiscoveryConfig(proto.Message):
         number=2,
         message=OrgConfig,
     )
+    other_cloud_starting_location: "OtherCloudDiscoveryStartingLocation" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="OtherCloudDiscoveryStartingLocation",
+    )
     inspect_templates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
@@ -8423,6 +8487,12 @@ class DiscoveryTarget(proto.Message):
             target to match a table will be the one applied.
 
             This field is a member of `oneof`_ ``target``.
+        other_cloud_target (google.cloud.dlp_v2.types.OtherCloudDiscoveryTarget):
+            Other clouds target for discovery. The first
+            target to match a resource will be the one
+            applied.
+
+            This field is a member of `oneof`_ ``target``.
     """
 
     big_query_target: "BigQueryDiscoveryTarget" = proto.Field(
@@ -8448,6 +8518,12 @@ class DiscoveryTarget(proto.Message):
         number=4,
         oneof="target",
         message="CloudStorageDiscoveryTarget",
+    )
+    other_cloud_target: "OtherCloudDiscoveryTarget" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="target",
+        message="OtherCloudDiscoveryTarget",
     )
 
 
@@ -9592,6 +9668,414 @@ class DiscoveryFileStoreConditions(proto.Message):
     )
 
 
+class OtherCloudDiscoveryTarget(proto.Message):
+    r"""Target used to match against for discovery of resources from other
+    clouds. An `AWS connector in Security Command Center
+    (Enterprise <https://cloud.google.com/security-command-center/docs/connect-scc-to-aws>`__
+    is required to use this feature.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        data_source_type (google.cloud.dlp_v2.types.DataSourceType):
+            Required. The type of data profiles generated by this
+            discovery target. Supported values are:
+
+            -  aws/s3/bucket
+        filter (google.cloud.dlp_v2.types.DiscoveryOtherCloudFilter):
+            Required. The resources that the discovery
+            cadence applies to. The first target with a
+            matching filter will be the one to apply to a
+            resource.
+        conditions (google.cloud.dlp_v2.types.DiscoveryOtherCloudConditions):
+            Optional. In addition to matching the filter,
+            these conditions must be true before a profile
+            is generated.
+        generation_cadence (google.cloud.dlp_v2.types.DiscoveryOtherCloudGenerationCadence):
+            How often and when to update data profiles.
+            New resources that match both the filter and
+            conditions are scanned as quickly as possible
+            depending on system capacity.
+
+            This field is a member of `oneof`_ ``cadence``.
+        disabled (google.cloud.dlp_v2.types.Disabled):
+            Disable profiling for resources that match
+            this filter.
+
+            This field is a member of `oneof`_ ``cadence``.
+    """
+
+    data_source_type: "DataSourceType" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="DataSourceType",
+    )
+    filter: "DiscoveryOtherCloudFilter" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DiscoveryOtherCloudFilter",
+    )
+    conditions: "DiscoveryOtherCloudConditions" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DiscoveryOtherCloudConditions",
+    )
+    generation_cadence: "DiscoveryOtherCloudGenerationCadence" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="cadence",
+        message="DiscoveryOtherCloudGenerationCadence",
+    )
+    disabled: "Disabled" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="cadence",
+        message="Disabled",
+    )
+
+
+class DiscoveryOtherCloudFilter(proto.Message):
+    r"""Determines which resources from the other cloud will have
+    profiles generated. Includes the ability to filter by resource
+    names.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        collection (google.cloud.dlp_v2.types.OtherCloudResourceCollection):
+            A collection of resources for this filter to
+            apply to.
+
+            This field is a member of `oneof`_ ``filter``.
+        single_resource (google.cloud.dlp_v2.types.OtherCloudSingleResourceReference):
+            The resource to scan. Configs using this
+            filter can only have one target (the target with
+            this single resource reference).
+
+            This field is a member of `oneof`_ ``filter``.
+        others (google.cloud.dlp_v2.types.AllOtherResources):
+            Optional. Catch-all. This should always be
+            the last target in the list because anything
+            above it will apply first. Should only appear
+            once in a configuration. If none is specified, a
+            default one will be added automatically.
+
+            This field is a member of `oneof`_ ``filter``.
+    """
+
+    collection: "OtherCloudResourceCollection" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="filter",
+        message="OtherCloudResourceCollection",
+    )
+    single_resource: "OtherCloudSingleResourceReference" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="filter",
+        message="OtherCloudSingleResourceReference",
+    )
+    others: "AllOtherResources" = proto.Field(
+        proto.MESSAGE,
+        number=100,
+        oneof="filter",
+        message="AllOtherResources",
+    )
+
+
+class OtherCloudResourceCollection(proto.Message):
+    r"""Match resources using regex filters.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        include_regexes (google.cloud.dlp_v2.types.OtherCloudResourceRegexes):
+            A collection of regular expressions to match
+            a resource against.
+
+            This field is a member of `oneof`_ ``pattern``.
+    """
+
+    include_regexes: "OtherCloudResourceRegexes" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="pattern",
+        message="OtherCloudResourceRegexes",
+    )
+
+
+class OtherCloudResourceRegexes(proto.Message):
+    r"""A collection of regular expressions to determine what
+    resources to match against.
+
+    Attributes:
+        patterns (MutableSequence[google.cloud.dlp_v2.types.OtherCloudResourceRegex]):
+            A group of regular expression patterns to
+            match against one or more resources.
+            Maximum of 100 entries. The sum of all regular
+            expression's length can't exceed 10 KiB.
+    """
+
+    patterns: MutableSequence["OtherCloudResourceRegex"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="OtherCloudResourceRegex",
+    )
+
+
+class OtherCloudResourceRegex(proto.Message):
+    r"""A pattern to match against one or more resources. At least one
+    pattern must be specified. Regular expressions use RE2
+    `syntax <https://github.com/google/re2/wiki/Syntax>`__; a guide can
+    be found under the google/re2 repository on GitHub.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        amazon_s3_bucket_regex (google.cloud.dlp_v2.types.AmazonS3BucketRegex):
+            Regex for Amazon S3 buckets.
+
+            This field is a member of `oneof`_ ``resource_regex``.
+    """
+
+    amazon_s3_bucket_regex: "AmazonS3BucketRegex" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="resource_regex",
+        message="AmazonS3BucketRegex",
+    )
+
+
+class AwsAccountRegex(proto.Message):
+    r"""AWS account regex.
+
+    Attributes:
+        account_id_regex (str):
+            Optional. Regex to test the AWS account ID
+            against. If empty, all accounts match.
+    """
+
+    account_id_regex: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AmazonS3BucketRegex(proto.Message):
+    r"""Amazon S3 bucket regex.
+
+    Attributes:
+        aws_account_regex (google.cloud.dlp_v2.types.AwsAccountRegex):
+            The AWS account regex.
+        bucket_name_regex (str):
+            Optional. Regex to test the bucket name
+            against. If empty, all buckets match.
+    """
+
+    aws_account_regex: "AwsAccountRegex" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="AwsAccountRegex",
+    )
+    bucket_name_regex: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class OtherCloudSingleResourceReference(proto.Message):
+    r"""Identifies a single resource, like a single Amazon S3 bucket.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        amazon_s3_bucket (google.cloud.dlp_v2.types.AmazonS3Bucket):
+            Amazon S3 bucket.
+
+            This field is a member of `oneof`_ ``resource``.
+    """
+
+    amazon_s3_bucket: "AmazonS3Bucket" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="resource",
+        message="AmazonS3Bucket",
+    )
+
+
+class AwsAccount(proto.Message):
+    r"""AWS account.
+
+    Attributes:
+        account_id (str):
+            Required. AWS account ID.
+    """
+
+    account_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AmazonS3Bucket(proto.Message):
+    r"""Amazon S3 bucket.
+
+    Attributes:
+        aws_account (google.cloud.dlp_v2.types.AwsAccount):
+            The AWS account.
+        bucket_name (str):
+            Required. The bucket name.
+    """
+
+    aws_account: "AwsAccount" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="AwsAccount",
+    )
+    bucket_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DiscoveryOtherCloudConditions(proto.Message):
+    r"""Requirements that must be true before a resource is profiled
+    for the first time.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        min_age (google.protobuf.duration_pb2.Duration):
+            Minimum age a resource must be before Cloud
+            DLP can profile it. Value must be 1 hour or
+            greater.
+        amazon_s3_bucket_conditions (google.cloud.dlp_v2.types.AmazonS3BucketConditions):
+            Amazon S3 bucket conditions.
+
+            This field is a member of `oneof`_ ``conditions``.
+    """
+
+    min_age: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    amazon_s3_bucket_conditions: "AmazonS3BucketConditions" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="conditions",
+        message="AmazonS3BucketConditions",
+    )
+
+
+class AmazonS3BucketConditions(proto.Message):
+    r"""Amazon S3 bucket conditions.
+
+    Attributes:
+        bucket_types (MutableSequence[google.cloud.dlp_v2.types.AmazonS3BucketConditions.BucketType]):
+            Optional. Bucket types that should be profiled. Optional.
+            Defaults to TYPE_ALL_SUPPORTED if unspecified.
+        object_storage_classes (MutableSequence[google.cloud.dlp_v2.types.AmazonS3BucketConditions.ObjectStorageClass]):
+            Optional. Object classes that should be profiled. Optional.
+            Defaults to ALL_SUPPORTED_CLASSES if unspecified.
+    """
+
+    class BucketType(proto.Enum):
+        r"""Supported Amazon S3 bucket types. Defaults to TYPE_ALL_SUPPORTED.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unused.
+            TYPE_ALL_SUPPORTED (1):
+                All supported classes.
+            TYPE_GENERAL_PURPOSE (2):
+                A general purpose Amazon S3 bucket.
+        """
+        TYPE_UNSPECIFIED = 0
+        TYPE_ALL_SUPPORTED = 1
+        TYPE_GENERAL_PURPOSE = 2
+
+    class ObjectStorageClass(proto.Enum):
+        r"""Supported Amazon S3 object storage classes. Defaults to
+        ALL_SUPPORTED_CLASSES.
+
+        Values:
+            UNSPECIFIED (0):
+                Unused.
+            ALL_SUPPORTED_CLASSES (1):
+                All supported classes.
+            STANDARD (2):
+                Standard object class.
+            STANDARD_INFREQUENT_ACCESS (4):
+                Standard - infrequent access object class.
+            GLACIER_INSTANT_RETRIEVAL (6):
+                Glacier - instant retrieval object class.
+            INTELLIGENT_TIERING (7):
+                Objects in the S3 Intelligent-Tiering access
+                tiers.
+        """
+        UNSPECIFIED = 0
+        ALL_SUPPORTED_CLASSES = 1
+        STANDARD = 2
+        STANDARD_INFREQUENT_ACCESS = 4
+        GLACIER_INSTANT_RETRIEVAL = 6
+        INTELLIGENT_TIERING = 7
+
+    bucket_types: MutableSequence[BucketType] = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum=BucketType,
+    )
+    object_storage_classes: MutableSequence[ObjectStorageClass] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=ObjectStorageClass,
+    )
+
+
+class DiscoveryOtherCloudGenerationCadence(proto.Message):
+    r"""How often existing resources should have their profiles
+    refreshed. New resources are scanned as quickly as possible
+    depending on system capacity.
+
+    Attributes:
+        refresh_frequency (google.cloud.dlp_v2.types.DataProfileUpdateFrequency):
+            Optional. Frequency to update profiles
+            regardless of whether the underlying resource
+            has changes. Defaults to never.
+        inspect_template_modified_cadence (google.cloud.dlp_v2.types.DiscoveryInspectTemplateModifiedCadence):
+            Optional. Governs when to update data profiles when the
+            inspection rules defined by the ``InspectTemplate`` change.
+            If not set, changing the template will not cause a data
+            profile to update.
+    """
+
+    refresh_frequency: "DataProfileUpdateFrequency" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="DataProfileUpdateFrequency",
+    )
+    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="DiscoveryInspectTemplateModifiedCadence",
+        )
+    )
+
+
 class DiscoveryStartingLocation(proto.Message):
     r"""The location to begin a discovery scan. Denotes an
     organization ID or folder ID within an organization.
@@ -9624,6 +10108,62 @@ class DiscoveryStartingLocation(proto.Message):
         proto.INT64,
         number=2,
         oneof="location",
+    )
+
+
+class OtherCloudDiscoveryStartingLocation(proto.Message):
+    r"""The other cloud starting location for discovery.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        aws_location (google.cloud.dlp_v2.types.OtherCloudDiscoveryStartingLocation.AwsDiscoveryStartingLocation):
+            The AWS starting location for discovery.
+
+            This field is a member of `oneof`_ ``location``.
+    """
+
+    class AwsDiscoveryStartingLocation(proto.Message):
+        r"""The AWS starting location for discovery.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            account_id (str):
+                The AWS account ID that this discovery config applies to.
+                Within an AWS organization, you can find the AWS account ID
+                inside an AWS account ARN. Example:
+                arn:{partition}:organizations::{management_account_id}:account/{org_id}/{account_id}
+
+                This field is a member of `oneof`_ ``scope``.
+            all_asset_inventory_assets (bool):
+                All AWS assets stored in Asset Inventory that
+                didn't match other AWS discovery configs.
+
+                This field is a member of `oneof`_ ``scope``.
+        """
+
+        account_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="scope",
+        )
+        all_asset_inventory_assets: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+            oneof="scope",
+        )
+
+    aws_location: AwsDiscoveryStartingLocation = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="location",
+        message=AwsDiscoveryStartingLocation,
     )
 
 
@@ -11260,7 +11800,7 @@ class ProjectDataProfile(proto.Message):
         name (str):
             The resource name of the profile.
         project_id (str):
-            Project ID that was profiled.
+            Project ID or account that was profiled.
         profile_last_generated (google.protobuf.timestamp_pb2.Timestamp):
             The last time the profile was generated.
         sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
@@ -11918,6 +12458,7 @@ class FileStoreDataProfile(proto.Message):
     r"""The profile for a file store.
 
     -  Cloud Storage: maps 1:1 with a bucket.
+    -  Amazon S3: maps 1:1 with a bucket.
 
     Attributes:
         name (str):
@@ -11929,12 +12470,15 @@ class FileStoreDataProfile(proto.Message):
             for this file store.
         project_id (str):
             The Google Cloud project ID that owns the
-            resource.
+            resource. For Amazon S3 buckets, this is the AWS
+            Account Id.
         file_store_location (str):
             The location of the file store.
 
             -  Cloud Storage:
                https://cloud.google.com/storage/docs/locations#available-locations
+            -  Amazon S3:
+               https://docs.aws.amazon.com/general/latest/gr/rande.html#regional-endpoints
         data_storage_locations (MutableSequence[str]):
             For resources that have multiple storage locations, these
             are those regions. For Cloud Storage this is the list of
@@ -11951,9 +12495,13 @@ class FileStoreDataProfile(proto.Message):
             The file store path.
 
             -  Cloud Storage: ``gs://{bucket}``
+            -  Amazon S3: ``s3://{bucket}``
         full_resource (str):
             The resource name of the resource profiled.
             https://cloud.google.com/apis/design/resource_names#full_resource_name
+
+            Example format of an S3 bucket full resource name:
+            ``//cloudasset.googleapis.com/organizations/{org_id}/otherCloudConnections/aws/arn:aws:s3:::{bucket_name}``
         config_snapshot (google.cloud.dlp_v2.types.DataProfileConfigSnapshot):
             The snapshot of the configurations used to
             generate the profile.
@@ -12322,6 +12870,7 @@ class ListFileStoreDataProfilesRequest(proto.Message):
             -  Supported fields/values:
 
                -  ``project_id`` - The Google Cloud project ID.
+               -  ``account_id`` - The AWS account ID.
                -  ``file_store_path`` - The path like "gs://bucket".
                -  ``data_source_type`` - The profile's data source type,
                   like "google/storage/bucket".
@@ -13003,9 +13552,13 @@ class DataSourceType(proto.Message):
 
     Attributes:
         data_source (str):
-            Output only. An identifying string to the
-            type of resource being profiled. Current values:
-            google/bigquery/table, google/project
+            Output only. An identifying string to the type of resource
+            being profiled. Current values:
+
+            -  google/bigquery/table
+            -  google/project
+            -  google/sql/table
+            -  google/gcs/bucket
     """
 
     data_source: str = proto.Field(
