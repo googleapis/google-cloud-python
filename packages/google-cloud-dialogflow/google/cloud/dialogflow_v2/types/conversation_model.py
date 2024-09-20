@@ -89,6 +89,16 @@ class ConversationModel(proto.Message):
             Metadata for smart reply models.
 
             This field is a member of `oneof`_ ``model_metadata``.
+        satisfies_pzs (bool):
+            Output only. A read only boolean field
+            reflecting Zone Separation status of the model.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
+        satisfies_pzi (bool):
+            Output only. A read only boolean field
+            reflecting Zone Isolation status of the model.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
     """
 
     class State(proto.Enum):
@@ -182,6 +192,16 @@ class ConversationModel(proto.Message):
         number=9,
         oneof="model_metadata",
         message="SmartReplyModelMetadata",
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=25,
+        optional=True,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=26,
+        optional=True,
     )
 
 
