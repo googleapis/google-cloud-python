@@ -59,7 +59,12 @@ from google.maps.places_v1.types import (
     photo,
     place,
     places_service,
+    polyline,
     review,
+    route_modifiers,
+    routing_preference,
+    routing_summary,
+    travel_mode,
 )
 
 
