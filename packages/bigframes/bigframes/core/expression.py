@@ -25,7 +25,9 @@ import bigframes.operations
 import bigframes.operations.aggregations as agg_ops
 
 
-def const(value: typing.Hashable, dtype: dtypes.ExpressionType = None) -> Expression:
+def const(
+    value: typing.Hashable, dtype: dtypes.ExpressionType = None
+) -> ScalarConstantExpression:
     return ScalarConstantExpression(value, dtype or dtypes.infer_literal_type(value))
 
 
@@ -141,6 +143,9 @@ class ScalarConstantExpression(Expression):
     def is_const(self) -> bool:
         return True
 
+    def rename(self, name_mapping: Mapping[str, str]) -> ScalarConstantExpression:
+        return self
+
     def output_type(
         self, input_types: dict[str, bigframes.dtypes.Dtype]
     ) -> dtypes.ExpressionType:
@@ -167,7 +172,7 @@ class UnboundVariableExpression(Expression):
     def unbound_variables(self) -> typing.Tuple[str, ...]:
         return (self.id,)
 
-    def rename(self, name_mapping: Mapping[str, str]) -> Expression:
+    def rename(self, name_mapping: Mapping[str, str]) -> UnboundVariableExpression:
         if self.id in name_mapping:
             return UnboundVariableExpression(name_mapping[self.id])
         else:

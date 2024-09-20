@@ -2709,27 +2709,30 @@ def test_between(scalars_df_index, scalars_pandas_df_index, left, right, inclusi
     )
 
 
-def test_case_when(scalars_df_index, scalars_pandas_df_index):
+def test_series_case_when(scalars_dfs_maybe_ordered):
     pytest.importorskip(
         "pandas",
         minversion="2.2.0",
         reason="case_when added in pandas 2.2.0",
     )
+    scalars_df, scalars_pandas_df = scalars_dfs_maybe_ordered
 
-    bf_series = scalars_df_index["int64_col"]
-    pd_series = scalars_pandas_df_index["int64_col"]
+    bf_series = scalars_df["int64_col"]
+    pd_series = scalars_pandas_df["int64_col"]
 
     # TODO(tswast): pandas case_when appears to assume True when a value is
     # null. I suspect this should be considered a bug in pandas.
     bf_result = bf_series.case_when(
         [
-            ((bf_series > 100).fillna(True), 1000),
+            ((bf_series > 100).fillna(True), bf_series - 1),
+            ((bf_series > 0).fillna(True), pd.NA),
             ((bf_series < -100).fillna(True), -1000),
         ]
     ).to_pandas()
     pd_result = pd_series.case_when(
         [
-            (pd_series > 100, 1000),
+            (pd_series > 100, pd_series - 1),
+            (pd_series > 0, pd.NA),
             (pd_series < -100, -1000),
         ]
     )

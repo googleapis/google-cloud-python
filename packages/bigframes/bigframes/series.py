@@ -445,23 +445,13 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
 
     def case_when(self, caselist) -> Series:
+        cases = list(itertools.chain(*caselist, (True, self)))
         return self._apply_nary_op(
             ops.case_when_op,
-            tuple(
-                itertools.chain(
-                    itertools.chain(*caselist),
-                    # Fallback to current value if no other matches.
-                    (
-                        # We make a Series with a constant value to avoid casts to
-                        # types other than boolean.
-                        Series(True, index=self.index, dtype=pandas.BooleanDtype()),
-                        self,
-                    ),
-                ),
-            ),
+            cases,
             # Self is already included in "others".
             ignore_self=True,
-        )
+        ).rename(self.name)
 
     @validations.requires_ordering()
     def cumsum(self) -> Series:
@@ -1116,8 +1106,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def where(self, cond, other=None):
         value_id, cond_id, other_id, block = self._align3(cond, other)
-        block, result_id = block.apply_ternary_op(
-            value_id, cond_id, other_id, ops.where_op
+        block, result_id = block.project_expr(
+            ops.where_op.as_expr(value_id, cond_id, other_id)
         )
         return Series(block.select_column(result_id).with_column_labels([self.name]))
 
@@ -1129,8 +1119,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         if upper is None:
             return self._apply_binary_op(lower, ops.maximum_op, alignment="left")
         value_id, lower_id, upper_id, block = self._align3(lower, upper)
-        block, result_id = block.apply_ternary_op(
-            value_id, lower_id, upper_id, ops.clip_op
+        block, result_id = block.project_expr(
+            ops.clip_op.as_expr(value_id, lower_id, upper_id),
         )
         return Series(block.select_column(result_id).with_column_labels([self.name]))
 
@@ -1242,8 +1232,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             return self.iloc[indexer]
         if isinstance(indexer, Series):
             (left, right, block) = self._align(indexer, "left")
-            block = block.filter_by_id(right)
-            block = block.select_column(left)
+            block = block.filter(right)
+            block = block.select_column(left.id)
             return Series(block)
         return self.loc[indexer]
 
@@ -1261,11 +1251,6 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             )
         else:
             raise AttributeError(key)
-
-    def _align3(self, other1: Series | scalars.Scalar, other2: Series | scalars.Scalar, how="left") -> tuple[str, str, str, blocks.Block]:  # type: ignore
-        """Aligns the series value with 2 other scalars or series objects. Returns new values and joined tabled expression."""
-        values, index = self._align_n([other1, other2], how)
-        return (values[0], values[1], values[2], index)
 
     def _apply_aggregation(
         self, op: agg_ops.UnaryAggregateOp | agg_ops.NullaryAggregateOp
