@@ -73,9 +73,9 @@ http_archive(
 # instantiated in grpc_deps().
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "13e7749c30bc24af6ee93e092422f9dc08491c7097efa69461f88eb5f61805ce",
-    strip_prefix = "protobuf-28.0",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v28.0.tar.gz"],
+    sha256 = "3b8bf6e96499a744bd014c60b58f797715a758093abf859f1d902194b8e1f8c9",
+    strip_prefix = "protobuf-28.1",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v28.1.tar.gz"],
 )
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
