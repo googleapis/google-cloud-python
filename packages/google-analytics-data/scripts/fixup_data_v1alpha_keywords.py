@@ -43,6 +43,7 @@ class dataCallTransformer(cst.CSTTransformer):
         'create_recurring_audience_list': ('parent', 'recurring_audience_list', ),
         'create_report_task': ('parent', 'report_task', ),
         'get_audience_list': ('name', ),
+        'get_property_quotas_snapshot': ('name', ),
         'get_recurring_audience_list': ('name', ),
         'get_report_task': ('name', ),
         'list_audience_lists': ('parent', 'page_size', 'page_token', ),

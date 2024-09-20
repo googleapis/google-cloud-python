@@ -180,6 +180,11 @@ class AlphaAnalyticsDataTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_property_quotas_snapshot: gapic_v1.method.wrap_method(
+                self.get_property_quotas_snapshot,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_report_task: gapic_v1.method.wrap_method(
                 self.create_report_task,
                 default_timeout=None,
@@ -316,6 +321,18 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         Union[
             analytics_data_api.ListRecurringAudienceListsResponse,
             Awaitable[analytics_data_api.ListRecurringAudienceListsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_property_quotas_snapshot(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetPropertyQuotasSnapshotRequest],
+        Union[
+            analytics_data_api.PropertyQuotasSnapshot,
+            Awaitable[analytics_data_api.PropertyQuotasSnapshot],
         ],
     ]:
         raise NotImplementedError()

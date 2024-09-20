@@ -660,6 +660,37 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         return self._stubs["list_recurring_audience_lists"]
 
     @property
+    def get_property_quotas_snapshot(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetPropertyQuotasSnapshotRequest],
+        analytics_data_api.PropertyQuotasSnapshot,
+    ]:
+        r"""Return a callable for the get property quotas snapshot method over gRPC.
+
+        Get all property quotas organized by quota category
+        for a given property. This will charge 1 property quota
+        from the category with the most quota.
+
+        Returns:
+            Callable[[~.GetPropertyQuotasSnapshotRequest],
+                    ~.PropertyQuotasSnapshot]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_property_quotas_snapshot" not in self._stubs:
+            self._stubs["get_property_quotas_snapshot"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetPropertyQuotasSnapshot",
+                request_serializer=analytics_data_api.GetPropertyQuotasSnapshotRequest.serialize,
+                response_deserializer=analytics_data_api.PropertyQuotasSnapshot.deserialize,
+            )
+        return self._stubs["get_property_quotas_snapshot"]
+
+    @property
     def create_report_task(
         self,
     ) -> Callable[
@@ -671,6 +702,12 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         quickly returns a report task and initiates a long
         running asynchronous request to form a customized report
         of your Google Analytics event data.
+
+        A report task will be retained and available for
+        querying for 72 hours after it has been created.
+
+        A report task created by one user can be listed and
+        queried by all users who have access to the property.
 
         Returns:
             Callable[[~.CreateReportTaskRequest],

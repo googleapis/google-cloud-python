@@ -293,7 +293,7 @@ class MetricType(proto.Enum):
 
 class RestrictedMetricType(proto.Enum):
     r"""Categories of data that you may be restricted from viewing on
-    certain GA4 properties.
+    certain Google Analytics properties.
 
     Values:
         RESTRICTED_METRIC_TYPE_UNSPECIFIED (0):
@@ -2231,7 +2231,7 @@ class Segment(proto.Message):
     particular line of products or who visit a specific part of your
     site or trigger certain events in your app.
 
-    To learn more, see `GA4 Segment
+    To learn more, see `Segment
     Builder <https://support.google.com/analytics/answer/9304353>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
