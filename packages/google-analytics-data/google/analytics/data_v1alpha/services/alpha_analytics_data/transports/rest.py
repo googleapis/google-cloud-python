@@ -103,6 +103,14 @@ class AlphaAnalyticsDataRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_property_quotas_snapshot(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_property_quotas_snapshot(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_recurring_audience_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -268,6 +276,31 @@ class AlphaAnalyticsDataRestInterceptor:
         self, response: analytics_data_api.AudienceList
     ) -> analytics_data_api.AudienceList:
         """Post-rpc interceptor for get_audience_list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlphaAnalyticsData server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_property_quotas_snapshot(
+        self,
+        request: analytics_data_api.GetPropertyQuotasSnapshotRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_data_api.GetPropertyQuotasSnapshotRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_property_quotas_snapshot
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlphaAnalyticsData server.
+        """
+        return request, metadata
+
+    def post_get_property_quotas_snapshot(
+        self, response: analytics_data_api.PropertyQuotasSnapshot
+    ) -> analytics_data_api.PropertyQuotasSnapshot:
+        """Post-rpc interceptor for get_property_quotas_snapshot
 
         Override in a subclass to manipulate the response
         after it is returned by the AlphaAnalyticsData server but before
@@ -1000,6 +1033,98 @@ class AlphaAnalyticsDataRestTransport(AlphaAnalyticsDataTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_audience_list(resp)
+            return resp
+
+    class _GetPropertyQuotasSnapshot(AlphaAnalyticsDataRestStub):
+        def __hash__(self):
+            return hash("GetPropertyQuotasSnapshot")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_data_api.GetPropertyQuotasSnapshotRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_data_api.PropertyQuotasSnapshot:
+            r"""Call the get property quotas
+            snapshot method over HTTP.
+
+                Args:
+                    request (~.analytics_data_api.GetPropertyQuotasSnapshotRequest):
+                        The request object. A request to return the
+                    PropertyQuotasSnapshot for a given
+                    category.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.analytics_data_api.PropertyQuotasSnapshot:
+                        Current state of all Property Quotas
+                    organized by quota category.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/propertyQuotasSnapshot}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_property_quotas_snapshot(
+                request, metadata
+            )
+            pb_request = analytics_data_api.GetPropertyQuotasSnapshotRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_data_api.PropertyQuotasSnapshot()
+            pb_resp = analytics_data_api.PropertyQuotasSnapshot.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_property_quotas_snapshot(resp)
             return resp
 
     class _GetRecurringAudienceList(AlphaAnalyticsDataRestStub):
@@ -1875,6 +2000,17 @@ class AlphaAnalyticsDataRestTransport(AlphaAnalyticsDataTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAudienceList(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_property_quotas_snapshot(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetPropertyQuotasSnapshotRequest],
+        analytics_data_api.PropertyQuotasSnapshot,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetPropertyQuotasSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_recurring_audience_list(
