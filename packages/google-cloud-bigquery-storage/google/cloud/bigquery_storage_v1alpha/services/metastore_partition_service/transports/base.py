@@ -141,9 +141,9 @@ class MetastorePartitionServiceTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=120.0,
+                    deadline=240.0,
                 ),
-                default_timeout=120.0,
+                default_timeout=240.0,
                 client_info=client_info,
             ),
             self.batch_delete_metastore_partitions: gapic_v1.method.wrap_method(
@@ -155,9 +155,9 @@ class MetastorePartitionServiceTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=120.0,
+                    deadline=240.0,
                 ),
-                default_timeout=120.0,
+                default_timeout=240.0,
                 client_info=client_info,
             ),
             self.batch_update_metastore_partitions: gapic_v1.method.wrap_method(
@@ -169,9 +169,9 @@ class MetastorePartitionServiceTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=120.0,
+                    deadline=240.0,
                 ),
-                default_timeout=120.0,
+                default_timeout=240.0,
                 client_info=client_info,
             ),
             self.list_metastore_partitions: gapic_v1.method.wrap_method(
@@ -183,14 +183,14 @@ class MetastorePartitionServiceTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=120.0,
+                    deadline=240.0,
                 ),
-                default_timeout=120.0,
+                default_timeout=240.0,
                 client_info=client_info,
             ),
             self.stream_metastore_partitions: gapic_v1.method.wrap_method(
                 self.stream_metastore_partitions,
-                default_timeout=120.0,
+                default_timeout=240.0,
                 client_info=client_info,
             ),
         }
