@@ -49,7 +49,11 @@ class AsyncResponseIterator(BaseResponseIterator):
     ):
         self._response = response
         self._chunk_size = 1024
-        self._response_itr = self._response.content().__aiter__()
+        # TODO(https://github.com/googleapis/python-api-core/issues/703): mypy does not recognize the abstract content
+        # method as an async generator as it looks for the `yield` keyword in the implementation.
+        # Given that the abstract method is not implemented, mypy fails to recognize it as an async generator.
+        # mypy warnings are silenced until the linked issue is resolved.
+        self._response_itr = self._response.content(self._chunk_size).__aiter__()  # type: ignore
         super(AsyncResponseIterator, self).__init__(
             response_message_cls=response_message_cls
         )
