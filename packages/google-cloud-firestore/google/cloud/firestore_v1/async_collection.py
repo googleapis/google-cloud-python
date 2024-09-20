@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Classes for representing collections for the Google Cloud Firestore API."""
+from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, AsyncGenerator, Optional, Tuple
 
@@ -35,6 +36,8 @@ from google.cloud.firestore_v1.document import DocumentReference
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
     from google.cloud.firestore_v1.base_document import DocumentSnapshot
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+    from google.cloud.firestore_v1.query_results import QueryResultsList
 
 
 class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
@@ -192,7 +195,9 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
         transaction: Optional[transaction.Transaction] = None,
         retry: Optional[retries.AsyncRetry] = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
-    ) -> list:
+        *,
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> QueryResultsList[DocumentSnapshot]:
         """Read the documents in this collection.
 
         This sends a ``RunQuery`` RPC and returns a list of documents
@@ -207,14 +212,21 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
                 system-specified policy.
             timeout (Otional[float]): The timeout for this request.  Defaults
                 to a system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
 
         If a ``transaction`` is used and it already has write operations added,
         this method cannot be used (i.e. read-after-write is not allowed).
 
         Returns:
-            list: The documents in this collection that match the query.
+            QueryResultsList[DocumentSnapshot]:
+            The documents in this collection that match the query.
         """
         query, kwargs = self._prep_get_or_stream(retry, timeout)
+        if explain_options is not None:
+            kwargs["explain_options"] = explain_options
 
         return await query.get(transaction=transaction, **kwargs)
 
@@ -223,7 +235,9 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
         transaction: Optional[transaction.Transaction] = None,
         retry: Optional[retries.AsyncRetry] = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
-    ) -> "AsyncStreamGenerator[DocumentSnapshot]":
+        *,
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> AsyncStreamGenerator[DocumentSnapshot]:
         """Read the documents in this collection.
 
         This sends a ``RunQuery`` RPC and then returns a generator which
@@ -250,11 +264,17 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
                 system-specified policy.
             timeout (Optional[float]): The timeout for this request. Defaults
                 to a system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
 
         Returns:
             `AsyncStreamGenerator[DocumentSnapshot]`: A generator of the query
             results.
         """
         query, kwargs = self._prep_get_or_stream(retry, timeout)
+        if explain_options:
+            kwargs["explain_options"] = explain_options
 
         return query.stream(transaction=transaction, **kwargs)

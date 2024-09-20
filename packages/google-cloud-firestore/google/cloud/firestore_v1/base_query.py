@@ -27,8 +27,8 @@ import warnings
 from typing import (
     TYPE_CHECKING,
     Any,
+    Coroutine,
     Dict,
-    Generator,
     Iterable,
     NoReturn,
     Optional,
@@ -59,9 +59,13 @@ from google.cloud.firestore_v1.types import (
 from google.cloud.firestore_v1.vector import Vector
 
 if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
     from google.cloud.firestore_v1.base_vector_query import BaseVectorQuery
     from google.cloud.firestore_v1.field_path import FieldPath
-    from google.cloud.firestore_v1.query_profile import ExplainMetrics, ExplainOptions
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+    from google.cloud.firestore_v1.query_results import QueryResultsList
+    from google.cloud.firestore_v1.stream_generator import StreamGenerator
+
 
 _BAD_DIR_STRING: str
 _BAD_OP_NAN_NULL: str
@@ -1011,7 +1015,10 @@ class BaseQuery(object):
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
-    ) -> Iterable[DocumentSnapshot]:
+    ) -> (
+        QueryResultsList[DocumentSnapshot]
+        | Coroutine[Any, Any, QueryResultsList[DocumentSnapshot]]
+    ):
         raise NotImplementedError
 
     def _prep_stream(
@@ -1047,7 +1054,10 @@ class BaseQuery(object):
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
-    ) -> Generator[document.DocumentSnapshot, Any, Optional[ExplainMetrics]]:
+    ) -> (
+        StreamGenerator[document.DocumentSnapshot]
+        | AsyncStreamGenerator[DocumentSnapshot]
+    ):
         raise NotImplementedError
 
     def on_snapshot(self, callback) -> NoReturn:

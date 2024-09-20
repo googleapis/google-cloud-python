@@ -16,7 +16,6 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Generator, Optional
-import warnings
 
 from google.api_core import exceptions, gapic_v1
 from google.api_core import retry as retries
@@ -173,16 +172,17 @@ class Transaction(batch.WriteBatch, BaseTransaction):
 
     def get(
         self,
-        ref_or_query,
+        ref_or_query: DocumentReference | Query,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
-    ) -> StreamGenerator[DocumentSnapshot]:
+    ) -> StreamGenerator[DocumentSnapshot] | Generator[DocumentSnapshot, Any, None]:
         """Retrieve a document or a query result from the database.
 
         Args:
-            ref_or_query: The document references or query object to return.
+            ref_or_query (DocumentReference | Query):
+                The document references or query object to return.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.  Defaults to a system-specified policy.
             timeout (float): The timeout for this request.  Defaults to a
@@ -191,19 +191,23 @@ class Transaction(batch.WriteBatch, BaseTransaction):
                 (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
                 Options to enable query profiling for this query. When set,
                 explain_metrics will be available on the returned generator.
-                Can only be used when running a query.
+                Can only be used when running a query, not a document reference.
 
         Yields:
             .DocumentSnapshot: The next document snapshot that fulfills the
             query, or :data:`None` if the document does not exist.
+
+        Raises:
+            ValueError: if `ref_or_query` is not one of the supported types, or
+            explain_options is provided when `ref_or_query` is a document
+            reference.
         """
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
         if isinstance(ref_or_query, DocumentReference):
             if explain_options is not None:
-                warnings.warn(
-                    "explain_options not supported in transanction with "
-                    "document references and will be ignored. To use "
-                    "explain_options, use transaction with query instead."
+                raise ValueError(
+                    "When type of `ref_or_query` is `AsyncDocumentReference`, "
+                    "`explain_options` cannot be provided."
                 )
             return self._client.get_all([ref_or_query], transaction=self, **kwargs)
         elif isinstance(ref_or_query, Query):

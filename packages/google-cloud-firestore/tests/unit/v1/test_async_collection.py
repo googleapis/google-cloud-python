@@ -435,6 +435,23 @@ async def test_asynccollectionreference_get_with_transaction(query_class):
 
 @mock.patch("google.cloud.firestore_v1.async_query.AsyncQuery", autospec=True)
 @pytest.mark.asyncio
+async def test_asynccollectionreference_get_w_explain_options(query_class):
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+
+    explain_options = ExplainOptions(analyze=True)
+
+    collection = _make_async_collection_reference("collection")
+    await collection.get(explain_options=ExplainOptions(analyze=True))
+
+    query_class.assert_called_once_with(collection)
+    query_instance = query_class.return_value
+    query_instance.get.assert_called_once_with(
+        transaction=None, explain_options=explain_options
+    )
+
+
+@mock.patch("google.cloud.firestore_v1.async_query.AsyncQuery", autospec=True)
+@pytest.mark.asyncio
 async def test_asynccollectionreference_stream(query_class):
     query_class.return_value.stream.return_value = AsyncIter(range(3))
 
@@ -488,6 +505,51 @@ async def test_asynccollectionreference_stream_with_transaction(query_class):
     query_class.assert_called_once_with(collection)
     query_instance = query_class.return_value
     query_instance.stream.assert_called_once_with(transaction=transaction)
+
+
+@mock.patch("google.cloud.firestore_v1.async_query.AsyncQuery", autospec=True)
+@pytest.mark.asyncio
+async def test_asynccollectionreference_stream_w_explain_options(query_class):
+    from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
+    from google.cloud.firestore_v1.query_profile import (
+        ExplainMetrics,
+        ExplainOptions,
+        QueryExplainError,
+    )
+    import google.cloud.firestore_v1.types.query_profile as query_profile_pb2
+
+    explain_options = ExplainOptions(analyze=True)
+    explain_metrics = query_profile_pb2.ExplainMetrics(
+        {"execution_stats": {"results_returned": 1}}
+    )
+
+    async def response_generator():
+        yield 1
+        yield explain_metrics
+
+    query_class.return_value.stream.return_value = AsyncStreamGenerator(
+        response_generator(), explain_options
+    )
+
+    collection = _make_async_collection_reference("collection")
+    stream_response = collection.stream(explain_options=ExplainOptions(analyze=True))
+    assert isinstance(stream_response, AsyncStreamGenerator)
+
+    with pytest.raises(QueryExplainError, match="explain_metrics not available"):
+        await stream_response.get_explain_metrics()
+
+    async for _ in stream_response:
+        pass
+
+    query_class.assert_called_once_with(collection)
+    query_instance = query_class.return_value
+    query_instance.stream.assert_called_once_with(
+        transaction=None, explain_options=explain_options
+    )
+
+    explain_metrics = await stream_response.get_explain_metrics()
+    assert isinstance(explain_metrics, ExplainMetrics)
+    assert explain_metrics.execution_stats.results_returned == 1
 
 
 def test_asynccollectionreference_recursive():

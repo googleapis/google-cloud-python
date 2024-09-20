@@ -15,7 +15,9 @@
 import mock
 import pytest
 
-from tests.unit.v1.test__helpers import AsyncMock
+from tests.unit.v1._test_helpers import make_async_client
+from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
+from tests.unit.v1.test_base_query import _make_query_response
 
 
 def _make_async_transaction(*args, **kwargs):
@@ -314,7 +316,7 @@ async def test_asynctransaction_get_all_w_retry_timeout():
     await _get_all_helper(retry=retry, timeout=timeout)
 
 
-async def _get_w_document_ref_helper(retry=None, timeout=None):
+async def _get_w_document_ref_helper(retry=None, timeout=None, explain_options=None):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.async_document import AsyncDocumentReference
 
@@ -323,7 +325,7 @@ async def _get_w_document_ref_helper(retry=None, timeout=None):
     ref = AsyncDocumentReference("documents", "doc-id")
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
-    result = await transaction.get(ref, **kwargs)
+    result = await transaction.get(ref, **kwargs, explain_options=explain_options)
 
     client.get_all.assert_called_once_with([ref], transaction=transaction, **kwargs)
     assert result is client.get_all.return_value
@@ -343,26 +345,93 @@ async def test_asynctransaction_get_w_document_ref_w_retry_timeout():
     await _get_w_document_ref_helper(retry=retry, timeout=timeout)
 
 
-async def _get_w_query_helper(retry=None, timeout=None):
+@pytest.mark.asyncio
+async def test_transaction_get_w_document_ref_w_explain_options():
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+
+    with pytest.raises(ValueError, match="`explain_options` cannot be provided."):
+        await _get_w_document_ref_helper(
+            explain_options=ExplainOptions(analyze=True),
+        )
+
+
+async def _get_w_query_helper(retry=None, timeout=None, explain_options=None):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.async_query import AsyncQuery
+    from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
+    from google.cloud.firestore_v1.query_profile import (
+        ExplainMetrics,
+        QueryExplainError,
+    )
 
-    client = AsyncMock(spec=[])
-    transaction = _make_async_transaction(client)
-    query = AsyncQuery(parent=AsyncMock(spec=[]))
-    query.stream = AsyncMock()
+    # Create a minimal fake GAPIC.
+    firestore_api = AsyncMock(spec=["run_query"])
+
+    # Attach the fake GAPIC to a real client.
+    client = make_async_client()
+    client._firestore_api_internal = firestore_api
+
+    # Make a **real** collection reference as parent.
+    parent = client.collection("dee")
+
+    # Add a dummy response to the minimal fake GAPIC.
+    _, expected_prefix = parent._parent_info()
+    name = "{}/sleep".format(expected_prefix)
+    data = {"snooze": 10}
+    if explain_options is not None:
+        explain_metrics = {"execution_stats": {"results_returned": 1}}
+    else:
+        explain_metrics = None
+    response_pb = _make_query_response(
+        name=name, data=data, explain_metrics=explain_metrics
+    )
+    firestore_api.run_query.return_value = AsyncIter([response_pb])
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
-    result = await transaction.get(
+    # Run the transaction with query.
+    transaction = _make_async_transaction(client)
+    txn_id = b"beep-fail-commit"
+    transaction._id = txn_id
+    query = AsyncQuery(parent)
+    returned_generator = await transaction.get(
         query,
         **kwargs,
+        explain_options=explain_options,
     )
 
-    query.stream.assert_called_once_with(
-        transaction=transaction,
+    # Verify the response.
+    assert isinstance(returned_generator, AsyncStreamGenerator)
+    results = [x async for x in returned_generator]
+    assert len(results) == 1
+    snapshot = results[0]
+    assert snapshot.reference._path == ("dee", "sleep")
+    assert snapshot.to_dict() == data
+
+    # Verify explain_metrics.
+    if explain_options is None:
+        with pytest.raises(QueryExplainError, match="explain_options not set"):
+            await returned_generator.get_explain_metrics()
+    else:
+        explain_metrics = await returned_generator.get_explain_metrics()
+        assert isinstance(explain_metrics, ExplainMetrics)
+        assert explain_metrics.execution_stats.results_returned == 1
+
+    # Create expected request body.
+    parent_path, _ = parent._parent_info()
+    request = {
+        "parent": parent_path,
+        "structured_query": query._to_protobuf(),
+        "transaction": b"beep-fail-commit",
+    }
+    if explain_options is not None:
+        request["explain_options"] = explain_options._to_dict()
+
+    # Verify the mock call.
+    firestore_api.run_query.assert_called_once_with(
+        request=request,
+        metadata=client._rpc_metadata,
         **kwargs,
     )
-    assert result is query.stream.return_value
 
 
 @pytest.mark.asyncio
@@ -373,6 +442,13 @@ async def test_asynctransaction_get_w_query():
 @pytest.mark.asyncio
 async def test_asynctransaction_get_w_query_w_retry_timeout():
     await _get_w_query_helper()
+
+
+@pytest.mark.asyncio
+async def test_transaction_get_w_query_w_explain_options():
+    from google.cloud.firestore_v1.query_profile import ExplainOptions
+
+    await _get_w_query_helper(explain_options=ExplainOptions(analyze=True))
 
 
 @pytest.mark.asyncio

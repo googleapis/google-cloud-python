@@ -20,13 +20,13 @@ a more common way to create a query than direct usage of the constructor.
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, AsyncGenerator, List, Optional, Type
+from typing import TYPE_CHECKING, Any, AsyncGenerator, List, Optional, Type
 
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 
 from google.cloud import firestore_v1
-from google.cloud.firestore_v1 import async_document, transaction
+from google.cloud.firestore_v1 import transaction
 from google.cloud.firestore_v1.async_aggregation import AsyncAggregationQuery
 from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
 from google.cloud.firestore_v1.async_vector_query import AsyncVectorQuery
@@ -38,12 +38,15 @@ from google.cloud.firestore_v1.base_query import (
     _enum_from_direction,
     _query_response_to_snapshot,
 )
+from google.cloud.firestore_v1.query_results import QueryResultsList
 
 if TYPE_CHECKING:  # pragma: NO COVER
     # Types needed only for Type Hints
     from google.cloud.firestore_v1.base_document import DocumentSnapshot
     from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
     from google.cloud.firestore_v1.field_path import FieldPath
+    from google.cloud.firestore_v1.query_profile import ExplainMetrics, ExplainOptions
+    import google.cloud.firestore_v1.types.query_profile as query_profile_pb
     from google.cloud.firestore_v1.vector import Vector
 
 
@@ -177,7 +180,9 @@ class AsyncQuery(BaseQuery):
         transaction: Optional[transaction.Transaction] = None,
         retry: Optional[retries.AsyncRetry] = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
-    ) -> list:
+        *,
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> QueryResultsList[DocumentSnapshot]:
         """Read the documents in the collection that match this query.
 
         This sends a ``RunQuery`` RPC and returns a list of documents
@@ -192,14 +197,21 @@ class AsyncQuery(BaseQuery):
                 system-specified policy.
             timeout (Otional[float]): The timeout for this request.  Defaults
                 to a system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
 
         If a ``transaction`` is used and it already has write operations
         added, this method cannot be used (i.e. read-after-write is not
         allowed).
 
         Returns:
-            list: The documents in the collection that match this query.
+            QueryResultsList[DocumentSnapshot]: The documents in the collection
+            that match this query.
         """
+        explain_metrics: ExplainMetrics | None = None
+
         is_limited_to_last = self._limit_to_last
 
         if self._limit_to_last:
@@ -217,12 +229,18 @@ class AsyncQuery(BaseQuery):
             transaction=transaction,
             retry=retry,
             timeout=timeout,
+            explain_options=explain_options,
         )
-        result = [d async for d in result]
+        result_list = [d async for d in result]
         if is_limited_to_last:
-            result = list(reversed(result))
+            result_list = list(reversed(result_list))
 
-        return result
+        if explain_options is None:
+            explain_metrics = None
+        else:
+            explain_metrics = await result.get_explain_metrics()
+
+        return QueryResultsList(result_list, explain_options, explain_metrics)
 
     def find_nearest(
         self,
@@ -314,7 +332,8 @@ class AsyncQuery(BaseQuery):
         transaction: Optional[transaction.Transaction] = None,
         retry: Optional[retries.AsyncRetry] = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
-    ) -> AsyncGenerator[async_document.DocumentSnapshot, None]:
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> AsyncGenerator[DocumentSnapshot | query_profile_pb.ExplainMetrics, Any]:
         """Internal method for stream(). Read the documents in the collection
         that match this query.
 
@@ -342,15 +361,23 @@ class AsyncQuery(BaseQuery):
                 system-specified policy.
             timeout (Optional[float]): The timeout for this request. Defaults
                 to a system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
 
         Yields:
-            :class:`~google.cloud.firestore_v1.async_document.DocumentSnapshot`:
-            The next document that fulfills the query.
+            [:class:`~google.cloud.firestore_v1.base_document.DocumentSnapshot` \
+                | google.cloud.firestore_v1.types.query_profile.ExplainMetrtics]:
+            The next document that fulfills the query. Query results will be
+            yielded as `DocumentSnapshot`. When the result contains returned
+            explain metrics, yield `query_profile_pb.ExplainMetrics` individually.
         """
         request, expected_prefix, kwargs = self._prep_stream(
             transaction,
             retry,
             timeout,
+            explain_options,
         )
 
         response_iterator = await self._client._firestore_api.run_query(
@@ -371,12 +398,18 @@ class AsyncQuery(BaseQuery):
             if snapshot is not None:
                 yield snapshot
 
+            if response.explain_metrics:
+                metrics = response.explain_metrics
+                yield metrics
+
     def stream(
         self,
         transaction: Optional[transaction.Transaction] = None,
         retry: Optional[retries.AsyncRetry] = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
-    ) -> "AsyncStreamGenerator[DocumentSnapshot]":
+        *,
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> AsyncStreamGenerator[DocumentSnapshot]:
         """Read the documents in the collection that match this query.
 
         This sends a ``RunQuery`` RPC and then returns a generator which
@@ -403,17 +436,22 @@ class AsyncQuery(BaseQuery):
                 system-specified policy.
             timeout (Optional[float]): The timeout for this request. Defaults
                 to a system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
 
         Returns:
-            `AsyncStreamGenerator[DocumentSnapshot]`: A generator of the query
-            results.
+            `AsyncStreamGenerator[DocumentSnapshot]`:
+            An asynchronous generator of the queryresults.
         """
         inner_generator = self._make_stream(
             transaction=transaction,
             retry=retry,
             timeout=timeout,
+            explain_options=explain_options,
         )
-        return AsyncStreamGenerator(inner_generator)
+        return AsyncStreamGenerator(inner_generator, explain_options)
 
     @staticmethod
     def _get_collection_reference_class() -> (

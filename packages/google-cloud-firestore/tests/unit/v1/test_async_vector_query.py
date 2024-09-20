@@ -15,7 +15,14 @@
 import pytest
 
 from google.cloud.firestore_v1._helpers import encode_value, make_retry_timeout_kwargs
+from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
+from google.cloud.firestore_v1.query_profile import (
+    ExplainMetrics,
+    ExplainOptions,
+    QueryExplainError,
+)
+from google.cloud.firestore_v1.query_results import QueryResultsList
 from google.cloud.firestore_v1.types.query import StructuredQuery
 from google.cloud.firestore_v1.vector import Vector
 from tests.unit.v1._test_helpers import (
@@ -58,6 +65,81 @@ def _expected_pb(
         distance_threshold=distance_threshold,
     )
     return expected_pb
+
+
+async def _async_vector_query_get_helper(
+    distance_measure,
+    expected_distance,
+    explain_options=None,
+):
+    # Create a minimal fake GAPIC.
+    firestore_api = AsyncMock(spec=["run_query"])
+    client = make_async_client()
+    client._firestore_api_internal = firestore_api
+
+    # Make a **real** collection reference as parent.
+    parent = client.collection("dee")
+    parent_path, expected_prefix = parent._parent_info()
+
+    data = {"snooze": 10, "embedding": Vector([1.0, 2.0, 3.0])}
+    if explain_options:
+        explain_metrics = {"execution_stats": {"results_returned": 1}}
+    else:
+        explain_metrics = None
+    response_pb1 = _make_query_response(
+        name="{}/test_doc".format(expected_prefix),
+        data=data,
+        explain_metrics=explain_metrics,
+    )
+
+    kwargs = make_retry_timeout_kwargs(retry=None, timeout=None)
+
+    # Execute the vector query and check the response.
+    firestore_api.run_query.return_value = AsyncIter([response_pb1])
+
+    vector_async_query = parent.find_nearest(
+        vector_field="embedding",
+        query_vector=Vector([1.0, 2.0, 3.0]),
+        distance_measure=distance_measure,
+        limit=5,
+    )
+
+    returned = await vector_async_query.get(
+        transaction=_transaction(client), explain_options=explain_options, **kwargs
+    )
+    assert isinstance(returned, QueryResultsList)
+    assert len(returned) == 1
+    assert returned[0].to_dict() == data
+
+    if explain_options is None:
+        with pytest.raises(QueryExplainError, match="explain_options not set"):
+            returned.get_explain_metrics()
+    else:
+        actual_explain_metrics = returned.get_explain_metrics()
+        assert isinstance(actual_explain_metrics, ExplainMetrics)
+        assert actual_explain_metrics.execution_stats.results_returned == 1
+
+    # Create expected request body.
+    expected_pb = _expected_pb(
+        parent=parent,
+        vector_field="embedding",
+        vector=Vector([1.0, 2.0, 3.0]),
+        distance_type=expected_distance,
+        limit=5,
+    )
+    request = {
+        "parent": parent_path,
+        "structured_query": expected_pb,
+        "transaction": _TXN_ID,
+    }
+    if explain_options:
+        request["explain_options"] = explain_options._to_dict()
+
+    firestore_api.run_query.assert_called_once_with(
+        request=request,
+        metadata=client._rpc_metadata,
+        **kwargs,
+    )
 
 
 def test_async_vector_query_int_threshold_constructor_to_pb():
@@ -103,54 +185,31 @@ def test_async_vector_query_int_threshold_constructor_to_pb():
     ],
 )
 @pytest.mark.asyncio
-async def test_async_vector_query(distance_measure, expected_distance):
-    # Create a minimal fake GAPIC.
-    firestore_api = AsyncMock(spec=["run_query"])
-    client = make_async_client()
-    client._firestore_api_internal = firestore_api
+async def test_async_vector_query_get(distance_measure, expected_distance):
+    await _async_vector_query_get_helper(distance_measure, expected_distance)
 
-    # Make a **real** collection reference as parent.
-    parent = client.collection("dee")
-    parent_path, expected_prefix = parent._parent_info()
 
-    data = {"snooze": 10, "embedding": Vector([1.0, 2.0, 3.0])}
-    response_pb1 = _make_query_response(
-        name="{}/test_doc".format(expected_prefix), data=data
-    )
-
-    kwargs = make_retry_timeout_kwargs(retry=None, timeout=None)
-
-    # Execute the vector query and check the response.
-    firestore_api.run_query.return_value = AsyncIter([response_pb1])
-
-    vector_async_query = parent.find_nearest(
-        vector_field="embedding",
-        query_vector=Vector([1.0, 2.0, 3.0]),
-        distance_measure=distance_measure,
-        limit=5,
-    )
-
-    returned = await vector_async_query.get(transaction=_transaction(client), **kwargs)
-    assert isinstance(returned, list)
-    assert len(returned) == 1
-    assert returned[0].to_dict() == data
-
-    expected_pb = _expected_pb(
-        parent=parent,
-        vector_field="embedding",
-        vector=Vector([1.0, 2.0, 3.0]),
-        distance_type=expected_distance,
-        limit=5,
-    )
-
-    firestore_api.run_query.assert_called_once_with(
-        request={
-            "parent": parent_path,
-            "structured_query": expected_pb,
-            "transaction": _TXN_ID,
-        },
-        metadata=client._rpc_metadata,
-        **kwargs,
+@pytest.mark.parametrize(
+    "distance_measure, expected_distance",
+    [
+        (
+            DistanceMeasure.EUCLIDEAN,
+            StructuredQuery.FindNearest.DistanceMeasure.EUCLIDEAN,
+        ),
+        (DistanceMeasure.COSINE, StructuredQuery.FindNearest.DistanceMeasure.COSINE),
+        (
+            DistanceMeasure.DOT_PRODUCT,
+            StructuredQuery.FindNearest.DistanceMeasure.DOT_PRODUCT,
+        ),
+    ],
+)
+@pytest.mark.asyncio
+async def test_async_vector_query_get_w_explain_options(
+    distance_measure, expected_distance
+):
+    explain_options = ExplainOptions(analyze=True)
+    await _async_vector_query_get_helper(
+        distance_measure, expected_distance, explain_options
     )
 
 
@@ -490,4 +549,124 @@ async def test_async_query_stream_multiple_empty_response_in_stream():
             "transaction": None,
         },
         metadata=client._rpc_metadata,
+    )
+
+
+async def _async_vector_query_stream_helper(
+    distance_measure,
+    expected_distance,
+    explain_options=None,
+):
+    # Create a minimal fake GAPIC.
+    firestore_api = AsyncMock(spec=["run_query"])
+    client = make_async_client()
+    client._firestore_api_internal = firestore_api
+
+    # Make a **real** collection reference as parent.
+    parent = client.collection("dee")
+    parent_path, expected_prefix = parent._parent_info()
+
+    data = {"snooze": 10, "embedding": Vector([1.0, 2.0, 3.0])}
+    if explain_options:
+        explain_metrics = {"execution_stats": {"results_returned": 1}}
+    else:
+        explain_metrics = None
+    response_pb1 = _make_query_response(
+        name="{}/test_doc".format(expected_prefix),
+        data=data,
+        explain_metrics=explain_metrics,
+    )
+
+    kwargs = make_retry_timeout_kwargs(retry=None, timeout=None)
+
+    # Execute the vector query and check the response.
+    firestore_api.run_query.return_value = AsyncIter([response_pb1])
+
+    vector_async_query = parent.find_nearest(
+        vector_field="embedding",
+        query_vector=Vector([1.0, 2.0, 3.0]),
+        distance_measure=distance_measure,
+        limit=5,
+    )
+
+    returned = vector_async_query.stream(
+        transaction=_transaction(client), explain_options=explain_options, **kwargs
+    )
+    assert isinstance(returned, AsyncStreamGenerator)
+
+    results_list = [item async for item in returned]
+    assert len(results_list) == 1
+    assert results_list[0].to_dict() == data
+
+    if explain_options is None:
+        with pytest.raises(QueryExplainError, match="explain_options not set"):
+            await returned.get_explain_metrics()
+    else:
+        actual_explain_metrics = await returned.get_explain_metrics()
+        assert isinstance(actual_explain_metrics, ExplainMetrics)
+        assert actual_explain_metrics.execution_stats.results_returned == 1
+
+    # Create expected request body.
+    expected_pb = _expected_pb(
+        parent=parent,
+        vector_field="embedding",
+        vector=Vector([1.0, 2.0, 3.0]),
+        distance_type=expected_distance,
+        limit=5,
+    )
+    request = {
+        "parent": parent_path,
+        "structured_query": expected_pb,
+        "transaction": _TXN_ID,
+    }
+    if explain_options:
+        request["explain_options"] = explain_options._to_dict()
+
+    firestore_api.run_query.assert_called_once_with(
+        request=request,
+        metadata=client._rpc_metadata,
+        **kwargs,
+    )
+
+
+@pytest.mark.parametrize(
+    "distance_measure, expected_distance",
+    [
+        (
+            DistanceMeasure.EUCLIDEAN,
+            StructuredQuery.FindNearest.DistanceMeasure.EUCLIDEAN,
+        ),
+        (DistanceMeasure.COSINE, StructuredQuery.FindNearest.DistanceMeasure.COSINE),
+        (
+            DistanceMeasure.DOT_PRODUCT,
+            StructuredQuery.FindNearest.DistanceMeasure.DOT_PRODUCT,
+        ),
+    ],
+)
+@pytest.mark.asyncio
+async def test_async_vector_query_stream(distance_measure, expected_distance):
+    await _async_vector_query_stream_helper(distance_measure, expected_distance)
+
+
+@pytest.mark.parametrize(
+    "distance_measure, expected_distance",
+    [
+        (
+            DistanceMeasure.EUCLIDEAN,
+            StructuredQuery.FindNearest.DistanceMeasure.EUCLIDEAN,
+        ),
+        (DistanceMeasure.COSINE, StructuredQuery.FindNearest.DistanceMeasure.COSINE),
+        (
+            DistanceMeasure.DOT_PRODUCT,
+            StructuredQuery.FindNearest.DistanceMeasure.DOT_PRODUCT,
+        ),
+    ],
+)
+@pytest.mark.asyncio
+async def test_async_vector_query_stream_w_explain_options(
+    distance_measure, expected_distance
+):
+    explain_options = ExplainOptions(analyze=True)
+    await _async_vector_query_stream_helper(
+        distance_measure, expected_distance, explain_options
     )

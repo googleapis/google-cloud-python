@@ -14,19 +14,26 @@
 
 from __future__ import annotations
 
-from typing import AsyncGenerator, List, Optional, TypeVar, Union
+from typing import TYPE_CHECKING, Any, AsyncGenerator, Optional, TypeVar, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 
-from google.cloud.firestore_v1 import async_document
-from google.cloud.firestore_v1.base_document import DocumentSnapshot
+from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
 from google.cloud.firestore_v1.base_query import (
     BaseQuery,
     _collection_group_query_response_to_snapshot,
     _query_response_to_snapshot,
 )
 from google.cloud.firestore_v1.base_vector_query import BaseVectorQuery
+from google.cloud.firestore_v1.query_results import QueryResultsList
+
+# Types needed only for Type Hints
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.firestore_v1.base_document import DocumentSnapshot
+    from google.cloud.firestore_v1.query_profile import ExplainMetrics, ExplainOptions
+    from google.cloud.firestore_v1 import transaction
+    import google.cloud.firestore_v1.types.query_profile as query_profile_pb
 
 TAsyncVectorQuery = TypeVar("TAsyncVectorQuery", bound="AsyncVectorQuery")
 
@@ -49,7 +56,9 @@ class AsyncVectorQuery(BaseVectorQuery):
         transaction=None,
         retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
-    ) -> List[DocumentSnapshot]:
+        *,
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> QueryResultsList[DocumentSnapshot]:
         """Runs the vector query.
 
         This sends a ``RunQuery`` RPC and returns a list of document messages.
@@ -65,25 +74,43 @@ class AsyncVectorQuery(BaseVectorQuery):
                 should be retried.  Defaults to a system-specified policy.
             timeout (float): The timeout for this request.  Defaults to a
                 system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
 
         Returns:
-            list: The vector query results.
+            QueryResultsList[DocumentSnapshot]: The documents in the collection
+            that match this query.
         """
+        explain_metrics: ExplainMetrics | None = None
+
         stream_result = self.stream(
-            transaction=transaction, retry=retry, timeout=timeout
+            transaction=transaction,
+            retry=retry,
+            timeout=timeout,
+            explain_options=explain_options,
         )
         result = [snapshot async for snapshot in stream_result]
-        return result  # type: ignore
 
-    async def stream(
+        if explain_options is None:
+            explain_metrics = None
+        else:
+            explain_metrics = await stream_result.get_explain_metrics()
+
+        return QueryResultsList(result, explain_options, explain_metrics)
+
+    async def _make_stream(
         self,
-        transaction=None,
-        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
+        transaction: Optional[transaction.Transaction] = None,
+        retry: Optional[retries.Retry] = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
-    ) -> AsyncGenerator[async_document.DocumentSnapshot, None]:
-        """Reads the documents in the collection that match this query.
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> AsyncGenerator[[DocumentSnapshot | query_profile_pb.ExplainMetrics], Any]:
+        """Internal method for stream(). Read the documents in the collection
+        that match this query.
 
-        This sends a ``RunQuery`` RPC and then returns an iterator which
+        This sends a ``RunQuery`` RPC and then returns a generator which
         consumes each document returned in the stream of ``RunQueryResponse``
         messages.
 
@@ -92,22 +119,31 @@ class AsyncVectorQuery(BaseVectorQuery):
         allowed).
 
         Args:
-            transaction
-                (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
-                An existing transaction that this query will run in.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.  Defaults to a system-specified policy.
-            timeout (float): The timeout for this request.  Defaults to a
-                system-specified value.
+            transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.\
+                Transaction`]):
+                An existing transaction that the query will run in.
+            retry (Optional[google.api_core.retry.Retry]): Designation of what
+                errors, if any, should be retried.  Defaults to a
+                system-specified policy.
+            timeout (Optional[float]): The timeout for this request. Defaults
+                to a system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
 
         Yields:
-            :class:`~google.cloud.firestore_v1.document.DocumentSnapshot`:
-            The next document that fulfills the query.
+            [:class:`~google.cloud.firestore_v1.base_document.DocumentSnapshot` \
+                | google.cloud.firestore_v1.types.query_profile.ExplainMetrtics]:
+            The next document that fulfills the query. Query results will be
+            yielded as `DocumentSnapshot`. When the result contains returned
+            explain metrics, yield `query_profile_pb.ExplainMetrics` individually.
         """
         request, expected_prefix, kwargs = self._prep_stream(
             transaction,
             retry,
             timeout,
+            explain_options,
         )
 
         response_iterator = await self._client._firestore_api.run_query(
@@ -127,3 +163,51 @@ class AsyncVectorQuery(BaseVectorQuery):
                 )
             if snapshot is not None:
                 yield snapshot
+
+            if response.explain_metrics:
+                metrics = response.explain_metrics
+                yield metrics
+
+    def stream(
+        self,
+        transaction=None,
+        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        *,
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> AsyncStreamGenerator[DocumentSnapshot]:
+        """Reads the documents in the collection that match this query.
+
+        This sends a ``RunQuery`` RPC and then returns an iterator which
+        consumes each document returned in the stream of ``RunQueryResponse``
+        messages.
+
+        If a ``transaction`` is used and it already has write operations
+        added, this method cannot be used (i.e. read-after-write is not
+        allowed).
+
+        Args:
+            transaction
+                (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
+                An existing transaction that this query will run in.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
+
+        Returns:
+            `AsyncStreamGenerator[DocumentSnapshot]`:
+            An asynchronous generator of the queryresults.
+        """
+
+        inner_generator = self._make_stream(
+            transaction=transaction,
+            retry=retry,
+            timeout=timeout,
+            explain_options=explain_options,
+        )
+        return AsyncStreamGenerator(inner_generator, explain_options)

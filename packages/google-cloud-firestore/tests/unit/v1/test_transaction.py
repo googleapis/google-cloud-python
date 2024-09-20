@@ -15,6 +15,8 @@
 import mock
 import pytest
 
+from tests.unit.v1.test_base_query import _make_query_response
+
 
 def _make_transaction(*args, **kwargs):
     from google.cloud.firestore_v1.transaction import Transaction
@@ -368,12 +370,10 @@ def test_transaction_get_w_document_ref_w_retry_timeout():
 def test_transaction_get_w_document_ref_w_explain_options():
     from google.cloud.firestore_v1.query_profile import ExplainOptions
 
-    with pytest.warns(UserWarning) as warned:
+    with pytest.raises(ValueError, match="`ref_or_query` is `AsyncDocumentReference`"):
         _transaction_get_w_document_ref_helper(
             explain_options=ExplainOptions(analyze=True),
         )
-    assert len(warned) == 1
-    assert "not supported in transanction with document" in str(warned[0])
 
 
 def _transaction_get_w_query_helper(
@@ -383,19 +383,80 @@ def _transaction_get_w_query_helper(
 ):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.query import Query
+    from google.cloud.firestore_v1.query_profile import (
+        ExplainMetrics,
+        QueryExplainError,
+    )
+    from google.cloud.firestore_v1.stream_generator import StreamGenerator
 
-    client = mock.Mock(spec=[])
-    transaction = _make_transaction(client)
-    query = Query(parent=mock.Mock(spec=[]))
-    query.stream = mock.MagicMock()
-    kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+    # Create a minimal fake GAPIC.
+    firestore_api = mock.Mock(spec=["run_query"])
+
+    # Attach the fake GAPIC to a real client.
+    client = _make_client()
+    client._firestore_api_internal = firestore_api
+
+    # Make a **real** collection reference as parent.
+    parent = client.collection("dee")
+
+    # Add a dummy response to the minimal fake GAPIC.
+    _, expected_prefix = parent._parent_info()
+    name = "{}/sleep".format(expected_prefix)
+    data = {"snooze": 10}
     if explain_options is not None:
-        kwargs["explain_options"] = explain_options
+        explain_metrics = {"execution_stats": {"results_returned": 1}}
+    else:
+        explain_metrics = None
+    response_pb = _make_query_response(
+        name=name, data=data, explain_metrics=explain_metrics
+    )
+    firestore_api.run_query.return_value = iter([response_pb])
+    kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
-    result = transaction.get(query, **kwargs)
+    # Run the transaction with query.
+    transaction = _make_transaction(client)
+    txn_id = b"beep-fail-commit"
+    transaction._id = txn_id
+    query = Query(parent)
+    returned_generator = transaction.get(
+        query,
+        **kwargs,
+        explain_options=explain_options,
+    )
 
-    assert result is query.stream.return_value
-    query.stream.assert_called_once_with(transaction=transaction, **kwargs)
+    # Verify the response.
+    assert isinstance(returned_generator, StreamGenerator)
+    results = list(returned_generator)
+    assert len(results) == 1
+    snapshot = results[0]
+    assert snapshot.reference._path == ("dee", "sleep")
+    assert snapshot.to_dict() == data
+
+    # Verify explain_metrics.
+    if explain_options is None:
+        with pytest.raises(QueryExplainError, match="explain_options not set"):
+            returned_generator.get_explain_metrics()
+    else:
+        explain_metrics = returned_generator.get_explain_metrics()
+        assert isinstance(explain_metrics, ExplainMetrics)
+        assert explain_metrics.execution_stats.results_returned == 1
+
+    # Create expected request body.
+    parent_path, _ = parent._parent_info()
+    request = {
+        "parent": parent_path,
+        "structured_query": query._to_protobuf(),
+        "transaction": b"beep-fail-commit",
+    }
+    if explain_options is not None:
+        request["explain_options"] = explain_options._to_dict()
+
+    # Verify the mock call.
+    firestore_api.run_query.assert_called_once_with(
+        request=request,
+        metadata=client._rpc_metadata,
+        **kwargs,
+    )
 
 
 def test_transaction_get_w_query():

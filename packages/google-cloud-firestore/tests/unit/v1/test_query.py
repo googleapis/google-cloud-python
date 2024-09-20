@@ -378,6 +378,7 @@ def _query_stream_helper(
     assert snapshot.reference._path == ("dee", "sleep")
     assert snapshot.to_dict() == data
 
+    # Verify explain_metrics.
     if explain_options is None:
         with pytest.raises(QueryExplainError, match="explain_options not set"):
             get_response.get_explain_metrics()

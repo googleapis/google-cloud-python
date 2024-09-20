@@ -25,7 +25,6 @@ from typing import (
     Generator,
     Generic,
     Iterable,
-    Iterator,
     NoReturn,
     Optional,
     Tuple,
@@ -49,6 +48,7 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.field_path import FieldPath
     from google.cloud.firestore_v1.query_profile import ExplainOptions
     from google.cloud.firestore_v1.query_results import QueryResultsList
+    from google.cloud.firestore_v1.stream_generator import StreamGenerator
     from google.cloud.firestore_v1.transaction import Transaction
     from google.cloud.firestore_v1.vector import Vector
     from google.cloud.firestore_v1.vector_query import VectorQuery
@@ -498,7 +498,10 @@ class BaseCollectionReference(Generic[QueryType]):
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
-    ) -> QueryResultsList[DocumentSnapshot]:
+    ) -> (
+        QueryResultsList[DocumentSnapshot]
+        | Coroutine[Any, Any, QueryResultsList[DocumentSnapshot]]
+    ):
         raise NotImplementedError
 
     def stream(
@@ -508,7 +511,7 @@ class BaseCollectionReference(Generic[QueryType]):
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
-    ) -> Union[Iterator[DocumentSnapshot], AsyncIterator[DocumentSnapshot]]:
+    ) -> StreamGenerator[DocumentSnapshot] | AsyncIterator[DocumentSnapshot]:
         raise NotImplementedError
 
     def on_snapshot(self, callback) -> NoReturn:

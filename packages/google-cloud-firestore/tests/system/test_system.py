@@ -1429,6 +1429,7 @@ def test_query_stream_or_get_w_explain_options_analyze_false(
     method_under_test = getattr(query, method)
     results = method_under_test(explain_options=ExplainOptions(analyze=False))
 
+    # Verify that no results are returned.
     results_list = list(results)
     assert len(results_list) == 0
 

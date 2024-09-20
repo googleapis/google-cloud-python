@@ -248,61 +248,6 @@ def test_vector_query_w_explain_options():
         expected_distance=StructuredQuery.FindNearest.DistanceMeasure.EUCLIDEAN,
         explain_options=explain_options,
     )
-    # # Create a minimal fake GAPIC.
-    # firestore_api = mock.Mock(spec=["run_query"])
-    # client = make_client()
-    # client._firestore_api_internal = firestore_api
-
-    # # Make a **real** collection reference as parent.
-    # parent = client.collection("dee")
-    # parent_path, expected_prefix = parent._parent_info()
-
-    # data = {"snooze": 10, "embedding": Vector([1.0, 2.0, 3.0])}
-    # response_pb = _make_query_response(
-    #     name="{}/test_doc".format(expected_prefix),
-    #     data=data,
-    #     explain_metrics={"execution_stats": {"results_returned": 1}},
-    # )
-
-    # kwargs = make_retry_timeout_kwargs(retry=None, timeout=None)
-
-    # # Execute the vector query and check the response.
-    # firestore_api.run_query.return_value = iter([response_pb])
-    # vector_query = parent.find_nearest(
-    #     vector_field="embedding",
-    #     query_vector=Vector([1.0, 2.0, 3.0]),
-    #     distance_measure=DistanceMeasure.EUCLIDEAN,
-    #     limit=5,
-    # )
-
-    # explain_options = ExplainOptions(analyze=True)
-    # returned = vector_query.get(
-    #     transaction=_transaction(client),
-    #     **kwargs,
-    #     explain_options=explain_options,
-    # )
-    # assert isinstance(returned, QueryResultsList)
-    # assert len(returned) == 1
-    # assert returned[0].to_dict() == data
-    # assert returned.explain_metrics is not None
-
-    # expected_pb = _expected_pb(
-    #     parent=parent,
-    #     vector_field="embedding",
-    #     vector=Vector([1.0, 2.0, 3.0]),
-    #     distance_type=StructuredQuery.FindNearest.DistanceMeasure.EUCLIDEAN,
-    #     limit=5,
-    # )
-    # firestore_api.run_query.assert_called_once_with(
-    #     request={
-    #         "parent": parent_path,
-    #         "structured_query": expected_pb,
-    #         "transaction": _TXN_ID,
-    #         "explain_options": explain_options._to_dict(),
-    #     },
-    #     metadata=client._rpc_metadata,
-    #     **kwargs,
-    # )
 
 
 @pytest.mark.parametrize(

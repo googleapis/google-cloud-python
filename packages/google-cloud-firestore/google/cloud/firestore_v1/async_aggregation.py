@@ -20,7 +20,7 @@ a more common way to create an aggregation query than direct usage of the constr
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, AsyncGenerator, List, Optional, Union
+from typing import TYPE_CHECKING, Any, AsyncGenerator, List, Optional, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
@@ -28,13 +28,15 @@ from google.api_core import retry_async as retries
 from google.cloud.firestore_v1 import transaction
 from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
 from google.cloud.firestore_v1.base_aggregation import (
-    AggregationResult,
     BaseAggregationQuery,
     _query_response_to_result,
 )
+from google.cloud.firestore_v1.query_results import QueryResultsList
 
 if TYPE_CHECKING:  # pragma: NO COVER
-    from google.cloud.firestore_v1.base_document import DocumentSnapshot
+    from google.cloud.firestore_v1.base_aggregation import AggregationResult
+    from google.cloud.firestore_v1.query_profile import ExplainMetrics, ExplainOptions
+    import google.cloud.firestore_v1.types.query_profile as query_profile_pb
 
 
 class AsyncAggregationQuery(BaseAggregationQuery):
@@ -53,7 +55,9 @@ class AsyncAggregationQuery(BaseAggregationQuery):
             retries.AsyncRetry, None, gapic_v1.method._MethodDefault
         ] = gapic_v1.method.DEFAULT,
         timeout: float | None = None,
-    ) -> List[List[AggregationResult]]:
+        *,
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> QueryResultsList[List[AggregationResult]]:
         """Runs the aggregation query.
 
         This sends a ``RunAggregationQuery`` RPC and returns a list of aggregation results in the stream of ``RunAggregationQueryResponse`` messages.
@@ -69,23 +73,39 @@ class AsyncAggregationQuery(BaseAggregationQuery):
                 should be retried.  Defaults to a system-specified policy.
             timeout (float): The timeout for this request.  Defaults to a
                 system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
 
         Returns:
-            List[List[AggregationResult]]: The aggregation query results
+            QueryResultsList[List[AggregationResult]]: The aggregation query results.
 
         """
+        explain_metrics: ExplainMetrics | None = None
+
         stream_result = self.stream(
-            transaction=transaction, retry=retry, timeout=timeout
+            transaction=transaction,
+            retry=retry,
+            timeout=timeout,
+            explain_options=explain_options,
         )
         result = [aggregation async for aggregation in stream_result]
-        return result  # type: ignore
+
+        if explain_options is None:
+            explain_metrics = None
+        else:
+            explain_metrics = await stream_result.get_explain_metrics()
+
+        return QueryResultsList(result, explain_options, explain_metrics)
 
     async def _make_stream(
         self,
         transaction: Optional[transaction.Transaction] = None,
         retry: Optional[retries.AsyncRetry] = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
-    ) -> Union[AsyncGenerator[List[AggregationResult], None]]:
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> AsyncGenerator[List[AggregationResult] | query_profile_pb.ExplainMetrics, Any]:
         """Internal method for stream(). Runs the aggregation query.
 
         This sends a ``RunAggregationQuery`` RPC and then returns a generator which
@@ -105,15 +125,23 @@ class AsyncAggregationQuery(BaseAggregationQuery):
                 system-specified policy.
             timeout (Optional[float]): The timeout for this request. Defaults
                 to a system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
 
         Yields:
-            :class:`~google.cloud.firestore_v1.base_aggregation.AggregationResult`:
-            The result of aggregations of this query
+            List[AggregationResult] | query_profile_pb.ExplainMetrics:
+            The result of aggregations of this query. Query results will be
+            yielded as `List[AggregationResult]`. When the result contains
+            returned explain metrics, yield `query_profile_pb.ExplainMetrics`
+            individually.
         """
         request, kwargs = self._prep_stream(
             transaction,
             retry,
             timeout,
+            explain_options,
         )
 
         response_iterator = await self._client._firestore_api.run_aggregation_query(
@@ -124,14 +152,21 @@ class AsyncAggregationQuery(BaseAggregationQuery):
 
         async for response in response_iterator:
             result = _query_response_to_result(response)
-            yield result
+            if result:
+                yield result
+
+            if response.explain_metrics:
+                metrics = response.explain_metrics
+                yield metrics
 
     def stream(
         self,
         transaction: Optional[transaction.Transaction] = None,
         retry: Optional[retries.AsyncRetry] = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
-    ) -> "AsyncStreamGenerator[DocumentSnapshot]":
+        *,
+        explain_options: Optional[ExplainOptions] = None,
+    ) -> AsyncStreamGenerator[List[AggregationResult]]:
         """Runs the aggregation query.
 
         This sends a ``RunAggregationQuery`` RPC and then returns a generator
@@ -150,9 +185,13 @@ class AsyncAggregationQuery(BaseAggregationQuery):
                 system-specified policy.
             timeout (Optional[float]): The timeout for this request. Defaults
                 to a system-specified value.
+            explain_options
+                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+                Options to enable query profiling for this query. When set,
+                explain_metrics will be available on the returned generator.
 
         Returns:
-            `AsyncStreamGenerator[DocumentSnapshot]`:
+            `AsyncStreamGenerator[List[AggregationResult]]`:
                 A generator of the query results.
         """
 
@@ -160,5 +199,6 @@ class AsyncAggregationQuery(BaseAggregationQuery):
             transaction=transaction,
             retry=retry,
             timeout=timeout,
+            explain_options=explain_options,
         )
-        return AsyncStreamGenerator(inner_generator)
+        return AsyncStreamGenerator(inner_generator, explain_options)

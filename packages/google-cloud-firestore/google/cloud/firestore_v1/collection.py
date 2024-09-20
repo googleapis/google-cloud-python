@@ -214,7 +214,7 @@ class CollectionReference(BaseCollectionReference[query_mod.Query]):
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
-    ) -> "StreamGenerator[DocumentSnapshot]":
+    ) -> StreamGenerator[DocumentSnapshot]:
         """Read the documents in this collection.
 
         This sends a ``RunQuery`` RPC and then returns an iterator which

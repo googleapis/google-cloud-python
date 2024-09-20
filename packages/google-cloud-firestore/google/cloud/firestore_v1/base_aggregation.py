@@ -272,7 +272,10 @@ class BaseAggregationQuery(ABC):
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
-    ) -> StreamGenerator[List[AggregationResult]] | AsyncStreamGenerator:
+    ) -> (
+        StreamGenerator[List[AggregationResult]]
+        | AsyncStreamGenerator[List[AggregationResult]]
+    ):
         """Runs the aggregation query.
 
         This sends a``RunAggregationQuery`` RPC and returns a generator in the stream of ``RunAggregationQueryResponse`` messages.
@@ -292,6 +295,6 @@ class BaseAggregationQuery(ABC):
                 explain_metrics will be available on the returned generator.
 
         Returns:
-            StreamGenerator[List[AggregationResult]] | AsyncStreamGenerator:
+            StreamGenerator[List[AggregationResult]] | AsyncStreamGenerator[List[AggregationResult]]:
             A generator of the query results.
         """

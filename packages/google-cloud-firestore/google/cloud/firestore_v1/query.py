@@ -138,7 +138,7 @@ class Query(BaseQuery):
         self,
         transaction=None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
     ) -> QueryResultsList[DocumentSnapshot]:
