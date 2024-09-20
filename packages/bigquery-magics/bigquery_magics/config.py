@@ -33,8 +33,6 @@ class Context(object):
     and can be found at ``bigquery_magics.context``.
     """
 
-    _credentials = None
-    _project = None
     _connection = None
 
     default_query_job_config = bigquery.QueryJobConfig()
@@ -103,6 +101,8 @@ class Context(object):
             >>> bigquery_magics.context.progress_bar_type = "tqdm_notebook"
     """
 
+    _credentials = None
+
     @property
     def credentials(self):
         """google.auth.credentials.Credentials: Credentials to use for queries
@@ -138,6 +138,8 @@ class Context(object):
     def credentials(self, value):
         self._credentials = value
 
+    _project = None
+
     @property
     def project(self):
         """str: Default project to use for queries performed through IPython
@@ -162,6 +164,29 @@ class Context(object):
     @project.setter
     def project(self, value):
         self._project = value
+
+    _engine = "pandas"
+
+    @property
+    def engine(self) -> str:
+        """Engine to run the query. Could either be "pandas" or "bigframes".
+
+        If using "pandas", the query result will be stored in a Pandas dataframe.
+        If using "bigframes", the query result will be stored in a bigframes dataframe instead.
+
+        Example:
+            Manully setting the content engine:
+
+            >>> from google.cloud.bigquery import magics
+            >>> bigquery_magics.context.engine = 'bigframes'
+        """
+        return self._engine
+
+    @engine.setter
+    def engine(self, value):
+        if value != "pandas" and value != "bigframes":
+            raise ValueError("engine must be either 'pandas' or 'bigframes'")
+        self._engine = value
 
 
 context = Context()

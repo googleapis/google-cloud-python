@@ -114,6 +114,11 @@ try:
 except ImportError:
     bigquery_storage = None
 
+try:
+    import bigframes.pandas as bpd
+except ImportError:
+    bpd = None
+
 USER_AGENT = f"ipython-{IPython.__version__} bigquery-magics/{bigquery_magics.version.__version__}"
 context = bigquery_magics.config.context
 
@@ -255,6 +260,7 @@ def _create_dataset_if_necessary(client, dataset_id):
     help=(
         "Sets query to be a dry run to estimate costs. "
         "Defaults to executing the query instead of dry run if this argument is not used."
+        "Does not work with engine 'bigframes'. "
     ),
 )
 @magic_arguments.argument(
@@ -319,6 +325,7 @@ def _create_dataset_if_necessary(client, dataset_id):
         "amount of time for the query to finish. By default, this "
         "information will be displayed as the query runs, but will be "
         "cleared after the query is finished."
+        "This flag is ignored when the engine is 'bigframes'."
     ),
 )
 @magic_arguments.argument(
@@ -350,6 +357,7 @@ def _create_dataset_if_necessary(client, dataset_id):
     help=(
         "Set the location to execute query."
         "Defaults to location set in query setting in console."
+        "This flag is ignored when the engine is 'bigframes'."
     ),
 )
 def _cell_magic(line, query):
@@ -376,18 +384,10 @@ def _cell_magic(line, query):
         return
     query = _validate_and_resolve_query(query, args)
 
-    bq_client, bqstorage_client = _create_clients(args)
+    if context.engine == "bigframes":
+        return _query_with_bigframes(query, params, args)
 
-    try:
-        return _make_bq_query(
-            query,
-            args=args,
-            params=params,
-            bq_client=bq_client,
-            bqstorage_client=bqstorage_client,
-        )
-    finally:
-        _close_transports(bq_client, bqstorage_client)
+    return _query_with_pandas(query, params, args)
 
 
 def _parse_magic_args(line: str) -> Tuple[List[Any], Any]:
@@ -442,6 +442,45 @@ def _split_args_line(line: str) -> Tuple[str, str]:
     params_option_value, rest_of_args = extractor.visit(tree)
 
     return params_option_value, rest_of_args
+
+
+def _query_with_bigframes(query: str, params: List[Any], args: Any):
+    if args.dry_run:
+        raise ValueError("Dry run is not supported by bigframes engine.")
+
+    if bpd is None:
+        raise ValueError("Bigframes package is not installed.")
+
+    bpd.options.bigquery.project = context.project
+    bpd.options.bigquery.credentials = context.credentials
+
+    max_results = int(args.max_results) if args.max_results else None
+
+    result = bpd.read_gbq_query(
+        query,
+        max_results=max_results,
+        configuration=_create_job_config(args, params).to_api_repr(),
+    )
+
+    if args.destination_var:
+        get_ipython().push({args.destination_var: result})
+    else:
+        return result
+
+
+def _query_with_pandas(query: str, params: List[Any], args: Any):
+    bq_client, bqstorage_client = _create_clients(args)
+
+    try:
+        return _make_bq_query(
+            query,
+            args=args,
+            params=params,
+            bq_client=bq_client,
+            bqstorage_client=bqstorage_client,
+        )
+    finally:
+        _close_transports(bq_client, bqstorage_client)
 
 
 def _create_clients(args: Any) -> Tuple[bigquery.Client, Any]:

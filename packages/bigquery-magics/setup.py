@@ -54,6 +54,7 @@ extras = {
         "grpcio >= 1.47.0, < 2.0dev",
         "grpcio >= 1.49.1, < 2.0dev; python_version>='3.11'",
     ],
+    "bigframes": ["bigframes >= 1.17.0"],
 }
 
 all_extras = []

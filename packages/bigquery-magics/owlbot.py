@@ -28,19 +28,20 @@ common = gcp.CommonTemplates()
 # Add templated files
 # ----------------------------------------------------------------------------
 
-extras = ["bqstorage"]
+extras_storage = ["bqstorage"]
+extras_bf = ["bqstorage", "bigframes"]
 extras_by_python = {
-    "3.7": extras,
-    "3.8": extras,
-    "3.9": extras,
-    "3.10": extras,
+    "3.7": extras_storage,
+    "3.8": extras_storage,
+    "3.9": extras_bf,
+    "3.10": extras_bf,
     # Use a middle version of Python to test when no extras are installed.
     "3.11": [],
-    "3.12": extras,
+    "3.12": extras_bf,
 }
 templated_files = common.py_library(
-    unit_test_python_versions=["3.7", "3.8", "3.11", "3.12"],
-    system_test_python_versions=["3.8", "3.11", "3.12"],
+    unit_test_python_versions=["3.7", "3.8", "3.9", "3.11", "3.12"],
+    system_test_python_versions=["3.8", "3.9", "3.11", "3.12"],
     cov_level=100,
     unit_test_extras_by_python=extras_by_python,
     unit_test_external_dependencies=["google-cloud-testutils"],

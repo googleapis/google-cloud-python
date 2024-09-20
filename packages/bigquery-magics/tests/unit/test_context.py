@@ -16,6 +16,7 @@ import unittest.mock as mock
 
 import google.auth.credentials
 import pydata_google_auth
+import pytest
 
 import bigquery_magics
 
@@ -64,3 +65,15 @@ def test_context_credentials_and_project_can_be_set_explicitly():
     assert bigquery_magics.context.credentials is credentials_mock
     # default should not be called if credentials & project are explicitly set
     assert default_mock.call_count == 0
+
+
+@pytest.mark.parametrize("engine", ["pandas", "bigframes"])
+def test_context_set_engine(engine):
+    bigquery_magics.context.engine = engine
+
+    assert bigquery_magics.context.engine == engine
+
+
+def test_context_set_invalid_engine():
+    with pytest.raises(ValueError):
+        bigquery_magics.context.engine = "whatever"

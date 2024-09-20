@@ -43,6 +43,11 @@ try:
 except ImportError:
     bigquery_storage = None
 
+try:
+    import bigframes.pandas as bpd
+except ImportError:
+    bpd = None
+
 
 def make_connection(*args):
     # TODO(tswast): Remove this in favor of a mock google.cloud.bigquery.Client
@@ -119,6 +124,11 @@ def mock_credentials(monkeypatch):
     # tests.
     monkeypatch.setattr(bigquery_magics.context, "_project", "test-project")
     monkeypatch.setattr(bigquery_magics.context, "_credentials", credentials)
+
+
+@pytest.fixture
+def bigframes_engine(monkeypatch):
+    monkeypatch.setattr(bigquery_magics.context, "engine", "bigframes")
 
 
 PROJECT_ID = "its-a-project-eh"
@@ -1884,3 +1894,129 @@ def test_bigquery_magic_with_location():
 
         client_options_used = run_query_mock.call_args_list[0][0][0]
         assert client_options_used.location == "us-east1"
+
+
+@pytest.mark.usefixtures("ipython_interactive", "mock_credentials", "bigframes_engine")
+def test_big_query_magic_bigframes():
+    if bpd is None:
+        pytest.skip("BigFrames not installed")
+
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    sql = "SELECT 0 AS something"
+    expected_configuration = {
+        "query": {"queryParameters": [], "useLegacySql": False},
+        "dryRun": False,
+    }
+    bf_patch = mock.patch("bigframes.pandas.read_gbq_query", autospec=True)
+
+    with bf_patch as bf_mock:
+        ip.run_cell_magic("bigquery", "", sql)
+
+        bf_mock.assert_called_once_with(
+            sql, max_results=None, configuration=expected_configuration
+        )
+        assert bpd.options.bigquery.credentials is bigquery_magics.context.credentials
+        assert bpd.options.bigquery.project == bigquery_magics.context.project
+
+
+@pytest.mark.usefixtures("ipython_interactive", "mock_credentials", "bigframes_engine")
+def test_big_query_magic_bigframes__bigframes_is_not_installed__should_raise_error():
+    if bpd is not None:
+        pytest.skip("BigFrames is installed")
+
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    sql = "SELECT 0 AS something"
+
+    with pytest.raises(ValueError, match="Bigframes package is not installed."):
+        ip.run_cell_magic("bigquery", "", sql)
+
+
+@pytest.mark.usefixtures("ipython_interactive", "mock_credentials", "bigframes_engine")
+def test_big_query_magic_bigframes_with_params():
+    if bpd is None:
+        pytest.skip("BigFrames not installed")
+
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    sql = "SELECT 0 AS @p"
+    expected_configuration = {
+        "query": {
+            "queryParameters": [
+                {
+                    "name": "p",
+                    "parameterType": {"type": "STRING"},
+                    "parameterValue": {"value": "num"},
+                },
+            ],
+            "useLegacySql": False,
+            "parameterMode": "NAMED",
+        },
+        "dryRun": False,
+    }
+    bf_patch = mock.patch("bigframes.pandas.read_gbq_query", autospec=True)
+
+    with bf_patch as bf_mock:
+        ip.run_cell_magic("bigquery", '--params {"p":"num"}', sql)
+
+        bf_mock.assert_called_once_with(
+            sql, max_results=None, configuration=expected_configuration
+        )
+
+
+@pytest.mark.usefixtures("ipython_interactive", "mock_credentials", "bigframes_engine")
+def test_big_query_magic_bigframes_with_max_results():
+    if bpd is None:
+        pytest.skip("BigFrames not installed")
+
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    sql = "SELECT 0 AS something"
+    expected_configuration = {
+        "query": {"queryParameters": [], "useLegacySql": False},
+        "dryRun": False,
+    }
+    bf_patch = mock.patch("bigframes.pandas.read_gbq_query", autospec=True)
+
+    with bf_patch as bf_mock:
+        ip.run_cell_magic("bigquery", "--max_results 10", sql)
+
+        bf_mock.assert_called_once_with(
+            sql, max_results=10, configuration=expected_configuration
+        )
+
+
+@pytest.mark.usefixtures("ipython_interactive", "mock_credentials", "bigframes_engine")
+def test_big_query_magic_bigframes_with_destination_var(ipython_ns_cleanup):
+    if bpd is None:
+        pytest.skip("BigFrames not installed")
+
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    sql = "SELECT 0 AS something"
+
+    bf_patch = mock.patch("bigframes.pandas.read_gbq_query", autospec=True)
+    ipython_ns_cleanup.append((ip, "df"))
+
+    with bf_patch as bf_mock:
+        ip.run_cell_magic("bigquery", "df", sql)
+
+        assert "df" in ip.user_ns
+        df = ip.user_ns["df"]
+        assert df is bf_mock.return_value
+
+
+@pytest.mark.usefixtures("ipython_interactive", "mock_credentials", "bigframes_engine")
+def test_big_query_magic_bigframes_with_dry_run__should_fail():
+    if bpd is None:
+        pytest.skip("BigFrames not installed")
+
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    sql = "SELECT 0 AS @p"
+
+    bf_patch = mock.patch("bigframes.pandas.read_gbq_query", autospec=True)
+
+    with bf_patch, pytest.raises(ValueError):
+        ip.run_cell_magic("bigquery", "--dry_run", sql)
