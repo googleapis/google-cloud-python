@@ -112,14 +112,16 @@ exceptiongroup==1.2.2 \
     --hash=sha256:3111b9d131c238bec2f8f516e123e14ba243563fb135d3fe885990585aa7795b \
     --hash=sha256:47c2edf7c6738fafb49fd34290706d1a1a2f4d1c6df275526b62cbb4aa5393cc
     # via pytest
-google-api-core==2.19.2 \
-    --hash=sha256:53ec0258f2837dd53bbd3d3df50f5359281b3cc13f800c941dd15a9b5a415af4 \
-    --hash=sha256:ca07de7e8aa1c98a8bfca9321890ad2340ef7f2eb136e558cee68f24b94b0a8f
+google-api-core==2.20.0 \
+    --hash=sha256:ef0591ef03c30bb83f79b3d0575c3f31219001fc9c5cf37024d08310aeffed8a \
+    --hash=sha256:f74dff1889ba291a4b76c5079df0711810e2d9da81abfdc99957bc961c1eb28f
     # via -r requirements.in
-google-auth==2.34.0 \
-    --hash=sha256:72fd4733b80b6d777dcde515628a9eb4a577339437012874ea286bca7261ee65 \
-    --hash=sha256:8eb87396435c19b20d32abd2f984e31c191a15284af72eb922f10e5bde9c04cc
-    # via google-api-core
+google-auth==2.35.0 \
+    --hash=sha256:25df55f327ef021de8be50bad0dfd4a916ad0de96da86cd05661c9297723ad3f \
+    --hash=sha256:f4c64ed4e01e8e8b646ef34c018f8bf3338df0c8e37d8b3bba40e7f574a3278a
+    # via
+    #   -r requirements.in
+    #   google-api-core
 googleapis-common-protos[grpc]==1.65.0 \
     --hash=sha256:2972e6c496f435b92590fd54045060867f3fe9be2c82ab148fc8885035479a63 \
     --hash=sha256:334a29d07cddc3aa01dee4988f9afd9b2916ee2ff49d6b757155dc0d197852c0
