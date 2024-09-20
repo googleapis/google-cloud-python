@@ -22,11 +22,17 @@ from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.places_v1.types import contextual_content, ev_charging, geometry
+from google.maps.places_v1.types import routing_preference as gmp_routing_preference
 from google.maps.places_v1.types import place as gmp_place
+from google.maps.places_v1.types import polyline as gmp_polyline
+from google.maps.places_v1.types import route_modifiers as gmp_route_modifiers
+from google.maps.places_v1.types import routing_summary
+from google.maps.places_v1.types import travel_mode as gmp_travel_mode
 
 __protobuf__ = proto.module(
     package="google.maps.places.v1",
     manifest={
+        "RoutingParameters",
         "SearchNearbyRequest",
         "SearchNearbyResponse",
         "SearchTextRequest",
@@ -38,6 +44,50 @@ __protobuf__ = proto.module(
         "AutocompletePlacesResponse",
     },
 )
+
+
+class RoutingParameters(proto.Message):
+    r"""Parameters to configure the routing calculations to the
+    places in the response, both along a route (where result ranking
+    will be influenced) and for calculating travel times on results.
+
+    Attributes:
+        origin (google.type.latlng_pb2.LatLng):
+            Optional. An explicit routing origin that
+            overrides the origin defined in the polyline. By
+            default, the polyline origin is used.
+        travel_mode (google.maps.places_v1.types.TravelMode):
+            Optional. The travel mode.
+        route_modifiers (google.maps.places_v1.types.RouteModifiers):
+            Optional. The route modifiers.
+        routing_preference (google.maps.places_v1.types.RoutingPreference):
+            Optional. Specifies how to compute the routing summaries.
+            The server attempts to use the selected routing preference
+            to compute the route. The traffic aware routing preference
+            is only available for the ``DRIVE`` or ``TWO_WHEELER``
+            ``travelMode``.
+    """
+
+    origin: latlng_pb2.LatLng = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=latlng_pb2.LatLng,
+    )
+    travel_mode: gmp_travel_mode.TravelMode = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=gmp_travel_mode.TravelMode,
+    )
+    route_modifiers: gmp_route_modifiers.RouteModifiers = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gmp_route_modifiers.RouteModifiers,
+    )
+    routing_preference: gmp_routing_preference.RoutingPreference = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=gmp_routing_preference.RoutingPreference,
+    )
 
 
 class SearchNearbyRequest(proto.Message):
@@ -163,6 +213,9 @@ class SearchNearbyRequest(proto.Message):
             Required. The region to search.
         rank_preference (google.maps.places_v1.types.SearchNearbyRequest.RankPreference):
             How results will be ranked in the response.
+        routing_parameters (google.maps.places_v1.types.RoutingParameters):
+            Optional. Parameters that affect the routing
+            to the search results.
     """
 
     class RankPreference(proto.Enum):
@@ -238,6 +291,11 @@ class SearchNearbyRequest(proto.Message):
         number=9,
         enum=RankPreference,
     )
+    routing_parameters: "RoutingParameters" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="RoutingParameters",
+    )
 
 
 class SearchNearbyResponse(proto.Message):
@@ -248,12 +306,27 @@ class SearchNearbyResponse(proto.Message):
             A list of places that meets user's
             requirements like places types, number of places
             and specific location restriction.
+        routing_summaries (MutableSequence[google.maps.places_v1.types.RoutingSummary]):
+            A list of routing summaries where each entry
+            associates to the corresponding place in the
+            same index in the places field. If the routing
+            summary is not available for one of the places,
+            it will contain an empty entry. This list should
+            have as many entries as the list of places if
+            requested.
     """
 
     places: MutableSequence[gmp_place.Place] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gmp_place.Place,
+    )
+    routing_summaries: MutableSequence[
+        routing_summary.RoutingSummary
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=routing_summary.RoutingSummary,
     )
 
 
@@ -327,6 +400,12 @@ class SearchTextRequest(proto.Message):
         ev_options (google.maps.places_v1.types.SearchTextRequest.EVOptions):
             Optional. Set the searchable EV options of a
             place search request.
+        routing_parameters (google.maps.places_v1.types.RoutingParameters):
+            Optional. Additional parameters for routing
+            to results.
+        search_along_route_parameters (google.maps.places_v1.types.SearchTextRequest.SearchAlongRouteParameters):
+            Optional. Additional parameters proto for
+            searching along a route.
     """
 
     class RankPreference(proto.Enum):
@@ -445,6 +524,35 @@ class SearchTextRequest(proto.Message):
             enum=ev_charging.EVConnectorType,
         )
 
+    class SearchAlongRouteParameters(proto.Message):
+        r"""Specifies a precalculated polyline from the `Routes
+        API <https://developers.google.com/maps/documentation/routes>`__
+        defining the route to search. Searching along a route is similar to
+        using the ``locationBias`` or ``locationRestriction`` request option
+        to bias the search results. However, while the ``locationBias`` and
+        ``locationRestriction`` options let you specify a region to bias the
+        search results, this option lets you bias the results along a trip
+        route.
+
+        Results are not guaranteed to be along the route provided, but
+        rather are ranked within the search area defined by the polyline
+        and, optionally, by the ``locationBias`` or ``locationRestriction``
+        based on minimal detour times from origin to destination. The
+        results might be along an alternate route, especially if the
+        provided polyline does not define an optimal route from origin to
+        destination.
+
+        Attributes:
+            polyline (google.maps.places_v1.types.Polyline):
+                Required. The route polyline.
+        """
+
+        polyline: gmp_polyline.Polyline = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=gmp_polyline.Polyline,
+        )
+
     text_query: str = proto.Field(
         proto.STRING,
         number=1,
@@ -502,6 +610,16 @@ class SearchTextRequest(proto.Message):
         number=15,
         message=EVOptions,
     )
+    routing_parameters: "RoutingParameters" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="RoutingParameters",
+    )
+    search_along_route_parameters: SearchAlongRouteParameters = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message=SearchAlongRouteParameters,
+    )
 
 
 class SearchTextResponse(proto.Message):
@@ -511,6 +629,14 @@ class SearchTextResponse(proto.Message):
         places (MutableSequence[google.maps.places_v1.types.Place]):
             A list of places that meet the user's text
             search criteria.
+        routing_summaries (MutableSequence[google.maps.places_v1.types.RoutingSummary]):
+            A list of routing summaries where each entry
+            associates to the corresponding place in the
+            same index in the places field. If the routing
+            summary is not available for one of the places,
+            it will contain an empty entry. This list will
+            have as many entries as the list of places if
+            requested.
         contextual_contents (MutableSequence[google.maps.places_v1.types.ContextualContent]):
             Experimental: See
             https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative
@@ -522,7 +648,7 @@ class SearchTextResponse(proto.Message):
             in the request are preferred. If the contextual content is
             not available for one of the places, it will return
             non-contextual content. It will be empty only when the
-            content is unavailable for this place. This list should have
+            content is unavailable for this place. This list will have
             as many entries as the list of places if requested.
     """
 
@@ -530,6 +656,13 @@ class SearchTextResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=gmp_place.Place,
+    )
+    routing_summaries: MutableSequence[
+        routing_summary.RoutingSummary
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=routing_summary.RoutingSummary,
     )
     contextual_contents: MutableSequence[
         contextual_content.ContextualContent
