@@ -5877,6 +5877,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 The profile for a file store.
 
                    -  Cloud Storage: maps 1:1 with a bucket.
+                   -  Amazon S3: maps 1:1 with a bucket.
 
         """
         # Create or coerce a protobuf request object.
