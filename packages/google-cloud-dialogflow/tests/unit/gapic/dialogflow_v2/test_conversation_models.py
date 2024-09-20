@@ -1614,6 +1614,8 @@ def test_get_conversation_model(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=conversation_model.ConversationModel.State.CREATING,
             language_code="language_code_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_conversation_model(request)
 
@@ -1629,6 +1631,8 @@ def test_get_conversation_model(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == conversation_model.ConversationModel.State.CREATING
     assert response.language_code == "language_code_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_conversation_model_empty_call():
@@ -1742,6 +1746,8 @@ async def test_get_conversation_model_empty_call_async():
                 display_name="display_name_value",
                 state=conversation_model.ConversationModel.State.CREATING,
                 language_code="language_code_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_conversation_model()
@@ -1817,6 +1823,8 @@ async def test_get_conversation_model_async(
                 display_name="display_name_value",
                 state=conversation_model.ConversationModel.State.CREATING,
                 language_code="language_code_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_conversation_model(request)
@@ -1833,6 +1841,8 @@ async def test_get_conversation_model_async(
     assert response.display_name == "display_name_value"
     assert response.state == conversation_model.ConversationModel.State.CREATING
     assert response.language_code == "language_code_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -5028,6 +5038,8 @@ def test_create_conversation_model_rest(request_type):
         "language_code": "language_code_value",
         "article_suggestion_model_metadata": {"training_model_type": 2},
         "smart_reply_model_metadata": {"training_model_type": 2},
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5414,6 +5426,8 @@ def test_get_conversation_model_rest(request_type):
             display_name="display_name_value",
             state=conversation_model.ConversationModel.State.CREATING,
             language_code="language_code_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -5433,6 +5447,8 @@ def test_get_conversation_model_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == conversation_model.ConversationModel.State.CREATING
     assert response.language_code == "language_code_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_conversation_model_rest_use_cached_wrapped_rpc():
