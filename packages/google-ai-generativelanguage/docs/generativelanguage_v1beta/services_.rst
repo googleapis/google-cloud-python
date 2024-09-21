@@ -9,5 +9,6 @@ Services for Google Ai Generativelanguage v1beta API
     generative_service
     model_service
     permission_service
+    prediction_service
     retriever_service
     text_service

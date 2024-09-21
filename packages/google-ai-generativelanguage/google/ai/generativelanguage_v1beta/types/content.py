@@ -31,6 +31,8 @@ __protobuf__ = proto.module(
         "ExecutableCode",
         "CodeExecutionResult",
         "Tool",
+        "GoogleSearchRetrieval",
+        "DynamicRetrievalConfig",
         "CodeExecution",
         "ToolConfig",
         "FunctionCallingConfig",
@@ -354,14 +356,18 @@ class Tool(proto.Message):
 
             The model or system does not execute the function. Instead
             the defined function may be returned as a
-            [FunctionCall][content.part.function_call] with arguments to
-            the client side for execution. The model may decide to call
-            a subset of these functions by populating
-            [FunctionCall][content.part.function_call] in the response.
-            The next conversation turn may contain a
-            [FunctionResponse][content.part.function_response] with the
-            [content.role] "function" generation context for the next
-            model turn.
+            [FunctionCall][google.ai.generativelanguage.v1beta.Part.function_call]
+            with arguments to the client side for execution. The model
+            may decide to call a subset of these functions by populating
+            [FunctionCall][google.ai.generativelanguage.v1beta.Part.function_call]
+            in the response. The next conversation turn may contain a
+            [FunctionResponse][google.ai.generativelanguage.v1beta.Part.function_response]
+            with the
+            [Content.role][google.ai.generativelanguage.v1beta.Content.role]
+            "function" generation context for the next model turn.
+        google_search_retrieval (google.ai.generativelanguage_v1beta.types.GoogleSearchRetrieval):
+            Optional. Retrieval tool that is powered by
+            Google search.
         code_execution (google.ai.generativelanguage_v1beta.types.CodeExecution):
             Optional. Enables the model to execute code
             as part of generation.
@@ -372,10 +378,74 @@ class Tool(proto.Message):
         number=1,
         message="FunctionDeclaration",
     )
+    google_search_retrieval: "GoogleSearchRetrieval" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="GoogleSearchRetrieval",
+    )
     code_execution: "CodeExecution" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="CodeExecution",
+    )
+
+
+class GoogleSearchRetrieval(proto.Message):
+    r"""Tool to retrieve public web data for grounding, powered by
+    Google.
+
+    Attributes:
+        dynamic_retrieval_config (google.ai.generativelanguage_v1beta.types.DynamicRetrievalConfig):
+            Specifies the dynamic retrieval configuration
+            for the given source.
+    """
+
+    dynamic_retrieval_config: "DynamicRetrievalConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="DynamicRetrievalConfig",
+    )
+
+
+class DynamicRetrievalConfig(proto.Message):
+    r"""Describes the options to customize dynamic retrieval.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        mode (google.ai.generativelanguage_v1beta.types.DynamicRetrievalConfig.Mode):
+            The mode of the predictor to be used in
+            dynamic retrieval.
+        dynamic_threshold (float):
+            The threshold to be used in dynamic
+            retrieval. If not set, a system default value is
+            used.
+
+            This field is a member of `oneof`_ ``_dynamic_threshold``.
+    """
+
+    class Mode(proto.Enum):
+        r"""The mode of the predictor to be used in dynamic retrieval.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Always trigger retrieval.
+            MODE_DYNAMIC (1):
+                Run retrieval only when system decides it is
+                necessary.
+        """
+        MODE_UNSPECIFIED = 0
+        MODE_DYNAMIC = 1
+
+    mode: Mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Mode,
+    )
+    dynamic_threshold: float = proto.Field(
+        proto.FLOAT,
+        number=2,
+        optional=True,
     )
 
 
@@ -608,6 +678,9 @@ class Schema(proto.Message):
         max_items (int):
             Optional. Maximum number of the elements for
             Type.ARRAY.
+        min_items (int):
+            Optional. Minimum number of the elements for
+            Type.ARRAY.
         properties (MutableMapping[str, google.ai.generativelanguage_v1beta.types.Schema]):
             Optional. Properties of Type.OBJECT.
         required (MutableSequence[str]):
@@ -644,6 +717,10 @@ class Schema(proto.Message):
     max_items: int = proto.Field(
         proto.INT64,
         number=21,
+    )
+    min_items: int = proto.Field(
+        proto.INT64,
+        number=22,
     )
     properties: MutableMapping[str, "Schema"] = proto.MapField(
         proto.STRING,

@@ -41,31 +41,32 @@ class HarmCategory(proto.Enum):
         HARM_CATEGORY_UNSPECIFIED (0):
             Category is unspecified.
         HARM_CATEGORY_DEROGATORY (1):
-            Negative or harmful comments targeting
-            identity and/or protected attribute.
+            **PaLM** - Negative or harmful comments targeting identity
+            and/or protected attribute.
         HARM_CATEGORY_TOXICITY (2):
-            Content that is rude, disrespectful, or
-            profane.
+            **PaLM** - Content that is rude, disrespectful, or profane.
         HARM_CATEGORY_VIOLENCE (3):
-            Describes scenarios depicting violence
-            against an individual or group, or general
-            descriptions of gore.
+            **PaLM** - Describes scenarios depicting violence against an
+            individual or group, or general descriptions of gore.
         HARM_CATEGORY_SEXUAL (4):
-            Contains references to sexual acts or other
-            lewd content.
+            **PaLM** - Contains references to sexual acts or other lewd
+            content.
         HARM_CATEGORY_MEDICAL (5):
-            Promotes unchecked medical advice.
+            **PaLM** - Promotes unchecked medical advice.
         HARM_CATEGORY_DANGEROUS (6):
-            Dangerous content that promotes, facilitates,
-            or encourages harmful acts.
+            **PaLM** - Dangerous content that promotes, facilitates, or
+            encourages harmful acts.
         HARM_CATEGORY_HARASSMENT (7):
-            Harasment content.
+            **Gemini** - Harassment content.
         HARM_CATEGORY_HATE_SPEECH (8):
-            Hate speech and content.
+            **Gemini** - Hate speech and content.
         HARM_CATEGORY_SEXUALLY_EXPLICIT (9):
-            Sexually explicit content.
+            **Gemini** - Sexually explicit content.
         HARM_CATEGORY_DANGEROUS_CONTENT (10):
-            Dangerous content.
+            **Gemini** - Dangerous content.
+        HARM_CATEGORY_CIVIC_INTEGRITY (11):
+            **Gemini** - Content that may be used to harm civic
+            integrity.
     """
     HARM_CATEGORY_UNSPECIFIED = 0
     HARM_CATEGORY_DEROGATORY = 1
@@ -78,6 +79,7 @@ class HarmCategory(proto.Enum):
     HARM_CATEGORY_HATE_SPEECH = 8
     HARM_CATEGORY_SEXUALLY_EXPLICIT = 9
     HARM_CATEGORY_DANGEROUS_CONTENT = 10
+    HARM_CATEGORY_CIVIC_INTEGRITY = 11
 
 
 class ContentFilter(proto.Message):
@@ -249,12 +251,15 @@ class SafetySetting(proto.Message):
                 be allowed.
             BLOCK_NONE (4):
                 All content will be allowed.
+            OFF (5):
+                Turn off the safety filter.
         """
         HARM_BLOCK_THRESHOLD_UNSPECIFIED = 0
         BLOCK_LOW_AND_ABOVE = 1
         BLOCK_MEDIUM_AND_ABOVE = 2
         BLOCK_ONLY_HIGH = 3
         BLOCK_NONE = 4
+        OFF = 5
 
     category: "HarmCategory" = proto.Field(
         proto.ENUM,

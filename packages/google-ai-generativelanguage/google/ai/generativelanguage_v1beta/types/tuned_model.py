@@ -118,6 +118,9 @@ class TunedModel(proto.Message):
         tuning_task (google.ai.generativelanguage_v1beta.types.TuningTask):
             Required. The tuning task that creates the
             tuned model.
+        reader_project_numbers (MutableSequence[int]):
+            Optional. List of project numbers that have
+            read access to the tuned model.
     """
 
     class State(proto.Enum):
@@ -195,6 +198,10 @@ class TunedModel(proto.Message):
         proto.MESSAGE,
         number=10,
         message="TuningTask",
+    )
+    reader_project_numbers: MutableSequence[int] = proto.RepeatedField(
+        proto.INT64,
+        number=14,
     )
 
 
