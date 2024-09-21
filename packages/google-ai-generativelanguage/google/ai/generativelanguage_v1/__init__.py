@@ -37,6 +37,7 @@ from .types.generative_service import (
     GenerateContentRequest,
     GenerateContentResponse,
     GenerationConfig,
+    LogprobsResult,
     TaskType,
 )
 from .types.model import Model
@@ -66,6 +67,7 @@ __all__ = (
     "HarmCategory",
     "ListModelsRequest",
     "ListModelsResponse",
+    "LogprobsResult",
     "Model",
     "ModelServiceClient",
     "Part",
