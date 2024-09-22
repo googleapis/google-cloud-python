@@ -3278,7 +3278,7 @@ class BuildOptions(proto.Message):
         NONE = 4
 
     class DefaultLogsBucketBehavior(proto.Enum):
-        r"""Default GCS log bucket behavior options.
+        r"""Default Cloud Storage log bucket behavior options.
 
         Values:
             DEFAULT_LOGS_BUCKET_BEHAVIOR_UNSPECIFIED (0):
@@ -3287,10 +3287,15 @@ class BuildOptions(proto.Message):
                 Bucket is located in user-owned project in
                 the same region as the build. The builder
                 service account must have access to create and
-                write to GCS buckets in the build project.
+                write to Cloud Storage buckets in the build
+                project.
+            LEGACY_BUCKET (2):
+                Bucket is located in a Google-owned project
+                and is not regionalized.
         """
         DEFAULT_LOGS_BUCKET_BEHAVIOR_UNSPECIFIED = 0
         REGIONAL_USER_OWNED_BUCKET = 1
+        LEGACY_BUCKET = 2
 
     class PoolOption(proto.Message):
         r"""Details about how a build should be executed on a ``WorkerPool``.
