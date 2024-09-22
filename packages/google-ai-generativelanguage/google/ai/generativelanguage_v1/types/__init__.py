@@ -27,6 +27,7 @@ from .generative_service import (
     GenerateContentRequest,
     GenerateContentResponse,
     GenerationConfig,
+    LogprobsResult,
     TaskType,
 )
 from .model import Model
@@ -50,6 +51,7 @@ __all__ = (
     "GenerateContentRequest",
     "GenerateContentResponse",
     "GenerationConfig",
+    "LogprobsResult",
     "TaskType",
     "Model",
     "GetModelRequest",

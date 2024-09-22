@@ -3349,11 +3349,15 @@ def test_create_cached_content_rest(request_type):
                             "enum": ["enum_value1", "enum_value2"],
                             "items": {},
                             "max_items": 967,
+                            "min_items": 965,
                             "properties": {},
                             "required": ["required_value1", "required_value2"],
                         },
                     }
                 ],
+                "google_search_retrieval": {
+                    "dynamic_retrieval_config": {"mode": 1, "dynamic_threshold": 0.1809}
+                },
                 "code_execution": {},
             }
         ],
@@ -4097,11 +4101,15 @@ def test_update_cached_content_rest(request_type):
                             "enum": ["enum_value1", "enum_value2"],
                             "items": {},
                             "max_items": 967,
+                            "min_items": 965,
                             "properties": {},
                             "required": ["required_value1", "required_value2"],
                         },
                     }
                 ],
+                "google_search_retrieval": {
+                    "dynamic_retrieval_config": {"mode": 1, "dynamic_threshold": 0.1809}
+                },
                 "code_execution": {},
             }
         ],

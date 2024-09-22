@@ -83,6 +83,7 @@ class generativelanguageCallTransformer(cst.CSTTransformer):
         'list_models': ('page_size', 'page_token', ),
         'list_permissions': ('parent', 'page_size', 'page_token', ),
         'list_tuned_models': ('page_size', 'page_token', 'filter', ),
+        'predict': ('model', 'instances', 'parameters', ),
         'query_corpus': ('name', 'query', 'metadata_filters', 'results_count', ),
         'query_document': ('name', 'query', 'results_count', 'metadata_filters', ),
         'stream_generate_content': ('model', 'contents', 'system_instruction', 'tools', 'tool_config', 'safety_settings', 'generation_config', 'cached_content', ),

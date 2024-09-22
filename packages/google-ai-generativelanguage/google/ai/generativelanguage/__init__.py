@@ -54,6 +54,12 @@ from google.ai.generativelanguage_v1beta.services.permission_service.async_clien
 from google.ai.generativelanguage_v1beta.services.permission_service.client import (
     PermissionServiceClient,
 )
+from google.ai.generativelanguage_v1beta.services.prediction_service.async_client import (
+    PredictionServiceAsyncClient,
+)
+from google.ai.generativelanguage_v1beta.services.prediction_service.client import (
+    PredictionServiceClient,
+)
 from google.ai.generativelanguage_v1beta.services.retriever_service.async_client import (
     RetrieverServiceAsyncClient,
 )
@@ -84,12 +90,14 @@ from google.ai.generativelanguage_v1beta.types.content import (
     CodeExecution,
     CodeExecutionResult,
     Content,
+    DynamicRetrievalConfig,
     ExecutableCode,
     FileData,
     FunctionCall,
     FunctionCallingConfig,
     FunctionDeclaration,
     FunctionResponse,
+    GoogleSearchRetrieval,
     GroundingPassage,
     GroundingPassages,
     Part,
@@ -132,6 +140,13 @@ from google.ai.generativelanguage_v1beta.types.generative_service import (
     GenerateContentResponse,
     GenerationConfig,
     GroundingAttribution,
+    GroundingChunk,
+    GroundingMetadata,
+    GroundingSupport,
+    LogprobsResult,
+    RetrievalMetadata,
+    SearchEntryPoint,
+    Segment,
     SemanticRetrieverConfig,
     TaskType,
 )
@@ -158,6 +173,10 @@ from google.ai.generativelanguage_v1beta.types.permission_service import (
     TransferOwnershipRequest,
     TransferOwnershipResponse,
     UpdatePermissionRequest,
+)
+from google.ai.generativelanguage_v1beta.types.prediction_service import (
+    PredictRequest,
+    PredictResponse,
 )
 from google.ai.generativelanguage_v1beta.types.retriever import (
     Chunk,
@@ -243,6 +262,8 @@ __all__ = (
     "ModelServiceAsyncClient",
     "PermissionServiceClient",
     "PermissionServiceAsyncClient",
+    "PredictionServiceClient",
+    "PredictionServiceAsyncClient",
     "RetrieverServiceClient",
     "RetrieverServiceAsyncClient",
     "TextServiceClient",
@@ -260,12 +281,14 @@ __all__ = (
     "CodeExecution",
     "CodeExecutionResult",
     "Content",
+    "DynamicRetrievalConfig",
     "ExecutableCode",
     "FileData",
     "FunctionCall",
     "FunctionCallingConfig",
     "FunctionDeclaration",
     "FunctionResponse",
+    "GoogleSearchRetrieval",
     "GroundingPassage",
     "GroundingPassages",
     "Part",
@@ -303,6 +326,13 @@ __all__ = (
     "GenerateContentResponse",
     "GenerationConfig",
     "GroundingAttribution",
+    "GroundingChunk",
+    "GroundingMetadata",
+    "GroundingSupport",
+    "LogprobsResult",
+    "RetrievalMetadata",
+    "SearchEntryPoint",
+    "Segment",
     "SemanticRetrieverConfig",
     "TaskType",
     "Model",
@@ -325,6 +355,8 @@ __all__ = (
     "TransferOwnershipRequest",
     "TransferOwnershipResponse",
     "UpdatePermissionRequest",
+    "PredictRequest",
+    "PredictResponse",
     "Chunk",
     "ChunkData",
     "Condition",
