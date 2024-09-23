@@ -3237,6 +3237,126 @@ class GDCHardwareManagementAsyncClient:
         # Done; return the response.
         return response
 
+    async def record_action_on_comment(
+        self,
+        request: Optional[Union[service.RecordActionOnCommentRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        action_type: Optional[service.RecordActionOnCommentRequest.ActionType] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.Comment:
+        r"""Record Action on a Comment. If the Action specified
+        in the request is READ, the viewed time in the comment
+        is set to the time the request was received. If the
+        comment is already marked as read, subsequent calls will
+        be ignored. If the Action is UNREAD, the viewed time is
+        cleared from the comment.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gdchardwaremanagement_v1alpha
+
+            async def sample_record_action_on_comment():
+                # Create a client
+                client = gdchardwaremanagement_v1alpha.GDCHardwareManagementAsyncClient()
+
+                # Initialize request argument(s)
+                request = gdchardwaremanagement_v1alpha.RecordActionOnCommentRequest(
+                    name="name_value",
+                    action_type="UNREAD",
+                )
+
+                # Make the request
+                response = await client.record_action_on_comment(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gdchardwaremanagement_v1alpha.types.RecordActionOnCommentRequest, dict]]):
+                The request object. A request to record an action on a
+                comment.
+            name (:class:`str`):
+                Required. The name of the comment. Format:
+                ``projects/{project}/locations/{location}/orders/{order}/comments/{comment}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            action_type (:class:`google.cloud.gdchardwaremanagement_v1alpha.types.RecordActionOnCommentRequest.ActionType`):
+                Required. The action type of the
+                recorded action.
+
+                This corresponds to the ``action_type`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.gdchardwaremanagement_v1alpha.types.Comment:
+                A comment on an order.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, action_type])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.RecordActionOnCommentRequest):
+            request = service.RecordActionOnCommentRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if action_type is not None:
+            request.action_type = action_type
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.record_action_on_comment
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_change_log_entries(
         self,
         request: Optional[Union[service.ListChangeLogEntriesRequest, dict]] = None,

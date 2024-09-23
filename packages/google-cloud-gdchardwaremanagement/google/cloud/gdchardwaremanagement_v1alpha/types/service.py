@@ -54,6 +54,7 @@ __protobuf__ = proto.module(
         "ListCommentsResponse",
         "GetCommentRequest",
         "CreateCommentRequest",
+        "RecordActionOnCommentRequest",
         "ListChangeLogEntriesRequest",
         "ListChangeLogEntriesResponse",
         "GetChangeLogEntryRequest",
@@ -280,7 +281,43 @@ class SubmitOrderRequest(proto.Message):
         request_id (str):
             Optional. An optional unique identifier for this request.
             See `AIP-155 <https://google.aip.dev/155>`__.
+        type_ (google.cloud.gdchardwaremanagement_v1alpha.types.SubmitOrderRequest.Type):
+            Optional. Type of this request. If unset, the request type
+            is assumed to be ``INFO_PENDING``.
     """
+
+    class Type(proto.Enum):
+        r"""Valid types of submit order request.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Request type is unspecified. This should not
+                be used.
+            INFO_PENDING (1):
+                Use this request type to submit your order
+                and initiate conversation with Google. After
+                this submission, you will not be able to modify
+                the number or SKU of your ordered hardware.
+                Please note that this order will not be ready
+                for fulfillment yet until you provide more
+                information, such as zone network configuration,
+                hardware physical and installation information,
+                etc.
+                If you are submitting an order for a SKU type of
+                RACK, please use this request type, as
+                additional information will be required outside
+                of the API.
+            INFO_COMPLETE (2):
+                Use this request type if and when you are ready to submit
+                your order for fulfillment. In addition to the information
+                required for ``INFO_PENDING``, the order must contain all
+                required information, such as zone network configuration,
+                hardware physical and installation information, etc. Further
+                changes to any order information will no longer be allowed.
+        """
+        TYPE_UNSPECIFIED = 0
+        INFO_PENDING = 1
+        INFO_COMPLETE = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -289,6 +326,11 @@ class SubmitOrderRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Type,
     )
 
 
@@ -963,6 +1005,44 @@ class CreateCommentRequest(proto.Message):
     )
 
 
+class RecordActionOnCommentRequest(proto.Message):
+    r"""A request to record an action on a comment.
+
+    Attributes:
+        name (str):
+            Required. The name of the comment. Format:
+            ``projects/{project}/locations/{location}/orders/{order}/comments/{comment}``
+        action_type (google.cloud.gdchardwaremanagement_v1alpha.types.RecordActionOnCommentRequest.ActionType):
+            Required. The action type of the recorded
+            action.
+    """
+
+    class ActionType(proto.Enum):
+        r"""Valid action types of Comment.
+
+        Values:
+            ACTION_TYPE_UNSPECIFIED (0):
+                Action is unspecified.
+            READ (1):
+                Mark comment as read.
+            UNREAD (2):
+                Mark comment as unread.
+        """
+        ACTION_TYPE_UNSPECIFIED = 0
+        READ = 1
+        UNREAD = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    action_type: ActionType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ActionType,
+    )
+
+
 class ListChangeLogEntriesRequest(proto.Message):
     r"""A request to list change log entries.
 
@@ -1354,12 +1434,17 @@ class SignalZoneStateRequest(proto.Message):
         Values:
             STATE_SIGNAL_UNSPECIFIED (0):
                 State signal of the zone is unspecified.
+            FACTORY_TURNUP_CHECKS_PASSED (1):
+                The Zone is ready for site turnup.
             READY_FOR_SITE_TURNUP (1):
                 The Zone is ready for site turnup.
+                Deprecated, but not deleted.
             FACTORY_TURNUP_CHECKS_FAILED (2):
                 The Zone failed in factory turnup checks.
         """
+        _pb_options = {"allow_alias": True}
         STATE_SIGNAL_UNSPECIFIED = 0
+        FACTORY_TURNUP_CHECKS_PASSED = 1
         READY_FOR_SITE_TURNUP = 1
         FACTORY_TURNUP_CHECKS_FAILED = 2
 

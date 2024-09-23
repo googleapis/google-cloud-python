@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
     package="google.cloud.gdchardwaremanagement.v1alpha",
     manifest={
         "PowerSupply",
+        "Entity",
         "Order",
         "Site",
         "HardwareGroup",
@@ -50,6 +51,7 @@ __protobuf__ = proto.module(
         "Dimensions",
         "RackSpace",
         "HardwareLocation",
+        "SubscriptionConfig",
     },
 )
 
@@ -68,6 +70,25 @@ class PowerSupply(proto.Enum):
     POWER_SUPPLY_UNSPECIFIED = 0
     POWER_SUPPLY_AC = 1
     POWER_SUPPLY_DC = 2
+
+
+class Entity(proto.Enum):
+    r"""Entity is used to denote an organization or party.
+
+    Values:
+        ENTITY_UNSPECIFIED (0):
+            Entity is unspecified.
+        GOOGLE (1):
+            Google.
+        CUSTOMER (2):
+            Customer.
+        VENDOR (3):
+            Vendor.
+    """
+    ENTITY_UNSPECIFIED = 0
+    GOOGLE = 1
+    CUSTOMER = 2
+    VENDOR = 3
 
 
 class Order(proto.Message):
@@ -140,6 +161,9 @@ class Order(proto.Message):
                 has not been submitted yet.
             SUBMITTED (2):
                 Order has been submitted to Google.
+            INFO_COMPLETE (12):
+                All information required from the customer
+                for fulfillment of the order is complete.
             ACCEPTED (3):
                 Order has been accepted by Google.
             ADDITIONAL_INFO_NEEDED (4):
@@ -167,6 +191,7 @@ class Order(proto.Message):
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         SUBMITTED = 2
+        INFO_COMPLETE = 12
         ACCEPTED = 3
         ADDITIONAL_INFO_NEEDED = 4
         BUILDING = 5
@@ -297,17 +322,30 @@ class Site(proto.Message):
             Optional. The time periods when the site is
             accessible. If this field is empty, the site is
             accessible at all times.
+
+            This field is used by Google to schedule the
+            initial installation as well as any later
+            hardware maintenance. You may update this at any
+            time. For example, if the initial installation
+            is requested during off-hours but maintenance
+            should be performed during regular business
+            hours, you should update the access times after
+            initial installation is complete.
         notes (str):
             Optional. Any additional notes for this Site.
             Please include information about:
+            - security or access restrictions
+            - any regulations affecting the technicians
+            visiting the site
+            - any special process or approval required to
+            move the equipment
+            - whether a representative will be available
+            during site visits
 
-             - security or access restrictions
-             - any regulations affecting the technicians
-              visiting the site
-             - any special process or approval required to
-              move the equipment
-             - whether a representative will be available
-              during site visits
+        customer_site_id (str):
+            Optional. Customer defined identifier for
+            this Site. This can be used to identify the site
+            in the customer's own systems.
     """
 
     name: str = proto.Field(
@@ -354,6 +392,10 @@ class Site(proto.Message):
     notes: str = proto.Field(
         proto.STRING,
         number=27,
+    )
+    customer_site_id: str = proto.Field(
+        proto.STRING,
+        number=28,
     )
 
 
@@ -679,6 +721,14 @@ class Comment(proto.Message):
         text (str):
             Required. Text of this comment. The length of
             text must be <= 1000 characters.
+        customer_viewed_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp of the first time this
+            comment was viewed by the customer. If the
+            comment wasn't viewed then this timestamp will
+            be unset.
+        author_entity (google.cloud.gdchardwaremanagement_v1alpha.types.Entity):
+            Output only. The entity the author belongs
+            to.
     """
 
     name: str = proto.Field(
@@ -702,6 +752,16 @@ class Comment(proto.Message):
     text: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    customer_viewed_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    author_entity: "Entity" = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum="Entity",
     )
 
 
@@ -881,6 +941,9 @@ class Zone(proto.Message):
         globally_unique_id (str):
             Output only. Globally unique identifier
             generated for this Edge Zone.
+        subscription_configs (MutableSequence[google.cloud.gdchardwaremanagement_v1alpha.types.SubscriptionConfig]):
+            Output only. Subscription configurations for
+            this zone.
     """
 
     class State(proto.Enum):
@@ -959,6 +1022,11 @@ class Zone(proto.Message):
     globally_unique_id: str = proto.Field(
         proto.STRING,
         number=12,
+    )
+    subscription_configs: MutableSequence["SubscriptionConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=13,
+        message="SubscriptionConfig",
     )
 
 
@@ -1499,6 +1567,67 @@ class HardwareLocation(proto.Message):
         proto.MESSAGE,
         number=3,
         message="RackSpace",
+    )
+
+
+class SubscriptionConfig(proto.Message):
+    r"""A message to store a subscription configuration.
+
+    Attributes:
+        subscription_id (str):
+            Output only. The unique identifier of the
+            subscription.
+        billing_id (str):
+            Output only. The Google Cloud Billing ID that
+            the subscription is created under.
+        state (google.cloud.gdchardwaremanagement_v1alpha.types.SubscriptionConfig.SubscriptionState):
+            Output only. The current state of the
+            subscription.
+    """
+
+    class SubscriptionState(proto.Enum):
+        r"""Enum to represent the state of the subscription.
+
+        Values:
+            SUBSCRIPTION_STATE_UNSPECIFIED (0):
+                State is unspecified.
+            ACTIVE (1):
+                Active state means that the subscription has
+                been created successfully and billing is
+                happening.
+            INACTIVE (2):
+                Inactive means that the subscription has been
+                created successfully, but billing has not
+                started yet.
+            ERROR (3):
+                The subscription is in an erroneous state.
+            FAILED_TO_RETRIEVE (4):
+                The subscription state failed to be
+                retrieved. This may be a transient issue. The
+                user should retry the request.
+            COMPLETED (5):
+                The subscription has been completed, because
+                it has reached the end date.
+        """
+        SUBSCRIPTION_STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        INACTIVE = 2
+        ERROR = 3
+        FAILED_TO_RETRIEVE = 4
+        COMPLETED = 5
+
+    subscription_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    billing_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    state: SubscriptionState = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=SubscriptionState,
     )
 
 
