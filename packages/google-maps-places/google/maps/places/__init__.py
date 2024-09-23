@@ -34,13 +34,19 @@ from google.maps.places_v1.types.places_service import (
     GetPhotoMediaRequest,
     GetPlaceRequest,
     PhotoMedia,
+    RoutingParameters,
     SearchNearbyRequest,
     SearchNearbyResponse,
     SearchTextRequest,
     SearchTextResponse,
 )
+from google.maps.places_v1.types.polyline import Polyline
 from google.maps.places_v1.types.reference import References
 from google.maps.places_v1.types.review import Review
+from google.maps.places_v1.types.route_modifiers import RouteModifiers
+from google.maps.places_v1.types.routing_preference import RoutingPreference
+from google.maps.places_v1.types.routing_summary import RoutingSummary
+from google.maps.places_v1.types.travel_mode import TravelMode
 
 __all__ = (
     "PlacesClient",
@@ -60,10 +66,16 @@ __all__ = (
     "GetPhotoMediaRequest",
     "GetPlaceRequest",
     "PhotoMedia",
+    "RoutingParameters",
     "SearchNearbyRequest",
     "SearchNearbyResponse",
     "SearchTextRequest",
     "SearchTextResponse",
+    "Polyline",
     "References",
     "Review",
+    "RouteModifiers",
+    "RoutingPreference",
+    "RoutingSummary",
+    "TravelMode",
 )

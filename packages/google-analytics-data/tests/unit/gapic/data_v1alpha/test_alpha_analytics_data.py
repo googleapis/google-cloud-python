@@ -5120,6 +5120,395 @@ async def test_list_recurring_audience_lists_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        analytics_data_api.GetPropertyQuotasSnapshotRequest,
+        dict,
+    ],
+)
+def test_get_property_quotas_snapshot(request_type, transport: str = "grpc"):
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_property_quotas_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_data_api.PropertyQuotasSnapshot(
+            name="name_value",
+        )
+        response = client.get_property_quotas_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = analytics_data_api.GetPropertyQuotasSnapshotRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.PropertyQuotasSnapshot)
+    assert response.name == "name_value"
+
+
+def test_get_property_quotas_snapshot_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_property_quotas_snapshot), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_property_quotas_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.GetPropertyQuotasSnapshotRequest()
+
+
+def test_get_property_quotas_snapshot_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = analytics_data_api.GetPropertyQuotasSnapshotRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_property_quotas_snapshot), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_property_quotas_snapshot(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.GetPropertyQuotasSnapshotRequest(
+            name="name_value",
+        )
+
+
+def test_get_property_quotas_snapshot_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AlphaAnalyticsDataClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_property_quotas_snapshot
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_property_quotas_snapshot
+        ] = mock_rpc
+        request = {}
+        client.get_property_quotas_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_property_quotas_snapshot(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_property_quotas_snapshot_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AlphaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_property_quotas_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.PropertyQuotasSnapshot(
+                name="name_value",
+            )
+        )
+        response = await client.get_property_quotas_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.GetPropertyQuotasSnapshotRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_property_quotas_snapshot_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AlphaAnalyticsDataAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_property_quotas_snapshot
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_property_quotas_snapshot
+        ] = mock_rpc
+
+        request = {}
+        await client.get_property_quotas_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_property_quotas_snapshot(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_property_quotas_snapshot_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_data_api.GetPropertyQuotasSnapshotRequest,
+):
+    client = AlphaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_property_quotas_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.PropertyQuotasSnapshot(
+                name="name_value",
+            )
+        )
+        response = await client.get_property_quotas_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = analytics_data_api.GetPropertyQuotasSnapshotRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.PropertyQuotasSnapshot)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_property_quotas_snapshot_async_from_dict():
+    await test_get_property_quotas_snapshot_async(request_type=dict)
+
+
+def test_get_property_quotas_snapshot_field_headers():
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_data_api.GetPropertyQuotasSnapshotRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_property_quotas_snapshot), "__call__"
+    ) as call:
+        call.return_value = analytics_data_api.PropertyQuotasSnapshot()
+        client.get_property_quotas_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_property_quotas_snapshot_field_headers_async():
+    client = AlphaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_data_api.GetPropertyQuotasSnapshotRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_property_quotas_snapshot), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.PropertyQuotasSnapshot()
+        )
+        await client.get_property_quotas_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_property_quotas_snapshot_flattened():
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_property_quotas_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_data_api.PropertyQuotasSnapshot()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_property_quotas_snapshot(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_property_quotas_snapshot_flattened_error():
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_property_quotas_snapshot(
+            analytics_data_api.GetPropertyQuotasSnapshotRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_property_quotas_snapshot_flattened_async():
+    client = AlphaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_property_quotas_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_data_api.PropertyQuotasSnapshot()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.PropertyQuotasSnapshot()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_property_quotas_snapshot(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_property_quotas_snapshot_flattened_error_async():
+    client = AlphaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_property_quotas_snapshot(
+            analytics_data_api.GetPropertyQuotasSnapshotRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         analytics_data_api.CreateReportTaskRequest,
         dict,
     ],
@@ -9890,6 +10279,316 @@ def test_list_recurring_audience_lists_rest_pager(transport: str = "rest"):
 @pytest.mark.parametrize(
     "request_type",
     [
+        analytics_data_api.GetPropertyQuotasSnapshotRequest,
+        dict,
+    ],
+)
+def test_get_property_quotas_snapshot_rest(request_type):
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/propertyQuotasSnapshot"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_data_api.PropertyQuotasSnapshot(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = analytics_data_api.PropertyQuotasSnapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_property_quotas_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.PropertyQuotasSnapshot)
+    assert response.name == "name_value"
+
+
+def test_get_property_quotas_snapshot_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AlphaAnalyticsDataClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_property_quotas_snapshot
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_property_quotas_snapshot
+        ] = mock_rpc
+
+        request = {}
+        client.get_property_quotas_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_property_quotas_snapshot(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_property_quotas_snapshot_rest_required_fields(
+    request_type=analytics_data_api.GetPropertyQuotasSnapshotRequest,
+):
+    transport_class = transports.AlphaAnalyticsDataRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_property_quotas_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_property_quotas_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_data_api.PropertyQuotasSnapshot()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = analytics_data_api.PropertyQuotasSnapshot.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_property_quotas_snapshot(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_property_quotas_snapshot_rest_unset_required_fields():
+    transport = transports.AlphaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_property_quotas_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_property_quotas_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.AlphaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AlphaAnalyticsDataRestInterceptor(),
+    )
+    client = AlphaAnalyticsDataClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AlphaAnalyticsDataRestInterceptor,
+        "post_get_property_quotas_snapshot",
+    ) as post, mock.patch.object(
+        transports.AlphaAnalyticsDataRestInterceptor, "pre_get_property_quotas_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_data_api.GetPropertyQuotasSnapshotRequest.pb(
+            analytics_data_api.GetPropertyQuotasSnapshotRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_data_api.PropertyQuotasSnapshot.to_json(
+            analytics_data_api.PropertyQuotasSnapshot()
+        )
+
+        request = analytics_data_api.GetPropertyQuotasSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_data_api.PropertyQuotasSnapshot()
+
+        client.get_property_quotas_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_property_quotas_snapshot_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_data_api.GetPropertyQuotasSnapshotRequest,
+):
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/propertyQuotasSnapshot"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_property_quotas_snapshot(request)
+
+
+def test_get_property_quotas_snapshot_rest_flattened():
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_data_api.PropertyQuotasSnapshot()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/propertyQuotasSnapshot"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = analytics_data_api.PropertyQuotasSnapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_property_quotas_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/propertyQuotasSnapshot}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_property_quotas_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_property_quotas_snapshot(
+            analytics_data_api.GetPropertyQuotasSnapshotRequest(),
+            name="name_value",
+        )
+
+
+def test_get_property_quotas_snapshot_rest_error():
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         analytics_data_api.CreateReportTaskRequest,
         dict,
     ],
@@ -11498,6 +12197,7 @@ def test_alpha_analytics_data_base_transport():
         "create_recurring_audience_list",
         "get_recurring_audience_list",
         "list_recurring_audience_lists",
+        "get_property_quotas_snapshot",
         "create_report_task",
         "query_report_task",
         "get_report_task",
@@ -11835,6 +12535,9 @@ def test_alpha_analytics_data_client_transport_session_collision(transport_name)
     session1 = client1.transport.list_recurring_audience_lists._session
     session2 = client2.transport.list_recurring_audience_lists._session
     assert session1 != session2
+    session1 = client1.transport.get_property_quotas_snapshot._session
+    session2 = client2.transport.get_property_quotas_snapshot._session
+    assert session1 != session2
     session1 = client1.transport.create_report_task._session
     session2 = client2.transport.create_report_task._session
     assert session1 != session2
@@ -12032,9 +12735,29 @@ def test_parse_audience_list_path():
     assert expected == actual
 
 
-def test_recurring_audience_list_path():
+def test_property_quotas_snapshot_path():
     property = "oyster"
-    recurring_audience_list = "nudibranch"
+    expected = "properties/{property}/propertyQuotasSnapshot".format(
+        property=property,
+    )
+    actual = AlphaAnalyticsDataClient.property_quotas_snapshot_path(property)
+    assert expected == actual
+
+
+def test_parse_property_quotas_snapshot_path():
+    expected = {
+        "property": "nudibranch",
+    }
+    path = AlphaAnalyticsDataClient.property_quotas_snapshot_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AlphaAnalyticsDataClient.parse_property_quotas_snapshot_path(path)
+    assert expected == actual
+
+
+def test_recurring_audience_list_path():
+    property = "cuttlefish"
+    recurring_audience_list = "mussel"
     expected = (
         "properties/{property}/recurringAudienceLists/{recurring_audience_list}".format(
             property=property,
@@ -12049,8 +12772,8 @@ def test_recurring_audience_list_path():
 
 def test_parse_recurring_audience_list_path():
     expected = {
-        "property": "cuttlefish",
-        "recurring_audience_list": "mussel",
+        "property": "winkle",
+        "recurring_audience_list": "nautilus",
     }
     path = AlphaAnalyticsDataClient.recurring_audience_list_path(**expected)
 
@@ -12060,8 +12783,8 @@ def test_parse_recurring_audience_list_path():
 
 
 def test_report_task_path():
-    property = "winkle"
-    report_task = "nautilus"
+    property = "scallop"
+    report_task = "abalone"
     expected = "properties/{property}/reportTasks/{report_task}".format(
         property=property,
         report_task=report_task,
@@ -12072,8 +12795,8 @@ def test_report_task_path():
 
 def test_parse_report_task_path():
     expected = {
-        "property": "scallop",
-        "report_task": "abalone",
+        "property": "squid",
+        "report_task": "clam",
     }
     path = AlphaAnalyticsDataClient.report_task_path(**expected)
 
@@ -12083,7 +12806,7 @@ def test_parse_report_task_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -12093,7 +12816,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "octopus",
     }
     path = AlphaAnalyticsDataClient.common_billing_account_path(**expected)
 
@@ -12103,7 +12826,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -12113,7 +12836,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nudibranch",
     }
     path = AlphaAnalyticsDataClient.common_folder_path(**expected)
 
@@ -12123,7 +12846,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -12133,7 +12856,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "mussel",
     }
     path = AlphaAnalyticsDataClient.common_organization_path(**expected)
 
@@ -12143,7 +12866,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -12153,7 +12876,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nautilus",
     }
     path = AlphaAnalyticsDataClient.common_project_path(**expected)
 
@@ -12163,8 +12886,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -12175,8 +12898,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "squid",
+        "location": "clam",
     }
     path = AlphaAnalyticsDataClient.common_location_path(**expected)
 

@@ -439,9 +439,13 @@ class Place(proto.Message):
 
         Attributes:
             open_now (bool):
-                Is this place open right now?  Always present
-                unless we lack time-of-day or timezone data for
-                these opening hours.
+                Whether the opening hours period is currently
+                active. For regular opening hours and current
+                opening hours, this field means whether the
+                place is open. For secondary opening hours and
+                current secondary opening hours, this field
+                means whether the secondary hours of this place
+                is active.
 
                 This field is a member of `oneof`_ ``_open_now``.
             periods (MutableSequence[google.maps.places_v1.types.Place.OpeningHours.Period]):

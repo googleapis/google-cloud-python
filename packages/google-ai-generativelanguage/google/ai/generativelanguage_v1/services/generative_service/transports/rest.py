@@ -1057,6 +1057,10 @@ class GenerativeServiceRestTransport(GenerativeServiceTransport):
                     "method": "get",
                     "uri": "/v1/{name=tunedModels/*/operations/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=generatedFiles/*}/operations/*",
+                },
             ]
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)

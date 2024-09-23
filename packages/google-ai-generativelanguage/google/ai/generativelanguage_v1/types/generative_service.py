@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "GenerationConfig",
         "GenerateContentResponse",
         "Candidate",
+        "LogprobsResult",
         "EmbedContentRequest",
         "ContentEmbedding",
         "EmbedContentResponse",
@@ -228,6 +229,58 @@ class GenerationConfig(proto.Message):
             doesn't allow setting ``top_k`` on requests.
 
             This field is a member of `oneof`_ ``_top_k``.
+        presence_penalty (float):
+            Optional. Presence penalty applied to the next token's
+            logprobs if the token has already been seen in the response.
+
+            This penalty is binary on/off and not dependant on the
+            number of times the token is used (after the first). Use
+            [frequency_penalty][google.ai.generativelanguage.v1.GenerationConfig.frequency_penalty]
+            for a penalty that increases with each use.
+
+            A positive penalty will discourage the use of tokens that
+            have already been used in the response, increasing the
+            vocabulary.
+
+            A negative penalty will encourage the use of tokens that
+            have already been used in the response, decreasing the
+            vocabulary.
+
+            This field is a member of `oneof`_ ``_presence_penalty``.
+        frequency_penalty (float):
+            Optional. Frequency penalty applied to the next token's
+            logprobs, multiplied by the number of times each token has
+            been seen in the respponse so far.
+
+            A positive penalty will discourage the use of tokens that
+            have already been used, proportional to the number of times
+            the token has been used: The more a token is used, the more
+            dificult it is for the model to use that token again
+            increasing the vocabulary of responses.
+
+            Caution: A *negative* penalty will encourage the model to
+            reuse tokens proportional to the number of times the token
+            has been used. Small negative values will reduce the
+            vocabulary of a response. Larger negative values will cause
+            the model to start repeating a common token until it hits
+            the
+            [max_output_tokens][google.ai.generativelanguage.v1.GenerationConfig.max_output_tokens]
+            limit: "...the the the the the...".
+
+            This field is a member of `oneof`_ ``_frequency_penalty``.
+        response_logprobs (bool):
+            Optional. If true, export the logprobs
+            results in response.
+
+            This field is a member of `oneof`_ ``_response_logprobs``.
+        logprobs (int):
+            Optional. Only valid if
+            [response_logprobs=True][google.ai.generativelanguage.v1.GenerationConfig.response_logprobs].
+            This sets the number of top logprobs to return at each
+            decoding step in the
+            [Candidate.logprobs_result][google.ai.generativelanguage.v1.Candidate.logprobs_result].
+
+            This field is a member of `oneof`_ ``_logprobs``.
     """
 
     candidate_count: int = proto.Field(
@@ -257,6 +310,26 @@ class GenerationConfig(proto.Message):
     top_k: int = proto.Field(
         proto.INT32,
         number=7,
+        optional=True,
+    )
+    presence_penalty: float = proto.Field(
+        proto.FLOAT,
+        number=15,
+        optional=True,
+    )
+    frequency_penalty: float = proto.Field(
+        proto.FLOAT,
+        number=16,
+        optional=True,
+    )
+    response_logprobs: bool = proto.Field(
+        proto.BOOL,
+        number=17,
+        optional=True,
+    )
+    logprobs: int = proto.Field(
+        proto.INT32,
+        number=18,
         optional=True,
     )
 
@@ -414,6 +487,11 @@ class Candidate(proto.Message):
             foundational LLM's training data.
         token_count (int):
             Output only. Token count for this candidate.
+        avg_logprobs (float):
+            Output only.
+        logprobs_result (google.ai.generativelanguage_v1.types.LogprobsResult):
+            Output only. Log-likelihood scores for the
+            response tokens and top tokens
     """
 
     class FinishReason(proto.Enum):
@@ -493,6 +571,89 @@ class Candidate(proto.Message):
     token_count: int = proto.Field(
         proto.INT32,
         number=7,
+    )
+    avg_logprobs: float = proto.Field(
+        proto.DOUBLE,
+        number=10,
+    )
+    logprobs_result: "LogprobsResult" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="LogprobsResult",
+    )
+
+
+class LogprobsResult(proto.Message):
+    r"""Logprobs Result
+
+    Attributes:
+        top_candidates (MutableSequence[google.ai.generativelanguage_v1.types.LogprobsResult.TopCandidates]):
+            Length = total number of decoding steps.
+        chosen_candidates (MutableSequence[google.ai.generativelanguage_v1.types.LogprobsResult.Candidate]):
+            Length = total number of decoding steps. The chosen
+            candidates may or may not be in top_candidates.
+    """
+
+    class Candidate(proto.Message):
+        r"""Candidate for the logprobs token and score.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            token (str):
+                The candidate’s token string value.
+
+                This field is a member of `oneof`_ ``_token``.
+            token_id (int):
+                The candidate’s token id value.
+
+                This field is a member of `oneof`_ ``_token_id``.
+            log_probability (float):
+                The candidate's log probability.
+
+                This field is a member of `oneof`_ ``_log_probability``.
+        """
+
+        token: str = proto.Field(
+            proto.STRING,
+            number=1,
+            optional=True,
+        )
+        token_id: int = proto.Field(
+            proto.INT32,
+            number=3,
+            optional=True,
+        )
+        log_probability: float = proto.Field(
+            proto.FLOAT,
+            number=2,
+            optional=True,
+        )
+
+    class TopCandidates(proto.Message):
+        r"""Candidates with top log probabilities at each decoding step.
+
+        Attributes:
+            candidates (MutableSequence[google.ai.generativelanguage_v1.types.LogprobsResult.Candidate]):
+                Sorted by log probability in descending
+                order.
+        """
+
+        candidates: MutableSequence["LogprobsResult.Candidate"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="LogprobsResult.Candidate",
+        )
+
+    top_candidates: MutableSequence[TopCandidates] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=TopCandidates,
+    )
+    chosen_candidates: MutableSequence[Candidate] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Candidate,
     )
 
 

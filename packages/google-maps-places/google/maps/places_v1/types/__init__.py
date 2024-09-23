@@ -27,13 +27,19 @@ from .places_service import (
     GetPhotoMediaRequest,
     GetPlaceRequest,
     PhotoMedia,
+    RoutingParameters,
     SearchNearbyRequest,
     SearchNearbyResponse,
     SearchTextRequest,
     SearchTextResponse,
 )
+from .polyline import Polyline
 from .reference import References
 from .review import Review
+from .route_modifiers import RouteModifiers
+from .routing_preference import RoutingPreference
+from .routing_summary import RoutingSummary
+from .travel_mode import TravelMode
 
 __all__ = (
     "AuthorAttribution",
@@ -51,10 +57,16 @@ __all__ = (
     "GetPhotoMediaRequest",
     "GetPlaceRequest",
     "PhotoMedia",
+    "RoutingParameters",
     "SearchNearbyRequest",
     "SearchNearbyResponse",
     "SearchTextRequest",
     "SearchTextResponse",
+    "Polyline",
     "References",
     "Review",
+    "RouteModifiers",
+    "RoutingPreference",
+    "RoutingSummary",
+    "TravelMode",
 )
