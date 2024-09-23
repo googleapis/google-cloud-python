@@ -826,6 +826,7 @@ class AutokeyAdminAsyncClient:
                 **JSON Example**
 
                 ::
+
                     {
                       "bindings": [
                         {
