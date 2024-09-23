@@ -145,6 +145,19 @@ class ListKeyHandlesRequest(proto.Message):
             Required. Name of the resource project and location from
             which to list [KeyHandles][google.cloud.kms.v1.KeyHandle],
             e.g. ``projects/{PROJECT_ID}/locations/{LOCATION}``.
+        page_size (int):
+            Optional. Optional limit on the number of
+            [KeyHandles][google.cloud.kms.v1.KeyHandle] to include in
+            the response. The service may return fewer than this value.
+            Further [KeyHandles][google.cloud.kms.v1.KeyHandle] can
+            subsequently be obtained by including the
+            [ListKeyHandlesResponse.next_page_token][google.cloud.kms.v1.ListKeyHandlesResponse.next_page_token]
+            in a subsequent request. If unspecified, at most 100
+            [KeyHandles][google.cloud.kms.v1.KeyHandle] will be
+            returned.
+        page_token (str):
+            Optional. Optional pagination token, returned earlier via
+            [ListKeyHandlesResponse.next_page_token][google.cloud.kms.v1.ListKeyHandlesResponse.next_page_token].
         filter (str):
             Optional. Filter to apply when listing
             [KeyHandles][google.cloud.kms.v1.KeyHandle], e.g.
@@ -154,6 +167,14 @@ class ListKeyHandlesRequest(proto.Message):
     parent: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
     filter: str = proto.Field(
         proto.STRING,
@@ -168,12 +189,24 @@ class ListKeyHandlesResponse(proto.Message):
     Attributes:
         key_handles (MutableSequence[google.cloud.kms_v1.types.KeyHandle]):
             Resulting [KeyHandles][google.cloud.kms.v1.KeyHandle].
+        next_page_token (str):
+            A token to retrieve next page of results. Pass this value in
+            [ListKeyHandlesRequest.page_token][google.cloud.kms.v1.ListKeyHandlesRequest.page_token]
+            to retrieve the next page of results.
     """
+
+    @property
+    def raw_page(self):
+        return self
 
     key_handles: MutableSequence["KeyHandle"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="KeyHandle",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

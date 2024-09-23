@@ -44,9 +44,10 @@ def sample_list_key_handles():
     )
 
     # Make the request
-    response = client.list_key_handles(request=request)
+    page_result = client.list_key_handles(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
 # [END cloudkms_v1_generated_Autokey_ListKeyHandles_sync]

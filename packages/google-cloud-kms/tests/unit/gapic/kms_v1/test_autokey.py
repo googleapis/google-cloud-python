@@ -60,6 +60,7 @@ from requests.sessions import Session
 from google.cloud.kms_v1.services.autokey import (
     AutokeyAsyncClient,
     AutokeyClient,
+    pagers,
     transports,
 )
 from google.cloud.kms_v1.types import autokey
@@ -1866,7 +1867,9 @@ def test_list_key_handles(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_key_handles), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = autokey.ListKeyHandlesResponse()
+        call.return_value = autokey.ListKeyHandlesResponse(
+            next_page_token="next_page_token_value",
+        )
         response = client.list_key_handles(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1876,7 +1879,8 @@ def test_list_key_handles(request_type, transport: str = "grpc"):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, autokey.ListKeyHandlesResponse)
+    assert isinstance(response, pagers.ListKeyHandlesPager)
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_key_handles_empty_call():
@@ -1911,6 +1915,7 @@ def test_list_key_handles_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = autokey.ListKeyHandlesRequest(
         parent="parent_value",
+        page_token="page_token_value",
         filter="filter_value",
     )
 
@@ -1924,6 +1929,7 @@ def test_list_key_handles_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == autokey.ListKeyHandlesRequest(
             parent="parent_value",
+            page_token="page_token_value",
             filter="filter_value",
         )
 
@@ -1978,7 +1984,9 @@ async def test_list_key_handles_empty_call_async():
     with mock.patch.object(type(client.transport.list_key_handles), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            autokey.ListKeyHandlesResponse()
+            autokey.ListKeyHandlesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_key_handles()
         call.assert_called()
@@ -2045,7 +2053,9 @@ async def test_list_key_handles_async(
     with mock.patch.object(type(client.transport.list_key_handles), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            autokey.ListKeyHandlesResponse()
+            autokey.ListKeyHandlesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_key_handles(request)
 
@@ -2056,7 +2066,8 @@ async def test_list_key_handles_async(
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, autokey.ListKeyHandlesResponse)
+    assert isinstance(response, pagers.ListKeyHandlesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -2205,6 +2216,200 @@ async def test_list_key_handles_flattened_error_async():
             autokey.ListKeyHandlesRequest(),
             parent="parent_value",
         )
+
+
+def test_list_key_handles_pager(transport_name: str = "grpc"):
+    client = AutokeyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_key_handles), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                ],
+                next_page_token="abc",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[],
+                next_page_token="def",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                ],
+                next_page_token="ghi",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_key_handles(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, autokey.KeyHandle) for i in results)
+
+
+def test_list_key_handles_pages(transport_name: str = "grpc"):
+    client = AutokeyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_key_handles), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                ],
+                next_page_token="abc",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[],
+                next_page_token="def",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                ],
+                next_page_token="ghi",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_key_handles(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_key_handles_async_pager():
+    client = AutokeyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_key_handles), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                ],
+                next_page_token="abc",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[],
+                next_page_token="def",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                ],
+                next_page_token="ghi",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_key_handles(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, autokey.KeyHandle) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_key_handles_async_pages():
+    client = AutokeyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_key_handles), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                ],
+                next_page_token="abc",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[],
+                next_page_token="def",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                ],
+                next_page_token="ghi",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_key_handles(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.parametrize(
@@ -2910,7 +3115,9 @@ def test_list_key_handles_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = autokey.ListKeyHandlesResponse()
+        return_value = autokey.ListKeyHandlesResponse(
+            next_page_token="next_page_token_value",
+        )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -2924,7 +3131,8 @@ def test_list_key_handles_rest(request_type):
         response = client.list_key_handles(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, autokey.ListKeyHandlesResponse)
+    assert isinstance(response, pagers.ListKeyHandlesPager)
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_key_handles_rest_use_cached_wrapped_rpc():
@@ -2993,7 +3201,13 @@ def test_list_key_handles_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).list_key_handles._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter",))
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3047,7 +3261,16 @@ def test_list_key_handles_rest_unset_required_fields():
     )
 
     unset_fields = transport.list_key_handles._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("filter",)) & set(("parent",)))
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3183,10 +3406,65 @@ def test_list_key_handles_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_list_key_handles_rest_error():
+def test_list_key_handles_rest_pager(transport: str = "rest"):
     client = AutokeyClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                ],
+                next_page_token="abc",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[],
+                next_page_token="def",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                ],
+                next_page_token="ghi",
+            ),
+            autokey.ListKeyHandlesResponse(
+                key_handles=[
+                    autokey.KeyHandle(),
+                    autokey.KeyHandle(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(autokey.ListKeyHandlesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_key_handles(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, autokey.KeyHandle) for i in results)
+
+        pages = list(client.list_key_handles(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_credentials_transport_error():
