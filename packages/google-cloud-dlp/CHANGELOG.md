@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.22.0...google-cloud-dlp-v3.23.0) (2024-09-23)
+
+
+### Features
+
+* action for publishing data profiles to SecOps (formelly known as Chronicle) ([afcf7cb](https://github.com/googleapis/google-cloud-python/commit/afcf7cbe57d6e0f183a113ba03bba9c288052969))
+* action for publishing data profiles to Security Command Center ([afcf7cb](https://github.com/googleapis/google-cloud-python/commit/afcf7cbe57d6e0f183a113ba03bba9c288052969))
+* discovery configs for AWS S3 buckets ([afcf7cb](https://github.com/googleapis/google-cloud-python/commit/afcf7cbe57d6e0f183a113ba03bba9c288052969))
+
+
+### Documentation
+
+* small improvements and clarifications ([afcf7cb](https://github.com/googleapis/google-cloud-python/commit/afcf7cbe57d6e0f183a113ba03bba9c288052969))
+
 ## [3.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.21.0...google-cloud-dlp-v3.22.0) (2024-08-19)
 
 

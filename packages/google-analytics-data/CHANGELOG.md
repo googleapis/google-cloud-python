@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.18.12](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.11...google-analytics-data-v0.18.12) (2024-09-23)
+
+
+### Features
+
+* add `GetPropertyQuotasSnapshot` method to the Data API v1alpha ([65f098a](https://github.com/googleapis/google-cloud-python/commit/65f098a1125677c69240849703a0b97bcab7fc4c))
+* add `PropertyQuotasSnapshot` type to the Data API v1alpha ([65f098a](https://github.com/googleapis/google-cloud-python/commit/65f098a1125677c69240849703a0b97bcab7fc4c))
+
+
+### Documentation
+
+* update the documentation for the `CreateReportTask` method ([65f098a](https://github.com/googleapis/google-cloud-python/commit/65f098a1125677c69240849703a0b97bcab7fc4c))
+
 ## [0.18.11](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.10...google-analytics-data-v0.18.11) (2024-08-08)
 
 
