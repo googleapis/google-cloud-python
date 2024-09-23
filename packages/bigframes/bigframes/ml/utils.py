@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import typing
-from typing import Any, Iterable, Literal, Mapping, Optional, Union
+from typing import Any, Generator, Iterable, Literal, Mapping, Optional, Union
 
 import bigframes_vendored.constants as constants
 from google.cloud import bigquery
@@ -25,7 +25,7 @@ import bigframes.pandas as bpd
 ArrayType = Union[bpd.DataFrame, bpd.Series]
 
 
-def convert_to_dataframe(*input: ArrayType) -> Iterable[bpd.DataFrame]:
+def convert_to_dataframe(*input: ArrayType) -> Generator[bpd.DataFrame, None, None]:
     return (_convert_to_dataframe(frame) for frame in input)
 
 
@@ -39,7 +39,7 @@ def _convert_to_dataframe(frame: ArrayType) -> bpd.DataFrame:
     )
 
 
-def convert_to_series(*input: ArrayType) -> Iterable[bpd.Series]:
+def convert_to_series(*input: ArrayType) -> Generator[bpd.Series, None, None]:
     return (_convert_to_series(frame) for frame in input)
 
 
@@ -57,6 +57,39 @@ def _convert_to_series(frame: ArrayType) -> bpd.Series:
         return frame
     raise ValueError(
         f"Unsupported type {type(frame)} to convert to Series. {constants.FEEDBACK_LINK}"
+    )
+
+
+def convert_to_types(
+    inputs: Iterable[Union[ArrayType, None]],
+    type_instances: Iterable[Union[ArrayType, None]],
+) -> tuple[Union[ArrayType, None]]:
+    """Convert the DF, Series and None types of the input to corresponding type_instances types."""
+    results = []
+    for input, type_instance in zip(inputs, type_instances):
+        results.append(_convert_to_type(input, type_instance))
+    return tuple(results)
+
+
+def _convert_to_type(
+    input: Union[ArrayType, None], type_instance: Union[ArrayType, None]
+):
+    if type_instance is None:
+        if input is not None:
+            raise ValueError(
+                f"Trying to convert not None type to None. {constants.FEEDBACK_LINK}"
+            )
+        return None
+    if input is None:
+        raise ValueError(
+            f"Trying to convert None type to not None. {constants.FEEDBACK_LINK}"
+        )
+    if isinstance(type_instance, bpd.DataFrame):
+        return _convert_to_dataframe(input)
+    if isinstance(type_instance, bpd.Series):
+        return _convert_to_series(input)
+    raise ValueError(
+        f"Unsupport converting to {type(type_instance)}. {constants.FEEDBACK_LINK}"
     )
 
 

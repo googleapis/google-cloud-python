@@ -17,8 +17,12 @@ scikit-learn's model_selection module:
 https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection."""
 
 
-from typing import cast, List, Union
+import inspect
+from typing import cast, Generator, List, Union
 
+import bigframes_vendored.sklearn.model_selection._split as vendored_model_selection_split
+
+from bigframes.core import log_adapter
 from bigframes.ml import utils
 import bigframes.pandas as bpd
 
@@ -30,30 +34,6 @@ def train_test_split(
     random_state: Union[int, None] = None,
     stratify: Union[bpd.Series, None] = None,
 ) -> List[Union[bpd.DataFrame, bpd.Series]]:
-    """Splits dataframes or series into random train and test subsets.
-
-    Args:
-        *arrays (bigframes.dataframe.DataFrame or bigframes.series.Series):
-            A sequence of BigQuery DataFrames or Series that can be joined on
-            their indexes.
-        test_size (default None):
-            The proportion of the dataset to include in the test split. If
-            None, this will default to the complement of train_size. If both
-            are none, it will be set to 0.25.
-        train_size (default None):
-            The proportion of the dataset to include in the train split. If
-            None, this will default to the complement of test_size.
-        random_state (default None):
-            A seed to use for randomly choosing the rows of the split. If not
-            set, a random split will be generated each time.
-        stratify: (bigframes.series.Series or None, default None):
-            If not None, data is split in a stratified fashion, using this as the class labels. Each split has the same distribution of the class labels with the original dataset.
-            Default to None.
-            Note: By setting the stratify parameter, the memory consumption and generated SQL will be linear to the unique values in the Series. May return errors if the unique values size is too large.
-
-    Returns:
-        List[Union[bigframes.dataframe.DataFrame, bigframes.series.Series]]: A list of BigQuery DataFrames or Series.
-    """
 
     # TODO(garrettwu): scikit-learn throws an error when the dataframes don't have the same
     # number of rows. We probably want to do something similar. Now the implementation is based
@@ -123,3 +103,47 @@ def train_test_split(
         results.append(joined_df_test[columns])
 
     return results
+
+
+train_test_split.__doc__ = inspect.getdoc(
+    vendored_model_selection_split.train_test_split
+)
+
+
+@log_adapter.class_logger
+class KFold(vendored_model_selection_split.KFold):
+    def __init__(self, n_splits: int = 5, *, random_state: Union[int, None] = None):
+        if n_splits < 2:
+            raise ValueError(f"n_splits must be at least 2. Got {n_splits}")
+        self._n_splits = n_splits
+        self._random_state = random_state
+
+    def get_n_splits(self) -> int:
+        return self._n_splits
+
+    def split(
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series, None] = None,
+    ) -> Generator[tuple[Union[bpd.DataFrame, bpd.Series, None]], None, None]:
+        X_df = next(utils.convert_to_dataframe(X))
+        y_df_or = next(utils.convert_to_dataframe(y)) if y is not None else None
+        joined_df = X_df.join(y_df_or, how="outer") if y_df_or is not None else X_df
+
+        fracs = (1 / self._n_splits,) * self._n_splits
+
+        dfs = joined_df._split(fracs=fracs, random_state=self._random_state)
+
+        for i in range(len(dfs)):
+            train_df = bpd.concat(dfs[:i] + dfs[i + 1 :])
+            test_df = dfs[i]
+
+            X_train = train_df[X_df.columns]
+            y_train = train_df[y_df_or.columns] if y_df_or is not None else None
+
+            X_test = test_df[X_df.columns]
+            y_test = test_df[y_df_or.columns] if y_df_or is not None else None
+
+            yield utils.convert_to_types(
+                [X_train, X_test, y_train, y_test], [X, X, y, y]
+            )

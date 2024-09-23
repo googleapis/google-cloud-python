@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import math
+
 import pandas as pd
 import pytest
 
@@ -302,3 +304,174 @@ def test_train_test_split_stratify(df_fixture, request):
         test_counts,
         check_index_type=False,
     )
+
+
+@pytest.mark.parametrize(
+    "n_splits",
+    (3, 5, 10),
+)
+def test_KFold_get_n_splits(n_splits):
+    kf = model_selection.KFold(n_splits)
+    assert kf.get_n_splits() == n_splits
+
+
+@pytest.mark.parametrize(
+    "df_fixture",
+    ("penguins_df_default_index", "penguins_df_null_index"),
+)
+@pytest.mark.parametrize(
+    "n_splits",
+    (3, 5),
+)
+def test_KFold_split(df_fixture, n_splits, request):
+    df = request.getfixturevalue(df_fixture)
+
+    kf = model_selection.KFold(n_splits=n_splits)
+
+    X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+        ]
+    ]
+    y = df["body_mass_g"]
+
+    len_test_upper, len_test_lower = math.ceil(len(df) / n_splits), math.floor(
+        len(df) / n_splits
+    )
+    len_train_upper, len_train_lower = (
+        len(df) - len_test_lower,
+        len(df) - len_test_upper,
+    )
+
+    for X_train, X_test, y_train, y_test in kf.split(X, y):  # type: ignore
+        assert isinstance(X_train, bpd.DataFrame)
+        assert isinstance(X_test, bpd.DataFrame)
+        assert isinstance(y_train, bpd.Series)
+        assert isinstance(y_test, bpd.Series)
+
+        # Depend on the iteration, train/test can +-1 in size.
+        assert (
+            X_train.shape == (len_train_upper, 3)
+            and y_train.shape == (len_train_upper,)
+            and X_test.shape == (len_test_lower, 3)
+            and y_test.shape == (len_test_lower,)
+        ) or (
+            X_train.shape == (len_train_lower, 3)
+            and y_train.shape == (len_train_lower,)
+            and X_test.shape == (len_test_upper, 3)
+            and y_test.shape == (len_test_upper,)
+        )
+
+
+@pytest.mark.parametrize(
+    "df_fixture",
+    ("penguins_df_default_index", "penguins_df_null_index"),
+)
+@pytest.mark.parametrize(
+    "n_splits",
+    (3, 5),
+)
+def test_KFold_split_X_only(df_fixture, n_splits, request):
+    df = request.getfixturevalue(df_fixture)
+
+    kf = model_selection.KFold(n_splits=n_splits)
+
+    X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+        ]
+    ]
+
+    len_test_upper, len_test_lower = math.ceil(len(df) / n_splits), math.floor(
+        len(df) / n_splits
+    )
+    len_train_upper, len_train_lower = (
+        len(df) - len_test_lower,
+        len(df) - len_test_upper,
+    )
+
+    for X_train, X_test, y_train, y_test in kf.split(X, y=None):  # type: ignore
+        assert isinstance(X_train, bpd.DataFrame)
+        assert isinstance(X_test, bpd.DataFrame)
+        assert y_train is None
+        assert y_test is None
+
+        # Depend on the iteration, train/test can +-1 in size.
+        assert (
+            X_train.shape == (len_train_upper, 3)
+            and X_test.shape == (len_test_lower, 3)
+        ) or (
+            X_train.shape == (len_train_lower, 3)
+            and X_test.shape == (len_test_upper, 3)
+        )
+
+
+def test_KFold_seeded_correct_rows(session, penguins_pandas_df_default_index):
+    kf = model_selection.KFold(random_state=42)
+    # Note that we're using `penguins_pandas_df_default_index` as this test depends
+    # on a stable row order being present end to end
+    # filter down to the chunkiest penguins, to keep our test code a reasonable size
+    all_data = penguins_pandas_df_default_index[
+        penguins_pandas_df_default_index.body_mass_g > 5500
+    ]
+
+    # Note that bigframes loses the index if it doesn't have a name
+    all_data.index.name = "rowindex"
+
+    df = session.read_pandas(all_data)
+
+    X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+        ]
+    ]
+    y = df["body_mass_g"]
+    X_train, X_test, y_train, y_test = next(kf.split(X, y))  # type: ignore
+
+    X_train_sorted = X_train.to_pandas().sort_index()
+    X_test_sorted = X_test.to_pandas().sort_index()
+    y_train_sorted = y_train.to_pandas().sort_index()
+    y_test_sorted = y_test.to_pandas().sort_index()
+
+    train_index: pd.Index = pd.Index(
+        [
+            144,
+            146,
+            148,
+            161,
+            168,
+            183,
+            217,
+            221,
+            225,
+            226,
+            237,
+            244,
+            257,
+            262,
+            264,
+            266,
+            267,
+            269,
+            278,
+            289,
+            290,
+            291,
+        ],
+        dtype="Int64",
+        name="rowindex",
+    )
+    test_index: pd.Index = pd.Index(
+        [186, 240, 245, 260, 263, 268], dtype="Int64", name="rowindex"
+    )
+
+    pd.testing.assert_index_equal(X_train_sorted.index, train_index)
+    pd.testing.assert_index_equal(X_test_sorted.index, test_index)
+    pd.testing.assert_index_equal(y_train_sorted.index, train_index)
+    pd.testing.assert_index_equal(y_test_sorted.index, test_index)
