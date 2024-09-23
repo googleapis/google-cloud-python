@@ -65,7 +65,7 @@ class kmsCallTransformer(cst.CSTTransformer):
         'list_crypto_key_versions': ('parent', 'page_size', 'page_token', 'view', 'filter', 'order_by', ),
         'list_ekm_connections': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_import_jobs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-        'list_key_handles': ('parent', 'filter', ),
+        'list_key_handles': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_key_rings': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'mac_sign': ('name', 'data', 'data_crc32c', ),
         'mac_verify': ('name', 'data', 'mac', 'data_crc32c', 'mac_crc32c', ),

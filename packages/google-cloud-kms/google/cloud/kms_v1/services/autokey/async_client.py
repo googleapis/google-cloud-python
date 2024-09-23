@@ -49,6 +49,7 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
+from google.cloud.kms_v1.services.autokey import pagers
 from google.cloud.kms_v1.types import autokey
 
 from .client import AutokeyClient
@@ -57,8 +58,9 @@ from .transports.grpc_asyncio import AutokeyGrpcAsyncIOTransport
 
 
 class AutokeyAsyncClient:
-    """Provides interfaces for using Cloud KMS Autokey to provision new
-    [CryptoKeys][google.cloud.kms.v1.CryptoKey], ready for Customer
+    """Provides interfaces for using `Cloud KMS
+    Autokey <https://cloud.google.com/kms/help/autokey>`__ to provision
+    new [CryptoKeys][google.cloud.kms.v1.CryptoKey], ready for Customer
     Managed Encryption Key (CMEK) use, on-demand. To support certain
     client tooling, this feature is modeled around a
     [KeyHandle][google.cloud.kms.v1.KeyHandle] resource: creating a
@@ -544,7 +546,7 @@ class AutokeyAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> autokey.ListKeyHandlesResponse:
+    ) -> pagers.ListKeyHandlesAsyncPager:
         r"""Lists [KeyHandles][google.cloud.kms.v1.KeyHandle].
 
         .. code-block:: python
@@ -568,10 +570,11 @@ class AutokeyAsyncClient:
                 )
 
                 # Make the request
-                response = await client.list_key_handles(request=request)
+                page_result = client.list_key_handles(request=request)
 
                 # Handle the response
-                print(response)
+                async for response in page_result:
+                    print(response)
 
         Args:
             request (Optional[Union[google.cloud.kms_v1.types.ListKeyHandlesRequest, dict]]):
@@ -593,9 +596,12 @@ class AutokeyAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.kms_v1.types.ListKeyHandlesResponse:
+            google.cloud.kms_v1.services.autokey.pagers.ListKeyHandlesAsyncPager:
                 Response message for
                    [Autokey.ListKeyHandles][google.cloud.kms.v1.Autokey.ListKeyHandles].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -636,6 +642,17 @@ class AutokeyAsyncClient:
         # Send the request.
         response = await rpc(
             request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListKeyHandlesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -855,6 +872,7 @@ class AutokeyAsyncClient:
                 **JSON Example**
 
                 ::
+
                     {
                       "bindings": [
                         {
