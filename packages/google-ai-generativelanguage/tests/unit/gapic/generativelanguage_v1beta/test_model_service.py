@@ -2059,6 +2059,7 @@ def test_get_tuned_model(request_type, transport: str = "grpc"):
             top_p=0.546,
             top_k=541,
             state=tuned_model.TunedModel.State.CREATING,
+            reader_project_numbers=[2340],
             base_model="base_model_value",
         )
         response = client.get_tuned_model(request)
@@ -2078,6 +2079,7 @@ def test_get_tuned_model(request_type, transport: str = "grpc"):
     assert math.isclose(response.top_p, 0.546, rel_tol=1e-6)
     assert response.top_k == 541
     assert response.state == tuned_model.TunedModel.State.CREATING
+    assert response.reader_project_numbers == [2340]
 
 
 def test_get_tuned_model_empty_call():
@@ -2183,6 +2185,7 @@ async def test_get_tuned_model_empty_call_async():
                 top_p=0.546,
                 top_k=541,
                 state=tuned_model.TunedModel.State.CREATING,
+                reader_project_numbers=[2340],
             )
         )
         response = await client.get_tuned_model()
@@ -2258,6 +2261,7 @@ async def test_get_tuned_model_async(
                 top_p=0.546,
                 top_k=541,
                 state=tuned_model.TunedModel.State.CREATING,
+                reader_project_numbers=[2340],
             )
         )
         response = await client.get_tuned_model(request)
@@ -2277,6 +2281,7 @@ async def test_get_tuned_model_async(
     assert math.isclose(response.top_p, 0.546, rel_tol=1e-6)
     assert response.top_k == 541
     assert response.state == tuned_model.TunedModel.State.CREATING
+    assert response.reader_project_numbers == [2340]
 
 
 @pytest.mark.asyncio
@@ -3346,6 +3351,7 @@ def test_update_tuned_model(request_type, transport: str = "grpc"):
             top_p=0.546,
             top_k=541,
             state=gag_tuned_model.TunedModel.State.CREATING,
+            reader_project_numbers=[2340],
             base_model="base_model_value",
         )
         response = client.update_tuned_model(request)
@@ -3365,6 +3371,7 @@ def test_update_tuned_model(request_type, transport: str = "grpc"):
     assert math.isclose(response.top_p, 0.546, rel_tol=1e-6)
     assert response.top_k == 541
     assert response.state == gag_tuned_model.TunedModel.State.CREATING
+    assert response.reader_project_numbers == [2340]
 
 
 def test_update_tuned_model_empty_call():
@@ -3476,6 +3483,7 @@ async def test_update_tuned_model_empty_call_async():
                 top_p=0.546,
                 top_k=541,
                 state=gag_tuned_model.TunedModel.State.CREATING,
+                reader_project_numbers=[2340],
             )
         )
         response = await client.update_tuned_model()
@@ -3553,6 +3561,7 @@ async def test_update_tuned_model_async(
                 top_p=0.546,
                 top_k=541,
                 state=gag_tuned_model.TunedModel.State.CREATING,
+                reader_project_numbers=[2340],
             )
         )
         response = await client.update_tuned_model(request)
@@ -3572,6 +3581,7 @@ async def test_update_tuned_model_async(
     assert math.isclose(response.top_p, 0.546, rel_tol=1e-6)
     assert response.top_k == 541
     assert response.state == gag_tuned_model.TunedModel.State.CREATING
+    assert response.reader_project_numbers == [2340]
 
 
 @pytest.mark.asyncio
@@ -4757,6 +4767,7 @@ def test_get_tuned_model_rest(request_type):
             top_p=0.546,
             top_k=541,
             state=tuned_model.TunedModel.State.CREATING,
+            reader_project_numbers=[2340],
             base_model="base_model_value",
         )
 
@@ -4780,6 +4791,7 @@ def test_get_tuned_model_rest(request_type):
     assert math.isclose(response.top_p, 0.546, rel_tol=1e-6)
     assert response.top_k == 541
     assert response.state == tuned_model.TunedModel.State.CREATING
+    assert response.reader_project_numbers == [2340]
 
 
 def test_get_tuned_model_rest_use_cached_wrapped_rpc():
@@ -5372,6 +5384,7 @@ def test_create_tuned_model_rest(request_type):
                 "batch_size": 1052,
             },
         },
+        "reader_project_numbers": [2341, 2342],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5784,6 +5797,7 @@ def test_update_tuned_model_rest(request_type):
                 "batch_size": 1052,
             },
         },
+        "reader_project_numbers": [2341, 2342],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5865,6 +5879,7 @@ def test_update_tuned_model_rest(request_type):
             top_p=0.546,
             top_k=541,
             state=gag_tuned_model.TunedModel.State.CREATING,
+            reader_project_numbers=[2340],
             base_model="base_model_value",
         )
 
@@ -5888,6 +5903,7 @@ def test_update_tuned_model_rest(request_type):
     assert math.isclose(response.top_p, 0.546, rel_tol=1e-6)
     assert response.top_k == 541
     assert response.state == gag_tuned_model.TunedModel.State.CREATING
+    assert response.reader_project_numbers == [2340]
 
 
 def test_update_tuned_model_rest_use_cached_wrapped_rpc():

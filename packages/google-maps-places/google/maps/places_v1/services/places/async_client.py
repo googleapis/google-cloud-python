@@ -54,6 +54,7 @@ from google.maps.places_v1.types import (
     place,
     places_service,
     review,
+    routing_summary,
 )
 
 from .client import PlacesClient
