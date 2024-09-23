@@ -51,6 +51,7 @@ UNIT_TEST_DEPENDENCIES = []
 UNIT_TEST_EXTRAS = [
     "bqstorage",
     "tqdm",
+    "geopandas",
 ]
 UNIT_TEST_EXTRAS_BY_PYTHON = {
     "3.9": [],

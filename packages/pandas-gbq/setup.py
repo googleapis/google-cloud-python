@@ -25,7 +25,7 @@ dependencies = [
     "db-dtypes >=1.0.4,<2.0.0",
     "numpy >=1.18.1",
     "pandas >=1.1.4",
-    "pyarrow >=3.0.0",
+    "pyarrow >=4.0.0",
     "pydata-google-auth >=1.5.0",
     # Note: google-api-core and google-auth are also included via transitive
     # dependency on google-cloud-bigquery, but this library also uses them
@@ -42,7 +42,8 @@ extras = {
     "bqstorage": [
         "google-cloud-bigquery-storage >=2.16.2, <3.0.0dev",
     ],
-    "tqdm": "tqdm>=4.23.0",
+    "tqdm": ["tqdm>=4.23.0"],
+    "geopandas": ["geopandas>=0.9.0", "Shapely>=1.8.4"],
 }
 
 # Setup boilerplate below this line.

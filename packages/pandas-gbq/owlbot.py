@@ -32,7 +32,7 @@ extras_by_python = {
     # Use a middle version of Python to test when no extras are installed.
     "3.9": []
 }
-extras = ["tqdm"]
+extras = ["tqdm", "geopandas"]
 templated_files = common.py_library(
     unit_test_python_versions=["3.8", "3.9", "3.10", "3.11", "3.12"],
     system_test_python_versions=["3.8", "3.9", "3.10", "3.11", "3.12"],

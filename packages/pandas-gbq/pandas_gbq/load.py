@@ -15,6 +15,8 @@ import pyarrow.lib
 
 from pandas_gbq import exceptions
 import pandas_gbq.schema
+import pandas_gbq.schema.bigquery
+import pandas_gbq.schema.pandas_to_bigquery
 
 
 def encode_chunk(dataframe):
@@ -214,11 +216,9 @@ def load_csv_from_file(
     This method is needed for writing with google-cloud-bigquery versions that
     don't implment load_table_from_dataframe with the CSV serialization format.
     """
-    if schema is None:
-        schema = pandas_gbq.schema.generate_bq_schema(dataframe)
-
-    schema = pandas_gbq.schema.remove_policy_tags(schema)
-    bq_schema = pandas_gbq.schema.to_google_cloud_bigquery(schema)
+    bq_schema = pandas_gbq.schema.pandas_to_bigquery.dataframe_to_bigquery_fields(
+        dataframe, schema
+    )
 
     def load_chunk(chunk, job_config):
         try:

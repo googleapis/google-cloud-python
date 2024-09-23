@@ -92,37 +92,6 @@ def schema_is_subset(schema_remote, schema_local):
     return all(field in fields_remote for field in fields_local)
 
 
-def generate_bq_schema(dataframe, default_type="STRING"):
-    """Given a passed dataframe, generate the associated Google BigQuery schema.
-
-    Arguments:
-        dataframe (pandas.DataFrame): D
-    default_type : string
-        The default big query type in case the type of the column
-        does not exist in the schema.
-    """
-
-    # If you update this mapping, also update the table at
-    # `docs/source/writing.rst`.
-    type_mapping = {
-        "i": "INTEGER",
-        "b": "BOOLEAN",
-        "f": "FLOAT",
-        "O": "STRING",
-        "S": "STRING",
-        "U": "STRING",
-        "M": "TIMESTAMP",
-    }
-
-    fields = []
-    for column_name, dtype in dataframe.dtypes.items():
-        fields.append(
-            {"name": column_name, "type": type_mapping.get(dtype.kind, default_type)}
-        )
-
-    return {"fields": fields}
-
-
 def update_schema(schema_old, schema_new):
     """
     Given an old BigQuery schema, update it with a new one.

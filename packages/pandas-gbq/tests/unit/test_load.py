@@ -165,11 +165,8 @@ def test_load_csv_from_file_generates_schema(mock_bigquery_client):
     assert sent_schema[2].field_type == "FLOAT"
     assert sent_schema[3].name == "string_col"
     assert sent_schema[3].field_type == "STRING"
-    # TODO: Disambiguate TIMESTAMP from DATETIME based on if column is
-    # localized or at least use field type from table metadata. See:
-    # https://github.com/googleapis/python-bigquery-pandas/issues/450
     assert sent_schema[4].name == "datetime_col"
-    assert sent_schema[4].field_type == "TIMESTAMP"
+    assert sent_schema[4].field_type == "DATETIME"
     assert sent_schema[5].name == "timestamp_col"
     assert sent_schema[5].field_type == "TIMESTAMP"
 

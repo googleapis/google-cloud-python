@@ -7,14 +7,12 @@ from typing import Any, Dict, List
 
 import google.cloud.bigquery
 import pandas
+import pyarrow
 import pytest
 
-
-@pytest.fixture
-def module_under_test():
-    import pandas_gbq.schema
-
-    return pandas_gbq.schema
+import pandas_gbq
+import pandas_gbq.gbq
+import pandas_gbq.schema
 
 
 @pytest.mark.parametrize(
@@ -45,17 +43,15 @@ def module_under_test():
         ),
     ],
 )
-def test_schema_is_subset_passes_if_subset(
-    module_under_test, original_fields, dataframe_fields
-):
+def test_schema_is_subset_passes_if_subset(original_fields, dataframe_fields):
     # Issue #24 schema_is_subset indicates whether the schema of the
     # dataframe is a subset of the schema of the bigquery table
     table_schema = {"fields": original_fields}
     tested_schema = {"fields": dataframe_fields}
-    assert module_under_test.schema_is_subset(table_schema, tested_schema)
+    assert pandas_gbq.schema.schema_is_subset(table_schema, tested_schema)
 
 
-def test_schema_is_subset_fails_if_not_subset(module_under_test):
+def test_schema_is_subset_fails_if_not_subset():
     table_schema = {
         "fields": [
             {"name": "A", "type": "FLOAT"},
@@ -66,12 +62,17 @@ def test_schema_is_subset_fails_if_not_subset(module_under_test):
     tested_schema = {
         "fields": [{"name": "A", "type": "FLOAT"}, {"name": "C", "type": "FLOAT"}]
     }
-    assert not module_under_test.schema_is_subset(table_schema, tested_schema)
+    assert not pandas_gbq.schema.schema_is_subset(table_schema, tested_schema)
 
 
 @pytest.mark.parametrize(
     "dataframe,expected_schema",
     [
+        pytest.param(
+            pandas.DataFrame(data={"col1": [object()]}),
+            {"fields": [{"name": "col1", "type": "STRING"}]},
+            id="default-type-fails-pyarrow-conversion",
+        ),
         (
             pandas.DataFrame(data={"col1": [1, 2, 3]}),
             {"fields": [{"name": "col1", "type": "INTEGER"}]},
@@ -88,13 +89,39 @@ def test_schema_is_subset_fails_if_not_subset(module_under_test):
             pandas.DataFrame(data={"col1": ["hello", "world"]}),
             {"fields": [{"name": "col1", "type": "STRING"}]},
         ),
-        (
-            pandas.DataFrame(data={"col1": [datetime.datetime.now()]}),
-            {"fields": [{"name": "col1", "type": "TIMESTAMP"}]},
+        pytest.param(
+            # No time zone -> DATETIME,
+            # Time zone -> TIMESTAMP
+            # See: https://github.com/googleapis/python-bigquery-pandas/issues/450
+            pandas.DataFrame(
+                data={
+                    "object1": pandas.Series([datetime.datetime.now()], dtype="object"),
+                    "object2": pandas.Series(
+                        [datetime.datetime.now(datetime.timezone.utc)], dtype="object"
+                    ),
+                    "datetime1": pandas.Series(
+                        [datetime.datetime.now()], dtype="datetime64[ns]"
+                    ),
+                    "datetime2": pandas.Series(
+                        [datetime.datetime.now(datetime.timezone.utc)],
+                        dtype="datetime64[ns, UTC]",
+                    ),
+                }
+            ),
+            {
+                "fields": [
+                    {"name": "object1", "type": "DATETIME"},
+                    {"name": "object2", "type": "TIMESTAMP"},
+                    {"name": "datetime1", "type": "DATETIME"},
+                    {"name": "datetime2", "type": "TIMESTAMP"},
+                ]
+            },
+            id="issue450-datetime",
         ),
         (
             pandas.DataFrame(
                 data={
+                    "col0": [datetime.datetime.now(datetime.timezone.utc)],
                     "col1": [datetime.datetime.now()],
                     "col2": ["hello"],
                     "col3": [3.14],
@@ -104,7 +131,8 @@ def test_schema_is_subset_fails_if_not_subset(module_under_test):
             ),
             {
                 "fields": [
-                    {"name": "col1", "type": "TIMESTAMP"},
+                    {"name": "col0", "type": "TIMESTAMP"},
+                    {"name": "col1", "type": "DATETIME"},
                     {"name": "col2", "type": "STRING"},
                     {"name": "col3", "type": "FLOAT"},
                     {"name": "col4", "type": "BOOLEAN"},
@@ -112,10 +140,83 @@ def test_schema_is_subset_fails_if_not_subset(module_under_test):
                 ]
             },
         ),
+        pytest.param(
+            # uint8, which is the result from get_dummies, should be INTEGER.
+            # https://github.com/googleapis/python-bigquery-pandas/issues/616
+            pandas.DataFrame({"col": [0, 1]}, dtype="uint8"),
+            {"fields": [{"name": "col", "type": "INTEGER"}]},
+            id="issue616-uint8",
+        ),
+        pytest.param(
+            # object column containing dictionaries should load to STRUCT.
+            # https://github.com/googleapis/python-bigquery-pandas/issues/452
+            pandas.DataFrame(
+                {
+                    "my_struct": pandas.Series(
+                        [{"test": "str1"}, {"test": "str2"}, {"test": "str3"}],
+                        dtype="object",
+                    ),
+                }
+            ),
+            {
+                "fields": [
+                    {
+                        "name": "my_struct",
+                        "type": "RECORD",
+                        "fields": [
+                            {"name": "test", "type": "STRING", "mode": "NULLABLE"}
+                        ],
+                    }
+                ]
+            },
+            id="issue452-struct",
+        ),
+        pytest.param(
+            pandas.DataFrame(
+                {
+                    "object": pandas.Series([[], ["abc"], []], dtype="object"),
+                    "list": pandas.Series(
+                        [[], [1, 2, 3], []],
+                        dtype=pandas.ArrowDtype(pyarrow.list_(pyarrow.int64()))
+                        if hasattr(pandas, "ArrowDtype")
+                        else "object",
+                    ),
+                    "list_of_struct": pandas.Series(
+                        [[], [{"test": "abc"}], []],
+                        dtype=pandas.ArrowDtype(
+                            pyarrow.list_(pyarrow.struct([("test", pyarrow.string())]))
+                        )
+                        if hasattr(pandas, "ArrowDtype")
+                        else "object",
+                    ),
+                }
+            ),
+            {
+                "fields": [
+                    {"name": "object", "type": "STRING", "mode": "REPEATED"},
+                    {"name": "list", "type": "INTEGER", "mode": "REPEATED"},
+                    {
+                        "name": "list_of_struct",
+                        "type": "RECORD",
+                        "mode": "REPEATED",
+                        "fields": [
+                            {"name": "test", "type": "STRING", "mode": "NULLABLE"},
+                        ],
+                    },
+                ],
+            },
+            id="array",
+        ),
     ],
 )
-def test_generate_bq_schema(module_under_test, dataframe, expected_schema):
-    schema = module_under_test.generate_bq_schema(dataframe)
+def test_generate_bq_schema(dataframe, expected_schema):
+    schema = pandas_gbq.gbq._generate_bq_schema(dataframe)
+
+    # NULLABLE is the default mode.
+    for field in expected_schema["fields"]:
+        if "mode" not in field:
+            field["mode"] = "NULLABLE"
+
     assert schema == expected_schema
 
 
@@ -156,8 +257,8 @@ def test_generate_bq_schema(module_under_test, dataframe, expected_schema):
         ),
     ],
 )
-def test_update_schema(module_under_test, schema_old, schema_new, expected_output):
-    output = module_under_test.update_schema(schema_old, schema_new)
+def test_update_schema(schema_old, schema_new, expected_output):
+    output = pandas_gbq.schema.update_schema(schema_old, schema_new)
     assert output == expected_output
 
 

@@ -25,6 +25,7 @@ from pandas_gbq.exceptions import GenericGBQException, QueryTimeout
 from pandas_gbq.features import FEATURES
 import pandas_gbq.query
 import pandas_gbq.schema
+import pandas_gbq.schema.pandas_to_bigquery
 import pandas_gbq.timestamp
 
 try:
@@ -1219,9 +1220,16 @@ def _generate_bq_schema(df, default_type="STRING"):
     be overridden: https://github.com/pydata/pandas-gbq/issues/218, this
     method can be removed after there is time to migrate away from this
     method."""
-    from pandas_gbq import schema
+    fields = pandas_gbq.schema.pandas_to_bigquery.dataframe_to_bigquery_fields(
+        df,
+        default_type=default_type,
+    )
+    fields_json = []
 
-    return schema.generate_bq_schema(df, default_type=default_type)
+    for field in fields:
+        fields_json.append(field.to_api_repr())
+
+    return {"fields": fields_json}
 
 
 class _Table(GbqConnector):

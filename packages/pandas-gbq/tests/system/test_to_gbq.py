@@ -10,6 +10,7 @@ import random
 import db_dtypes
 import pandas
 import pandas.testing
+import pyarrow
 import pytest
 
 pytest.importorskip("google.cloud.bigquery", minversion="1.24.0")
@@ -125,6 +126,37 @@ DataFrameRoundTripTestCase = collections.namedtuple(
 )
 
 DATAFRAME_ROUND_TRIPS = [
+    # Ensure that a BOOLEAN column can be written with bool, boolean, and
+    # object dtypes. See:
+    # https://github.com/googleapis/python-bigquery-pandas/issues/105
+    pytest.param(
+        *DataFrameRoundTripTestCase(
+            input_df=pandas.DataFrame(
+                {
+                    "row_num": [0, 1, 2],
+                    "bool_col": pandas.Series(
+                        [True, False, True],
+                        dtype="bool",
+                    ),
+                    "boolean_col": pandas.Series(
+                        [None, True, False],
+                        dtype="boolean",
+                    ),
+                    "object_col": pandas.Series(
+                        [False, None, True],
+                        dtype="object",
+                    ),
+                }
+            ),
+            table_schema=[
+                {"name": "bool_col", "type": "BOOLEAN"},
+                {"name": "boolean_col", "type": "BOOLEAN"},
+                {"name": "object_col", "type": "BOOLEAN"},
+            ],
+            api_methods={"load_csv", "load_parquet"},
+        ),
+        id="boolean",
+    ),
     # Ensure that a DATE column can be written with datetime64[ns] dtype
     # data. See:
     # https://github.com/googleapis/python-bigquery-pandas/issues/362
@@ -175,6 +207,96 @@ DATAFRAME_ROUND_TRIPS = [
             {"name": "row_num", "type": "INTEGER"},
             {"name": "date_col", "type": "DATE"},
         ],
+    ),
+    # Loading an INTEGER column should work for any integer dtype. See:
+    # https://github.com/googleapis/python-bigquery-pandas/issues/616
+    pytest.param(
+        *DataFrameRoundTripTestCase(
+            input_df=pandas.DataFrame(
+                {
+                    "row_num": [0, 1, 2],
+                    "object": pandas.Series(
+                        [None, 1, -2],
+                        dtype="object",
+                    ),
+                    "nullable_int64": pandas.Series(
+                        [3, None, -4],
+                        dtype="Int64",
+                    ),
+                    "int8": pandas.Series(
+                        [5, -6, 7],
+                        dtype="int8",
+                    ),
+                    "int16": pandas.Series(
+                        [-8, 9, -10],
+                        dtype="int16",
+                    ),
+                    "int32": pandas.Series(
+                        [11, -12, 13],
+                        dtype="int32",
+                    ),
+                    "int64": pandas.Series(
+                        [-14, 15, -16],
+                        dtype="int64",
+                    ),
+                    "uint8": pandas.Series(
+                        [0, 1, 2],
+                        dtype="uint8",
+                    ),
+                    "uint16": pandas.Series(
+                        [3, 4, 5],
+                        dtype="uint16",
+                    ),
+                    "uint32": pandas.Series(
+                        [6, 7, 8],
+                        dtype="uint32",
+                    ),
+                }
+            ),
+            expected_df=pandas.DataFrame(
+                {
+                    "row_num": [0, 1, 2],
+                    "object": pandas.Series(
+                        [None, 1, -2],
+                        dtype="Int64",
+                    ),
+                    "nullable_int64": pandas.Series(
+                        [3, None, -4],
+                        dtype="Int64",
+                    ),
+                    "int8": pandas.Series(
+                        [5, -6, 7],
+                        dtype="Int64",
+                    ),
+                    "int16": pandas.Series(
+                        [-8, 9, -10],
+                        dtype="Int64",
+                    ),
+                    "int32": pandas.Series(
+                        [11, -12, 13],
+                        dtype="Int64",
+                    ),
+                    "int64": pandas.Series(
+                        [-14, 15, -16],
+                        dtype="Int64",
+                    ),
+                    "uint8": pandas.Series(
+                        [0, 1, 2],
+                        dtype="Int64",
+                    ),
+                    "uint16": pandas.Series(
+                        [3, 4, 5],
+                        dtype="Int64",
+                    ),
+                    "uint32": pandas.Series(
+                        [6, 7, 8],
+                        dtype="Int64",
+                    ),
+                }
+            ),
+            api_methods={"load_csv", "load_parquet"},
+        ),
+        id="integer",
     ),
     # Loading a NUMERIC column should work for floating point objects. See:
     # https://github.com/googleapis/python-bigquery-pandas/issues/421
@@ -240,6 +362,133 @@ DATAFRAME_ROUND_TRIPS = [
         ),
         id="issue365-extreme-datetimes",
     ),
+    pytest.param(
+        # Load STRUCT and ARRAY using either object column or ArrowDtype.
+        # See: https://github.com/googleapis/python-bigquery-pandas/issues/452
+        *DataFrameRoundTripTestCase(
+            input_df=pandas.DataFrame(
+                {
+                    "row_num": [0, 1, 2],
+                    "object_struct": pandas.Series(
+                        [{"test": "str1"}, {"test": "str2"}, {"test": "str3"}],
+                        dtype="object",
+                    ),
+                    # Array of DATETIME requires inspection into list elements.
+                    # See:
+                    # https://github.com/googleapis/python-bigquery/pull/1061
+                    "object_array_datetime": pandas.Series(
+                        [[], [datetime.datetime(1998, 9, 4, 12, 0, 0)], []],
+                        dtype="object",
+                    ),
+                    "object_array_of_struct": pandas.Series(
+                        [[], [{"test": "str4"}], []], dtype="object"
+                    ),
+                    "arrow_struct": pandas.Series(
+                        [
+                            {"version": 1, "project": "pandas"},
+                            {"version": 2, "project": "pandas"},
+                            {"version": 1, "project": "numpy"},
+                        ],
+                        dtype=pandas.ArrowDtype(
+                            pyarrow.struct(
+                                [
+                                    ("version", pyarrow.int64()),
+                                    ("project", pyarrow.string()),
+                                ]
+                            )
+                        )
+                        if hasattr(pandas, "ArrowDtype")
+                        else "object",
+                    ),
+                    "arrow_array": pandas.Series(
+                        [[1, 2, 3], None, [4, 5, 6]],
+                        dtype=pandas.ArrowDtype(
+                            pyarrow.list_(pyarrow.int64()),
+                        )
+                        if hasattr(pandas, "ArrowDtype")
+                        else "object",
+                    ),
+                    "arrow_array_of_struct": pandas.Series(
+                        [
+                            [{"test": "str5"}],
+                            None,
+                            [{"test": "str6"}, {"test": "str7"}],
+                        ],
+                        dtype=pandas.ArrowDtype(
+                            pyarrow.list_(pyarrow.struct([("test", pyarrow.string())])),
+                        )
+                        if hasattr(pandas, "ArrowDtype")
+                        else "object",
+                    ),
+                },
+            ),
+            expected_df=pandas.DataFrame(
+                {
+                    "row_num": [0, 1, 2],
+                    "object_struct": pandas.Series(
+                        [{"test": "str1"}, {"test": "str2"}, {"test": "str3"}],
+                        dtype=pandas.ArrowDtype(
+                            pyarrow.struct([("test", pyarrow.string())]),
+                        )
+                        if hasattr(pandas, "ArrowDtype")
+                        else "object",
+                    ),
+                    # Array of DATETIME requires inspection into list elements.
+                    # See:
+                    # https://github.com/googleapis/python-bigquery/pull/1061
+                    "object_array_datetime": pandas.Series(
+                        [[], [datetime.datetime(1998, 9, 4, 12, 0, 0)], []],
+                        dtype=pandas.ArrowDtype(pyarrow.list_(pyarrow.timestamp("us")))
+                        if hasattr(pandas, "ArrowDtype")
+                        else "object",
+                    ),
+                    "object_array_of_struct": pandas.Series(
+                        [[], [{"test": "str4"}], []],
+                        dtype=pandas.ArrowDtype(
+                            pyarrow.list_(pyarrow.struct([("test", pyarrow.string())])),
+                        )
+                        if hasattr(pandas, "ArrowDtype")
+                        else "object",
+                    ),
+                    "arrow_struct": pandas.Series(
+                        [
+                            {"version": 1, "project": "pandas"},
+                            {"version": 2, "project": "pandas"},
+                            {"version": 1, "project": "numpy"},
+                        ],
+                        dtype=pandas.ArrowDtype(
+                            pyarrow.struct(
+                                [
+                                    ("version", pyarrow.int64()),
+                                    ("project", pyarrow.string()),
+                                ]
+                            )
+                        )
+                        if hasattr(pandas, "ArrowDtype")
+                        else "object",
+                    ),
+                    "arrow_array": pandas.Series(
+                        [[1, 2, 3], [], [4, 5, 6]],
+                        dtype=pandas.ArrowDtype(
+                            pyarrow.list_(pyarrow.int64()),
+                        )
+                        if hasattr(pandas, "ArrowDtype")
+                        else "object",
+                    ),
+                    "arrow_array_of_struct": pandas.Series(
+                        [[{"test": "str5"}], [], [{"test": "str6"}, {"test": "str7"}]],
+                        dtype=pandas.ArrowDtype(
+                            pyarrow.list_(pyarrow.struct([("test", pyarrow.string())])),
+                        )
+                        if hasattr(pandas, "ArrowDtype")
+                        else "object",
+                    ),
+                },
+            ),
+            api_methods={"load_parquet"},
+        ),
+        id="struct",
+    ),
 ]
 
 
@@ -264,13 +513,20 @@ def test_dataframe_round_trip_with_table_schema(
     method_under_test(
         input_df, table_id, table_schema=table_schema, api_method=api_method
     )
-    round_trip = read_gbq(
-        table_id,
-        dtypes=dict(zip(expected_df.columns, expected_df.dtypes)),
-        # BigQuery Storage API is required to avoid out-of-bound due to extra
-        # day from rounding error which was fixed in google-cloud-bigquery
-        # 2.6.0. https://github.com/googleapis/python-bigquery/pull/402
-        use_bqstorage_api=True,
+    round_trip = (
+        read_gbq(
+            table_id,
+            dtypes=dict(zip(expected_df.columns, expected_df.dtypes)),
+            # BigQuery Storage API is required to avoid out-of-bound due to extra
+            # day from rounding error which was fixed in google-cloud-bigquery
+            # 2.6.0. https://github.com/googleapis/python-bigquery/pull/402
+            use_bqstorage_api=True,
+        )
+        .set_index("row_num")
+        .sort_index()
     )
-    round_trip.sort_values("row_num", inplace=True)
-    pandas.testing.assert_frame_equal(expected_df, round_trip)
+
+    # TODO(tswast): Support writing index columns if to_gbq(index=True).
+    pandas.testing.assert_frame_equal(
+        expected_df.set_index("row_num").sort_index(), round_trip
+    )
