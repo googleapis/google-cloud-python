@@ -3473,11 +3473,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise ValueError(f"na_action={na_action} not supported")
 
         # TODO(shobs): Support **kwargs
-        # Reproject as workaround to applying filter too late. This forces the
-        # filter to be applied before passing data to remote function,
-        # protecting from bad inputs causing errors.
-        reprojected_df = DataFrame(self._block._force_reproject())
-        return reprojected_df._apply_unary_op(
+        return self._apply_unary_op(
             ops.RemoteFunctionOp(func=func, apply_on_null=(na_action is None))
         )
 
@@ -3572,13 +3568,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                     )
 
                 series_list = [self[col] for col in self.columns]
-                # Reproject as workaround to applying filter too late. This forces the
-                # filter to be applied before passing data to remote function,
-                # protecting from bad inputs causing errors.
-                reprojected_series = bigframes.series.Series(
-                    series_list[0]._block._force_reproject()
-                )
-                result_series = reprojected_series._apply_nary_op(
+                result_series = series_list[0]._apply_nary_op(
                     ops.NaryRemoteFunctionOp(func=func), series_list[1:]
                 )
             result_series.name = None
