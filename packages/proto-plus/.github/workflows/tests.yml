@@ -82,6 +82,7 @@ jobs:
         with:
           name: coverage-artifact-${{ matrix.variant }}-${{ env.PYTHON_VERSION_TRIMMED }}
           path: .coverage-${{ matrix.variant }}-${{ env.PYTHON_VERSION_TRIMMED }}
+          include-hidden-files: true
   prerelease:
     runs-on: ubuntu-22.04
     strategy:
