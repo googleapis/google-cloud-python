@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.18](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.17...google-maps-places-v0.1.18) (2024-09-23)
+
+
+### Features
+
+* action for publishing data profiles to SecOps (formelly known as Chronicle) ([2cc1550](https://github.com/googleapis/google-cloud-python/commit/2cc1550492a2b78ed7240aab84a8449de5e5afa2))
+* action for publishing data profiles to Security Command Center ([2cc1550](https://github.com/googleapis/google-cloud-python/commit/2cc1550492a2b78ed7240aab84a8449de5e5afa2))
+* discovery configs for AWS S3 buckets ([2cc1550](https://github.com/googleapis/google-cloud-python/commit/2cc1550492a2b78ed7240aab84a8449de5e5afa2))
+
+
+### Documentation
+
+* small improvements and clarifications ([2cc1550](https://github.com/googleapis/google-cloud-python/commit/2cc1550492a2b78ed7240aab84a8449de5e5afa2))
+
 ## [0.1.17](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.16...google-maps-places-v0.1.17) (2024-07-30)
 
 
