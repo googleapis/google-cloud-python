@@ -76,14 +76,27 @@ class Compiler:
     @_compile_node.register
     def compile_join(self, node: nodes.JoinNode, ordered: bool = True):
         if ordered:
-            left_ordered = self.compile_ordered_ir(node.left_child)
-            right_ordered = self.compile_ordered_ir(node.right_child)
-            return bigframes.core.compile.single_column.join_by_column_ordered(
-                left=left_ordered,
-                right=right_ordered,
-                type=node.type,
-                conditions=node.conditions,
-            )
+            # In general, joins are an ordering destroying operation.
+            # With ordering_mode = "partial", make this explicit. In
+            # this case, we don't need to provide a deterministic ordering.
+            if self.strict:
+                left_ordered = self.compile_ordered_ir(node.left_child)
+                right_ordered = self.compile_ordered_ir(node.right_child)
+                return bigframes.core.compile.single_column.join_by_column_ordered(
+                    left=left_ordered,
+                    right=right_ordered,
+                    type=node.type,
+                    conditions=node.conditions,
+                )
+            else:
+                left_unordered = self.compile_unordered_ir(node.left_child)
+                right_unordered = self.compile_unordered_ir(node.right_child)
+                return bigframes.core.compile.single_column.join_by_column_unordered(
+                    left=left_unordered,
+                    right=right_unordered,
+                    type=node.type,
+                    conditions=node.conditions,
+                ).as_ordered_ir()
         else:
             left_unordered = self.compile_unordered_ir(node.left_child)
             right_unordered = self.compile_unordered_ir(node.right_child)

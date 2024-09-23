@@ -441,6 +441,10 @@ class UnorderedIR(BaseIbisIR):
             columns=columns,
         )
 
+    def as_ordered_ir(self) -> OrderedIR:
+        """Convert to OrderedIr, but without any definite ordering."""
+        return OrderedIR(self._table, self._columns, predicates=self._predicates)
+
     ## Helpers
     def _set_or_replace_by_id(
         self, id: str, new_value: ibis_types.Value
