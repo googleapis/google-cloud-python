@@ -543,7 +543,7 @@ def docfx(session):
     )
 
 
-def prerelease(session: nox.sessions.Session, tests_path):
+def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=()):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
@@ -588,7 +588,7 @@ def prerelease(session: nox.sessions.Session, tests_path):
     session.install(
         "--upgrade",
         "--pre",
-        "ibis-framework>=8.0.0,<9.0.0dev",
+        "ibis-framework>=9.0.0,<=9.2.0",
     )
     already_installed.add("ibis-framework")
 
@@ -662,6 +662,7 @@ def prerelease(session: nox.sessions.Session, tests_path):
         "--cov-report=term-missing",
         "--cov-fail-under=0",
         tests_path,
+        *extra_pytest_options,
         *session.posargs,
     )
 
@@ -675,7 +676,24 @@ def unit_prerelease(session: nox.sessions.Session):
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])
 def system_prerelease(session: nox.sessions.Session):
     """Run the system test suite with prerelease dependencies."""
-    prerelease(session, os.path.join("tests", "system", "small"))
+    small_tests_dir = os.path.join("tests", "system", "small")
+
+    # Let's exclude remote function tests from the prerelease tests, since the
+    # some of the package dependencies propagate to the cloud run functions'
+    # requirements.txt, and the prerelease package versions may not be available
+    # in the standard pip install.
+    # This would mean that we will only rely on the standard remote function
+    # tests.
+    small_remote_function_tests = os.path.join(
+        small_tests_dir, "test_remote_function.py"
+    )
+    assert os.path.exists(small_remote_function_tests)
+
+    prerelease(
+        session,
+        os.path.join("tests", "system", "small"),
+        (f"--ignore={small_remote_function_tests}",),
+    )
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)

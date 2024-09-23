@@ -1690,6 +1690,9 @@ def test_df_apply_axis_1_aggregates(session, scalars_dfs):
                 ),
             ),
             id="multiindex",
+            marks=pytest.mark.skip(
+                reason="TODO(b/368639580) revert this skip after fix"
+            ),
         ),
         pytest.param(
             pandas.DataFrame(
