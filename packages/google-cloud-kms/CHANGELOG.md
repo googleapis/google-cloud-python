@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.24.2...google-cloud-kms-v3.0.0) (2024-09-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* Pagination feature is introduced for method ListKeyHandles in service Autokey
+
+### Features
+
+* Adding a state field for AutokeyConfig ([b4c9770](https://github.com/googleapis/google-cloud-python/commit/b4c977059e075c73781c179b26fdf915548e65c4))
+
+
+### Bug Fixes
+
+* Pagination feature is introduced for method ListKeyHandles in service Autokey ([b4c9770](https://github.com/googleapis/google-cloud-python/commit/b4c977059e075c73781c179b26fdf915548e65c4))
+
+
+### Documentation
+
+* A comment for field destroy_scheduled_duration in message .google.cloud.kms.v1.CryptoKey is updated for the default duration ([b4c9770](https://github.com/googleapis/google-cloud-python/commit/b4c977059e075c73781c179b26fdf915548e65c4))
+* Field service_resolvers in message .google.cloud.kms.v1.EkmConnection is Explicitly is marked as to have field behavior of Optional ([b4c9770](https://github.com/googleapis/google-cloud-python/commit/b4c977059e075c73781c179b26fdf915548e65c4))
+
 ## [2.24.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.24.1...google-cloud-kms-v2.24.2) (2024-07-30)
 
 

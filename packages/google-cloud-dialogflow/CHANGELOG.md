@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.31.0...google-cloud-dialogflow-v2.32.0) (2024-09-23)
+
+
+### Features
+
+* created new boolean fields in conversation model for zone isolation and zone separation compliance status ([1f8b564](https://github.com/googleapis/google-cloud-python/commit/1f8b5640b0ac5397318ede4ebcfa120120ebccc8))
+
 ## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.30.2...google-cloud-dialogflow-v2.31.0) (2024-08-08)
 
 

@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.6.10](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.9...google-ai-generativelanguage-v0.6.10) (2024-09-23)
+
+
+### Features
+
+* Add GenerationConfig.{presence_penalty, frequency_penalty, logprobs, response_logprobs, logprobs} and Candidate.{avg_logprobs, logprobs_result} ([d6238e4](https://github.com/googleapis/google-cloud-python/commit/d6238e49a17caf54dd0fbc45215527beed057cc5))
+* Add GoogleSearchRetrieval tool and candidate.grounding_metadata ([d6238e4](https://github.com/googleapis/google-cloud-python/commit/d6238e49a17caf54dd0fbc45215527beed057cc5))
+* Add HarmBlockThreshold.OFF ([d6238e4](https://github.com/googleapis/google-cloud-python/commit/d6238e49a17caf54dd0fbc45215527beed057cc5))
+* Add HarmCategory.HARM_CATEGORY_CIVIC_INTEGRITY ([d6238e4](https://github.com/googleapis/google-cloud-python/commit/d6238e49a17caf54dd0fbc45215527beed057cc5))
+* Add PredictionService (for Imagen) ([d6238e4](https://github.com/googleapis/google-cloud-python/commit/d6238e49a17caf54dd0fbc45215527beed057cc5))
+* Add Schema.min_items ([d6238e4](https://github.com/googleapis/google-cloud-python/commit/d6238e49a17caf54dd0fbc45215527beed057cc5))
+* Add TunedModels.reader_project_numbers ([d6238e4](https://github.com/googleapis/google-cloud-python/commit/d6238e49a17caf54dd0fbc45215527beed057cc5))
+
+
+### Documentation
+
+* Small fixes ([d6238e4](https://github.com/googleapis/google-cloud-python/commit/d6238e49a17caf54dd0fbc45215527beed057cc5))
+* Tag HarmCategories by the model family they're used on. ([d6238e4](https://github.com/googleapis/google-cloud-python/commit/d6238e49a17caf54dd0fbc45215527beed057cc5))
+
 ## [0.6.9](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.8...google-ai-generativelanguage-v0.6.9) (2024-08-19)
 
 

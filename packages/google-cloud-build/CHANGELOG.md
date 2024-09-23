@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.24.2...google-cloud-build-v3.25.0) (2024-09-23)
+
+
+### Features
+
+* Add LEGACY_BUCKET option to DefaultLogsBucketBehavior ([e889809](https://github.com/googleapis/google-cloud-python/commit/e889809389c5b194ec77955664eb2859cde28d73))
+
+
+### Documentation
+
+* Sanitize docs ([e889809](https://github.com/googleapis/google-cloud-python/commit/e889809389c5b194ec77955664eb2859cde28d73))
+
 ## [3.24.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.24.1...google-cloud-build-v3.24.2) (2024-07-30)
 
 

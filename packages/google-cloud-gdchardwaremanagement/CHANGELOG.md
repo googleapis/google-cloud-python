@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.1.3...google-cloud-gdchardwaremanagement-v0.1.4) (2024-09-23)
+
+
+### Features
+
+* add an order type field to distinguish a fulfillment request from a sales inquiry ([e727cc0](https://github.com/googleapis/google-cloud-python/commit/e727cc0e98e37d55882215182f86c2a7d23154ef))
+* add support to mark comments as read or unread ([e727cc0](https://github.com/googleapis/google-cloud-python/commit/e727cc0e98e37d55882215182f86c2a7d23154ef))
+* rename zone state signal READY_FOR_SITE_TURNUP to FACTORY_TURNUP_CHECKS_PASSED ([e727cc0](https://github.com/googleapis/google-cloud-python/commit/e727cc0e98e37d55882215182f86c2a7d23154ef))
+
+
+### Documentation
+
+* clarify how access_times are used ([e727cc0](https://github.com/googleapis/google-cloud-python/commit/e727cc0e98e37d55882215182f86c2a7d23154ef))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.1.2...google-cloud-gdchardwaremanagement-v0.1.3) (2024-07-30)
 
 
