@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.23.2](https://github.com/googleapis/python-bigquery-pandas/compare/v0.23.1...v0.23.2) (2024-09-20)
+
+
+### Bug Fixes
+
+* **deps:** Require google-cloud-bigquery &gt;= 3.4.2 ([5e14496](https://github.com/googleapis/python-bigquery-pandas/commit/5e144968893c476ffc9866461d128298e6b49d62))
+* **deps:** Require numpy &gt;=1.18.1 ([5e14496](https://github.com/googleapis/python-bigquery-pandas/commit/5e144968893c476ffc9866461d128298e6b49d62))
+* **deps:** Require packaging &gt;= 22.0 ([5e14496](https://github.com/googleapis/python-bigquery-pandas/commit/5e144968893c476ffc9866461d128298e6b49d62))
+
+
+### Documentation
+
+* Fix typo in 'vebosity' ([#803](https://github.com/googleapis/python-bigquery-pandas/issues/803)) ([a7641c9](https://github.com/googleapis/python-bigquery-pandas/commit/a7641c9b13be7f8649f43d985dac29cc7e05be0b))
+
 ## [0.23.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.23.0...v0.23.1) (2024-06-07)
 
 
