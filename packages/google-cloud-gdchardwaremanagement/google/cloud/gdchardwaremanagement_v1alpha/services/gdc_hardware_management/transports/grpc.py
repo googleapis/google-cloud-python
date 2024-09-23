@@ -846,6 +846,37 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["create_comment"]
 
     @property
+    def record_action_on_comment(
+        self,
+    ) -> Callable[[service.RecordActionOnCommentRequest], resources.Comment]:
+        r"""Return a callable for the record action on comment method over gRPC.
+
+        Record Action on a Comment. If the Action specified
+        in the request is READ, the viewed time in the comment
+        is set to the time the request was received. If the
+        comment is already marked as read, subsequent calls will
+        be ignored. If the Action is UNREAD, the viewed time is
+        cleared from the comment.
+
+        Returns:
+            Callable[[~.RecordActionOnCommentRequest],
+                    ~.Comment]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "record_action_on_comment" not in self._stubs:
+            self._stubs["record_action_on_comment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement/RecordActionOnComment",
+                request_serializer=service.RecordActionOnCommentRequest.serialize,
+                response_deserializer=resources.Comment.deserialize,
+            )
+        return self._stubs["record_action_on_comment"]
+
+    @property
     def list_change_log_entries(
         self,
     ) -> Callable[

@@ -4275,6 +4275,7 @@ def test_get_site(request_type, transport: str = "grpc"):
             description="description_value",
             google_maps_pin_uri="google_maps_pin_uri_value",
             notes="notes_value",
+            customer_site_id="customer_site_id_value",
         )
         response = client.get_site(request)
 
@@ -4291,6 +4292,7 @@ def test_get_site(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.google_maps_pin_uri == "google_maps_pin_uri_value"
     assert response.notes == "notes_value"
+    assert response.customer_site_id == "customer_site_id_value"
 
 
 def test_get_site_empty_call():
@@ -4394,6 +4396,7 @@ async def test_get_site_empty_call_async():
                 description="description_value",
                 google_maps_pin_uri="google_maps_pin_uri_value",
                 notes="notes_value",
+                customer_site_id="customer_site_id_value",
             )
         )
         response = await client.get_site()
@@ -4465,6 +4468,7 @@ async def test_get_site_async(
                 description="description_value",
                 google_maps_pin_uri="google_maps_pin_uri_value",
                 notes="notes_value",
+                customer_site_id="customer_site_id_value",
             )
         )
         response = await client.get_site(request)
@@ -4482,6 +4486,7 @@ async def test_get_site_async(
     assert response.description == "description_value"
     assert response.google_maps_pin_uri == "google_maps_pin_uri_value"
     assert response.notes == "notes_value"
+    assert response.customer_site_id == "customer_site_id_value"
 
 
 @pytest.mark.asyncio
@@ -10302,6 +10307,7 @@ def test_get_comment(request_type, transport: str = "grpc"):
             name="name_value",
             author="author_value",
             text="text_value",
+            author_entity=resources.Entity.GOOGLE,
         )
         response = client.get_comment(request)
 
@@ -10316,6 +10322,7 @@ def test_get_comment(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.author == "author_value"
     assert response.text == "text_value"
+    assert response.author_entity == resources.Entity.GOOGLE
 
 
 def test_get_comment_empty_call():
@@ -10417,6 +10424,7 @@ async def test_get_comment_empty_call_async():
                 name="name_value",
                 author="author_value",
                 text="text_value",
+                author_entity=resources.Entity.GOOGLE,
             )
         )
         response = await client.get_comment()
@@ -10488,6 +10496,7 @@ async def test_get_comment_async(
                 name="name_value",
                 author="author_value",
                 text="text_value",
+                author_entity=resources.Entity.GOOGLE,
             )
         )
         response = await client.get_comment(request)
@@ -10503,6 +10512,7 @@ async def test_get_comment_async(
     assert response.name == "name_value"
     assert response.author == "author_value"
     assert response.text == "text_value"
+    assert response.author_entity == resources.Entity.GOOGLE
 
 
 @pytest.mark.asyncio
@@ -11037,6 +11047,415 @@ async def test_create_comment_flattened_error_async():
             parent="parent_value",
             comment=resources.Comment(name="name_value"),
             comment_id="comment_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RecordActionOnCommentRequest,
+        dict,
+    ],
+)
+def test_record_action_on_comment(request_type, transport: str = "grpc"):
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.record_action_on_comment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.Comment(
+            name="name_value",
+            author="author_value",
+            text="text_value",
+            author_entity=resources.Entity.GOOGLE,
+        )
+        response = client.record_action_on_comment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.RecordActionOnCommentRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Comment)
+    assert response.name == "name_value"
+    assert response.author == "author_value"
+    assert response.text == "text_value"
+    assert response.author_entity == resources.Entity.GOOGLE
+
+
+def test_record_action_on_comment_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.record_action_on_comment), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.record_action_on_comment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RecordActionOnCommentRequest()
+
+
+def test_record_action_on_comment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.RecordActionOnCommentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.record_action_on_comment), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.record_action_on_comment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RecordActionOnCommentRequest(
+            name="name_value",
+        )
+
+
+def test_record_action_on_comment_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = GDCHardwareManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.record_action_on_comment
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.record_action_on_comment
+        ] = mock_rpc
+        request = {}
+        client.record_action_on_comment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.record_action_on_comment(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_record_action_on_comment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GDCHardwareManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.record_action_on_comment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Comment(
+                name="name_value",
+                author="author_value",
+                text="text_value",
+                author_entity=resources.Entity.GOOGLE,
+            )
+        )
+        response = await client.record_action_on_comment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RecordActionOnCommentRequest()
+
+
+@pytest.mark.asyncio
+async def test_record_action_on_comment_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = GDCHardwareManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.record_action_on_comment
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.record_action_on_comment
+        ] = mock_rpc
+
+        request = {}
+        await client.record_action_on_comment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.record_action_on_comment(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_record_action_on_comment_async(
+    transport: str = "grpc_asyncio", request_type=service.RecordActionOnCommentRequest
+):
+    client = GDCHardwareManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.record_action_on_comment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Comment(
+                name="name_value",
+                author="author_value",
+                text="text_value",
+                author_entity=resources.Entity.GOOGLE,
+            )
+        )
+        response = await client.record_action_on_comment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.RecordActionOnCommentRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Comment)
+    assert response.name == "name_value"
+    assert response.author == "author_value"
+    assert response.text == "text_value"
+    assert response.author_entity == resources.Entity.GOOGLE
+
+
+@pytest.mark.asyncio
+async def test_record_action_on_comment_async_from_dict():
+    await test_record_action_on_comment_async(request_type=dict)
+
+
+def test_record_action_on_comment_field_headers():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.RecordActionOnCommentRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.record_action_on_comment), "__call__"
+    ) as call:
+        call.return_value = resources.Comment()
+        client.record_action_on_comment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_record_action_on_comment_field_headers_async():
+    client = GDCHardwareManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.RecordActionOnCommentRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.record_action_on_comment), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Comment())
+        await client.record_action_on_comment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_record_action_on_comment_flattened():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.record_action_on_comment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.Comment()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.record_action_on_comment(
+            name="name_value",
+            action_type=service.RecordActionOnCommentRequest.ActionType.READ,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].action_type
+        mock_val = service.RecordActionOnCommentRequest.ActionType.READ
+        assert arg == mock_val
+
+
+def test_record_action_on_comment_flattened_error():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.record_action_on_comment(
+            service.RecordActionOnCommentRequest(),
+            name="name_value",
+            action_type=service.RecordActionOnCommentRequest.ActionType.READ,
+        )
+
+
+@pytest.mark.asyncio
+async def test_record_action_on_comment_flattened_async():
+    client = GDCHardwareManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.record_action_on_comment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.Comment()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Comment())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.record_action_on_comment(
+            name="name_value",
+            action_type=service.RecordActionOnCommentRequest.ActionType.READ,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].action_type
+        mock_val = service.RecordActionOnCommentRequest.ActionType.READ
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_record_action_on_comment_flattened_error_async():
+    client = GDCHardwareManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.record_action_on_comment(
+            service.RecordActionOnCommentRequest(),
+            name="name_value",
+            action_type=service.RecordActionOnCommentRequest.ActionType.READ,
         )
 
 
@@ -15382,7 +15801,7 @@ def test_signal_zone_state_flattened():
         # using the keyword arguments to the method.
         client.signal_zone_state(
             name="name_value",
-            state_signal=service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP,
+            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED,
         )
 
         # Establish that the underlying call was made with the expected
@@ -15393,7 +15812,9 @@ def test_signal_zone_state_flattened():
         mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].state_signal
-        mock_val = service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP
+        mock_val = (
+            service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED
+        )
         assert arg == mock_val
 
 
@@ -15408,7 +15829,7 @@ def test_signal_zone_state_flattened_error():
         client.signal_zone_state(
             service.SignalZoneStateRequest(),
             name="name_value",
-            state_signal=service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP,
+            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED,
         )
 
 
@@ -15432,7 +15853,7 @@ async def test_signal_zone_state_flattened_async():
         # using the keyword arguments to the method.
         response = await client.signal_zone_state(
             name="name_value",
-            state_signal=service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP,
+            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED,
         )
 
         # Establish that the underlying call was made with the expected
@@ -15443,7 +15864,9 @@ async def test_signal_zone_state_flattened_async():
         mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].state_signal
-        mock_val = service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP
+        mock_val = (
+            service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED
+        )
         assert arg == mock_val
 
 
@@ -15459,7 +15882,7 @@ async def test_signal_zone_state_flattened_error_async():
         await client.signal_zone_state(
             service.SignalZoneStateRequest(),
             name="name_value",
-            state_signal=service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP,
+            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED,
         )
 
 
@@ -18052,6 +18475,7 @@ def test_get_site_rest(request_type):
             description="description_value",
             google_maps_pin_uri="google_maps_pin_uri_value",
             notes="notes_value",
+            customer_site_id="customer_site_id_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -18072,6 +18496,7 @@ def test_get_site_rest(request_type):
     assert response.description == "description_value"
     assert response.google_maps_pin_uri == "google_maps_pin_uri_value"
     assert response.notes == "notes_value"
+    assert response.customer_site_id == "customer_site_id_value"
 
 
 def test_get_site_rest_use_cached_wrapped_rpc():
@@ -18393,6 +18818,7 @@ def test_create_site_rest(request_type):
         "google_maps_pin_uri": "google_maps_pin_uri_value",
         "access_times": {},
         "notes": "notes_value",
+        "customer_site_id": "customer_site_id_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -18830,6 +19256,7 @@ def test_update_site_rest(request_type):
         "google_maps_pin_uri": "google_maps_pin_uri_value",
         "access_times": {},
         "notes": "notes_value",
+        "customer_site_id": "customer_site_id_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -23278,6 +23705,7 @@ def test_get_comment_rest(request_type):
             name="name_value",
             author="author_value",
             text="text_value",
+            author_entity=resources.Entity.GOOGLE,
         )
 
         # Wrap the value into a proper Response obj
@@ -23296,6 +23724,7 @@ def test_get_comment_rest(request_type):
     assert response.name == "name_value"
     assert response.author == "author_value"
     assert response.text == "text_value"
+    assert response.author_entity == resources.Entity.GOOGLE
 
 
 def test_get_comment_rest_use_cached_wrapped_rpc():
@@ -23580,6 +24009,8 @@ def test_create_comment_rest(request_type):
         "labels": {},
         "author": "author_value",
         "text": "text_value",
+        "customer_viewed_time": {},
+        "author_entity": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -23948,6 +24379,335 @@ def test_create_comment_rest_flattened_error(transport: str = "rest"):
 
 
 def test_create_comment_rest_error():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RecordActionOnCommentRequest,
+        dict,
+    ],
+)
+def test_record_action_on_comment_rest(request_type):
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orders/sample3/comments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Comment(
+            name="name_value",
+            author="author_value",
+            text="text_value",
+            author_entity=resources.Entity.GOOGLE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.Comment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.record_action_on_comment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Comment)
+    assert response.name == "name_value"
+    assert response.author == "author_value"
+    assert response.text == "text_value"
+    assert response.author_entity == resources.Entity.GOOGLE
+
+
+def test_record_action_on_comment_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = GDCHardwareManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.record_action_on_comment
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.record_action_on_comment
+        ] = mock_rpc
+
+        request = {}
+        client.record_action_on_comment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.record_action_on_comment(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_record_action_on_comment_rest_required_fields(
+    request_type=service.RecordActionOnCommentRequest,
+):
+    transport_class = transports.GDCHardwareManagementRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).record_action_on_comment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).record_action_on_comment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Comment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.Comment.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.record_action_on_comment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_record_action_on_comment_rest_unset_required_fields():
+    transport = transports.GDCHardwareManagementRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.record_action_on_comment._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "actionType",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_record_action_on_comment_rest_interceptors(null_interceptor):
+    transport = transports.GDCHardwareManagementRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GDCHardwareManagementRestInterceptor(),
+    )
+    client = GDCHardwareManagementClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor, "post_record_action_on_comment"
+    ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor, "pre_record_action_on_comment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.RecordActionOnCommentRequest.pb(
+            service.RecordActionOnCommentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Comment.to_json(resources.Comment())
+
+        request = service.RecordActionOnCommentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Comment()
+
+        client.record_action_on_comment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_record_action_on_comment_rest_bad_request(
+    transport: str = "rest", request_type=service.RecordActionOnCommentRequest
+):
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orders/sample3/comments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.record_action_on_comment(request)
+
+
+def test_record_action_on_comment_rest_flattened():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Comment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/orders/sample3/comments/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            action_type=service.RecordActionOnCommentRequest.ActionType.READ,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.Comment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.record_action_on_comment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/orders/*/comments/*}:recordAction"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_record_action_on_comment_rest_flattened_error(transport: str = "rest"):
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.record_action_on_comment(
+            service.RecordActionOnCommentRequest(),
+            name="name_value",
+            action_type=service.RecordActionOnCommentRequest.ActionType.READ,
+        )
+
+
+def test_record_action_on_comment_rest_error():
     client = GDCHardwareManagementClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -26069,6 +26829,13 @@ def test_create_zone_rest(request_type):
             "kubernetes_ipv4_subnet": {},
         },
         "globally_unique_id": "globally_unique_id_value",
+        "subscription_configs": [
+            {
+                "subscription_id": "subscription_id_value",
+                "billing_id": "billing_id_value",
+                "state": 1,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -26498,6 +27265,13 @@ def test_update_zone_rest(request_type):
             "kubernetes_ipv4_subnet": {},
         },
         "globally_unique_id": "globally_unique_id_value",
+        "subscription_configs": [
+            {
+                "subscription_id": "subscription_id_value",
+                "billing_id": "billing_id_value",
+                "state": 1,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -27428,7 +28202,7 @@ def test_signal_zone_state_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             name="name_value",
-            state_signal=service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP,
+            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED,
         )
         mock_args.update(sample_request)
 
@@ -27464,7 +28238,7 @@ def test_signal_zone_state_rest_flattened_error(transport: str = "rest"):
         client.signal_zone_state(
             service.SignalZoneStateRequest(),
             name="name_value",
-            state_signal=service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP,
+            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED,
         )
 
 
@@ -27636,6 +28410,7 @@ def test_gdc_hardware_management_base_transport():
         "list_comments",
         "get_comment",
         "create_comment",
+        "record_action_on_comment",
         "list_change_log_entries",
         "get_change_log_entry",
         "list_skus",
@@ -28004,6 +28779,9 @@ def test_gdc_hardware_management_client_transport_session_collision(transport_na
     assert session1 != session2
     session1 = client1.transport.create_comment._session
     session2 = client2.transport.create_comment._session
+    assert session1 != session2
+    session1 = client1.transport.record_action_on_comment._session
+    session2 = client2.transport.record_action_on_comment._session
     assert session1 != session2
     session1 = client1.transport.list_change_log_entries._session
     session2 = client2.transport.list_change_log_entries._session
