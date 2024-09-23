@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.2.0...v0.3.0) (2024-09-20)
+
+
+### Features
+
+* Add support for BigQuery DataFrames. Set `context.engine` to 'bigframes' to support query results larger than 10 GB ([#58](https://github.com/googleapis/python-bigquery-magics/issues/58)) ([90ba05f](https://github.com/googleapis/python-bigquery-magics/commit/90ba05f3d918979788e01b0cd3201ac8f01741a9))
+
 ## [0.2.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.1.1...v0.2.0) (2024-08-27)
 
 
