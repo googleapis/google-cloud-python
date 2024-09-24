@@ -26,10 +26,16 @@ from typing import List, Optional, Sequence, Union
 import warnings
 from google.api_core.retry import exponential_sleep_generator
 
+from opentelemetry import trace
+
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.cloud.pubsub_v1.subscriber.exceptions import (
     AcknowledgeStatus,
+)
+from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
+    start_ack_span,
+    start_nack_span,
 )
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
@@ -232,16 +238,69 @@ class Dispatcher(object):
         items_gen = iter(items)
         ack_ids_gen = (item.ack_id for item in items)
         total_chunks = int(math.ceil(len(items) / _ACK_IDS_BATCH_SIZE))
+        subscription_id: Optional[str] = None
+        project_id: Optional[str] = None
+        for item in items:
+            if item.opentelemetry_data:
+                item.opentelemetry_data.add_subscribe_span_event("ack start")
+                if subscription_id is None:
+                    subscription_id = item.opentelemetry_data.subscription_id
+                if project_id is None:
+                    project_id = item.opentelemetry_data.project_id
 
         for _ in range(total_chunks):
             ack_reqs_dict = {
                 req.ack_id: req
                 for req in itertools.islice(items_gen, _ACK_IDS_BATCH_SIZE)
             }
+
+            subscribe_links: List[trace.Link] = []
+            subscribe_spans: List[trace.Span] = []
+            for ack_req in ack_reqs_dict.values():
+                if ack_req.opentelemetry_data:
+                    subscribe_span: Optional[
+                        trace.Span
+                    ] = ack_req.opentelemetry_data.subscribe_span
+                    if (
+                        subscribe_span
+                        and subscribe_span.get_span_context().trace_flags.sampled
+                    ):
+                        subscribe_links.append(
+                            trace.Link(subscribe_span.get_span_context())
+                        )
+                        subscribe_spans.append(subscribe_span)
+            ack_span: Optional[trace.Span] = None
+            if subscription_id and project_id:
+                ack_span = start_ack_span(
+                    subscription_id,
+                    len(ack_reqs_dict),
+                    project_id,
+                    subscribe_links,
+                )
+                if (
+                    ack_span and ack_span.get_span_context().trace_flags.sampled
+                ):  # pragma: NO COVER
+                    ack_span_context: trace.SpanContext = ack_span.get_span_context()
+                    for subscribe_span in subscribe_spans:
+                        subscribe_span.add_link(
+                            context=ack_span_context,
+                            attributes={
+                                "messaging.operation.name": "ack",
+                            },
+                        )
+
             requests_completed, requests_to_retry = self._manager.send_unary_ack(
                 ack_ids=list(itertools.islice(ack_ids_gen, _ACK_IDS_BATCH_SIZE)),
                 ack_reqs_dict=ack_reqs_dict,
             )
+            if ack_span:
+                ack_span.end()
+
+            for completed_ack in requests_completed:
+                if completed_ack.opentelemetry_data:
+                    completed_ack.opentelemetry_data.add_subscribe_span_event("ack end")
+                    completed_ack.opentelemetry_data.set_subscribe_span_result("acked")
+                    completed_ack.opentelemetry_data.end_subscribe_span()
 
             # Remove the completed messages from lease management.
             self.drop(requests_completed)
@@ -267,7 +326,7 @@ class Dispatcher(object):
         # a back-end timeout error or other permanent failure.
         retry_thread.start()
 
-    def _retry_acks(self, requests_to_retry):
+    def _retry_acks(self, requests_to_retry: List[requests.AckRequest]):
         retry_delay_gen = exponential_sleep_generator(
             initial=_MIN_EXACTLY_ONCE_DELIVERY_ACK_MODACK_RETRY_DURATION_SECS,
             maximum=_MAX_EXACTLY_ONCE_DELIVERY_ACK_MODACK_RETRY_DURATION_SECS,
@@ -282,10 +341,62 @@ class Dispatcher(object):
             time.sleep(time_to_wait)
 
             ack_reqs_dict = {req.ack_id: req for req in requests_to_retry}
+            subscription_id: Optional[str] = None
+            project_id: Optional[str] = None
+            subscribe_links: List[trace.Link] = []
+            subscribe_spans: List[trace.Span] = []
+            for req in requests_to_retry:
+                if req.opentelemetry_data:
+                    req.opentelemetry_data.add_subscribe_span_event("ack start")
+                    if subscription_id is None:
+                        subscription_id = req.opentelemetry_data.subscription_id
+                    if project_id is None:
+                        project_id = req.opentelemetry_data.project_id
+                    subscribe_span: Optional[
+                        trace.Span
+                    ] = req.opentelemetry_data.subscribe_span
+                    if (
+                        subscribe_span
+                        and subscribe_span.get_span_context().trace_flags.sampled
+                    ):
+                        subscribe_links.append(
+                            trace.Link(subscribe_span.get_span_context())
+                        )
+                        subscribe_spans.append(subscribe_span)
+            ack_span: Optional[trace.Span] = None
+            if subscription_id and project_id:
+                ack_span = start_ack_span(
+                    subscription_id,
+                    len(ack_reqs_dict),
+                    project_id,
+                    subscribe_links,
+                )
+                if (
+                    ack_span and ack_span.get_span_context().trace_flags.sampled
+                ):  # pragma: NO COVER
+                    ack_span_context: trace.SpanContext = ack_span.get_span_context()
+                    for subscribe_span in subscribe_spans:
+                        subscribe_span.add_link(
+                            context=ack_span_context,
+                            attributes={
+                                "messaging.operation.name": "ack",
+                            },
+                        )
+
             requests_completed, requests_to_retry = self._manager.send_unary_ack(
                 ack_ids=[req.ack_id for req in requests_to_retry],
                 ack_reqs_dict=ack_reqs_dict,
             )
+
+            if ack_span:
+                ack_span.end()
+
+            for completed_ack in requests_completed:
+                if completed_ack.opentelemetry_data:
+                    completed_ack.opentelemetry_data.add_subscribe_span_event("ack end")
+                    completed_ack.opentelemetry_data.set_subscribe_span_result("acked")
+                    completed_ack.opentelemetry_data.end_subscribe_span()
+
             assert (
                 len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE
             ), "Too many requests to be retried."
@@ -336,15 +447,63 @@ class Dispatcher(object):
         deadline_seconds_gen = (item.seconds for item in items)
         total_chunks = int(math.ceil(len(items) / _ACK_IDS_BATCH_SIZE))
 
+        subscription_id: Optional[str] = None
+        project_id: Optional[str] = None
+
+        for item in items:
+            if item.opentelemetry_data:
+                if math.isclose(item.seconds, 0):
+                    item.opentelemetry_data.add_subscribe_span_event("nack start")
+                    if subscription_id is None:
+                        subscription_id = item.opentelemetry_data.subscription_id
+                    if project_id is None:
+                        project_id = item.opentelemetry_data.project_id
+                else:
+                    item.opentelemetry_data.add_subscribe_span_event("modack start")
         for _ in range(total_chunks):
             ack_reqs_dict = {
                 req.ack_id: req
                 for req in itertools.islice(items_gen, _ACK_IDS_BATCH_SIZE)
             }
+            subscribe_links: List[trace.Link] = []
+            subscribe_spans: List[trace.Span] = []
+            for ack_req in ack_reqs_dict.values():
+                if ack_req.opentelemetry_data and math.isclose(ack_req.seconds, 0):
+                    subscribe_span: Optional[
+                        trace.Span
+                    ] = ack_req.opentelemetry_data.subscribe_span
+                    if (
+                        subscribe_span
+                        and subscribe_span.get_span_context().trace_flags.sampled
+                    ):
+                        subscribe_links.append(
+                            trace.Link(subscribe_span.get_span_context())
+                        )
+                        subscribe_spans.append(subscribe_span)
+            nack_span: Optional[trace.Span] = None
+            if subscription_id and project_id:
+                nack_span = start_nack_span(
+                    subscription_id,
+                    len(ack_reqs_dict),
+                    project_id,
+                    subscribe_links,
+                )
+                if (
+                    nack_span and nack_span.get_span_context().trace_flags.sampled
+                ):  # pragma: NO COVER
+                    nack_span_context: trace.SpanContext = nack_span.get_span_context()
+                    for subscribe_span in subscribe_spans:
+                        subscribe_span.add_link(
+                            context=nack_span_context,
+                            attributes={
+                                "messaging.operation.name": "nack",
+                            },
+                        )
             requests_to_retry: List[requests.ModAckRequest]
+            requests_completed: Optional[List[requests.ModAckRequest]] = None
             if default_deadline is None:
                 # no further work needs to be done for `requests_to_retry`
-                _, requests_to_retry = self._manager.send_unary_modack(
+                requests_completed, requests_to_retry = self._manager.send_unary_modack(
                     modify_deadline_ack_ids=list(
                         itertools.islice(ack_ids_gen, _ACK_IDS_BATCH_SIZE)
                     ),
@@ -355,7 +514,7 @@ class Dispatcher(object):
                     default_deadline=None,
                 )
             else:
-                _, requests_to_retry = self._manager.send_unary_modack(
+                requests_completed, requests_to_retry = self._manager.send_unary_modack(
                     modify_deadline_ack_ids=itertools.islice(
                         ack_ids_gen, _ACK_IDS_BATCH_SIZE
                     ),
@@ -363,9 +522,27 @@ class Dispatcher(object):
                     ack_reqs_dict=ack_reqs_dict,
                     default_deadline=default_deadline,
                 )
+            if nack_span:
+                nack_span.end()
             assert (
                 len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE
             ), "Too many requests to be retried."
+
+            for completed_modack in requests_completed:
+                if completed_modack.opentelemetry_data:
+                    # nack is a modack with 0 extension seconds.
+                    if math.isclose(completed_modack.seconds, 0):
+                        completed_modack.opentelemetry_data.set_subscribe_span_result(
+                            "nacked"
+                        )
+                        completed_modack.opentelemetry_data.add_subscribe_span_event(
+                            "nack end"
+                        )
+                        completed_modack.opentelemetry_data.end_subscribe_span()
+                    else:
+                        completed_modack.opentelemetry_data.add_subscribe_span_event(
+                            "modack end"
+                        )
 
             # Retry on a separate thread so the dispatcher thread isn't blocked
             # by sleeps.
@@ -390,11 +567,67 @@ class Dispatcher(object):
             time.sleep(time_to_wait)
 
             ack_reqs_dict = {req.ack_id: req for req in requests_to_retry}
+
+            subscription_id = None
+            project_id = None
+            subscribe_links = []
+            subscribe_spans = []
+            for ack_req in ack_reqs_dict.values():
+                if ack_req.opentelemetry_data and math.isclose(ack_req.seconds, 0):
+                    if subscription_id is None:
+                        subscription_id = ack_req.opentelemetry_data.subscription_id
+                    if project_id is None:
+                        project_id = ack_req.opentelemetry_data.project_id
+                    subscribe_span = ack_req.opentelemetry_data.subscribe_span
+                    if (
+                        subscribe_span
+                        and subscribe_span.get_span_context().trace_flags.sampled
+                    ):
+                        subscribe_links.append(
+                            trace.Link(subscribe_span.get_span_context())
+                        )
+                        subscribe_spans.append(subscribe_span)
+            nack_span = None
+            if subscription_id and project_id:
+                nack_span = start_nack_span(
+                    subscription_id,
+                    len(ack_reqs_dict),
+                    project_id,
+                    subscribe_links,
+                )
+                if (
+                    nack_span and nack_span.get_span_context().trace_flags.sampled
+                ):  # pragma: NO COVER
+                    nack_span_context: trace.SpanContext = nack_span.get_span_context()
+                    for subscribe_span in subscribe_spans:
+                        subscribe_span.add_link(
+                            context=nack_span_context,
+                            attributes={
+                                "messaging.operation.name": "nack",
+                            },
+                        )
             requests_completed, requests_to_retry = self._manager.send_unary_modack(
                 modify_deadline_ack_ids=[req.ack_id for req in requests_to_retry],
                 modify_deadline_seconds=[req.seconds for req in requests_to_retry],
                 ack_reqs_dict=ack_reqs_dict,
             )
+            if nack_span:
+                nack_span.end()
+            for completed_modack in requests_completed:
+                if completed_modack.opentelemetry_data:
+                    # nack is a modack with 0 extension seconds.
+                    if math.isclose(completed_modack.seconds, 0):
+                        completed_modack.opentelemetry_data.set_subscribe_span_result(
+                            "nacked"
+                        )
+                        completed_modack.opentelemetry_data.add_subscribe_span_event(
+                            "nack end"
+                        )
+                        completed_modack.opentelemetry_data.end_subscribe_span()
+                    else:
+                        completed_modack.opentelemetry_data.add_subscribe_span_event(
+                            "modack end"
+                        )
 
     def nack(self, items: Sequence[requests.NackRequest]) -> None:
         """Explicitly deny receipt of messages.
@@ -405,7 +638,10 @@ class Dispatcher(object):
         self.modify_ack_deadline(
             [
                 requests.ModAckRequest(
-                    ack_id=item.ack_id, seconds=0, future=item.future
+                    ack_id=item.ack_id,
+                    seconds=0,
+                    future=item.future,
+                    opentelemetry_data=item.opentelemetry_data,
                 )
                 for item in items
             ]

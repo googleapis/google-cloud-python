@@ -131,6 +131,29 @@ class PublishFlowControl(NamedTuple):
     """The action to take when publish flow control limits are exceeded."""
 
 
+# Define the default subscriber options.
+#
+# This class is used when creating a subscriber client to pass in options
+# to enable/disable features.
+class SubscriberOptions(NamedTuple):
+    """
+    Options for the subscriber client.
+    Attributes:
+        enable_open_telemetry_tracing (bool):
+            Whether to enable OpenTelemetry tracing. Defaults to False.
+    """
+
+    enable_open_telemetry_tracing: bool = False
+    """
+    Whether to enable OpenTelemetry tracing.
+
+    Warning: traces are subject to change. The name and attributes of a span might
+    change without notice. Only use run traces interactively. Don't use in
+    automation. Running non-interactive traces can cause problems if the underlying
+    trace architecture changes without notice.
+    """
+
+
 # Define the default publisher options.
 #
 # This class is used when creating a publisher client to pass in options
@@ -175,7 +198,14 @@ class PublisherOptions(NamedTuple):
     )
 
     enable_open_telemetry_tracing: bool = False  # disabled by default
-    """Open Telemetry tracing is enabled if this is set to True."""
+    """
+    Open Telemetry tracing is enabled if this is set to True.
+
+    Warning: traces are subject to change. The name and attributes of a span might
+    change without notice. Only use run traces interactively. Don't use in
+    automation. Running non-interactive traces can cause problems if the underlying
+    trace architecture changes without notice.
+    """
 
 
 # Define the type class and default values for flow control settings.

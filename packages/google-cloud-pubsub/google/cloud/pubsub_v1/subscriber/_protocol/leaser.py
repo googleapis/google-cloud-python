@@ -23,6 +23,9 @@ import typing
 from typing import Dict, Iterable, Optional, Union
 
 from google.cloud.pubsub_v1.subscriber._protocol.dispatcher import _MAX_BATCH_LATENCY
+from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
+    SubscribeOpenTelemetry,
+)
 
 try:
     from collections.abc import KeysView
@@ -50,6 +53,7 @@ class _LeasedMessage(typing.NamedTuple):
 
     size: int
     ordering_key: Optional[str]
+    opentelemetry_data: Optional[SubscribeOpenTelemetry]
 
 
 class Leaser(object):
@@ -98,6 +102,7 @@ class Leaser(object):
                         sent_time=float("inf"),
                         size=item.byte_size,
                         ordering_key=item.ordering_key,
+                        opentelemetry_data=item.opentelemetry_data,
                     )
                     self._bytes += item.byte_size
                 else:
@@ -175,6 +180,17 @@ class Leaser(object):
                     "Dropping %s items because they were leased too long.", len(to_drop)
                 )
                 assert self._manager.dispatcher is not None
+                for drop_msg in to_drop:
+                    leased_message = leased_messages.get(drop_msg.ack_id)
+                    if leased_message and leased_message.opentelemetry_data:
+                        leased_message.opentelemetry_data.add_process_span_event(
+                            "expired"
+                        )
+                        leased_message.opentelemetry_data.end_process_span()
+                        leased_message.opentelemetry_data.set_subscribe_span_result(
+                            "expired"
+                        )
+                        leased_message.opentelemetry_data.end_subscribe_span()
                 self._manager.dispatcher.drop(to_drop)
 
             # Remove dropped items from our copy of the leased messages (they
@@ -198,14 +214,28 @@ class Leaser(object):
                 #       is inactive.
                 assert self._manager.dispatcher is not None
                 ack_id_gen = (ack_id for ack_id in ack_ids)
+                opentelemetry_data = [
+                    message.opentelemetry_data
+                    for message in list(leased_messages.values())
+                    if message.opentelemetry_data
+                ]
                 expired_ack_ids = self._manager._send_lease_modacks(
-                    ack_id_gen, deadline
+                    ack_id_gen,
+                    deadline,
+                    opentelemetry_data,
                 )
 
             start_time = time.time()
             # If exactly once delivery is enabled, we should drop all expired ack_ids from lease management.
             if self._manager._exactly_once_delivery_enabled() and len(expired_ack_ids):
                 assert self._manager.dispatcher is not None
+                for ack_id in expired_ack_ids:
+                    msg = leased_messages.get(ack_id)
+                    if msg and msg.opentelemetry_data:
+                        msg.opentelemetry_data.add_process_span_event("expired")
+                        msg.opentelemetry_data.end_process_span()
+                        msg.opentelemetry_data.set_subscribe_span_result("expired")
+                        msg.opentelemetry_data.end_subscribe_span()
                 self._manager.dispatcher.drop(
                     [
                         requests.DropRequest(

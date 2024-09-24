@@ -15,6 +15,10 @@
 import typing
 from typing import NamedTuple, Optional
 
+from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
+    SubscribeOpenTelemetry,
+)
+
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.pubsub_v1.subscriber import futures
 
@@ -27,6 +31,7 @@ class AckRequest(NamedTuple):
     time_to_ack: float
     ordering_key: Optional[str]
     future: Optional["futures.Future"]
+    opentelemetry_data: Optional[SubscribeOpenTelemetry] = None
 
 
 class DropRequest(NamedTuple):
@@ -39,12 +44,14 @@ class LeaseRequest(NamedTuple):
     ack_id: str
     byte_size: int
     ordering_key: Optional[str]
+    opentelemetry_data: Optional[SubscribeOpenTelemetry] = None
 
 
 class ModAckRequest(NamedTuple):
     ack_id: str
     seconds: float
     future: Optional["futures.Future"]
+    opentelemetry_data: Optional[SubscribeOpenTelemetry] = None
 
 
 class NackRequest(NamedTuple):
@@ -52,3 +59,4 @@ class NackRequest(NamedTuple):
     byte_size: int
     ordering_key: Optional[str]
     future: Optional["futures.Future"]
+    opentelemetry_data: Optional[SubscribeOpenTelemetry] = None

@@ -24,6 +24,9 @@ from typing import Optional, Callable
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.cloud.pubsub_v1.subscriber import futures
 from google.cloud.pubsub_v1.subscriber.exceptions import AcknowledgeStatus
+from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
+    SubscribeOpenTelemetry,
+)
 
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
@@ -85,6 +88,8 @@ class Message(object):
             information on this type.
         publish_time (google.protobuf.timestamp_pb2.Timestamp):
             The time that this message was originally published.
+        opentelemetry_data (google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry.SubscribeOpenTelemetry)
+            Open Telemetry data associated with this message. None if Open Telemetry is not enabled.
     """
 
     def __init__(
@@ -144,6 +149,9 @@ class Message(object):
         self._ordering_key = message.ordering_key
         self._size = message.ByteSize()
 
+        # None if Open Telemetry is disabled. Else contains OpenTelemetry data.
+        self._opentelemetry_data: Optional[SubscribeOpenTelemetry] = None
+
     def __repr__(self):
         # Get an abbreviated version of the data.
         abbv_data = self._message.data
@@ -157,6 +165,14 @@ class Message(object):
         # We don't actually want the first line indented.
         pretty_attrs = pretty_attrs.lstrip()
         return _MESSAGE_REPR.format(abbv_data, str(self.ordering_key), pretty_attrs)
+
+    @property
+    def opentelemetry_data(self):
+        return self._opentelemetry_data  # pragma: NO COVER
+
+    @opentelemetry_data.setter
+    def opentelemetry_data(self, data):
+        self._opentelemetry_data = data  # pragma: NO COVER
 
     @property
     def attributes(self) -> "containers.ScalarMap":
@@ -252,6 +268,9 @@ class Message(object):
             https://cloud.google.com/pubsub/docs/exactly-once-delivery."
 
         """
+        if self.opentelemetry_data:
+            self.opentelemetry_data.add_process_span_event("ack called")
+            self.opentelemetry_data.end_process_span()
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._request_queue.put(
             requests.AckRequest(
@@ -260,6 +279,7 @@ class Message(object):
                 time_to_ack=time_to_ack,
                 ordering_key=self.ordering_key,
                 future=None,
+                opentelemetry_data=self.opentelemetry_data,
             )
         )
 
@@ -302,6 +322,9 @@ class Message(object):
             pubsub_v1.subscriber.exceptions.AcknowledgeError exception
             will be thrown.
         """
+        if self.opentelemetry_data:
+            self.opentelemetry_data.add_process_span_event("ack called")
+            self.opentelemetry_data.end_process_span()
         req_future: Optional[futures.Future]
         if self._exactly_once_delivery_enabled_func():
             future = futures.Future()
@@ -317,6 +340,7 @@ class Message(object):
                 time_to_ack=time_to_ack,
                 ordering_key=self.ordering_key,
                 future=req_future,
+                opentelemetry_data=self.opentelemetry_data,
             )
         )
         return future
@@ -357,7 +381,12 @@ class Message(object):
                 against.
         """
         self._request_queue.put(
-            requests.ModAckRequest(ack_id=self._ack_id, seconds=seconds, future=None)
+            requests.ModAckRequest(
+                ack_id=self._ack_id,
+                seconds=seconds,
+                future=None,
+                opentelemetry_data=self.opentelemetry_data,
+            )
         )
 
     def modify_ack_deadline_with_response(self, seconds: int) -> "futures.Future":
@@ -416,7 +445,10 @@ class Message(object):
 
         self._request_queue.put(
             requests.ModAckRequest(
-                ack_id=self._ack_id, seconds=seconds, future=req_future
+                ack_id=self._ack_id,
+                seconds=seconds,
+                future=req_future,
+                opentelemetry_data=self.opentelemetry_data,
             )
         )
 
@@ -429,12 +461,16 @@ class Message(object):
         may take place immediately or after a delay, and may arrive at this subscriber
         or another.
         """
+        if self.opentelemetry_data:
+            self.opentelemetry_data.add_process_span_event("nack called")
+            self.opentelemetry_data.end_process_span()
         self._request_queue.put(
             requests.NackRequest(
                 ack_id=self._ack_id,
                 byte_size=self.size,
                 ordering_key=self.ordering_key,
                 future=None,
+                opentelemetry_data=self.opentelemetry_data,
             )
         )
 
@@ -472,6 +508,9 @@ class Message(object):
             will be thrown.
 
         """
+        if self.opentelemetry_data:
+            self.opentelemetry_data.add_process_span_event("nack called")
+            self.opentelemetry_data.end_process_span()
         req_future: Optional[futures.Future]
         if self._exactly_once_delivery_enabled_func():
             future = futures.Future()
@@ -486,6 +525,7 @@ class Message(object):
                 byte_size=self.size,
                 ordering_key=self.ordering_key,
                 future=req_future,
+                opentelemetry_data=self.opentelemetry_data,
             )
         )
 

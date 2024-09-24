@@ -29,6 +29,9 @@ from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.protobuf import timestamp_pb2
 from google.pubsub_v1 import types as gapic_types
 from google.cloud.pubsub_v1.subscriber.exceptions import AcknowledgeStatus
+from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
+    SubscribeOpenTelemetry,
+)
 
 
 RECEIVED = datetime.datetime(2012, 4, 21, 15, 0, tzinfo=datetime.timezone.utc)
@@ -129,6 +132,155 @@ def check_call_types(mock, *args, **kwargs):
         assert len(call_args) == len(args)
         for n, argtype in enumerate(args):
             assert isinstance(call_args[n], argtype)
+
+
+def test_opentelemetry_ack(span_exporter):
+    SUBSCRIPTION = "projects/projectID/subscriptions/subscriptionID"
+    msg = create_message(b"data", ack_id="ack_id")
+    opentelemetry_data = SubscribeOpenTelemetry(msg)
+    opentelemetry_data.start_subscribe_span(
+        subscription=SUBSCRIPTION,
+        exactly_once_enabled=False,
+        ack_id="ack_id",
+        delivery_attempt=2,
+    )
+    opentelemetry_data.start_process_span()
+    msg.opentelemetry_data = opentelemetry_data
+    msg.ack()
+    opentelemetry_data.end_subscribe_span()
+
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 2
+    process_span, subscribe_span = spans
+
+    assert subscribe_span.name == "subscriptionID subscribe"
+    assert len(subscribe_span.events) == 0
+
+    assert process_span.name == "subscriptionID process"
+    assert len(process_span.events) == 1
+    assert process_span.events[0].name == "ack called"
+
+
+def test_opentelemetry_ack_with_response(span_exporter):
+    SUBSCRIPTION = "projects/projectID/subscriptions/subscriptionID"
+    msg = create_message(b"data", ack_id="ack_id")
+    opentelemetry_data = SubscribeOpenTelemetry(msg)
+    opentelemetry_data.start_subscribe_span(
+        subscription=SUBSCRIPTION,
+        exactly_once_enabled=False,
+        ack_id="ack_id",
+        delivery_attempt=2,
+    )
+    opentelemetry_data.start_process_span()
+    msg.opentelemetry_data = opentelemetry_data
+    msg.ack_with_response()
+    opentelemetry_data.end_subscribe_span()
+
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 2
+    process_span, subscribe_span = spans
+
+    assert subscribe_span.name == "subscriptionID subscribe"
+    assert len(subscribe_span.events) == 0
+
+    assert process_span.name == "subscriptionID process"
+    assert len(process_span.events) == 1
+    assert process_span.events[0].name == "ack called"
+
+
+def test_opentelemetry_nack(span_exporter):
+    SUBSCRIPTION = "projects/projectID/subscriptions/subscriptionID"
+    msg = create_message(b"data", ack_id="ack_id")
+    opentelemetry_data = SubscribeOpenTelemetry(msg)
+    opentelemetry_data.start_subscribe_span(
+        subscription=SUBSCRIPTION,
+        exactly_once_enabled=False,
+        ack_id="ack_id",
+        delivery_attempt=2,
+    )
+    opentelemetry_data.start_process_span()
+    msg.opentelemetry_data = opentelemetry_data
+    msg.nack()
+    opentelemetry_data.end_subscribe_span()
+
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 2
+    process_span, subscribe_span = spans
+
+    assert subscribe_span.name == "subscriptionID subscribe"
+    assert len(subscribe_span.events) == 0
+
+    assert process_span.name == "subscriptionID process"
+    assert len(process_span.events) == 1
+    assert process_span.events[0].name == "nack called"
+
+
+def test_opentelemetry_nack_with_response(span_exporter):
+    SUBSCRIPTION = "projects/projectID/subscriptions/subscriptionID"
+    msg = create_message(b"data", ack_id="ack_id")
+    opentelemetry_data = SubscribeOpenTelemetry(msg)
+    opentelemetry_data.start_subscribe_span(
+        subscription=SUBSCRIPTION,
+        exactly_once_enabled=False,
+        ack_id="ack_id",
+        delivery_attempt=2,
+    )
+    opentelemetry_data.start_process_span()
+    msg.opentelemetry_data = opentelemetry_data
+    msg.nack_with_response()
+    opentelemetry_data.end_subscribe_span()
+
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 2
+
+    process_span, subscribe_span = spans
+
+    assert subscribe_span.name == "subscriptionID subscribe"
+    assert len(subscribe_span.events) == 0
+
+    assert process_span.name == "subscriptionID process"
+    assert len(process_span.events) == 1
+    assert process_span.events[0].name == "nack called"
+
+
+def test_opentelemetry_modack(span_exporter):
+    SUBSCRIPTION = "projects/projectID/subscriptions/subscriptionID"
+    msg = create_message(b"data", ack_id="ack_id")
+    opentelemetry_data = SubscribeOpenTelemetry(msg)
+    opentelemetry_data.start_subscribe_span(
+        subscription=SUBSCRIPTION,
+        exactly_once_enabled=False,
+        ack_id="ack_id",
+        delivery_attempt=2,
+    )
+    msg.opentelemetry_data = opentelemetry_data
+    msg.modify_ack_deadline(3)
+    opentelemetry_data.end_subscribe_span()
+
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 1
+
+    assert len(spans[0].events) == 0
+
+
+def test_opentelemetry_modack_with_response(span_exporter):
+    SUBSCRIPTION = "projects/projectID/subscriptions/subscriptionID"
+    msg = create_message(b"data", ack_id="ack_id")
+    opentelemetry_data = SubscribeOpenTelemetry(msg)
+    opentelemetry_data.start_subscribe_span(
+        subscription=SUBSCRIPTION,
+        exactly_once_enabled=False,
+        ack_id="ack_id",
+        delivery_attempt=2,
+    )
+    msg.opentelemetry_data = opentelemetry_data
+    msg.modify_ack_deadline_with_response(3)
+    opentelemetry_data.end_subscribe_span()
+
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 1
+
+    assert len(spans[0].events) == 0
 
 
 def test_ack():

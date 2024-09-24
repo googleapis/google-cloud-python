@@ -18,6 +18,20 @@ import sys
 import threading
 import time
 import types as stdlib_types
+import datetime
+import queue
+import math
+
+from opentelemetry import trace
+from google.protobuf import timestamp_pb2
+from google.api_core import datetime_helpers
+
+from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
+    SubscribeOpenTelemetry,
+)
+from google.cloud.pubsub_v1.subscriber.message import Message
+from google.cloud.pubsub_v1.types import PubsubMessage
+
 
 # special case python < 3.8
 if sys.version_info.major == 3 and sys.version_info.minor < 8:
@@ -179,11 +193,16 @@ def test_constructor_with_max_duration_per_lease_extension_too_high():
     assert manager._stream_ack_deadline == 600
 
 
-def make_manager(**kwargs):
+def make_manager(
+    enable_open_telemetry: bool = False,
+    subscription_name: str = "subscription-name",
+    **kwargs,
+):
     client_ = mock.create_autospec(client.Client, instance=True)
+    client_.open_telemetry_enabled = enable_open_telemetry
     scheduler_ = mock.create_autospec(scheduler.Scheduler, instance=True)
     return streaming_pull_manager.StreamingPullManager(
-        client_, "subscription-name", scheduler=scheduler_, **kwargs
+        client_, subscription_name, scheduler=scheduler_, **kwargs
     )
 
 
@@ -509,6 +528,45 @@ def test__maybe_release_messages_on_overload():
     manager._scheduler.schedule.assert_not_called()
 
 
+def test_opentelemetry__maybe_release_messages_subscribe_scheduler_span(span_exporter):
+    manager = make_manager(
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
+    )
+    manager._callback = mock.sentinel.callback
+
+    # Init leaser message count to 11, so that when subtracting the 3 messages
+    # that are on hold, there is still room for another 2 messages before the
+    # max load is hit.
+    _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
+    fake_leaser_add(_leaser, init_msg_count=8, assumed_msg_size=10)
+    msg = mock.create_autospec(
+        message.Message, instance=True, ack_id="ack_foo", size=10
+    )
+    msg.message_id = 3
+    opentelemetry_data = SubscribeOpenTelemetry(msg)
+    msg.opentelemetry_data = opentelemetry_data
+    opentelemetry_data.start_subscribe_span(
+        subscription="projects/projectId/subscriptions/subscriptionID",
+        exactly_once_enabled=False,
+        ack_id="ack_id",
+        delivery_attempt=4,
+    )
+    manager._messages_on_hold.put(msg)
+    manager._maybe_release_messages()
+    opentelemetry_data.end_subscribe_span()
+    spans = span_exporter.get_finished_spans()
+
+    assert len(spans) == 2
+
+    subscriber_scheduler_span, subscribe_span = spans
+
+    assert subscriber_scheduler_span.name == "subscriber scheduler"
+    assert subscribe_span.name == "subscriptionID subscribe"
+
+    assert subscriber_scheduler_span.parent == subscribe_span.context
+    assert subscriber_scheduler_span.kind == trace.SpanKind.INTERNAL
+
+
 def test__maybe_release_messages_below_overload():
     manager = make_manager(
         flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
@@ -572,6 +630,86 @@ def test__maybe_release_messages_negative_on_hold_bytes_warning(caplog):
     assert "-12" in expected_warnings[0]
 
     assert manager._on_hold_bytes == 0  # should be auto-corrected
+
+
+@pytest.mark.skipif(
+    sys.version_info < (3, 8),
+    reason="Open Telemetry not supported below Python version 3.8",
+)
+@pytest.mark.parametrize(
+    "receipt_modack",
+    [
+        True,
+        False,
+    ],
+)
+def test_opentelemetry__send_lease_modacks(span_exporter, receipt_modack):
+    manager, _, _, _, _, _ = make_running_manager(
+        enable_open_telemetry=True,
+        subscription_name="projects/projectID/subscriptions/subscriptionID",
+    )
+    data1 = SubscribeOpenTelemetry(
+        message=gapic_types.PubsubMessage(data=b"foo", message_id="1")
+    )
+    data2 = SubscribeOpenTelemetry(
+        message=gapic_types.PubsubMessage(data=b"bar", message_id="2")
+    )
+
+    data1.start_subscribe_span(
+        subscription="projects/projectID/subscriptions/subscriptionID",
+        exactly_once_enabled=False,
+        ack_id="ack_id1",
+        delivery_attempt=2,
+    )
+    data2.start_subscribe_span(
+        subscription="projects/projectID/subscriptions/subscriptionID",
+        exactly_once_enabled=True,
+        ack_id="ack_id1",
+        delivery_attempt=2,
+    )
+    mock_span_context = mock.Mock(spec=trace.SpanContext)
+    mock_span_context.trace_flags.sampled = False
+    with mock.patch.object(
+        data1._subscribe_span, "get_span_context", return_value=mock_span_context
+    ):
+        manager._send_lease_modacks(
+            ack_ids=["ack_id1", "ack_id2"],
+            ack_deadline=20,
+            opentelemetry_data=[data1, data2],
+            receipt_modack=receipt_modack,
+        )
+    data1.end_subscribe_span()
+    data2.end_subscribe_span()
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 3
+    modack_span, subscribe_span1, subscribe_span2 = spans
+
+    assert len(subscribe_span1.events) == 0
+    assert len(subscribe_span2.events) == 0
+
+    assert len(subscribe_span1.links) == 0
+    assert len(subscribe_span2.links) == 1
+    assert subscribe_span2.links[0].context == modack_span.context
+    assert subscribe_span2.links[0].attributes["messaging.operation.name"] == "modack"
+
+    assert modack_span.name == "subscriptionID modack"
+    assert modack_span.parent is None
+    assert modack_span.kind == trace.SpanKind.CLIENT
+    assert len(modack_span.links) == 1
+    modack_span_attributes = modack_span.attributes
+    assert modack_span_attributes["messaging.system"] == "gcp_pubsub"
+    assert modack_span_attributes["messaging.batch.message_count"] == 2
+    assert math.isclose(
+        modack_span_attributes["messaging.gcp_pubsub.message.ack_deadline"], 20
+    )
+    assert modack_span_attributes["messaging.destination.name"] == "subscriptionID"
+    assert modack_span_attributes["gcp.project_id"] == "projectID"
+    assert modack_span_attributes["messaging.operation.name"] == "modack"
+    assert modack_span_attributes["code.function"] == "_send_lease_modacks"
+    assert (
+        modack_span_attributes["messaging.gcp_pubsub.is_receipt_modack"]
+        == receipt_modack
+    )
 
 
 def test_send_unary_ack():
@@ -1224,14 +1362,17 @@ def test_open_has_been_closed():
         manager.open(mock.sentinel.callback, mock.sentinel.on_callback_error)
 
 
-def make_running_manager(**kwargs):
-    manager = make_manager(**kwargs)
+def make_running_manager(
+    enable_open_telemetry: bool = False,
+    subscription_name: str = "subscription-name",
+    **kwargs,
+):
+    manager = make_manager(enable_open_telemetry, subscription_name, **kwargs)
     manager._consumer = mock.create_autospec(bidi.BackgroundConsumer, instance=True)
     manager._consumer.is_active = True
     manager._dispatcher = mock.create_autospec(dispatcher.Dispatcher, instance=True)
     manager._leaser = mock.create_autospec(leaser.Leaser, instance=True)
     manager._heartbeater = mock.create_autospec(heartbeater.Heartbeater, instance=True)
-
     return (
         manager,
         manager._consumer,
@@ -2626,3 +2767,148 @@ def test_process_requests_mixed_success_and_failure_modacks():
     # message with ack_id 'ackid3' succeeds
     assert requests_completed[1].ack_id == "ackid3"
     assert future3.result() == subscriber_exceptions.AcknowledgeStatus.SUCCESS
+
+
+@pytest.mark.skipif(
+    sys.version_info < (3, 8),
+    reason="Open Telemetry not supported below Python version 3.8",
+)
+def test_opentelemetry__on_response_subscribe_span_create(span_exporter):
+    manager, _, _, leaser, _, _ = make_running_manager(
+        enable_open_telemetry=True,
+        subscription_name="projects/projectID/subscriptions/subscriptionID",
+    )
+
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=42)
+    manager._callback = mock.sentinel.callback
+
+    response = gapic_types.StreamingPullResponse(
+        received_messages=[
+            gapic_types.ReceivedMessage(
+                ack_id="ack1",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="1"),
+            ),
+            gapic_types.ReceivedMessage(
+                ack_id="ack2",
+                message=gapic_types.PubsubMessage(data=b"bar", message_id="2"),
+                delivery_attempt=6,
+            ),
+        ]
+    )
+
+    manager._on_response(response)
+
+    spans = span_exporter.get_finished_spans()
+
+    # Subscribe span is still active, hence unexported.
+    # Subscriber scheduler spans corresponding to the two messages would be started in `messages_on_hold.put()``
+    # and ended in `_maybe_release_messages`
+    assert len(spans) == 3
+    modack_span = spans[0]
+
+    for span in spans[1:]:
+        assert span.name == "subscriber scheduler"
+        assert span.kind == trace.SpanKind.INTERNAL
+        assert span.parent is not None
+        assert len(span.attributes) == 0
+
+    assert modack_span.name == "subscriptionID modack"
+    assert modack_span.kind == trace.SpanKind.CLIENT
+    assert modack_span.parent is None
+    assert len(modack_span.links) == 2
+
+
+RECEIVED = datetime.datetime(2012, 4, 21, 15, 0, tzinfo=datetime.timezone.utc)
+RECEIVED_SECONDS = datetime_helpers.to_milliseconds(RECEIVED) // 1000
+PUBLISHED_MICROS = 123456
+PUBLISHED = RECEIVED + datetime.timedelta(days=1, microseconds=PUBLISHED_MICROS)
+PUBLISHED_SECONDS = datetime_helpers.to_milliseconds(PUBLISHED) // 1000
+
+
+def create_message(
+    data,
+    ack_id="ACKID",
+    delivery_attempt=0,
+    ordering_key="",
+    exactly_once_delivery_enabled=False,
+    **attrs,
+):  # pragma: NO COVER
+    with mock.patch.object(time, "time") as time_:
+        time_.return_value = RECEIVED_SECONDS
+        gapic_pubsub_message = PubsubMessage(
+            attributes=attrs,
+            data=data,
+            message_id="message_id",
+            publish_time=timestamp_pb2.Timestamp(
+                seconds=PUBLISHED_SECONDS, nanos=PUBLISHED_MICROS * 1000
+            ),
+            ordering_key=ordering_key,
+        )
+        msg = Message(
+            # The code under test uses a raw protobuf PubsubMessage, i.e. w/o additional
+            # Python class wrappers, hence the "_pb"
+            message=gapic_pubsub_message._pb,
+            ack_id=ack_id,
+            delivery_attempt=delivery_attempt,
+            request_queue=queue.Queue(),
+            exactly_once_delivery_enabled_func=lambda: exactly_once_delivery_enabled,
+        )
+        return msg
+
+
+def test_opentelemetry_subscriber_concurrency_control_span(span_exporter):
+    manager, _, _, leaser, _, _ = make_running_manager(
+        enable_open_telemetry=True,
+        subscription_name="projects/projectID/subscriptions/subscriptionID",
+    )
+    manager._callback = mock.Mock()
+    msg = create_message(b"foo")
+    opentelemetry_data = SubscribeOpenTelemetry(msg)
+    opentelemetry_data.start_subscribe_span(
+        subscription="projects/projectId/subscriptions/subscriptionID",
+        exactly_once_enabled=False,
+        ack_id="ack_id",
+        delivery_attempt=4,
+    )
+    msg.opentelemetry_data = opentelemetry_data
+    manager._schedule_message_on_hold(msg)
+    opentelemetry_data.end_subscribe_concurrency_control_span()
+    opentelemetry_data.end_subscribe_span()
+
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 2
+
+    concurrency_control_span, subscribe_span = spans
+    assert concurrency_control_span.name == "subscriber concurrency control"
+    assert subscribe_span.name == "subscriptionID subscribe"
+    assert opentelemetry_data.subscription_id == "subscriptionID"
+
+    assert concurrency_control_span.parent == subscribe_span.context
+
+
+def test_opentelemetry_subscriber_concurrency_control_span_end(span_exporter):
+    msg = create_message(b"foo")
+    opentelemetry_data = SubscribeOpenTelemetry(msg)
+    opentelemetry_data.start_subscribe_span(
+        subscription="projects/projectId/subscriptions/subscriptionID",
+        exactly_once_enabled=False,
+        ack_id="ack_id",
+        delivery_attempt=4,
+    )
+    opentelemetry_data.start_subscribe_concurrency_control_span()
+    msg.opentelemetry_data = opentelemetry_data
+    streaming_pull_manager._wrap_callback_errors(mock.Mock(), mock.Mock(), msg)
+
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 1
+
+    concurrency_control_span = spans[0]
+    concurrency_control_span.name == "subscriber concurrency control"
+
+
+def test_opentelemetry_wrap_callback_error(span_exporter):
+    msg = create_message(b"foo")
+    streaming_pull_manager._wrap_callback_errors(mock.Mock(), mock.Mock(), msg)
+
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 0

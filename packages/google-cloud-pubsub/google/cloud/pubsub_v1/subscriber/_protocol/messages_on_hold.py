@@ -100,6 +100,8 @@ class MessagesOnHold(object):
         Args:
             message: The message to put on hold.
         """
+        if message.opentelemetry_data:
+            message.opentelemetry_data.start_subscribe_scheduler_span()
         self._messages_on_hold.append(message)
         self._size = self._size + 1
 

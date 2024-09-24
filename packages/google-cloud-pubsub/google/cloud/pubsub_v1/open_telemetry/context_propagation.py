@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from opentelemetry.propagators.textmap import Setter
+from typing import Optional, List
+
+from opentelemetry.propagators.textmap import Setter, Getter
 
 from google.pubsub_v1 import PubsubMessage
 
@@ -37,3 +39,17 @@ class OpenTelemetryContextSetter(Setter):
             None
         """
         carrier.attributes["googclient_" + key] = value
+
+
+class OpenTelemetryContextGetter(Getter):
+    """
+    Used by Open Telemetry for context propagation.
+    """
+
+    def get(self, carrier: PubsubMessage, key: str) -> Optional[List[str]]:
+        if ("googclient_" + key) not in carrier.attributes:
+            return None
+        return [carrier.attributes["googclient_" + key]]
+
+    def keys(self, carrier: PubsubMessage) -> List[str]:
+        return list(map(str, carrier.attributes.keys()))

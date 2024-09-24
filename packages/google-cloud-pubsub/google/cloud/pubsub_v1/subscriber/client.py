@@ -14,6 +14,7 @@
 
 from __future__ import absolute_import
 
+import sys
 import os
 import typing
 from typing import cast, Any, Callable, Optional, Sequence, Union
@@ -67,7 +68,16 @@ class Client(subscriber_client.SubscriberClient):
         )
     """
 
-    def __init__(self, **kwargs: Any):
+    def __init__(
+        self,
+        subscriber_options: Union[types.SubscriberOptions, Sequence] = (),
+        **kwargs: Any
+    ):
+        assert (
+            isinstance(subscriber_options, types.SubscriberOptions)
+            or len(subscriber_options) == 0
+        ), "subscriber_options must be of type SubscriberOptions or an empty sequence."
+
         # Sanity check: Is our goal to use the emulator?
         # If so, create a grpc insecure channel with the emulator host
         # as the target.
@@ -81,6 +91,32 @@ class Client(subscriber_client.SubscriberClient):
         super().__init__(**kwargs)
         self._target = self._transport._host
         self._closed = False
+
+        self.subscriber_options = types.SubscriberOptions(*subscriber_options)
+
+        # Set / override Open Telemetry  option.
+        self._open_telemetry_enabled = (
+            self.subscriber_options.enable_open_telemetry_tracing
+        )
+        # OpenTelemetry features used by the library are not supported in Python versions <= 3.7.
+        # Refer https://github.com/open-telemetry/opentelemetry-python/issues/3993#issuecomment-2211976389
+        if (
+            self.subscriber_options.enable_open_telemetry_tracing
+            and sys.version_info.major == 3
+            and sys.version_info.minor < 8
+        ):
+            warnings.warn(
+                message="Open Telemetry for Python version 3.7 or lower is not supported. Disabling Open Telemetry tracing.",
+                category=RuntimeWarning,
+            )
+            self._open_telemetry_enabled = False
+
+    @property
+    def open_telemetry_enabled(self) -> bool:
+        """
+        Returns True if Open Telemetry is enabled. False otherwise.
+        """
+        return self._open_telemetry_enabled  # pragma: NO COVER
 
     @classmethod
     def from_service_account_file(  # type: ignore[override]

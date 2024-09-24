@@ -14,9 +14,14 @@
 
 import queue
 
+from opentelemetry import trace
+
+from google.pubsub_v1 import types as gapic_types
 from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber._protocol import messages_on_hold
-from google.pubsub_v1 import types as gapic_types
+from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
+    SubscribeOpenTelemetry,
+)
 
 
 def make_message(ack_id, ordering_key):
@@ -35,6 +40,32 @@ def test_init():
 
     assert moh.size == 0
     assert moh.get() is None
+
+
+def test_opentelemetry_subscriber_scheduler_span(span_exporter):
+    moh = messages_on_hold.MessagesOnHold()
+    msg = make_message(ack_id="ack1", ordering_key="")
+    opentelemetry_data = SubscribeOpenTelemetry(msg)
+    msg.opentelemetry_data = opentelemetry_data
+    opentelemetry_data.start_subscribe_span(
+        subscription="projects/projectId/subscriptions/subscriptionID",
+        exactly_once_enabled=False,
+        ack_id="ack_id",
+        delivery_attempt=4,
+    )
+    moh.put(msg)
+    opentelemetry_data.end_subscribe_scheduler_span()
+    opentelemetry_data.end_subscribe_span()
+
+    spans = span_exporter.get_finished_spans()
+
+    assert len(spans) == 2
+
+    subscribe_scheduler_span, subscribe_span = spans
+
+    assert subscribe_scheduler_span.name == "subscriber scheduler"
+    assert subscribe_scheduler_span.kind == trace.SpanKind.INTERNAL
+    assert subscribe_scheduler_span.parent == subscribe_span.context
 
 
 def test_put_and_get_unordered_messages():

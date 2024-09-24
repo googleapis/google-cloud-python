@@ -17,11 +17,17 @@ import queue
 import sys
 import threading
 
+from opentelemetry import trace
+
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 from google.cloud.pubsub_v1.subscriber import futures
+from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
+    SubscribeOpenTelemetry,
+)
+from google.pubsub_v1.types import PubsubMessage
 
 # special case python < 3.8
 if sys.version_info.major == 3 and sys.version_info.minor < 8:
@@ -365,6 +371,125 @@ def test_unknown_request_type():
         dispatcher_.dispatch_callback(items)
 
 
+def test_opentelemetry_modify_ack_deadline(span_exporter):
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+    opentelemetry_data = SubscribeOpenTelemetry(message=PubsubMessage(data=b"foo"))
+    opentelemetry_data.start_subscribe_span(
+        subscription="projects/projectID/subscriptions/subscriptionID",
+        exactly_once_enabled=True,
+        ack_id="ack_id",
+        delivery_attempt=5,
+    )
+
+    items = [
+        requests.ModAckRequest(
+            ack_id="ack_id_string",
+            seconds=60,
+            future=None,
+            opentelemetry_data=opentelemetry_data,
+        )
+    ]
+    manager.send_unary_modack.return_value = (items, [])
+    dispatcher_.modify_ack_deadline(items)
+
+    # Subscribe span would not have ended as part of a modack. So, end it
+    # in the test, so that we can export and assert its contents.
+    opentelemetry_data.end_subscribe_span()
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 1
+    subscribe_span = spans[0]
+
+    assert len(subscribe_span.events) == 2
+    assert subscribe_span.events[0].name == "modack start"
+    assert subscribe_span.events[1].name == "modack end"
+
+
+@pytest.mark.skipif(
+    sys.version_info < (3, 8),
+    reason="Open Telemetry not supported below Python version 3.8",
+)
+def test_opentelemetry_ack(span_exporter):
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    data1 = SubscribeOpenTelemetry(message=PubsubMessage(data=b"foo"))
+    data1.start_subscribe_span(
+        subscription="projects/projectID/subscriptions/subscriptionID",
+        exactly_once_enabled=True,
+        ack_id="ack_id",
+        delivery_attempt=5,
+    )
+    data2 = SubscribeOpenTelemetry(message=PubsubMessage(data=b"foo"))
+    data2.start_subscribe_span(
+        subscription="projects/projectID/subscriptions/subscriptionID",
+        exactly_once_enabled=True,
+        ack_id="ack_id",
+        delivery_attempt=5,
+    )
+    items = [
+        requests.AckRequest(
+            ack_id="ack_id_string",
+            byte_size=0,
+            time_to_ack=20,
+            ordering_key="",
+            future=None,
+            opentelemetry_data=data1,
+        ),
+        requests.AckRequest(
+            ack_id="ack_id_string2",
+            byte_size=0,
+            time_to_ack=20,
+            ordering_key="",
+            future=None,
+            opentelemetry_data=data2,
+        ),
+    ]
+    manager.send_unary_ack.return_value = (items, [])
+    mock_span_context = mock.Mock(spec=trace.SpanContext)
+    mock_span_context.trace_flags.sampled = False
+    with mock.patch.object(
+        data2._subscribe_span, "get_span_context", return_value=mock_span_context
+    ):
+        dispatcher_.ack(items)
+
+    spans = span_exporter.get_finished_spans()
+
+    assert len(spans) == 3
+    ack_span = spans[0]
+
+    for subscribe_span in spans[1:]:
+        assert subscribe_span.attributes["messaging.gcp_pubsub.result"] == "acked"
+        assert len(subscribe_span.events) == 2
+        assert subscribe_span.events[0].name == "ack start"
+        assert subscribe_span.events[1].name == "ack end"
+
+    # This subscribe span is sampled, so we expect it to be linked to the ack
+    # span.
+    assert len(spans[1].links) == 1
+    assert spans[1].links[0].context == ack_span.context
+    assert len(spans[1].links[0].attributes) == 1
+    assert spans[1].links[0].attributes["messaging.operation.name"] == "ack"
+    # This subscribe span is not sampled, so we expect it to not be linked to
+    # the ack span
+    assert len(spans[2].links) == 0
+
+    assert ack_span.name == "subscriptionID ack"
+    assert ack_span.kind == trace.SpanKind.CLIENT
+    assert ack_span.parent is None
+    assert len(ack_span.links) == 1
+    assert ack_span.attributes["messaging.system"] == "gcp_pubsub"
+    assert ack_span.attributes["messaging.batch.message_count"] == 2
+    assert ack_span.attributes["messaging.operation"] == "ack"
+    assert ack_span.attributes["gcp.project_id"] == "projectID"
+    assert ack_span.attributes["messaging.destination.name"] == "subscriptionID"
+    assert ack_span.attributes["code.function"] == "ack"
+
+
 def test_ack():
     manager = mock.create_autospec(
         streaming_pull_manager.StreamingPullManager, instance=True
@@ -481,6 +606,92 @@ def test_retry_acks_in_new_thread():
             assert ctor_call.kwargs["daemon"]
 
 
+@pytest.mark.skipif(
+    sys.version_info < (3, 8),
+    reason="Open Telemetry not supported below Python version 3.8",
+)
+def test_opentelemetry_retry_acks(span_exporter):
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+    data1 = SubscribeOpenTelemetry(message=PubsubMessage(data=b"foo"))
+    data1.start_subscribe_span(
+        subscription="projects/projectID/subscriptions/subscriptionID",
+        exactly_once_enabled=True,
+        ack_id="ack_id",
+        delivery_attempt=5,
+    )
+    data2 = SubscribeOpenTelemetry(message=PubsubMessage(data=b"foo"))
+    data2.start_subscribe_span(
+        subscription="projects/projectID/subscriptions/subscriptionID",
+        exactly_once_enabled=True,
+        ack_id="ack_id",
+        delivery_attempt=5,
+    )
+
+    f = futures.Future()
+    items = [
+        requests.AckRequest(
+            ack_id="ack_id_string",
+            byte_size=0,
+            time_to_ack=20,
+            ordering_key="",
+            future=f,
+            opentelemetry_data=data1,
+        ),
+        requests.AckRequest(
+            ack_id="ack_id_string2",
+            byte_size=0,
+            time_to_ack=20,
+            ordering_key="",
+            future=f,
+            opentelemetry_data=data2,
+        ),
+    ]
+    manager.send_unary_ack.side_effect = [(items, [])]
+    mock_span_context = mock.Mock(spec=trace.SpanContext)
+    mock_span_context.trace_flags.sampled = False
+    with mock.patch("time.sleep", return_value=None):
+        with mock.patch.object(
+            data2._subscribe_span, "get_span_context", return_value=mock_span_context
+        ):
+            dispatcher_._retry_acks(items)
+
+    spans = span_exporter.get_finished_spans()
+
+    assert len(spans) == 3
+    ack_span = spans[0]
+
+    for subscribe_span in spans[1:]:
+        assert "messaging.gcp_pubsub.result" in subscribe_span.attributes
+        assert subscribe_span.attributes["messaging.gcp_pubsub.result"] == "acked"
+        assert len(subscribe_span.events) == 2
+        assert subscribe_span.events[0].name == "ack start"
+        assert subscribe_span.events[1].name == "ack end"
+
+    # This subscribe span is sampled, so we expect it to be linked to the ack
+    # span.
+    assert len(spans[1].links) == 1
+    assert spans[1].links[0].context == ack_span.context
+    assert len(spans[1].links[0].attributes) == 1
+    assert spans[1].links[0].attributes["messaging.operation.name"] == "ack"
+    # This subscribe span is not sampled, so we expect it to not be linked to
+    # the ack span
+    assert len(spans[2].links) == 0
+
+    assert ack_span.name == "subscriptionID ack"
+    assert ack_span.kind == trace.SpanKind.CLIENT
+    assert ack_span.parent is None
+    assert len(ack_span.links) == 1
+    assert ack_span.attributes["messaging.system"] == "gcp_pubsub"
+    assert ack_span.attributes["messaging.batch.message_count"] == 2
+    assert ack_span.attributes["messaging.operation"] == "ack"
+    assert ack_span.attributes["gcp.project_id"] == "projectID"
+    assert ack_span.attributes["messaging.destination.name"] == "subscriptionID"
+    assert ack_span.attributes["code.function"] == "ack"
+
+
 def test_retry_acks():
     manager = mock.create_autospec(
         streaming_pull_manager.StreamingPullManager, instance=True
@@ -542,6 +753,125 @@ def test_retry_modacks_in_new_thread():
             assert ctor_call.kwargs["name"] == "Thread-RetryModAcks"
             assert ctor_call.kwargs["target"].args[0] == items
             assert ctor_call.kwargs["daemon"]
+
+
+def test_opentelemetry_retry_modacks(span_exporter):
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    opentelemetry_data = SubscribeOpenTelemetry(message=PubsubMessage(data=b"foo"))
+    opentelemetry_data.start_subscribe_span(
+        subscription="projects/projectID/subscriptions/subscriptionID",
+        exactly_once_enabled=True,
+        ack_id="ack_id",
+        delivery_attempt=5,
+    )
+
+    f = futures.Future()
+    items = [
+        requests.ModAckRequest(
+            ack_id="ack_id_string",
+            seconds=20,
+            future=f,
+            opentelemetry_data=opentelemetry_data,
+        )
+    ]
+    manager.send_unary_modack.side_effect = [(items, [])]
+    with mock.patch("time.sleep", return_value=None):
+        dispatcher_._retry_modacks(items)
+
+    # Subscribe span wouldn't be ended for modacks. So, end it in the test, so
+    # that we can export and assert its contents.
+    opentelemetry_data.end_subscribe_span()
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 1
+    subscribe_span = spans[0]
+
+    assert len(subscribe_span.events) == 1
+    assert subscribe_span.events[0].name == "modack end"
+
+
+@pytest.mark.skipif(
+    sys.version_info < (3, 8),
+    reason="Open Telemetry not supported below Python version 3.8",
+)
+def test_opentelemetry_retry_nacks(span_exporter):
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    data1 = SubscribeOpenTelemetry(message=PubsubMessage(data=b"foo"))
+    data1.start_subscribe_span(
+        subscription="projects/projectID/subscriptions/subscriptionID",
+        exactly_once_enabled=True,
+        ack_id="ack_id1",
+        delivery_attempt=5,
+    )
+    data2 = SubscribeOpenTelemetry(message=PubsubMessage(data=b"foo"))
+    data2.start_subscribe_span(
+        subscription="projects/projectID/subscriptions/subscriptionID",
+        exactly_once_enabled=True,
+        ack_id="ack_id2",
+        delivery_attempt=5,
+    )
+
+    f = futures.Future()
+    items = [
+        requests.ModAckRequest(
+            ack_id="ack_id1",
+            seconds=0,
+            future=f,
+            opentelemetry_data=data1,
+        ),
+        requests.ModAckRequest(
+            ack_id="ack_id2",
+            seconds=0,
+            future=f,
+            opentelemetry_data=data2,
+        ),
+    ]
+    manager.send_unary_modack.side_effect = [(items, [])]
+    mock_span_context = mock.Mock(spec=trace.SpanContext)
+    mock_span_context.trace_flags.sampled = False
+    with mock.patch("time.sleep", return_value=None):
+        with mock.patch.object(
+            data2._subscribe_span, "get_span_context", return_value=mock_span_context
+        ):
+            dispatcher_._retry_modacks(items)
+
+    spans = span_exporter.get_finished_spans()
+    assert len(spans) == 3
+    nack_span = spans[0]
+
+    for subscribe_span in spans[1:]:
+        assert "messaging.gcp_pubsub.result" in subscribe_span.attributes
+        assert subscribe_span.attributes["messaging.gcp_pubsub.result"] == "nacked"
+        assert len(subscribe_span.events) == 1
+        assert subscribe_span.events[0].name == "nack end"
+
+    # This subscribe span is sampled, so we expect it to be linked to the nack
+    # span.
+    assert len(spans[1].links) == 1
+    assert spans[1].links[0].context == nack_span.context
+    assert len(spans[1].links[0].attributes) == 1
+    assert spans[1].links[0].attributes["messaging.operation.name"] == "nack"
+    # This subscribe span is not sampled, so we expect it to not be linked to
+    # the nack span
+    assert len(spans[2].links) == 0
+
+    assert nack_span.name == "subscriptionID nack"
+    assert nack_span.kind == trace.SpanKind.CLIENT
+    assert nack_span.parent is None
+    assert len(nack_span.links) == 1
+    assert nack_span.attributes["messaging.system"] == "gcp_pubsub"
+    assert nack_span.attributes["messaging.batch.message_count"] == 2
+    assert nack_span.attributes["messaging.operation"] == "nack"
+    assert nack_span.attributes["gcp.project_id"] == "projectID"
+    assert nack_span.attributes["messaging.destination.name"] == "subscriptionID"
+    assert nack_span.attributes["code.function"] == "modify_ack_deadline"
 
 
 def test_retry_modacks():
@@ -631,6 +961,103 @@ def test_drop_ordered_messages():
     manager.leaser.remove.assert_called_once_with(items)
     assert list(manager.activate_ordering_keys.call_args.args[0]) == ["key1", "key2"]
     manager.maybe_resume_consumer.assert_called_once()
+
+
+@pytest.mark.skipif(
+    sys.version_info < (3, 8),
+    reason="Open Telemetry not supported below Python version 3.8",
+)
+def test_opentelemetry_nack(span_exporter):
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    data1 = SubscribeOpenTelemetry(message=PubsubMessage(data=b"foo"))
+    data1.start_subscribe_span(
+        subscription="projects/projectID/subscriptions/subscriptionID",
+        exactly_once_enabled=True,
+        ack_id="ack_id",
+        delivery_attempt=5,
+    )
+    data2 = SubscribeOpenTelemetry(message=PubsubMessage(data=b"foo"))
+    data2.start_subscribe_span(
+        subscription="projects/projectID/subscriptions/subscriptionID",
+        exactly_once_enabled=True,
+        ack_id="ack_id2",
+        delivery_attempt=5,
+    )
+
+    items = [
+        requests.NackRequest(
+            ack_id="ack_id",
+            byte_size=10,
+            ordering_key="",
+            future=None,
+            opentelemetry_data=data1,
+        ),
+        requests.NackRequest(
+            ack_id="ack_id2",
+            byte_size=10,
+            ordering_key="",
+            future=None,
+            opentelemetry_data=data2,
+        ),
+    ]
+    response_items = [
+        requests.ModAckRequest(
+            ack_id="ack_id",
+            seconds=0,
+            future=None,
+            opentelemetry_data=data1,
+        ),
+        requests.ModAckRequest(
+            ack_id="ack_id2",
+            seconds=0,
+            future=None,
+            opentelemetry_data=data2,
+        ),
+    ]
+    manager.send_unary_modack.return_value = (response_items, [])
+
+    mock_span_context = mock.Mock(spec=trace.SpanContext)
+    mock_span_context.trace_flags.sampled = False
+    with mock.patch.object(
+        data2._subscribe_span, "get_span_context", return_value=mock_span_context
+    ):
+        dispatcher_.nack(items)
+
+    spans = span_exporter.get_finished_spans()
+
+    assert len(spans) == 3
+    nack_span = spans[0]
+    for subscribe_span in spans[1:]:
+        assert "messaging.gcp_pubsub.result" in subscribe_span.attributes
+        assert subscribe_span.attributes["messaging.gcp_pubsub.result"] == "nacked"
+        assert len(subscribe_span.events) == 2
+        assert subscribe_span.events[0].name == "nack start"
+        assert subscribe_span.events[1].name == "nack end"
+
+    # This subscribe span is sampled, so we expect it to be linked to the nack
+    # span.
+    assert len(spans[1].links) == 1
+    assert spans[1].links[0].context == nack_span.context
+    assert len(spans[1].links[0].attributes) == 1
+    assert spans[1].links[0].attributes["messaging.operation.name"] == "nack"
+    # This subscribe span is not sampled, so we expect it to not be linked to
+    # the nack span
+    assert len(spans[2].links) == 0
+
+    assert nack_span.name == "subscriptionID nack"
+    assert nack_span.kind == trace.SpanKind.CLIENT
+    assert nack_span.parent is None
+    assert len(nack_span.links) == 1
+    assert nack_span.attributes["messaging.system"] == "gcp_pubsub"
+    assert nack_span.attributes["messaging.batch.message_count"] == 2
+    assert nack_span.attributes["messaging.operation"] == "nack"
+    assert nack_span.attributes["gcp.project_id"] == "projectID"
+    assert nack_span.attributes["messaging.destination.name"] == "subscriptionID"
+    assert nack_span.attributes["code.function"] == "modify_ack_deadline"
 
 
 def test_nack():
