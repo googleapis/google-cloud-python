@@ -19,7 +19,17 @@ import collections.abc
 import inspect
 import sys
 import threading
-from typing import Any, cast, Dict, Mapping, Optional, Sequence, TYPE_CHECKING, Union
+from typing import (
+    Any,
+    cast,
+    Dict,
+    Literal,
+    Mapping,
+    Optional,
+    Sequence,
+    TYPE_CHECKING,
+    Union,
+)
 import warnings
 
 import bigframes_vendored.constants as constants
@@ -110,6 +120,9 @@ class RemoteFunctionSession:
         cloud_function_max_instances: Optional[int] = None,
         cloud_function_vpc_connector: Optional[str] = None,
         cloud_function_memory_mib: Optional[int] = 1024,
+        cloud_function_ingress_settings: Literal[
+            "all", "internal-only", "internal-and-gclb"
+        ] = "all",
     ):
         """Decorator to turn a user defined function into a BigQuery remote function.
 
@@ -280,6 +293,11 @@ class RemoteFunctionSession:
                 default memory of cloud functions be allocated, pass `None`. See
                 for more details
                 https://cloud.google.com/functions/docs/configuring/memory.
+            cloud_function_ingress_settings (str, Optional):
+                Ingress settings controls dictating what traffic can reach the
+                function. By default `all` will be used. It must be one of:
+                `all`, `internal-only`, `internal-and-gclb`. See for more details
+                https://cloud.google.com/functions/docs/networking/network-settings#ingress_settings.
         """
         # Some defaults may be used from the session if not provided otherwise
         import bigframes.exceptions as bf_exceptions
@@ -504,6 +522,7 @@ class RemoteFunctionSession:
                 is_row_processor=is_row_processor,
                 cloud_function_vpc_connector=cloud_function_vpc_connector,
                 cloud_function_memory_mib=cloud_function_memory_mib,
+                cloud_function_ingress_settings=cloud_function_ingress_settings,
             )
 
             # TODO(shobs): Find a better way to support udfs with param named "name".

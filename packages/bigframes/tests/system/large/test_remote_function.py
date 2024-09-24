@@ -2173,3 +2173,69 @@ def test_df_apply_axis_1_single_param_non_series(session):
         cleanup_remote_function_assets(
             session.bqclient, session.cloudfunctionsclient, foo
         )
+
+
+@pytest.mark.parametrize(
+    ("ingress_settings_args", "effective_ingress_settings"),
+    [
+        pytest.param(
+            {}, functions_v2.ServiceConfig.IngressSettings.ALLOW_ALL, id="no-set"
+        ),
+        pytest.param(
+            {"cloud_function_ingress_settings": "all"},
+            functions_v2.ServiceConfig.IngressSettings.ALLOW_ALL,
+            id="set-all",
+        ),
+        pytest.param(
+            {"cloud_function_ingress_settings": "internal-only"},
+            functions_v2.ServiceConfig.IngressSettings.ALLOW_INTERNAL_ONLY,
+            id="set-internal-only",
+        ),
+        pytest.param(
+            {"cloud_function_ingress_settings": "internal-and-gclb"},
+            functions_v2.ServiceConfig.IngressSettings.ALLOW_INTERNAL_AND_GCLB,
+            id="set-internal-and-gclb",
+        ),
+    ],
+)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_ingress_settings(
+    session, scalars_dfs, ingress_settings_args, effective_ingress_settings
+):
+    try:
+
+        def square(x: int) -> int:
+            return x * x
+
+        square_remote = session.remote_function(reuse=False, **ingress_settings_args)(
+            square
+        )
+
+        # Assert that the GCF is created with the intended maximum timeout
+        gcf = session.cloudfunctionsclient.get_function(
+            name=square_remote.bigframes_cloud_function
+        )
+        assert gcf.service_config.ingress_settings == effective_ingress_settings
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_result = scalars_df["int64_too"].apply(square_remote).to_pandas()
+        pd_result = scalars_pandas_df["int64_too"].apply(square)
+
+        pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, square_remote
+        )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_ingress_settings_unsupported(session):
+    with pytest.raises(
+        ValueError, match="'unknown' not one of the supported ingress settings values"
+    ):
+
+        @session.remote_function(reuse=False, cloud_function_ingress_settings="unknown")
+        def square(x: int) -> int:
+            return x * x

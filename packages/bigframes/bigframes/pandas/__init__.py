@@ -669,6 +669,9 @@ def remote_function(
     cloud_function_max_instances: Optional[int] = None,
     cloud_function_vpc_connector: Optional[str] = None,
     cloud_function_memory_mib: Optional[int] = 1024,
+    cloud_function_ingress_settings: Literal[
+        "all", "internal-only", "internal-and-gclb"
+    ] = "all",
 ):
     return global_session.with_default_session(
         bigframes.session.Session.remote_function,
@@ -687,6 +690,7 @@ def remote_function(
         cloud_function_max_instances=cloud_function_max_instances,
         cloud_function_vpc_connector=cloud_function_vpc_connector,
         cloud_function_memory_mib=cloud_function_memory_mib,
+        cloud_function_ingress_settings=cloud_function_ingress_settings,
     )
 
 
