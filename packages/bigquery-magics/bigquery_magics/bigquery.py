@@ -360,6 +360,15 @@ def _create_dataset_if_necessary(client, dataset_id):
         "This flag is ignored when the engine is 'bigframes'."
     ),
 )
+@magic_arguments.argument(
+    "--engine",
+    type=str,
+    default=None,
+    help=(
+        "Set the execution engine, either 'pandas' or 'bigframes'."
+        "Defaults to engine set in the query setting in console."
+    ),
+)
 def _cell_magic(line, query):
     """Underlying function for bigquery cell magic
 
@@ -384,7 +393,9 @@ def _cell_magic(line, query):
         return
     query = _validate_and_resolve_query(query, args)
 
-    if context.engine == "bigframes":
+    engine = args.engine or context.engine
+
+    if engine == "bigframes":
         return _query_with_bigframes(query, params, args)
 
     return _query_with_pandas(query, params, args)
@@ -423,7 +434,12 @@ def _parse_magic_args(line: str) -> Tuple[List[Any], Any]:
 
         params = _helpers.to_query_parameters(ast.literal_eval(params_option_value), {})
 
-    return params, magic_arguments.parse_argstring(_cell_magic, rest_of_args)
+    args = magic_arguments.parse_argstring(_cell_magic, rest_of_args)
+
+    if args.engine is not None and args.engine not in ("pandas", "bigframes"):
+        raise ValueError(f"Invalid engine: {args.engine}")
+
+    return params, args
 
 
 def _split_args_line(line: str) -> Tuple[str, str]:
