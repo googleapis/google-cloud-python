@@ -2302,52 +2302,19 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             self._block.melt(id_col_ids, val_col_ids, var_name, value_name)
         )
 
-    _NUMERIC_DESCRIBE_AGGS = (
-        "count",
-        "mean",
-        "std",
-        "min",
-        "25%",
-        "50%",
-        "75%",
-        "max",
-    )
-    _NON_NUMERIC_DESCRIBE_AGGS = ("count", "nunique")
-
     def describe(self, include: None | Literal["all"] = None) -> DataFrame:
-
-        allowed_non_numeric_types = {
-            bigframes.dtypes.STRING_DTYPE,
-            bigframes.dtypes.BOOL_DTYPE,
-            bigframes.dtypes.BYTES_DTYPE,
-        }
-
         if include is None:
             numeric_df = self._drop_non_numeric(permissive=False)
             if len(numeric_df.columns) == 0:
                 # Describe eligible non-numeric columns
-                result = self.select_dtypes(include=allowed_non_numeric_types).agg(
-                    self._NON_NUMERIC_DESCRIBE_AGGS
-                )
-            else:
-                # Otherwise, only describe numeric columns
-                result = numeric_df.agg(self._NUMERIC_DESCRIBE_AGGS)
-            return typing.cast(DataFrame, result)
+                return self._describe_non_numeric()
+
+            # Otherwise, only describe numeric columns
+            return self._describe_numeric()
 
         elif include == "all":
-            numeric_result = typing.cast(
-                DataFrame,
-                self._drop_non_numeric(permissive=False).agg(
-                    self._NUMERIC_DESCRIBE_AGGS
-                ),
-            )
-
-            non_numeric_result = typing.cast(
-                DataFrame,
-                self.select_dtypes(include=allowed_non_numeric_types).agg(
-                    self._NON_NUMERIC_DESCRIBE_AGGS
-                ),
-            )
+            numeric_result = self._describe_numeric()
+            non_numeric_result = self._describe_non_numeric()
 
             if len(numeric_result.columns) == 0:
                 return non_numeric_result
@@ -2363,6 +2330,35 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         else:
             raise ValueError(f"Unsupported include type: {include}")
+
+    def _describe_numeric(self) -> DataFrame:
+        return typing.cast(
+            DataFrame,
+            self._drop_non_numeric(permissive=False).agg(
+                [
+                    "count",
+                    "mean",
+                    "std",
+                    "min",
+                    "25%",
+                    "50%",
+                    "75%",
+                    "max",
+                ]
+            ),
+        )
+
+    def _describe_non_numeric(self) -> DataFrame:
+        return typing.cast(
+            DataFrame,
+            self.select_dtypes(
+                include={
+                    bigframes.dtypes.STRING_DTYPE,
+                    bigframes.dtypes.BOOL_DTYPE,
+                    bigframes.dtypes.BYTES_DTYPE,
+                }
+            ).agg(["count", "nunique"]),
+        )
 
     def skew(self, *, numeric_only: bool = False):
         if not numeric_only:
