@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.19.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.18.0...v1.19.0) (2024-09-24)
+
+
+### Features
+
+* Add ml.model_selection.KFold class ([#1001](https://github.com/googleapis/python-bigquery-dataframes/issues/1001)) ([952cab9](https://github.com/googleapis/python-bigquery-dataframes/commit/952cab92e548b70d077b20bf10f5307751d2ae76))
+* Support bool and bytes types in `describe(include='all')` ([#994](https://github.com/googleapis/python-bigquery-dataframes/issues/994)) ([cc48f58](https://github.com/googleapis/python-bigquery-dataframes/commit/cc48f58cbd94f8110ee863eb57d3fe8dc5a17778))
+* Support ingress settings in `remote_function` ([#1011](https://github.com/googleapis/python-bigquery-dataframes/issues/1011)) ([8e9919b](https://github.com/googleapis/python-bigquery-dataframes/commit/8e9919b53899b6951a10d02643d1d0e53e15665f))
+
+
+### Bug Fixes
+
+* Fix miscasting issues with case_when ([#1003](https://github.com/googleapis/python-bigquery-dataframes/issues/1003)) ([038139d](https://github.com/googleapis/python-bigquery-dataframes/commit/038139dfa4fa89167c52c1cb559c2eb5fe2f0411))
+
+
+### Performance Improvements
+
+* Join op discards child ordering in unordered mode ([#923](https://github.com/googleapis/python-bigquery-dataframes/issues/923)) ([1b5b0ee](https://github.com/googleapis/python-bigquery-dataframes/commit/1b5b0eea92631b7dd1b688cf1da617fc7ce862dc))
+
+
+### Dependencies
+
+* Update ibis version in prerelease tests ([#1012](https://github.com/googleapis/python-bigquery-dataframes/issues/1012)) ([f89785f](https://github.com/googleapis/python-bigquery-dataframes/commit/f89785fcfc51c541253ca8c1e8baf80fbfaea3b6))
+
 ## [1.18.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.17.0...v1.18.0) (2024-09-18)
 
 
