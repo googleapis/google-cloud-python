@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.3.0...v0.4.0) (2024-09-24)
+
+
+### Features
+
+* Add support for overriding `context.engine` by magic argument ([#60](https://github.com/googleapis/python-bigquery-magics/issues/60)) ([ff57f14](https://github.com/googleapis/python-bigquery-magics/commit/ff57f14aa43c60ffc02b8966da2405c31ea42c64))
+
 ## [0.3.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.2.0...v0.3.0) (2024-09-20)
 
 
