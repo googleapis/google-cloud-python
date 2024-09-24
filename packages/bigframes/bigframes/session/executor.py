@@ -360,11 +360,6 @@ class BigQueryCachingExecutor:
 
     def _cache_with_offsets(self, array_value: bigframes.core.ArrayValue):
         """Executes the query and uses the resulting table to rewrite future executions."""
-
-        if not self.strictly_ordered:
-            raise ValueError(
-                "Caching with offsets only supported in strictly ordered mode."
-            )
         offset_column = bigframes.core.guid.generate_guid("bigframes_offsets")
         w_offsets, offset_column = array_value.promote_offsets()
         sql = self.compiler.compile_unordered(self._get_optimized_plan(w_offsets.node))

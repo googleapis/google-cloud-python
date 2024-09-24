@@ -44,8 +44,8 @@ def can_fast_head(node: nodes.BigFrameNode) -> bool:
     """Can get head fast if can push head operator down to leafs and operators preserve rows."""
     if isinstance(node, nodes.LeafNode):
         return node.supports_fast_head
-    if isinstance(node, nodes.UnaryNode):
-        return node.row_preserving and can_fast_head(node.child)
+    if isinstance(node, (nodes.ProjectionNode, nodes.SelectionNode)):
+        return can_fast_head(node.child)
     return False
 
 

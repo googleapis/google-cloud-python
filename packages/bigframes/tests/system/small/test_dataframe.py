@@ -567,6 +567,30 @@ def test_repr_w_all_rows(scalars_dfs):
     assert actual == expected
 
 
+def test_join_repr(scalars_dfs_maybe_ordered):
+    scalars_df, scalars_pandas_df = scalars_dfs_maybe_ordered
+
+    scalars_df = (
+        scalars_df[["int64_col"]]
+        .join(scalars_df.set_index("int64_col")[["int64_too"]])
+        .sort_index()
+    )
+    scalars_pandas_df = (
+        scalars_pandas_df[["int64_col"]]
+        .join(scalars_pandas_df.set_index("int64_col")[["int64_too"]])
+        .sort_index()
+    )
+    # Pandas join result index name seems to depend on the index values in a way that bigframes can't match exactly
+    scalars_pandas_df.index.name = None
+
+    actual = repr(scalars_df)
+
+    with display_options.pandas_repr(bigframes.options.display):
+        expected = repr(scalars_pandas_df)
+
+    assert actual == expected
+
+
 def test_repr_html_w_all_rows(scalars_dfs):
     scalars_df, _ = scalars_dfs
     # get a pandas df of the expected format

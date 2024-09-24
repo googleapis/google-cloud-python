@@ -643,7 +643,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if opts.repr_mode == "deferred":
             return formatter.repr_query_job(self._compute_dry_run())
 
-        self._cached()
         # TODO(swast): pass max_columns and get the true column count back. Maybe
         # get 1 more column than we have requested so that pandas can add the
         # ... for us?
