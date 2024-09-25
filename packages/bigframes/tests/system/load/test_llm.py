@@ -156,3 +156,27 @@ def test_claude3_text_generator_predict_with_params_success(
     utils.check_pandas_df_schema_and_index(
         df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
     )
+
+
+@pytest.mark.parametrize(
+    "model_name",
+    ("claude-3-sonnet", "claude-3-haiku", "claude-3-5-sonnet", "claude-3-opus"),
+)
+@pytest.mark.flaky(retries=3, delay=120)
+def test_claude3_text_generator_predict_multi_col_success(
+    llm_text_df, model_name, session, session_us_east5, bq_connection
+):
+    if model_name in ("claude-3-5-sonnet", "claude-3-opus"):
+        session = session_us_east5
+
+    llm_text_df["additional_col"] = 1
+    claude3_text_generator_model = llm.Claude3TextGenerator(
+        model_name=model_name, connection_name=bq_connection, session=session
+    )
+    df = claude3_text_generator_model.predict(llm_text_df).to_pandas()
+    utils.check_pandas_df_schema_and_index(
+        df,
+        columns=utils.ML_GENERATE_TEXT_OUTPUT + ["additional_col"],
+        index=3,
+        col_exact=False,
+    )

@@ -244,7 +244,7 @@ class PaLM2TextGenerator(base.BaseEstimator):
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):
-                Input DataFrame or Series, which contains only one column of prompts.
+                Input DataFrame or Series, can contain one or more columns. If multiple columns are in the DataFrame, it must contain a "prompt" column for prediction.
                 Prompts can include preamble, questions, suggestions, instructions, or examples.
 
             temperature (float, default 0.0):
@@ -307,14 +307,10 @@ class PaLM2TextGenerator(base.BaseEstimator):
 
         (X,) = utils.convert_to_dataframe(X)
 
-        if len(X.columns) != 1:
-            raise ValueError(
-                f"Only support one column as input. {constants.FEEDBACK_LINK}"
-            )
-
-        # BQML identified the column by name
-        col_label = cast(blocks.Label, X.columns[0])
-        X = X.rename(columns={col_label: "prompt"})
+        if len(X.columns) == 1:
+            # BQML identified the column by name
+            col_label = cast(blocks.Label, X.columns[0])
+            X = X.rename(columns={col_label: "prompt"})
 
         options = {
             "temperature": temperature,
@@ -522,7 +518,7 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):
-                Input DataFrame, which needs to contain a column with name "content". Only the column will be used as input. Content can include preamble, questions, suggestions, instructions, or examples.
+                Input DataFrame or Series, can contain one or more columns. If multiple columns are in the DataFrame, it must contain a "content" column for prediction.
 
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
@@ -531,14 +527,10 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
         # Params reference: https://cloud.google.com/vertex-ai/docs/generative-ai/learn/models
         (X,) = utils.convert_to_dataframe(X)
 
-        if len(X.columns) != 1:
-            raise ValueError(
-                f"Only support one column as input. {constants.FEEDBACK_LINK}"
-            )
-
-        # BQML identified the column by name
-        col_label = cast(blocks.Label, X.columns[0])
-        X = X.rename(columns={col_label: "content"})
+        if len(X.columns) == 1:
+            # BQML identified the column by name
+            col_label = cast(blocks.Label, X.columns[0])
+            X = X.rename(columns={col_label: "content"})
 
         options = {
             "flatten_json_output": True,
@@ -679,7 +671,7 @@ class TextEmbeddingGenerator(base.BaseEstimator):
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):
-                Input DataFrame, which needs to contain a column with name "content". Only the column will be used as input. Content can include preamble, questions, suggestions, instructions, or examples.
+                Input DataFrame or Series, can contain one or more columns. If multiple columns are in the DataFrame, it must contain a "content" column for prediction.
 
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
@@ -688,14 +680,10 @@ class TextEmbeddingGenerator(base.BaseEstimator):
         # Params reference: https://cloud.google.com/vertex-ai/docs/generative-ai/learn/models
         (X,) = utils.convert_to_dataframe(X)
 
-        if len(X.columns) != 1:
-            raise ValueError(
-                f"Only support one column as input. {constants.FEEDBACK_LINK}"
-            )
-
-        # BQML identified the column by name
-        col_label = cast(blocks.Label, X.columns[0])
-        X = X.rename(columns={col_label: "content"})
+        if len(X.columns) == 1:
+            # BQML identified the column by name
+            col_label = cast(blocks.Label, X.columns[0])
+            X = X.rename(columns={col_label: "content"})
 
         options = {
             "flatten_json_output": True,
@@ -893,7 +881,7 @@ class GeminiTextGenerator(base.BaseEstimator):
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):
-                Input DataFrame or Series, which contains only one column of prompts.
+                Input DataFrame or Series, can contain one or more columns. If multiple columns are in the DataFrame, it must contain a "prompt" column for prediction.
                 Prompts can include preamble, questions, suggestions, instructions, or examples.
 
             temperature (float, default 0.9):
@@ -938,14 +926,10 @@ class GeminiTextGenerator(base.BaseEstimator):
 
         (X,) = utils.convert_to_dataframe(X)
 
-        if len(X.columns) != 1:
-            raise ValueError(
-                f"Only support one column as input. {constants.FEEDBACK_LINK}"
-            )
-
-        # BQML identified the column by name
-        col_label = cast(blocks.Label, X.columns[0])
-        X = X.rename(columns={col_label: "prompt"})
+        if len(X.columns) == 1:
+            # BQML identified the column by name
+            col_label = cast(blocks.Label, X.columns[0])
+            X = X.rename(columns={col_label: "prompt"})
 
         options = {
             "temperature": temperature,
@@ -1181,7 +1165,7 @@ class Claude3TextGenerator(base.BaseEstimator):
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):
-                Input DataFrame or Series, which contains only one column of prompts.
+                Input DataFrame or Series, can contain one or more columns. If multiple columns are in the DataFrame, it must contain a "prompt" column for prediction.
                 Prompts can include preamble, questions, suggestions, instructions, or examples.
 
             max_output_tokens (int, default 128):
@@ -1222,14 +1206,10 @@ class Claude3TextGenerator(base.BaseEstimator):
 
         (X,) = utils.convert_to_dataframe(X)
 
-        if len(X.columns) != 1:
-            raise ValueError(
-                f"Only support one column as input. {constants.FEEDBACK_LINK}"
-            )
-
-        # BQML identified the column by name
-        col_label = cast(blocks.Label, X.columns[0])
-        X = X.rename(columns={col_label: "prompt"})
+        if len(X.columns) == 1:
+            # BQML identified the column by name
+            col_label = cast(blocks.Label, X.columns[0])
+            X = X.rename(columns={col_label: "prompt"})
 
         options = {
             "max_output_tokens": max_output_tokens,

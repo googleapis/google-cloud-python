@@ -15,6 +15,7 @@
 import pytest
 
 from bigframes.ml import llm
+import bigframes.pandas as bpd
 from tests.system import utils
 
 
@@ -167,6 +168,20 @@ def test_text_generator_predict_arbitrary_col_label_success(
 
 
 @pytest.mark.flaky(retries=2)
+def test_text_generator_predict_multiple_cols_success(
+    palm2_text_generator_model, llm_text_df: bpd.DataFrame
+):
+    df = llm_text_df.assign(additional_col=1)
+    pd_df = palm2_text_generator_model.predict(df).to_pandas()
+    utils.check_pandas_df_schema_and_index(
+        pd_df,
+        columns=utils.ML_GENERATE_TEXT_OUTPUT + ["additional_col"],
+        index=3,
+        col_exact=False,
+    )
+
+
+@pytest.mark.flaky(retries=2)
 def test_text_generator_predict_with_params_success(
     palm2_text_generator_model, llm_text_df
 ):
@@ -212,11 +227,33 @@ def test_text_embedding_generator_predict_default_params_success(
         model_name=model_name, connection_name=bq_connection, session=session
     )
     df = text_embedding_model.predict(llm_text_df).to_pandas()
-    assert df.shape == (3, 4)
-    assert "ml_generate_embedding_result" in df.columns
-    series = df["ml_generate_embedding_result"]
-    value = series[0]
-    assert len(value) == 768
+    utils.check_pandas_df_schema_and_index(
+        df, columns=utils.ML_GENERATE_EMBEDDING_OUTPUT, index=3, col_exact=False
+    )
+    assert len(df["ml_generate_embedding_result"][0]) == 768
+
+
+@pytest.mark.parametrize(
+    "model_name",
+    ("text-embedding-004", "text-multilingual-embedding-002"),
+)
+@pytest.mark.flaky(retries=2)
+def test_text_embedding_generator_multi_cols_predict_success(
+    llm_text_df: bpd.DataFrame, model_name, session, bq_connection
+):
+    df = llm_text_df.assign(additional_col=1)
+    df = df.rename(columns={"prompt": "content"})
+    text_embedding_model = llm.TextEmbeddingGenerator(
+        model_name=model_name, connection_name=bq_connection, session=session
+    )
+    pd_df = text_embedding_model.predict(df).to_pandas()
+    utils.check_pandas_df_schema_and_index(
+        pd_df,
+        columns=utils.ML_GENERATE_EMBEDDING_OUTPUT + ["additional_col"],
+        index=3,
+        col_exact=False,
+    )
+    assert len(pd_df["ml_generate_embedding_result"][0]) == 768
 
 
 @pytest.mark.parametrize(
@@ -292,6 +329,33 @@ def test_gemini_text_generator_predict_with_params_success(
     ).to_pandas()
     utils.check_pandas_df_schema_and_index(
         df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
+    )
+
+
+@pytest.mark.parametrize(
+    "model_name",
+    (
+        "gemini-pro",
+        "gemini-1.5-pro-preview-0514",
+        "gemini-1.5-flash-preview-0514",
+        "gemini-1.5-pro-001",
+        "gemini-1.5-flash-001",
+    ),
+)
+@pytest.mark.flaky(retries=2)
+def test_gemini_text_generator_multi_cols_predict_success(
+    llm_text_df: bpd.DataFrame, model_name, session, bq_connection
+):
+    df = llm_text_df.assign(additional_col=1)
+    gemini_text_generator_model = llm.GeminiTextGenerator(
+        model_name=model_name, connection_name=bq_connection, session=session
+    )
+    pd_df = gemini_text_generator_model.predict(df).to_pandas()
+    utils.check_pandas_df_schema_and_index(
+        pd_df,
+        columns=utils.ML_GENERATE_TEXT_OUTPUT + ["additional_col"],
+        index=3,
+        col_exact=False,
     )
 
 

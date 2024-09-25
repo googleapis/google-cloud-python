@@ -50,6 +50,12 @@ ML_GENERATE_TEXT_OUTPUT = [
     "ml_generate_text_status",
     "prompt",
 ]
+ML_GENERATE_EMBEDDING_OUTPUT = [
+    "ml_generate_embedding_result",
+    "ml_generate_embedding_statistics",
+    "ml_generate_embedding_status",
+    "content",
+]
 
 
 def skip_legacy_pandas(test):
