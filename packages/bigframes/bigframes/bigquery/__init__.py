@@ -272,6 +272,46 @@ def json_extract_array(
     return series._apply_unary_op(ops.JSONExtractArray(json_path=json_path))
 
 
+# Approximate aggrgate functions defined from
+# https://cloud.google.com/bigquery/docs/reference/standard-sql/approximate_aggregate_functions
+
+
+def approx_top_count(
+    series: series.Series,
+    number: int,
+) -> series.Series:
+    """Returns the approximate top elements of `expression` as an array of STRUCTs.
+    The number parameter specifies the number of elements returned.
+
+    Each `STRUCT` contains two fields. The first field (named `value`) contains an input
+    value. The second field (named `count`) contains an `INT64` specifying the number
+    of times the value was returned.
+
+    Returns `NULL` if there are zero input rows.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bpd.options.display.progress_bar = None
+        >>> s = bpd.Series(["apple", "apple", "pear", "pear", "pear", "banana"])
+        >>> bbq.approx_top_count(s, number=2)
+        [{'value': 'pear', 'count': 3}, {'value': 'apple', 'count': 2}]
+
+    Args:
+        series (bigframes.series.Series):
+            The Series with any data type that the `GROUP BY` clause supports.
+        number (int):
+            An integer specifying the number of times the value was returned.
+
+    Returns:
+        bigframes.series.Series: A new Series with the result data.
+    """
+    if number < 1:
+        raise ValueError("The number of approx_top_count must be at least 1")
+    return series._apply_aggregation(agg_ops.ApproxTopCountOp(number=number))
+
+
 def struct(value: dataframe.DataFrame) -> series.Series:
     """Takes a DataFrame and converts it into a Series of structs with each
     struct entry corresponding to a DataFrame row and each struct field

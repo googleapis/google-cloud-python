@@ -185,6 +185,23 @@ class ApproxQuartilesOp(UnaryAggregateOp):
 
 
 @dataclasses.dataclass(frozen=True)
+class ApproxTopCountOp(UnaryAggregateOp):
+    name: typing.ClassVar[str] = "approx_top_count"
+    number: int
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if not dtypes.is_orderable(input_types[0]):
+            raise TypeError(f"Type {input_types[0]} is not orderable")
+
+        input_type = input_types[0]
+        fields = [
+            pa.field("value", dtypes.bigframes_dtype_to_arrow_dtype(input_type)),
+            pa.field("count", pa.int64()),
+        ]
+        return pd.ArrowDtype(pa.list_(pa.struct(fields)))
+
+
+@dataclasses.dataclass(frozen=True)
 class MeanOp(UnaryAggregateOp):
     name: ClassVar[str] = "mean"
 

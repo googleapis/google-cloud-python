@@ -11,6 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from __future__ import annotations
+
 import functools
 import typing
 from typing import cast, List, Optional
@@ -19,6 +22,7 @@ import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 import ibis
 import ibis.expr.datatypes as ibis_dtypes
+import ibis.expr.operations as ibis_ops
 import ibis.expr.types as ibis_types
 import pandas as pd
 
@@ -194,6 +198,34 @@ def _(
         )
     value = approx_quantiles(column, 4)[op.quartile]  # type: ignore
     return cast(ibis_types.NumericValue, value)
+
+
+@compile_unary_agg.register
+def _(
+    op: agg_ops.ApproxTopCountOp,
+    column: ibis_types.Column,
+    window=None,
+) -> ibis_types.ArrayColumn:
+    # APPROX_TOP_COUNT has very few allowed windows.
+    if window is not None:
+        raise NotImplementedError(
+            f"Approx top count with windowing is not supported. {constants.FEEDBACK_LINK}"
+        )
+
+    # Define a user-defined function (UDF) that approximates the top counts of an expression.
+    # The type of value is dynamically matching the input column.
+    def approx_top_count(expression, number: ibis_dtypes.int64):  # type: ignore
+        ...
+
+    return_type = ibis_dtypes.Array(
+        ibis_dtypes.Struct.from_tuples(
+            [("value", column.type()), ("count", ibis_dtypes.int64)]
+        )
+    )
+    approx_top_count.__annotations__["return"] = return_type
+    udf_op = ibis_ops.udf.agg.builtin(approx_top_count)
+
+    return udf_op(expression=column, number=op.number)
 
 
 @compile_unary_agg.register
