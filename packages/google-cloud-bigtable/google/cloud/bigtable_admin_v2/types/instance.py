@@ -237,6 +237,9 @@ class Cluster(proto.Message):
             The number of nodes allocated to this
             cluster. More nodes enable higher throughput and
             more consistent performance.
+        node_scaling_factor (google.cloud.bigtable_admin_v2.types.Cluster.NodeScalingFactor):
+            Immutable. The node scaling factor of this
+            cluster.
         cluster_config (google.cloud.bigtable_admin_v2.types.Cluster.ClusterConfig):
             Configuration for this cluster.
 
@@ -283,6 +286,28 @@ class Cluster(proto.Message):
         CREATING = 2
         RESIZING = 3
         DISABLED = 4
+
+    class NodeScalingFactor(proto.Enum):
+        r"""Possible node scaling factors of the clusters. Node scaling
+        delivers better latency and more throughput by removing node
+        boundaries.
+
+        Values:
+            NODE_SCALING_FACTOR_UNSPECIFIED (0):
+                No node scaling specified. Defaults to
+                NODE_SCALING_FACTOR_1X.
+            NODE_SCALING_FACTOR_1X (1):
+                The cluster is running with a scaling factor
+                of 1.
+            NODE_SCALING_FACTOR_2X (2):
+                The cluster is running with a scaling factor of 2. All node
+                count values must be in increments of 2 with this scaling
+                factor enabled, otherwise an INVALID_ARGUMENT error will be
+                returned.
+        """
+        NODE_SCALING_FACTOR_UNSPECIFIED = 0
+        NODE_SCALING_FACTOR_1X = 1
+        NODE_SCALING_FACTOR_2X = 2
 
     class ClusterAutoscalingConfig(proto.Message):
         r"""Autoscaling config for a cluster.
@@ -363,6 +388,11 @@ class Cluster(proto.Message):
     serve_nodes: int = proto.Field(
         proto.INT32,
         number=4,
+    )
+    node_scaling_factor: NodeScalingFactor = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=NodeScalingFactor,
     )
     cluster_config: ClusterConfig = proto.Field(
         proto.MESSAGE,
@@ -468,17 +498,46 @@ class AppProfile(proto.Message):
         in a region are considered equidistant. Choosing this option
         sacrifices read-your-writes consistency to improve availability.
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             cluster_ids (MutableSequence[str]):
                 The set of clusters to route to. The order is
                 ignored; clusters will be tried in order of
                 distance. If left empty, all clusters are
                 eligible.
+            row_affinity (google.cloud.bigtable_admin_v2.types.AppProfile.MultiClusterRoutingUseAny.RowAffinity):
+                Row affinity sticky routing based on the row
+                key of the request. Requests that span multiple
+                rows are routed non-deterministically.
+
+                This field is a member of `oneof`_ ``affinity``.
         """
+
+        class RowAffinity(proto.Message):
+            r"""If enabled, Bigtable will route the request based on the row
+            key of the request, rather than randomly. Instead, each row key
+            will be assigned to a cluster, and will stick to that cluster.
+            If clusters are added or removed, then this may affect which row
+            keys stick to which clusters. To avoid this, users can use a
+            cluster group to specify which clusters are to be used. In this
+            case, new clusters that are not a part of the cluster group will
+            not be routed to, and routing will be unaffected by the new
+            cluster. Moreover, clusters specified in the cluster group
+            cannot be deleted unless removed from the cluster group.
+
+            """
 
         cluster_ids: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
+        )
+        row_affinity: "AppProfile.MultiClusterRoutingUseAny.RowAffinity" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="affinity",
+            message="AppProfile.MultiClusterRoutingUseAny.RowAffinity",
         )
 
     class SingleClusterRouting(proto.Message):
