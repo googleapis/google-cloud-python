@@ -46,6 +46,101 @@ _BQML_TRANSFROM_TYPE_MAPPING = types.MappingProxyType(
 )
 
 
+class SQLScalarColumnTransformer:
+    r"""
+    Wrapper for plain SQL code contained in a ColumnTransformer.
+
+    Create a single column transformer in plain sql.
+    This transformer can only be used inside ColumnTransformer.
+
+    When creating an instance '{0}' can be used as placeholder
+    for the column to transform:
+
+        SQLScalarColumnTransformer("{0}+1")
+
+    The default target column gets the prefix 'transformed\_'
+    but can also be changed when creating an instance:
+
+        SQLScalarColumnTransformer("{0}+1", "inc_{0}")
+
+    **Examples:**
+
+        >>> from bigframes.ml.compose import ColumnTransformer, SQLScalarColumnTransformer
+        >>> import bigframes.pandas as bpd
+        <BLANKLINE>
+        >>> df = bpd.DataFrame({'name': ["James", None, "Mary"], 'city': ["New York", "Boston", None]})
+        >>> col_trans = ColumnTransformer([
+        ...     ("strlen",
+        ...      SQLScalarColumnTransformer("CASE WHEN {0} IS NULL THEN 15 ELSE LENGTH({0}) END"),
+        ...      ['name', 'city']),
+        ... ])
+        >>> col_trans = col_trans.fit(df)
+        >>> df_transformed = col_trans.transform(df)
+        >>> df_transformed
+           transformed_name  transformed_city
+        0                 5                 8
+        1                15                 6
+        2                 4                15
+        <BLANKLINE>
+        [3 rows x 2 columns]
+
+    SQLScalarColumnTransformer can be combined with other transformers, like StandardScaler:
+
+        >>> col_trans = ColumnTransformer([
+        ...     ("identity", SQLScalarColumnTransformer("{0}", target_column="{0}"), ["col1", "col5"]),
+        ...     ("increment", SQLScalarColumnTransformer("{0}+1", target_column="inc_{0}"), "col2"),
+        ...     ("stdscale", preprocessing.StandardScaler(), "col3"),
+        ...     # ...
+        ... ])
+
+    """
+
+    def __init__(self, sql: str, target_column: str = "transformed_{0}"):
+        super().__init__()
+        self._sql = sql
+        self._target_column = target_column.replace("`", "")
+
+    PLAIN_COLNAME_RX = re.compile("^[a-z][a-z0-9_]*$", re.IGNORECASE)
+
+    def escape(self, colname: str):
+        colname = colname.replace("`", "")
+        if self.PLAIN_COLNAME_RX.match(colname):
+            return colname
+        return f"`{colname}`"
+
+    def _compile_to_sql(
+        self, X: bpd.DataFrame, columns: Optional[Iterable[str]] = None
+    ) -> List[str]:
+        if columns is None:
+            columns = X.columns
+        result = []
+        for column in columns:
+            current_sql = self._sql.format(self.escape(column))
+            current_target_column = self.escape(self._target_column.format(column))
+            result.append(f"{current_sql} AS {current_target_column}")
+        return result
+
+    def __repr__(self):
+        return f"SQLScalarColumnTransformer(sql='{self._sql}', target_column='{self._target_column}')"
+
+    def __eq__(self, other) -> bool:
+        return type(self) is type(other) and self._keys() == other._keys()
+
+    def __hash__(self) -> int:
+        return hash(self._keys())
+
+    def _keys(self):
+        return (self._sql, self._target_column)
+
+
+# Type hints for transformers contained in ColumnTransformer
+SingleColTransformer = Union[
+    preprocessing.PreprocessingType,
+    impute.SimpleImputer,
+    SQLScalarColumnTransformer,
+]
+
+
 @log_adapter.class_logger
 class ColumnTransformer(
     base.Transformer,
@@ -60,7 +155,7 @@ class ColumnTransformer(
         transformers: Iterable[
             Tuple[
                 str,
-                Union[preprocessing.PreprocessingType, impute.SimpleImputer],
+                SingleColTransformer,
                 Union[str, Iterable[str]],
             ]
         ],
@@ -78,14 +173,12 @@ class ColumnTransformer(
     @property
     def transformers_(
         self,
-    ) -> List[
-        Tuple[str, Union[preprocessing.PreprocessingType, impute.SimpleImputer], str]
-    ]:
+    ) -> List[Tuple[str, SingleColTransformer, str,]]:
         """The collection of transformers as tuples of (name, transformer, column)."""
         result: List[
             Tuple[
                 str,
-                Union[preprocessing.PreprocessingType, impute.SimpleImputer],
+                SingleColTransformer,
                 str,
             ]
         ] = []
@@ -103,6 +196,8 @@ class ColumnTransformer(
 
         return result
 
+    AS_FLEXNAME_SUFFIX_RX = re.compile("^(.*)\\bAS\\s*`[^`]+`\\s*$", re.IGNORECASE)
+
     @classmethod
     def _extract_from_bq_model(
         cls,
@@ -114,7 +209,7 @@ class ColumnTransformer(
         transformers_set: Set[
             Tuple[
                 str,
-                Union[preprocessing.PreprocessingType, impute.SimpleImputer],
+                SingleColTransformer,
                 Union[str, List[str]],
             ]
         ] = set()
@@ -130,8 +225,11 @@ class ColumnTransformer(
             if "transformSql" not in transform_col_dict:
                 continue
             transform_sql: str = transform_col_dict["transformSql"]
-            if not transform_sql.startswith("ML."):
-                continue
+
+            # workaround for bug in bq_model returning " AS `...`" suffix for flexible names
+            flex_name_match = cls.AS_FLEXNAME_SUFFIX_RX.match(transform_sql)
+            if flex_name_match:
+                transform_sql = flex_name_match.group(1)
 
             output_names.append(transform_col_dict["name"])
             found_transformer = False
@@ -148,8 +246,22 @@ class ColumnTransformer(
                     found_transformer = True
                     break
             if not found_transformer:
-                raise NotImplementedError(
-                    f"Unsupported transformer type. {constants.FEEDBACK_LINK}"
+                if transform_sql.startswith("ML."):
+                    raise NotImplementedError(
+                        f"Unsupported transformer type. {constants.FEEDBACK_LINK}"
+                    )
+
+                target_column = transform_col_dict["name"]
+                sql_transformer = SQLScalarColumnTransformer(
+                    transform_sql, target_column=target_column
+                )
+                input_column_name = f"?{target_column}"
+                transformers_set.add(
+                    (
+                        camel_to_snake(sql_transformer.__class__.__name__),
+                        sql_transformer,
+                        input_column_name,
+                    )
                 )
 
         transformer = cls(transformers=list(transformers_set))
@@ -167,6 +279,8 @@ class ColumnTransformer(
 
         assert len(transformers) > 0
         _, transformer_0, column_0 = transformers[0]
+        if isinstance(transformer_0, SQLScalarColumnTransformer):
+            return self  # SQLScalarColumnTransformer only work inside ColumnTransformer
         feature_columns_sorted = sorted(
             [
                 cast(str, feature_column.name)

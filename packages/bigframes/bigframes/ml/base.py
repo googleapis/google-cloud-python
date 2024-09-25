@@ -198,10 +198,6 @@ class BaseTransformer(BaseEstimator):
             # pass the columns that are not transformed
             if "transformSql" not in transform_col_dict:
                 continue
-            transform_sql: str = transform_col_dict["transformSql"]
-            if not transform_sql.startswith("ML."):
-                continue
-
             output_names.append(transform_col_dict["name"])
 
         self._output_names = output_names
