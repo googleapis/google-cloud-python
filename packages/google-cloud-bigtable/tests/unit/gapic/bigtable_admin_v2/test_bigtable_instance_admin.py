@@ -3837,6 +3837,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             location="location_value",
             state=instance.Cluster.State.READY,
             serve_nodes=1181,
+            node_scaling_factor=instance.Cluster.NodeScalingFactor.NODE_SCALING_FACTOR_1X,
             default_storage_type=common.StorageType.SSD,
         )
         response = client.get_cluster(request)
@@ -3853,6 +3854,10 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.location == "location_value"
     assert response.state == instance.Cluster.State.READY
     assert response.serve_nodes == 1181
+    assert (
+        response.node_scaling_factor
+        == instance.Cluster.NodeScalingFactor.NODE_SCALING_FACTOR_1X
+    )
     assert response.default_storage_type == common.StorageType.SSD
 
 
@@ -3956,6 +3961,7 @@ async def test_get_cluster_empty_call_async():
                 location="location_value",
                 state=instance.Cluster.State.READY,
                 serve_nodes=1181,
+                node_scaling_factor=instance.Cluster.NodeScalingFactor.NODE_SCALING_FACTOR_1X,
                 default_storage_type=common.StorageType.SSD,
             )
         )
@@ -4030,6 +4036,7 @@ async def test_get_cluster_async(
                 location="location_value",
                 state=instance.Cluster.State.READY,
                 serve_nodes=1181,
+                node_scaling_factor=instance.Cluster.NodeScalingFactor.NODE_SCALING_FACTOR_1X,
                 default_storage_type=common.StorageType.SSD,
             )
         )
@@ -4047,6 +4054,10 @@ async def test_get_cluster_async(
     assert response.location == "location_value"
     assert response.state == instance.Cluster.State.READY
     assert response.serve_nodes == 1181
+    assert (
+        response.node_scaling_factor
+        == instance.Cluster.NodeScalingFactor.NODE_SCALING_FACTOR_1X
+    )
     assert response.default_storage_type == common.StorageType.SSD
 
 
@@ -11381,6 +11392,7 @@ def test_create_cluster_rest(request_type):
         "location": "location_value",
         "state": 1,
         "serve_nodes": 1181,
+        "node_scaling_factor": 1,
         "cluster_config": {
             "cluster_autoscaling_config": {
                 "autoscaling_limits": {
@@ -11800,6 +11812,7 @@ def test_get_cluster_rest(request_type):
             location="location_value",
             state=instance.Cluster.State.READY,
             serve_nodes=1181,
+            node_scaling_factor=instance.Cluster.NodeScalingFactor.NODE_SCALING_FACTOR_1X,
             default_storage_type=common.StorageType.SSD,
         )
 
@@ -11820,6 +11833,10 @@ def test_get_cluster_rest(request_type):
     assert response.location == "location_value"
     assert response.state == instance.Cluster.State.READY
     assert response.serve_nodes == 1181
+    assert (
+        response.node_scaling_factor
+        == instance.Cluster.NodeScalingFactor.NODE_SCALING_FACTOR_1X
+    )
     assert response.default_storage_type == common.StorageType.SSD
 
 
@@ -12577,6 +12594,7 @@ def test_partial_update_cluster_rest(request_type):
         "location": "location_value",
         "state": 1,
         "serve_nodes": 1181,
+        "node_scaling_factor": 1,
         "cluster_config": {
             "cluster_autoscaling_config": {
                 "autoscaling_limits": {
@@ -13267,7 +13285,8 @@ def test_create_app_profile_rest(request_type):
         "etag": "etag_value",
         "description": "description_value",
         "multi_cluster_routing_use_any": {
-            "cluster_ids": ["cluster_ids_value1", "cluster_ids_value2"]
+            "cluster_ids": ["cluster_ids_value1", "cluster_ids_value2"],
+            "row_affinity": {},
         },
         "single_cluster_routing": {
             "cluster_id": "cluster_id_value",
@@ -14396,7 +14415,8 @@ def test_update_app_profile_rest(request_type):
         "etag": "etag_value",
         "description": "description_value",
         "multi_cluster_routing_use_any": {
-            "cluster_ids": ["cluster_ids_value1", "cluster_ids_value2"]
+            "cluster_ids": ["cluster_ids_value1", "cluster_ids_value2"],
+            "row_affinity": {},
         },
         "single_cluster_routing": {
             "cluster_id": "cluster_id_value",
