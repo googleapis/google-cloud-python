@@ -5,6 +5,15 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.19.0](https://github.com/googleapis/python-firestore/compare/v2.18.0...v2.19.0) (2024-09-20)
+
+
+### Features
+
+* Add Database.SourceInfo and Database.source_info (information about database provenance, specifically for restored databases) ([#963](https://github.com/googleapis/python-firestore/issues/963)) ([4e15714](https://github.com/googleapis/python-firestore/commit/4e15714cd70b0577d1450b081ad26a8678fe1a9e))
+* Query profiling part 1: synchronous ([#938](https://github.com/googleapis/python-firestore/issues/938)) ([1614b3f](https://github.com/googleapis/python-firestore/commit/1614b3f15311f9eee39c8b72b8dc81f259498dcb))
+* Query profiling part 2: asynchronous ([#961](https://github.com/googleapis/python-firestore/issues/961)) ([060a3ef](https://github.com/googleapis/python-firestore/commit/060a3efa7df4eb6b4ef0701a246ff630dde432c7))
+
 ## [2.18.0](https://github.com/googleapis/python-firestore/compare/v2.17.2...v2.18.0) (2024-08-26)
 
 
