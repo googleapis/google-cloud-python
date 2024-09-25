@@ -72,7 +72,8 @@ class FileStripeLevel(proto.Enum):
 
     Values:
         FILE_STRIPE_LEVEL_UNSPECIFIED (0):
-            Default file striping
+            If not set, FileStripeLevel will default to
+            FILE_STRIPE_LEVEL_BALANCED
         FILE_STRIPE_LEVEL_MIN (1):
             Minimum file striping
         FILE_STRIPE_LEVEL_BALANCED (2):
@@ -91,7 +92,8 @@ class DirectoryStripeLevel(proto.Enum):
 
     Values:
         DIRECTORY_STRIPE_LEVEL_UNSPECIFIED (0):
-            Default directory striping
+            If not set, DirectoryStripeLevel will default to
+            DIRECTORY_STRIPE_LEVEL_MAX
         DIRECTORY_STRIPE_LEVEL_MIN (1):
             Minimum directory striping
         DIRECTORY_STRIPE_LEVEL_BALANCED (2):
@@ -111,7 +113,7 @@ class Instance(proto.Message):
     Attributes:
         name (str):
             Identifier. The resource name of the instance, in the format
-            ``projects/{project}/locations/{location}/instances/{instance_id}``
+            ``projects/{project}/locations/{location}/instances/{instance_id}``.
         description (str):
             Optional. The description of the instance.
             2048 characters or less.
@@ -124,76 +126,62 @@ class Instance(proto.Message):
             Output only. The time when the instance was
             updated.
         labels (MutableMapping[str, str]):
-            Optional. Cloud Labels are a flexible and lightweight
-            mechanism for organizing cloud resources into groups that
-            reflect a customer's organizational needs and deployment
-            strategies. Cloud Labels can be used to filter collections
-            of resources. They can be used to control how resource
-            metrics are aggregated. And they can be used as arguments to
-            policy management rules (e.g. route, firewall, load
-            balancing, etc.).
-
-            -  Label keys must be between 1 and 63 characters long and
-               must conform to the following regular expression:
-               ``[a-z][a-z0-9_-]{0,62}``.
-            -  Label values must be between 0 and 63 characters long and
-               must conform to the regular expression
-               ``[a-z0-9_-]{0,63}``.
-            -  No more than 64 labels can be associated with a given
-               resource.
-
-            See https://goo.gl/xmQnxf for more information on and
-            examples of labels.
-
-            If you plan to use labels in your own code, please note that
-            additional characters may be allowed in the future.
-            Therefore, you are advised to use an internal label
-            representation, such as JSON, which doesn't rely upon
-            specific characters being disallowed. For example,
-            representing labels as the string: name + "*" + value would
-            prove problematic if we were to allow "*" in a future
-            release.
+            Optional. Cloud Labels are a flexible and
+            lightweight mechanism for organizing cloud
+            resources into groups that reflect a customer's
+            organizational needs and deployment strategies.
+            See
+            https://cloud.google.com/resource-manager/docs/labels-overview
+            for details.
         capacity_gib (int):
-            Required. Immutable. Storage capacity of
-            Parallelstore instance in Gibibytes (GiB).
+            Required. Immutable. The instance's storage
+            capacity in Gibibytes (GiB). Allowed values are
+            between 12000 and 100000, in multiples of 4000;
+            e.g., 12000, 16000, 20000, ...
         daos_version (str):
             Output only. The version of DAOS software
-            running in the instance
+            running in the instance.
         access_points (MutableSequence[str]):
-            Output only. List of access_points. Contains a list of IPv4
-            addresses used for client side configuration.
+            Output only. A list of IPv4 addresses used
+            for client side configuration.
         network (str):
-            Optional. Immutable. The name of the Google Compute Engine
-            `VPC network <https://cloud.google.com/vpc/docs/vpc>`__ to
-            which the instance is connected.
+            Optional. Immutable. The name of the Compute Engine `VPC
+            network <https://cloud.google.com/vpc/docs/vpc>`__ to which
+            the instance is connected.
         reserved_ip_range (str):
-            Optional. Immutable. Contains the id of the
-            allocated IP address range associated with the
-            private service access connection for example,
-            "test-default" associated with IP range
-            10.0.0.0/29. If no range id is provided all
-            ranges will be considered.
+            Optional. Immutable. The ID of the IP address range being
+            used by the instance's VPC network. See `Configure a VPC
+            network <https://cloud.google.com/parallelstore/docs/vpc#create_and_configure_the_vpc>`__.
+            If no ID is provided, all ranges are considered.
         effective_reserved_ip_range (str):
-            Output only. Immutable. Contains the id of
-            the allocated IP address range associated with
-            the private service access connection for
-            example, "test-default" associated with IP range
-            10.0.0.0/29. This field is populated by the
-            service and and contains the value currently
-            used by the service.
+            Output only. Immutable. The ID of the IP
+            address range being used by the instance's VPC
+            network. This field is populated by the service
+            and contains the value currently used by the
+            service.
         file_stripe_level (google.cloud.parallelstore_v1beta.types.FileStripeLevel):
-            Optional. Stripe level for files.
-            MIN better suited for small size files.
-            MAX higher throughput performance for larger
-            files.
+            Optional. Stripe level for files. Allowed values are:
+
+            -  ``FILE_STRIPE_LEVEL_MIN``: offers the best performance
+               for small size files.
+            -  ``FILE_STRIPE_LEVEL_BALANCED``: balances performance for
+               workloads involving a mix of small and large files.
+            -  ``FILE_STRIPE_LEVEL_MAX``: higher throughput performance
+               for larger files.
         directory_stripe_level (google.cloud.parallelstore_v1beta.types.DirectoryStripeLevel):
-            Optional. Stripe level for directories.
-            MIN when directory has a small number of files.
-            MAX when directory has a large number of files.
+            Optional. Stripe level for directories. Allowed values are:
+
+            -  ``DIRECTORY_STRIPE_LEVEL_MIN``: recommended when
+               directories contain a small number of files.
+            -  ``DIRECTORY_STRIPE_LEVEL_BALANCED``: balances performance
+               for workloads involving a mix of small and large
+               directories.
+            -  ``DIRECTORY_STRIPE_LEVEL_MAX``: recommended for
+               directories with a large number of files.
     """
 
     class State(proto.Enum):
-        r"""Represents the different states of a Parallelstore instance.
+        r"""The possible states of a Parallelstore instance.
 
         Values:
             STATE_UNSPECIFIED (0):
@@ -206,12 +194,15 @@ class Instance(proto.Message):
                 The instance is being deleted.
             FAILED (4):
                 The instance is not usable.
+            UPGRADING (5):
+                The instance is being upgraded.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
         DELETING = 3
         FAILED = 4
+        UPGRADING = 5
 
     name: str = proto.Field(
         proto.STRING,
@@ -278,28 +269,28 @@ class Instance(proto.Message):
 
 
 class ListInstancesRequest(proto.Message):
-    r"""Message for requesting list of Instances
+    r"""List instances request.
 
     Attributes:
         parent (str):
             Required. The project and location for which to retrieve
             instance information, in the format
-            ``projects/{project_id}/locations/{location}``. For
-            Parallelstore locations map to Google Cloud zones, for
-            example **us-central1-a**. To retrieve instance information
-            for all locations, use "-" for the ``{location}`` value.
+            ``projects/{project_id}/locations/{location}``.
+
+            To retrieve instance information for all locations, use "-"
+            as the value of ``{location}``.
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. If
-            unspecified, server will pick an appropriate
+            unspecified, the server will pick an appropriate
             default.
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.
         filter (str):
-            Optional. Filtering results
+            Optional. Filtering results.
         order_by (str):
-            Optional. Hint for how to order the results
+            Optional. Hint for how to order the results.
     """
 
     parent: str = proto.Field(
@@ -325,11 +316,12 @@ class ListInstancesRequest(proto.Message):
 
 
 class ListInstancesResponse(proto.Message):
-    r"""Message for response to listing Instances
+    r"""Response from
+    [ListInstances][google.cloud.parallelstore.v1beta.Parallelstore.ListInstances].
 
     Attributes:
         instances (MutableSequence[google.cloud.parallelstore_v1beta.types.Instance]):
-            The list of Parallelstore Instances
+            The list of Parallelstore instances.
         next_page_token (str):
             A token identifying a page of results the
             server should return.
@@ -357,7 +349,7 @@ class ListInstancesResponse(proto.Message):
 
 
 class GetInstanceRequest(proto.Message):
-    r"""Request to get an instance's details.
+    r"""Get an instance's details.
 
     Attributes:
         name (str):
@@ -372,17 +364,15 @@ class GetInstanceRequest(proto.Message):
 
 
 class CreateInstanceRequest(proto.Message):
-    r"""Request for
-    [CreateInstance][google.cloud.parallelstore.v1beta.Parallelstore.CreateInstance]
+    r"""Create a new Parallelstore instance.
 
     Attributes:
         parent (str):
             Required. The instance's project and location, in the format
             ``projects/{project}/locations/{location}``. Locations map
-            to Google Cloud zones, for example **us-west1-b**.
+            to Google Cloud zones; for example, ``us-west1-b``.
         instance_id (str):
-            Required. The logical name of the Parallelstore instance in
-            the user project with the following restrictions:
+            Required. The name of the Parallelstore instance.
 
             -  Must contain only lowercase letters, numbers, and
                hyphens.
@@ -434,17 +424,17 @@ class CreateInstanceRequest(proto.Message):
 
 
 class UpdateInstanceRequest(proto.Message):
-    r"""Message for updating a Instance
+    r"""Update an instance.
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Mask of fields to update .Field mask is used to
+            Required. Mask of fields to update. Field mask is used to
             specify the fields to be overwritten in the Instance
             resource by the update. At least one path must be supplied
             in this field. The fields specified in the update_mask are
             relative to the resource, not the full request.
         instance (google.cloud.parallelstore_v1beta.types.Instance):
-            Required. The instance to update
+            Required. The instance to update.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
@@ -484,7 +474,7 @@ class UpdateInstanceRequest(proto.Message):
 
 
 class DeleteInstanceRequest(proto.Message):
-    r"""Message for deleting a Instance
+    r"""Delete an instance.
 
     Attributes:
         name (str):
@@ -522,7 +512,7 @@ class DeleteInstanceRequest(proto.Message):
 
 
 class OperationMetadata(proto.Message):
-    r"""Represents the metadata of the long-running operation.
+    r"""Long-running operation metadata.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -584,12 +574,13 @@ class OperationMetadata(proto.Message):
 
 
 class SourceGcsBucket(proto.Message):
-    r"""Google Cloud Storage as a source.
+    r"""Cloud Storage as the source of a data transfer.
 
     Attributes:
         uri (str):
-            Required. URI to a Cloud Storage object in format:
-            'gs://<bucket_name>/<path_inside_bucket>'.
+            Required. URI to a Cloud Storage bucket in the format:
+            ``gs://<bucket_name>/<path_inside_bucket>``. The path inside
+            the bucket is optional.
     """
 
     uri: str = proto.Field(
@@ -599,12 +590,13 @@ class SourceGcsBucket(proto.Message):
 
 
 class DestinationGcsBucket(proto.Message):
-    r"""Google Cloud Storage as a destination.
+    r"""Cloud Storage as the destination of a data transfer.
 
     Attributes:
         uri (str):
-            Required. URI to a Cloud Storage object in format:
-            'gs://<bucket_name>/<path_inside_bucket>'.
+            Required. URI to a Cloud Storage bucket in the format:
+            ``gs://<bucket_name>/<path_inside_bucket>``. The path inside
+            the bucket is optional.
     """
 
     uri: str = proto.Field(
@@ -614,13 +606,12 @@ class DestinationGcsBucket(proto.Message):
 
 
 class SourceParallelstore(proto.Message):
-    r"""Pa as a source.
+    r"""Parallelstore as the source of a data transfer.
 
     Attributes:
         path (str):
-            Optional. Root directory path to the
-            Paralellstore filesystem, starting with '/'.
-            Defaults to '/' if unset.
+            Optional. Root directory path to the Paralellstore
+            filesystem, starting with ``/``. Defaults to ``/`` if unset.
     """
 
     path: str = proto.Field(
@@ -630,13 +621,12 @@ class SourceParallelstore(proto.Message):
 
 
 class DestinationParallelstore(proto.Message):
-    r"""Parallelstore as a destination.
+    r"""Parallelstore as the destination of a data transfer.
 
     Attributes:
         path (str):
-            Optional. Root directory path to the
-            Paralellstore filesystem, starting with '/'.
-            Defaults to '/' if unset.
+            Optional. Root directory path to the Paralellstore
+            filesystem, starting with ``/``. Defaults to ``/`` if unset.
     """
 
     path: str = proto.Field(
@@ -646,15 +636,14 @@ class DestinationParallelstore(proto.Message):
 
 
 class ImportDataRequest(proto.Message):
-    r"""Message representing the request importing data from
-    parallelstore to Cloud Storage.
-
+    r"""Import data from Cloud Storage into a Parallelstore instance.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         source_gcs_bucket (google.cloud.parallelstore_v1beta.types.SourceGcsBucket):
-            Cloud Storage source.
+            The Cloud Storage source bucket and,
+            optionally, path inside the bucket.
 
             This field is a member of `oneof`_ ``source``.
         destination_parallelstore (google.cloud.parallelstore_v1beta.types.DestinationParallelstore):
@@ -684,11 +673,17 @@ class ImportDataRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         service_account (str):
-            Optional. User-specified Service Account (SA) credentials to
-            be used when performing the transfer. Format:
-            ``projects/{project_id}/serviceAccounts/{service_account}``
+            Optional. User-specified service account credentials to be
+            used when performing the transfer.
+
+            Use one of the following formats:
+
+            -  {EMAIL_ADDRESS_OR_UNIQUE_ID}
+            -  ``projects/{PROJECT_ID_OR_NUMBER}/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}``
+            -  \`projects/-/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}
+
             If unspecified, the Parallelstore service agent is used:
-            service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com)
+            ``service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com``
     """
 
     source_gcs_bucket: "SourceGcsBucket" = proto.Field(
@@ -718,9 +713,7 @@ class ImportDataRequest(proto.Message):
 
 
 class ExportDataRequest(proto.Message):
-    r"""Message representing the request exporting data from Cloud
-    Storage to parallelstore.
-
+    r"""Export data from Parallelstore to Cloud Storage.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -757,10 +750,15 @@ class ExportDataRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
         service_account (str):
             Optional. User-specified Service Account (SA) credentials to
-            be used when performing the transfer. Format:
-            ``projects/{project_id}/serviceAccounts/{service_account}``
+            be used when performing the transfer. Use one of the
+            following formats:
+
+            -  {EMAIL_ADDRESS_OR_UNIQUE_ID}
+            -  ``projects/{PROJECT_ID_OR_NUMBER}/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}``
+            -  \`projects/-/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}
+
             If unspecified, the Parallelstore service agent is used:
-            service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com)
+            ``service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com``
     """
 
     source_parallelstore: "SourceParallelstore" = proto.Field(
@@ -790,19 +788,15 @@ class ExportDataRequest(proto.Message):
 
 
 class ImportDataResponse(proto.Message):
-    r"""ImportDataResponse is the response returned from ImportData
-    rpc.
-
-    """
+    r"""The response to a request to import data to Parallelstore."""
 
 
 class ImportDataMetadata(proto.Message):
-    r"""ImportDataMetadata contains import data operation metadata
+    r"""Metadata related to the data import operation.
 
     Attributes:
         operation_metadata (google.cloud.parallelstore_v1beta.types.TransferOperationMetadata):
-            Contains the data transfer operation
-            metadata.
+            Data transfer operation metadata.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the operation was
             created.
@@ -867,19 +861,15 @@ class ImportDataMetadata(proto.Message):
 
 
 class ExportDataResponse(proto.Message):
-    r"""ExportDataResponse is the response returned from ExportData
-    rpc
-
-    """
+    r"""The response to a request to export data from Parallelstore."""
 
 
 class ExportDataMetadata(proto.Message):
-    r"""ExportDataMetadata contains export data operation metadata
+    r"""Metadata related to the data export operation.
 
     Attributes:
         operation_metadata (google.cloud.parallelstore_v1beta.types.TransferOperationMetadata):
-            Contains the data transfer operation
-            metadata.
+            Data transfer operation metadata.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the operation was
             created.
@@ -944,7 +934,7 @@ class ExportDataMetadata(proto.Message):
 
 
 class TransferOperationMetadata(proto.Message):
-    r"""Represents the metadata of the long-running operation.
+    r"""Long-running operation metadata related to a data transfer.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -971,8 +961,8 @@ class TransferOperationMetadata(proto.Message):
 
             This field is a member of `oneof`_ ``destination``.
         counters (google.cloud.parallelstore_v1beta.types.TransferCounters):
-            Output only. Information about the progress
-            of the transfer operation.
+            Output only. The progress of the transfer
+            operation.
         transfer_type (google.cloud.parallelstore_v1beta.types.TransferType):
             Output only. The type of transfer occurring.
     """
