@@ -184,3 +184,30 @@ def test_download_blob_to_file_w_etag(
         if_etag_match=blob.etag,
     )
     assert buffer.getvalue() == payload
+
+
+def test_client_universe_domain(
+    universe_domain_client,
+    test_universe_location,
+    buckets_to_delete,
+    blobs_to_delete,
+):
+    bucket_name = _helpers.unique_name("gcp-systest-ud")
+    ud_bucket = universe_domain_client.create_bucket(
+        bucket_name, location=test_universe_location
+    )
+    buckets_to_delete.append(ud_bucket)
+
+    blob_name = _helpers.unique_name("gcp-systest-ud")
+    blob = ud_bucket.blob(blob_name)
+    payload = b"The quick brown fox jumps over the lazy dog"
+    blob.upload_from_string(payload)
+    blobs_to_delete.append(blob)
+
+    with tempfile.NamedTemporaryFile() as temp_f:
+        with open(temp_f.name, "wb") as file_obj:
+            universe_domain_client.download_blob_to_file(blob, file_obj)
+        with open(temp_f.name, "rb") as file_obj:
+            stored_contents = file_obj.read()
+
+    assert stored_contents == payload

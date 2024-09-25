@@ -31,6 +31,10 @@ retry_failures = RetryErrors(AssertionError)
 
 user_project = os.environ.get("GOOGLE_CLOUD_TESTS_USER_PROJECT")
 testing_mtls = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE") == "true"
+test_universe_domain = os.getenv("TEST_UNIVERSE_DOMAIN")
+test_universe_project_id = os.getenv("TEST_UNIVERSE_PROJECT_ID")
+test_universe_location = os.getenv("TEST_UNIVERSE_LOCATION")
+test_universe_domain_credential = os.getenv("TEST_UNIVERSE_DOMAIN_CREDENTIAL")
 signing_blob_content = b"This time for sure, Rocky!"
 is_api_endpoint_override = (
     _get_default_storage_base_url() != "https://storage.googleapis.com"

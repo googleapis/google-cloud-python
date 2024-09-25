@@ -331,3 +331,56 @@ def keyring(storage_client, kms_bucket, kms_client):
         except exceptions.NotFound:
             key = {"purpose": purpose}
             kms_client.create_crypto_key(keyring_path, key_name, key)
+
+
+@pytest.fixture(scope="function")
+def test_universe_domain():
+    if _helpers.test_universe_domain is None:
+        pytest.skip("TEST_UNIVERSE_DOMAIN not set in environment.")
+    return _helpers.test_universe_domain
+
+
+@pytest.fixture(scope="function")
+def test_universe_project_id():
+    if _helpers.test_universe_project_id is None:
+        pytest.skip("TEST_UNIVERSE_PROJECT_ID not set in environment.")
+    return _helpers.test_universe_project_id
+
+
+@pytest.fixture(scope="function")
+def test_universe_location():
+    if _helpers.test_universe_location is None:
+        pytest.skip("TEST_UNIVERSE_LOCATION not set in environment.")
+    return _helpers.test_universe_location
+
+
+@pytest.fixture(scope="function")
+def test_universe_domain_credential():
+    if _helpers.test_universe_domain_credential is None:
+        pytest.skip("TEST_UNIVERSE_DOMAIN_CREDENTIAL not set in environment.")
+    return _helpers.test_universe_domain_credential
+
+
+@pytest.fixture(scope="function")
+def universe_domain_credential(test_universe_domain_credential):
+    from google.oauth2 import service_account
+
+    return service_account.Credentials.from_service_account_file(
+        test_universe_domain_credential
+    )
+
+
+@pytest.fixture(scope="function")
+def universe_domain_client(
+    test_universe_domain, test_universe_project_id, universe_domain_credential
+):
+    from google.cloud.storage import Client
+
+    client_options = {"universe_domain": test_universe_domain}
+    ud_storage_client = Client(
+        project=test_universe_project_id,
+        credentials=universe_domain_credential,
+        client_options=client_options,
+    )
+    with contextlib.closing(ud_storage_client):
+        yield ud_storage_client
