@@ -48,16 +48,18 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-from google.shopping.merchant_accounts_v1beta.types import shippingsettings
+from google.protobuf import field_mask_pb2  # type: ignore
 
-from .transports.base import DEFAULT_CLIENT_INFO, ShippingSettingsServiceTransport
-from .transports.grpc import ShippingSettingsServiceGrpcTransport
-from .transports.grpc_asyncio import ShippingSettingsServiceGrpcAsyncIOTransport
-from .transports.rest import ShippingSettingsServiceRestTransport
+from google.shopping.merchant_accounts_v1beta.types import autofeedsettings
+
+from .transports.base import DEFAULT_CLIENT_INFO, AutofeedSettingsServiceTransport
+from .transports.grpc import AutofeedSettingsServiceGrpcTransport
+from .transports.grpc_asyncio import AutofeedSettingsServiceGrpcAsyncIOTransport
+from .transports.rest import AutofeedSettingsServiceRestTransport
 
 
-class ShippingSettingsServiceClientMeta(type):
-    """Metaclass for the ShippingSettingsService client.
+class AutofeedSettingsServiceClientMeta(type):
+    """Metaclass for the AutofeedSettingsService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
@@ -66,15 +68,15 @@ class ShippingSettingsServiceClientMeta(type):
 
     _transport_registry = (
         OrderedDict()
-    )  # type: Dict[str, Type[ShippingSettingsServiceTransport]]
-    _transport_registry["grpc"] = ShippingSettingsServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = ShippingSettingsServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = ShippingSettingsServiceRestTransport
+    )  # type: Dict[str, Type[AutofeedSettingsServiceTransport]]
+    _transport_registry["grpc"] = AutofeedSettingsServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = AutofeedSettingsServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = AutofeedSettingsServiceRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[ShippingSettingsServiceTransport]:
+    ) -> Type[AutofeedSettingsServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -93,9 +95,10 @@ class ShippingSettingsServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta):
-    """Service to get method call shipping setting information per
-    Merchant API method.
+class AutofeedSettingsServiceClient(metaclass=AutofeedSettingsServiceClientMeta):
+    """Service to support
+    `autofeed <https://support.google.com/merchants/answer/7538732>`__
+    setting.
     """
 
     @staticmethod
@@ -148,7 +151,7 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ShippingSettingsServiceClient: The constructed client.
+            AutofeedSettingsServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -166,7 +169,7 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ShippingSettingsServiceClient: The constructed client.
+            AutofeedSettingsServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -175,28 +178,28 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> ShippingSettingsServiceTransport:
+    def transport(self) -> AutofeedSettingsServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            ShippingSettingsServiceTransport: The transport used by the client
+            AutofeedSettingsServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
 
     @staticmethod
-    def shipping_settings_path(
+    def autofeed_settings_path(
         account: str,
     ) -> str:
-        """Returns a fully-qualified shipping_settings string."""
-        return "accounts/{account}/shippingSettings".format(
+        """Returns a fully-qualified autofeed_settings string."""
+        return "accounts/{account}/autofeedSettings".format(
             account=account,
         )
 
     @staticmethod
-    def parse_shipping_settings_path(path: str) -> Dict[str, str]:
-        """Parses a shipping_settings path into its component segments."""
-        m = re.match(r"^accounts/(?P<account>.+?)/shippingSettings$", path)
+    def parse_autofeed_settings_path(path: str) -> Dict[str, str]:
+        """Parses a autofeed_settings path into its component segments."""
+        m = re.match(r"^accounts/(?P<account>.+?)/autofeedSettings$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -418,15 +421,15 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = ShippingSettingsServiceClient._DEFAULT_UNIVERSE
+            _default_universe = AutofeedSettingsServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = ShippingSettingsServiceClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = AutofeedSettingsServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = (
-                ShippingSettingsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+                AutofeedSettingsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
                     UNIVERSE_DOMAIN=universe_domain
                 )
             )
@@ -448,7 +451,7 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = ShippingSettingsServiceClient._DEFAULT_UNIVERSE
+        universe_domain = AutofeedSettingsServiceClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -474,7 +477,7 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
             ValueError: when client_universe does not match the universe in credentials.
         """
 
-        default_universe = ShippingSettingsServiceClient._DEFAULT_UNIVERSE
+        default_universe = AutofeedSettingsServiceClient._DEFAULT_UNIVERSE
         credentials_universe = getattr(credentials, "universe_domain", default_universe)
 
         if client_universe != credentials_universe:
@@ -498,7 +501,7 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
         """
         self._is_universe_domain_valid = (
             self._is_universe_domain_valid
-            or ShippingSettingsServiceClient._compare_universes(
+            or AutofeedSettingsServiceClient._compare_universes(
                 self.universe_domain, self.transport._credentials
             )
         )
@@ -529,14 +532,14 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
         transport: Optional[
             Union[
                 str,
-                ShippingSettingsServiceTransport,
-                Callable[..., ShippingSettingsServiceTransport],
+                AutofeedSettingsServiceTransport,
+                Callable[..., AutofeedSettingsServiceTransport],
             ]
         ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the shipping settings service client.
+        """Instantiates the autofeed settings service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -544,10 +547,10 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,ShippingSettingsServiceTransport,Callable[..., ShippingSettingsServiceTransport]]]):
+            transport (Optional[Union[str,AutofeedSettingsServiceTransport,Callable[..., AutofeedSettingsServiceTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the ShippingSettingsServiceTransport constructor.
+                arguments as used in the AutofeedSettingsServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -600,13 +603,13 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = ShippingSettingsServiceClient._read_environment_variables()
+        ) = AutofeedSettingsServiceClient._read_environment_variables()
         self._client_cert_source = (
-            ShippingSettingsServiceClient._get_client_cert_source(
+            AutofeedSettingsServiceClient._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert
             )
         )
-        self._universe_domain = ShippingSettingsServiceClient._get_universe_domain(
+        self._universe_domain = AutofeedSettingsServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -623,9 +626,9 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, ShippingSettingsServiceTransport)
+        transport_provided = isinstance(transport, AutofeedSettingsServiceTransport)
         if transport_provided:
-            # transport is a ShippingSettingsServiceTransport instance.
+            # transport is a AutofeedSettingsServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -636,12 +639,12 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(ShippingSettingsServiceTransport, transport)
+            self._transport = cast(AutofeedSettingsServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
         self._api_endpoint = (
             self._api_endpoint
-            or ShippingSettingsServiceClient._get_api_endpoint(
+            or AutofeedSettingsServiceClient._get_api_endpoint(
                 self._client_options.api_endpoint,
                 self._client_cert_source,
                 self._universe_domain,
@@ -660,12 +663,12 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
                 )
 
             transport_init: Union[
-                Type[ShippingSettingsServiceTransport],
-                Callable[..., ShippingSettingsServiceTransport],
+                Type[AutofeedSettingsServiceTransport],
+                Callable[..., AutofeedSettingsServiceTransport],
             ] = (
-                ShippingSettingsServiceClient.get_transport_class(transport)
+                AutofeedSettingsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(Callable[..., ShippingSettingsServiceTransport], transport)
+                else cast(Callable[..., AutofeedSettingsServiceTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -680,18 +683,18 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
                 api_audience=self._client_options.api_audience,
             )
 
-    def get_shipping_settings(
+    def get_autofeed_settings(
         self,
         request: Optional[
-            Union[shippingsettings.GetShippingSettingsRequest, dict]
+            Union[autofeedsettings.GetAutofeedSettingsRequest, dict]
         ] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> shippingsettings.ShippingSettings:
-        r"""Retrieve shipping setting information.
+    ) -> autofeedsettings.AutofeedSettings:
+        r"""Retrieves the autofeed settings of an account.
 
         .. code-block:: python
 
@@ -704,27 +707,27 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.shopping import merchant_accounts_v1beta
 
-            def sample_get_shipping_settings():
+            def sample_get_autofeed_settings():
                 # Create a client
-                client = merchant_accounts_v1beta.ShippingSettingsServiceClient()
+                client = merchant_accounts_v1beta.AutofeedSettingsServiceClient()
 
                 # Initialize request argument(s)
-                request = merchant_accounts_v1beta.GetShippingSettingsRequest(
+                request = merchant_accounts_v1beta.GetAutofeedSettingsRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = client.get_shipping_settings(request=request)
+                response = client.get_autofeed_settings(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.shopping.merchant_accounts_v1beta.types.GetShippingSettingsRequest, dict]):
-                The request object. Request message for the ``GetShippingSetting`` method.
+            request (Union[google.shopping.merchant_accounts_v1beta.types.GetAutofeedSettingsRequest, dict]):
+                The request object. Request message for the ``GetAutofeedSettings`` method.
             name (str):
-                Required. The name of the shipping setting to retrieve.
-                Format: ``accounts/{account}/shippingsetting``
+                Required. The resource name of the autofeed settings.
+                Format: ``accounts/{account}/autofeedSettings``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -736,9 +739,10 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
                 sent along with the request as metadata.
 
         Returns:
-            google.shopping.merchant_accounts_v1beta.types.ShippingSettings:
-                The merchant account's [shipping
-                   setting](\ https://support.google.com/merchants/answer/6069284).
+            google.shopping.merchant_accounts_v1beta.types.AutofeedSettings:
+                Collection of information related to the
+                   [autofeed](https://support.google.com/merchants/answer/7538732)
+                   settings.
 
         """
         # Create or coerce a protobuf request object.
@@ -753,8 +757,8 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, shippingsettings.GetShippingSettingsRequest):
-            request = shippingsettings.GetShippingSettingsRequest(request)
+        if not isinstance(request, autofeedsettings.GetAutofeedSettingsRequest):
+            request = autofeedsettings.GetAutofeedSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -762,7 +766,7 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_shipping_settings]
+        rpc = self._transport._wrapped_methods[self._transport.get_autofeed_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -784,19 +788,19 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
         # Done; return the response.
         return response
 
-    def insert_shipping_settings(
+    def update_autofeed_settings(
         self,
         request: Optional[
-            Union[shippingsettings.InsertShippingSettingsRequest, dict]
+            Union[autofeedsettings.UpdateAutofeedSettingsRequest, dict]
         ] = None,
         *,
+        autofeed_settings: Optional[autofeedsettings.AutofeedSettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> shippingsettings.ShippingSettings:
-        r"""Replace the shipping setting of a merchant with the
-        request shipping setting. Executing this method requires
-        admin access.
+    ) -> autofeedsettings.AutofeedSettings:
+        r"""Updates the autofeed settings of an account.
 
         .. code-block:: python
 
@@ -809,29 +813,42 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.shopping import merchant_accounts_v1beta
 
-            def sample_insert_shipping_settings():
+            def sample_update_autofeed_settings():
                 # Create a client
-                client = merchant_accounts_v1beta.ShippingSettingsServiceClient()
+                client = merchant_accounts_v1beta.AutofeedSettingsServiceClient()
 
                 # Initialize request argument(s)
-                shipping_setting = merchant_accounts_v1beta.ShippingSettings()
-                shipping_setting.etag = "etag_value"
+                autofeed_settings = merchant_accounts_v1beta.AutofeedSettings()
+                autofeed_settings.enable_products = True
 
-                request = merchant_accounts_v1beta.InsertShippingSettingsRequest(
-                    parent="parent_value",
-                    shipping_setting=shipping_setting,
+                request = merchant_accounts_v1beta.UpdateAutofeedSettingsRequest(
+                    autofeed_settings=autofeed_settings,
                 )
 
                 # Make the request
-                response = client.insert_shipping_settings(request=request)
+                response = client.update_autofeed_settings(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.shopping.merchant_accounts_v1beta.types.InsertShippingSettingsRequest, dict]):
-                The request object. Request message for the ``InsertShippingSetting``
+            request (Union[google.shopping.merchant_accounts_v1beta.types.UpdateAutofeedSettingsRequest, dict]):
+                The request object. Request message for the ``UpdateAutofeedSettings``
                 method.
+            autofeed_settings (google.shopping.merchant_accounts_v1beta.types.AutofeedSettings):
+                Required. The new version of the
+                autofeed setting.
+
+                This corresponds to the ``autofeed_settings`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. List of fields being
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -839,25 +856,43 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
                 sent along with the request as metadata.
 
         Returns:
-            google.shopping.merchant_accounts_v1beta.types.ShippingSettings:
-                The merchant account's [shipping
-                   setting](\ https://support.google.com/merchants/answer/6069284).
+            google.shopping.merchant_accounts_v1beta.types.AutofeedSettings:
+                Collection of information related to the
+                   [autofeed](https://support.google.com/merchants/answer/7538732)
+                   settings.
 
         """
         # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([autofeed_settings, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, shippingsettings.InsertShippingSettingsRequest):
-            request = shippingsettings.InsertShippingSettingsRequest(request)
+        if not isinstance(request, autofeedsettings.UpdateAutofeedSettingsRequest):
+            request = autofeedsettings.UpdateAutofeedSettingsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if autofeed_settings is not None:
+                request.autofeed_settings = autofeed_settings
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.insert_shipping_settings]
+        rpc = self._transport._wrapped_methods[self._transport.update_autofeed_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("autofeed_settings.name", request.autofeed_settings.name),)
+            ),
         )
 
         # Validate the universe domain.
@@ -874,7 +909,7 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
         # Done; return the response.
         return response
 
-    def __enter__(self) -> "ShippingSettingsServiceClient":
+    def __enter__(self) -> "AutofeedSettingsServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -893,4 +928,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("ShippingSettingsServiceClient",)
+__all__ = ("AutofeedSettingsServiceClient",)

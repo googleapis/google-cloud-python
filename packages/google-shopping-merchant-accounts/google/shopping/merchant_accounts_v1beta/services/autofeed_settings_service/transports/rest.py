@@ -36,10 +36,10 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
-from google.shopping.merchant_accounts_v1beta.types import shippingsettings
+from google.shopping.merchant_accounts_v1beta.types import autofeedsettings
 
+from .base import AutofeedSettingsServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import ShippingSettingsServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -48,8 +48,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class ShippingSettingsServiceRestInterceptor:
-    """Interceptor for ShippingSettingsService.
+class AutofeedSettingsServiceRestInterceptor:
+    """Interceptor for AutofeedSettingsService.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -59,93 +59,94 @@ class ShippingSettingsServiceRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the ShippingSettingsServiceRestTransport.
+    instance of a custom subclass when constructing the AutofeedSettingsServiceRestTransport.
 
     .. code-block:: python
-        class MyCustomShippingSettingsServiceInterceptor(ShippingSettingsServiceRestInterceptor):
-            def pre_get_shipping_settings(self, request, metadata):
+        class MyCustomAutofeedSettingsServiceInterceptor(AutofeedSettingsServiceRestInterceptor):
+            def pre_get_autofeed_settings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_shipping_settings(self, response):
+            def post_get_autofeed_settings(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_insert_shipping_settings(self, request, metadata):
+            def pre_update_autofeed_settings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_insert_shipping_settings(self, response):
+            def post_update_autofeed_settings(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-        transport = ShippingSettingsServiceRestTransport(interceptor=MyCustomShippingSettingsServiceInterceptor())
-        client = ShippingSettingsServiceClient(transport=transport)
+        transport = AutofeedSettingsServiceRestTransport(interceptor=MyCustomAutofeedSettingsServiceInterceptor())
+        client = AutofeedSettingsServiceClient(transport=transport)
 
 
     """
 
-    def pre_get_shipping_settings(
+    def pre_get_autofeed_settings(
         self,
-        request: shippingsettings.GetShippingSettingsRequest,
+        request: autofeedsettings.GetAutofeedSettingsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[shippingsettings.GetShippingSettingsRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for get_shipping_settings
+    ) -> Tuple[autofeedsettings.GetAutofeedSettingsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_autofeed_settings
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the ShippingSettingsService server.
+        before they are sent to the AutofeedSettingsService server.
         """
         return request, metadata
 
-    def post_get_shipping_settings(
-        self, response: shippingsettings.ShippingSettings
-    ) -> shippingsettings.ShippingSettings:
-        """Post-rpc interceptor for get_shipping_settings
+    def post_get_autofeed_settings(
+        self, response: autofeedsettings.AutofeedSettings
+    ) -> autofeedsettings.AutofeedSettings:
+        """Post-rpc interceptor for get_autofeed_settings
 
         Override in a subclass to manipulate the response
-        after it is returned by the ShippingSettingsService server but before
+        after it is returned by the AutofeedSettingsService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_insert_shipping_settings(
+    def pre_update_autofeed_settings(
         self,
-        request: shippingsettings.InsertShippingSettingsRequest,
+        request: autofeedsettings.UpdateAutofeedSettingsRequest,
         metadata: Sequence[Tuple[str, str]],
     ) -> Tuple[
-        shippingsettings.InsertShippingSettingsRequest, Sequence[Tuple[str, str]]
+        autofeedsettings.UpdateAutofeedSettingsRequest, Sequence[Tuple[str, str]]
     ]:
-        """Pre-rpc interceptor for insert_shipping_settings
+        """Pre-rpc interceptor for update_autofeed_settings
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the ShippingSettingsService server.
+        before they are sent to the AutofeedSettingsService server.
         """
         return request, metadata
 
-    def post_insert_shipping_settings(
-        self, response: shippingsettings.ShippingSettings
-    ) -> shippingsettings.ShippingSettings:
-        """Post-rpc interceptor for insert_shipping_settings
+    def post_update_autofeed_settings(
+        self, response: autofeedsettings.AutofeedSettings
+    ) -> autofeedsettings.AutofeedSettings:
+        """Post-rpc interceptor for update_autofeed_settings
 
         Override in a subclass to manipulate the response
-        after it is returned by the ShippingSettingsService server but before
+        after it is returned by the AutofeedSettingsService server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class ShippingSettingsServiceRestStub:
+class AutofeedSettingsServiceRestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: ShippingSettingsServiceRestInterceptor
+    _interceptor: AutofeedSettingsServiceRestInterceptor
 
 
-class ShippingSettingsServiceRestTransport(ShippingSettingsServiceTransport):
-    """REST backend transport for ShippingSettingsService.
+class AutofeedSettingsServiceRestTransport(AutofeedSettingsServiceTransport):
+    """REST backend transport for AutofeedSettingsService.
 
-    Service to get method call shipping setting information per
-    Merchant API method.
+    Service to support
+    `autofeed <https://support.google.com/merchants/answer/7538732>`__
+    setting.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -167,7 +168,7 @@ class ShippingSettingsServiceRestTransport(ShippingSettingsServiceTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[ShippingSettingsServiceRestInterceptor] = None,
+        interceptor: Optional[AutofeedSettingsServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -228,12 +229,12 @@ class ShippingSettingsServiceRestTransport(ShippingSettingsServiceTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or ShippingSettingsServiceRestInterceptor()
+        self._interceptor = interceptor or AutofeedSettingsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetShippingSettings(ShippingSettingsServiceRestStub):
+    class _GetAutofeedSettings(AutofeedSettingsServiceRestStub):
         def __hash__(self):
-            return hash("GetShippingSettings")
+            return hash("GetAutofeedSettings")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -247,17 +248,17 @@ class ShippingSettingsServiceRestTransport(ShippingSettingsServiceTransport):
 
         def __call__(
             self,
-            request: shippingsettings.GetShippingSettingsRequest,
+            request: autofeedsettings.GetAutofeedSettingsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> shippingsettings.ShippingSettings:
-            r"""Call the get shipping settings method over HTTP.
+        ) -> autofeedsettings.AutofeedSettings:
+            r"""Call the get autofeed settings method over HTTP.
 
             Args:
-                request (~.shippingsettings.GetShippingSettingsRequest):
-                    The request object. Request message for the ``GetShippingSetting`` method.
+                request (~.autofeedsettings.GetAutofeedSettingsRequest):
+                    The request object. Request message for the ``GetAutofeedSettings`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -265,22 +266,23 @@ class ShippingSettingsServiceRestTransport(ShippingSettingsServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.shippingsettings.ShippingSettings:
-                    The merchant account's `shipping
-                setting <https://support.google.com/merchants/answer/6069284>`__.
+                ~.autofeedsettings.AutofeedSettings:
+                    Collection of information related to the
+                `autofeed <https://support.google.com/merchants/answer/7538732>`__
+                settings.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/accounts/v1beta/{name=accounts/*/shippingSettings}",
+                    "uri": "/accounts/v1beta/{name=accounts/*/autofeedSettings}",
                 },
             ]
-            request, metadata = self._interceptor.pre_get_shipping_settings(
+            request, metadata = self._interceptor.pre_get_autofeed_settings(
                 request, metadata
             )
-            pb_request = shippingsettings.GetShippingSettingsRequest.pb(request)
+            pb_request = autofeedsettings.GetAutofeedSettingsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -313,18 +315,20 @@ class ShippingSettingsServiceRestTransport(ShippingSettingsServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = shippingsettings.ShippingSettings()
-            pb_resp = shippingsettings.ShippingSettings.pb(resp)
+            resp = autofeedsettings.AutofeedSettings()
+            pb_resp = autofeedsettings.AutofeedSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_get_shipping_settings(resp)
+            resp = self._interceptor.post_get_autofeed_settings(resp)
             return resp
 
-    class _InsertShippingSettings(ShippingSettingsServiceRestStub):
+    class _UpdateAutofeedSettings(AutofeedSettingsServiceRestStub):
         def __hash__(self):
-            return hash("InsertShippingSettings")
+            return hash("UpdateAutofeedSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -336,17 +340,17 @@ class ShippingSettingsServiceRestTransport(ShippingSettingsServiceTransport):
 
         def __call__(
             self,
-            request: shippingsettings.InsertShippingSettingsRequest,
+            request: autofeedsettings.UpdateAutofeedSettingsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> shippingsettings.ShippingSettings:
-            r"""Call the insert shipping settings method over HTTP.
+        ) -> autofeedsettings.AutofeedSettings:
+            r"""Call the update autofeed settings method over HTTP.
 
             Args:
-                request (~.shippingsettings.InsertShippingSettingsRequest):
-                    The request object. Request message for the ``InsertShippingSetting``
+                request (~.autofeedsettings.UpdateAutofeedSettingsRequest):
+                    The request object. Request message for the ``UpdateAutofeedSettings``
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -355,23 +359,24 @@ class ShippingSettingsServiceRestTransport(ShippingSettingsServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.shippingsettings.ShippingSettings:
-                    The merchant account's `shipping
-                setting <https://support.google.com/merchants/answer/6069284>`__.
+                ~.autofeedsettings.AutofeedSettings:
+                    Collection of information related to the
+                `autofeed <https://support.google.com/merchants/answer/7538732>`__
+                settings.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
-                    "method": "post",
-                    "uri": "/accounts/v1beta/{parent=accounts/*}/shippingSettings:insert",
-                    "body": "shipping_setting",
+                    "method": "patch",
+                    "uri": "/accounts/v1beta/{autofeed_settings.name=accounts/*/autofeedSettings}",
+                    "body": "autofeed_settings",
                 },
             ]
-            request, metadata = self._interceptor.pre_insert_shipping_settings(
+            request, metadata = self._interceptor.pre_update_autofeed_settings(
                 request, metadata
             )
-            pb_request = shippingsettings.InsertShippingSettingsRequest.pb(request)
+            pb_request = autofeedsettings.UpdateAutofeedSettingsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -410,33 +415,33 @@ class ShippingSettingsServiceRestTransport(ShippingSettingsServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = shippingsettings.ShippingSettings()
-            pb_resp = shippingsettings.ShippingSettings.pb(resp)
+            resp = autofeedsettings.AutofeedSettings()
+            pb_resp = autofeedsettings.AutofeedSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_insert_shipping_settings(resp)
+            resp = self._interceptor.post_update_autofeed_settings(resp)
             return resp
 
     @property
-    def get_shipping_settings(
+    def get_autofeed_settings(
         self,
     ) -> Callable[
-        [shippingsettings.GetShippingSettingsRequest], shippingsettings.ShippingSettings
+        [autofeedsettings.GetAutofeedSettingsRequest], autofeedsettings.AutofeedSettings
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetShippingSettings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetAutofeedSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert_shipping_settings(
+    def update_autofeed_settings(
         self,
     ) -> Callable[
-        [shippingsettings.InsertShippingSettingsRequest],
-        shippingsettings.ShippingSettings,
+        [autofeedsettings.UpdateAutofeedSettingsRequest],
+        autofeedsettings.AutofeedSettings,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._InsertShippingSettings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateAutofeedSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:
@@ -446,4 +451,4 @@ class ShippingSettingsServiceRestTransport(ShippingSettingsServiceTransport):
         self._session.close()
 
 
-__all__ = ("ShippingSettingsServiceRestTransport",)
+__all__ = ("AutofeedSettingsServiceRestTransport",)

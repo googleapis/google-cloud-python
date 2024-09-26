@@ -34,7 +34,6 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
 from google.type import datetime_pb2  # type: ignore
@@ -52,7 +51,12 @@ from google.shopping.merchant_accounts_v1beta.services.accounts_service import (
     pagers,
     transports,
 )
-from google.shopping.merchant_accounts_v1beta.types import accessright, accounts, user
+from google.shopping.merchant_accounts_v1beta.types import (
+    accessright,
+    accounts,
+    accountservices,
+    user,
+)
 
 
 def client_cert_source_callback():
@@ -4006,7 +4010,15 @@ def test_create_and_configure_account_rest_unset_required_fields():
     )
 
     unset_fields = transport.create_and_configure_account._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("account",)))
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "account",
+                "service",
+            )
+        )
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

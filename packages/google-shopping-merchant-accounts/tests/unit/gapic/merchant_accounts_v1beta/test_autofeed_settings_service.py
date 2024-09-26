@@ -34,6 +34,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
@@ -43,15 +44,12 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.shopping.merchant_accounts_v1beta.services.terms_of_service_service import (
-    TermsOfServiceServiceAsyncClient,
-    TermsOfServiceServiceClient,
+from google.shopping.merchant_accounts_v1beta.services.autofeed_settings_service import (
+    AutofeedSettingsServiceAsyncClient,
+    AutofeedSettingsServiceClient,
     transports,
 )
-from google.shopping.merchant_accounts_v1beta.types import (
-    termsofservice,
-    termsofservicekind,
-)
+from google.shopping.merchant_accounts_v1beta.types import autofeedsettings
 
 
 def client_cert_source_callback():
@@ -87,45 +85,45 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert TermsOfServiceServiceClient._get_default_mtls_endpoint(None) is None
+    assert AutofeedSettingsServiceClient._get_default_mtls_endpoint(None) is None
     assert (
-        TermsOfServiceServiceClient._get_default_mtls_endpoint(api_endpoint)
+        AutofeedSettingsServiceClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        TermsOfServiceServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        AutofeedSettingsServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        TermsOfServiceServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        AutofeedSettingsServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        TermsOfServiceServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        AutofeedSettingsServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        TermsOfServiceServiceClient._get_default_mtls_endpoint(non_googleapi)
+        AutofeedSettingsServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
     )
 
 
 def test__read_environment_variables():
-    assert TermsOfServiceServiceClient._read_environment_variables() == (
+    assert AutofeedSettingsServiceClient._read_environment_variables() == (
         False,
         "auto",
         None,
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert TermsOfServiceServiceClient._read_environment_variables() == (
+        assert AutofeedSettingsServiceClient._read_environment_variables() == (
             True,
             "auto",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert TermsOfServiceServiceClient._read_environment_variables() == (
+        assert AutofeedSettingsServiceClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -135,28 +133,28 @@ def test__read_environment_variables():
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError) as excinfo:
-            TermsOfServiceServiceClient._read_environment_variables()
+            AutofeedSettingsServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert TermsOfServiceServiceClient._read_environment_variables() == (
+        assert AutofeedSettingsServiceClient._read_environment_variables() == (
             False,
             "never",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert TermsOfServiceServiceClient._read_environment_variables() == (
+        assert AutofeedSettingsServiceClient._read_environment_variables() == (
             False,
             "always",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert TermsOfServiceServiceClient._read_environment_variables() == (
+        assert AutofeedSettingsServiceClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -164,14 +162,14 @@ def test__read_environment_variables():
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
-            TermsOfServiceServiceClient._read_environment_variables()
+            AutofeedSettingsServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert TermsOfServiceServiceClient._read_environment_variables() == (
+        assert AutofeedSettingsServiceClient._read_environment_variables() == (
             False,
             "auto",
             "foo.com",
@@ -182,15 +180,15 @@ def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
 
-    assert TermsOfServiceServiceClient._get_client_cert_source(None, False) is None
+    assert AutofeedSettingsServiceClient._get_client_cert_source(None, False) is None
     assert (
-        TermsOfServiceServiceClient._get_client_cert_source(
+        AutofeedSettingsServiceClient._get_client_cert_source(
             mock_provided_cert_source, False
         )
         is None
     )
     assert (
-        TermsOfServiceServiceClient._get_client_cert_source(
+        AutofeedSettingsServiceClient._get_client_cert_source(
             mock_provided_cert_source, True
         )
         == mock_provided_cert_source
@@ -204,11 +202,11 @@ def test__get_client_cert_source():
             return_value=mock_default_cert_source,
         ):
             assert (
-                TermsOfServiceServiceClient._get_client_cert_source(None, True)
+                AutofeedSettingsServiceClient._get_client_cert_source(None, True)
                 is mock_default_cert_source
             )
             assert (
-                TermsOfServiceServiceClient._get_client_cert_source(
+                AutofeedSettingsServiceClient._get_client_cert_source(
                     mock_provided_cert_source, "true"
                 )
                 is mock_provided_cert_source
@@ -216,72 +214,72 @@ def test__get_client_cert_source():
 
 
 @mock.patch.object(
-    TermsOfServiceServiceClient,
+    AutofeedSettingsServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(TermsOfServiceServiceClient),
+    modify_default_endpoint_template(AutofeedSettingsServiceClient),
 )
 @mock.patch.object(
-    TermsOfServiceServiceAsyncClient,
+    AutofeedSettingsServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(TermsOfServiceServiceAsyncClient),
+    modify_default_endpoint_template(AutofeedSettingsServiceAsyncClient),
 )
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
-    default_universe = TermsOfServiceServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = TermsOfServiceServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = AutofeedSettingsServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = AutofeedSettingsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = TermsOfServiceServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = AutofeedSettingsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
     assert (
-        TermsOfServiceServiceClient._get_api_endpoint(
+        AutofeedSettingsServiceClient._get_api_endpoint(
             api_override, mock_client_cert_source, default_universe, "always"
         )
         == api_override
     )
     assert (
-        TermsOfServiceServiceClient._get_api_endpoint(
+        AutofeedSettingsServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "auto"
         )
-        == TermsOfServiceServiceClient.DEFAULT_MTLS_ENDPOINT
+        == AutofeedSettingsServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        TermsOfServiceServiceClient._get_api_endpoint(
+        AutofeedSettingsServiceClient._get_api_endpoint(
             None, None, default_universe, "auto"
         )
         == default_endpoint
     )
     assert (
-        TermsOfServiceServiceClient._get_api_endpoint(
+        AutofeedSettingsServiceClient._get_api_endpoint(
             None, None, default_universe, "always"
         )
-        == TermsOfServiceServiceClient.DEFAULT_MTLS_ENDPOINT
+        == AutofeedSettingsServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        TermsOfServiceServiceClient._get_api_endpoint(
+        AutofeedSettingsServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "always"
         )
-        == TermsOfServiceServiceClient.DEFAULT_MTLS_ENDPOINT
+        == AutofeedSettingsServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        TermsOfServiceServiceClient._get_api_endpoint(
+        AutofeedSettingsServiceClient._get_api_endpoint(
             None, None, mock_universe, "never"
         )
         == mock_endpoint
     )
     assert (
-        TermsOfServiceServiceClient._get_api_endpoint(
+        AutofeedSettingsServiceClient._get_api_endpoint(
             None, None, default_universe, "never"
         )
         == default_endpoint
     )
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        TermsOfServiceServiceClient._get_api_endpoint(
+        AutofeedSettingsServiceClient._get_api_endpoint(
             None, mock_client_cert_source, mock_universe, "auto"
         )
     assert (
@@ -295,22 +293,22 @@ def test__get_universe_domain():
     universe_domain_env = "bar.com"
 
     assert (
-        TermsOfServiceServiceClient._get_universe_domain(
+        AutofeedSettingsServiceClient._get_universe_domain(
             client_universe_domain, universe_domain_env
         )
         == client_universe_domain
     )
     assert (
-        TermsOfServiceServiceClient._get_universe_domain(None, universe_domain_env)
+        AutofeedSettingsServiceClient._get_universe_domain(None, universe_domain_env)
         == universe_domain_env
     )
     assert (
-        TermsOfServiceServiceClient._get_universe_domain(None, None)
-        == TermsOfServiceServiceClient._DEFAULT_UNIVERSE
+        AutofeedSettingsServiceClient._get_universe_domain(None, None)
+        == AutofeedSettingsServiceClient._DEFAULT_UNIVERSE
     )
 
     with pytest.raises(ValueError) as excinfo:
-        TermsOfServiceServiceClient._get_universe_domain("", None)
+        AutofeedSettingsServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
@@ -318,13 +316,13 @@ def test__get_universe_domain():
     "client_class,transport_class,transport_name",
     [
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceGrpcTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceGrpcTransport,
             "grpc",
         ),
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceRestTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceRestTransport,
             "rest",
         ),
     ],
@@ -405,12 +403,12 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (TermsOfServiceServiceClient, "grpc"),
-        (TermsOfServiceServiceAsyncClient, "grpc_asyncio"),
-        (TermsOfServiceServiceClient, "rest"),
+        (AutofeedSettingsServiceClient, "grpc"),
+        (AutofeedSettingsServiceAsyncClient, "grpc_asyncio"),
+        (AutofeedSettingsServiceClient, "rest"),
     ],
 )
-def test_terms_of_service_service_client_from_service_account_info(
+def test_autofeed_settings_service_client_from_service_account_info(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -433,12 +431,12 @@ def test_terms_of_service_service_client_from_service_account_info(
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.TermsOfServiceServiceGrpcTransport, "grpc"),
-        (transports.TermsOfServiceServiceGrpcAsyncIOTransport, "grpc_asyncio"),
-        (transports.TermsOfServiceServiceRestTransport, "rest"),
+        (transports.AutofeedSettingsServiceGrpcTransport, "grpc"),
+        (transports.AutofeedSettingsServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.AutofeedSettingsServiceRestTransport, "rest"),
     ],
 )
-def test_terms_of_service_service_client_service_account_always_use_jwt(
+def test_autofeed_settings_service_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -459,12 +457,12 @@ def test_terms_of_service_service_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (TermsOfServiceServiceClient, "grpc"),
-        (TermsOfServiceServiceAsyncClient, "grpc_asyncio"),
-        (TermsOfServiceServiceClient, "rest"),
+        (AutofeedSettingsServiceClient, "grpc"),
+        (AutofeedSettingsServiceAsyncClient, "grpc_asyncio"),
+        (AutofeedSettingsServiceClient, "rest"),
     ],
 )
-def test_terms_of_service_service_client_from_service_account_file(
+def test_autofeed_settings_service_client_from_service_account_file(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -491,59 +489,59 @@ def test_terms_of_service_service_client_from_service_account_file(
         )
 
 
-def test_terms_of_service_service_client_get_transport_class():
-    transport = TermsOfServiceServiceClient.get_transport_class()
+def test_autofeed_settings_service_client_get_transport_class():
+    transport = AutofeedSettingsServiceClient.get_transport_class()
     available_transports = [
-        transports.TermsOfServiceServiceGrpcTransport,
-        transports.TermsOfServiceServiceRestTransport,
+        transports.AutofeedSettingsServiceGrpcTransport,
+        transports.AutofeedSettingsServiceRestTransport,
     ]
     assert transport in available_transports
 
-    transport = TermsOfServiceServiceClient.get_transport_class("grpc")
-    assert transport == transports.TermsOfServiceServiceGrpcTransport
+    transport = AutofeedSettingsServiceClient.get_transport_class("grpc")
+    assert transport == transports.AutofeedSettingsServiceGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceGrpcTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceGrpcTransport,
             "grpc",
         ),
         (
-            TermsOfServiceServiceAsyncClient,
-            transports.TermsOfServiceServiceGrpcAsyncIOTransport,
+            AutofeedSettingsServiceAsyncClient,
+            transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceRestTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceRestTransport,
             "rest",
         ),
     ],
 )
 @mock.patch.object(
-    TermsOfServiceServiceClient,
+    AutofeedSettingsServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(TermsOfServiceServiceClient),
+    modify_default_endpoint_template(AutofeedSettingsServiceClient),
 )
 @mock.patch.object(
-    TermsOfServiceServiceAsyncClient,
+    AutofeedSettingsServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(TermsOfServiceServiceAsyncClient),
+    modify_default_endpoint_template(AutofeedSettingsServiceAsyncClient),
 )
-def test_terms_of_service_service_client_client_options(
+def test_autofeed_settings_service_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(TermsOfServiceServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(AutofeedSettingsServiceClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(TermsOfServiceServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(AutofeedSettingsServiceClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -667,55 +665,55 @@ def test_terms_of_service_service_client_client_options(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceGrpcTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceGrpcTransport,
             "grpc",
             "true",
         ),
         (
-            TermsOfServiceServiceAsyncClient,
-            transports.TermsOfServiceServiceGrpcAsyncIOTransport,
+            AutofeedSettingsServiceAsyncClient,
+            transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceGrpcTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceGrpcTransport,
             "grpc",
             "false",
         ),
         (
-            TermsOfServiceServiceAsyncClient,
-            transports.TermsOfServiceServiceGrpcAsyncIOTransport,
+            AutofeedSettingsServiceAsyncClient,
+            transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceRestTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceRestTransport,
             "rest",
             "true",
         ),
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceRestTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceRestTransport,
             "rest",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    TermsOfServiceServiceClient,
+    AutofeedSettingsServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(TermsOfServiceServiceClient),
+    modify_default_endpoint_template(AutofeedSettingsServiceClient),
 )
 @mock.patch.object(
-    TermsOfServiceServiceAsyncClient,
+    AutofeedSettingsServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(TermsOfServiceServiceAsyncClient),
+    modify_default_endpoint_template(AutofeedSettingsServiceAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_terms_of_service_service_client_mtls_env_auto(
+def test_autofeed_settings_service_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -818,19 +816,19 @@ def test_terms_of_service_service_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize(
-    "client_class", [TermsOfServiceServiceClient, TermsOfServiceServiceAsyncClient]
+    "client_class", [AutofeedSettingsServiceClient, AutofeedSettingsServiceAsyncClient]
 )
 @mock.patch.object(
-    TermsOfServiceServiceClient,
+    AutofeedSettingsServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(TermsOfServiceServiceClient),
+    modify_default_endpoint(AutofeedSettingsServiceClient),
 )
 @mock.patch.object(
-    TermsOfServiceServiceAsyncClient,
+    AutofeedSettingsServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(TermsOfServiceServiceAsyncClient),
+    modify_default_endpoint(AutofeedSettingsServiceAsyncClient),
 )
-def test_terms_of_service_service_client_get_mtls_endpoint_and_cert_source(
+def test_autofeed_settings_service_client_get_mtls_endpoint_and_cert_source(
     client_class,
 ):
     mock_client_cert_source = mock.Mock()
@@ -924,27 +922,27 @@ def test_terms_of_service_service_client_get_mtls_endpoint_and_cert_source(
 
 
 @pytest.mark.parametrize(
-    "client_class", [TermsOfServiceServiceClient, TermsOfServiceServiceAsyncClient]
+    "client_class", [AutofeedSettingsServiceClient, AutofeedSettingsServiceAsyncClient]
 )
 @mock.patch.object(
-    TermsOfServiceServiceClient,
+    AutofeedSettingsServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(TermsOfServiceServiceClient),
+    modify_default_endpoint_template(AutofeedSettingsServiceClient),
 )
 @mock.patch.object(
-    TermsOfServiceServiceAsyncClient,
+    AutofeedSettingsServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(TermsOfServiceServiceAsyncClient),
+    modify_default_endpoint_template(AutofeedSettingsServiceAsyncClient),
 )
-def test_terms_of_service_service_client_client_api_endpoint(client_class):
+def test_autofeed_settings_service_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
-    default_universe = TermsOfServiceServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = TermsOfServiceServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = AutofeedSettingsServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = AutofeedSettingsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = TermsOfServiceServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = AutofeedSettingsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
@@ -1013,23 +1011,23 @@ def test_terms_of_service_service_client_client_api_endpoint(client_class):
     "client_class,transport_class,transport_name",
     [
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceGrpcTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceGrpcTransport,
             "grpc",
         ),
         (
-            TermsOfServiceServiceAsyncClient,
-            transports.TermsOfServiceServiceGrpcAsyncIOTransport,
+            AutofeedSettingsServiceAsyncClient,
+            transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceRestTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceRestTransport,
             "rest",
         ),
     ],
 )
-def test_terms_of_service_service_client_client_options_scopes(
+def test_autofeed_settings_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -1058,26 +1056,26 @@ def test_terms_of_service_service_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceGrpcTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            TermsOfServiceServiceAsyncClient,
-            transports.TermsOfServiceServiceGrpcAsyncIOTransport,
+            AutofeedSettingsServiceAsyncClient,
+            transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceRestTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceRestTransport,
             "rest",
             None,
         ),
     ],
 )
-def test_terms_of_service_service_client_client_options_credentials_file(
+def test_autofeed_settings_service_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1101,12 +1099,12 @@ def test_terms_of_service_service_client_client_options_credentials_file(
         )
 
 
-def test_terms_of_service_service_client_client_options_from_dict():
+def test_autofeed_settings_service_client_client_options_from_dict():
     with mock.patch(
-        "google.shopping.merchant_accounts_v1beta.services.terms_of_service_service.transports.TermsOfServiceServiceGrpcTransport.__init__"
+        "google.shopping.merchant_accounts_v1beta.services.autofeed_settings_service.transports.AutofeedSettingsServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
@@ -1126,20 +1124,20 @@ def test_terms_of_service_service_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            TermsOfServiceServiceClient,
-            transports.TermsOfServiceServiceGrpcTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            TermsOfServiceServiceAsyncClient,
-            transports.TermsOfServiceServiceGrpcAsyncIOTransport,
+            AutofeedSettingsServiceAsyncClient,
+            transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_terms_of_service_service_client_create_channel_credentials_file(
+def test_autofeed_settings_service_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1194,12 +1192,12 @@ def test_terms_of_service_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        termsofservice.GetTermsOfServiceRequest,
+        autofeedsettings.GetAutofeedSettingsRequest,
         dict,
     ],
 )
-def test_get_terms_of_service(request_type, transport: str = "grpc"):
-    client = TermsOfServiceServiceClient(
+def test_get_autofeed_settings(request_type, transport: str = "grpc"):
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1210,58 +1208,54 @@ def test_get_terms_of_service(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.get_terms_of_service), "__call__"
+        type(client.transport.get_autofeed_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = termsofservice.TermsOfService(
+        call.return_value = autofeedsettings.AutofeedSettings(
             name="name_value",
-            region_code="region_code_value",
-            kind=termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER,
-            file_uri="file_uri_value",
-            external=True,
+            enable_products=True,
+            eligible=True,
         )
-        response = client.get_terms_of_service(request)
+        response = client.get_autofeed_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = termsofservice.GetTermsOfServiceRequest()
+        request = autofeedsettings.GetAutofeedSettingsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, termsofservice.TermsOfService)
+    assert isinstance(response, autofeedsettings.AutofeedSettings)
     assert response.name == "name_value"
-    assert response.region_code == "region_code_value"
-    assert response.kind == termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER
-    assert response.file_uri == "file_uri_value"
-    assert response.external is True
+    assert response.enable_products is True
+    assert response.eligible is True
 
 
-def test_get_terms_of_service_empty_call():
+def test_get_autofeed_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = TermsOfServiceServiceClient(
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.get_terms_of_service), "__call__"
+        type(client.transport.get_autofeed_settings), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.get_terms_of_service()
+        client.get_autofeed_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == termsofservice.GetTermsOfServiceRequest()
+        assert args[0] == autofeedsettings.GetAutofeedSettingsRequest()
 
 
-def test_get_terms_of_service_non_empty_request_with_auto_populated_field():
+def test_get_autofeed_settings_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = TermsOfServiceServiceClient(
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1269,30 +1263,30 @@ def test_get_terms_of_service_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = termsofservice.GetTermsOfServiceRequest(
+    request = autofeedsettings.GetAutofeedSettingsRequest(
         name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.get_terms_of_service), "__call__"
+        type(client.transport.get_autofeed_settings), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.get_terms_of_service(request=request)
+        client.get_autofeed_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == termsofservice.GetTermsOfServiceRequest(
+        assert args[0] == autofeedsettings.GetAutofeedSettingsRequest(
             name="name_value",
         )
 
 
-def test_get_terms_of_service_use_cached_wrapped_rpc():
+def test_get_autofeed_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1303,415 +1297,7 @@ def test_get_terms_of_service_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.get_terms_of_service in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_terms_of_service
-        ] = mock_rpc
-        request = {}
-        client.get_terms_of_service(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_terms_of_service(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_terms_of_service_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TermsOfServiceServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terms_of_service), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            termsofservice.TermsOfService(
-                name="name_value",
-                region_code="region_code_value",
-                kind=termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER,
-                file_uri="file_uri_value",
-                external=True,
-            )
-        )
-        response = await client.get_terms_of_service()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == termsofservice.GetTermsOfServiceRequest()
-
-
-@pytest.mark.asyncio
-async def test_get_terms_of_service_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = TermsOfServiceServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.get_terms_of_service
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_terms_of_service
-        ] = mock_rpc
-
-        request = {}
-        await client.get_terms_of_service(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.get_terms_of_service(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_terms_of_service_async(
-    transport: str = "grpc_asyncio",
-    request_type=termsofservice.GetTermsOfServiceRequest,
-):
-    client = TermsOfServiceServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terms_of_service), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            termsofservice.TermsOfService(
-                name="name_value",
-                region_code="region_code_value",
-                kind=termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER,
-                file_uri="file_uri_value",
-                external=True,
-            )
-        )
-        response = await client.get_terms_of_service(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = termsofservice.GetTermsOfServiceRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, termsofservice.TermsOfService)
-    assert response.name == "name_value"
-    assert response.region_code == "region_code_value"
-    assert response.kind == termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER
-    assert response.file_uri == "file_uri_value"
-    assert response.external is True
-
-
-@pytest.mark.asyncio
-async def test_get_terms_of_service_async_from_dict():
-    await test_get_terms_of_service_async(request_type=dict)
-
-
-def test_get_terms_of_service_field_headers():
-    client = TermsOfServiceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = termsofservice.GetTermsOfServiceRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terms_of_service), "__call__"
-    ) as call:
-        call.return_value = termsofservice.TermsOfService()
-        client.get_terms_of_service(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_terms_of_service_field_headers_async():
-    client = TermsOfServiceServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = termsofservice.GetTermsOfServiceRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terms_of_service), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            termsofservice.TermsOfService()
-        )
-        await client.get_terms_of_service(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_terms_of_service_flattened():
-    client = TermsOfServiceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terms_of_service), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = termsofservice.TermsOfService()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_terms_of_service(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_terms_of_service_flattened_error():
-    client = TermsOfServiceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_terms_of_service(
-            termsofservice.GetTermsOfServiceRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_terms_of_service_flattened_async():
-    client = TermsOfServiceServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terms_of_service), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = termsofservice.TermsOfService()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            termsofservice.TermsOfService()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_terms_of_service(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_terms_of_service_flattened_error_async():
-    client = TermsOfServiceServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_terms_of_service(
-            termsofservice.GetTermsOfServiceRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        termsofservice.RetrieveLatestTermsOfServiceRequest,
-        dict,
-    ],
-)
-def test_retrieve_latest_terms_of_service(request_type, transport: str = "grpc"):
-    client = TermsOfServiceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.retrieve_latest_terms_of_service), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = termsofservice.TermsOfService(
-            name="name_value",
-            region_code="region_code_value",
-            kind=termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER,
-            file_uri="file_uri_value",
-            external=True,
-        )
-        response = client.retrieve_latest_terms_of_service(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = termsofservice.RetrieveLatestTermsOfServiceRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, termsofservice.TermsOfService)
-    assert response.name == "name_value"
-    assert response.region_code == "region_code_value"
-    assert response.kind == termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER
-    assert response.file_uri == "file_uri_value"
-    assert response.external is True
-
-
-def test_retrieve_latest_terms_of_service_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TermsOfServiceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.retrieve_latest_terms_of_service), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.retrieve_latest_terms_of_service()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == termsofservice.RetrieveLatestTermsOfServiceRequest()
-
-
-def test_retrieve_latest_terms_of_service_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = TermsOfServiceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = termsofservice.RetrieveLatestTermsOfServiceRequest(
-        region_code="region_code_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.retrieve_latest_terms_of_service), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.retrieve_latest_terms_of_service(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == termsofservice.RetrieveLatestTermsOfServiceRequest(
-            region_code="region_code_value",
-        )
-
-
-def test_retrieve_latest_terms_of_service_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = TermsOfServiceServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.retrieve_latest_terms_of_service
+            client._transport.get_autofeed_settings
             in client._transport._wrapped_methods
         )
 
@@ -1721,15 +1307,15 @@ def test_retrieve_latest_terms_of_service_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.retrieve_latest_terms_of_service
+            client._transport.get_autofeed_settings
         ] = mock_rpc
         request = {}
-        client.retrieve_latest_terms_of_service(request)
+        client.get_autofeed_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.retrieve_latest_terms_of_service(request)
+        client.get_autofeed_settings(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1737,42 +1323,40 @@ def test_retrieve_latest_terms_of_service_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_retrieve_latest_terms_of_service_empty_call_async():
+async def test_get_autofeed_settings_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = TermsOfServiceServiceAsyncClient(
+    client = AutofeedSettingsServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.retrieve_latest_terms_of_service), "__call__"
+        type(client.transport.get_autofeed_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            termsofservice.TermsOfService(
+            autofeedsettings.AutofeedSettings(
                 name="name_value",
-                region_code="region_code_value",
-                kind=termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER,
-                file_uri="file_uri_value",
-                external=True,
+                enable_products=True,
+                eligible=True,
             )
         )
-        response = await client.retrieve_latest_terms_of_service()
+        response = await client.get_autofeed_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == termsofservice.RetrieveLatestTermsOfServiceRequest()
+        assert args[0] == autofeedsettings.GetAutofeedSettingsRequest()
 
 
 @pytest.mark.asyncio
-async def test_retrieve_latest_terms_of_service_async_use_cached_wrapped_rpc(
+async def test_get_autofeed_settings_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = TermsOfServiceServiceAsyncClient(
+        client = AutofeedSettingsServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -1783,7 +1367,7 @@ async def test_retrieve_latest_terms_of_service_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.retrieve_latest_terms_of_service
+            client._client._transport.get_autofeed_settings
             in client._client._transport._wrapped_methods
         )
 
@@ -1791,16 +1375,16 @@ async def test_retrieve_latest_terms_of_service_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.retrieve_latest_terms_of_service
+            client._client._transport.get_autofeed_settings
         ] = mock_rpc
 
         request = {}
-        await client.retrieve_latest_terms_of_service(request)
+        await client.get_autofeed_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        await client.retrieve_latest_terms_of_service(request)
+        await client.get_autofeed_settings(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1808,11 +1392,11 @@ async def test_retrieve_latest_terms_of_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_retrieve_latest_terms_of_service_async(
+async def test_get_autofeed_settings_async(
     transport: str = "grpc_asyncio",
-    request_type=termsofservice.RetrieveLatestTermsOfServiceRequest,
+    request_type=autofeedsettings.GetAutofeedSettingsRequest,
 ):
-    client = TermsOfServiceServiceAsyncClient(
+    client = AutofeedSettingsServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1823,49 +1407,196 @@ async def test_retrieve_latest_terms_of_service_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.retrieve_latest_terms_of_service), "__call__"
+        type(client.transport.get_autofeed_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            termsofservice.TermsOfService(
+            autofeedsettings.AutofeedSettings(
                 name="name_value",
-                region_code="region_code_value",
-                kind=termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER,
-                file_uri="file_uri_value",
-                external=True,
+                enable_products=True,
+                eligible=True,
             )
         )
-        response = await client.retrieve_latest_terms_of_service(request)
+        response = await client.get_autofeed_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = termsofservice.RetrieveLatestTermsOfServiceRequest()
+        request = autofeedsettings.GetAutofeedSettingsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, termsofservice.TermsOfService)
+    assert isinstance(response, autofeedsettings.AutofeedSettings)
     assert response.name == "name_value"
-    assert response.region_code == "region_code_value"
-    assert response.kind == termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER
-    assert response.file_uri == "file_uri_value"
-    assert response.external is True
+    assert response.enable_products is True
+    assert response.eligible is True
 
 
 @pytest.mark.asyncio
-async def test_retrieve_latest_terms_of_service_async_from_dict():
-    await test_retrieve_latest_terms_of_service_async(request_type=dict)
+async def test_get_autofeed_settings_async_from_dict():
+    await test_get_autofeed_settings_async(request_type=dict)
+
+
+def test_get_autofeed_settings_field_headers():
+    client = AutofeedSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = autofeedsettings.GetAutofeedSettingsRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autofeed_settings), "__call__"
+    ) as call:
+        call.return_value = autofeedsettings.AutofeedSettings()
+        client.get_autofeed_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_autofeed_settings_field_headers_async():
+    client = AutofeedSettingsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = autofeedsettings.GetAutofeedSettingsRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autofeed_settings), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            autofeedsettings.AutofeedSettings()
+        )
+        await client.get_autofeed_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_autofeed_settings_flattened():
+    client = AutofeedSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autofeed_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = autofeedsettings.AutofeedSettings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_autofeed_settings(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_autofeed_settings_flattened_error():
+    client = AutofeedSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_autofeed_settings(
+            autofeedsettings.GetAutofeedSettingsRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_autofeed_settings_flattened_async():
+    client = AutofeedSettingsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autofeed_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = autofeedsettings.AutofeedSettings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            autofeedsettings.AutofeedSettings()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_autofeed_settings(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_autofeed_settings_flattened_error_async():
+    client = AutofeedSettingsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_autofeed_settings(
+            autofeedsettings.GetAutofeedSettingsRequest(),
+            name="name_value",
+        )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        termsofservice.AcceptTermsOfServiceRequest,
+        autofeedsettings.UpdateAutofeedSettingsRequest,
         dict,
     ],
 )
-def test_accept_terms_of_service(request_type, transport: str = "grpc"):
-    client = TermsOfServiceServiceClient(
+def test_update_autofeed_settings(request_type, transport: str = "grpc"):
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1876,47 +1607,54 @@ def test_accept_terms_of_service(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.accept_terms_of_service), "__call__"
+        type(client.transport.update_autofeed_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = None
-        response = client.accept_terms_of_service(request)
+        call.return_value = autofeedsettings.AutofeedSettings(
+            name="name_value",
+            enable_products=True,
+            eligible=True,
+        )
+        response = client.update_autofeed_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = termsofservice.AcceptTermsOfServiceRequest()
+        request = autofeedsettings.UpdateAutofeedSettingsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert response is None
+    assert isinstance(response, autofeedsettings.AutofeedSettings)
+    assert response.name == "name_value"
+    assert response.enable_products is True
+    assert response.eligible is True
 
 
-def test_accept_terms_of_service_empty_call():
+def test_update_autofeed_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = TermsOfServiceServiceClient(
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.accept_terms_of_service), "__call__"
+        type(client.transport.update_autofeed_settings), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.accept_terms_of_service()
+        client.update_autofeed_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == termsofservice.AcceptTermsOfServiceRequest()
+        assert args[0] == autofeedsettings.UpdateAutofeedSettingsRequest()
 
 
-def test_accept_terms_of_service_non_empty_request_with_auto_populated_field():
+def test_update_autofeed_settings_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = TermsOfServiceServiceClient(
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1924,34 +1662,26 @@ def test_accept_terms_of_service_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = termsofservice.AcceptTermsOfServiceRequest(
-        name="name_value",
-        account="account_value",
-        region_code="region_code_value",
-    )
+    request = autofeedsettings.UpdateAutofeedSettingsRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.accept_terms_of_service), "__call__"
+        type(client.transport.update_autofeed_settings), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.accept_terms_of_service(request=request)
+        client.update_autofeed_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == termsofservice.AcceptTermsOfServiceRequest(
-            name="name_value",
-            account="account_value",
-            region_code="region_code_value",
-        )
+        assert args[0] == autofeedsettings.UpdateAutofeedSettingsRequest()
 
 
-def test_accept_terms_of_service_use_cached_wrapped_rpc():
+def test_update_autofeed_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1962,7 +1692,7 @@ def test_accept_terms_of_service_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.accept_terms_of_service
+            client._transport.update_autofeed_settings
             in client._transport._wrapped_methods
         )
 
@@ -1972,15 +1702,15 @@ def test_accept_terms_of_service_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.accept_terms_of_service
+            client._transport.update_autofeed_settings
         ] = mock_rpc
         request = {}
-        client.accept_terms_of_service(request)
+        client.update_autofeed_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.accept_terms_of_service(request)
+        client.update_autofeed_settings(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1988,34 +1718,40 @@ def test_accept_terms_of_service_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_accept_terms_of_service_empty_call_async():
+async def test_update_autofeed_settings_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = TermsOfServiceServiceAsyncClient(
+    client = AutofeedSettingsServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.accept_terms_of_service), "__call__"
+        type(client.transport.update_autofeed_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.accept_terms_of_service()
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            autofeedsettings.AutofeedSettings(
+                name="name_value",
+                enable_products=True,
+                eligible=True,
+            )
+        )
+        response = await client.update_autofeed_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == termsofservice.AcceptTermsOfServiceRequest()
+        assert args[0] == autofeedsettings.UpdateAutofeedSettingsRequest()
 
 
 @pytest.mark.asyncio
-async def test_accept_terms_of_service_async_use_cached_wrapped_rpc(
+async def test_update_autofeed_settings_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = TermsOfServiceServiceAsyncClient(
+        client = AutofeedSettingsServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -2026,7 +1762,7 @@ async def test_accept_terms_of_service_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.accept_terms_of_service
+            client._client._transport.update_autofeed_settings
             in client._client._transport._wrapped_methods
         )
 
@@ -2034,16 +1770,16 @@ async def test_accept_terms_of_service_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.accept_terms_of_service
+            client._client._transport.update_autofeed_settings
         ] = mock_rpc
 
         request = {}
-        await client.accept_terms_of_service(request)
+        await client.update_autofeed_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        await client.accept_terms_of_service(request)
+        await client.update_autofeed_settings(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2051,11 +1787,11 @@ async def test_accept_terms_of_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_accept_terms_of_service_async(
+async def test_update_autofeed_settings_async(
     transport: str = "grpc_asyncio",
-    request_type=termsofservice.AcceptTermsOfServiceRequest,
+    request_type=autofeedsettings.UpdateAutofeedSettingsRequest,
 ):
-    client = TermsOfServiceServiceAsyncClient(
+    client = AutofeedSettingsServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2066,44 +1802,53 @@ async def test_accept_terms_of_service_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.accept_terms_of_service), "__call__"
+        type(client.transport.update_autofeed_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.accept_terms_of_service(request)
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            autofeedsettings.AutofeedSettings(
+                name="name_value",
+                enable_products=True,
+                eligible=True,
+            )
+        )
+        response = await client.update_autofeed_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = termsofservice.AcceptTermsOfServiceRequest()
+        request = autofeedsettings.UpdateAutofeedSettingsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert response is None
+    assert isinstance(response, autofeedsettings.AutofeedSettings)
+    assert response.name == "name_value"
+    assert response.enable_products is True
+    assert response.eligible is True
 
 
 @pytest.mark.asyncio
-async def test_accept_terms_of_service_async_from_dict():
-    await test_accept_terms_of_service_async(request_type=dict)
+async def test_update_autofeed_settings_async_from_dict():
+    await test_update_autofeed_settings_async(request_type=dict)
 
 
-def test_accept_terms_of_service_field_headers():
-    client = TermsOfServiceServiceClient(
+def test_update_autofeed_settings_field_headers():
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = termsofservice.AcceptTermsOfServiceRequest()
+    request = autofeedsettings.UpdateAutofeedSettingsRequest()
 
-    request.name = "name_value"
+    request.autofeed_settings.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.accept_terms_of_service), "__call__"
+        type(client.transport.update_autofeed_settings), "__call__"
     ) as call:
-        call.return_value = None
-        client.accept_terms_of_service(request)
+        call.return_value = autofeedsettings.AutofeedSettings()
+        client.update_autofeed_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -2114,28 +1859,30 @@ def test_accept_terms_of_service_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name_value",
+        "autofeed_settings.name=name_value",
     ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_accept_terms_of_service_field_headers_async():
-    client = TermsOfServiceServiceAsyncClient(
+async def test_update_autofeed_settings_field_headers_async():
+    client = AutofeedSettingsServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = termsofservice.AcceptTermsOfServiceRequest()
+    request = autofeedsettings.UpdateAutofeedSettingsRequest()
 
-    request.name = "name_value"
+    request.autofeed_settings.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.accept_terms_of_service), "__call__"
+        type(client.transport.update_autofeed_settings), "__call__"
     ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.accept_terms_of_service(request)
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            autofeedsettings.AutofeedSettings()
+        )
+        await client.update_autofeed_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -2146,147 +1893,155 @@ async def test_accept_terms_of_service_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name_value",
+        "autofeed_settings.name=name_value",
     ) in kw["metadata"]
 
 
-def test_accept_terms_of_service_flattened():
-    client = TermsOfServiceServiceClient(
+def test_update_autofeed_settings_flattened():
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.accept_terms_of_service), "__call__"
+        type(client.transport.update_autofeed_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = None
+        call.return_value = autofeedsettings.AutofeedSettings()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.accept_terms_of_service(
-            name="name_value",
+        client.update_autofeed_settings(
+            autofeed_settings=autofeedsettings.AutofeedSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
+        arg = args[0].autofeed_settings
+        mock_val = autofeedsettings.AutofeedSettings(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
-def test_accept_terms_of_service_flattened_error():
-    client = TermsOfServiceServiceClient(
+def test_update_autofeed_settings_flattened_error():
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.accept_terms_of_service(
-            termsofservice.AcceptTermsOfServiceRequest(),
-            name="name_value",
+        client.update_autofeed_settings(
+            autofeedsettings.UpdateAutofeedSettingsRequest(),
+            autofeed_settings=autofeedsettings.AutofeedSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
-async def test_accept_terms_of_service_flattened_async():
-    client = TermsOfServiceServiceAsyncClient(
+async def test_update_autofeed_settings_flattened_async():
+    client = AutofeedSettingsServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.accept_terms_of_service), "__call__"
+        type(client.transport.update_autofeed_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = None
+        call.return_value = autofeedsettings.AutofeedSettings()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            autofeedsettings.AutofeedSettings()
+        )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.accept_terms_of_service(
-            name="name_value",
+        response = await client.update_autofeed_settings(
+            autofeed_settings=autofeedsettings.AutofeedSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
+        arg = args[0].autofeed_settings
+        mock_val = autofeedsettings.AutofeedSettings(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
 @pytest.mark.asyncio
-async def test_accept_terms_of_service_flattened_error_async():
-    client = TermsOfServiceServiceAsyncClient(
+async def test_update_autofeed_settings_flattened_error_async():
+    client = AutofeedSettingsServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.accept_terms_of_service(
-            termsofservice.AcceptTermsOfServiceRequest(),
-            name="name_value",
+        await client.update_autofeed_settings(
+            autofeedsettings.UpdateAutofeedSettingsRequest(),
+            autofeed_settings=autofeedsettings.AutofeedSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        termsofservice.GetTermsOfServiceRequest,
+        autofeedsettings.GetAutofeedSettingsRequest,
         dict,
     ],
 )
-def test_get_terms_of_service_rest(request_type):
-    client = TermsOfServiceServiceClient(
+def test_get_autofeed_settings_rest(request_type):
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "termsOfService/sample1"}
+    request_init = {"name": "accounts/sample1/autofeedSettings"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = termsofservice.TermsOfService(
+        return_value = autofeedsettings.AutofeedSettings(
             name="name_value",
-            region_code="region_code_value",
-            kind=termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER,
-            file_uri="file_uri_value",
-            external=True,
+            enable_products=True,
+            eligible=True,
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = termsofservice.TermsOfService.pb(return_value)
+        return_value = autofeedsettings.AutofeedSettings.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.get_terms_of_service(request)
+        response = client.get_autofeed_settings(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, termsofservice.TermsOfService)
+    assert isinstance(response, autofeedsettings.AutofeedSettings)
     assert response.name == "name_value"
-    assert response.region_code == "region_code_value"
-    assert response.kind == termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER
-    assert response.file_uri == "file_uri_value"
-    assert response.external is True
+    assert response.enable_products is True
+    assert response.eligible is True
 
 
-def test_get_terms_of_service_rest_use_cached_wrapped_rpc():
+def test_get_autofeed_settings_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -2297,7 +2052,8 @@ def test_get_terms_of_service_rest_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.get_terms_of_service in client._transport._wrapped_methods
+            client._transport.get_autofeed_settings
+            in client._transport._wrapped_methods
         )
 
         # Replace cached wrapped function with mock
@@ -2306,26 +2062,26 @@ def test_get_terms_of_service_rest_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.get_terms_of_service
+            client._transport.get_autofeed_settings
         ] = mock_rpc
 
         request = {}
-        client.get_terms_of_service(request)
+        client.get_autofeed_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.get_terms_of_service(request)
+        client.get_autofeed_settings(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_get_terms_of_service_rest_required_fields(
-    request_type=termsofservice.GetTermsOfServiceRequest,
+def test_get_autofeed_settings_rest_required_fields(
+    request_type=autofeedsettings.GetAutofeedSettingsRequest,
 ):
-    transport_class = transports.TermsOfServiceServiceRestTransport
+    transport_class = transports.AutofeedSettingsServiceRestTransport
 
     request_init = {}
     request_init["name"] = ""
@@ -2339,7 +2095,7 @@ def test_get_terms_of_service_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).get_terms_of_service._get_unset_required_fields(jsonified_request)
+    ).get_autofeed_settings._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2348,21 +2104,21 @@ def test_get_terms_of_service_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).get_terms_of_service._get_unset_required_fields(jsonified_request)
+    ).get_autofeed_settings._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == "name_value"
 
-    client = TermsOfServiceServiceClient(
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = termsofservice.TermsOfService()
+    return_value = autofeedsettings.AutofeedSettings()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -2383,50 +2139,50 @@ def test_get_terms_of_service_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = termsofservice.TermsOfService.pb(return_value)
+            return_value = autofeedsettings.AutofeedSettings.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.get_terms_of_service(request)
+            response = client.get_autofeed_settings(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_get_terms_of_service_rest_unset_required_fields():
-    transport = transports.TermsOfServiceServiceRestTransport(
+def test_get_autofeed_settings_rest_unset_required_fields():
+    transport = transports.AutofeedSettingsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.get_terms_of_service._get_unset_required_fields({})
+    unset_fields = transport.get_autofeed_settings._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_terms_of_service_rest_interceptors(null_interceptor):
-    transport = transports.TermsOfServiceServiceRestTransport(
+def test_get_autofeed_settings_rest_interceptors(null_interceptor):
+    transport = transports.AutofeedSettingsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.TermsOfServiceServiceRestInterceptor(),
+        else transports.AutofeedSettingsServiceRestInterceptor(),
     )
-    client = TermsOfServiceServiceClient(transport=transport)
+    client = AutofeedSettingsServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.TermsOfServiceServiceRestInterceptor, "post_get_terms_of_service"
+        transports.AutofeedSettingsServiceRestInterceptor, "post_get_autofeed_settings"
     ) as post, mock.patch.object(
-        transports.TermsOfServiceServiceRestInterceptor, "pre_get_terms_of_service"
+        transports.AutofeedSettingsServiceRestInterceptor, "pre_get_autofeed_settings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = termsofservice.GetTermsOfServiceRequest.pb(
-            termsofservice.GetTermsOfServiceRequest()
+        pb_message = autofeedsettings.GetAutofeedSettingsRequest.pb(
+            autofeedsettings.GetAutofeedSettingsRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -2438,19 +2194,19 @@ def test_get_terms_of_service_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = termsofservice.TermsOfService.to_json(
-            termsofservice.TermsOfService()
+        req.return_value._content = autofeedsettings.AutofeedSettings.to_json(
+            autofeedsettings.AutofeedSettings()
         )
 
-        request = termsofservice.GetTermsOfServiceRequest()
+        request = autofeedsettings.GetAutofeedSettingsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = termsofservice.TermsOfService()
+        post.return_value = autofeedsettings.AutofeedSettings()
 
-        client.get_terms_of_service(
+        client.get_autofeed_settings(
             request,
             metadata=[
                 ("key", "val"),
@@ -2462,16 +2218,16 @@ def test_get_terms_of_service_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_terms_of_service_rest_bad_request(
-    transport: str = "rest", request_type=termsofservice.GetTermsOfServiceRequest
+def test_get_autofeed_settings_rest_bad_request(
+    transport: str = "rest", request_type=autofeedsettings.GetAutofeedSettingsRequest
 ):
-    client = TermsOfServiceServiceClient(
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "termsOfService/sample1"}
+    request_init = {"name": "accounts/sample1/autofeedSettings"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2483,11 +2239,11 @@ def test_get_terms_of_service_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.get_terms_of_service(request)
+        client.get_autofeed_settings(request)
 
 
-def test_get_terms_of_service_rest_flattened():
-    client = TermsOfServiceServiceClient(
+def test_get_autofeed_settings_rest_flattened():
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2495,10 +2251,10 @@ def test_get_terms_of_service_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = termsofservice.TermsOfService()
+        return_value = autofeedsettings.AutofeedSettings()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "termsOfService/sample1"}
+        sample_request = {"name": "accounts/sample1/autofeedSettings"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -2510,25 +2266,26 @@ def test_get_terms_of_service_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = termsofservice.TermsOfService.pb(return_value)
+        return_value = autofeedsettings.AutofeedSettings.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.get_terms_of_service(**mock_args)
+        client.get_autofeed_settings(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/accounts/v1beta/{name=termsOfService/*}" % client.transport._host,
+            "%s/accounts/v1beta/{name=accounts/*/autofeedSettings}"
+            % client.transport._host,
             args[1],
         )
 
 
-def test_get_terms_of_service_rest_flattened_error(transport: str = "rest"):
-    client = TermsOfServiceServiceClient(
+def test_get_autofeed_settings_rest_flattened_error(transport: str = "rest"):
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2536,14 +2293,14 @@ def test_get_terms_of_service_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.get_terms_of_service(
-            termsofservice.GetTermsOfServiceRequest(),
+        client.get_autofeed_settings(
+            autofeedsettings.GetAutofeedSettingsRequest(),
             name="name_value",
         )
 
 
-def test_get_terms_of_service_rest_error():
-    client = TermsOfServiceServiceClient(
+def test_get_autofeed_settings_rest_error():
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -2551,56 +2308,126 @@ def test_get_terms_of_service_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        termsofservice.RetrieveLatestTermsOfServiceRequest,
+        autofeedsettings.UpdateAutofeedSettingsRequest,
         dict,
     ],
 )
-def test_retrieve_latest_terms_of_service_rest(request_type):
-    client = TermsOfServiceServiceClient(
+def test_update_autofeed_settings_rest(request_type):
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {}
+    request_init = {"autofeed_settings": {"name": "accounts/sample1/autofeedSettings"}}
+    request_init["autofeed_settings"] = {
+        "name": "accounts/sample1/autofeedSettings",
+        "enable_products": True,
+        "eligible": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = autofeedsettings.UpdateAutofeedSettingsRequest.meta.fields[
+        "autofeed_settings"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["autofeed_settings"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["autofeed_settings"][field])):
+                    del request_init["autofeed_settings"][field][i][subfield]
+            else:
+                del request_init["autofeed_settings"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = termsofservice.TermsOfService(
+        return_value = autofeedsettings.AutofeedSettings(
             name="name_value",
-            region_code="region_code_value",
-            kind=termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER,
-            file_uri="file_uri_value",
-            external=True,
+            enable_products=True,
+            eligible=True,
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = termsofservice.TermsOfService.pb(return_value)
+        return_value = autofeedsettings.AutofeedSettings.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.retrieve_latest_terms_of_service(request)
+        response = client.update_autofeed_settings(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, termsofservice.TermsOfService)
+    assert isinstance(response, autofeedsettings.AutofeedSettings)
     assert response.name == "name_value"
-    assert response.region_code == "region_code_value"
-    assert response.kind == termsofservicekind.TermsOfServiceKind.MERCHANT_CENTER
-    assert response.file_uri == "file_uri_value"
-    assert response.external is True
+    assert response.enable_products is True
+    assert response.eligible is True
 
 
-def test_retrieve_latest_terms_of_service_rest_use_cached_wrapped_rpc():
+def test_update_autofeed_settings_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -2611,7 +2438,7 @@ def test_retrieve_latest_terms_of_service_rest_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.retrieve_latest_terms_of_service
+            client._transport.update_autofeed_settings
             in client._transport._wrapped_methods
         )
 
@@ -2621,29 +2448,28 @@ def test_retrieve_latest_terms_of_service_rest_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.retrieve_latest_terms_of_service
+            client._transport.update_autofeed_settings
         ] = mock_rpc
 
         request = {}
-        client.retrieve_latest_terms_of_service(request)
+        client.update_autofeed_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.retrieve_latest_terms_of_service(request)
+        client.update_autofeed_settings(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_retrieve_latest_terms_of_service_rest_required_fields(
-    request_type=termsofservice.RetrieveLatestTermsOfServiceRequest,
+def test_update_autofeed_settings_rest_required_fields(
+    request_type=autofeedsettings.UpdateAutofeedSettingsRequest,
 ):
-    transport_class = transports.TermsOfServiceServiceRestTransport
+    transport_class = transports.AutofeedSettingsServiceRestTransport
 
     request_init = {}
-    request_init["region_code"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -2651,43 +2477,31 @@ def test_retrieve_latest_terms_of_service_rest_required_fields(
     )
 
     # verify fields with default values are dropped
-    assert "regionCode" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).retrieve_latest_terms_of_service._get_unset_required_fields(jsonified_request)
+    ).update_autofeed_settings._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "regionCode" in jsonified_request
-    assert jsonified_request["regionCode"] == request_init["region_code"]
-
-    jsonified_request["regionCode"] = "region_code_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).retrieve_latest_terms_of_service._get_unset_required_fields(jsonified_request)
+    ).update_autofeed_settings._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "kind",
-            "region_code",
-        )
-    )
+    assert not set(unset_fields) - set(("update_mask",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    assert "regionCode" in jsonified_request
-    assert jsonified_request["regionCode"] == "region_code_value"
 
-    client = TermsOfServiceServiceClient(
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = termsofservice.TermsOfService()
+    return_value = autofeedsettings.AutofeedSettings()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -2699,82 +2513,70 @@ def test_retrieve_latest_terms_of_service_rest_required_fields(
             pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
-                "method": "get",
+                "method": "patch",
                 "query_params": pb_request,
             }
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = termsofservice.TermsOfService.pb(return_value)
+            return_value = autofeedsettings.AutofeedSettings.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.retrieve_latest_terms_of_service(request)
+            response = client.update_autofeed_settings(request)
 
-            expected_params = [
-                (
-                    "regionCode",
-                    "",
-                ),
-                ("$alt", "json;enum-encoding=int"),
-            ]
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_retrieve_latest_terms_of_service_rest_unset_required_fields():
-    transport = transports.TermsOfServiceServiceRestTransport(
+def test_update_autofeed_settings_rest_unset_required_fields():
+    transport = transports.AutofeedSettingsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = (
-        transport.retrieve_latest_terms_of_service._get_unset_required_fields({})
-    )
+    unset_fields = transport.update_autofeed_settings._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "kind",
-                "regionCode",
-            )
-        )
+        set(("updateMask",))
         & set(
             (
-                "regionCode",
-                "kind",
+                "autofeedSettings",
+                "updateMask",
             )
         )
     )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_retrieve_latest_terms_of_service_rest_interceptors(null_interceptor):
-    transport = transports.TermsOfServiceServiceRestTransport(
+def test_update_autofeed_settings_rest_interceptors(null_interceptor):
+    transport = transports.AutofeedSettingsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.TermsOfServiceServiceRestInterceptor(),
+        else transports.AutofeedSettingsServiceRestInterceptor(),
     )
-    client = TermsOfServiceServiceClient(transport=transport)
+    client = AutofeedSettingsServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.TermsOfServiceServiceRestInterceptor,
-        "post_retrieve_latest_terms_of_service",
+        transports.AutofeedSettingsServiceRestInterceptor,
+        "post_update_autofeed_settings",
     ) as post, mock.patch.object(
-        transports.TermsOfServiceServiceRestInterceptor,
-        "pre_retrieve_latest_terms_of_service",
+        transports.AutofeedSettingsServiceRestInterceptor,
+        "pre_update_autofeed_settings",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = termsofservice.RetrieveLatestTermsOfServiceRequest.pb(
-            termsofservice.RetrieveLatestTermsOfServiceRequest()
+        pb_message = autofeedsettings.UpdateAutofeedSettingsRequest.pb(
+            autofeedsettings.UpdateAutofeedSettingsRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -2786,19 +2588,19 @@ def test_retrieve_latest_terms_of_service_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = termsofservice.TermsOfService.to_json(
-            termsofservice.TermsOfService()
+        req.return_value._content = autofeedsettings.AutofeedSettings.to_json(
+            autofeedsettings.AutofeedSettings()
         )
 
-        request = termsofservice.RetrieveLatestTermsOfServiceRequest()
+        request = autofeedsettings.UpdateAutofeedSettingsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = termsofservice.TermsOfService()
+        post.return_value = autofeedsettings.AutofeedSettings()
 
-        client.retrieve_latest_terms_of_service(
+        client.update_autofeed_settings(
             request,
             metadata=[
                 ("key", "val"),
@@ -2810,17 +2612,16 @@ def test_retrieve_latest_terms_of_service_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_retrieve_latest_terms_of_service_rest_bad_request(
-    transport: str = "rest",
-    request_type=termsofservice.RetrieveLatestTermsOfServiceRequest,
+def test_update_autofeed_settings_rest_bad_request(
+    transport: str = "rest", request_type=autofeedsettings.UpdateAutofeedSettingsRequest
 ):
-    client = TermsOfServiceServiceClient(
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {}
+    request_init = {"autofeed_settings": {"name": "accounts/sample1/autofeedSettings"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2832,291 +2633,11 @@ def test_retrieve_latest_terms_of_service_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.retrieve_latest_terms_of_service(request)
+        client.update_autofeed_settings(request)
 
 
-def test_retrieve_latest_terms_of_service_rest_error():
-    client = TermsOfServiceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        termsofservice.AcceptTermsOfServiceRequest,
-        dict,
-    ],
-)
-def test_accept_terms_of_service_rest(request_type):
-    client = TermsOfServiceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "termsOfService/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.accept_terms_of_service(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_accept_terms_of_service_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = TermsOfServiceServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.accept_terms_of_service
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.accept_terms_of_service
-        ] = mock_rpc
-
-        request = {}
-        client.accept_terms_of_service(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.accept_terms_of_service(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_accept_terms_of_service_rest_required_fields(
-    request_type=termsofservice.AcceptTermsOfServiceRequest,
-):
-    transport_class = transports.TermsOfServiceServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request_init["account"] = ""
-    request_init["region_code"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-    assert "account" not in jsonified_request
-    assert "regionCode" not in jsonified_request
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).accept_terms_of_service._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-    assert "account" in jsonified_request
-    assert jsonified_request["account"] == request_init["account"]
-    assert "regionCode" in jsonified_request
-    assert jsonified_request["regionCode"] == request_init["region_code"]
-
-    jsonified_request["name"] = "name_value"
-    jsonified_request["account"] = "account_value"
-    jsonified_request["regionCode"] = "region_code_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).accept_terms_of_service._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "account",
-            "region_code",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-    assert "account" in jsonified_request
-    assert jsonified_request["account"] == "account_value"
-    assert "regionCode" in jsonified_request
-    assert jsonified_request["regionCode"] == "region_code_value"
-
-    client = TermsOfServiceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = None
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = ""
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.accept_terms_of_service(request)
-
-            expected_params = [
-                (
-                    "account",
-                    "",
-                ),
-                (
-                    "regionCode",
-                    "",
-                ),
-                ("$alt", "json;enum-encoding=int"),
-            ]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_accept_terms_of_service_rest_unset_required_fields():
-    transport = transports.TermsOfServiceServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.accept_terms_of_service._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "account",
-                "regionCode",
-            )
-        )
-        & set(
-            (
-                "name",
-                "account",
-                "regionCode",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_accept_terms_of_service_rest_interceptors(null_interceptor):
-    transport = transports.TermsOfServiceServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TermsOfServiceServiceRestInterceptor(),
-    )
-    client = TermsOfServiceServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TermsOfServiceServiceRestInterceptor, "pre_accept_terms_of_service"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = termsofservice.AcceptTermsOfServiceRequest.pb(
-            termsofservice.AcceptTermsOfServiceRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = termsofservice.AcceptTermsOfServiceRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.accept_terms_of_service(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_accept_terms_of_service_rest_bad_request(
-    transport: str = "rest", request_type=termsofservice.AcceptTermsOfServiceRequest
-):
-    client = TermsOfServiceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "termsOfService/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.accept_terms_of_service(request)
-
-
-def test_accept_terms_of_service_rest_flattened():
-    client = TermsOfServiceServiceClient(
+def test_update_autofeed_settings_rest_flattened():
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -3124,39 +2645,44 @@ def test_accept_terms_of_service_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = None
+        return_value = autofeedsettings.AutofeedSettings()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "termsOfService/sample1"}
+        sample_request = {
+            "autofeed_settings": {"name": "accounts/sample1/autofeedSettings"}
+        }
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name="name_value",
+            autofeed_settings=autofeedsettings.AutofeedSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = ""
+        # Convert return value to protobuf type
+        return_value = autofeedsettings.AutofeedSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.accept_terms_of_service(**mock_args)
+        client.update_autofeed_settings(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/accounts/v1beta/{name=termsOfService/*}:accept"
+            "%s/accounts/v1beta/{autofeed_settings.name=accounts/*/autofeedSettings}"
             % client.transport._host,
             args[1],
         )
 
 
-def test_accept_terms_of_service_rest_flattened_error(transport: str = "rest"):
-    client = TermsOfServiceServiceClient(
+def test_update_autofeed_settings_rest_flattened_error(transport: str = "rest"):
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3164,47 +2690,48 @@ def test_accept_terms_of_service_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.accept_terms_of_service(
-            termsofservice.AcceptTermsOfServiceRequest(),
-            name="name_value",
+        client.update_autofeed_settings(
+            autofeedsettings.UpdateAutofeedSettingsRequest(),
+            autofeed_settings=autofeedsettings.AutofeedSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
-def test_accept_terms_of_service_rest_error():
-    client = TermsOfServiceServiceClient(
+def test_update_autofeed_settings_rest_error():
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.TermsOfServiceServiceGrpcTransport(
+    transport = transports.AutofeedSettingsServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.TermsOfServiceServiceGrpcTransport(
+    transport = transports.AutofeedSettingsServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.TermsOfServiceServiceGrpcTransport(
+    transport = transports.AutofeedSettingsServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             client_options=options,
             transport=transport,
         )
@@ -3213,16 +2740,16 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.TermsOfServiceServiceGrpcTransport(
+    transport = transports.AutofeedSettingsServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -3230,22 +2757,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.TermsOfServiceServiceGrpcTransport(
+    transport = transports.AutofeedSettingsServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = TermsOfServiceServiceClient(transport=transport)
+    client = AutofeedSettingsServiceClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.TermsOfServiceServiceGrpcTransport(
+    transport = transports.AutofeedSettingsServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.TermsOfServiceServiceGrpcAsyncIOTransport(
+    transport = transports.AutofeedSettingsServiceGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -3255,9 +2782,9 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.TermsOfServiceServiceGrpcTransport,
-        transports.TermsOfServiceServiceGrpcAsyncIOTransport,
-        transports.TermsOfServiceServiceRestTransport,
+        transports.AutofeedSettingsServiceGrpcTransport,
+        transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
+        transports.AutofeedSettingsServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3276,7 +2803,7 @@ def test_transport_adc(transport_class):
     ],
 )
 def test_transport_kind(transport_name):
-    transport = TermsOfServiceServiceClient.get_transport_class(transport_name)(
+    transport = AutofeedSettingsServiceClient.get_transport_class(transport_name)(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
@@ -3284,40 +2811,39 @@ def test_transport_kind(transport_name):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = TermsOfServiceServiceClient(
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.TermsOfServiceServiceGrpcTransport,
+        transports.AutofeedSettingsServiceGrpcTransport,
     )
 
 
-def test_terms_of_service_service_base_transport_error():
+def test_autofeed_settings_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.TermsOfServiceServiceTransport(
+        transport = transports.AutofeedSettingsServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_terms_of_service_service_base_transport():
+def test_autofeed_settings_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.shopping.merchant_accounts_v1beta.services.terms_of_service_service.transports.TermsOfServiceServiceTransport.__init__"
+        "google.shopping.merchant_accounts_v1beta.services.autofeed_settings_service.transports.AutofeedSettingsServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.TermsOfServiceServiceTransport(
+        transport = transports.AutofeedSettingsServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "get_terms_of_service",
-        "retrieve_latest_terms_of_service",
-        "accept_terms_of_service",
+        "get_autofeed_settings",
+        "update_autofeed_settings",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3335,16 +2861,16 @@ def test_terms_of_service_service_base_transport():
             getattr(transport, r)()
 
 
-def test_terms_of_service_service_base_transport_with_credentials_file():
+def test_autofeed_settings_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.shopping.merchant_accounts_v1beta.services.terms_of_service_service.transports.TermsOfServiceServiceTransport._prep_wrapped_messages"
+        "google.shopping.merchant_accounts_v1beta.services.autofeed_settings_service.transports.AutofeedSettingsServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.TermsOfServiceServiceTransport(
+        transport = transports.AutofeedSettingsServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -3356,22 +2882,22 @@ def test_terms_of_service_service_base_transport_with_credentials_file():
         )
 
 
-def test_terms_of_service_service_base_transport_with_adc():
+def test_autofeed_settings_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.shopping.merchant_accounts_v1beta.services.terms_of_service_service.transports.TermsOfServiceServiceTransport._prep_wrapped_messages"
+        "google.shopping.merchant_accounts_v1beta.services.autofeed_settings_service.transports.AutofeedSettingsServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.TermsOfServiceServiceTransport()
+        transport = transports.AutofeedSettingsServiceTransport()
         adc.assert_called_once()
 
 
-def test_terms_of_service_service_auth_adc():
+def test_autofeed_settings_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        TermsOfServiceServiceClient()
+        AutofeedSettingsServiceClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/content",),
@@ -3382,11 +2908,11 @@ def test_terms_of_service_service_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.TermsOfServiceServiceGrpcTransport,
-        transports.TermsOfServiceServiceGrpcAsyncIOTransport,
+        transports.AutofeedSettingsServiceGrpcTransport,
+        transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
     ],
 )
-def test_terms_of_service_service_transport_auth_adc(transport_class):
+def test_autofeed_settings_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -3402,12 +2928,12 @@ def test_terms_of_service_service_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.TermsOfServiceServiceGrpcTransport,
-        transports.TermsOfServiceServiceGrpcAsyncIOTransport,
-        transports.TermsOfServiceServiceRestTransport,
+        transports.AutofeedSettingsServiceGrpcTransport,
+        transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
+        transports.AutofeedSettingsServiceRestTransport,
     ],
 )
-def test_terms_of_service_service_transport_auth_gdch_credentials(transport_class):
+def test_autofeed_settings_service_transport_auth_gdch_credentials(transport_class):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -3425,11 +2951,11 @@ def test_terms_of_service_service_transport_auth_gdch_credentials(transport_clas
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.TermsOfServiceServiceGrpcTransport, grpc_helpers),
-        (transports.TermsOfServiceServiceGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.AutofeedSettingsServiceGrpcTransport, grpc_helpers),
+        (transports.AutofeedSettingsServiceGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_terms_of_service_service_transport_create_channel(
+def test_autofeed_settings_service_transport_create_channel(
     transport_class, grpc_helpers
 ):
     # If credentials and host are not provided, the transport class should use
@@ -3462,11 +2988,11 @@ def test_terms_of_service_service_transport_create_channel(
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.TermsOfServiceServiceGrpcTransport,
-        transports.TermsOfServiceServiceGrpcAsyncIOTransport,
+        transports.AutofeedSettingsServiceGrpcTransport,
+        transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
     ],
 )
-def test_terms_of_service_service_grpc_transport_client_cert_source_for_mtls(
+def test_autofeed_settings_service_grpc_transport_client_cert_source_for_mtls(
     transport_class,
 ):
     cred = ga_credentials.AnonymousCredentials()
@@ -3506,12 +3032,12 @@ def test_terms_of_service_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
-def test_terms_of_service_service_http_transport_client_cert_source_for_mtls():
+def test_autofeed_settings_service_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
-        transports.TermsOfServiceServiceRestTransport(
+        transports.AutofeedSettingsServiceRestTransport(
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
@@ -3525,8 +3051,8 @@ def test_terms_of_service_service_http_transport_client_cert_source_for_mtls():
         "rest",
     ],
 )
-def test_terms_of_service_service_host_no_port(transport_name):
-    client = TermsOfServiceServiceClient(
+def test_autofeed_settings_service_host_no_port(transport_name):
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="merchantapi.googleapis.com"
@@ -3548,8 +3074,8 @@ def test_terms_of_service_service_host_no_port(transport_name):
         "rest",
     ],
 )
-def test_terms_of_service_service_host_with_port(transport_name):
-    client = TermsOfServiceServiceClient(
+def test_autofeed_settings_service_host_with_port(transport_name):
+    client = AutofeedSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="merchantapi.googleapis.com:8000"
@@ -3569,33 +3095,30 @@ def test_terms_of_service_service_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_terms_of_service_service_client_transport_session_collision(transport_name):
+def test_autofeed_settings_service_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
-    client1 = TermsOfServiceServiceClient(
+    client1 = AutofeedSettingsServiceClient(
         credentials=creds1,
         transport=transport_name,
     )
-    client2 = TermsOfServiceServiceClient(
+    client2 = AutofeedSettingsServiceClient(
         credentials=creds2,
         transport=transport_name,
     )
-    session1 = client1.transport.get_terms_of_service._session
-    session2 = client2.transport.get_terms_of_service._session
+    session1 = client1.transport.get_autofeed_settings._session
+    session2 = client2.transport.get_autofeed_settings._session
     assert session1 != session2
-    session1 = client1.transport.retrieve_latest_terms_of_service._session
-    session2 = client2.transport.retrieve_latest_terms_of_service._session
-    assert session1 != session2
-    session1 = client1.transport.accept_terms_of_service._session
-    session2 = client2.transport.accept_terms_of_service._session
+    session1 = client1.transport.update_autofeed_settings._session
+    session2 = client2.transport.update_autofeed_settings._session
     assert session1 != session2
 
 
-def test_terms_of_service_service_grpc_transport_channel():
+def test_autofeed_settings_service_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.TermsOfServiceServiceGrpcTransport(
+    transport = transports.AutofeedSettingsServiceGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -3604,11 +3127,11 @@ def test_terms_of_service_service_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_terms_of_service_service_grpc_asyncio_transport_channel():
+def test_autofeed_settings_service_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.TermsOfServiceServiceGrpcAsyncIOTransport(
+    transport = transports.AutofeedSettingsServiceGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -3622,11 +3145,11 @@ def test_terms_of_service_service_grpc_asyncio_transport_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.TermsOfServiceServiceGrpcTransport,
-        transports.TermsOfServiceServiceGrpcAsyncIOTransport,
+        transports.AutofeedSettingsServiceGrpcTransport,
+        transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
     ],
 )
-def test_terms_of_service_service_transport_channel_mtls_with_client_cert_source(
+def test_autofeed_settings_service_transport_channel_mtls_with_client_cert_source(
     transport_class,
 ):
     with mock.patch(
@@ -3676,11 +3199,11 @@ def test_terms_of_service_service_transport_channel_mtls_with_client_cert_source
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.TermsOfServiceServiceGrpcTransport,
-        transports.TermsOfServiceServiceGrpcAsyncIOTransport,
+        transports.AutofeedSettingsServiceGrpcTransport,
+        transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
     ],
 )
-def test_terms_of_service_service_transport_channel_mtls_with_adc(transport_class):
+def test_autofeed_settings_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -3717,146 +3240,126 @@ def test_terms_of_service_service_transport_channel_mtls_with_adc(transport_clas
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_account_path():
+def test_autofeed_settings_path():
     account = "squid"
-    expected = "accounts/{account}".format(
+    expected = "accounts/{account}/autofeedSettings".format(
         account=account,
     )
-    actual = TermsOfServiceServiceClient.account_path(account)
+    actual = AutofeedSettingsServiceClient.autofeed_settings_path(account)
     assert expected == actual
 
 
-def test_parse_account_path():
+def test_parse_autofeed_settings_path():
     expected = {
         "account": "clam",
     }
-    path = TermsOfServiceServiceClient.account_path(**expected)
+    path = AutofeedSettingsServiceClient.autofeed_settings_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = TermsOfServiceServiceClient.parse_account_path(path)
-    assert expected == actual
-
-
-def test_terms_of_service_path():
-    version = "whelk"
-    expected = "termsOfService/{version}".format(
-        version=version,
-    )
-    actual = TermsOfServiceServiceClient.terms_of_service_path(version)
-    assert expected == actual
-
-
-def test_parse_terms_of_service_path():
-    expected = {
-        "version": "octopus",
-    }
-    path = TermsOfServiceServiceClient.terms_of_service_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = TermsOfServiceServiceClient.parse_terms_of_service_path(path)
+    actual = AutofeedSettingsServiceClient.parse_autofeed_settings_path(path)
     assert expected == actual
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = TermsOfServiceServiceClient.common_billing_account_path(billing_account)
+    actual = AutofeedSettingsServiceClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "octopus",
     }
-    path = TermsOfServiceServiceClient.common_billing_account_path(**expected)
+    path = AutofeedSettingsServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = TermsOfServiceServiceClient.parse_common_billing_account_path(path)
+    actual = AutofeedSettingsServiceClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = TermsOfServiceServiceClient.common_folder_path(folder)
+    actual = AutofeedSettingsServiceClient.common_folder_path(folder)
     assert expected == actual
 
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "nudibranch",
     }
-    path = TermsOfServiceServiceClient.common_folder_path(**expected)
+    path = AutofeedSettingsServiceClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = TermsOfServiceServiceClient.parse_common_folder_path(path)
+    actual = AutofeedSettingsServiceClient.parse_common_folder_path(path)
     assert expected == actual
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = TermsOfServiceServiceClient.common_organization_path(organization)
+    actual = AutofeedSettingsServiceClient.common_organization_path(organization)
     assert expected == actual
 
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "mussel",
     }
-    path = TermsOfServiceServiceClient.common_organization_path(**expected)
+    path = AutofeedSettingsServiceClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = TermsOfServiceServiceClient.parse_common_organization_path(path)
+    actual = AutofeedSettingsServiceClient.parse_common_organization_path(path)
     assert expected == actual
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = TermsOfServiceServiceClient.common_project_path(project)
+    actual = AutofeedSettingsServiceClient.common_project_path(project)
     assert expected == actual
 
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nautilus",
     }
-    path = TermsOfServiceServiceClient.common_project_path(**expected)
+    path = AutofeedSettingsServiceClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = TermsOfServiceServiceClient.parse_common_project_path(path)
+    actual = AutofeedSettingsServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
     )
-    actual = TermsOfServiceServiceClient.common_location_path(project, location)
+    actual = AutofeedSettingsServiceClient.common_location_path(project, location)
     assert expected == actual
 
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "squid",
+        "location": "clam",
     }
-    path = TermsOfServiceServiceClient.common_location_path(**expected)
+    path = AutofeedSettingsServiceClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = TermsOfServiceServiceClient.parse_common_location_path(path)
+    actual = AutofeedSettingsServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -3864,18 +3367,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.TermsOfServiceServiceTransport, "_prep_wrapped_messages"
+        transports.AutofeedSettingsServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.TermsOfServiceServiceTransport, "_prep_wrapped_messages"
+        transports.AutofeedSettingsServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = TermsOfServiceServiceClient.get_transport_class()
+        transport_class = AutofeedSettingsServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -3885,7 +3388,7 @@ def test_client_with_default_client_info():
 
 @pytest.mark.asyncio
 async def test_transport_close_async():
-    client = TermsOfServiceServiceAsyncClient(
+    client = AutofeedSettingsServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -3904,7 +3407,7 @@ def test_transport_close():
     }
 
     for transport, close_name in transports.items():
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
@@ -3921,7 +3424,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = TermsOfServiceServiceClient(
+        client = AutofeedSettingsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -3935,10 +3438,13 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (TermsOfServiceServiceClient, transports.TermsOfServiceServiceGrpcTransport),
         (
-            TermsOfServiceServiceAsyncClient,
-            transports.TermsOfServiceServiceGrpcAsyncIOTransport,
+            AutofeedSettingsServiceClient,
+            transports.AutofeedSettingsServiceGrpcTransport,
+        ),
+        (
+            AutofeedSettingsServiceAsyncClient,
+            transports.AutofeedSettingsServiceGrpcAsyncIOTransport,
         ),
     ],
 )
