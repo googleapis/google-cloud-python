@@ -18,9 +18,11 @@ https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_select
 
 
 import inspect
-from typing import cast, Generator, List, Union
+import time
+from typing import cast, Generator, List, Optional, Union
 
 import bigframes_vendored.sklearn.model_selection._split as vendored_model_selection_split
+import bigframes_vendored.sklearn.model_selection._validation as vendored_model_selection_validation
 
 from bigframes.core import log_adapter
 from bigframes.ml import utils
@@ -147,3 +149,37 @@ class KFold(vendored_model_selection_split.KFold):
             yield utils.convert_to_types(
                 [X_train, X_test, y_train, y_test], [X, X, y, y]
             )
+
+
+def cross_validate(
+    estimator,
+    X: Union[bpd.DataFrame, bpd.Series],
+    y: Union[bpd.DataFrame, bpd.Series, None] = None,
+    *,
+    cv: Optional[Union[int, KFold]] = None,
+) -> dict[str, list]:
+    if cv is None:
+        cv = KFold(n_splits=5)
+    elif isinstance(cv, int):
+        cv = KFold(n_splits=cv)
+
+    result: dict[str, list] = {"test_score": [], "fit_time": [], "score_time": []}
+    for X_train, X_test, y_train, y_test in cv.split(X, y):  # type: ignore
+        fit_start_time = time.perf_counter()
+        estimator.fit(X_train, y_train)
+        fit_time = time.perf_counter() - fit_start_time
+
+        score_start_time = time.perf_counter()
+        score = estimator.score(X_test, y_test)
+        score_time = time.perf_counter() - score_start_time
+
+        result["test_score"].append(score)
+        result["fit_time"].append(fit_time)
+        result["score_time"].append(score_time)
+
+    return result
+
+
+cross_validate.__doc__ = inspect.getdoc(
+    vendored_model_selection_validation.cross_validate
+)
