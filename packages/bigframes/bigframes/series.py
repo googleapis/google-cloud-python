@@ -185,7 +185,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def transpose(self) -> Series:
         return self
 
-    def _set_internal_query_job(self, query_job: bigquery.QueryJob):
+    def _set_internal_query_job(self, query_job: Optional[bigquery.QueryJob]):
         self._query_job = query_job
 
     def __len__(self):
@@ -1790,9 +1790,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         ns = (n,) if n is not None else ()
         fracs = (frac,) if frac is not None else ()
         return Series(
-            self._block._split(
-                ns=ns, fracs=fracs, random_state=random_state, sort=sort
-            )[0]
+            self._block.split(ns=ns, fracs=fracs, random_state=random_state, sort=sort)[
+                0
+            ]
         )
 
     def explode(self, *, ignore_index: Optional[bool] = False) -> Series:

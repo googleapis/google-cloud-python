@@ -499,7 +499,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
         return DataFrame(self._block.select_columns(selected_columns))
 
-    def _set_internal_query_job(self, query_job: bigquery.QueryJob):
+    def _set_internal_query_job(self, query_job: Optional[bigquery.QueryJob]):
         self._query_job = query_job
 
     def __getitem__(
@@ -2937,9 +2937,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         ns = (n,) if n is not None else ()
         fracs = (frac,) if frac is not None else ()
         return DataFrame(
-            self._block._split(
-                ns=ns, fracs=fracs, random_state=random_state, sort=sort
-            )[0]
+            self._block.split(ns=ns, fracs=fracs, random_state=random_state, sort=sort)[
+                0
+            ]
         )
 
     def explode(
@@ -2976,7 +2976,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         At most one of ns and fracs can be passed in. If neither, default to ns = (1,).
         Return a list of sampled DataFrames.
         """
-        blocks = self._block._split(ns=ns, fracs=fracs, random_state=random_state)
+        blocks = self._block.split(ns=ns, fracs=fracs, random_state=random_state)
         return [DataFrame(block) for block in blocks]
 
     @classmethod
@@ -3156,7 +3156,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 default_project=default_project,
             )
         )
-        _, query_job = self._session._export(
+        query_job = self._session._executor.export_gbq(
             export_array,
             destination=destination,
             col_id_overrides=id_overrides,

@@ -237,7 +237,7 @@ def start_query_with_client(
     opts = bigframes.options.display
     if opts.progress_bar is not None and not query_job.configuration.dry_run:
         results_iterator = formatting_helpers.wait_for_query_job(
-            query_job, max_results, opts.progress_bar
+            query_job, max_results=max_results, progress_bar=opts.progress_bar
         )
     else:
         results_iterator = query_job.result(max_results=max_results)

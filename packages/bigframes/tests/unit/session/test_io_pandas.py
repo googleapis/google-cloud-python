@@ -25,6 +25,7 @@ import pandas.testing
 import pyarrow  # type: ignore
 import pytest
 
+import bigframes.core.schema
 import bigframes.features
 import bigframes.pandas
 import bigframes.session._io.pandas
@@ -445,7 +446,13 @@ def test_arrow_to_pandas(
     dtypes: Dict,
     expected: pandas.DataFrame,
 ):
-    actual = bigframes.session._io.pandas.arrow_to_pandas(arrow_table, dtypes)
+    schema = bigframes.core.schema.ArraySchema(
+        tuple(
+            bigframes.core.schema.SchemaItem(name, dtype)
+            for name, dtype in dtypes.items()
+        )
+    )
+    actual = bigframes.session._io.pandas.arrow_to_pandas(arrow_table, schema)
     pandas.testing.assert_series_equal(actual.dtypes, expected.dtypes)
 
     # assert_frame_equal is converting to numpy internally, which causes some
@@ -478,8 +485,14 @@ def test_arrow_to_pandas(
 def test_arrow_to_pandas_wrong_size_dtypes(
     arrow_table: Union[pyarrow.Table, pyarrow.RecordBatch], dtypes: Dict
 ):
-    with pytest.raises(ValueError, match=f"Number of types {len(dtypes)}"):
-        bigframes.session._io.pandas.arrow_to_pandas(arrow_table, dtypes)
+    schema = bigframes.core.schema.ArraySchema(
+        tuple(
+            bigframes.core.schema.SchemaItem(name, dtype)
+            for name, dtype in dtypes.items()
+        )
+    )
+    with pytest.raises(ValueError, match=f"Number of types {len(schema)}"):
+        bigframes.session._io.pandas.arrow_to_pandas(arrow_table, schema)
 
 
 def test_read_pandas_with_bigframes_dataframe():

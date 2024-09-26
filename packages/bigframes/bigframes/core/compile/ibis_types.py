@@ -330,7 +330,11 @@ def _ibis_dtype_to_arrow_dtype(ibis_dtype: ibis_dtypes.DataType) -> pa.DataType:
     if isinstance(ibis_dtype, ibis_dtypes.Struct):
         return pa.struct(
             [
-                (name, _ibis_dtype_to_arrow_dtype(dtype))
+                pa.field(
+                    name,
+                    _ibis_dtype_to_arrow_dtype(dtype),
+                    nullable=not pa.types.is_list(_ibis_dtype_to_arrow_dtype(dtype)),
+                )
                 for name, dtype in ibis_dtype.fields.items()
             ]
         )

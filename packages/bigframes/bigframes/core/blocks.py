@@ -25,11 +25,20 @@ import ast
 import dataclasses
 import functools
 import itertools
-import os
 import random
 import textwrap
 import typing
-from typing import Iterable, List, Literal, Mapping, Optional, Sequence, Tuple, Union
+from typing import (
+    Iterable,
+    List,
+    Literal,
+    Mapping,
+    Optional,
+    Sequence,
+    Tuple,
+    TYPE_CHECKING,
+    Union,
+)
 import warnings
 
 import bigframes_vendored.constants as constants
@@ -56,7 +65,10 @@ import bigframes.exceptions
 import bigframes.features
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
-import bigframes.session._io.pandas
+import bigframes.session._io.pandas as io_pandas
+
+if TYPE_CHECKING:
+    import bigframes.session.executor
 
 # Type constraint for wherever column labels are used
 Label = typing.Hashable
@@ -450,46 +462,14 @@ class Block:
         level_names = [self.col_id_to_index_name[index_id] for index_id in ids]
         return Block(self.expr, ids, self.column_labels, level_names)
 
-    def _to_dataframe(self, result) -> pd.DataFrame:
-        """Convert BigQuery data to pandas DataFrame with specific dtypes."""
-        result_dataframe = self.session._rows_to_dataframe(result)
-        # Runs strict validations to ensure internal type predictions and ibis are completely in sync
-        # Do not execute these validations outside of testing suite.
-        if "PYTEST_CURRENT_TEST" in os.environ:
-            self._validate_result_schema(result.schema)
-        return result_dataframe
-
-    def _validate_result_schema(
-        self, bq_result_schema: list[bigquery.schema.SchemaField]
-    ):
-        actual_schema = tuple(bq_result_schema)
-        ibis_schema = self.expr._compiled_schema
-        internal_schema = self.expr.schema
-        if not bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable:
-            return
-        if internal_schema.to_bigquery() != actual_schema:
-            raise ValueError(
-                f"This error should only occur while testing. BigFrames internal schema: {internal_schema.to_bigquery()} does not match actual schema: {actual_schema}"
-            )
-        if ibis_schema.to_bigquery() != actual_schema:
-            raise ValueError(
-                f"This error should only occur while testing. Ibis schema: {ibis_schema.to_bigquery()} does not match actual schema: {actual_schema}"
-            )
-
     def to_arrow(
         self,
         *,
         ordered: bool = True,
     ) -> Tuple[pa.Table, bigquery.QueryJob]:
         """Run query and download results as a pyarrow Table."""
-        # pa.Table.from_pandas puts index columns last, so update the expression to match.
-        expr = self.expr.select_columns(
-            list(self.value_columns) + list(self.index_columns)
-        )
-
-        _, query_job = self.session._execute(expr, ordered=ordered)
-        results_iterator = query_job.result()
-        pa_table = results_iterator.to_arrow()
+        execute_result = self.session._executor.execute(self.expr, ordered=ordered)
+        pa_table = execute_result.to_arrow_table()
 
         pa_index_labels = []
         for index_level, index_label in enumerate(self._index_labels):
@@ -498,8 +478,10 @@ class Block:
             else:
                 pa_index_labels.append(f"__index_level_{index_level}__")
 
+        # pa.Table.from_pandas puts index columns last, so update to match.
+        pa_table = pa_table.select([*self.value_columns, *self.index_columns])
         pa_table = pa_table.rename_columns(list(self.column_labels) + pa_index_labels)
-        return pa_table, query_job
+        return pa_table, execute_result.query_job
 
     def to_pandas(
         self,
@@ -508,7 +490,7 @@ class Block:
         random_state: Optional[int] = None,
         *,
         ordered: bool = True,
-    ) -> Tuple[pd.DataFrame, bigquery.QueryJob]:
+    ) -> Tuple[pd.DataFrame, Optional[bigquery.QueryJob]]:
         """Run query and download results as a pandas DataFrame.
 
         Args:
@@ -560,8 +542,8 @@ class Block:
         self, n: int = 20, force: bool = False
     ) -> typing.Optional[pd.DataFrame]:
         if force or self.expr.supports_fast_peek:
-            iterator, _ = self.session._peek(self.expr, n)
-            df = self._to_dataframe(iterator)
+            result = self.session._executor.peek(self.expr, n)
+            df = io_pandas.arrow_to_pandas(result.to_arrow_table(), self.expr.schema)
             self._copy_index_to_pandas(df)
             return df
         else:
@@ -574,18 +556,15 @@ class Block:
 
         page_size and max_results determine the size and number of batches,
         see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob#google_cloud_bigquery_job_QueryJob_result"""
-        dtypes = dict(zip(self.index_columns, self.index.dtypes))
-        dtypes.update(zip(self.value_columns, self.dtypes))
-        _, query_job = self.session._executor.execute(
-            self.expr, ordered=True, use_explicit_destination=True
+        execute_result = self.session._executor.execute(
+            self.expr,
+            ordered=True,
+            use_explicit_destination=True,
+            page_size=page_size,
+            max_results=max_results,
         )
-        results_iterator = query_job.result(
-            page_size=page_size, max_results=max_results
-        )
-        for arrow_table in results_iterator.to_arrow_iterable(
-            bqstorage_client=self.session.bqstoragereadclient
-        ):
-            df = bigframes.session._io.pandas.arrow_to_pandas(arrow_table, dtypes)
+        for record_batch in execute_result.arrow_batches():
+            df = io_pandas.arrow_to_pandas(record_batch, self.expr.schema)
             self._copy_index_to_pandas(df)
             yield df
 
@@ -605,22 +584,19 @@ class Block:
 
     def _materialize_local(
         self, materialize_options: MaterializationOptions = MaterializationOptions()
-    ) -> Tuple[pd.DataFrame, bigquery.QueryJob]:
+    ) -> Tuple[pd.DataFrame, Optional[bigquery.QueryJob]]:
         """Run query and download results as a pandas DataFrame. Return the total number of results as well."""
         # TODO(swast): Allow for dry run and timeout.
-        _, query_job = self.session._execute(
-            self.expr, ordered=materialize_options.ordered
+        execute_result = self.session._executor.execute(
+            self.expr, ordered=materialize_options.ordered, get_size_bytes=True
         )
-        results_iterator = query_job.result()
-
-        table_size = (
-            self.session._get_table_size(query_job.destination) / _BYTES_TO_MEGABYTES
-        )
+        assert execute_result.total_bytes is not None
+        table_mb = execute_result.total_bytes / _BYTES_TO_MEGABYTES
         sample_config = materialize_options.downsampling
         max_download_size = sample_config.max_download_size
         fraction = (
-            max_download_size / table_size
-            if (max_download_size is not None) and (table_size != 0)
+            max_download_size / table_mb
+            if (max_download_size is not None) and (table_mb != 0)
             else 2
         )
 
@@ -629,7 +605,7 @@ class Block:
         if fraction < 1:
             if not sample_config.enable_downsampling:
                 raise RuntimeError(
-                    f"The data size ({table_size:.2f} MB) exceeds the maximum download limit of "
+                    f"The data size ({table_mb:.2f} MB) exceeds the maximum download limit of "
                     f"{max_download_size} MB. You can:\n\t* Enable downsampling in global options:\n"
                     "\t\t`bigframes.options.sampling.enable_downsampling = True`\n"
                     "\t* Update the global `max_download_size` option. Please make sure "
@@ -640,12 +616,12 @@ class Block:
                 )
 
             warnings.warn(
-                f"The data size ({table_size:.2f} MB) exceeds the maximum download limit of"
+                f"The data size ({table_mb:.2f} MB) exceeds the maximum download limit of"
                 f"({max_download_size} MB). It will be downsampled to {max_download_size} MB for download."
                 "\nPlease refer to the documentation for configuring the downloading limit.",
                 UserWarning,
             )
-            total_rows = results_iterator.total_rows
+            total_rows = execute_result.total_rows
             # Remove downsampling config from subsequent invocations, as otherwise could result in many
             # iterations if downsampling undershoots
             return self._downsample(
@@ -657,11 +633,12 @@ class Block:
                 MaterializationOptions(ordered=materialize_options.ordered)
             )
         else:
-            total_rows = results_iterator.total_rows
-            df = self._to_dataframe(results_iterator)
+            total_rows = execute_result.total_rows
+            arrow = self.session._executor.execute(self.expr).to_arrow_table()
+            df = io_pandas.arrow_to_pandas(arrow, schema=self.expr.schema)
             self._copy_index_to_pandas(df)
 
-        return df, query_job
+        return df, execute_result.query_job
 
     def _downsample(
         self, total_rows: int, sampling_method: str, fraction: float, random_state
@@ -680,7 +657,7 @@ class Block:
             )
             return block
         elif sampling_method == _UNIFORM:
-            block = self._split(
+            block = self.split(
                 fracs=(fraction,),
                 random_state=random_state,
                 sort=False,
@@ -693,7 +670,7 @@ class Block:
                 f"please choose from {','.join(_SAMPLING_METHODS)}."
             )
 
-    def _split(
+    def split(
         self,
         ns: Iterable[int] = (),
         fracs: Iterable[float] = (),
@@ -785,7 +762,7 @@ class Block:
         self, value_keys: Optional[Iterable[str]] = None
     ) -> bigquery.QueryJob:
         expr = self._apply_value_keys_to_expr(value_keys=value_keys)
-        _, query_job = self.session._dry_run(expr)
+        query_job = self.session._executor.dry_run(expr)
         return query_job
 
     def _apply_value_keys_to_expr(self, value_keys: Optional[Iterable[str]] = None):
@@ -1567,7 +1544,7 @@ class Block:
     @functools.cache
     def retrieve_repr_request_results(
         self, max_results: int
-    ) -> Tuple[pd.DataFrame, int, bigquery.QueryJob]:
+    ) -> Tuple[pd.DataFrame, int, Optional[bigquery.QueryJob]]:
         """
         Retrieves a pandas dataframe containing only max_results many rows for use
         with printing methods.
@@ -1575,12 +1552,13 @@ class Block:
         Returns a tuple of the dataframe and the overall number of rows of the query.
         """
 
-        results, query_job = self.session._executor.head(self.expr, max_results)
+        head_result = self.session._executor.head(self.expr, max_results)
         count = self.session._executor.get_row_count(self.expr)
 
-        computed_df = self._to_dataframe(results)
-        self._copy_index_to_pandas(computed_df)
-        return computed_df, count, query_job
+        arrow = self.session._executor.execute(self.expr).to_arrow_table()
+        df = io_pandas.arrow_to_pandas(arrow, schema=self.expr.schema)
+        self._copy_index_to_pandas(df)
+        return df, count, head_result.query_job
 
     def promote_offsets(self, label: Label = None) -> typing.Tuple[Block, str]:
         expr, result_id = self._expr.promote_offsets()
@@ -2330,7 +2308,10 @@ class Block:
             # the BigQuery unicode column name feature?
             substitutions[old_id] = new_id
 
-        sql = self.session._to_sql(
+        # Note: this uses the sql from the executor, so is coupled tightly to execution
+        # implementaton. It will reference cached tables instead of original data sources.
+        # Maybe should just compile raw BFET? Depends on user intent.
+        sql = self.session._executor.to_sql(
             array_value, col_id_overrides=substitutions, enable_cache=enable_cache
         )
         return (
@@ -2424,7 +2405,7 @@ class Block:
         # TODO(shobs): Replace direct SQL manipulation by structured expression
         # manipulation
         expr, ordering_column_name = self.expr.promote_offsets()
-        expr_sql = self.session._to_sql(expr)
+        expr_sql = self.session._executor.to_sql(expr)
 
         # Names of the columns to serialize for the row.
         # We will use the repr-eval pattern to serialize a value here and
@@ -2578,17 +2559,8 @@ class BlockIndexProperties:
             raise bigframes.exceptions.NullIndexError(
                 "Cannot materialize index, as this object does not have an index. Set index column(s) using set_index."
             )
-        # Project down to only the index column. So the query can be cached to visualize other data.
-        index_columns = list(self._block.index_columns)
-        expr = self._expr.select_columns(index_columns)
-        results, _ = self.session._execute(
-            expr, ordered=ordered if ordered is not None else True
-        )
-        df = expr.session._rows_to_dataframe(results)
-        df = df.set_index(index_columns)
-        index = df.index
-        index.names = list(self._block._index_labels)  # type:ignore
-        return index
+        ordered = ordered if ordered is not None else True
+        return self._block.select_columns([]).to_pandas(ordered=ordered)[0].index
 
     def resolve_level(self, level: LevelsType) -> typing.Sequence[str]:
         if utils.is_list_like(level):

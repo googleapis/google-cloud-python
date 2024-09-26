@@ -19,6 +19,7 @@ import functools
 import typing
 
 import google.cloud.bigquery
+import pyarrow
 
 import bigframes.core.guid
 import bigframes.dtypes
@@ -64,6 +65,19 @@ class ArraySchema:
             for item in self.items
         )
 
+    def to_pyarrow(self) -> pyarrow.Schema:
+        fields = []
+        for item in self.items:
+            pa_type = bigframes.dtypes.bigframes_dtype_to_arrow_dtype(item.dtype)
+            fields.append(
+                pyarrow.field(
+                    item.column,
+                    pa_type,
+                    nullable=not pyarrow.types.is_list(pa_type),
+                )
+            )
+        return pyarrow.schema(fields)
+
     def drop(self, columns: typing.Iterable[str]) -> ArraySchema:
         return ArraySchema(
             tuple(item for item in self.items if item.column not in columns)
@@ -72,6 +86,14 @@ class ArraySchema:
     def select(self, columns: typing.Iterable[str]) -> ArraySchema:
         return ArraySchema(
             tuple(SchemaItem(name, self.get_type(name)) for name in columns)
+        )
+
+    def rename(self, mapping: typing.Mapping[str, str]) -> ArraySchema:
+        return ArraySchema(
+            tuple(
+                SchemaItem(mapping.get(item.column, item.column), item.dtype)
+                for item in self.items
+            )
         )
 
     def append(self, item: SchemaItem):

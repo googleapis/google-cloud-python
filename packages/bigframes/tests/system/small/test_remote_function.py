@@ -1225,7 +1225,6 @@ def test_remote_function_nary_applied_after_filter(
         pytest.param("mask"),
     ],
 )
-@pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_unary_partial_ordering_mode_assign(
     unordered_session, dataset_id_permanent, method
 ):

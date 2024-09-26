@@ -879,10 +879,12 @@ class StructOp(NaryOp):
         fields = []
 
         for i in range(num_input_types):
+            arrow_type = dtypes.bigframes_dtype_to_arrow_dtype(input_types[i])
             fields.append(
-                (
+                pa.field(
                     self.column_names[i],
-                    dtypes.bigframes_dtype_to_arrow_dtype(input_types[i]),
+                    arrow_type,
+                    nullable=(not pa.types.is_list(arrow_type)),
                 )
             )
         return pd.ArrowDtype(

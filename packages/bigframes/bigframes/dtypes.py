@@ -356,6 +356,8 @@ _BIGFRAMES_TO_ARROW = {
     for mapping in SIMPLE_TYPES
     if mapping.arrow_dtype is not None
 }
+# unidirectional mapping
+_BIGFRAMES_TO_ARROW[GEO_DTYPE] = pa.string()
 
 
 def bigframes_dtype_to_arrow_dtype(
@@ -382,10 +384,14 @@ def infer_literal_type(literal) -> typing.Optional[Dtype]:
         as_arrow = bigframes_dtype_to_arrow_dtype(common_type)
         return pd.ArrowDtype(as_arrow)
     if pd.api.types.is_dict_like(literal):
-        fields = [
-            (key, bigframes_dtype_to_arrow_dtype(infer_literal_type(literal[key])))
-            for key in literal.keys()
-        ]
+        fields = []
+        for key in literal.keys():
+            field_type = bigframes_dtype_to_arrow_dtype(
+                infer_literal_type(literal[key])
+            )
+            fields.append(
+                pa.field(key, field_type, nullable=(not pa.types.is_list(field_type)))
+            )
         return pd.ArrowDtype(pa.struct(fields))
     if pd.isna(literal):
         return None  # Null value without a definite type
@@ -437,10 +443,13 @@ def convert_schema_field(
     is_repeated = field.mode == "REPEATED"
     if field.field_type == "RECORD":
         mapped_fields = map(convert_schema_field, field.fields)
-        pa_struct = pa.struct(
-            (name, bigframes_dtype_to_arrow_dtype(dtype))
-            for name, dtype in mapped_fields
-        )
+        fields = []
+        for name, dtype in mapped_fields:
+            arrow_type = bigframes_dtype_to_arrow_dtype(dtype)
+            fields.append(
+                pa.field(name, arrow_type, nullable=not pa.types.is_list(arrow_type))
+            )
+        pa_struct = pa.struct(fields)
         pa_type = pa.list_(pa_struct) if is_repeated else pa_struct
         return field.name, pd.ArrowDtype(pa_type)
     elif (
