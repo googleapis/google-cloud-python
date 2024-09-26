@@ -17,26 +17,24 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
 from google.type import month_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.cloud.backupdr.v1',
+    package="google.cloud.backupdr.v1",
     manifest={
-        'BackupPlan',
-        'BackupRule',
-        'StandardSchedule',
-        'BackupWindow',
-        'WeekDayOfMonth',
-        'CreateBackupPlanRequest',
-        'ListBackupPlansRequest',
-        'ListBackupPlansResponse',
-        'GetBackupPlanRequest',
-        'DeleteBackupPlanRequest',
+        "BackupPlan",
+        "BackupRule",
+        "StandardSchedule",
+        "BackupWindow",
+        "WeekDayOfMonth",
+        "CreateBackupPlanRequest",
+        "ListBackupPlansRequest",
+        "ListBackupPlansResponse",
+        "GetBackupPlanRequest",
+        "DeleteBackupPlanRequest",
     },
 )
 
@@ -96,6 +94,7 @@ class BackupPlan(proto.Message):
             for taking backups. Specify the email address of
             the Backup Vault Service Account.
     """
+
     class State(proto.Enum):
         r"""``State`` enumerates the possible states for a ``BackupPlan``.
 
@@ -142,10 +141,10 @@ class BackupPlan(proto.Message):
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    backup_rules: MutableSequence['BackupRule'] = proto.RepeatedField(
+    backup_rules: MutableSequence["BackupRule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
-        message='BackupRule',
+        message="BackupRule",
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -203,11 +202,11 @@ class BackupRule(proto.Message):
         proto.INT32,
         number=4,
     )
-    standard_schedule: 'StandardSchedule' = proto.Field(
+    standard_schedule: "StandardSchedule" = proto.Field(
         proto.MESSAGE,
         number=5,
-        oneof='backup_schedule_oneof',
-        message='StandardSchedule',
+        oneof="backup_schedule_oneof",
+        message="StandardSchedule",
     )
 
 
@@ -281,6 +280,7 @@ class StandardSchedule(proto.Message):
             for the list of valid timezone names. For e.g.,
             Europe/Paris.
     """
+
     class RecurrenceType(proto.Enum):
         r"""``RecurrenceTypes`` enumerates the applicable periodicity for the
         schedule.
@@ -324,20 +324,20 @@ class StandardSchedule(proto.Message):
         proto.INT32,
         number=4,
     )
-    week_day_of_month: 'WeekDayOfMonth' = proto.Field(
+    week_day_of_month: "WeekDayOfMonth" = proto.Field(
         proto.MESSAGE,
         number=5,
-        message='WeekDayOfMonth',
+        message="WeekDayOfMonth",
     )
     months: MutableSequence[month_pb2.Month] = proto.RepeatedField(
         proto.ENUM,
         number=6,
         enum=month_pb2.Month,
     )
-    backup_window: 'BackupWindow' = proto.Field(
+    backup_window: "BackupWindow" = proto.Field(
         proto.MESSAGE,
         number=7,
-        message='BackupWindow',
+        message="BackupWindow",
     )
     time_zone: str = proto.Field(
         proto.STRING,
@@ -388,6 +388,7 @@ class WeekDayOfMonth(proto.Message):
         day_of_week (google.type.dayofweek_pb2.DayOfWeek):
             Required. Specifies the day of the week.
     """
+
     class WeekOfMonth(proto.Enum):
         r"""``WeekOfMonth`` enumerates possible weeks in the month, e.g. the
         first, third, or last week of the month.
@@ -472,10 +473,10 @@ class CreateBackupPlanRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    backup_plan: 'BackupPlan' = proto.Field(
+    backup_plan: "BackupPlan" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='BackupPlan',
+        message="BackupPlan",
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -566,10 +567,10 @@ class ListBackupPlansResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_plans: MutableSequence['BackupPlan'] = proto.RepeatedField(
+    backup_plans: MutableSequence["BackupPlan"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='BackupPlan',
+        message="BackupPlan",
     )
     next_page_token: str = proto.Field(
         proto.STRING,

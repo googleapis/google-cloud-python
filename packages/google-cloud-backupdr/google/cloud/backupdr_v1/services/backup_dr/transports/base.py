@@ -29,7 +29,12 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.backupdr_v1 import gapic_version as package_version
-from google.cloud.backupdr_v1.types import backupdr
+from google.cloud.backupdr_v1.types import (
+    backupdr,
+    backupplan,
+    backupplanassociation,
+    backupvault,
+)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -170,6 +175,237 @@ class BackupDRTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_backup_vault: gapic_v1.method.wrap_method(
+                self.create_backup_vault,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_backup_vaults: gapic_v1.method.wrap_method(
+                self.list_backup_vaults,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.fetch_usable_backup_vaults: gapic_v1.method.wrap_method(
+                self.fetch_usable_backup_vaults,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_backup_vault: gapic_v1.method.wrap_method(
+                self.get_backup_vault,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_backup_vault: gapic_v1.method.wrap_method(
+                self.update_backup_vault,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_backup_vault: gapic_v1.method.wrap_method(
+                self.delete_backup_vault,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: gapic_v1.method.wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_data_sources: gapic_v1.method.wrap_method(
+                self.list_data_sources,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_data_source: gapic_v1.method.wrap_method(
+                self.get_data_source,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_data_source: gapic_v1.method.wrap_method(
+                self.update_data_source,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.remove_data_source: gapic_v1.method.wrap_method(
+                self.remove_data_source,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_internal_status: gapic_v1.method.wrap_method(
+                self.set_internal_status,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.initiate_backup: gapic_v1.method.wrap_method(
+                self.initiate_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.abandon_backup: gapic_v1.method.wrap_method(
+                self.abandon_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.finalize_backup: gapic_v1.method.wrap_method(
+                self.finalize_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_access_token: gapic_v1.method.wrap_method(
+                self.fetch_access_token,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_backups: gapic_v1.method.wrap_method(
+                self.list_backups,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_backup: gapic_v1.method.wrap_method(
+                self.get_backup,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_backup: gapic_v1.method.wrap_method(
+                self.update_backup,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_backup: gapic_v1.method.wrap_method(
+                self.delete_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.restore_backup: gapic_v1.method.wrap_method(
+                self.restore_backup,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_backup_plan: gapic_v1.method.wrap_method(
+                self.create_backup_plan,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_backup_plan: gapic_v1.method.wrap_method(
+                self.get_backup_plan,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_backup_plans: gapic_v1.method.wrap_method(
+                self.list_backup_plans,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_backup_plan: gapic_v1.method.wrap_method(
+                self.delete_backup_plan,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_backup_plan_association: gapic_v1.method.wrap_method(
+                self.create_backup_plan_association,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_backup_plan_association: gapic_v1.method.wrap_method(
+                self.get_backup_plan_association,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_backup_plan_associations: gapic_v1.method.wrap_method(
+                self.list_backup_plan_associations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_backup_plan_association: gapic_v1.method.wrap_method(
+                self.delete_backup_plan_association,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.trigger_backup: gapic_v1.method.wrap_method(
+                self.trigger_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -226,6 +462,305 @@ class BackupDRTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def create_backup_vault(
+        self,
+    ) -> Callable[
+        [backupvault.CreateBackupVaultRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backup_vaults(
+        self,
+    ) -> Callable[
+        [backupvault.ListBackupVaultsRequest],
+        Union[
+            backupvault.ListBackupVaultsResponse,
+            Awaitable[backupvault.ListBackupVaultsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_usable_backup_vaults(
+        self,
+    ) -> Callable[
+        [backupvault.FetchUsableBackupVaultsRequest],
+        Union[
+            backupvault.FetchUsableBackupVaultsResponse,
+            Awaitable[backupvault.FetchUsableBackupVaultsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup_vault(
+        self,
+    ) -> Callable[
+        [backupvault.GetBackupVaultRequest],
+        Union[backupvault.BackupVault, Awaitable[backupvault.BackupVault]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_backup_vault(
+        self,
+    ) -> Callable[
+        [backupvault.UpdateBackupVaultRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup_vault(
+        self,
+    ) -> Callable[
+        [backupvault.DeleteBackupVaultRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_data_sources(
+        self,
+    ) -> Callable[
+        [backupvault.ListDataSourcesRequest],
+        Union[
+            backupvault.ListDataSourcesResponse,
+            Awaitable[backupvault.ListDataSourcesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_data_source(
+        self,
+    ) -> Callable[
+        [backupvault.GetDataSourceRequest],
+        Union[backupvault.DataSource, Awaitable[backupvault.DataSource]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_data_source(
+        self,
+    ) -> Callable[
+        [backupvault.UpdateDataSourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def remove_data_source(
+        self,
+    ) -> Callable[
+        [backupvault.RemoveDataSourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_internal_status(
+        self,
+    ) -> Callable[
+        [backupvault.SetInternalStatusRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def initiate_backup(
+        self,
+    ) -> Callable[
+        [backupvault.InitiateBackupRequest],
+        Union[
+            backupvault.InitiateBackupResponse,
+            Awaitable[backupvault.InitiateBackupResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def abandon_backup(
+        self,
+    ) -> Callable[
+        [backupvault.AbandonBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def finalize_backup(
+        self,
+    ) -> Callable[
+        [backupvault.FinalizeBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_access_token(
+        self,
+    ) -> Callable[
+        [backupvault.FetchAccessTokenRequest],
+        Union[
+            backupvault.FetchAccessTokenResponse,
+            Awaitable[backupvault.FetchAccessTokenResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[
+        [backupvault.ListBackupsRequest],
+        Union[
+            backupvault.ListBackupsResponse, Awaitable[backupvault.ListBackupsResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup(
+        self,
+    ) -> Callable[
+        [backupvault.GetBackupRequest],
+        Union[backupvault.Backup, Awaitable[backupvault.Backup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_backup(
+        self,
+    ) -> Callable[
+        [backupvault.UpdateBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[
+        [backupvault.DeleteBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def restore_backup(
+        self,
+    ) -> Callable[
+        [backupvault.RestoreBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_backup_plan(
+        self,
+    ) -> Callable[
+        [backupplan.CreateBackupPlanRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup_plan(
+        self,
+    ) -> Callable[
+        [backupplan.GetBackupPlanRequest],
+        Union[backupplan.BackupPlan, Awaitable[backupplan.BackupPlan]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backup_plans(
+        self,
+    ) -> Callable[
+        [backupplan.ListBackupPlansRequest],
+        Union[
+            backupplan.ListBackupPlansResponse,
+            Awaitable[backupplan.ListBackupPlansResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup_plan(
+        self,
+    ) -> Callable[
+        [backupplan.DeleteBackupPlanRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_backup_plan_association(
+        self,
+    ) -> Callable[
+        [backupplanassociation.CreateBackupPlanAssociationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup_plan_association(
+        self,
+    ) -> Callable[
+        [backupplanassociation.GetBackupPlanAssociationRequest],
+        Union[
+            backupplanassociation.BackupPlanAssociation,
+            Awaitable[backupplanassociation.BackupPlanAssociation],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backup_plan_associations(
+        self,
+    ) -> Callable[
+        [backupplanassociation.ListBackupPlanAssociationsRequest],
+        Union[
+            backupplanassociation.ListBackupPlanAssociationsResponse,
+            Awaitable[backupplanassociation.ListBackupPlanAssociationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup_plan_association(
+        self,
+    ) -> Callable[
+        [backupplanassociation.DeleteBackupPlanAssociationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def trigger_backup(
+        self,
+    ) -> Callable[
+        [backupplanassociation.TriggerBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_operations(
         self,
     ) -> Callable[
@@ -256,36 +791,6 @@ class BackupDRTransport(abc.ABC):
     def delete_operation(
         self,
     ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
-        raise NotImplementedError()
-
-    @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
-    ]:
         raise NotImplementedError()
 
     @property

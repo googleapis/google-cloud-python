@@ -17,63 +17,61 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
-from google.cloud.backupdr_v1.types import backupvault_ba
-from google.cloud.backupdr_v1.types import backupvault_gce
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.backupdr_v1.types import backupvault_ba, backupvault_gce
 
 __protobuf__ = proto.module(
-    package='google.cloud.backupdr.v1',
+    package="google.cloud.backupdr.v1",
     manifest={
-        'BackupConfigState',
-        'BackupView',
-        'BackupVaultView',
-        'BackupVault',
-        'DataSource',
-        'BackupConfigInfo',
-        'GcpBackupConfig',
-        'BackupApplianceBackupConfig',
-        'DataSourceGcpResource',
-        'DataSourceBackupApplianceApplication',
-        'ServiceLockInfo',
-        'BackupApplianceLockInfo',
-        'BackupLock',
-        'Backup',
-        'CreateBackupVaultRequest',
-        'ListBackupVaultsRequest',
-        'ListBackupVaultsResponse',
-        'FetchUsableBackupVaultsRequest',
-        'FetchUsableBackupVaultsResponse',
-        'GetBackupVaultRequest',
-        'UpdateBackupVaultRequest',
-        'DeleteBackupVaultRequest',
-        'ListDataSourcesRequest',
-        'ListDataSourcesResponse',
-        'GetDataSourceRequest',
-        'UpdateDataSourceRequest',
-        'RemoveDataSourceRequest',
-        'SetInternalStatusRequest',
-        'SetInternalStatusResponse',
-        'InitiateBackupRequest',
-        'InitiateBackupResponse',
-        'AbandonBackupRequest',
-        'FinalizeBackupRequest',
-        'FetchAccessTokenRequest',
-        'FetchAccessTokenResponse',
-        'ListBackupsRequest',
-        'ListBackupsResponse',
-        'GetBackupRequest',
-        'UpdateBackupRequest',
-        'DeleteBackupRequest',
-        'RestoreBackupRequest',
-        'RestoreBackupResponse',
-        'TargetResource',
-        'GcpResource',
+        "BackupConfigState",
+        "BackupView",
+        "BackupVaultView",
+        "BackupVault",
+        "DataSource",
+        "BackupConfigInfo",
+        "GcpBackupConfig",
+        "BackupApplianceBackupConfig",
+        "DataSourceGcpResource",
+        "DataSourceBackupApplianceApplication",
+        "ServiceLockInfo",
+        "BackupApplianceLockInfo",
+        "BackupLock",
+        "Backup",
+        "CreateBackupVaultRequest",
+        "ListBackupVaultsRequest",
+        "ListBackupVaultsResponse",
+        "FetchUsableBackupVaultsRequest",
+        "FetchUsableBackupVaultsResponse",
+        "GetBackupVaultRequest",
+        "UpdateBackupVaultRequest",
+        "DeleteBackupVaultRequest",
+        "ListDataSourcesRequest",
+        "ListDataSourcesResponse",
+        "GetDataSourceRequest",
+        "UpdateDataSourceRequest",
+        "RemoveDataSourceRequest",
+        "SetInternalStatusRequest",
+        "SetInternalStatusResponse",
+        "InitiateBackupRequest",
+        "InitiateBackupResponse",
+        "AbandonBackupRequest",
+        "FinalizeBackupRequest",
+        "FetchAccessTokenRequest",
+        "FetchAccessTokenResponse",
+        "ListBackupsRequest",
+        "ListBackupsResponse",
+        "GetBackupRequest",
+        "UpdateBackupRequest",
+        "DeleteBackupRequest",
+        "RestoreBackupRequest",
+        "RestoreBackupResponse",
+        "TargetResource",
+        "GcpResource",
     },
 )
 
@@ -226,6 +224,7 @@ class BackupVault(proto.Message):
             Access restriction for the backup vault. Default value is
             WITHIN_ORGANIZATION if not provided during creation.
     """
+
     class State(proto.Enum):
         r"""Holds the state of the backup vault resource.
 
@@ -420,6 +419,7 @@ class DataSource(proto.Message):
 
             This field is a member of `oneof`_ ``source_resource``.
     """
+
     class State(proto.Enum):
         r"""Holds the state of the data source resource.
 
@@ -484,27 +484,29 @@ class DataSource(proto.Message):
         number=23,
         optional=True,
     )
-    config_state: 'BackupConfigState' = proto.Field(
+    config_state: "BackupConfigState" = proto.Field(
         proto.ENUM,
         number=24,
-        enum='BackupConfigState',
+        enum="BackupConfigState",
     )
-    backup_config_info: 'BackupConfigInfo' = proto.Field(
+    backup_config_info: "BackupConfigInfo" = proto.Field(
         proto.MESSAGE,
         number=25,
-        message='BackupConfigInfo',
+        message="BackupConfigInfo",
     )
-    data_source_gcp_resource: 'DataSourceGcpResource' = proto.Field(
+    data_source_gcp_resource: "DataSourceGcpResource" = proto.Field(
         proto.MESSAGE,
         number=26,
-        oneof='source_resource',
-        message='DataSourceGcpResource',
+        oneof="source_resource",
+        message="DataSourceGcpResource",
     )
-    data_source_backup_appliance_application: 'DataSourceBackupApplianceApplication' = proto.Field(
-        proto.MESSAGE,
-        number=27,
-        oneof='source_resource',
-        message='DataSourceBackupApplianceApplication',
+    data_source_backup_appliance_application: "DataSourceBackupApplianceApplication" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=27,
+            oneof="source_resource",
+            message="DataSourceBackupApplianceApplication",
+        )
     )
 
 
@@ -540,6 +542,7 @@ class BackupConfigInfo(proto.Message):
 
             This field is a member of `oneof`_ ``backup_config``.
     """
+
     class LastBackupState(proto.Enum):
         r"""LastBackupstate tracks whether the last backup was not yet
         started, successful, failed, or could not be run because of the
@@ -579,17 +582,17 @@ class BackupConfigInfo(proto.Message):
         number=3,
         message=status_pb2.Status,
     )
-    gcp_backup_config: 'GcpBackupConfig' = proto.Field(
+    gcp_backup_config: "GcpBackupConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof='backup_config',
-        message='GcpBackupConfig',
+        oneof="backup_config",
+        message="GcpBackupConfig",
     )
-    backup_appliance_backup_config: 'BackupApplianceBackupConfig' = proto.Field(
+    backup_appliance_backup_config: "BackupApplianceBackupConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
-        oneof='backup_config',
-        message='BackupApplianceBackupConfig',
+        oneof="backup_config",
+        message="BackupApplianceBackupConfig",
     )
 
 
@@ -724,7 +727,7 @@ class DataSourceGcpResource(proto.Message):
     compute_instance_datasource_properties: backupvault_gce.ComputeInstanceDataSourceProperties = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof='gcp_resource_properties',
+        oneof="gcp_resource_properties",
         message=backupvault_gce.ComputeInstanceDataSourceProperties,
     )
 
@@ -854,17 +857,17 @@ class BackupApplianceLockInfo(proto.Message):
     job_name: str = proto.Field(
         proto.STRING,
         number=6,
-        oneof='lock_source',
+        oneof="lock_source",
     )
     backup_image: str = proto.Field(
         proto.STRING,
         number=7,
-        oneof='lock_source',
+        oneof="lock_source",
     )
     sla_id: int = proto.Field(
         proto.INT64,
         number=8,
-        oneof='lock_source',
+        oneof="lock_source",
     )
 
 
@@ -903,17 +906,17 @@ class BackupLock(proto.Message):
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    backup_appliance_lock_info: 'BackupApplianceLockInfo' = proto.Field(
+    backup_appliance_lock_info: "BackupApplianceLockInfo" = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof='ClientLockInfo',
-        message='BackupApplianceLockInfo',
+        oneof="ClientLockInfo",
+        message="BackupApplianceLockInfo",
     )
-    service_lock_info: 'ServiceLockInfo' = proto.Field(
+    service_lock_info: "ServiceLockInfo" = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof='ClientLockInfo',
-        message='ServiceLockInfo',
+        oneof="ClientLockInfo",
+        message="ServiceLockInfo",
     )
 
 
@@ -1005,6 +1008,7 @@ class Backup(proto.Message):
             Output only. source resource size in bytes at
             the time of the backup.
     """
+
     class State(proto.Enum):
         r"""Holds the state of the backup resource.
 
@@ -1123,26 +1127,26 @@ class Backup(proto.Message):
         number=15,
         enum=State,
     )
-    service_locks: MutableSequence['BackupLock'] = proto.RepeatedField(
+    service_locks: MutableSequence["BackupLock"] = proto.RepeatedField(
         proto.MESSAGE,
         number=17,
-        message='BackupLock',
+        message="BackupLock",
     )
-    backup_appliance_locks: MutableSequence['BackupLock'] = proto.RepeatedField(
+    backup_appliance_locks: MutableSequence["BackupLock"] = proto.RepeatedField(
         proto.MESSAGE,
         number=18,
-        message='BackupLock',
+        message="BackupLock",
     )
     compute_instance_backup_properties: backupvault_gce.ComputeInstanceBackupProperties = proto.Field(
         proto.MESSAGE,
         number=19,
-        oneof='backup_properties',
+        oneof="backup_properties",
         message=backupvault_gce.ComputeInstanceBackupProperties,
     )
     backup_appliance_backup_properties: backupvault_ba.BackupApplianceBackupProperties = proto.Field(
         proto.MESSAGE,
         number=21,
-        oneof='backup_properties',
+        oneof="backup_properties",
         message=backupvault_ba.BackupApplianceBackupProperties,
     )
     backup_type: BackupType = proto.Field(
@@ -1153,7 +1157,7 @@ class Backup(proto.Message):
     gcp_backup_plan_info: GCPBackupPlanInfo = proto.Field(
         proto.MESSAGE,
         number=22,
-        oneof='plan_info',
+        oneof="plan_info",
         message=GCPBackupPlanInfo,
     )
     resource_size_bytes: int = proto.Field(
@@ -1207,10 +1211,10 @@ class CreateBackupVaultRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    backup_vault: 'BackupVault' = proto.Field(
+    backup_vault: "BackupVault" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='BackupVault',
+        message="BackupVault",
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -1270,10 +1274,10 @@ class ListBackupVaultsRequest(proto.Message):
         proto.STRING,
         number=5,
     )
-    view: 'BackupVaultView' = proto.Field(
+    view: "BackupVaultView" = proto.Field(
         proto.ENUM,
         number=6,
-        enum='BackupVaultView',
+        enum="BackupVaultView",
     )
 
 
@@ -1303,10 +1307,10 @@ class ListBackupVaultsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_vaults: MutableSequence['BackupVault'] = proto.RepeatedField(
+    backup_vaults: MutableSequence["BackupVault"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='BackupVault',
+        message="BackupVault",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1391,10 +1395,10 @@ class FetchUsableBackupVaultsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_vaults: MutableSequence['BackupVault'] = proto.RepeatedField(
+    backup_vaults: MutableSequence["BackupVault"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='BackupVault',
+        message="BackupVault",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1423,10 +1427,10 @@ class GetBackupVaultRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    view: 'BackupVaultView' = proto.Field(
+    view: "BackupVaultView" = proto.Field(
         proto.ENUM,
         number=2,
-        enum='BackupVaultView',
+        enum="BackupVaultView",
     )
 
 
@@ -1477,10 +1481,10 @@ class UpdateBackupVaultRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    backup_vault: 'BackupVault' = proto.Field(
+    backup_vault: "BackupVault" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='BackupVault',
+        message="BackupVault",
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -1638,10 +1642,10 @@ class ListDataSourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    data_sources: MutableSequence['DataSource'] = proto.RepeatedField(
+    data_sources: MutableSequence["DataSource"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='DataSource',
+        message="DataSource",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1711,10 +1715,10 @@ class UpdateDataSourceRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    data_source: 'DataSource' = proto.Field(
+    data_source: "DataSource" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='DataSource',
+        message="DataSource",
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -1804,10 +1808,10 @@ class SetInternalStatusRequest(proto.Message):
         proto.BYTES,
         number=2,
     )
-    backup_config_state: 'BackupConfigState' = proto.Field(
+    backup_config_state: "BackupConfigState" = proto.Field(
         proto.ENUM,
         number=3,
-        enum='BackupConfigState',
+        enum="BackupConfigState",
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -1816,8 +1820,7 @@ class SetInternalStatusRequest(proto.Message):
 
 
 class SetInternalStatusResponse(proto.Message):
-    r"""Response message from SetStatusInternal method.
-    """
+    r"""Response message from SetStatusInternal method."""
 
 
 class InitiateBackupRequest(proto.Message):
@@ -2146,10 +2149,10 @@ class ListBackupsRequest(proto.Message):
         proto.STRING,
         number=5,
     )
-    view: 'BackupView' = proto.Field(
+    view: "BackupView" = proto.Field(
         proto.ENUM,
         number=6,
-        enum='BackupView',
+        enum="BackupView",
     )
 
 
@@ -2179,10 +2182,10 @@ class ListBackupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backups: MutableSequence['Backup'] = proto.RepeatedField(
+    backups: MutableSequence["Backup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='Backup',
+        message="Backup",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -2211,10 +2214,10 @@ class GetBackupRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    view: 'BackupView' = proto.Field(
+    view: "BackupView" = proto.Field(
         proto.ENUM,
         number=2,
-        enum='BackupView',
+        enum="BackupView",
     )
 
 
@@ -2258,10 +2261,10 @@ class UpdateBackupRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    backup: 'Backup' = proto.Field(
+    backup: "Backup" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='Backup',
+        message="Backup",
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -2360,13 +2363,13 @@ class RestoreBackupRequest(proto.Message):
     compute_instance_target_environment: backupvault_gce.ComputeInstanceTargetEnvironment = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof='target_environment',
+        oneof="target_environment",
         message=backupvault_gce.ComputeInstanceTargetEnvironment,
     )
     compute_instance_restore_properties: backupvault_gce.ComputeInstanceRestoreProperties = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof='instance_properties',
+        oneof="instance_properties",
         message=backupvault_gce.ComputeInstanceRestoreProperties,
     )
 
@@ -2380,10 +2383,10 @@ class RestoreBackupResponse(proto.Message):
             created/modified as part of restore.
     """
 
-    target_resource: 'TargetResource' = proto.Field(
+    target_resource: "TargetResource" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='TargetResource',
+        message="TargetResource",
     )
 
 
@@ -2402,11 +2405,11 @@ class TargetResource(proto.Message):
             This field is a member of `oneof`_ ``target_resource_info``.
     """
 
-    gcp_resource: 'GcpResource' = proto.Field(
+    gcp_resource: "GcpResource" = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof='target_resource_info',
-        message='GcpResource',
+        oneof="target_resource_info",
+        message="GcpResource",
     )
 
 

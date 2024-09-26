@@ -19,34 +19,33 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.backupdr.v1',
+    package="google.cloud.backupdr.v1",
     manifest={
-        'KeyRevocationActionType',
-        'ComputeInstanceBackupProperties',
-        'ComputeInstanceRestoreProperties',
-        'ComputeInstanceTargetEnvironment',
-        'ComputeInstanceDataSourceProperties',
-        'AdvancedMachineFeatures',
-        'ConfidentialInstanceConfig',
-        'DisplayDevice',
-        'AcceleratorConfig',
-        'CustomerEncryptionKey',
-        'Entry',
-        'Metadata',
-        'NetworkInterface',
-        'NetworkPerformanceConfig',
-        'AccessConfig',
-        'AliasIpRange',
-        'InstanceParams',
-        'AllocationAffinity',
-        'Scheduling',
-        'SchedulingDuration',
-        'ServiceAccount',
-        'Tags',
-        'AttachedDisk',
-        'GuestOsFeature',
+        "KeyRevocationActionType",
+        "ComputeInstanceBackupProperties",
+        "ComputeInstanceRestoreProperties",
+        "ComputeInstanceTargetEnvironment",
+        "ComputeInstanceDataSourceProperties",
+        "AdvancedMachineFeatures",
+        "ConfidentialInstanceConfig",
+        "DisplayDevice",
+        "AcceleratorConfig",
+        "CustomerEncryptionKey",
+        "Entry",
+        "Metadata",
+        "NetworkInterface",
+        "NetworkPerformanceConfig",
+        "AccessConfig",
+        "AliasIpRange",
+        "InstanceParams",
+        "AllocationAffinity",
+        "Scheduling",
+        "SchedulingDuration",
+        "ServiceAccount",
+        "Tags",
+        "AttachedDisk",
+        "GuestOsFeature",
     },
 )
 
@@ -179,11 +178,11 @@ class ComputeInstanceBackupProperties(proto.Message):
         number=1,
         optional=True,
     )
-    tags: 'Tags' = proto.Field(
+    tags: "Tags" = proto.Field(
         proto.MESSAGE,
         number=2,
         optional=True,
-        message='Tags',
+        message="Tags",
     )
     machine_type: str = proto.Field(
         proto.STRING,
@@ -195,48 +194,48 @@ class ComputeInstanceBackupProperties(proto.Message):
         number=4,
         optional=True,
     )
-    network_interface: MutableSequence['NetworkInterface'] = proto.RepeatedField(
+    network_interface: MutableSequence["NetworkInterface"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
-        message='NetworkInterface',
+        message="NetworkInterface",
     )
-    disk: MutableSequence['AttachedDisk'] = proto.RepeatedField(
+    disk: MutableSequence["AttachedDisk"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
-        message='AttachedDisk',
+        message="AttachedDisk",
     )
-    metadata: 'Metadata' = proto.Field(
+    metadata: "Metadata" = proto.Field(
         proto.MESSAGE,
         number=7,
         optional=True,
-        message='Metadata',
+        message="Metadata",
     )
-    service_account: MutableSequence['ServiceAccount'] = proto.RepeatedField(
+    service_account: MutableSequence["ServiceAccount"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
-        message='ServiceAccount',
+        message="ServiceAccount",
     )
-    scheduling: 'Scheduling' = proto.Field(
+    scheduling: "Scheduling" = proto.Field(
         proto.MESSAGE,
         number=9,
         optional=True,
-        message='Scheduling',
+        message="Scheduling",
     )
-    guest_accelerator: MutableSequence['AcceleratorConfig'] = proto.RepeatedField(
+    guest_accelerator: MutableSequence["AcceleratorConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
-        message='AcceleratorConfig',
+        message="AcceleratorConfig",
     )
     min_cpu_platform: str = proto.Field(
         proto.STRING,
         number=11,
         optional=True,
     )
-    key_revocation_action_type: 'KeyRevocationActionType' = proto.Field(
+    key_revocation_action_type: "KeyRevocationActionType" = proto.Field(
         proto.ENUM,
         number=12,
         optional=True,
-        enum='KeyRevocationActionType',
+        enum="KeyRevocationActionType",
     )
     source_instance: str = proto.Field(
         proto.STRING,
@@ -386,6 +385,7 @@ class ComputeInstanceRestoreProperties(proto.Message):
 
             This field is a member of `oneof`_ ``_tags``.
     """
+
     class InstancePrivateIpv6GoogleAccess(proto.Enum):
         r"""The private IPv6 google access type for the VMs.
 
@@ -418,22 +418,22 @@ class ComputeInstanceRestoreProperties(proto.Message):
         number=1,
         optional=True,
     )
-    advanced_machine_features: 'AdvancedMachineFeatures' = proto.Field(
+    advanced_machine_features: "AdvancedMachineFeatures" = proto.Field(
         proto.MESSAGE,
         number=2,
         optional=True,
-        message='AdvancedMachineFeatures',
+        message="AdvancedMachineFeatures",
     )
     can_ip_forward: bool = proto.Field(
         proto.BOOL,
         number=3,
         optional=True,
     )
-    confidential_instance_config: 'ConfidentialInstanceConfig' = proto.Field(
+    confidential_instance_config: "ConfidentialInstanceConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         optional=True,
-        message='ConfidentialInstanceConfig',
+        message="ConfidentialInstanceConfig",
     )
     deletion_protection: bool = proto.Field(
         proto.BOOL,
@@ -445,38 +445,38 @@ class ComputeInstanceRestoreProperties(proto.Message):
         number=6,
         optional=True,
     )
-    disks: MutableSequence['AttachedDisk'] = proto.RepeatedField(
+    disks: MutableSequence["AttachedDisk"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
-        message='AttachedDisk',
+        message="AttachedDisk",
     )
-    display_device: 'DisplayDevice' = proto.Field(
+    display_device: "DisplayDevice" = proto.Field(
         proto.MESSAGE,
         number=8,
         optional=True,
-        message='DisplayDevice',
+        message="DisplayDevice",
     )
-    guest_accelerators: MutableSequence['AcceleratorConfig'] = proto.RepeatedField(
+    guest_accelerators: MutableSequence["AcceleratorConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
-        message='AcceleratorConfig',
+        message="AcceleratorConfig",
     )
     hostname: str = proto.Field(
         proto.STRING,
         number=10,
         optional=True,
     )
-    instance_encryption_key: 'CustomerEncryptionKey' = proto.Field(
+    instance_encryption_key: "CustomerEncryptionKey" = proto.Field(
         proto.MESSAGE,
         number=11,
         optional=True,
-        message='CustomerEncryptionKey',
+        message="CustomerEncryptionKey",
     )
-    key_revocation_action_type: 'KeyRevocationActionType' = proto.Field(
+    key_revocation_action_type: "KeyRevocationActionType" = proto.Field(
         proto.ENUM,
         number=12,
         optional=True,
-        enum='KeyRevocationActionType',
+        enum="KeyRevocationActionType",
     )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -488,33 +488,33 @@ class ComputeInstanceRestoreProperties(proto.Message):
         number=14,
         optional=True,
     )
-    metadata: 'Metadata' = proto.Field(
+    metadata: "Metadata" = proto.Field(
         proto.MESSAGE,
         number=15,
         optional=True,
-        message='Metadata',
+        message="Metadata",
     )
     min_cpu_platform: str = proto.Field(
         proto.STRING,
         number=16,
         optional=True,
     )
-    network_interfaces: MutableSequence['NetworkInterface'] = proto.RepeatedField(
+    network_interfaces: MutableSequence["NetworkInterface"] = proto.RepeatedField(
         proto.MESSAGE,
         number=17,
-        message='NetworkInterface',
+        message="NetworkInterface",
     )
-    network_performance_config: 'NetworkPerformanceConfig' = proto.Field(
+    network_performance_config: "NetworkPerformanceConfig" = proto.Field(
         proto.MESSAGE,
         number=18,
         optional=True,
-        message='NetworkPerformanceConfig',
+        message="NetworkPerformanceConfig",
     )
-    params: 'InstanceParams' = proto.Field(
+    params: "InstanceParams" = proto.Field(
         proto.MESSAGE,
         number=19,
         optional=True,
-        message='InstanceParams',
+        message="InstanceParams",
     )
     private_ipv6_google_access: InstancePrivateIpv6GoogleAccess = proto.Field(
         proto.ENUM,
@@ -522,32 +522,32 @@ class ComputeInstanceRestoreProperties(proto.Message):
         optional=True,
         enum=InstancePrivateIpv6GoogleAccess,
     )
-    allocation_affinity: 'AllocationAffinity' = proto.Field(
+    allocation_affinity: "AllocationAffinity" = proto.Field(
         proto.MESSAGE,
         number=21,
         optional=True,
-        message='AllocationAffinity',
+        message="AllocationAffinity",
     )
     resource_policies: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=22,
     )
-    scheduling: 'Scheduling' = proto.Field(
+    scheduling: "Scheduling" = proto.Field(
         proto.MESSAGE,
         number=23,
         optional=True,
-        message='Scheduling',
+        message="Scheduling",
     )
-    service_accounts: MutableSequence['ServiceAccount'] = proto.RepeatedField(
+    service_accounts: MutableSequence["ServiceAccount"] = proto.RepeatedField(
         proto.MESSAGE,
         number=24,
-        message='ServiceAccount',
+        message="ServiceAccount",
     )
-    tags: 'Tags' = proto.Field(
+    tags: "Tags" = proto.Field(
         proto.MESSAGE,
         number=26,
         optional=True,
-        message='Tags',
+        message="Tags",
     )
 
 
@@ -786,17 +786,17 @@ class CustomerEncryptionKey(proto.Message):
     raw_key: str = proto.Field(
         proto.STRING,
         number=1,
-        oneof='key',
+        oneof="key",
     )
     rsa_encrypted_key: str = proto.Field(
         proto.STRING,
         number=2,
-        oneof='key',
+        oneof="key",
     )
     kms_key_name: str = proto.Field(
         proto.STRING,
         number=3,
-        oneof='key',
+        oneof="key",
     )
     kms_key_service_account: str = proto.Field(
         proto.STRING,
@@ -848,10 +848,10 @@ class Metadata(proto.Message):
             512 KB.
     """
 
-    items: MutableSequence['Entry'] = proto.RepeatedField(
+    items: MutableSequence["Entry"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='Entry',
+        message="Entry",
     )
 
 
@@ -946,6 +946,7 @@ class NetworkInterface(proto.Message):
 
             This field is a member of `oneof`_ ``_network_attachment``.
     """
+
     class StackType(proto.Enum):
         r"""Stack type for this network interface.
 
@@ -1026,20 +1027,20 @@ class NetworkInterface(proto.Message):
         number=6,
         optional=True,
     )
-    access_configs: MutableSequence['AccessConfig'] = proto.RepeatedField(
+    access_configs: MutableSequence["AccessConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
-        message='AccessConfig',
+        message="AccessConfig",
     )
-    ipv6_access_configs: MutableSequence['AccessConfig'] = proto.RepeatedField(
+    ipv6_access_configs: MutableSequence["AccessConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
-        message='AccessConfig',
+        message="AccessConfig",
     )
-    alias_ip_ranges: MutableSequence['AliasIpRange'] = proto.RepeatedField(
+    alias_ip_ranges: MutableSequence["AliasIpRange"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
-        message='AliasIpRange',
+        message="AliasIpRange",
     )
     stack_type: StackType = proto.Field(
         proto.ENUM,
@@ -1083,6 +1084,7 @@ class NetworkPerformanceConfig(proto.Message):
 
             This field is a member of `oneof`_ ``_total_egress_bandwidth_tier``.
     """
+
     class Tier(proto.Enum):
         r"""Network performance tier.
 
@@ -1158,6 +1160,7 @@ class AccessConfig(proto.Message):
 
             This field is a member of `oneof`_ ``_network_tier``.
     """
+
     class AccessType(proto.Enum):
         r"""The type of configuration.
 
@@ -1307,6 +1310,7 @@ class AllocationAffinity(proto.Message):
             Optional. Corresponds to the label values of
             a reservation resource.
     """
+
     class Type(proto.Enum):
         r"""Indicates whether to consume from a reservation or not.
 
@@ -1396,6 +1400,7 @@ class Scheduling(proto.Message):
 
             This field is a member of `oneof`_ ``_local_ssd_recovery_timeout``.
     """
+
     class OnHostMaintenance(proto.Enum):
         r"""Defines the maintenance behavior for this instance=
 
@@ -1469,6 +1474,7 @@ class Scheduling(proto.Message):
                 Optional. Corresponds to the label values of
                 Node resource.
         """
+
         class Operator(proto.Enum):
             r"""Defines the type of node selections.
 
@@ -1491,11 +1497,11 @@ class Scheduling(proto.Message):
             number=1,
             optional=True,
         )
-        operator: 'Scheduling.NodeAffinity.Operator' = proto.Field(
+        operator: "Scheduling.NodeAffinity.Operator" = proto.Field(
             proto.ENUM,
             number=2,
             optional=True,
-            enum='Scheduling.NodeAffinity.Operator',
+            enum="Scheduling.NodeAffinity.Operator",
         )
         values: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
@@ -1540,11 +1546,11 @@ class Scheduling(proto.Message):
         optional=True,
         enum=InstanceTerminationAction,
     )
-    local_ssd_recovery_timeout: 'SchedulingDuration' = proto.Field(
+    local_ssd_recovery_timeout: "SchedulingDuration" = proto.Field(
         proto.MESSAGE,
         number=10,
         optional=True,
-        message='SchedulingDuration',
+        message="SchedulingDuration",
     )
 
 
@@ -1715,6 +1721,7 @@ class AttachedDisk(proto.Message):
 
             This field is a member of `oneof`_ ``_type``.
     """
+
     class DiskType(proto.Enum):
         r"""List of the Disk Types.
 
@@ -1875,16 +1882,16 @@ class AttachedDisk(proto.Message):
         optional=True,
         enum=DiskInterface,
     )
-    guest_os_feature: MutableSequence['GuestOsFeature'] = proto.RepeatedField(
+    guest_os_feature: MutableSequence["GuestOsFeature"] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
-        message='GuestOsFeature',
+        message="GuestOsFeature",
     )
-    disk_encryption_key: 'CustomerEncryptionKey' = proto.Field(
+    disk_encryption_key: "CustomerEncryptionKey" = proto.Field(
         proto.MESSAGE,
         number=15,
         optional=True,
-        message='CustomerEncryptionKey',
+        message="CustomerEncryptionKey",
     )
     disk_size_gb: int = proto.Field(
         proto.INT64,
@@ -1921,6 +1928,7 @@ class GuestOsFeature(proto.Message):
 
             This field is a member of `oneof`_ ``_type``.
     """
+
     class FeatureType(proto.Enum):
         r"""List of the Feature Types.
 

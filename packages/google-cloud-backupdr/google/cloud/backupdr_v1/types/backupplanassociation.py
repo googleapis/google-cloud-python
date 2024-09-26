@@ -17,23 +17,21 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.cloud.backupdr.v1',
+    package="google.cloud.backupdr.v1",
     manifest={
-        'BackupPlanAssociation',
-        'RuleConfigInfo',
-        'CreateBackupPlanAssociationRequest',
-        'ListBackupPlanAssociationsRequest',
-        'ListBackupPlanAssociationsResponse',
-        'GetBackupPlanAssociationRequest',
-        'DeleteBackupPlanAssociationRequest',
-        'TriggerBackupRequest',
+        "BackupPlanAssociation",
+        "RuleConfigInfo",
+        "CreateBackupPlanAssociationRequest",
+        "ListBackupPlanAssociationsRequest",
+        "ListBackupPlanAssociationsResponse",
+        "GetBackupPlanAssociationRequest",
+        "DeleteBackupPlanAssociationRequest",
+        "TriggerBackupRequest",
     },
 )
 
@@ -81,6 +79,7 @@ class BackupPlanAssociation(proto.Message):
 
             projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}
     """
+
     class State(proto.Enum):
         r"""Enum for State of BackupPlan Association
 
@@ -135,10 +134,10 @@ class BackupPlanAssociation(proto.Message):
         number=7,
         enum=State,
     )
-    rules_config_info: MutableSequence['RuleConfigInfo'] = proto.RepeatedField(
+    rules_config_info: MutableSequence["RuleConfigInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
-        message='RuleConfigInfo',
+        message="RuleConfigInfo",
     )
     data_source: str = proto.Field(
         proto.STRING,
@@ -165,6 +164,7 @@ class RuleConfigInfo(proto.Message):
             Output only. The point in time when the last
             successful backup was captured from the source.
     """
+
     class LastBackupState(proto.Enum):
         r"""Enum for LastBackupState
 
@@ -254,10 +254,10 @@ class CreateBackupPlanAssociationRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    backup_plan_association: 'BackupPlanAssociation' = proto.Field(
+    backup_plan_association: "BackupPlanAssociation" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='BackupPlanAssociation',
+        message="BackupPlanAssociation",
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -331,10 +331,12 @@ class ListBackupPlanAssociationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_plan_associations: MutableSequence['BackupPlanAssociation'] = proto.RepeatedField(
+    backup_plan_associations: MutableSequence[
+        "BackupPlanAssociation"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='BackupPlanAssociation',
+        message="BackupPlanAssociation",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
