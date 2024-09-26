@@ -14,6 +14,23 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.12.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.11.0...v1.12.0) (2024-08-14)
+
+
+### Features
+
+* Adds user agent parameters to two functions ([#1100](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1100)) ([f9324e3](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/f9324e35a6aa2f3d9c9f2511d1104fdf60c97c83))
+* Support UPDATE + JOIN in BigQuery dialect ([#1083](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1083)) ([d766d21](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/d766d21053f7d9df5019d0d6dedf4476ef6125a9))
+* Update colspec to account for sqlalchemy Enum ([#1111](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1111)) ([b54bdde](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/b54bdde0a01cabf5844c2b2794994b1ae5f4952f))
+
+
+### Bug Fixes
+
+* Fix partitioning by DATE column ([#1074](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1074)) ([ad69c63](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/ad69c630833bce207784dfbea8eb3c58f316e511))
+* Implement modulus operator ([#1048](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1048)) ([f5fb1a2](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/f5fb1a2543e8196e076d74848a7ae0dcf169f667))
+* Set cte_follows_insert to True ([#1095](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1095)) ([9e0b117](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/9e0b117b6966ad72bc94c0916be95189e4bd9654))
+* Use except distinct and intersect distinct ([#1094](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1094)) ([80781ef](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/80781ef99287af2e950f21ca399c84d20422b732))
+
 ## [1.11.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.10.0...v1.11.0) (2024-04-12)
 
 
