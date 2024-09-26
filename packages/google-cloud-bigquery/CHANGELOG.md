@@ -5,6 +5,34 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.26.0](https://github.com/googleapis/python-bigquery/compare/v3.25.0...v3.26.0) (2024-09-25)
+
+
+### Features
+
+* Include LegacyPandasError in init imports ([#2014](https://github.com/googleapis/python-bigquery/issues/2014)) ([3ab5e95](https://github.com/googleapis/python-bigquery/commit/3ab5e95984ad521027a4e1efd9f16767403e668d))
+* Use `bigquery-magics` package for the `%%bigquery` magic ([#1965](https://github.com/googleapis/python-bigquery/issues/1965)) ([60128a5](https://github.com/googleapis/python-bigquery/commit/60128a522375823422f238312521a2ce356d9177))
+
+
+### Bug Fixes
+
+* Add docfx to the presubmit configuration and delete docs-presubmit ([#1995](https://github.com/googleapis/python-bigquery/issues/1995)) ([bd83cfd](https://github.com/googleapis/python-bigquery/commit/bd83cfd2eb25cec58d59af8048f5188d748b083d))
+* Add warning when encountering unknown field types  ([#1989](https://github.com/googleapis/python-bigquery/issues/1989)) ([8f5a41d](https://github.com/googleapis/python-bigquery/commit/8f5a41d283a965ca161019588d3a3b2947b04b5b))
+* Allow protobuf 5.x; require protobuf &gt;=3.20.2; proto-plus >=1.22.3 ([#1976](https://github.com/googleapis/python-bigquery/issues/1976)) ([57bf873](https://github.com/googleapis/python-bigquery/commit/57bf873474382cc2cb34243b704bc928fa1b64c6))
+* Do not set job timeout extra property if None ([#1987](https://github.com/googleapis/python-bigquery/issues/1987)) ([edcb79c](https://github.com/googleapis/python-bigquery/commit/edcb79ca69dba30d8102abebb9d53bc76e4882ee))
+* Set pyarrow field nullable to False for a BigQuery field in REPEATED mode ([#1999](https://github.com/googleapis/python-bigquery/issues/1999)) ([5352870](https://github.com/googleapis/python-bigquery/commit/5352870283ca7d4652aefc73f12645bcf6e1363c))
+
+
+### Dependencies
+
+* Bump min version of google-api-core and google-cloud-core to 2.x ([#1972](https://github.com/googleapis/python-bigquery/issues/1972)) ([a958732](https://github.com/googleapis/python-bigquery/commit/a958732aed7d9bd51ffde3dc0e6cae9ad7455b54))
+
+
+### Documentation
+
+* Add short mode query sample & test ([#1978](https://github.com/googleapis/python-bigquery/issues/1978)) ([ba61a8a](https://github.com/googleapis/python-bigquery/commit/ba61a8ab0da541ba1940211875d7ea2e9e17dfa8))
+* Improve QueryJobConfig.destination docstring ([#2016](https://github.com/googleapis/python-bigquery/issues/2016)) ([1b4cca0](https://github.com/googleapis/python-bigquery/commit/1b4cca0a3cc788a4570705572d5f04172f6b4b24))
+
 ## [3.25.0](https://github.com/googleapis/python-bigquery/compare/v3.24.0...v3.25.0) (2024-06-17)
 
 
