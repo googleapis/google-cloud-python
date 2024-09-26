@@ -40,6 +40,7 @@ def sample_update_quota_preference():
 
     # Initialize request argument(s)
     quota_preference = cloudquotas_v1.QuotaPreference()
+    quota_preference.name = "projects/project_id_or_number/locations/global/quotaPreferences/quota_preference_id"
     quota_preference.quota_config.preferred_value = 1595
     quota_preference.service = "service_value"
     quota_preference.quota_id = "quota_id_value"
