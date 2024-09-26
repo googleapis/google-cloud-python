@@ -57,12 +57,14 @@ function log_and_execute() {
 ################################################################################
 function enable_apis() {
   for service in aiplatform.googleapis.com \
+                 artifactregistry.googleapis.com \
                  bigquery.googleapis.com \
                  bigqueryconnection.googleapis.com \
                  bigquerystorage.googleapis.com \
                  cloudbuild.googleapis.com \
                  cloudfunctions.googleapis.com \
                  cloudresourcemanager.googleapis.com \
+                 compute.googleapis.com \
                  run.googleapis.com \
     ; do
     log_and_execute gcloud --project=$PROJECT_ID services enable $service
@@ -148,6 +150,7 @@ function ensure_bq_connections_with_iam() {
                   southamerica-west1 \
                   us \
                   us-central1 \
+                  us-east5 \
     ; do
     ensure_bq_connection_with_iam "$location" "$BIGFRAMES_RF_CONNECTION_NAME"
   done
