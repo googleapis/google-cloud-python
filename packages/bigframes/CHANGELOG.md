@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.20.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.19.0...v1.20.0) (2024-09-25)
+
+
+### Features
+
+* Add bigframes.bigquery.approx_top_count ([#1010](https://github.com/googleapis/python-bigquery-dataframes/issues/1010)) ([3263bd7](https://github.com/googleapis/python-bigquery-dataframes/commit/3263bd70cff01bc18f1ae4ac3d5aa7f9d70fd4b7))
+* Add bigframes.ml.compose.SQLScalarColumnTransformer to create custom SQL-based transformations ([#955](https://github.com/googleapis/python-bigquery-dataframes/issues/955)) ([1930b4e](https://github.com/googleapis/python-bigquery-dataframes/commit/1930b4efe60295751ceef89c2a824923a35b19af))
+* Allow multiple columns input for llm models ([#998](https://github.com/googleapis/python-bigquery-dataframes/issues/998)) ([2fe5e48](https://github.com/googleapis/python-bigquery-dataframes/commit/2fe5e48c56bbc359d3769824c83745d65a001dd7))
+
+
+### Bug Fixes
+
+* Fix __repr__ caching with partial ordering ([#1016](https://github.com/googleapis/python-bigquery-dataframes/issues/1016)) ([208a984](https://github.com/googleapis/python-bigquery-dataframes/commit/208a98475389f59d4e32e0cfbcc46824cac278a6))
+
+
+### Documentation
+
+* Limit pypi notebook to 7 days and add more info about differences with partial ordering mode ([#1013](https://github.com/googleapis/python-bigquery-dataframes/issues/1013)) ([3c54399](https://github.com/googleapis/python-bigquery-dataframes/commit/3c543990297ec3be0e30425ee841546217e26d2a))
+* Move and edit existing linear-regression tutorial snippet ([#991](https://github.com/googleapis/python-bigquery-dataframes/issues/991)) ([4cb62fd](https://github.com/googleapis/python-bigquery-dataframes/commit/4cb62fd74fc1ac3bb21da23b8639464a9ae3525d))
+
 ## [1.19.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.18.0...v1.19.0) (2024-09-24)
 
 
