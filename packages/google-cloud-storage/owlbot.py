@@ -46,6 +46,7 @@ s.move(
         "noxfile.py",
         "CONTRIBUTING.rst",
         "README.rst",
+        ".kokoro/continuous/common.cfg",
         ".kokoro/presubmit/system-3.8.cfg",
         ".kokoro/samples/python3.6", # remove python 3.6 support
         ".github/blunderbuss.yml", # blunderbuss assignment to python squad
@@ -82,6 +83,12 @@ s.replace(
     "omit =",
     """omit =
   .nox/*""")
+
+s.replace(
+    ".kokoro/release/common.cfg",
+    'value: "releasetool-publish-reporter-app,releasetool-publish-reporter-googleapis-installation,releasetool-publish-reporter-pem"',
+    'value: "releasetool-publish-reporter-app,releasetool-publish-reporter-googleapis-installation,releasetool-publish-reporter-pem, client-library-test-universe-domain-credential"'
+)
 
 python.py_samples(skip_readmes=True)
 
