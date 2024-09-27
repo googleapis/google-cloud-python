@@ -29,6 +29,7 @@ import pyarrow.feather as pa_feather
 import bigframes.core.compile
 import bigframes.core.expression as ex
 import bigframes.core.guid
+import bigframes.core.identifiers as ids
 import bigframes.core.join_def as join_def
 import bigframes.core.local_data as local_data
 import bigframes.core.nodes as nodes
@@ -169,7 +170,7 @@ class ArrayValue:
     # Operations
     def filter_by_id(self, predicate_id: str, keep_null: bool = False) -> ArrayValue:
         """Filter the table on a given expression, the predicate must be a boolean series aligned with the table expression."""
-        predicate: ex.Expression = ex.free_var(predicate_id)
+        predicate: ex.Expression = ex.deref(predicate_id)
         if keep_null:
             predicate = ops.fillna_op.as_expr(predicate, ex.const(True))
         return self.filter(predicate)
@@ -200,7 +201,9 @@ class ArrayValue:
                 )
 
         return (
-            ArrayValue(nodes.PromoteOffsetsNode(child=self.node, col_id=col_id)),
+            ArrayValue(
+                nodes.PromoteOffsetsNode(child=self.node, col_id=ids.ColumnId(col_id))
+            ),
             col_id,
         )
 
@@ -212,7 +215,9 @@ class ArrayValue:
 
     def compute_values(self, assignments: Sequence[ex.Expression]):
         col_ids = self._gen_namespaced_uids(len(assignments))
-        ex_id_pairs = tuple((ex, id) for ex, id in zip(assignments, col_ids))
+        ex_id_pairs = tuple(
+            (ex, ids.ColumnId(id)) for ex, id in zip(assignments, col_ids)
+        )
         return (
             ArrayValue(nodes.ProjectionNode(child=self.node, assignments=ex_id_pairs)),
             col_ids,
@@ -228,14 +233,19 @@ class ArrayValue:
         if destination_id in self.column_ids:  # Mutate case
             exprs = [
                 (
-                    (source_id if (col_id == destination_id) else col_id),
-                    col_id,
+                    ex.deref(source_id if (col_id == destination_id) else col_id),
+                    ids.ColumnId(col_id),
                 )
                 for col_id in self.column_ids
             ]
         else:  # append case
-            self_projection = ((col_id, col_id) for col_id in self.column_ids)
-            exprs = [*self_projection, (source_id, destination_id)]
+            self_projection = (
+                (ex.deref(col_id), ids.ColumnId(col_id)) for col_id in self.column_ids
+            )
+            exprs = [
+                *self_projection,
+                (ex.deref(source_id), ids.ColumnId(destination_id)),
+            ]
         return ArrayValue(
             nodes.SelectionNode(
                 child=self.node,
@@ -248,24 +258,15 @@ class ArrayValue:
         value: typing.Any,
         dtype: typing.Optional[bigframes.dtypes.Dtype],
     ) -> Tuple[ArrayValue, str]:
-        destination_id = self._gen_namespaced_uid()
         if pandas.isna(value):
             # Need to assign a data type when value is NaN.
             dtype = dtype or bigframes.dtypes.DEFAULT_DTYPE
 
-        return (
-            ArrayValue(
-                nodes.ProjectionNode(
-                    child=self.node,
-                    assignments=((ex.const(value, dtype), destination_id),),
-                )
-            ),
-            destination_id,
-        )
+        return self.project_to_id(ex.const(value, dtype))
 
     def select_columns(self, column_ids: typing.Sequence[str]) -> ArrayValue:
         # This basically just drops and reorders columns - logically a no-op except as a final step
-        selections = ((col_id, col_id) for col_id in column_ids)
+        selections = ((ex.deref(col_id), ids.ColumnId(col_id)) for col_id in column_ids)
         return ArrayValue(
             nodes.SelectionNode(
                 child=self.node,
@@ -274,14 +275,8 @@ class ArrayValue:
         )
 
     def drop_columns(self, columns: Iterable[str]) -> ArrayValue:
-        new_projection = (
-            (col_id, col_id) for col_id in self.column_ids if col_id not in columns
-        )
-        return ArrayValue(
-            nodes.SelectionNode(
-                child=self.node,
-                input_output_pairs=tuple(new_projection),
-            )
+        return self.select_columns(
+            [col_id for col_id in self.column_ids if col_id not in columns]
         )
 
     def aggregate(
@@ -297,11 +292,12 @@ class ArrayValue:
             by_column_id: column id of the aggregation key, this is preserved through the transform
             dropna: whether null keys should be dropped
         """
+        agg_defs = tuple((agg, ids.ColumnId(name)) for agg, name in aggregations)
         return ArrayValue(
             nodes.AggregateNode(
                 child=self.node,
-                aggregations=tuple(aggregations),
-                by_column_ids=tuple(by_column_ids),
+                aggregations=agg_defs,
+                by_column_ids=tuple(map(ex.deref, by_column_ids)),
                 dropna=dropna,
             )
         )
@@ -342,10 +338,10 @@ class ArrayValue:
             ArrayValue(
                 nodes.WindowOpNode(
                     child=self.node,
-                    column_name=column_name,
+                    column_name=ex.deref(column_name),
                     op=op,
                     window_spec=window_spec,
-                    output_name=output_name,
+                    output_name=ids.ColumnId(output_name),
                     never_skip_nulls=never_skip_nulls,
                     skip_reproject_unsafe=skip_reproject_unsafe,
                 )
@@ -376,7 +372,9 @@ class ArrayValue:
         join_node = nodes.JoinNode(
             left_child=self.node,
             right_child=other.node,
-            conditions=conditions,
+            conditions=tuple(
+                (ex.deref(l_col), ex.deref(r_col)) for l_col, r_col in conditions
+            ),
             type=type,
         )
         # Maps input ids to output ids for caller convenience
@@ -414,7 +412,7 @@ class ArrayValue:
         for column_id in column_ids:
             assert bigframes.dtypes.is_array_like(self.get_column_type(column_id))
 
-        offsets = tuple(self.get_offset_for_name(id) for id in column_ids)
+        offsets = tuple(ex.deref(id) for id in column_ids)
         return ArrayValue(nodes.ExplodeNode(child=self.node, column_ids=offsets))
 
     def _uniform_sampling(self, fraction: float) -> ArrayValue:
@@ -424,9 +422,6 @@ class ArrayValue:
             The row numbers of result is non-deterministic, avoid to use.
         """
         return ArrayValue(nodes.RandomSampleNode(self.node, fraction))
-
-    def get_offset_for_name(self, name: str):
-        return self.schema.names.index(name)
 
     # Deterministically generate namespaced ids for new variables
     # These new ids are only unique within the current namespace.

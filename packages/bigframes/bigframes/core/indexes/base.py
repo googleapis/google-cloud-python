@@ -327,7 +327,9 @@ class Index(vendored_pandas_index.Index):
     ) -> Index:
         if self.nlevels > 1:
             raise TypeError("Multiindex does not support 'astype'")
-        return self._apply_unary_expr(ops.AsTypeOp(to_type=dtype).as_expr("arg"))
+        return self._apply_unary_expr(
+            ops.AsTypeOp(to_type=dtype).as_expr(ex.free_var("arg"))
+        )
 
     def all(self) -> bool:
         if self.nlevels > 1:
@@ -396,7 +398,9 @@ class Index(vendored_pandas_index.Index):
     def fillna(self, value=None) -> Index:
         if self.nlevels > 1:
             raise TypeError("Multiindex does not support 'fillna'")
-        return self._apply_unary_expr(ops.fillna_op.as_expr("arg", ex.const(value)))
+        return self._apply_unary_expr(
+            ops.fillna_op.as_expr(ex.free_var("arg"), ex.const(value))
+        )
 
     def rename(self, name: Union[str, Sequence[str]]) -> Index:
         names = [name] if isinstance(name, str) else list(name)
@@ -446,7 +450,9 @@ class Index(vendored_pandas_index.Index):
             )
 
         return self._apply_unary_expr(
-            ops.IsInOp(values=tuple(values), match_nulls=True).as_expr("arg")
+            ops.IsInOp(values=tuple(values), match_nulls=True).as_expr(
+                ex.free_var("arg")
+            )
         ).fillna(value=False)
 
     def _apply_unary_expr(
@@ -454,14 +460,16 @@ class Index(vendored_pandas_index.Index):
         op: ex.Expression,
     ) -> Index:
         """Applies a unary operator to the index."""
-        if len(op.unbound_variables) != 1:
+        if len(op.free_variables) != 1:
             raise ValueError("Expression must have exactly 1 unbound variable.")
-        unbound_variable = op.unbound_variables[0]
+        unbound_variable = op.free_variables[0]
 
         block = self._block
         result_ids = []
         for col in self._block.index_columns:
-            block, result_id = block.project_expr(op.rename({unbound_variable: col}))
+            block, result_id = block.project_expr(
+                op.bind_variables({unbound_variable: ex.deref(col)})
+            )
             result_ids.append(result_id)
 
         block = block.set_index(result_ids, index_labels=self._block.index.names)

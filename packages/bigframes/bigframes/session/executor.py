@@ -42,6 +42,7 @@ import bigframes.core
 import bigframes.core.compile
 import bigframes.core.expression as ex
 import bigframes.core.guid
+import bigframes.core.identifiers
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as order
 import bigframes.core.schema
@@ -488,9 +489,10 @@ class BigQueryCachingExecutor:
         target, cluster_cols = bigframes.session.planner.session_aware_cache_plan(
             array_value.node, list(session_forest)
         )
+        cluster_cols_sql_names = [id.sql for id in cluster_cols]
         if len(cluster_cols) > 0:
             self._cache_with_cluster_cols(
-                bigframes.core.ArrayValue(target), cluster_cols
+                bigframes.core.ArrayValue(target), cluster_cols_sql_names
             )
         elif self.strictly_ordered:
             self._cache_with_offsets(bigframes.core.ArrayValue(target))
@@ -554,11 +556,19 @@ class BigQueryCachingExecutor:
 
 def generate_head_plan(node: nodes.BigFrameNode, n: int):
     offsets_id = bigframes.core.guid.generate_guid("offsets_")
-    plan_w_offsets = nodes.PromoteOffsetsNode(node, offsets_id)
-    predicate = ops.lt_op.as_expr(ex.free_var(offsets_id), ex.const(n))
+    plan_w_offsets = nodes.PromoteOffsetsNode(
+        node, bigframes.core.identifiers.ColumnId(offsets_id)
+    )
+    predicate = ops.lt_op.as_expr(ex.deref(offsets_id), ex.const(n))
     plan_w_head = nodes.FilterNode(plan_w_offsets, predicate)
     # Finally, drop the offsets column
-    return nodes.SelectionNode(plan_w_head, tuple((i, i) for i in node.schema.names))
+    return nodes.SelectionNode(
+        plan_w_head,
+        tuple(
+            (ex.deref(i), bigframes.core.identifiers.ColumnId(i))
+            for i in node.schema.names
+        ),
+    )
 
 
 def generate_row_count_plan(node: nodes.BigFrameNode):

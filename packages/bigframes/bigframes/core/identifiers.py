@@ -11,16 +11,37 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
 
-# Later, plan on migrating ids to use integers to reduce memory usage allow use of bitmaps to represent column sets
-
+import dataclasses
+import functools
 from typing import Generator
 
-ID_TYPE = str
 
-
-def standard_identifiers() -> Generator[ID_TYPE, None, None]:
+def standard_identifiers() -> Generator[str, None, None]:
     i = 0
     while True:
         yield f"col_{i}"
         i = i + 1
+
+
+# Used for expression trees
+@functools.total_ordering
+@dataclasses.dataclass(frozen=True)
+class ColumnId:
+    """Local id without plan-wide id."""
+
+    name: str
+
+    @property
+    def sql(self) -> str:
+        """Returns the unescaped SQL name."""
+        return self.name
+
+    @property
+    def local_normalized(self) -> ColumnId:
+        """For use in compiler only. Normalizes to ColumnId referring to sql name."""
+        return self  # == ColumnId(name=self.sql)
+
+    def __lt__(self, other: ColumnId) -> bool:
+        return self.name < other.name

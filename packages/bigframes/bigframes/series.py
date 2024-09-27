@@ -1233,7 +1233,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         if isinstance(indexer, Series):
             (left, right, block) = self._align(indexer, "left")
             block = block.filter(right)
-            block = block.select_column(left.id)
+            block = block.select_column(left.id.name)
             return Series(block)
         return self.loc[indexer]
 

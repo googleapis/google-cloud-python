@@ -93,8 +93,8 @@ def join_by_column_ordered(
     ordering = orderings.join_orderings(
         left._ordering,
         right._ordering,
-        l_mapping,
-        r_mapping,
+        {ids.ColumnId(lin): ids.ColumnId(lout) for lin, lout in l_mapping.items()},
+        {ids.ColumnId(rin): ids.ColumnId(rout) for rin, rout in r_mapping.items()},
         left_order_dominates=(type != "right"),
     )
 

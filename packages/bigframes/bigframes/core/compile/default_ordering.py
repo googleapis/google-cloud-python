@@ -27,6 +27,7 @@ import ibis.backends
 import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
 
+import bigframes.core.expression as ex
 import bigframes.core.guid as guid
 import bigframes.core.ordering as order
 
@@ -91,6 +92,8 @@ def gen_default_ordering(table: ibis.table, use_double_hash: bool = True):
         ordering_value_columns=tuple(
             order.ascending_over(col.get_name()) for col in order_values
         ),
-        total_ordering_columns=frozenset(col.get_name() for col in order_values),
+        total_ordering_columns=frozenset(
+            ex.deref(col.get_name()) for col in order_values
+        ),
     )
     return table_with_ordering, ordering

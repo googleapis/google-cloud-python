@@ -148,11 +148,11 @@ class TernaryOp(ScalarOp):
 def _convert_expr_input(
     input: typing.Union[str, bigframes.core.expression.Expression]
 ) -> bigframes.core.expression.Expression:
-    """Allows creating free variables with just a string"""
+    """Allows creating column references with just a string"""
     import bigframes.core.expression
 
     if isinstance(input, str):
-        return bigframes.core.expression.UnboundVariableExpression(input)
+        return bigframes.core.expression.deref(input)
     else:
         return input
 

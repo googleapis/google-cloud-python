@@ -20,6 +20,7 @@ import pandas as pd
 
 import bigframes.core as core
 import bigframes.core.expression as ex
+import bigframes.core.identifiers as ids
 import bigframes.core.schema
 import bigframes.operations as ops
 import bigframes.session.planner as planner
@@ -53,7 +54,7 @@ def test_session_aware_caching_project_filter():
         target.node, [obj.node for obj in session_objects]
     )
     assert result == LEAF.node
-    assert cluster_cols == ["col_a"]
+    assert cluster_cols == [ids.ColumnId("col_a")]
 
 
 def test_session_aware_caching_project_multi_filter():
@@ -76,7 +77,7 @@ def test_session_aware_caching_project_multi_filter():
         target.node, [obj.node for obj in session_objects]
     )
     assert result == LEAF.node
-    assert cluster_cols == ["col_a", "col_b"]
+    assert cluster_cols == [ids.ColumnId("col_a"), ids.ColumnId("col_b")]
 
 
 def test_session_aware_caching_unusable_filter():
@@ -117,4 +118,4 @@ def test_session_aware_caching_fork_after_window_op():
         ],
     )
     assert result == LEAF.promote_offsets()[0].node
-    assert cluster_cols == ["col_a"]
+    assert cluster_cols == [ids.ColumnId("col_a")]

@@ -19,12 +19,13 @@ import itertools
 from typing import Mapping, Optional, Sequence, Tuple
 
 import bigframes.core.expression as scalar_exprs
+import bigframes.core.identifiers as ids
 import bigframes.core.join_def as join_defs
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as order
 import bigframes.operations as ops
 
-Selection = Tuple[Tuple[scalar_exprs.Expression, str], ...]
+Selection = Tuple[Tuple[scalar_exprs.Expression, ids.ColumnId], ...]
 
 REWRITABLE_NODE_TYPES = (
     nodes.SelectionNode,
@@ -40,7 +41,7 @@ class SquashedSelect:
     """Squash nodes together until target node, separating out the projection, filter and reordering expressions."""
 
     root: nodes.BigFrameNode
-    columns: Tuple[Tuple[scalar_exprs.Expression, str], ...]
+    columns: Tuple[Tuple[scalar_exprs.Expression, ids.ColumnId], ...]
     predicate: Optional[scalar_exprs.Expression]
     ordering: Tuple[order.OrderingExpression, ...]
     reverse_root: bool = False
@@ -51,8 +52,7 @@ class SquashedSelect:
     ) -> SquashedSelect:
         if node == target:
             selection = tuple(
-                (scalar_exprs.UnboundVariableExpression(id), id)
-                for id in get_node_column_ids(node)
+                (scalar_exprs.DerefOp(id), id) for id in get_node_column_ids(node)
             )
             return cls(node, selection, None, ())
 
@@ -72,13 +72,15 @@ class SquashedSelect:
             raise ValueError(f"Cannot rewrite node {node}")
 
     @property
-    def column_lookup(self) -> Mapping[str, scalar_exprs.Expression]:
+    def column_lookup(self) -> Mapping[ids.ColumnId, scalar_exprs.Expression]:
         return {col_id: expr for expr, col_id in self.columns}
 
-    def select(self, input_output_pairs: Tuple[Tuple[str, str], ...]) -> SquashedSelect:
+    def select(
+        self, input_output_pairs: Tuple[Tuple[scalar_exprs.DerefOp, ids.ColumnId], ...]
+    ) -> SquashedSelect:
         new_columns = tuple(
             (
-                scalar_exprs.free_var(input).bind_variables(self.column_lookup),
+                input.bind_refs(self.column_lookup),
                 output,
             )
             for input, output in input_output_pairs
@@ -88,11 +90,11 @@ class SquashedSelect:
         )
 
     def project(
-        self, projection: Tuple[Tuple[scalar_exprs.Expression, str], ...]
+        self, projection: Tuple[Tuple[scalar_exprs.Expression, ids.ColumnId], ...]
     ) -> SquashedSelect:
         existing_columns = self.columns
         new_columns = tuple(
-            (expr.bind_variables(self.column_lookup), id) for expr, id in projection
+            (expr.bind_refs(self.column_lookup), id) for expr, id in projection
         )
         return SquashedSelect(
             self.root,
@@ -104,10 +106,10 @@ class SquashedSelect:
 
     def filter(self, predicate: scalar_exprs.Expression) -> SquashedSelect:
         if self.predicate is None:
-            new_predicate = predicate.bind_variables(self.column_lookup)
+            new_predicate = predicate.bind_refs(self.column_lookup)
         else:
             new_predicate = ops.and_op.as_expr(
-                self.predicate, predicate.bind_variables(self.column_lookup)
+                self.predicate, predicate.bind_refs(self.column_lookup)
             )
         return SquashedSelect(
             self.root, self.columns, new_predicate, self.ordering, self.reverse_root
@@ -121,7 +123,7 @@ class SquashedSelect:
 
     def order_with(self, by: Tuple[order.OrderingExpression, ...]):
         adjusted_orderings = [
-            order_part.bind_variables(self.column_lookup) for order_part in by
+            order_part.bind_refs(self.column_lookup) for order_part in by
         ]
         new_ordering = (*adjusted_orderings, *self.ordering)
         return SquashedSelect(
@@ -134,8 +136,8 @@ class SquashedSelect:
         join_keys: Tuple[join_defs.CoalescedColumnMapping, ...],
     ) -> bool:
         """Determines whether the two selections can be merged into a single selection."""
-        r_exprs_by_id = {id: expr for expr, id in right.columns}
-        l_exprs_by_id = {id: expr for expr, id in self.columns}
+        r_exprs_by_id = {id.name: expr for expr, id in right.columns}
+        l_exprs_by_id = {id.name: expr for expr, id in self.columns}
         l_join_exprs = [
             l_exprs_by_id[join_key.left_source_id] for join_key in join_keys
         ]
@@ -227,7 +229,7 @@ class SquashedSelect:
             root = nodes.FilterNode(child=root, predicate=self.predicate)
         if self.ordering:
             root = nodes.OrderByNode(child=root, by=self.ordering)
-        selection = tuple((id, id) for _, id in self.columns)
+        selection = tuple((scalar_exprs.DerefOp(id), id) for _, id in self.columns)
         return nodes.SelectionNode(
             child=nodes.ProjectionNode(child=root, assignments=self.columns),
             input_output_pairs=selection,
@@ -266,14 +268,15 @@ def merge_expressions(
     rmask: Optional[scalar_exprs.Expression],
 ) -> Selection:
     new_selection: Selection = tuple()
-    l_exprs_by_id = {id: expr for expr, id in lselection}
-    r_exprs_by_id = {id: expr for expr, id in rselection}
+    # Assumption is simple ids
+    l_exprs_by_id = {id.name: expr for expr, id in lselection}
+    r_exprs_by_id = {id.name: expr for expr, id in rselection}
     for key in join_keys:
         # Join keys expressions are equivalent on both sides, so can choose either left or right key
         assert l_exprs_by_id[key.left_source_id] == r_exprs_by_id[key.right_source_id]
         expr = l_exprs_by_id[key.left_source_id]
         id = key.destination_id
-        new_selection = (*new_selection, (expr, id))
+        new_selection = (*new_selection, (expr, ids.ColumnId(id)))
     for mapping in mappings:
         if mapping.source_table == join_defs.JoinSide.LEFT:
             expr = l_exprs_by_id[mapping.source_id]
@@ -283,7 +286,7 @@ def merge_expressions(
             expr = r_exprs_by_id[mapping.source_id]
             if rmask is not None:
                 expr = apply_mask(expr, rmask)
-        new_selection = (*new_selection, (expr, mapping.destination_id))
+        new_selection = (*new_selection, (expr, ids.ColumnId(mapping.destination_id)))
     return new_selection
 
 
@@ -354,12 +357,8 @@ def decompose_conjunction(
         return (expr,)
 
 
-def get_node_column_ids(node: nodes.BigFrameNode) -> Tuple[str, ...]:
-    # TODO: Convert to use node.schema once that has been merged
-    # Note: this actually compiles the node to get the schema
-    import bigframes.core
-
-    return tuple(bigframes.core.ArrayValue(node).column_ids)
+def get_node_column_ids(node: nodes.BigFrameNode) -> Tuple[ids.ColumnId, ...]:
+    return tuple(field.id for field in node.fields)
 
 
 def common_selection_root(

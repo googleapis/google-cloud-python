@@ -749,11 +749,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if reverse:
             expr = op.as_expr(
                 left_input=ex.const(other),
-                right_input=bigframes.core.guid.generate_guid(),
+                right_input=ex.free_var("var1"),
             )
         else:
             expr = op.as_expr(
-                left_input=bigframes.core.guid.generate_guid(),
+                left_input=ex.free_var("var1"),
                 right_input=ex.const(other),
             )
         return DataFrame(

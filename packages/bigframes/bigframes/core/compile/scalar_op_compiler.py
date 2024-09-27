@@ -86,13 +86,13 @@ class ScalarOpCompiler:
     @compile_expression.register
     def _(
         self,
-        expression: ex.UnboundVariableExpression,
+        expression: ex.DerefOp,
         bindings: typing.Dict[str, ibis_types.Value],
     ) -> ibis_types.Value:
-        if expression.id not in bindings:
+        if expression.id.sql not in bindings:
             raise ValueError(f"Could not resolve unbound variable {expression.id}")
         else:
-            return bindings[expression.id]
+            return bindings[expression.id.sql]
 
     @compile_expression.register
     def _(

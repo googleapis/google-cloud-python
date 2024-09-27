@@ -716,7 +716,7 @@ class Block:
         )
         block, hash_string_sum_col = block.apply_unary_op(string_sum_col, ops.hash_op)
         block = block.order_by(
-            [ordering.OrderingExpression(ex.free_var(hash_string_sum_col))]
+            [ordering.OrderingExpression(ex.deref(hash_string_sum_col))]
         )
 
         intervals = []
@@ -735,7 +735,7 @@ class Block:
             sliced_blocks = [
                 sliced_block.order_by(
                     [
-                        ordering.OrderingExpression(ex.free_var(idx_col))
+                        ordering.OrderingExpression(ex.deref(idx_col))
                         for idx_col in sliced_block.index_columns
                     ]
                 )
@@ -744,7 +744,7 @@ class Block:
         elif sort is False:
             sliced_blocks = [
                 sliced_block.order_by(
-                    [ordering.OrderingExpression(ex.free_var(ordering_col))]
+                    [ordering.OrderingExpression(ex.deref(ordering_col))]
                 )
                 for sliced_block in sliced_blocks
             ]
@@ -902,9 +902,9 @@ class Block:
     ) -> Block:
         if isinstance(op, ops.UnaryOp):
             input_varname = guid.generate_guid()
-            expr = op.as_expr(input_varname)
+            expr = op.as_expr(ex.free_var(input_varname))
         else:
-            input_varnames = op.unbound_variables
+            input_varnames = op.free_variables
             assert len(input_varnames) == 1
             expr = op
             input_varname = input_varnames[0]
@@ -913,7 +913,7 @@ class Block:
         for col_id in columns:
             label = self.col_id_to_label[col_id]
             block, result_id = block.project_expr(
-                expr.bind_variables({input_varname: ex.free_var(col_id)}),
+                expr.bind_variables({input_varname: ex.deref(col_id)}),
                 label=label,
             )
             block = block.copy_values(result_id, col_id)
@@ -943,7 +943,7 @@ class Block:
         block = self
         if skip_null_groups:
             for key in window_spec.grouping_keys:
-                block, not_null_id = block.apply_unary_op(key, ops.notnull_op)
+                block, not_null_id = block.apply_unary_op(key.id.name, ops.notnull_op)
                 block = block.filter_by_id(not_null_id).drop_columns([not_null_id])
         expr, result_id = block._expr.project_window_op(
             column,
@@ -1027,7 +1027,7 @@ class Block:
         if axis_n == 0:
             aggregations = [
                 (
-                    ex.UnaryAggregation(operation, ex.free_var(col_id))
+                    ex.UnaryAggregation(operation, ex.deref(col_id))
                     if isinstance(operation, agg_ops.UnaryAggregateOp)
                     else ex.NullaryAggregation(operation),
                     col_id,
@@ -1058,7 +1058,10 @@ class Block:
             index_cols = passthrough_cols[:-1]
             og_offset_col = passthrough_cols[-1]
             index_aggregations = [
-                (ex.UnaryAggregation(agg_ops.AnyValueOp(), ex.free_var(col_id)), col_id)
+                (
+                    ex.UnaryAggregation(agg_ops.AnyValueOp(), ex.deref(col_id)),
+                    col_id,
+                )
                 for col_id in index_cols
             ]
             # TODO: may need add NullaryAggregation in main_aggregation
@@ -1067,7 +1070,7 @@ class Block:
                 operation, agg_ops.UnaryAggregateOp
             ), f"Expected a unary operation, but got {operation}. Please report this error and how you got here to the BigQuery DataFrames team (bit.ly/bigframes-feedback)."
             main_aggregation = (
-                ex.UnaryAggregation(operation, ex.free_var(value_col_ids[0])),
+                ex.UnaryAggregation(operation, ex.deref(value_col_ids[0])),
                 value_col_ids[0],
             )
             # Drop row identity after aggregating over it
@@ -1177,7 +1180,7 @@ class Block:
         """
         agg_specs = [
             (
-                ex.UnaryAggregation(operation, ex.free_var(input_id))
+                ex.UnaryAggregation(operation, ex.deref(input_id))
                 if isinstance(operation, agg_ops.UnaryAggregateOp)
                 else ex.NullaryAggregation(operation),
                 guid.generate_guid(),
@@ -1235,7 +1238,7 @@ class Block:
 
         aggregations = [
             (
-                ex.UnaryAggregation(stat, ex.free_var(column_id))
+                ex.UnaryAggregation(stat, ex.deref(column_id))
                 if isinstance(stat, agg_ops.UnaryAggregateOp)
                 else ex.NullaryAggregation(stat),
                 stat.name,
@@ -1264,7 +1267,7 @@ class Block:
         aggregations = [
             (
                 ex.BinaryAggregation(
-                    stat, ex.free_var(column_id_left), ex.free_var(column_id_right)
+                    stat, ex.deref(column_id_left), ex.deref(column_id_right)
                 ),
                 f"{stat.name}_{column_id_left}{column_id_right}",
             )
@@ -1290,7 +1293,7 @@ class Block:
         labels = pd.Index([stat.name for stat in stats])
         aggregations = [
             (
-                ex.UnaryAggregation(stat, ex.free_var(col_id))
+                ex.UnaryAggregation(stat, ex.deref(col_id))
                 if isinstance(stat, agg_ops.UnaryAggregateOp)
                 else ex.NullaryAggregation(stat),
                 f"{col_id}-{stat.name}",
@@ -1327,7 +1330,7 @@ class Block:
 
         aggregations = [
             (
-                ex.BinaryAggregation(op, ex.free_var(left_col), ex.free_var(right_col)),
+                ex.BinaryAggregation(op, ex.deref(left_col), ex.deref(right_col)),
                 f"{left_col}-{right_col}",
             )
             for left_col in self.value_columns
@@ -2009,7 +2012,7 @@ class Block:
             # sort uses coalesced join keys always
             joined_expr = joined_expr.order_by(
                 [
-                    ordering.OrderingExpression(ex.free_var(col_id))
+                    ordering.OrderingExpression(ex.deref(col_id))
                     for col_id in coalesced_ids
                 ],
             )
@@ -2062,12 +2065,12 @@ class Block:
         )
 
         left_input_lookup = (
-            lambda index: ex.free_var(get_column_left[self.value_columns[index]])
+            lambda index: ex.deref(get_column_left[self.value_columns[index]])
             if index != -1
             else ex.const(None)
         )
         righ_input_lookup = (
-            lambda index: ex.free_var(get_column_right[other.value_columns[index]])
+            lambda index: ex.deref(get_column_right[other.value_columns[index]])
             if index != -1
             else ex.const(None)
         )
@@ -2085,8 +2088,8 @@ class Block:
         series_column_id = other.value_columns[0]
         inputs = tuple(
             (
-                ex.free_var(get_column_left[col]),
-                ex.free_var(get_column_right[series_column_id]),
+                ex.deref(get_column_left[col]),
+                ex.deref(get_column_right[series_column_id]),
             )
             for col in self.value_columns
         )
@@ -2121,12 +2124,12 @@ class Block:
         )
 
         left_input_lookup = (
-            lambda index: ex.free_var(get_column_left[self.value_columns[index]])
+            lambda index: ex.deref(get_column_left[self.value_columns[index]])
             if index != -1
             else ex.const(None)
         )
         righ_input_lookup = (
-            lambda index: ex.free_var(
+            lambda index: ex.deref(
                 get_column_right[other.transpose().value_columns[index]]
             )
             if index != -1
@@ -2156,7 +2159,7 @@ class Block:
         )
 
         left_input_lookup = (
-            lambda index: ex.free_var(self.value_columns[index])
+            lambda index: ex.deref(self.value_columns[index])
             if index != -1
             else ex.const(None)
         )
@@ -2706,7 +2709,7 @@ def join_mono_indexed(
     if sort:
         combined_expr = combined_expr.order_by(
             [
-                ordering.OrderingExpression(ex.free_var(col_id))
+                ordering.OrderingExpression(ex.deref(col_id))
                 for col_id in coalesced_join_cols
             ]
         )
@@ -2769,7 +2772,7 @@ def join_multi_indexed(
     if sort:
         combined_expr = combined_expr.order_by(
             [
-                ordering.OrderingExpression(ex.free_var(col_id))
+                ordering.OrderingExpression(ex.deref(col_id))
                 for col_id in coalesced_join_cols
             ]
         )
@@ -3008,7 +3011,7 @@ def unpivot(
             *(
                 (
                     ops.eq_op.as_expr(explode_offsets_id, ex.const(i)),
-                    ex.free_var(column_mapping[id_or_null])
+                    ex.deref(column_mapping[id_or_null])
                     if (id_or_null is not None)
                     else ex.const(None),
                 )

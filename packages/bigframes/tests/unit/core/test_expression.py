@@ -13,13 +13,16 @@
 # limitations under the License.
 
 import bigframes.core.expression as ex
+import bigframes.core.identifiers as ids
 import bigframes.dtypes as dtypes
 import bigframes.operations as ops
 
 
 def test_expression_dtype_simple():
     expression = ops.add_op.as_expr("a", "b")
-    result = expression.output_type({"a": dtypes.INT_DTYPE, "b": dtypes.INT_DTYPE})
+    result = expression.output_type(
+        {ids.ColumnId("a"): dtypes.INT_DTYPE, ids.ColumnId("b"): dtypes.INT_DTYPE}
+    )
     assert result == dtypes.INT_DTYPE
 
 
@@ -28,7 +31,9 @@ def test_expression_dtype_nested():
         "a", ops.abs_op.as_expr(ops.sub_op.as_expr("b", ex.const(3.14)))
     )
 
-    result = expression.output_type({"a": dtypes.INT_DTYPE, "b": dtypes.INT_DTYPE})
+    result = expression.output_type(
+        {ids.ColumnId("a"): dtypes.INT_DTYPE, ids.ColumnId("b"): dtypes.INT_DTYPE}
+    )
 
     assert result == dtypes.FLOAT_DTYPE
 

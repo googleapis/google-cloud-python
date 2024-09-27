@@ -24,6 +24,7 @@ import pandas as pd
 import bigframes.core.blocks as blocks
 import bigframes.core.convert
 import bigframes.core.expression as ex
+import bigframes.core.identifiers as ids
 import bigframes.core.indexes as indexes
 import bigframes.core.scalar as scalars
 import bigframes.dtypes
@@ -219,31 +220,27 @@ class SeriesMethods:
         self, other: series.Series, stat: agg_ops.BinaryAggregateOp
     ) -> float:
         (left, right, block) = self._align(other, how="outer")
-        assert isinstance(left, ex.UnboundVariableExpression)
-        assert isinstance(right, ex.UnboundVariableExpression)
-        return block.get_binary_stat(left.id, right.id, stat)
+        assert isinstance(left, ex.DerefOp)
+        assert isinstance(right, ex.DerefOp)
+        return block.get_binary_stat(left.id.name, right.id.name, stat)
 
-    AlignedExprT = Union[ex.ScalarConstantExpression, ex.UnboundVariableExpression]
+    AlignedExprT = Union[ex.ScalarConstantExpression, ex.DerefOp]
 
     @typing.overload
     def _align(
         self, other: series.Series, how="outer"
-    ) -> tuple[
-        ex.UnboundVariableExpression,
-        ex.UnboundVariableExpression,
-        blocks.Block,
-    ]:
+    ) -> tuple[ex.DerefOp, ex.DerefOp, blocks.Block,]:
         ...
 
     @typing.overload
     def _align(
         self, other: typing.Union[series.Series, scalars.Scalar], how="outer"
-    ) -> tuple[ex.UnboundVariableExpression, AlignedExprT, blocks.Block,]:
+    ) -> tuple[ex.DerefOp, AlignedExprT, blocks.Block,]:
         ...
 
     def _align(
         self, other: typing.Union[series.Series, scalars.Scalar], how="outer"
-    ) -> tuple[ex.UnboundVariableExpression, AlignedExprT, blocks.Block,]:
+    ) -> tuple[ex.DerefOp, AlignedExprT, blocks.Block,]:
         """Aligns the series value with another scalar or series object. Returns new left column id, right column id and joined tabled expression."""
         values, block = self._align_n(
             [
@@ -251,13 +248,13 @@ class SeriesMethods:
             ],
             how,
         )
-        return (typing.cast(ex.UnboundVariableExpression, values[0]), values[1], block)
+        return (typing.cast(ex.DerefOp, values[0]), values[1], block)
 
-    def _align3(self, other1: series.Series | scalars.Scalar, other2: series.Series | scalars.Scalar, how="left") -> tuple[ex.UnboundVariableExpression, AlignedExprT, AlignedExprT, blocks.Block]:  # type: ignore
+    def _align3(self, other1: series.Series | scalars.Scalar, other2: series.Series | scalars.Scalar, how="left") -> tuple[ex.DerefOp, AlignedExprT, AlignedExprT, blocks.Block]:  # type: ignore
         """Aligns the series value with 2 other scalars or series objects. Returns new values and joined tabled expression."""
         values, index = self._align_n([other1, other2], how)
         return (
-            typing.cast(ex.UnboundVariableExpression, values[0]),
+            typing.cast(ex.DerefOp, values[0]),
             values[1],
             values[2],
             index,
@@ -270,17 +267,13 @@ class SeriesMethods:
         ignore_self=False,
         cast_scalars: bool = True,
     ) -> tuple[
-        typing.Sequence[
-            Union[ex.ScalarConstantExpression, ex.UnboundVariableExpression]
-        ],
+        typing.Sequence[Union[ex.ScalarConstantExpression, ex.DerefOp]],
         blocks.Block,
     ]:
         if ignore_self:
-            value_ids: List[
-                Union[ex.ScalarConstantExpression, ex.UnboundVariableExpression]
-            ] = []
+            value_ids: List[Union[ex.ScalarConstantExpression, ex.DerefOp]] = []
         else:
-            value_ids = [ex.free_var(self._value_column)]
+            value_ids = [ex.deref(self._value_column)]
 
         block = self._block
         for other in others:
@@ -289,9 +282,16 @@ class SeriesMethods:
                     get_column_left,
                     get_column_right,
                 ) = block.join(other._block, how=how)
+                rebindings = {
+                    ids.ColumnId(old): ids.ColumnId(new)
+                    for old, new in get_column_left.items()
+                }
+                remapped_value_ids = (
+                    value.remap_column_refs(rebindings) for value in value_ids
+                )
                 value_ids = [
-                    *[value.rename(get_column_left) for value in value_ids],
-                    ex.free_var(get_column_right[other._value_column]),
+                    *remapped_value_ids,  # type: ignore
+                    ex.deref(get_column_right[other._value_column]),
                 ]
             else:
                 # Will throw if can't interpret as scalar.

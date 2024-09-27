@@ -19,6 +19,7 @@ import typing
 import ibis
 
 import bigframes.core.compile.compiled as compiled
+import bigframes.core.expression as ex
 from bigframes.core.ordering import (
     ascending_over,
     reencode_order_string,
@@ -85,7 +86,7 @@ def concat_ordered(
     combined_table = ibis.union(*tables)
     ordering = TotalOrdering(
         ordering_value_columns=tuple([ascending_over(ORDER_ID_COLUMN)]),
-        total_ordering_columns=frozenset([ORDER_ID_COLUMN]),
+        total_ordering_columns=frozenset([ex.deref(ORDER_ID_COLUMN)]),
         string_encoding=StringEncoding(True, prefix_size + max_encoding_size),
     )
     return compiled.OrderedIR(

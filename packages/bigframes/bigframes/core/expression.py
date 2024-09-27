@@ -20,6 +20,7 @@ import itertools
 import typing
 from typing import Mapping, Union
 
+import bigframes.core.identifiers as ids
 import bigframes.dtypes as dtypes
 import bigframes.operations
 import bigframes.operations.aggregations as agg_ops
@@ -29,6 +30,10 @@ def const(
     value: typing.Hashable, dtype: dtypes.ExpressionType = None
 ) -> ScalarConstantExpression:
     return ScalarConstantExpression(value, dtype or dtypes.infer_literal_type(value))
+
+
+def deref(name: str) -> DerefOp:
+    return DerefOp(ids.ColumnId(name))
 
 
 def free_var(id: str) -> UnboundVariableExpression:
@@ -43,7 +48,7 @@ class Aggregation(abc.ABC):
 
     @abc.abstractmethod
     def output_type(
-        self, input_types: dict[str, dtypes.ExpressionType]
+        self, input_types: dict[ids.ColumnId, dtypes.ExpressionType]
     ) -> dtypes.ExpressionType:
         ...
 
@@ -53,7 +58,7 @@ class NullaryAggregation(Aggregation):
     op: agg_ops.NullaryWindowOp = dataclasses.field()
 
     def output_type(
-        self, input_types: dict[str, bigframes.dtypes.Dtype]
+        self, input_types: dict[ids.ColumnId, bigframes.dtypes.Dtype]
     ) -> dtypes.ExpressionType:
         return self.op.output_type()
 
@@ -61,12 +66,10 @@ class NullaryAggregation(Aggregation):
 @dataclasses.dataclass(frozen=True)
 class UnaryAggregation(Aggregation):
     op: agg_ops.UnaryWindowOp = dataclasses.field()
-    arg: Union[
-        UnboundVariableExpression, ScalarConstantExpression
-    ] = dataclasses.field()
+    arg: Union[DerefOp, ScalarConstantExpression] = dataclasses.field()
 
     def output_type(
-        self, input_types: dict[str, bigframes.dtypes.Dtype]
+        self, input_types: dict[ids.ColumnId, bigframes.dtypes.Dtype]
     ) -> dtypes.ExpressionType:
         return self.op.output_type(self.arg.output_type(input_types))
 
@@ -74,15 +77,11 @@ class UnaryAggregation(Aggregation):
 @dataclasses.dataclass(frozen=True)
 class BinaryAggregation(Aggregation):
     op: agg_ops.BinaryAggregateOp = dataclasses.field()
-    left: Union[
-        UnboundVariableExpression, ScalarConstantExpression
-    ] = dataclasses.field()
-    right: Union[
-        UnboundVariableExpression, ScalarConstantExpression
-    ] = dataclasses.field()
+    left: Union[DerefOp, ScalarConstantExpression] = dataclasses.field()
+    right: Union[DerefOp, ScalarConstantExpression] = dataclasses.field()
 
     def output_type(
-        self, input_types: dict[str, bigframes.dtypes.Dtype]
+        self, input_types: dict[ids.ColumnId, bigframes.dtypes.Dtype]
     ) -> dtypes.ExpressionType:
         return self.op.output_type(
             self.left.output_type(input_types), self.right.output_type(input_types)
@@ -94,11 +93,19 @@ class Expression(abc.ABC):
     """An expression represents a computation taking N scalar inputs and producing a single output scalar."""
 
     @property
-    def unbound_variables(self) -> typing.Tuple[str, ...]:
+    def free_variables(self) -> typing.Tuple[str, ...]:
         return ()
 
-    def rename(self, name_mapping: Mapping[str, str]) -> Expression:
-        return self
+    @property
+    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
+        return ()
+
+    def remap_column_refs(
+        self, name_mapping: Mapping[ids.ColumnId, ids.ColumnId]
+    ) -> Expression:
+        return self.bind_refs(
+            {old_id: DerefOp(new_id) for old_id, new_id in name_mapping.items()}
+        )
 
     @property
     @abc.abstractmethod
@@ -107,17 +114,29 @@ class Expression(abc.ABC):
 
     @abc.abstractmethod
     def output_type(
-        self, input_types: dict[str, dtypes.ExpressionType]
+        self, input_types: dict[ids.ColumnId, dtypes.ExpressionType]
     ) -> dtypes.ExpressionType:
         ...
 
     @abc.abstractmethod
-    def bind_variables(
-        self, bindings: Mapping[str, Expression], check_bind_all: bool = True
+    def bind_refs(
+        self,
+        bindings: Mapping[ids.ColumnId, Expression],
+        allow_partial_bindings: bool = False,
     ) -> Expression:
         """Replace variables with expression given in `bindings`.
 
-        If check_bind_all is True, validate that all free variables are bound to a new value.
+        If allow_partial_bindings is False, validate that all free variables are bound to a new value.
+        """
+        ...
+
+    @abc.abstractmethod
+    def bind_variables(
+        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+    ) -> Expression:
+        """Replace variables with expression given in `bindings`.
+
+        If allow_partial_bindings is False, validate that all free variables are bound to a new value.
         """
         ...
 
@@ -143,17 +162,21 @@ class ScalarConstantExpression(Expression):
     def is_const(self) -> bool:
         return True
 
-    def rename(self, name_mapping: Mapping[str, str]) -> ScalarConstantExpression:
-        return self
-
     def output_type(
-        self, input_types: dict[str, bigframes.dtypes.Dtype]
+        self, input_types: dict[ids.ColumnId, bigframes.dtypes.Dtype]
     ) -> dtypes.ExpressionType:
         return self.dtype
 
     def bind_variables(
-        self, bindings: Mapping[str, Expression], check_bind_all: bool = True
+        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
     ) -> Expression:
+        return self
+
+    def bind_refs(
+        self,
+        bindings: Mapping[ids.ColumnId, Expression],
+        allow_partial_bindings: bool = False,
+    ) -> ScalarConstantExpression:
         return self
 
     @property
@@ -169,21 +192,59 @@ class UnboundVariableExpression(Expression):
     id: str
 
     @property
-    def unbound_variables(self) -> typing.Tuple[str, ...]:
+    def free_variables(self) -> typing.Tuple[str, ...]:
         return (self.id,)
-
-    def rename(self, name_mapping: Mapping[str, str]) -> UnboundVariableExpression:
-        if self.id in name_mapping:
-            return UnboundVariableExpression(name_mapping[self.id])
-        else:
-            return self
 
     @property
     def is_const(self) -> bool:
         return False
 
     def output_type(
-        self, input_types: dict[str, bigframes.dtypes.Dtype]
+        self, input_types: dict[ids.ColumnId, bigframes.dtypes.Dtype]
+    ) -> dtypes.ExpressionType:
+        raise ValueError(f"Type of variable {self.id} has not been fixed.")
+
+    def bind_refs(
+        self,
+        bindings: Mapping[ids.ColumnId, Expression],
+        allow_partial_bindings: bool = False,
+    ) -> UnboundVariableExpression:
+        return self
+
+    def bind_variables(
+        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+    ) -> Expression:
+        if self.id in bindings.keys():
+            return bindings[self.id]
+        elif not allow_partial_bindings:
+            raise ValueError(f"Variable {self.id} remains unbound")
+        return self
+
+    @property
+    def is_bijective(self) -> bool:
+        return True
+
+    @property
+    def is_identity(self) -> bool:
+        return True
+
+
+@dataclasses.dataclass(frozen=True)
+class DerefOp(Expression):
+    """A variable expression representing an unbound variable."""
+
+    id: ids.ColumnId
+
+    @property
+    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
+        return (self.id,)
+
+    @property
+    def is_const(self) -> bool:
+        return False
+
+    def output_type(
+        self, input_types: dict[ids.ColumnId, bigframes.dtypes.Dtype]
     ) -> dtypes.ExpressionType:
         if self.id in input_types:
             return input_types[self.id]
@@ -191,11 +252,18 @@ class UnboundVariableExpression(Expression):
             raise ValueError(f"Type of variable {self.id} has not been fixed.")
 
     def bind_variables(
-        self, bindings: Mapping[str, Expression], check_bind_all: bool = True
+        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+    ) -> Expression:
+        return self
+
+    def bind_refs(
+        self,
+        bindings: Mapping[ids.ColumnId, Expression],
+        allow_partial_bindings: bool = False,
     ) -> Expression:
         if self.id in bindings.keys():
             return bindings[self.id]
-        elif check_bind_all:
+        elif not allow_partial_bindings:
             raise ValueError(f"Variable {self.id} remains unbound")
         return self
 
@@ -216,16 +284,19 @@ class OpExpression(Expression):
     inputs: typing.Tuple[Expression, ...]
 
     @property
-    def unbound_variables(self) -> typing.Tuple[str, ...]:
+    def column_references(
+        self,
+    ) -> typing.Tuple[bigframes.core.identifiers.ColumnId, ...]:
         return tuple(
             itertools.chain.from_iterable(
-                map(lambda x: x.unbound_variables, self.inputs)
+                map(lambda x: x.column_references, self.inputs)
             )
         )
 
-    def rename(self, name_mapping: Mapping[str, str]) -> Expression:
-        return OpExpression(
-            self.op, tuple(input.rename(name_mapping) for input in self.inputs)
+    @property
+    def free_variables(self) -> typing.Tuple[str, ...]:
+        return tuple(
+            itertools.chain.from_iterable(map(lambda x: x.free_variables, self.inputs))
         )
 
     @property
@@ -233,7 +304,7 @@ class OpExpression(Expression):
         return all(child.is_const for child in self.inputs)
 
     def output_type(
-        self, input_types: dict[str, dtypes.ExpressionType]
+        self, input_types: dict[ids.ColumnId, dtypes.ExpressionType]
     ) -> dtypes.ExpressionType:
         operand_types = tuple(
             map(lambda x: x.output_type(input_types=input_types), self.inputs)
@@ -241,12 +312,27 @@ class OpExpression(Expression):
         return self.op.output_type(*operand_types)
 
     def bind_variables(
-        self, bindings: Mapping[str, Expression], check_bind_all: bool = True
-    ) -> Expression:
+        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+    ) -> OpExpression:
         return OpExpression(
             self.op,
             tuple(
-                input.bind_variables(bindings, check_bind_all=check_bind_all)
+                input.bind_variables(
+                    bindings, allow_partial_bindings=allow_partial_bindings
+                )
+                for input in self.inputs
+            ),
+        )
+
+    def bind_refs(
+        self,
+        bindings: Mapping[ids.ColumnId, Expression],
+        allow_partial_bindings: bool = False,
+    ) -> OpExpression:
+        return OpExpression(
+            self.op,
+            tuple(
+                input.bind_refs(bindings, allow_partial_bindings=allow_partial_bindings)
                 for input in self.inputs
             ),
         )

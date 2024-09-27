@@ -110,10 +110,8 @@ def ordering_clause(
         if ordering_expr.is_const:
             # Probably shouldn't have constants in ordering definition, but best to ignore if somehow they end up here.
             continue
-        assert isinstance(
-            ordering_expr, bigframes.core.expression.UnboundVariableExpression
-        )
-        part = f"`{ordering_expr.id}` {asc_desc} {null_clause}"
+        assert isinstance(ordering_expr, bigframes.core.expression.DerefOp)
+        part = f"`{ordering_expr.id.sql}` {asc_desc} {null_clause}"
         parts.append(part)
     return f"ORDER BY {' ,'.join(parts)}"
 

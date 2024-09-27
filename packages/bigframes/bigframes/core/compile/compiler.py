@@ -16,6 +16,7 @@ from __future__ import annotations
 import dataclasses
 import functools
 import io
+import itertools
 import typing
 
 import ibis
@@ -30,6 +31,7 @@ import bigframes.core.compile.default_ordering as default_ordering
 import bigframes.core.compile.ibis_types
 import bigframes.core.compile.schema_translator
 import bigframes.core.compile.single_column
+import bigframes.core.expression as ex
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as bf_ordering
 
@@ -75,6 +77,9 @@ class Compiler:
 
     @_compile_node.register
     def compile_join(self, node: nodes.JoinNode, ordered: bool = True):
+        condition_pairs = tuple(
+            (left.id.sql, right.id.sql) for left, right in node.conditions
+        )
         if ordered:
             # In general, joins are an ordering destroying operation.
             # With ordering_mode = "partial", make this explicit. In
@@ -86,7 +91,7 @@ class Compiler:
                     left=left_ordered,
                     right=right_ordered,
                     type=node.type,
-                    conditions=node.conditions,
+                    conditions=condition_pairs,
                 )
             else:
                 left_unordered = self.compile_unordered_ir(node.left_child)
@@ -95,7 +100,7 @@ class Compiler:
                     left=left_unordered,
                     right=right_unordered,
                     type=node.type,
-                    conditions=node.conditions,
+                    conditions=condition_pairs,
                 ).as_ordered_ir()
         else:
             left_unordered = self.compile_unordered_ir(node.left_child)
@@ -104,7 +109,7 @@ class Compiler:
                 left=left_unordered,
                 right=right_unordered,
                 type=node.type,
-                conditions=node.conditions,
+                conditions=condition_pairs,
             )
 
     @_compile_node.register
@@ -121,13 +126,8 @@ class Compiler:
         full_table_name = (
             f"{node.table.project_id}.{node.table.dataset_id}.{node.table.table_id}"
         )
-        used_columns = (
-            *node.schema.names,
-            *node._hidden_columns,
-        )
-        # Physical schema might include unused columns, unsupported datatypes like JSON
         physical_schema = ibis.backends.bigquery.BigQuerySchema.to_ibis(
-            list(i for i in node.table.physical_schema if i.name in used_columns)
+            node.table.physical_schema
         )
         ibis_table = ibis.table(physical_schema, full_table_name)
         if ordered:
@@ -144,9 +144,11 @@ class Compiler:
                 ibis_table,
                 columns=tuple(
                     bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
-                        ibis_table[col]
+                        ibis_table[col.sql]
                     )
-                    for col in [*node.schema.names, *node._hidden_columns]
+                    for col in itertools.chain(
+                        map(lambda x: x.id, node.fields), node._hidden_columns
+                    )
                 ),
                 ordering=node.ordering,
             )
@@ -228,7 +230,7 @@ class Compiler:
             ordering: bf_ordering.RowOrdering = bf_ordering.TotalOrdering(
                 ordering_value_columns,
                 integer_encoding=integer_encoding,
-                total_ordering_columns=frozenset(node.total_order_cols),
+                total_ordering_columns=frozenset(map(ex.deref, node.total_order_cols)),
             )
             hidden_columns = ()
         elif self.strict:
@@ -260,7 +262,7 @@ class Compiler:
     def compile_promote_offsets(
         self, node: nodes.PromoteOffsetsNode, ordered: bool = True
     ):
-        result = self.compile_ordered_ir(node.child).promote_offsets(node.col_id)
+        result = self.compile_ordered_ir(node.child).promote_offsets(node.col_id.sql)
         return result if ordered else result.to_unordered()
 
     @_compile_node.register
@@ -284,12 +286,14 @@ class Compiler:
     @_compile_node.register
     def compile_selection(self, node: nodes.SelectionNode, ordered: bool = True):
         result = self.compile_node(node.child, ordered)
-        return result.selection(node.input_output_pairs)
+        selection = tuple((ref, id.sql) for ref, id in node.input_output_pairs)
+        return result.selection(selection)
 
     @_compile_node.register
     def compile_projection(self, node: nodes.ProjectionNode, ordered: bool = True):
         result = self.compile_node(node.child, ordered)
-        return result.projection(node.assignments)
+        projections = ((expr, id.sql) for expr, id in node.assignments)
+        return result.projection(tuple(projections))
 
     @_compile_node.register
     def compile_concat(self, node: nodes.ConcatNode, ordered: bool = True):
@@ -312,13 +316,14 @@ class Compiler:
         has_ordered_aggregation_ops = any(
             aggregate.op.can_order_by for aggregate, _ in node.aggregations
         )
+        aggs = tuple((agg, id.sql) for agg, id in node.aggregations)
         if ordered and has_ordered_aggregation_ops:
             return self.compile_ordered_ir(node.child).aggregate(
-                node.aggregations, node.by_column_ids, node.dropna
+                aggs, node.by_column_ids, node.dropna
             )
         else:
             result = self.compile_unordered_ir(node.child).aggregate(
-                node.aggregations, node.by_column_ids, node.dropna
+                aggs, node.by_column_ids, node.dropna
             )
             return result if ordered else result.to_unordered()
 
@@ -328,7 +333,7 @@ class Compiler:
             node.column_name,
             node.op,
             node.window_spec,
-            node.output_name,
+            node.output_name.sql,
             never_skip_nulls=node.never_skip_nulls,
         )
         return result if ordered else result.to_unordered()

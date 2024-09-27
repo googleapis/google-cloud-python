@@ -24,6 +24,7 @@ import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
 
 import bigframes.core.expression as expression
+import bigframes.core.identifiers as ids
 
 # TODO(tbergeron): Encode more efficiently
 ORDERING_ID_STRING_BASE: int = 10
@@ -54,16 +55,25 @@ class OrderingExpression:
     direction: OrderingDirection = OrderingDirection.ASC
     na_last: bool = True
 
-    def remap_names(self, mapping: Mapping[str, str]) -> OrderingExpression:
-        return OrderingExpression(
-            self.scalar_expression.rename(mapping), self.direction, self.na_last
+    def remap_column_refs(
+        self,
+        mapping: Mapping[ids.ColumnId, ids.ColumnId],
+        allow_partial_bindings: bool = False,
+    ) -> OrderingExpression:
+        return self.bind_refs(
+            {old_id: expression.DerefOp(new_id) for old_id, new_id in mapping.items()},
+            allow_partial_bindings=allow_partial_bindings,
         )
 
-    def bind_variables(
-        self, mapping: Mapping[str, expression.Expression]
+    def bind_refs(
+        self,
+        mapping: Mapping[ids.ColumnId, expression.Expression],
+        allow_partial_bindings: bool = False,
     ) -> OrderingExpression:
         return OrderingExpression(
-            self.scalar_expression.bind_variables(mapping),
+            self.scalar_expression.bind_refs(
+                mapping, allow_partial_bindings=allow_partial_bindings
+            ),
             self.direction,
             self.na_last,
         )
@@ -106,11 +116,11 @@ class RowOrdering:
         return list(self.ordering_value_columns)
 
     @property
-    def referenced_columns(self) -> Set[str]:
+    def referenced_columns(self) -> Set[ids.ColumnId]:
         return set(
             col
             for part in self.ordering_value_columns
-            for col in part.scalar_expression.unbound_variables
+            for col in part.scalar_expression.column_references
         )
 
     @property
@@ -133,9 +143,16 @@ class RowOrdering:
             tuple([col.with_reverse() for col in self.ordering_value_columns]),
         )
 
-    def with_column_remap(self, mapping: typing.Mapping[str, str]) -> RowOrdering:
+    def remap_column_refs(
+        self,
+        mapping: typing.Mapping[ids.ColumnId, ids.ColumnId],
+        allow_partial_bindings: bool = False,
+    ) -> RowOrdering:
         new_value_columns = [
-            col.remap_names(mapping) for col in self.all_ordering_columns
+            col.remap_column_refs(
+                mapping, allow_partial_bindings=allow_partial_bindings
+            )
+            for col in self.all_ordering_columns
         ]
         return RowOrdering(
             tuple(new_value_columns),
@@ -182,13 +199,13 @@ class RowOrdering:
         self, order_refs: tuple[OrderingExpression, ...]
     ) -> tuple[OrderingExpression, ...]:
         # Truncate once we refer to a full key in bijective operations
-        columns_seen: Set[str] = set()
+        columns_seen: Set[ids.ColumnId] = set()
         truncated_refs = []
         for order_part in order_refs:
             expr = order_part.scalar_expression
-            if not set(expr.unbound_variables).issubset(columns_seen):
+            if not set(expr.column_references).issubset(columns_seen):
                 if expr.is_bijective:
-                    columns_seen.update(expr.unbound_variables)
+                    columns_seen.update(expr.column_references)
                 truncated_refs.append(order_part)
         return tuple(truncated_refs)
 
@@ -200,14 +217,16 @@ class TotalOrdering(RowOrdering):
     # A table has a total ordering defined by the identities of a set of 1 or more columns.
     # These columns must always be part of the ordering, in order to guarantee that the ordering is total.
     # Therefore, any modifications(or drops) done to these columns must result in hidden copies being made.
-    total_ordering_columns: frozenset[str] = field(default_factory=frozenset)
+    total_ordering_columns: frozenset[expression.DerefOp] = field(
+        default_factory=frozenset
+    )
 
     @classmethod
     def from_offset_col(cls, col: str) -> TotalOrdering:
         return TotalOrdering(
             (ascending_over(col),),
             integer_encoding=IntegerEncoding(True, is_sequential=True),
-            total_ordering_columns=frozenset({col}),
+            total_ordering_columns=frozenset({expression.deref(col)}),
         )
 
     def with_non_sequential(self):
@@ -253,14 +272,14 @@ class TotalOrdering(RowOrdering):
         self, order_refs: tuple[OrderingExpression, ...]
     ) -> tuple[OrderingExpression, ...]:
         # Truncate once we refer to a full key in bijective operations
-        must_see = set(self.total_ordering_columns)
-        columns_seen: Set[str] = set()
+        must_see = set(ref.id for ref in self.total_ordering_columns)
+        columns_seen: Set[ids.ColumnId] = set()
         truncated_refs = []
         for order_part in order_refs:
             expr = order_part.scalar_expression
-            if not set(expr.unbound_variables).issubset(columns_seen):
+            if not set(expr.column_references).issubset(columns_seen):
                 if expr.is_bijective:
-                    columns_seen.update(expr.unbound_variables)
+                    columns_seen.update(expr.column_references)
                 truncated_refs.append(order_part)
                 if columns_seen.issuperset(must_see):
                     return tuple(truncated_refs)
@@ -275,12 +294,20 @@ class TotalOrdering(RowOrdering):
             total_ordering_columns=self.total_ordering_columns,
         )
 
-    def with_column_remap(self, mapping: typing.Mapping[str, str]):
+    def remap_column_refs(
+        self,
+        mapping: typing.Mapping[ids.ColumnId, ids.ColumnId],
+        allow_partial_bindings: bool = False,
+    ):
         new_value_columns = [
-            col.remap_names(mapping) for col in self.all_ordering_columns
+            col.remap_column_refs(
+                mapping, allow_partial_bindings=allow_partial_bindings
+            )
+            for col in self.all_ordering_columns
         ]
         new_total_order = frozenset(
-            mapping.get(col_id, col_id) for col_id in self.total_ordering_columns
+            expression.DerefOp(mapping.get(col_id.id, col_id.id))
+            for col_id in self.total_ordering_columns
         )
         return TotalOrdering(
             tuple(new_value_columns),
@@ -326,12 +353,12 @@ def reencode_order_string(
 
 # Convenience functions
 def ascending_over(id: str, nulls_last: bool = True) -> OrderingExpression:
-    return OrderingExpression(expression.free_var(id), na_last=nulls_last)
+    return OrderingExpression(expression.deref(id), na_last=nulls_last)
 
 
 def descending_over(id: str, nulls_last: bool = True) -> OrderingExpression:
     return OrderingExpression(
-        expression.free_var(id), direction=OrderingDirection.DESC, na_last=nulls_last
+        expression.deref(id), direction=OrderingDirection.DESC, na_last=nulls_last
     )
 
 
@@ -339,8 +366,8 @@ def descending_over(id: str, nulls_last: bool = True) -> OrderingExpression:
 def join_orderings(
     left: TotalOrdering,
     right: TotalOrdering,
-    left_id_mapping: Mapping[str, str],
-    right_id_mapping: Mapping[str, str],
+    left_id_mapping: Mapping[ids.ColumnId, ids.ColumnId],
+    right_id_mapping: Mapping[ids.ColumnId, ids.ColumnId],
     left_order_dominates: bool = True,
 ) -> TotalOrdering:
     ...
@@ -350,8 +377,8 @@ def join_orderings(
 def join_orderings(
     left: RowOrdering,
     right: RowOrdering,
-    left_id_mapping: Mapping[str, str],
-    right_id_mapping: Mapping[str, str],
+    left_id_mapping: Mapping[ids.ColumnId, ids.ColumnId],
+    right_id_mapping: Mapping[ids.ColumnId, ids.ColumnId],
     left_order_dominates: bool = True,
 ) -> RowOrdering:
     ...
@@ -360,15 +387,15 @@ def join_orderings(
 def join_orderings(
     left: RowOrdering,
     right: RowOrdering,
-    left_id_mapping: Mapping[str, str],
-    right_id_mapping: Mapping[str, str],
+    left_id_mapping: Mapping[ids.ColumnId, ids.ColumnId],
+    right_id_mapping: Mapping[ids.ColumnId, ids.ColumnId],
     left_order_dominates: bool = True,
 ) -> RowOrdering:
     left_ordering_refs = [
-        ref.remap_names(left_id_mapping) for ref in left.all_ordering_columns
+        ref.remap_column_refs(left_id_mapping) for ref in left.all_ordering_columns
     ]
     right_ordering_refs = [
-        ref.remap_names(right_id_mapping) for ref in right.all_ordering_columns
+        ref.remap_column_refs(right_id_mapping) for ref in right.all_ordering_columns
     ]
     if left_order_dominates:
         joined_refs = [*left_ordering_refs, *right_ordering_refs]
@@ -377,14 +404,16 @@ def join_orderings(
 
     if isinstance(left, TotalOrdering) and isinstance(right, TotalOrdering):
         left_total_order_cols = frozenset(
-            [left_id_mapping[id] for id in left.total_ordering_columns]
+            [left_id_mapping[ref.id] for ref in left.total_ordering_columns]
         )
         right_total_order_cols = frozenset(
-            [right_id_mapping[id] for id in right.total_ordering_columns]
+            [right_id_mapping[ref.id] for ref in right.total_ordering_columns]
         )
         return TotalOrdering(
             ordering_value_columns=tuple(joined_refs),
-            total_ordering_columns=left_total_order_cols | right_total_order_cols,
+            total_ordering_columns=frozenset(
+                map(expression.DerefOp, left_total_order_cols | right_total_order_cols)
+            ),
         )
     else:
         return RowOrdering(tuple(joined_refs))
