@@ -21,9 +21,10 @@ import warnings
 
 import bigframes_vendored.constants as constants
 from google.cloud import bigquery
+import typing_extensions
 
 import bigframes
-from bigframes import clients
+from bigframes import clients, exceptions
 from bigframes.core import blocks, log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
@@ -403,12 +404,16 @@ class PaLM2TextGenerator(base.BaseEstimator):
         return new_model.session.read_gbq_model(model_name)
 
 
+@typing_extensions.deprecated(
+    "PaLM2TextEmbeddingGenerator has been deprecated. Use TextEmbeddingGenerator(https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.TextEmbeddingGenerator) instead. ",
+    category=exceptions.ApiDeprecationWarning,
+)
 @log_adapter.class_logger
 class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
     """PaLM2 text embedding generator LLM model.
 
     .. note::
-        Models in this class are outdated and going to be deprecated. To use the most updated text embedding models, go to the TextEmbeddingGenerator class.
+        PaLM2TextEmbeddingGenerator has been deprecated. Use TextEmbeddingGenerator(https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.TextEmbeddingGenerator) instead.
 
 
     Args:

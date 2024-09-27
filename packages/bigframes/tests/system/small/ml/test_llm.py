@@ -14,6 +14,7 @@
 
 import pytest
 
+from bigframes import exceptions
 from bigframes.ml import llm
 import bigframes.pandas as bpd
 from tests.system import utils
@@ -447,3 +448,11 @@ def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index):
         ],
         index=6,
     )
+
+
+def test_palm2_text_embedding_deprecated():
+    with pytest.warns(exceptions.ApiDeprecationWarning):
+        try:
+            llm.PaLM2TextEmbeddingGenerator()
+        except (Exception):
+            pass

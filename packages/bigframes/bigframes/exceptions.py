@@ -69,3 +69,7 @@ class AmbiguousWindowWarning(Warning):
 
 class UnknownDataTypeWarning(Warning):
     """Data type is unknown."""
+
+
+class ApiDeprecationWarning(FutureWarning):
+    """The API has been deprecated."""
