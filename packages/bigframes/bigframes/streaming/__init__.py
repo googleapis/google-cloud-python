@@ -15,13 +15,13 @@
 import inspect
 
 import bigframes.core.global_session as global_session
-import bigframes.pandas as bpd
+from bigframes.pandas.io.api import _set_default_session_location_if_possible
 import bigframes.session
 import bigframes.streaming.dataframe as streaming_dataframe
 
 
 def read_gbq_table(table: str) -> streaming_dataframe.StreamingDataFrame:
-    bpd._set_default_session_location_if_possible(table)
+    _set_default_session_location_if_possible(table)
     return global_session.with_default_session(
         bigframes.session.Session.read_gbq_table_streaming, table
     )
