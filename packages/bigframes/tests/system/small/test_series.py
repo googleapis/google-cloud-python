@@ -19,6 +19,7 @@ import tempfile
 
 import geopandas as gpd  # type: ignore
 import numpy
+from packaging.version import Version
 import pandas as pd
 import pyarrow as pa  # type: ignore
 import pytest
@@ -3912,3 +3913,41 @@ def test_series_explode_null(data):
         s.to_pandas().explode(),
         check_dtype=False,
     )
+
+
+def test_series_struct_get_field_by_attribute(
+    nested_structs_df, nested_structs_pandas_df, nested_structs_pandas_type
+):
+    if Version(pd.__version__) < Version("2.2.0"):
+        pytest.skip("struct accessor is not supported before pandas 2.2")
+
+    bf_series = nested_structs_df["person"]
+    df_series = nested_structs_pandas_df["person"].astype(nested_structs_pandas_type)
+
+    pd.testing.assert_series_equal(
+        bf_series.address.city.to_pandas(),
+        df_series.struct.field("address").struct.field("city"),
+        check_dtype=False,
+        check_index=False,
+    )
+    pd.testing.assert_series_equal(
+        bf_series.address.country.to_pandas(),
+        df_series.struct.field("address").struct.field("country"),
+        check_dtype=False,
+        check_index=False,
+    )
+
+
+def test_series_struct_fields_in_dir(nested_structs_df):
+    series = nested_structs_df["person"]
+
+    assert "age" in dir(series)
+    assert "address" in dir(series)
+    assert "city" in dir(series.address)
+    assert "country" in dir(series.address)
+
+
+def test_series_struct_class_attributes_shadow_struct_fields(nested_structs_df):
+    series = nested_structs_df["person"]
+
+    assert series.name == "person"

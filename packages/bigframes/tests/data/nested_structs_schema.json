@@ -1,0 +1,39 @@
+[
+    {
+        "name": "id",
+        "type": "INTEGER",
+        "mode": "REQUIRED"
+    },
+    {
+        "name": "person",
+        "type": "RECORD",
+        "fields": [
+            {
+                "name": "name",
+                "type": "STRING",
+                "mode": "NULLABLE"
+            },
+            {
+                "name": "age",
+                "type": "INTEGER",
+                "mode": "NULLABLE"
+            },
+            {
+                "name": "address",
+                "type": "RECORD",
+                "fields": [
+                    {
+                        "name": "city",
+                        "type": "STRING",
+                        "mode": "NULLABLE"
+                    },
+                    {
+                        "name": "country",
+                        "type": "STRING",
+                        "mode": "NULLABLE"
+                    }
+                ]
+            }
+        ]
+    }
+]
