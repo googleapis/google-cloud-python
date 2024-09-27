@@ -46,7 +46,7 @@ s.move(
         "noxfile.py",
         "CONTRIBUTING.rst",
         "README.rst",
-        ".kokoro/continuous/common.cfg",
+        ".kokoro/continuous/continuous.cfg",
         ".kokoro/presubmit/system-3.8.cfg",
         ".kokoro/samples/python3.6", # remove python 3.6 support
         ".github/blunderbuss.yml", # blunderbuss assignment to python squad
