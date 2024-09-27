@@ -186,6 +186,10 @@ def test_download_blob_to_file_w_etag(
     assert buffer.getvalue() == payload
 
 
+@pytest.mark.skipif(
+    _helpers.is_api_endpoint_override,
+    reason="Credentials not yet supported in preprod testing.",
+)
 def test_client_universe_domain(
     universe_domain_client,
     test_universe_location,
