@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.25.0](https://github.com/googleapis/python-pubsub/compare/v2.24.0...v2.25.0) (2024-09-28)
+
+
+### Features
+
+* Add OpenTelemetry publish sample ([#1258](https://github.com/googleapis/python-pubsub/issues/1258)) ([bc13ff0](https://github.com/googleapis/python-pubsub/commit/bc13ff05c3d1104c17169c360bdc09340430da37))
+
 ## [2.24.0](https://github.com/googleapis/python-pubsub/compare/v2.23.1...v2.24.0) (2024-09-24)
 
 
