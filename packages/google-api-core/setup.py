@@ -36,6 +36,9 @@ dependencies = [
     "requests >= 2.18.0, < 3.0.0.dev0",
 ]
 extras = {
+    "async_rest": [
+        "google-auth[aiohttp] >= 2.35.0, < 3.0.dev0",
+    ],
     "grpc": [
         "grpcio >= 1.33.2, < 2.0dev",
         "grpcio >= 1.49.1, < 2.0dev; python_version>='3.11'",

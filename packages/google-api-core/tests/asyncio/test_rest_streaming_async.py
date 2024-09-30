@@ -28,14 +28,9 @@ import proto
 
 try:
     from google.auth.aio.transport import Response
-
-    AUTH_AIO_INSTALLED = True
 except ImportError:
-    AUTH_AIO_INSTALLED = False
-
-if not AUTH_AIO_INSTALLED:  # pragma: NO COVER
     pytest.skip(
-        "google-auth>=2.35.0 is required to use asynchronous rest streaming.",
+        "google-api-core[async_rest] is required to test asynchronous rest streaming.",
         allow_module_level=True,
     )
 

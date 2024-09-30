@@ -22,7 +22,9 @@ try:
     import google.auth.aio.transport
 except ImportError as e:  # pragma: NO COVER
     raise ImportError(
-        "google-auth>=2.35.0 is required to use asynchronous rest streaming."
+        "`google-api-core[async_rest]` is required to use asynchronous rest streaming. "
+        "Install the `async_rest` extra of `google-api-core` using "
+        "`pip install google-api-core[async_rest]`."
     ) from e
 
 import google.protobuf.message
