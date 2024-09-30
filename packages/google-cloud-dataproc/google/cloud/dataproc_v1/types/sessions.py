@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "DeleteSessionRequest",
         "Session",
         "JupyterConfig",
+        "SparkConnectConfig",
     },
 )
 
@@ -125,13 +126,16 @@ class ListSessionsRequest(proto.Message):
             various fields in each session resource. Filters are case
             sensitive, and may contain multiple clauses combined with
             logical operators (AND, OR). Supported fields are
-            ``session_id``, ``session_uuid``, ``state``, and
-            ``create_time``.
+            ``session_id``, ``session_uuid``, ``state``,
+            ``create_time``, and ``labels``.
 
             Example:
             ``state = ACTIVE and create_time < "2023-01-01T00:00:00Z"``
             is a filter for sessions in an ACTIVE state that were
             created before 2023-01-01.
+            ``state = ACTIVE and labels.environment=production`` is a
+            filter for sessions in an ACTIVE state that have a
+            production environment label.
 
             See https://google.aip.dev/assets/misc/ebnf-filtering.txt
             for a detailed description of the filter syntax and a list
@@ -249,6 +253,11 @@ class DeleteSessionRequest(proto.Message):
 class Session(proto.Message):
     r"""A representation of a session.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -263,6 +272,10 @@ class Session(proto.Message):
             created.
         jupyter_session (google.cloud.dataproc_v1.types.JupyterConfig):
             Optional. Jupyter session config.
+
+            This field is a member of `oneof`_ ``session_config``.
+        spark_connect_session (google.cloud.dataproc_v1.types.SparkConnectConfig):
+            Optional. Spark Connect session config.
 
             This field is a member of `oneof`_ ``session_config``.
         runtime_info (google.cloud.dataproc_v1.types.RuntimeInfo):
@@ -388,6 +401,12 @@ class Session(proto.Message):
         oneof="session_config",
         message="JupyterConfig",
     )
+    spark_connect_session: "SparkConnectConfig" = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        oneof="session_config",
+        message="SparkConnectConfig",
+    )
     runtime_info: shared.RuntimeInfo = proto.Field(
         proto.MESSAGE,
         number=6,
@@ -476,6 +495,10 @@ class JupyterConfig(proto.Message):
         proto.STRING,
         number=2,
     )
+
+
+class SparkConnectConfig(proto.Message):
+    r"""Spark Connect configuration for an interactive session."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

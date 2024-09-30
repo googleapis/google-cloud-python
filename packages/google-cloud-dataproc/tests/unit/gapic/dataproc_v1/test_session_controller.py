@@ -3293,6 +3293,7 @@ def test_create_session_rest(request_type):
         "uuid": "uuid_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "jupyter_session": {"kernel": 1, "display_name": "display_name_value"},
+        "spark_connect_session": {},
         "runtime_info": {
             "endpoints": {},
             "output_uri": "output_uri_value",
