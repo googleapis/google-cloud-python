@@ -106,7 +106,7 @@ SQLAlchemy
     from sqlalchemy.schema import *
     engine = create_engine('bigquery://project')
     table = Table('dataset.table', MetaData(bind=engine), autoload=True)
-    print(select([func.count('*')], from_obj=table().scalar())
+    print(select([func.count('*')], from_obj=table().scalar()))
 
 
 Project
