@@ -1235,6 +1235,14 @@ if __name__ == "__main__":  # noqa
         "list-in-project", help=list_subscriptions_in_project.__doc__
     )
 
+    otel_subscribe_parse = subparsers.add_parser(
+        "otel-subscribe", help=pubsub_subscribe_otel_tracing.__doc__
+    )
+    otel_subscribe_parse.add_argument("subscription_project_id")
+    otel_subscribe_parse.add_argument("cloud_trace_project_id")
+    otel_subscribe_parse.add_argument("subscription_id")
+    otel_subscribe_parse.add_argument("timeout", default=None, type=float, nargs="?")
+
     create_parser = subparsers.add_parser("create", help=create_subscription.__doc__)
     create_parser.add_argument("topic_id")
     create_parser.add_argument("subscription_id")
@@ -1515,4 +1523,11 @@ if __name__ == "__main__":  # noqa
     elif args.command == "receive-messages-with-concurrency-control":
         receive_messages_with_concurrency_control(
             args.project_id, args.subscription_id, args.timeout
+        )
+    elif args.command == "otel-subscribe":
+        pubsub_subscribe_otel_tracing(
+            args.subscription_project_id,
+            args.cloud_trace_project_id,
+            args.subscription_id,
+            args.timeout,
         )
