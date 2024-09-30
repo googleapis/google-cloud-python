@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.25.1](https://github.com/googleapis/python-pubsub/compare/v2.25.0...v2.25.1) (2024-09-29)
+
+
+### Bug Fixes
+
+* Update the requirements.txt for samples directory ([#1263](https://github.com/googleapis/python-pubsub/issues/1263)) ([5cce8b1](https://github.com/googleapis/python-pubsub/commit/5cce8b103ab7085613b7ee0efb5c8342d41ebae1))
+
 ## [2.25.0](https://github.com/googleapis/python-pubsub/compare/v2.24.0...v2.25.0) (2024-09-28)
 
 
