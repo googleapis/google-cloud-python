@@ -117,6 +117,7 @@
     "packages/google-cloud-network-services": "0.5.14",
     "packages/google-cloud-notebooks": "1.10.5",
     "packages/google-cloud-optimization": "1.8.5",
+    "packages/google-cloud-oracledatabase": "0.0.0",
     "packages/google-cloud-orchestration-airflow": "1.14.0",
     "packages/google-cloud-os-config": "1.17.5",
     "packages/google-cloud-os-login": "2.14.6",
