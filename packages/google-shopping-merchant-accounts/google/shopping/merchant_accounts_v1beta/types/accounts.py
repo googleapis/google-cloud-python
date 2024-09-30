@@ -235,11 +235,19 @@ class DeleteAccountRequest(proto.Message):
         name (str):
             Required. The name of the account to delete. Format:
             ``accounts/{account}``
+        force (bool):
+            Optional. If set to ``true``, the account is deleted even if
+            it provides services to other accounts or has processed
+            offers.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 

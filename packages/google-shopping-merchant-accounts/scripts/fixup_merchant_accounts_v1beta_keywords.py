@@ -44,7 +44,7 @@ class merchant_accountsCallTransformer(cst.CSTTransformer):
         'create_and_configure_account': ('account', 'service', 'users', 'accept_terms_of_service', ),
         'create_region': ('parent', 'region_id', 'region', ),
         'create_user': ('parent', 'user_id', 'user', ),
-        'delete_account': ('name', ),
+        'delete_account': ('name', 'force', ),
         'delete_region': ('name', ),
         'delete_user': ('name', ),
         'disable_program': ('name', ),

@@ -1,2 +1,0 @@
-recursive-include google/shopping/merchant_accounts *.py
-recursive-include google/shopping/merchant_accounts_v1beta *.py
