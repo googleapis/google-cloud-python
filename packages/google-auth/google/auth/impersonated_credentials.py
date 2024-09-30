@@ -31,6 +31,7 @@ from datetime import datetime
 import http.client as http_client
 import json
 
+from google.auth import _exponential_backoff
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
@@ -288,18 +289,22 @@ class Credentials(
         authed_session = AuthorizedSession(self._source_credentials)
 
         try:
-            response = authed_session.post(
-                url=iam_sign_endpoint, headers=headers, json=body
-            )
+            retries = _exponential_backoff.ExponentialBackoff()
+            for _ in retries:
+                response = authed_session.post(
+                    url=iam_sign_endpoint, headers=headers, json=body
+                )
+                if response.status_code in iam.IAM_RETRY_CODES:
+                    continue
+                if response.status_code != http_client.OK:
+                    raise exceptions.TransportError(
+                        "Error calling sign_bytes: {}".format(response.json())
+                    )
+
+                return base64.b64decode(response.json()["signedBlob"])
         finally:
             authed_session.close()
-
-        if response.status_code != http_client.OK:
-            raise exceptions.TransportError(
-                "Error calling sign_bytes: {}".format(response.json())
-            )
-
-        return base64.b64decode(response.json()["signedBlob"])
+        raise exceptions.TransportError("exhausted signBlob endpoint retries")
 
     @property
     def signer_email(self):

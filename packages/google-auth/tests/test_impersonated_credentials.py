@@ -426,11 +426,27 @@ class TestImpersonatedCredentials(object):
             "google.auth.transport.requests.AuthorizedSession.request", autospec=True
         ) as auth_session:
             data = {"error": {"code": 403, "message": "unauthorized"}}
-            auth_session.return_value = MockResponse(data, http_client.FORBIDDEN)
+            mock_response = MockResponse(data, http_client.UNAUTHORIZED)
+            auth_session.return_value = mock_response
 
             with pytest.raises(exceptions.TransportError) as excinfo:
                 credentials.sign_bytes(b"foo")
             assert excinfo.match("'code': 403")
+
+    @mock.patch("time.sleep", return_value=None)
+    def test_sign_bytes_retryable_failure(self, mock_time):
+        credentials = self.make_credentials(lifetime=None)
+
+        with mock.patch(
+            "google.auth.transport.requests.AuthorizedSession.request", autospec=True
+        ) as auth_session:
+            data = {"error": {"code": 500, "message": "internal_failure"}}
+            mock_response = MockResponse(data, http_client.INTERNAL_SERVER_ERROR)
+            auth_session.return_value = mock_response
+
+            with pytest.raises(exceptions.TransportError) as excinfo:
+                credentials.sign_bytes(b"foo")
+            assert excinfo.match("exhausted signBlob endpoint retries")
 
     def test_with_quota_project(self):
         credentials = self.make_credentials()

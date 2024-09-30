@@ -23,9 +23,17 @@ import base64
 import http.client as http_client
 import json
 
+from google.auth import _exponential_backoff
 from google.auth import _helpers
 from google.auth import crypt
 from google.auth import exceptions
+
+IAM_RETRY_CODES = {
+    http_client.INTERNAL_SERVER_ERROR,
+    http_client.BAD_GATEWAY,
+    http_client.SERVICE_UNAVAILABLE,
+    http_client.GATEWAY_TIMEOUT,
+}
 
 
 _IAM_SCOPE = ["https://www.googleapis.com/auth/iam"]
@@ -88,15 +96,22 @@ class Signer(crypt.Signer):
             {"payload": base64.b64encode(message).decode("utf-8")}
         ).encode("utf-8")
 
-        self._credentials.before_request(self._request, method, url, headers)
-        response = self._request(url=url, method=method, body=body, headers=headers)
+        retries = _exponential_backoff.ExponentialBackoff()
+        for _ in retries:
+            self._credentials.before_request(self._request, method, url, headers)
 
-        if response.status != http_client.OK:
-            raise exceptions.TransportError(
-                "Error calling the IAM signBlob API: {}".format(response.data)
-            )
+            response = self._request(url=url, method=method, body=body, headers=headers)
 
-        return json.loads(response.data.decode("utf-8"))
+            if response.status in IAM_RETRY_CODES:
+                continue
+
+            if response.status != http_client.OK:
+                raise exceptions.TransportError(
+                    "Error calling the IAM signBlob API: {}".format(response.data)
+                )
+
+            return json.loads(response.data.decode("utf-8"))
+        raise exceptions.TransportError("exhausted signBlob endpoint retries")
 
     @property
     def key_id(self):

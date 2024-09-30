@@ -91,6 +91,7 @@ class TestSigner(object):
         assert returned_signature == signature
         kwargs = request.call_args[1]
         assert kwargs["headers"]["Content-Type"] == "application/json"
+        request.call_count == 1
 
     def test_sign_bytes_failure(self):
         request = make_request(http_client.UNAUTHORIZED)
@@ -100,3 +101,15 @@ class TestSigner(object):
 
         with pytest.raises(exceptions.TransportError):
             signer.sign("123")
+        request.call_count == 1
+
+    @mock.patch("time.sleep", return_value=None)
+    def test_sign_bytes_retryable_failure(self, mock_time):
+        request = make_request(http_client.INTERNAL_SERVER_ERROR)
+        credentials = make_credentials()
+
+        signer = iam.Signer(request, credentials, mock.sentinel.service_account_email)
+
+        with pytest.raises(exceptions.TransportError):
+            signer.sign("123")
+        request.call_count == 3
