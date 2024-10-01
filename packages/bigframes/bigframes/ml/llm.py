@@ -84,9 +84,16 @@ _ML_EMBED_TEXT_STATUS = "ml_embed_text_status"
 _ML_GENERATE_EMBEDDING_STATUS = "ml_generate_embedding_status"
 
 
+@typing_extensions.deprecated(
+    "PaLM2TextGenerator is going to be deprecated. Use GeminiTextGenerator(https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.GeminiTextGenerator) instead. ",
+    category=exceptions.ApiDeprecationWarning,
+)
 @log_adapter.class_logger
 class PaLM2TextGenerator(base.BaseEstimator):
     """PaLM2 text generator LLM model.
+
+    .. note::
+        PaLM2TextGenerator is going to be deprecated. Use GeminiTextGenerator(https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.GeminiTextGenerator) instead.
 
     Args:
         model_name (str, Default to "text-bison"):

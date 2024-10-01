@@ -450,6 +450,11 @@ def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index):
     )
 
 
+def test_palm2_text_generator_deprecated():
+    with pytest.warns(exceptions.ApiDeprecationWarning):
+        llm.PaLM2TextGenerator()
+
+
 def test_palm2_text_embedding_deprecated():
     with pytest.warns(exceptions.ApiDeprecationWarning):
         try:
