@@ -1475,10 +1475,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             ops.RemoteFunctionOp(func=func, apply_on_null=True)
         )
 
-        # return Series with materialized result so that any error in the remote
-        # function is caught early
-        materialized_series = result_series._cached(session_aware=False)
-        return materialized_series
+        return result_series
 
     def combine(
         self,
@@ -1506,10 +1503,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             other, ops.BinaryRemoteFunctionOp(func=func)
         )
 
-        # return Series with materialized result so that any error in the remote
-        # function is caught early
-        materialized_series = result_series._cached()
-        return materialized_series
+        return result_series
 
     @validations.requires_index
     def add_prefix(self, prefix: str, axis: int | str | None = None) -> Series:
