@@ -636,7 +636,7 @@ class Block:
             )
         else:
             total_rows = execute_result.total_rows
-            arrow = self.session._executor.execute(self.expr).to_arrow_table()
+            arrow = execute_result.to_arrow_table()
             df = io_pandas.arrow_to_pandas(arrow, schema=self.expr.schema)
             self._copy_index_to_pandas(df)
 
