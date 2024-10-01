@@ -76,6 +76,16 @@ class ArrayValue:
         return cls(node)
 
     @classmethod
+    def from_range(cls, start, end, step):
+        return cls(
+            nodes.FromRangeNode(
+                start=start.node,
+                end=end.node,
+                step=step,
+            )
+        )
+
+    @classmethod
     def from_table(
         cls,
         table: google.cloud.bigquery.Table,

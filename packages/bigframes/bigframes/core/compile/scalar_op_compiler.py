@@ -729,6 +729,194 @@ def floor_dt_op_impl(x: ibis_types.Value, op: ops.FloorDtOp):
     return result.cast(result_type)
 
 
+@scalar_op_compiler.register_binary_op(ops.DatetimeToIntegerLabelOp, pass_op=True)
+def datetime_to_integer_label_op_impl(
+    x: ibis_types.Value, y: ibis_types.Value, op: ops.DatetimeToIntegerLabelOp
+):
+    # Determine if the frequency is fixed by checking if 'op.freq.nanos' is defined.
+    try:
+        return datetime_to_integer_label_fixed_frequency(x, y, op)
+    except ValueError:
+        return datetime_to_integer_label_non_fixed_frequency(x, y, op)
+
+
+def datetime_to_integer_label_fixed_frequency(
+    x: ibis_types.Value, y: ibis_types.Value, op: ops.DatetimeToIntegerLabelOp
+):
+    """
+    This function handles fixed frequency conversions where the unit can range
+    from microseconds (us) to days.
+    """
+    us = op.freq.nanos / 1000
+    x_int = x.cast(ibis_dtypes.Timestamp(timezone="UTC")).cast(ibis_dtypes.int64)
+    first = calculate_resample_first(y, op.origin)
+    x_int_label = (x_int - first) // us
+    return x_int_label
+
+
+def datetime_to_integer_label_non_fixed_frequency(
+    x: ibis_types.Value, y: ibis_types.Value, op: ops.DatetimeToIntegerLabelOp
+):
+    """
+    This function handles non-fixed frequency conversions for units ranging
+    from weeks to years.
+    """
+    rule_code = op.freq.rule_code
+    n = op.freq.n
+    if rule_code == "W-SUN":  # Weekly
+        us = n * 7 * 24 * 60 * 60 * 1000000
+        x = x.truncate("week") + ibis.interval(days=6)
+        y = y.truncate("week") + ibis.interval(days=6)
+        x_int = x.cast(ibis_dtypes.Timestamp(timezone="UTC")).cast(ibis_dtypes.int64)
+        first = y.cast(ibis_dtypes.Timestamp(timezone="UTC")).cast(ibis_dtypes.int64)
+        x_int_label = (
+            ibis.case()
+            .when(x_int == first, 0)
+            .else_((x_int - first - 1) // us + 1)
+            .end()
+        )
+    elif rule_code == "ME":  # Monthly
+        x_int = x.year() * 12 + x.month() - 1
+        first = y.year() * 12 + y.month() - 1
+        x_int_label = (
+            ibis.case()
+            .when(x_int == first, 0)
+            .else_((x_int - first - 1) // n + 1)
+            .end()
+        )
+    elif rule_code == "QE-DEC":  # Quarterly
+        x_int = x.year() * 4 + x.quarter() - 1
+        first = y.year() * 4 + y.quarter() - 1
+        x_int_label = (
+            ibis.case()
+            .when(x_int == first, 0)
+            .else_((x_int - first - 1) // n + 1)
+            .end()
+        )
+    elif rule_code == "YE-DEC":  # Yearly
+        x_int = x.year()
+        first = y.year()
+        x_int_label = (
+            ibis.case()
+            .when(x_int == first, 0)
+            .else_((x_int - first - 1) // n + 1)
+            .end()
+        )
+    else:
+        raise ValueError(rule_code)
+    return x_int_label
+
+
+@scalar_op_compiler.register_binary_op(ops.IntegerLabelToDatetimeOp, pass_op=True)
+def integer_label_to_datetime_op_impl(
+    x: ibis_types.Value, y: ibis_types.Value, op: ops.IntegerLabelToDatetimeOp
+):
+    # Determine if the frequency is fixed by checking if 'op.freq.nanos' is defined.
+    try:
+        return integer_label_to_datetime_op_fixed_frequency(x, y, op)
+    except ValueError:
+        return integer_label_to_datetime_op_non_fixed_frequency(x, y, op)
+
+
+def integer_label_to_datetime_op_fixed_frequency(
+    x: ibis_types.Value, y: ibis_types.Value, op: ops.IntegerLabelToDatetimeOp
+):
+    """
+    This function handles fixed frequency conversions where the unit can range
+    from microseconds (us) to days.
+    """
+    us = op.freq.nanos / 1000
+
+    first = calculate_resample_first(y, op.origin)
+
+    x_label = (
+        (x * us + first)
+        .cast(ibis_dtypes.int64)
+        .to_timestamp(unit="us")
+        .cast(ibis_dtypes.Timestamp(timezone="UTC"))
+        .cast(y.type())
+    )
+    return x_label
+
+
+def integer_label_to_datetime_op_non_fixed_frequency(
+    x: ibis_types.Value, y: ibis_types.Value, op: ops.IntegerLabelToDatetimeOp
+):
+    """
+    This function handles non-fixed frequency conversions for units ranging
+    from weeks to years.
+    """
+    rule_code = op.freq.rule_code
+    n = op.freq.n
+    if rule_code == "W-SUN":  # Weekly
+        us = n * 7 * 24 * 60 * 60 * 1000000
+        first = (
+            y.cast(ibis_dtypes.Timestamp(timezone="UTC")).truncate("week")
+            + ibis.interval(days=6)
+        ).cast(ibis_dtypes.int64)
+        x_label = (
+            (x * us + first)
+            .cast(ibis_dtypes.int64)
+            .to_timestamp(unit="us")
+            .cast(ibis_dtypes.Timestamp(timezone="UTC"))
+            .cast(y.type())
+        )
+    elif rule_code == "ME":  # Monthly
+        one = ibis.literal(1)
+        twelve = ibis.literal(12)
+        first = y.year() * twelve + y.month() - one
+
+        x = x * n + first
+        year = x // twelve
+        month = (x % twelve) + one
+
+        next_year = (month == twelve).ifelse(year + one, year)
+        next_month = (month == twelve).ifelse(one, month + one)
+        next_month_date = ibis.timestamp(next_year, next_month, one, 0, 0, 0)
+
+        x_label = next_month_date - ibis.interval(days=1)
+    elif rule_code == "QE-DEC":  # Quarterly
+        one = ibis.literal(1)
+        three = ibis.literal(3)
+        four = ibis.literal(4)
+        twelve = ibis.literal(12)
+        first = y.year() * four + y.quarter() - one
+
+        x = x * n + first
+        year = x // four
+        month = ((x % four) + one) * three
+
+        next_year = (month == twelve).ifelse(year + one, year)
+        next_month = (month == twelve).ifelse(one, month + one)
+        next_month_date = ibis.timestamp(next_year, next_month, one, 0, 0, 0)
+
+        x_label = next_month_date - ibis.interval(days=1)
+    elif rule_code == "YE-DEC":  # Yearly
+        one = ibis.literal(1)
+        first = y.year()
+        x = x * n + first
+        next_year = x + one
+        next_month_date = ibis.timestamp(next_year, 1, 1, 0, 0, 0)
+        x_label = next_month_date - ibis.interval(days=1)
+
+    return x_label.cast(ibis_dtypes.Timestamp(timezone="UTC")).cast(y.type())
+
+
+def calculate_resample_first(y: ibis_types.Value, origin):
+    if origin == "epoch":
+        return ibis.literal(0)
+    elif origin == "start_day":
+        return (
+            y.cast(ibis_dtypes.date)
+            .cast(ibis_dtypes.Timestamp(timezone="UTC"))
+            .cast(ibis_dtypes.int64)
+        )
+    elif origin == "start":
+        return y.cast(ibis_dtypes.Timestamp(timezone="UTC")).cast(ibis_dtypes.int64)
+    else:
+        raise ValueError(f"Origin {origin} not supported")
+
+
 @scalar_op_compiler.register_unary_op(ops.time_op)
 def time_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.TimestampValue, x).time()

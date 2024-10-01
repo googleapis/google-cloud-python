@@ -15,12 +15,14 @@
 from __future__ import annotations
 
 import dataclasses
+import datetime
 import functools
 import typing
 from typing import Union
 
 import numpy as np
 import pandas as pd
+from pandas.tseries.offsets import DateOffset
 import pyarrow as pa
 
 import bigframes.dtypes
@@ -587,6 +589,34 @@ class FloorDtOp(UnaryOp):
 
     def output_type(self, *input_types):
         return input_types[0]
+
+
+@dataclasses.dataclass(frozen=True)
+class DatetimeToIntegerLabelOp(BinaryOp):
+    name: typing.ClassVar[str] = "datetime_to_integer_label"
+    freq: DateOffset
+    closed: typing.Optional[typing.Literal["right", "left"]]
+    origin: Union[
+        Union[pd.Timestamp, datetime.datetime, np.datetime64, int, float, str],
+        typing.Literal["epoch", "start", "start_day", "end", "end_day"],
+    ]
+
+    def output_type(self, *input_types):
+        return dtypes.INT_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
+class IntegerLabelToDatetimeOp(BinaryOp):
+    name: typing.ClassVar[str] = "integer_label_to_datetime"
+    freq: DateOffset
+    label: typing.Optional[typing.Literal["right", "left"]]
+    origin: Union[
+        Union[pd.Timestamp, datetime.datetime, np.datetime64, int, float, str],
+        typing.Literal["epoch", "start", "start_day", "end", "end_day"],
+    ]
+
+    def output_type(self, *input_types):
+        return input_types[1]
 
 
 ## Array Ops

@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import ast
 import dataclasses
+import datetime
 import functools
 import itertools
 import random
@@ -43,6 +44,7 @@ import warnings
 
 import bigframes_vendored.constants as constants
 import google.cloud.bigquery as bigquery
+import numpy
 import pandas as pd
 import pyarrow as pa
 
@@ -1833,6 +1835,179 @@ class Block:
             .drop_levels([result.index_columns[-1]])
             .with_transpose_cache(self)
         )
+
+    def _generate_sequence(
+        self,
+        start,
+        stop,
+        step: int = 1,
+    ):
+        range_expr = self.expr.from_range(
+            start,
+            stop,
+            step,
+        )
+
+        return Block(
+            range_expr,
+            column_labels=["min"],
+            index_columns=[],
+        )
+
+    def _generate_resample_label(
+        self,
+        rule: str,
+        closed: Optional[Literal["right", "left"]] = None,
+        label: Optional[Literal["right", "left"]] = None,
+        on: Optional[Label] = None,
+        level: typing.Union[LevelType, typing.Sequence[LevelType]] = None,
+        origin: Union[
+            Union[pd.Timestamp, datetime.datetime, numpy.datetime64, int, float, str],
+            Literal["epoch", "start", "start_day", "end", "end_day"],
+        ] = "start_day",
+    ) -> Block:
+        # Validate and resolve the index or column to use for grouping
+        if on is None:
+            if len(self.index_columns) == 0:
+                raise ValueError(
+                    f"No index for resampling. Expected {bigframes.dtypes.DATETIME_DTYPE} or "
+                    f"{bigframes.dtypes.TIMESTAMP_DTYPE} index or 'on' parameter specifying a column."
+                )
+            if len(self.index_columns) > 1 and (level is None):
+                raise ValueError(
+                    "Multiple indices are not supported for this operation"
+                    " when 'level' is not set."
+                )
+            level = level or 0
+            col_id = self.index.resolve_level(level)[0]
+            # Reset index to make the resampling level a column, then drop all other index columns.
+            # This simplifies processing by focusing solely on the column required for resampling.
+            block = self.reset_index(drop=False)
+            block = block.drop_columns(
+                [col for col in self.index.column_ids if col != col_id]
+            )
+        elif level is not None:
+            raise ValueError("The Grouper cannot specify both a key and a level!")
+        else:
+            matches = self.label_to_col_id.get(on, [])
+            if len(matches) > 1:
+                raise ValueError(
+                    f"Multiple columns matching id {on} were found. {constants.FEEDBACK_LINK}"
+                )
+            if len(matches) == 0:
+                raise KeyError(f"The grouper name {on} is not found")
+
+            col_id = matches[0]
+            block = self
+        if level is None:
+            dtype = self._column_type(col_id)
+        elif isinstance(level, int):
+            dtype = self.index.dtypes[level]
+        else:
+            dtype = self.index.dtypes[self.index.names.index(level)]
+
+        if dtype not in (
+            bigframes.dtypes.DATETIME_DTYPE,
+            bigframes.dtypes.TIMESTAMP_DTYPE,
+        ):
+            raise TypeError(
+                f"Invalid column type: {dtype}. Expected types are "
+                f"{bigframes.dtypes.DATETIME_DTYPE}, or "
+                f"{bigframes.dtypes.TIMESTAMP_DTYPE}."
+            )
+
+        freq = pd.tseries.frequencies.to_offset(rule)
+        assert freq is not None
+
+        if origin not in ("epoch", "start", "start_day"):
+            raise ValueError(
+                "'origin' should be equal to 'epoch', 'start' or 'start_day'"
+                f". Got '{origin}' instead."
+            )
+
+        agg_specs = [
+            (
+                ex.UnaryAggregation(agg_ops.min_op, ex.deref(col_id)),
+                guid.generate_guid(),
+            ),
+        ]
+        origin_block = Block(
+            block.expr.aggregate(agg_specs, dropna=True),
+            column_labels=["origin"],
+            index_columns=[],
+        )
+
+        col_level = block.value_columns.index(col_id)
+
+        block = block.merge(
+            origin_block, how="cross", left_join_ids=[], right_join_ids=[], sort=True
+        )
+
+        # After merging, the original column ids are altered. 'col_level' is the index of
+        # the datetime column used for resampling. 'block.value_columns[-1]' is the
+        # 'origin' column, which is the minimum datetime value.
+        block, label_col_id = block.apply_binary_op(
+            block.value_columns[col_level],
+            block.value_columns[-1],
+            op=ops.DatetimeToIntegerLabelOp(freq=freq, closed=closed, origin=origin),
+        )
+        block = block.drop_columns([block.value_columns[-2]])
+
+        # Generate integer label sequence.
+        min_agg_specs = [
+            (
+                ex.UnaryAggregation(agg_ops.min_op, ex.deref(label_col_id)),
+                guid.generate_guid(),
+            ),
+        ]
+        max_agg_specs = [
+            (
+                ex.UnaryAggregation(agg_ops.max_op, ex.deref(label_col_id)),
+                guid.generate_guid(),
+            ),
+        ]
+        label_start = block.expr.aggregate(min_agg_specs, dropna=True)
+        label_stop = block.expr.aggregate(max_agg_specs, dropna=True)
+
+        label_block = block._generate_sequence(
+            start=label_start,
+            stop=label_stop,
+        )
+
+        label_block = label_block.merge(
+            origin_block, how="cross", left_join_ids=[], right_join_ids=[], sort=True
+        )
+
+        block = label_block.merge(
+            block,
+            how="left",
+            left_join_ids=[label_block.value_columns[0]],
+            right_join_ids=[label_col_id],
+            sort=True,
+        )
+
+        block, resample_label_id = block.apply_binary_op(
+            block.value_columns[0],
+            block.value_columns[1],
+            op=ops.IntegerLabelToDatetimeOp(freq=freq, label=label, origin=origin),
+        )
+
+        # After multiple merges, the columns:
+        # - block.value_columns[0] is the integer label sequence,
+        # - block.value_columns[1] is the origin column (minimum datetime value),
+        # - col_level+2 represents the datetime column used for resampling,
+        # - block.value_columns[-2] is the integer label column derived from the datetime column.
+        # These columns are no longer needed.
+        block = block.drop_columns(
+            [
+                block.value_columns[0],
+                block.value_columns[1],
+                block.value_columns[col_level + 2],
+                block.value_columns[-2],
+            ]
+        )
+
+        return block.set_index([resample_label_id])
 
     def _create_stack_column(self, col_label: typing.Tuple, stack_labels: pd.Index):
         dtype = None

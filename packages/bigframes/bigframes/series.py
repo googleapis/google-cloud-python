@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import datetime
 import functools
 import inspect
 import itertools
@@ -1817,6 +1818,72 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 column_ids=[self._value_column], ignore_index=ignore_index
             )
         )
+
+    @validations.requires_ordering()
+    def _resample(
+        self,
+        rule: str,
+        *,
+        closed: Optional[Literal["right", "left"]] = None,
+        label: Optional[Literal["right", "left"]] = None,
+        level: Optional[LevelsType] = None,
+        origin: Union[
+            Union[
+                pandas.Timestamp, datetime.datetime, numpy.datetime64, int, float, str
+            ],
+            Literal["epoch", "start", "start_day", "end", "end_day"],
+        ] = "start_day",
+    ) -> bigframes.core.groupby.SeriesGroupBy:
+        """Internal function to support resample. Resample time-series data.
+
+        **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import pandas as pd
+        >>> bpd.options.display.progress_bar = None
+
+        >>> data = {
+        ...     "timestamp_col": pd.date_range(
+        ...         start="2021-01-01 13:00:00", periods=30, freq="1s"
+        ...     ),
+        ...     "int64_col": range(30),
+        ... }
+        >>> s = bpd.DataFrame(data).set_index("timestamp_col")
+        >>> s._resample(rule="7s", origin="epoch").min()
+                             int64_col
+        2021-01-01 12:59:56          0
+        2021-01-01 13:00:03          3
+        2021-01-01 13:00:10         10
+        2021-01-01 13:00:17         17
+        2021-01-01 13:00:24         24
+        <BLANKLINE>
+        [5 rows x 1 columns]
+
+
+        Args:
+            rule (str):
+                The offset string representing target conversion.
+            level (str or int, default None):
+                For a MultiIndex, level (name or number) to use for resampling.
+                level must be datetime-like.
+            origin(str, default 'start_day'):
+                The timestamp on which to adjust the grouping. Must be one of the following:
+                'epoch': origin is 1970-01-01
+                'start': origin is the first value of the timeseries
+                'start_day': origin is the first day at midnight of the timeseries
+        Returns:
+            SeriesGroupBy: SeriesGroupBy object.
+        """
+        block = self._block._generate_resample_label(
+            rule=rule,
+            closed=closed,
+            label=label,
+            on=None,
+            level=level,
+            origin=origin,
+        )
+        series = Series(block)
+        return series.groupby(level=0)
 
     def __array_ufunc__(
         self, ufunc: numpy.ufunc, method: str, *inputs, **kwargs
