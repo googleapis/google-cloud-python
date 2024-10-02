@@ -678,7 +678,7 @@ class ImportDataRequest(proto.Message):
 
             Use one of the following formats:
 
-            -  {EMAIL_ADDRESS_OR_UNIQUE_ID}
+            -  ``{EMAIL_ADDRESS_OR_UNIQUE_ID}``
             -  ``projects/{PROJECT_ID_OR_NUMBER}/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}``
             -  \`projects/-/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}
 
@@ -753,7 +753,7 @@ class ExportDataRequest(proto.Message):
             be used when performing the transfer. Use one of the
             following formats:
 
-            -  {EMAIL_ADDRESS_OR_UNIQUE_ID}
+            -  ``{EMAIL_ADDRESS_OR_UNIQUE_ID}``
             -  ``projects/{PROJECT_ID_OR_NUMBER}/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}``
             -  \`projects/-/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}
 
