@@ -115,8 +115,8 @@ s.replace(
 
 s.replace(
     ["noxfile.py"],
-    r"def default\(session\)",
-    "def default(session, install_extras=True)",
+    r"def unit\(session, protobuf_implementation\)",
+    "def unit(session, protobuf_implementation, install_extras=True)",
 )
 
 
@@ -145,10 +145,10 @@ install_logic = """
     session.install("-e", install_target, "-c", constraints_path)
 """
 
-place_before(
-    "noxfile.py",
-    "# Run py.test against the unit tests.",
-    install_logic,
+s.replace(
+    ["noxfile.py"],
+    r"# TODO\(https://github.com/googleapis/synthtool/issues/1976\):",
+    install_logic + "\n" + "# TODO(https://github.com/googleapis/synthtool/issues/1976):",
 )
 
 
@@ -285,14 +285,6 @@ s.replace(
     ["setup.cfg"],
     "universal = 1\n",
     """universal = 1
-
-[sqla_testing]
-requirement_cls=sqlalchemy_bigquery.requirements:Requirements
-profile_file=.sqlalchemy_dialect_compliance-profiles.txt
-
-[tool:pytest]
-addopts= --tb native -v -r fxX -p no:warnings
-python_files=tests/*test_*.py
 """,
 )
 
