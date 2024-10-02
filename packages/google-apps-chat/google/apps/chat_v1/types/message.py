@@ -109,8 +109,8 @@ class Message(proto.Message):
             user <https://developers.google.com/workspace/chat/format-messages#messages-@mention>`__,
             or everyone in the space.
 
-            To learn about creating text messages, see `Send a text
-            message <https://developers.google.com/workspace/chat/create-messages#create-text-messages>`__.
+            To learn about creating text messages, see `Send a
+            message <https://developers.google.com/workspace/chat/create-messages>`__.
         formatted_text (str):
             Output only. Contains the message ``text`` with markups
             added to communicate formatting. This field might not
@@ -154,8 +154,9 @@ class Message(proto.Message):
             user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
             the messages can't contain cards.
 
-            To learn about cards and how to create them, see `Send card
-            messages <https://developers.google.com/workspace/chat/create-messages#create>`__.
+            To learn how to create a message that contains cards, see
+            `Send a
+            message <https://developers.google.com/workspace/chat/create-messages>`__.
 
             `Card
             builder <https://addons.gsuite.google.com/uikit/builder>`__
@@ -213,17 +214,17 @@ class Message(proto.Message):
             Immutable. Input for creating a message, otherwise output
             only. The user that can view the message. When set, the
             message is private and only visible to the specified user
-            and the Chat app. Link previews and attachments aren't
-            supported for private messages.
+            and the Chat app. To include this field in your request, you
+            must call the Chat API using `app
+            authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+            and omit the following:
 
-            Only Chat apps can send private messages. If your Chat app
-            `authenticates as a
-            user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-            to send a message, the message can't be private and must
-            omit this field.
+            -  `Attachments <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages.attachments>`__
+            -  `Accessory
+               widgets <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages#Message.AccessoryWidget>`__
 
-            For details, see `Send private messages to Google Chat
-            users <https://developers.google.com/workspace/chat/private-messages>`__.
+            For details, see `Send a message
+            privately <https://developers.google.com/workspace/chat/create-messages#private>`__.
         deletion_metadata (google.apps.chat_v1.types.DeletionMetadata):
             Output only. Information about a deleted message. A message
             is deleted when ``delete_time`` is set.
@@ -428,7 +429,7 @@ class Thread(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of the thread.
+            Resource name of the thread.
 
             Example: ``spaces/{space}/threads/{thread}``
         thread_key (str):
