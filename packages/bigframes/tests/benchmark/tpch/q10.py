@@ -17,7 +17,7 @@ import benchmark.utils as utils
 import bigframes_vendored.tpch.queries.q10 as vendored_tpch_q10
 
 if __name__ == "__main__":
-    project_id, dataset_id, session, suffix = utils.get_tpch_configuration()
+    project_id, dataset_id, session, suffix = utils.get_configuration()
     current_path = pathlib.Path(__file__).absolute()
 
     utils.get_execution_time(

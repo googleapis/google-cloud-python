@@ -4,12 +4,12 @@
 import bigframes
 
 
-def q1(table_id: str, session: bigframes.Session):
+def q1(project_id: str, dataset_id: str, table_id: str, session: bigframes.Session):
     print("Join benchmark 1: small inner on int")
 
-    x = session.read_gbq(f"bigframes-dev-perf.dbbenchmark.{table_id}")
+    x = session.read_gbq(f"{project_id}.{dataset_id}.{table_id}")
     small = session.read_gbq(
-        f"bigframes-dev-perf.dbbenchmark.{_get_join_table_id(table_id, 'small')}"
+        f"{project_id}.{dataset_id}.{_get_join_table_id(table_id, 'small')}"
     )
 
     ans = x.merge(small, on="id1")
@@ -19,12 +19,12 @@ def q1(table_id: str, session: bigframes.Session):
     print(chk)
 
 
-def q2(table_id: str, session: bigframes.Session):
+def q2(project_id: str, dataset_id: str, table_id: str, session: bigframes.Session):
     print("Join benchmark 2: medium inner on int")
 
-    x = session.read_gbq(f"bigframes-dev-perf.dbbenchmark.{table_id}")
+    x = session.read_gbq(f"{project_id}.{dataset_id}.{table_id}")
     medium = session.read_gbq(
-        f"bigframes-dev-perf.dbbenchmark.{_get_join_table_id(table_id, 'medium')}"
+        f"{project_id}.{dataset_id}.{_get_join_table_id(table_id, 'medium')}"
     )
 
     ans = x.merge(medium, on="id2")
@@ -34,12 +34,12 @@ def q2(table_id: str, session: bigframes.Session):
     print(chk)
 
 
-def q3(table_id: str, session: bigframes.Session):
+def q3(project_id: str, dataset_id: str, table_id: str, session: bigframes.Session):
     print("Join benchmark 3: medium outer on int")
 
-    x = session.read_gbq(f"bigframes-dev-perf.dbbenchmark.{table_id}")
+    x = session.read_gbq(f"{project_id}.{dataset_id}.{table_id}")
     medium = session.read_gbq(
-        f"bigframes-dev-perf.dbbenchmark.{_get_join_table_id(table_id, 'medium')}"
+        f"{project_id}.{dataset_id}.{_get_join_table_id(table_id, 'medium')}"
     )
 
     ans = x.merge(medium, how="left", on="id2")
@@ -49,12 +49,12 @@ def q3(table_id: str, session: bigframes.Session):
     print(chk)
 
 
-def q4(table_id: str, session: bigframes.Session):
+def q4(project_id: str, dataset_id: str, table_id: str, session: bigframes.Session):
     print("Join benchmark 4: medium inner on factor")
 
-    x = session.read_gbq(f"bigframes-dev-perf.dbbenchmark.{table_id}")
+    x = session.read_gbq(f"{project_id}.{dataset_id}.{table_id}")
     medium = session.read_gbq(
-        f"bigframes-dev-perf.dbbenchmark.{_get_join_table_id(table_id, 'medium')}"
+        f"{project_id}.{dataset_id}.{_get_join_table_id(table_id, 'medium')}"
     )
 
     ans = x.merge(medium, on="id5")
@@ -64,12 +64,12 @@ def q4(table_id: str, session: bigframes.Session):
     print(chk)
 
 
-def q5(table_id: str, session: bigframes.Session):
+def q5(project_id: str, dataset_id: str, table_id: str, session: bigframes.Session):
     print("Join benchmark 5: big inner on int")
 
-    x = session.read_gbq(f"bigframes-dev-perf.dbbenchmark.{table_id}")
+    x = session.read_gbq(f"{project_id}.{dataset_id}.{table_id}")
     big = session.read_gbq(
-        f"bigframes-dev-perf.dbbenchmark.{_get_join_table_id(table_id, 'big')}"
+        f"{project_id}.{dataset_id}.{_get_join_table_id(table_id, 'big')}"
     )
 
     ans = x.merge(big, on="id3")

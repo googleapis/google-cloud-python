@@ -18,43 +18,29 @@ import time
 import bigframes
 
 
-def get_dbbenchmark_configuration():
+def get_configuration(include_table_id=False):
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--table_id",
-        type=str,
-        required=True,
-        help="The BigQuery table ID to query.",
-    )
-    parser.add_argument(
-        "--ordered",
-        type=str,
-        help="Set to True (default) to have an ordered session, or False for an unordered session.",
-    )
-    parser.add_argument(
-        "--benchmark_suffix",
-        type=str,
-        help="Suffix to append to benchmark names for identification purposes.",
-    )
-    args = parser.parse_args()
-    session = _initialize_session(_str_to_bool(args.ordered))
-    return args.table_id, session, args.benchmark_suffix
-
-
-def get_tpch_configuration():
-    parser = argparse.ArgumentParser(description="Process TPC-H Query using BigFrames.")
     parser.add_argument(
         "--project_id",
         type=str,
         required=True,
-        help="The BigQuery dataset ID to query.",
+        help="The BigQuery project ID.",
     )
     parser.add_argument(
         "--dataset_id",
         type=str,
         required=True,
-        help="The BigQuery dataset ID to query.",
+        help="The BigQuery dataset ID.",
     )
+
+    if include_table_id:
+        parser.add_argument(
+            "--table_id",
+            type=str,
+            required=True,
+            help="The BigQuery table ID to query.",
+        )
+
     parser.add_argument(
         "--ordered",
         type=str,
@@ -68,7 +54,22 @@ def get_tpch_configuration():
 
     args = parser.parse_args()
     session = _initialize_session(_str_to_bool(args.ordered))
-    return args.project_id, args.dataset_id, session, args.benchmark_suffix
+
+    if include_table_id:
+        return (
+            args.project_id,
+            args.dataset_id,
+            args.table_id,
+            session,
+            args.benchmark_suffix,
+        )
+    else:
+        return (
+            args.project_id,
+            args.dataset_id,
+            session,
+            args.benchmark_suffix,
+        )
 
 
 def get_execution_time(func, current_path, suffix, *args, **kwargs):

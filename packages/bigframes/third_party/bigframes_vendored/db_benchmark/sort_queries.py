@@ -4,10 +4,12 @@ import bigframes
 import bigframes.session
 
 
-def q1(table_id: str, session: bigframes.Session) -> None:
+def q1(
+    project_id: str, dataset_id: str, table_id: str, session: bigframes.Session
+) -> None:
     print("Sort benchmark 1: sort by int id2")
 
-    x = session.read_gbq(f"bigframes-dev-perf.dbbenchmark.{table_id}")
+    x = session.read_gbq(f"{project_id}.{dataset_id}.{table_id}")
 
     ans = x.sort_values("id2")
     print(ans.shape)

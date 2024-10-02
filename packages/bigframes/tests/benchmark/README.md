@@ -11,6 +11,28 @@ This section lists the benchmarks currently available, with descriptions and lin
 - **TPC-H Benchmark**: Based on the TPC-H standards, this benchmark evaluates transaction processing capabilities. It is adapted from code found in the Polars repository, specifically tailored to test and compare these capabilities. Details are available on the [Polars Benchmark GitHub repository](https://github.com/pola-rs/polars-benchmark).
 - **Notebooks**: These Jupyter notebooks showcase BigFrames' key features and patterns, and also enable performance benchmarking. Explore them at the [BigFrames Notebooks repository](https://github.com/googleapis/python-bigquery-dataframes/tree/main/notebooks).
 
+## Benchmark Configuration Using `config.jsonl` Files
+
+For each benchmark, a corresponding `config.jsonl` file exists in the same folder or its parent folder. These configuration files allow users to control various benchmark parameters without modifying the code directly. By updating the relevant `config.jsonl` file in the specific benchmark's folder, you can easily configure settings such as:
+- **benchmark_suffix**: A suffix appended to the benchmark name for identification purposes.
+- **ordered**: Controls the mode for BigFrames, specifying whether to use ordered (`true`) or unordered mode (`false`).
+- **project_id**: The Google Cloud project ID where the benchmark dataset or table is located.
+- **dataset_id**: The dataset ID for querying during the benchmark.
+- **table_id**: This is **required** for benchmarks like `dbbenchmark` that target a specific table, but is **not configurable** for benchmarks like `TPC-H`, which use multiple tables with fixed names.
+
+### Example `config.jsonl` Files
+
+#### `dbbenchmark` Example
+```jsonl
+{"benchmark_suffix": "50g_ordered", "project_id": "your-google-cloud-project", "dataset_id": "dbbenchmark", "table_id": "G1_1e9_1e2_5_0", "ordered": true}
+{"benchmark_suffix": "50g_unordered", "project_id": "your-google-cloud-project", "dataset_id": "dbbenchmark", "table_id": "G1_1e9_1e2_5_0", "ordered": false}
+```
+
+#### `TPC-H` Example
+```jsonl
+{"benchmark_suffix": "10t_unordered", "project_id":  "your-google-cloud-project", "dataset_id": "tpch_0010t", "ordered": false}
+```
+
 ## Usage Examples
 Our benchmarking process runs internally on a daily basis to continuously monitor the performance of BigFrames. However, there are occasions when you might need to conduct benchmarking locally to test specific changes or new features.
 
