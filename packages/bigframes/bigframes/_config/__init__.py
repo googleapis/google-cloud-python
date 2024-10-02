@@ -29,6 +29,7 @@ import bigframes_vendored.pandas._config.config as pandas_config
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes._config.compute_options as compute_options
 import bigframes._config.display_options as display_options
+import bigframes._config.experiment_options as experiment_options
 import bigframes._config.sampling_options as sampling_options
 
 
@@ -45,6 +46,9 @@ class ThreadLocalConfig(threading.local):
     )
     compute_options: compute_options.ComputeOptions = field(
         default_factory=compute_options.ComputeOptions
+    )
+    experiment_options: experiment_options.ExperimentOptions = field(
+        default_factory=experiment_options.ExperimentOptions
     )
 
 
@@ -121,6 +125,16 @@ class Options:
                 Thread-local options for controlling object computation
         """
         return self._local.compute_options
+
+    @property
+    def experiments(self) -> experiment_options.ExperimentOptions:
+        """Options controlling experiments
+
+        Returns:
+            bigframes._config.experiment_options.ExperimentOptions:
+               Thread-local options for controlling experiments
+        """
+        return self._local.experiment_options
 
     @property
     def is_bigquery_thread_local(self) -> bool:
