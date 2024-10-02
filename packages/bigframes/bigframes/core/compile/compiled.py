@@ -45,7 +45,6 @@ from bigframes.core.ordering import (
     RowOrdering,
     TotalOrdering,
 )
-import bigframes.core.schema as schemata
 import bigframes.core.sql
 from bigframes.core.window_spec import RangeWindowBounds, RowsWindowBounds, WindowSpec
 import bigframes.dtypes
@@ -585,9 +584,7 @@ class OrderedIR(BaseIbisIR):
 
     @classmethod
     def from_pandas(
-        cls,
-        pd_df: pandas.DataFrame,
-        schema: schemata.ArraySchema,
+        cls, pd_df: pandas.DataFrame, scan_cols: bigframes.core.nodes.ScanList
     ) -> OrderedIR:
         """
         Builds an in-memory only (SQL only) expr from a pandas dataframe.
@@ -603,10 +600,10 @@ class OrderedIR(BaseIbisIR):
         # derive the ibis schema from the original pandas schema
         ibis_schema = [
             (
-                name,
+                local_label,
                 bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(dtype),
             )
-            for name, dtype in zip(schema.names, schema.dtypes)
+            for id, dtype, local_label in scan_cols.items
         ]
         ibis_schema.append((ORDER_ID_COLUMN, ibis_dtypes.int64))
 
@@ -614,7 +611,10 @@ class OrderedIR(BaseIbisIR):
 
         return cls(
             keys_memtable,
-            columns=[keys_memtable[column].name(column) for column in pd_df.columns],
+            columns=[
+                keys_memtable[local_label].name(col_id.sql)
+                for col_id, _, local_label in scan_cols.items
+            ],
             ordering=TotalOrdering.from_offset_col(ORDER_ID_COLUMN),
             hidden_ordering_columns=(keys_memtable[ORDER_ID_COLUMN],),
         )

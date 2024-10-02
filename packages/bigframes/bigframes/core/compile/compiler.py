@@ -16,7 +16,6 @@ from __future__ import annotations
 import dataclasses
 import functools
 import io
-import itertools
 import typing
 
 import ibis
@@ -29,9 +28,12 @@ import bigframes.core.compile.compiled as compiled
 import bigframes.core.compile.concat as concat_impl
 import bigframes.core.compile.default_ordering as default_ordering
 import bigframes.core.compile.ibis_types
+import bigframes.core.compile.scalar_op_compiler
+import bigframes.core.compile.scalar_op_compiler as compile_scalar
 import bigframes.core.compile.schema_translator
 import bigframes.core.compile.single_column
-import bigframes.core.expression as ex
+import bigframes.core.guid as guids
+import bigframes.core.identifiers as ids
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as bf_ordering
 
@@ -45,6 +47,7 @@ class Compiler:
     # In strict mode, ordering will always be deterministic
     # In unstrict mode, ordering from ReadTable or after joins may be ambiguous to improve query performance.
     strict: bool = True
+    scalar_op_compiler = compile_scalar.ScalarOpCompiler()
 
     def compile_ordered_ir(self, node: nodes.BigFrameNode) -> compiled.OrderedIR:
         ir = typing.cast(compiled.OrderedIR, self.compile_node(node, True))
@@ -148,88 +151,40 @@ class Compiler:
 
     @_compile_node.register
     def compile_readlocal(self, node: nodes.ReadLocalNode, ordered: bool = True):
-        array_as_pd = pd.read_feather(io.BytesIO(node.feather_bytes))
-        ordered_ir = compiled.OrderedIR.from_pandas(array_as_pd, node.schema)
+        array_as_pd = pd.read_feather(
+            io.BytesIO(node.feather_bytes),
+            columns=[item.source_id for item in node.scan_list.items],
+        )
+        ordered_ir = compiled.OrderedIR.from_pandas(array_as_pd, node.scan_list)
         if ordered:
             return ordered_ir
         else:
             return ordered_ir.to_unordered()
 
     @_compile_node.register
-    def compile_cached_table(self, node: nodes.CachedTableNode, ordered: bool = True):
-        full_table_name = (
-            f"{node.table.project_id}.{node.table.dataset_id}.{node.table.table_id}"
-        )
-        physical_schema = ibis.backends.bigquery.BigQuerySchema.to_ibis(
-            node.table.physical_schema
-        )
-        ibis_table = ibis.table(physical_schema, full_table_name)
-        if ordered:
-            if node.ordering is None:
-                # If this happens, session malfunctioned while applying cached results.
-                raise ValueError(
-                    "Cannot use unordered cached value. Result requires ordering information."
-                )
-            if self.strict and not isinstance(node.ordering, bf_ordering.TotalOrdering):
-                raise ValueError(
-                    "Cannot use partially ordered cached value. Result requires total ordering information."
-                )
-            ir = compiled.OrderedIR(
-                ibis_table,
-                columns=tuple(
-                    bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
-                        ibis_table[col.sql]
-                    )
-                    for col in itertools.chain(
-                        map(lambda x: x.id, node.fields), node._hidden_columns
-                    )
-                ),
-                ordering=node.ordering,
-            )
-            ir = ir._select(
-                tuple(ir._get_ibis_column(name) for name in node.schema.names)
-            )
-            return ir
-        else:
-            return compiled.UnorderedIR(
-                ibis_table,
-                columns=tuple(
-                    bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
-                        ibis_table[col]
-                    )
-                    for col in node.schema.names
-                ),
-            )
-
-    @_compile_node.register
     def compile_readtable(self, node: nodes.ReadTableNode, ordered: bool = True):
         if ordered:
-            return self.compile_read_table_ordered(node)
+            return self.compile_read_table_ordered(node.source, node.scan_list)
         else:
-            return self.compile_read_table_unordered(node)
+            return self.compile_read_table_unordered(node.source, node.scan_list)
 
     def read_table_as_unordered_ibis(
-        self, node: nodes.ReadTableNode
+        self, source: nodes.BigqueryDataSource
     ) -> ibis.expr.types.Table:
-        full_table_name = (
-            f"{node.table.project_id}.{node.table.dataset_id}.{node.table.table_id}"
-        )
-        used_columns = (
-            *node.schema.names,
-            *[i for i in node.total_order_cols if i not in node.schema.names],
-        )
+        full_table_name = f"{source.table.project_id}.{source.table.dataset_id}.{source.table.table_id}"
+        used_columns = tuple(col.name for col in source.table.physical_schema)
         # Physical schema might include unused columns, unsupported datatypes like JSON
         physical_schema = ibis.backends.bigquery.BigQuerySchema.to_ibis(
-            list(i for i in node.table.physical_schema if i.name in used_columns)
+            list(i for i in source.table.physical_schema if i.name in used_columns)
         )
-        if node.at_time is not None or node.sql_predicate is not None:
+        if source.at_time is not None or source.sql_predicate is not None:
             import bigframes.session._io.bigquery
 
             sql = bigframes.session._io.bigquery.to_query(
                 full_table_name,
                 columns=used_columns,
-                sql_predicate=node.sql_predicate,
-                time_travel_timestamp=node.at_time,
+                sql_predicate=source.sql_predicate,
+                time_travel_timestamp=source.at_time,
             )
             return ibis.backends.bigquery.Backend().sql(
                 schema=physical_schema, query=sql
@@ -237,56 +192,64 @@ class Compiler:
         else:
             return ibis.table(physical_schema, full_table_name)
 
-    def compile_read_table_unordered(self, node: nodes.ReadTableNode):
-        ibis_table = self.read_table_as_unordered_ibis(node)
+    def compile_read_table_unordered(
+        self, source: nodes.BigqueryDataSource, scan: nodes.ScanList
+    ):
+        ibis_table = self.read_table_as_unordered_ibis(source)
         return compiled.UnorderedIR(
             ibis_table,
             tuple(
                 bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
-                    ibis_table[col]
+                    ibis_table[scan_item.source_id].name(scan_item.id.sql)
                 )
-                for col in node.schema.names
+                for scan_item in scan.items
             ),
         )
 
-    def compile_read_table_ordered(self, node: nodes.ReadTableNode):
-        ibis_table = self.read_table_as_unordered_ibis(node)
-        if node.total_order_cols:
-            ordering_value_columns = tuple(
-                bf_ordering.ascending_over(col) for col in node.total_order_cols
-            )
-            if node.order_col_is_sequential:
-                integer_encoding = bf_ordering.IntegerEncoding(
-                    is_encoded=True, is_sequential=True
-                )
-            else:
-                integer_encoding = bf_ordering.IntegerEncoding()
-            ordering: bf_ordering.RowOrdering = bf_ordering.TotalOrdering(
-                ordering_value_columns,
-                integer_encoding=integer_encoding,
-                total_ordering_columns=frozenset(map(ex.deref, node.total_order_cols)),
-            )
-            hidden_columns = ()
-        elif self.strict:
-            ibis_table, ordering = default_ordering.gen_default_ordering(
-                ibis_table, use_double_hash=True
-            )
+    def compile_read_table_ordered(
+        self, source: nodes.BigqueryDataSource, scan_list: nodes.ScanList
+    ):
+        ibis_table = self.read_table_as_unordered_ibis(source)
+        if source.ordering is not None:
+            visible_column_mapping = {
+                ids.ColumnId(scan_item.source_id): scan_item.id
+                for scan_item in scan_list.items
+            }
+            full_mapping = {
+                ids.ColumnId(col.name): ids.ColumnId(guids.generate_guid())
+                for col in source.ordering.referenced_columns
+            }
+            full_mapping.update(visible_column_mapping)
+
+            ordering = source.ordering.remap_column_refs(full_mapping)
             hidden_columns = tuple(
-                ibis_table[col]
-                for col in ibis_table.columns
-                if col not in node.schema.names
+                ibis_table[source_id.sql].name(out_id.sql)
+                for source_id, out_id in full_mapping.items()
+                if source_id not in visible_column_mapping
             )
+        elif self.strict:  # In strict mode, we fallback to ordering by row hash
+            order_values = [
+                col.name(guids.generate_guid())
+                for col in default_ordering.gen_default_ordering(
+                    ibis_table, use_double_hash=True
+                )
+            ]
+            ordering = bf_ordering.TotalOrdering.from_primary_key(
+                [value.get_name() for value in order_values]
+            )
+            hidden_columns = tuple(order_values)
         else:
             # In unstrict mode, don't generate total ordering from hashing as this is
             # expensive (prevent removing any columns from table scan)
             ordering, hidden_columns = bf_ordering.RowOrdering(), ()
+
         return compiled.OrderedIR(
             ibis_table,
             columns=tuple(
                 bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
-                    ibis_table[col]
+                    ibis_table[scan_item.source_id].name(scan_item.id.sql)
                 )
-                for col in node.schema.names
+                for scan_item in scan_list.items
             ),
             ordering=ordering,
             hidden_ordering_columns=hidden_columns,

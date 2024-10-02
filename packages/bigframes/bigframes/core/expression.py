@@ -52,6 +52,10 @@ class Aggregation(abc.ABC):
     ) -> dtypes.ExpressionType:
         ...
 
+    @property
+    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
+        return ()
+
 
 @dataclasses.dataclass(frozen=True)
 class NullaryAggregation(Aggregation):
@@ -73,6 +77,10 @@ class UnaryAggregation(Aggregation):
     ) -> dtypes.ExpressionType:
         return self.op.output_type(self.arg.output_type(input_types))
 
+    @property
+    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
+        return self.arg.column_references
+
 
 @dataclasses.dataclass(frozen=True)
 class BinaryAggregation(Aggregation):
@@ -86,6 +94,10 @@ class BinaryAggregation(Aggregation):
         return self.op.output_type(
             self.left.output_type(input_types), self.right.output_type(input_types)
         )
+
+    @property
+    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
+        return (*self.left.column_references, *self.right.column_references)
 
 
 @dataclasses.dataclass(frozen=True)

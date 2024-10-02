@@ -67,11 +67,20 @@ class ArrayValue:
 
         iobytes = io.BytesIO()
         pa_feather.write_feather(adapted_table, iobytes)
+        # Scan all columns by default, we define this list as it can be pruned while preserving source_def
+        scan_list = nodes.ScanList(
+            tuple(
+                nodes.ScanItem(ids.ColumnId(item.column), item.dtype, item.column)
+                for item in schema.items
+            )
+        )
+
         node = nodes.ReadLocalNode(
             iobytes.getvalue(),
             data_schema=schema,
             session=session,
             n_rows=arrow_table.num_rows,
+            scan_list=scan_list,
         )
         return cls(node)
 
@@ -104,14 +113,30 @@ class ArrayValue:
                 "Interpreting JSON column(s) as StringDtype. This behavior may change in future versions.",
                 bigframes.exceptions.PreviewWarning,
             )
+        # define data source only for needed columns, this makes row-hashing cheaper
+        table_def = nodes.GbqTable.from_table(table, columns=schema.names)
+
+        # create ordering from info
+        ordering = None
+        if offsets_col:
+            ordering = orderings.TotalOrdering.from_offset_col(offsets_col)
+        elif primary_key:
+            ordering = orderings.TotalOrdering.from_primary_key(primary_key)
+
+        # Scan all columns by default, we define this list as it can be pruned while preserving source_def
+        scan_list = nodes.ScanList(
+            tuple(
+                nodes.ScanItem(ids.ColumnId(item.column), item.dtype, item.column)
+                for item in schema.items
+            )
+        )
+        source_def = nodes.BigqueryDataSource(
+            table=table_def, at_time=at_time, sql_predicate=predicate, ordering=ordering
+        )
         node = nodes.ReadTableNode(
-            table=nodes.GbqTable.from_table(table),
-            total_order_cols=(offsets_col,) if offsets_col else tuple(primary_key),
-            order_col_is_sequential=(offsets_col is not None),
-            columns=schema,
-            at_time=at_time,
+            source=source_def,
+            scan_list=scan_list,
             table_session=session,
-            sql_predicate=predicate,
         )
         return cls(node)
 
@@ -157,12 +182,22 @@ class ArrayValue:
         ordering: Optional[orderings.RowOrdering],
     ) -> ArrayValue:
         """
-        Replace the node with an equivalent one that references a tabel where the value has been materialized to.
+        Replace the node with an equivalent one that references a table where the value has been materialized to.
         """
+        table = nodes.GbqTable.from_table(cache_table)
+        source = nodes.BigqueryDataSource(table, ordering=ordering)
+        # Assumption: GBQ cached table uses field name as bq column name
+        scan_list = nodes.ScanList(
+            tuple(
+                nodes.ScanItem(field.id, field.dtype, field.id.name)
+                for field in self.node.fields
+            )
+        )
         node = nodes.CachedTableNode(
             original_node=self.node,
-            table=nodes.GbqTable.from_table(cache_table),
-            ordering=ordering,
+            source=source,
+            table_session=self.session,
+            scan_list=scan_list,
         )
         return ArrayValue(node)
 
@@ -379,28 +414,34 @@ class ArrayValue:
         conditions: typing.Tuple[typing.Tuple[str, str], ...] = (),
         type: typing.Literal["inner", "outer", "left", "right", "cross"] = "inner",
     ) -> typing.Tuple[ArrayValue, typing.Tuple[dict[str, str], dict[str, str]]]:
+        l_mapping = {  # Identity mapping, only rename right side
+            lcol.name: lcol.name for lcol in self.node.ids
+        }
+        r_mapping = {  # Rename conflicting names
+            rcol.name: rcol.name
+            if (rcol.name not in l_mapping)
+            else bigframes.core.guid.generate_guid()
+            for rcol in other.node.ids
+        }
+        other_node = other.node
+        if set(other_node.ids) & set(self.node.ids):
+            other_node = nodes.SelectionNode(
+                other_node,
+                tuple(
+                    (ex.deref(old_id), ids.ColumnId(new_id))
+                    for old_id, new_id in r_mapping.items()
+                ),
+            )
+
         join_node = nodes.JoinNode(
             left_child=self.node,
-            right_child=other.node,
+            right_child=other_node,
             conditions=tuple(
-                (ex.deref(l_col), ex.deref(r_col)) for l_col, r_col in conditions
+                (ex.deref(l_mapping[l_col]), ex.deref(r_mapping[r_col]))
+                for l_col, r_col in conditions
             ),
             type=type,
         )
-        # Maps input ids to output ids for caller convenience
-        l_size = len(self.node.schema)
-        l_mapping = {
-            lcol: ocol
-            for lcol, ocol in zip(
-                self.node.schema.names, join_node.schema.names[:l_size]
-            )
-        }
-        r_mapping = {
-            rcol: ocol
-            for rcol, ocol in zip(
-                other.node.schema.names, join_node.schema.names[l_size:]
-            )
-        }
         return ArrayValue(join_node), (l_mapping, r_mapping)
 
     def try_align_as_projection(

@@ -60,6 +60,8 @@ QUERY_COMPLEXITY_LIMIT = 1e7
 # Number of times to factor out subqueries before giving up.
 MAX_SUBTREE_FACTORINGS = 5
 _MAX_CLUSTER_COLUMNS = 4
+# TODO: b/338258028 Enable pruning to reduce text size.
+ENABLE_PRUNING = False
 
 
 @dataclasses.dataclass(frozen=True)
@@ -431,6 +433,9 @@ class BigQueryCachingExecutor:
         optimized_plan = tree_properties.replace_nodes(
             node, (dict(self._cached_executions))
         )
+        if ENABLE_PRUNING:
+            used_fields = frozenset(field.id for field in optimized_plan.fields)
+            optimized_plan = optimized_plan.prune(used_fields)
         return optimized_plan
 
     def _is_trivially_executable(self, array_value: bigframes.core.ArrayValue):

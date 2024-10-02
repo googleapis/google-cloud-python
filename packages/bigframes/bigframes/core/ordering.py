@@ -55,6 +55,10 @@ class OrderingExpression:
     direction: OrderingDirection = OrderingDirection.ASC
     na_last: bool = True
 
+    @property
+    def referenced_columns(self) -> Set[ids.ColumnId]:
+        return set(self.scalar_expression.column_references)
+
     def remap_column_refs(
         self,
         mapping: Mapping[ids.ColumnId, ids.ColumnId],
@@ -120,7 +124,7 @@ class RowOrdering:
         return set(
             col
             for part in self.ordering_value_columns
-            for col in part.scalar_expression.column_references
+            for col in part.referenced_columns
         )
 
     @property
@@ -131,6 +135,10 @@ class RowOrdering:
     @property
     def is_sequential(self) -> bool:
         return self.integer_encoding.is_encoded and self.integer_encoding.is_sequential
+
+    @property
+    def is_total_ordering(self) -> bool:
+        return False
 
     @property
     def total_order_col(self) -> Optional[OrderingExpression]:
@@ -228,6 +236,19 @@ class TotalOrdering(RowOrdering):
             integer_encoding=IntegerEncoding(True, is_sequential=True),
             total_ordering_columns=frozenset({expression.deref(col)}),
         )
+
+    @classmethod
+    def from_primary_key(cls, primary_key: Sequence[str]) -> TotalOrdering:
+        return TotalOrdering(
+            tuple(ascending_over(col) for col in primary_key),
+            total_ordering_columns=frozenset(
+                {expression.deref(col) for col in primary_key}
+            ),
+        )
+
+    @property
+    def is_total_ordering(self) -> bool:
+        return True
 
     def with_non_sequential(self):
         """Create a copy that is marked as non-sequential.
