@@ -5,25 +5,6 @@
   "protoPackage": "google.ads.admanager.v1",
   "schema": "1.0",
   "services": {
-    "AdPartnerService": {
-      "clients": {
-        "rest": {
-          "libraryClient": "AdPartnerServiceClient",
-          "rpcs": {
-            "GetAdPartner": {
-              "methods": [
-                "get_ad_partner"
-              ]
-            },
-            "ListAdPartners": {
-              "methods": [
-                "list_ad_partners"
-              ]
-            }
-          }
-        }
-      }
-    },
     "AdUnitService": {
       "clients": {
         "rest": {
@@ -32,6 +13,11 @@
             "GetAdUnit": {
               "methods": [
                 "get_ad_unit"
+              ]
+            },
+            "ListAdUnitSizes": {
+              "methods": [
+                "list_ad_unit_sizes"
               ]
             },
             "ListAdUnits": {
@@ -56,44 +42,6 @@
             "ListCompanies": {
               "methods": [
                 "list_companies"
-              ]
-            }
-          }
-        }
-      }
-    },
-    "ContactService": {
-      "clients": {
-        "rest": {
-          "libraryClient": "ContactServiceClient",
-          "rpcs": {
-            "GetContact": {
-              "methods": [
-                "get_contact"
-              ]
-            },
-            "ListContacts": {
-              "methods": [
-                "list_contacts"
-              ]
-            }
-          }
-        }
-      }
-    },
-    "CreativeService": {
-      "clients": {
-        "rest": {
-          "libraryClient": "CreativeServiceClient",
-          "rpcs": {
-            "GetCreative": {
-              "methods": [
-                "get_creative"
-              ]
-            },
-            "ListCreatives": {
-              "methods": [
-                "list_creatives"
               ]
             }
           }
@@ -157,38 +105,39 @@
         }
       }
     },
-    "LabelService": {
+    "EntitySignalsMappingService": {
       "clients": {
         "rest": {
-          "libraryClient": "LabelServiceClient",
+          "libraryClient": "EntitySignalsMappingServiceClient",
           "rpcs": {
-            "GetLabel": {
+            "BatchCreateEntitySignalsMappings": {
               "methods": [
-                "get_label"
+                "batch_create_entity_signals_mappings"
               ]
             },
-            "ListLabels": {
+            "BatchUpdateEntitySignalsMappings": {
               "methods": [
-                "list_labels"
-              ]
-            }
-          }
-        }
-      }
-    },
-    "LineItemService": {
-      "clients": {
-        "rest": {
-          "libraryClient": "LineItemServiceClient",
-          "rpcs": {
-            "GetLineItem": {
-              "methods": [
-                "get_line_item"
+                "batch_update_entity_signals_mappings"
               ]
             },
-            "ListLineItems": {
+            "CreateEntitySignalsMapping": {
               "methods": [
-                "list_line_items"
+                "create_entity_signals_mapping"
+              ]
+            },
+            "GetEntitySignalsMapping": {
+              "methods": [
+                "get_entity_signals_mapping"
+              ]
+            },
+            "ListEntitySignalsMappings": {
+              "methods": [
+                "list_entity_signals_mappings"
+              ]
+            },
+            "UpdateEntitySignalsMapping": {
+              "methods": [
+                "update_entity_signals_mapping"
               ]
             }
           }
@@ -203,6 +152,11 @@
             "GetNetwork": {
               "methods": [
                 "get_network"
+              ]
+            },
+            "ListNetworks": {
+              "methods": [
+                "list_networks"
               ]
             }
           }
@@ -252,9 +206,34 @@
         "rest": {
           "libraryClient": "ReportServiceClient",
           "rpcs": {
-            "ExportSavedReport": {
+            "CreateReport": {
               "methods": [
-                "export_saved_report"
+                "create_report"
+              ]
+            },
+            "FetchReportResultRows": {
+              "methods": [
+                "fetch_report_result_rows"
+              ]
+            },
+            "GetReport": {
+              "methods": [
+                "get_report"
+              ]
+            },
+            "ListReports": {
+              "methods": [
+                "list_reports"
+              ]
+            },
+            "RunReport": {
+              "methods": [
+                "run_report"
+              ]
+            },
+            "UpdateReport": {
+              "methods": [
+                "update_report"
               ]
             }
           }
@@ -280,19 +259,19 @@
         }
       }
     },
-    "TeamService": {
+    "TaxonomyCategoryService": {
       "clients": {
         "rest": {
-          "libraryClient": "TeamServiceClient",
+          "libraryClient": "TaxonomyCategoryServiceClient",
           "rpcs": {
-            "GetTeam": {
+            "GetTaxonomyCategory": {
               "methods": [
-                "get_team"
+                "get_taxonomy_category"
               ]
             },
-            "ListTeams": {
+            "ListTaxonomyCategories": {
               "methods": [
-                "list_teams"
+                "list_taxonomy_categories"
               ]
             }
           }
@@ -307,11 +286,6 @@
             "GetUser": {
               "methods": [
                 "get_user"
-              ]
-            },
-            "ListUsers": {
-              "methods": [
-                "list_users"
               ]
             }
           }

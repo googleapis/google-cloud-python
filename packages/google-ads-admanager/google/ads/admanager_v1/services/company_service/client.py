@@ -49,11 +49,13 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.company_service import pagers
 from google.ads.admanager_v1.types import (
     applied_label,
     company_credit_status_enum,
+    company_messages,
     company_service,
     company_type_enum,
 )
@@ -753,7 +755,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> company_service.Company:
+    ) -> company_messages.Company:
         r"""API to retrieve a ``Company`` object.
 
         .. code-block:: python
@@ -902,7 +904,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         Returns:
             google.ads.admanager_v1.services.company_service.pagers.ListCompaniesPager:
                 Response object for ListCompaniesRequest containing matching Company
-                   resources.
+                   objects.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

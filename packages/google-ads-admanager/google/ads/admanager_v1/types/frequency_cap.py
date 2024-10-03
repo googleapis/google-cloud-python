@@ -19,11 +19,12 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.ads.admanager_v1.types import time_unit_enum
+
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
     manifest={
         "FrequencyCap",
-        "TimeUnitEnum",
     },
 )
 
@@ -60,51 +61,12 @@ class FrequencyCap(proto.Message):
         number=2,
         optional=True,
     )
-    time_unit: "TimeUnitEnum.TimeUnit" = proto.Field(
+    time_unit: time_unit_enum.TimeUnitEnum.TimeUnit = proto.Field(
         proto.ENUM,
         number=3,
         optional=True,
-        enum="TimeUnitEnum.TimeUnit",
+        enum=time_unit_enum.TimeUnitEnum.TimeUnit,
     )
-
-
-class TimeUnitEnum(proto.Message):
-    r"""Wrapper message for TimeUnit."""
-
-    class TimeUnit(proto.Enum):
-        r"""Unit of time for the frequency cap.
-
-        Values:
-            TIME_UNIT_UNSPECIFIED (0):
-                Default value. This value is unused.
-            MINUTE (1):
-                Minute
-            HOUR (2):
-                Hour
-            DAY (3):
-                Day
-            WEEK (4):
-                Week
-            MONTH (5):
-                Month
-            LIFETIME (6):
-                Lifetime
-            POD (7):
-                Per pod of ads in a video stream. Only valid for entities in
-                a VIDEO_PLAYER environment.
-            STREAM (8):
-                Per video stream. Only valid for entities in a VIDEO_PLAYER
-                environment.
-        """
-        TIME_UNIT_UNSPECIFIED = 0
-        MINUTE = 1
-        HOUR = 2
-        DAY = 3
-        WEEK = 4
-        MONTH = 5
-        LIFETIME = 6
-        POD = 7
-        STREAM = 8
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

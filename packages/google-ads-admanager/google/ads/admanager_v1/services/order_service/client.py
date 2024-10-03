@@ -52,7 +52,13 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.order_service import pagers
-from google.ads.admanager_v1.types import applied_label, order_service
+from google.ads.admanager_v1.types import (
+    applied_label,
+    custom_field_value,
+    order_enums,
+    order_messages,
+    order_service,
+)
 
 from .transports.base import DEFAULT_CLIENT_INFO, OrderServiceTransport
 from .transports.rest import OrderServiceRestTransport
@@ -215,6 +221,25 @@ class OrderServiceClient(metaclass=OrderServiceClientMeta):
         """Parses a contact path into its component segments."""
         m = re.match(
             r"^networks/(?P<network_code>.+?)/contacts/(?P<contact>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def custom_field_path(
+        network_code: str,
+        custom_field: str,
+    ) -> str:
+        """Returns a fully-qualified custom_field string."""
+        return "networks/{network_code}/customFields/{custom_field}".format(
+            network_code=network_code,
+            custom_field=custom_field,
+        )
+
+    @staticmethod
+    def parse_custom_field_path(path: str) -> Dict[str, str]:
+        """Parses a custom_field path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/customFields/(?P<custom_field>.+?)$", path
         )
         return m.groupdict() if m else {}
 
@@ -778,7 +803,7 @@ class OrderServiceClient(metaclass=OrderServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> order_service.Order:
+    ) -> order_messages.Order:
         r"""API to retrieve an Order object.
 
         .. code-block:: python

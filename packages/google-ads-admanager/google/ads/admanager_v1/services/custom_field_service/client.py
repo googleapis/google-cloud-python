@@ -51,7 +51,11 @@ except AttributeError:  # pragma: NO COVER
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.custom_field_service import pagers
-from google.ads.admanager_v1.types import custom_field_enums, custom_field_service
+from google.ads.admanager_v1.types import (
+    custom_field_enums,
+    custom_field_messages,
+    custom_field_service,
+)
 
 from .transports.base import DEFAULT_CLIENT_INFO, CustomFieldServiceTransport
 from .transports.rest import CustomFieldServiceRestTransport
@@ -702,7 +706,7 @@ class CustomFieldServiceClient(metaclass=CustomFieldServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> custom_field_service.CustomField:
+    ) -> custom_field_messages.CustomField:
         r"""API to retrieve a ``CustomField`` object.
 
         .. code-block:: python
@@ -749,7 +753,9 @@ class CustomFieldServiceClient(metaclass=CustomFieldServiceClientMeta):
 
         Returns:
             google.ads.admanager_v1.types.CustomField:
-                The CustomField resource.
+                An additional, user-created field on
+                an entity.
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have

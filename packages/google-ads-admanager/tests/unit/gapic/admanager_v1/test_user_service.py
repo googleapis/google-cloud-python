@@ -44,12 +44,8 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.ads.admanager_v1.services.user_service import (
-    UserServiceClient,
-    pagers,
-    transports,
-)
-from google.ads.admanager_v1.types import user_service
+from google.ads.admanager_v1.services.user_service import UserServiceClient, transports
+from google.ads.admanager_v1.types import user_messages, user_service
 
 
 def client_cert_source_callback():
@@ -951,7 +947,7 @@ def test_get_user_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = user_service.User(
+        return_value = user_messages.User(
             name="name_value",
             user_id=747,
             display_name="display_name_value",
@@ -967,7 +963,7 @@ def test_get_user_rest(request_type):
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = user_service.User.pb(return_value)
+        return_value = user_messages.User.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -975,7 +971,7 @@ def test_get_user_rest(request_type):
         response = client.get_user(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, user_service.User)
+    assert isinstance(response, user_messages.User)
     assert response.name == "name_value"
     assert response.user_id == 747
     assert response.display_name == "display_name_value"
@@ -1061,7 +1057,7 @@ def test_get_user_rest_required_fields(request_type=user_service.GetUserRequest)
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = user_service.User()
+    return_value = user_messages.User()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -1082,7 +1078,7 @@ def test_get_user_rest_required_fields(request_type=user_service.GetUserRequest)
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = user_service.User.pb(return_value)
+            return_value = user_messages.User.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -1135,7 +1131,7 @@ def test_get_user_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = user_service.User.to_json(user_service.User())
+        req.return_value._content = user_messages.User.to_json(user_messages.User())
 
         request = user_service.GetUserRequest()
         metadata = [
@@ -1143,7 +1139,7 @@ def test_get_user_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = user_service.User()
+        post.return_value = user_messages.User()
 
         client.get_user(
             request,
@@ -1190,7 +1186,7 @@ def test_get_user_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = user_service.User()
+        return_value = user_messages.User()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"name": "networks/sample1/users/sample2"}
@@ -1205,7 +1201,7 @@ def test_get_user_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = user_service.User.pb(return_value)
+        return_value = user_messages.User.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1240,381 +1236,6 @@ def test_get_user_rest_error():
     client = UserServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        user_service.ListUsersRequest,
-        dict,
-    ],
-)
-def test_list_users_rest(request_type):
-    client = UserServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "networks/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = user_service.ListUsersResponse(
-            next_page_token="next_page_token_value",
-            total_size=1086,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = user_service.ListUsersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_users(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListUsersPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.total_size == 1086
-
-
-def test_list_users_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.list_users in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.list_users] = mock_rpc
-
-        request = {}
-        client.list_users(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_users(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_list_users_rest_required_fields(request_type=user_service.ListUsersRequest):
-    transport_class = transports.UserServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_users._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_users._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "filter",
-            "order_by",
-            "page_size",
-            "page_token",
-            "skip",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = UserServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = user_service.ListUsersResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = user_service.ListUsersResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list_users(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_users_rest_unset_required_fields():
-    transport = transports.UserServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_users._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-                "skip",
-            )
-        )
-        & set(("parent",))
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_users_rest_interceptors(null_interceptor):
-    transport = transports.UserServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.UserServiceRestInterceptor(),
-    )
-    client = UserServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.UserServiceRestInterceptor, "post_list_users"
-    ) as post, mock.patch.object(
-        transports.UserServiceRestInterceptor, "pre_list_users"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = user_service.ListUsersRequest.pb(user_service.ListUsersRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = user_service.ListUsersResponse.to_json(
-            user_service.ListUsersResponse()
-        )
-
-        request = user_service.ListUsersRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = user_service.ListUsersResponse()
-
-        client.list_users(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_users_rest_bad_request(
-    transport: str = "rest", request_type=user_service.ListUsersRequest
-):
-    client = UserServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "networks/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_users(request)
-
-
-def test_list_users_rest_flattened():
-    client = UserServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = user_service.ListUsersResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "networks/sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = user_service.ListUsersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list_users(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=networks/*}/users" % client.transport._host, args[1]
-        )
-
-
-def test_list_users_rest_flattened_error(transport: str = "rest"):
-    client = UserServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_users(
-            user_service.ListUsersRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_users_rest_pager(transport: str = "rest"):
-    client = UserServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            user_service.ListUsersResponse(
-                users=[
-                    user_service.User(),
-                    user_service.User(),
-                    user_service.User(),
-                ],
-                next_page_token="abc",
-            ),
-            user_service.ListUsersResponse(
-                users=[],
-                next_page_token="def",
-            ),
-            user_service.ListUsersResponse(
-                users=[
-                    user_service.User(),
-                ],
-                next_page_token="ghi",
-            ),
-            user_service.ListUsersResponse(
-                users=[
-                    user_service.User(),
-                    user_service.User(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(user_service.ListUsersResponse.to_json(x) for x in response)
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {"parent": "networks/sample1"}
-
-        pager = client.list_users(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, user_service.User) for i in results)
-
-        pages = list(client.list_users(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
 
 
 def test_credentials_transport_error():
@@ -1728,7 +1349,6 @@ def test_user_service_base_transport():
     # raise NotImplementedError.
     methods = (
         "get_user",
-        "list_users",
         "get_operation",
     )
     for method in methods:
@@ -1864,34 +1484,11 @@ def test_user_service_client_transport_session_collision(transport_name):
     session1 = client1.transport.get_user._session
     session2 = client2.transport.get_user._session
     assert session1 != session2
-    session1 = client1.transport.list_users._session
-    session2 = client2.transport.list_users._session
-    assert session1 != session2
-
-
-def test_network_path():
-    network_code = "squid"
-    expected = "networks/{network_code}".format(
-        network_code=network_code,
-    )
-    actual = UserServiceClient.network_path(network_code)
-    assert expected == actual
-
-
-def test_parse_network_path():
-    expected = {
-        "network_code": "clam",
-    }
-    path = UserServiceClient.network_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = UserServiceClient.parse_network_path(path)
-    assert expected == actual
 
 
 def test_role_path():
-    network_code = "whelk"
-    role = "octopus"
+    network_code = "squid"
+    role = "clam"
     expected = "networks/{network_code}/roles/{role}".format(
         network_code=network_code,
         role=role,
@@ -1902,8 +1499,8 @@ def test_role_path():
 
 def test_parse_role_path():
     expected = {
-        "network_code": "oyster",
-        "role": "nudibranch",
+        "network_code": "whelk",
+        "role": "octopus",
     }
     path = UserServiceClient.role_path(**expected)
 
@@ -1913,8 +1510,8 @@ def test_parse_role_path():
 
 
 def test_user_path():
-    network_code = "cuttlefish"
-    user = "mussel"
+    network_code = "oyster"
+    user = "nudibranch"
     expected = "networks/{network_code}/users/{user}".format(
         network_code=network_code,
         user=user,
@@ -1925,8 +1522,8 @@ def test_user_path():
 
 def test_parse_user_path():
     expected = {
-        "network_code": "winkle",
-        "user": "nautilus",
+        "network_code": "cuttlefish",
+        "user": "mussel",
     }
     path = UserServiceClient.user_path(**expected)
 
@@ -1936,7 +1533,7 @@ def test_parse_user_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1946,7 +1543,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "nautilus",
     }
     path = UserServiceClient.common_billing_account_path(**expected)
 
@@ -1956,7 +1553,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -1966,7 +1563,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "abalone",
     }
     path = UserServiceClient.common_folder_path(**expected)
 
@@ -1976,7 +1573,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -1986,7 +1583,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "clam",
     }
     path = UserServiceClient.common_organization_path(**expected)
 
@@ -1996,7 +1593,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -2006,7 +1603,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "octopus",
     }
     path = UserServiceClient.common_project_path(**expected)
 
@@ -2016,8 +1613,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -2028,8 +1625,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = UserServiceClient.common_location_path(**expected)
 
@@ -2071,7 +1668,7 @@ def test_get_operation_rest_bad_request(
 
     request = request_type()
     request = json_format.ParseDict(
-        {"name": "networks/sample1/operations/reports/exports/sample2"}, request
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2098,7 +1695,7 @@ def test_get_operation_rest(request_type):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request_init = {"name": "networks/sample1/operations/reports/exports/sample2"}
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:

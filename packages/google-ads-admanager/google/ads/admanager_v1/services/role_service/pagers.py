@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.ads.admanager_v1.types import role_service
+from google.ads.admanager_v1.types import role_messages, role_service
 
 
 class ListRolesPager:
@@ -107,7 +107,7 @@ class ListRolesPager:
             )
             yield self._response
 
-    def __iter__(self) -> Iterator[role_service.Role]:
+    def __iter__(self) -> Iterator[role_messages.Role]:
         for page in self.pages:
             yield from page.roles
 

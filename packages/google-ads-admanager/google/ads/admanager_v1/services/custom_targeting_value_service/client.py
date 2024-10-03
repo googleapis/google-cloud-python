@@ -53,6 +53,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.ads.admanager_v1.services.custom_targeting_value_service import pagers
 from google.ads.admanager_v1.types import (
     custom_targeting_value_enums,
+    custom_targeting_value_messages,
     custom_targeting_value_service,
 )
 
@@ -723,7 +724,7 @@ class CustomTargetingValueServiceClient(
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> custom_targeting_value_service.CustomTargetingValue:
+    ) -> custom_targeting_value_messages.CustomTargetingValue:
         r"""API to retrieve a ``CustomTargetingValue`` object.
 
         .. code-block:: python

@@ -49,7 +49,11 @@ from google.ads.admanager_v1.services.custom_field_service import (
     pagers,
     transports,
 )
-from google.ads.admanager_v1.types import custom_field_enums, custom_field_service
+from google.ads.admanager_v1.types import (
+    custom_field_enums,
+    custom_field_messages,
+    custom_field_service,
+)
 
 
 def client_cert_source_callback():
@@ -1004,7 +1008,7 @@ def test_get_custom_field_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = custom_field_service.CustomField(
+        return_value = custom_field_messages.CustomField(
             name="name_value",
             custom_field_id=1578,
             display_name="display_name_value",
@@ -1019,7 +1023,7 @@ def test_get_custom_field_rest(request_type):
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = custom_field_service.CustomField.pb(return_value)
+        return_value = custom_field_messages.CustomField.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -1027,7 +1031,7 @@ def test_get_custom_field_rest(request_type):
         response = client.get_custom_field(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, custom_field_service.CustomField)
+    assert isinstance(response, custom_field_messages.CustomField)
     assert response.name == "name_value"
     assert response.custom_field_id == 1578
     assert response.display_name == "display_name_value"
@@ -1128,7 +1132,7 @@ def test_get_custom_field_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = custom_field_service.CustomField()
+    return_value = custom_field_messages.CustomField()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -1149,7 +1153,7 @@ def test_get_custom_field_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = custom_field_service.CustomField.pb(return_value)
+            return_value = custom_field_messages.CustomField.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -1204,8 +1208,8 @@ def test_get_custom_field_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = custom_field_service.CustomField.to_json(
-            custom_field_service.CustomField()
+        req.return_value._content = custom_field_messages.CustomField.to_json(
+            custom_field_messages.CustomField()
         )
 
         request = custom_field_service.GetCustomFieldRequest()
@@ -1214,7 +1218,7 @@ def test_get_custom_field_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = custom_field_service.CustomField()
+        post.return_value = custom_field_messages.CustomField()
 
         client.get_custom_field(
             request,
@@ -1261,7 +1265,7 @@ def test_get_custom_field_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = custom_field_service.CustomField()
+        return_value = custom_field_messages.CustomField()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"name": "networks/sample1/customFields/sample2"}
@@ -1276,7 +1280,7 @@ def test_get_custom_field_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = custom_field_service.CustomField.pb(return_value)
+        return_value = custom_field_messages.CustomField.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1653,9 +1657,9 @@ def test_list_custom_fields_rest_pager(transport: str = "rest"):
         response = (
             custom_field_service.ListCustomFieldsResponse(
                 custom_fields=[
-                    custom_field_service.CustomField(),
-                    custom_field_service.CustomField(),
-                    custom_field_service.CustomField(),
+                    custom_field_messages.CustomField(),
+                    custom_field_messages.CustomField(),
+                    custom_field_messages.CustomField(),
                 ],
                 next_page_token="abc",
             ),
@@ -1665,14 +1669,14 @@ def test_list_custom_fields_rest_pager(transport: str = "rest"):
             ),
             custom_field_service.ListCustomFieldsResponse(
                 custom_fields=[
-                    custom_field_service.CustomField(),
+                    custom_field_messages.CustomField(),
                 ],
                 next_page_token="ghi",
             ),
             custom_field_service.ListCustomFieldsResponse(
                 custom_fields=[
-                    custom_field_service.CustomField(),
-                    custom_field_service.CustomField(),
+                    custom_field_messages.CustomField(),
+                    custom_field_messages.CustomField(),
                 ],
             ),
         )
@@ -1695,7 +1699,7 @@ def test_list_custom_fields_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, custom_field_service.CustomField) for i in results)
+        assert all(isinstance(i, custom_field_messages.CustomField) for i in results)
 
         pages = list(client.list_custom_fields(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -2133,7 +2137,7 @@ def test_get_operation_rest_bad_request(
 
     request = request_type()
     request = json_format.ParseDict(
-        {"name": "networks/sample1/operations/reports/exports/sample2"}, request
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2160,7 +2164,7 @@ def test_get_operation_rest(request_type):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request_init = {"name": "networks/sample1/operations/reports/exports/sample2"}
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:

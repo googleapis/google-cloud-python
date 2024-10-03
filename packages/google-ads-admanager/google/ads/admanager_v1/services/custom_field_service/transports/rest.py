@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.ads.admanager_v1.types import custom_field_service
+from google.ads.admanager_v1.types import custom_field_messages, custom_field_service
 
 from .base import CustomFieldServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -100,8 +100,8 @@ class CustomFieldServiceRestInterceptor:
         return request, metadata
 
     def post_get_custom_field(
-        self, response: custom_field_service.CustomField
-    ) -> custom_field_service.CustomField:
+        self, response: custom_field_messages.CustomField
+    ) -> custom_field_messages.CustomField:
         """Post-rpc interceptor for get_custom_field
 
         Override in a subclass to manipulate the response
@@ -274,7 +274,7 @@ class CustomFieldServiceRestTransport(CustomFieldServiceTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> custom_field_service.CustomField:
+        ) -> custom_field_messages.CustomField:
             r"""Call the get custom field method over HTTP.
 
             Args:
@@ -287,8 +287,10 @@ class CustomFieldServiceRestTransport(CustomFieldServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.custom_field_service.CustomField:
-                    The ``CustomField`` resource.
+                ~.custom_field_messages.CustomField:
+                    An additional, user-created field on
+                an entity.
+
             """
 
             http_options: List[Dict[str, str]] = [
@@ -333,8 +335,8 @@ class CustomFieldServiceRestTransport(CustomFieldServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = custom_field_service.CustomField()
-            pb_resp = custom_field_service.CustomField.pb(resp)
+            resp = custom_field_messages.CustomField()
+            pb_resp = custom_field_messages.CustomField.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_custom_field(resp)
@@ -433,7 +435,7 @@ class CustomFieldServiceRestTransport(CustomFieldServiceTransport):
     def get_custom_field(
         self,
     ) -> Callable[
-        [custom_field_service.GetCustomFieldRequest], custom_field_service.CustomField
+        [custom_field_service.GetCustomFieldRequest], custom_field_messages.CustomField
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -481,11 +483,11 @@ class CustomFieldServiceRestTransport(CustomFieldServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                 },
             ]
 

@@ -19,10 +19,11 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.ads.admanager_v1.types import role_messages
+
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
     manifest={
-        "Role",
         "GetRoleRequest",
         "ListRolesRequest",
         "ListRolesResponse",
@@ -30,23 +31,8 @@ __protobuf__ = proto.module(
 )
 
 
-class Role(proto.Message):
-    r"""The Role resource.
-
-    Attributes:
-        name (str):
-            Identifier. The resource name of the Role. Format:
-            ``networks/{network_code}/roles/{role_id}``
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
 class GetRoleRequest(proto.Message):
-    r"""Request object for GetRole method.
+    r"""Request object for ``GetRole`` method.
 
     Attributes:
         name (str):
@@ -61,18 +47,17 @@ class GetRoleRequest(proto.Message):
 
 
 class ListRolesRequest(proto.Message):
-    r"""Request object for ListRoles method.
+    r"""Request object for ``ListRoles`` method.
 
     Attributes:
         parent (str):
             Required. The parent, which owns this collection of Roles.
             Format: ``networks/{network_code}``
         page_size (int):
-            Optional. The maximum number of Roles to
-            return. The service may return fewer than this
-            value. If unspecified, at most 50 roles will be
-            returned. The maximum value is 1000; values
-            above 1000 will be coerced to 1000.
+            Optional. The maximum number of ``Roles`` to return. The
+            service may return fewer than this value. If unspecified, at
+            most 50 ``Roles`` will be returned. The maximum value is
+            1000; values above 1000 will be coerced to 1000.
         page_token (str):
             Optional. A page token, received from a previous
             ``ListRoles`` call. Provide this to retrieve the subsequent
@@ -121,20 +106,20 @@ class ListRolesRequest(proto.Message):
 
 
 class ListRolesResponse(proto.Message):
-    r"""Response object for ListRolesRequest containing matching Role
-    resources.
+    r"""Response object for ``ListRolesRequest`` containing matching
+    ``Role`` objects.
 
     Attributes:
         roles (MutableSequence[google.ads.admanager_v1.types.Role]):
-            The Role from the specified network.
+            The ``Role`` objects from the specified network.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
         total_size (int):
-            Total number of Roles. If a filter was included in the
-            request, this reflects the total number after the filtering
-            is applied.
+            Total number of ``Role`` objects. If a filter was included
+            in the request, this reflects the total number after the
+            filtering is applied.
 
             ``total_size`` will not be calculated in the response unless
             it has been included in a response field mask. The response
@@ -150,10 +135,10 @@ class ListRolesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    roles: MutableSequence["Role"] = proto.RepeatedField(
+    roles: MutableSequence[role_messages.Role] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message="Role",
+        message=role_messages.Role,
     )
     next_page_token: str = proto.Field(
         proto.STRING,

@@ -22,36 +22,91 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
     manifest={
-        "AppliedAdsenseEnabledEnum",
+        "AdUnitStatusEnum",
+        "SmartSizeModeEnum",
+        "TargetWindowEnum",
     },
 )
 
 
-class AppliedAdsenseEnabledEnum(proto.Message):
+class AdUnitStatusEnum(proto.Message):
     r"""Wrapper message for
-    [AppliedAdsenseEnabled][google.ads.admanager.v1.AppliedAdsenseEnabledEnum.AppliedAdsenseEnabled]
+    [AdUnitStatus][google.ads.admanager.v1.AdUnitStatusEnum.AdUnitStatus]
 
     """
 
-    class AppliedAdsenseEnabled(proto.Enum):
-        r"""Specifies if serving ads from the AdSense content network is
-        enabled.
+    class AdUnitStatus(proto.Enum):
+        r"""The status of an AdUnit.
 
         Values:
-            APPLIED_ADSENSE_ENABLED_UNSPECIFIED (0):
-                No adsense enabled setting applied directly;
-                value will be inherited from parent or system
-                default.
-            TRUE (1):
-                Serving ads from AdSense content network is
-                enabled.
-            FALSE (2):
-                Serving ads from AdSense content network is
-                disabled.
+            AD_UNIT_STATUS_UNSPECIFIED (0):
+                Default value. This value is unused.
+            ACTIVE (1):
+                The ad unit is active, available for
+                targeting, and serving.
+            INACTIVE (2):
+                The ad unit will be visible in the UI, but
+                ignored by serving.
+            ARCHIVED (3):
+                The ad unit will be hidden in the UI and
+                ignored by serving.
         """
-        APPLIED_ADSENSE_ENABLED_UNSPECIFIED = 0
-        TRUE = 1
-        FALSE = 2
+        AD_UNIT_STATUS_UNSPECIFIED = 0
+        ACTIVE = 1
+        INACTIVE = 2
+        ARCHIVED = 3
+
+
+class SmartSizeModeEnum(proto.Message):
+    r"""Wrapper message for
+    [SmartSizeMode][google.ads.admanager.v1.SmartSizeModeEnum.SmartSizeMode].
+
+    """
+
+    class SmartSizeMode(proto.Enum):
+        r"""The smart size mode for this ad unit. This attribute is
+        optional and defaults to SmartSizeMode.NONE for fixed sizes.
+
+        Values:
+            SMART_SIZE_MODE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            NONE (1):
+                Fixed size mode (default).
+            SMART_BANNER (2):
+                The height is fixed for the request, the
+                width is a range.
+            DYNAMIC_SIZE (3):
+                Height and width are ranges.
+        """
+        SMART_SIZE_MODE_UNSPECIFIED = 0
+        NONE = 1
+        SMART_BANNER = 2
+        DYNAMIC_SIZE = 3
+
+
+class TargetWindowEnum(proto.Message):
+    r"""Wrapper message for
+    [TargetWindow][google.ads.admanager.v1.TargetWindowEnum.TargetWindow].
+
+    """
+
+    class TargetWindow(proto.Enum):
+        r"""Corresponds to an HTML link's target attribute.
+        See http://www.w3.org/TR/html401/present/frames.html#adef-target
+
+        Values:
+            TARGET_WINDOW_UNSPECIFIED (0):
+                Default value. This value is unused.
+            TOP (1):
+                Specifies that the link should open in the
+                full body of the page.
+            BLANK (2):
+                Specifies that the link should open in a new
+                window.
+        """
+        TARGET_WINDOW_UNSPECIFIED = 0
+        TOP = 1
+        BLANK = 2
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

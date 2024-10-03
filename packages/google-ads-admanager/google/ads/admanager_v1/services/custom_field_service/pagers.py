@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.ads.admanager_v1.types import custom_field_service
+from google.ads.admanager_v1.types import custom_field_messages, custom_field_service
 
 
 class ListCustomFieldsPager:
@@ -107,7 +107,7 @@ class ListCustomFieldsPager:
             )
             yield self._response
 
-    def __iter__(self) -> Iterator[custom_field_service.CustomField]:
+    def __iter__(self) -> Iterator[custom_field_messages.CustomField]:
         for page in self.pages:
             yield from page.custom_fields
 

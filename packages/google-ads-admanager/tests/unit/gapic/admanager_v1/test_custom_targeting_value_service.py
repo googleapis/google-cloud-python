@@ -51,6 +51,7 @@ from google.ads.admanager_v1.services.custom_targeting_value_service import (
 )
 from google.ads.admanager_v1.types import (
     custom_targeting_value_enums,
+    custom_targeting_value_messages,
     custom_targeting_value_service,
 )
 
@@ -1041,7 +1042,7 @@ def test_get_custom_targeting_value_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = custom_targeting_value_service.CustomTargetingValue(
+        return_value = custom_targeting_value_messages.CustomTargetingValue(
             name="name_value",
             ad_tag_name="ad_tag_name_value",
             display_name="display_name_value",
@@ -1053,7 +1054,7 @@ def test_get_custom_targeting_value_rest(request_type):
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = custom_targeting_value_service.CustomTargetingValue.pb(
+        return_value = custom_targeting_value_messages.CustomTargetingValue.pb(
             return_value
         )
         json_return_value = json_format.MessageToJson(return_value)
@@ -1063,7 +1064,7 @@ def test_get_custom_targeting_value_rest(request_type):
         response = client.get_custom_targeting_value(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, custom_targeting_value_service.CustomTargetingValue)
+    assert isinstance(response, custom_targeting_value_messages.CustomTargetingValue)
     assert response.name == "name_value"
     assert response.ad_tag_name == "ad_tag_name_value"
     assert response.display_name == "display_name_value"
@@ -1158,7 +1159,7 @@ def test_get_custom_targeting_value_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = custom_targeting_value_service.CustomTargetingValue()
+    return_value = custom_targeting_value_messages.CustomTargetingValue()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -1179,7 +1180,7 @@ def test_get_custom_targeting_value_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = custom_targeting_value_service.CustomTargetingValue.pb(
+            return_value = custom_targeting_value_messages.CustomTargetingValue.pb(
                 return_value
             )
             json_return_value = json_format.MessageToJson(return_value)
@@ -1239,8 +1240,8 @@ def test_get_custom_targeting_value_rest_interceptors(null_interceptor):
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
         req.return_value._content = (
-            custom_targeting_value_service.CustomTargetingValue.to_json(
-                custom_targeting_value_service.CustomTargetingValue()
+            custom_targeting_value_messages.CustomTargetingValue.to_json(
+                custom_targeting_value_messages.CustomTargetingValue()
             )
         )
 
@@ -1250,7 +1251,7 @@ def test_get_custom_targeting_value_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = custom_targeting_value_service.CustomTargetingValue()
+        post.return_value = custom_targeting_value_messages.CustomTargetingValue()
 
         client.get_custom_targeting_value(
             request,
@@ -1300,7 +1301,7 @@ def test_get_custom_targeting_value_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = custom_targeting_value_service.CustomTargetingValue()
+        return_value = custom_targeting_value_messages.CustomTargetingValue()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -1317,7 +1318,7 @@ def test_get_custom_targeting_value_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = custom_targeting_value_service.CustomTargetingValue.pb(
+        return_value = custom_targeting_value_messages.CustomTargetingValue.pb(
             return_value
         )
         json_return_value = json_format.MessageToJson(return_value)
@@ -1718,9 +1719,9 @@ def test_list_custom_targeting_values_rest_pager(transport: str = "rest"):
         response = (
             custom_targeting_value_service.ListCustomTargetingValuesResponse(
                 custom_targeting_values=[
-                    custom_targeting_value_service.CustomTargetingValue(),
-                    custom_targeting_value_service.CustomTargetingValue(),
-                    custom_targeting_value_service.CustomTargetingValue(),
+                    custom_targeting_value_messages.CustomTargetingValue(),
+                    custom_targeting_value_messages.CustomTargetingValue(),
+                    custom_targeting_value_messages.CustomTargetingValue(),
                 ],
                 next_page_token="abc",
             ),
@@ -1730,14 +1731,14 @@ def test_list_custom_targeting_values_rest_pager(transport: str = "rest"):
             ),
             custom_targeting_value_service.ListCustomTargetingValuesResponse(
                 custom_targeting_values=[
-                    custom_targeting_value_service.CustomTargetingValue(),
+                    custom_targeting_value_messages.CustomTargetingValue(),
                 ],
                 next_page_token="ghi",
             ),
             custom_targeting_value_service.ListCustomTargetingValuesResponse(
                 custom_targeting_values=[
-                    custom_targeting_value_service.CustomTargetingValue(),
-                    custom_targeting_value_service.CustomTargetingValue(),
+                    custom_targeting_value_messages.CustomTargetingValue(),
+                    custom_targeting_value_messages.CustomTargetingValue(),
                 ],
             ),
         )
@@ -1762,7 +1763,7 @@ def test_list_custom_targeting_values_rest_pager(transport: str = "rest"):
         results = list(pager)
         assert len(results) == 6
         assert all(
-            isinstance(i, custom_targeting_value_service.CustomTargetingValue)
+            isinstance(i, custom_targeting_value_messages.CustomTargetingValue)
             for i in results
         )
 
@@ -2218,7 +2219,7 @@ def test_get_operation_rest_bad_request(
 
     request = request_type()
     request = json_format.ParseDict(
-        {"name": "networks/sample1/operations/reports/exports/sample2"}, request
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2245,7 +2246,7 @@ def test_get_operation_rest(request_type):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request_init = {"name": "networks/sample1/operations/reports/exports/sample2"}
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:

@@ -26,7 +26,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.ads.admanager_v1 import gapic_version as package_version
-from google.ads.admanager_v1.types import ad_unit_service
+from google.ads.admanager_v1.types import ad_unit_messages, ad_unit_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -139,6 +139,11 @@ class AdUnitServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_ad_unit_sizes: gapic_v1.method.wrap_method(
+                self.list_ad_unit_sizes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -155,7 +160,7 @@ class AdUnitServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [ad_unit_service.GetAdUnitRequest],
-        Union[ad_unit_service.AdUnit, Awaitable[ad_unit_service.AdUnit]],
+        Union[ad_unit_messages.AdUnit, Awaitable[ad_unit_messages.AdUnit]],
     ]:
         raise NotImplementedError()
 
@@ -167,6 +172,18 @@ class AdUnitServiceTransport(abc.ABC):
         Union[
             ad_unit_service.ListAdUnitsResponse,
             Awaitable[ad_unit_service.ListAdUnitsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_ad_unit_sizes(
+        self,
+    ) -> Callable[
+        [ad_unit_service.ListAdUnitSizesRequest],
+        Union[
+            ad_unit_service.ListAdUnitSizesResponse,
+            Awaitable[ad_unit_service.ListAdUnitSizesResponse],
         ],
     ]:
         raise NotImplementedError()

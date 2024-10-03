@@ -13,69 +13,46 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .ad_partner_declaration import AdPartnerDeclaration, DeclarationTypeEnum
-from .ad_partner_service import (
-    AdPartner,
-    GetAdPartnerRequest,
-    ListAdPartnersRequest,
-    ListAdPartnersResponse,
-)
-from .ad_unit_enums import AppliedAdsenseEnabledEnum
+from .ad_unit_enums import AdUnitStatusEnum, SmartSizeModeEnum, TargetWindowEnum
+from .ad_unit_messages import AdUnit, AdUnitParent, AdUnitSize, LabelFrequencyCap
 from .ad_unit_service import (
-    AdUnit,
-    AdUnitParent,
     GetAdUnitRequest,
-    LabelFrequencyCap,
+    ListAdUnitSizesRequest,
+    ListAdUnitSizesResponse,
     ListAdUnitsRequest,
     ListAdUnitsResponse,
-    SmartSizeModeEnum,
-    TargetWindowEnum,
 )
-from .ad_unit_size import AdUnitSize
 from .admanager_error import AdManagerError
 from .applied_label import AppliedLabel
 from .company_credit_status_enum import CompanyCreditStatusEnum
+from .company_messages import Company
 from .company_service import (
-    Company,
     GetCompanyRequest,
     ListCompaniesRequest,
     ListCompaniesResponse,
 )
 from .company_type_enum import CompanyTypeEnum
-from .computed_status_enum import ComputedStatusEnum
-from .contact_service import (
-    Contact,
-    GetContactRequest,
-    ListContactsRequest,
-    ListContactsResponse,
-)
-from .creative_placeholder import CreativePlaceholder
-from .creative_service import (
-    Creative,
-    GetCreativeRequest,
-    ListCreativesRequest,
-    ListCreativesResponse,
-)
+from .contact_messages import Contact
 from .custom_field_enums import (
     CustomFieldDataTypeEnum,
     CustomFieldEntityTypeEnum,
     CustomFieldStatusEnum,
     CustomFieldVisibilityEnum,
 )
+from .custom_field_messages import CustomField, CustomFieldOption
 from .custom_field_service import (
-    CustomField,
-    CustomFieldOption,
     GetCustomFieldRequest,
     ListCustomFieldsRequest,
     ListCustomFieldsResponse,
 )
+from .custom_field_value import CustomFieldValue
 from .custom_targeting_key_enums import (
     CustomTargetingKeyReportableTypeEnum,
     CustomTargetingKeyStatusEnum,
     CustomTargetingKeyTypeEnum,
 )
+from .custom_targeting_key_messages import CustomTargetingKey
 from .custom_targeting_key_service import (
-    CustomTargetingKey,
     GetCustomTargetingKeyRequest,
     ListCustomTargetingKeysRequest,
     ListCustomTargetingKeysResponse,
@@ -84,67 +61,89 @@ from .custom_targeting_value_enums import (
     CustomTargetingValueMatchTypeEnum,
     CustomTargetingValueStatusEnum,
 )
+from .custom_targeting_value_messages import CustomTargetingValue
 from .custom_targeting_value_service import (
-    CustomTargetingValue,
     GetCustomTargetingValueRequest,
     ListCustomTargetingValuesRequest,
     ListCustomTargetingValuesResponse,
 )
+from .entity_signals_mapping_messages import EntitySignalsMapping
+from .entity_signals_mapping_service import (
+    BatchCreateEntitySignalsMappingsRequest,
+    BatchCreateEntitySignalsMappingsResponse,
+    BatchUpdateEntitySignalsMappingsRequest,
+    BatchUpdateEntitySignalsMappingsResponse,
+    CreateEntitySignalsMappingRequest,
+    GetEntitySignalsMappingRequest,
+    ListEntitySignalsMappingsRequest,
+    ListEntitySignalsMappingsResponse,
+    UpdateEntitySignalsMappingRequest,
+)
 from .environment_type_enum import EnvironmentTypeEnum
-from .frequency_cap import FrequencyCap, TimeUnitEnum
-from .goal import Goal, GoalTypeEnum, UnitTypeEnum
-from .label_service import GetLabelRequest, Label, ListLabelsRequest, ListLabelsResponse
-from .line_item_enums import (
-    CreativeRotationTypeEnum,
-    DeliveryRateTypeEnum,
-    LineItemCostTypeEnum,
-    LineItemDiscountTypeEnum,
-    LineItemTypeEnum,
-    ReservationStatusEnum,
+from .frequency_cap import FrequencyCap
+from .label_messages import Label
+from .network_messages import Network
+from .network_service import (
+    GetNetworkRequest,
+    ListNetworksRequest,
+    ListNetworksResponse,
 )
-from .line_item_service import (
-    GetLineItemRequest,
-    LineItem,
-    ListLineItemsRequest,
-    ListLineItemsResponse,
-)
-from .network_service import GetNetworkRequest, Network
-from .order_service import GetOrderRequest, ListOrdersRequest, ListOrdersResponse, Order
+from .order_enums import OrderStatusEnum
+from .order_messages import Order
+from .order_service import GetOrderRequest, ListOrdersRequest, ListOrdersResponse
 from .placement_enums import PlacementStatusEnum
+from .placement_messages import Placement
 from .placement_service import (
     GetPlacementRequest,
     ListPlacementsRequest,
     ListPlacementsResponse,
-    Placement,
 )
 from .report_service import (
-    ExportSavedReportMetadata,
-    ExportSavedReportRequest,
-    ExportSavedReportResponse,
+    CreateReportRequest,
+    FetchReportResultRowsRequest,
+    FetchReportResultRowsResponse,
+    GetReportRequest,
+    ListReportsRequest,
+    ListReportsResponse,
     Report,
+    ReportDefinition,
+    RunReportMetadata,
+    RunReportRequest,
+    RunReportResponse,
+    Schedule,
+    ScheduleOptions,
+    UpdateReportRequest,
 )
-from .role_service import GetRoleRequest, ListRolesRequest, ListRolesResponse, Role
-from .size import Size, SizeTypeEnum
-from .team_service import GetTeamRequest, ListTeamsRequest, ListTeamsResponse, Team
-from .user_service import GetUserRequest, ListUsersRequest, ListUsersResponse, User
+from .role_enums import RoleStatusEnum
+from .role_messages import Role
+from .role_service import GetRoleRequest, ListRolesRequest, ListRolesResponse
+from .size import Size
+from .size_type_enum import SizeTypeEnum
+from .taxonomy_category_messages import TaxonomyCategory
+from .taxonomy_category_service import (
+    GetTaxonomyCategoryRequest,
+    ListTaxonomyCategoriesRequest,
+    ListTaxonomyCategoriesResponse,
+)
+from .taxonomy_type_enum import TaxonomyTypeEnum
+from .team_messages import Team
+from .time_unit_enum import TimeUnitEnum
+from .user_messages import User
+from .user_service import GetUserRequest
 
 __all__ = (
-    "AdPartnerDeclaration",
-    "DeclarationTypeEnum",
-    "AdPartner",
-    "GetAdPartnerRequest",
-    "ListAdPartnersRequest",
-    "ListAdPartnersResponse",
-    "AppliedAdsenseEnabledEnum",
-    "AdUnit",
-    "AdUnitParent",
-    "GetAdUnitRequest",
-    "LabelFrequencyCap",
-    "ListAdUnitsRequest",
-    "ListAdUnitsResponse",
+    "AdUnitStatusEnum",
     "SmartSizeModeEnum",
     "TargetWindowEnum",
+    "AdUnit",
+    "AdUnitParent",
     "AdUnitSize",
+    "LabelFrequencyCap",
+    "GetAdUnitRequest",
+    "ListAdUnitSizesRequest",
+    "ListAdUnitSizesResponse",
+    "ListAdUnitsRequest",
+    "ListAdUnitsResponse",
     "AdManagerError",
     "AppliedLabel",
     "CompanyCreditStatusEnum",
@@ -153,16 +152,7 @@ __all__ = (
     "ListCompaniesRequest",
     "ListCompaniesResponse",
     "CompanyTypeEnum",
-    "ComputedStatusEnum",
     "Contact",
-    "GetContactRequest",
-    "ListContactsRequest",
-    "ListContactsResponse",
-    "CreativePlaceholder",
-    "Creative",
-    "GetCreativeRequest",
-    "ListCreativesRequest",
-    "ListCreativesResponse",
     "CustomFieldDataTypeEnum",
     "CustomFieldEntityTypeEnum",
     "CustomFieldStatusEnum",
@@ -172,6 +162,7 @@ __all__ = (
     "GetCustomFieldRequest",
     "ListCustomFieldsRequest",
     "ListCustomFieldsResponse",
+    "CustomFieldValue",
     "CustomTargetingKeyReportableTypeEnum",
     "CustomTargetingKeyStatusEnum",
     "CustomTargetingKeyTypeEnum",
@@ -185,53 +176,61 @@ __all__ = (
     "GetCustomTargetingValueRequest",
     "ListCustomTargetingValuesRequest",
     "ListCustomTargetingValuesResponse",
+    "EntitySignalsMapping",
+    "BatchCreateEntitySignalsMappingsRequest",
+    "BatchCreateEntitySignalsMappingsResponse",
+    "BatchUpdateEntitySignalsMappingsRequest",
+    "BatchUpdateEntitySignalsMappingsResponse",
+    "CreateEntitySignalsMappingRequest",
+    "GetEntitySignalsMappingRequest",
+    "ListEntitySignalsMappingsRequest",
+    "ListEntitySignalsMappingsResponse",
+    "UpdateEntitySignalsMappingRequest",
     "EnvironmentTypeEnum",
     "FrequencyCap",
-    "TimeUnitEnum",
-    "Goal",
-    "GoalTypeEnum",
-    "UnitTypeEnum",
-    "GetLabelRequest",
     "Label",
-    "ListLabelsRequest",
-    "ListLabelsResponse",
-    "CreativeRotationTypeEnum",
-    "DeliveryRateTypeEnum",
-    "LineItemCostTypeEnum",
-    "LineItemDiscountTypeEnum",
-    "LineItemTypeEnum",
-    "ReservationStatusEnum",
-    "GetLineItemRequest",
-    "LineItem",
-    "ListLineItemsRequest",
-    "ListLineItemsResponse",
-    "GetNetworkRequest",
     "Network",
+    "GetNetworkRequest",
+    "ListNetworksRequest",
+    "ListNetworksResponse",
+    "OrderStatusEnum",
+    "Order",
     "GetOrderRequest",
     "ListOrdersRequest",
     "ListOrdersResponse",
-    "Order",
     "PlacementStatusEnum",
+    "Placement",
     "GetPlacementRequest",
     "ListPlacementsRequest",
     "ListPlacementsResponse",
-    "Placement",
-    "ExportSavedReportMetadata",
-    "ExportSavedReportRequest",
-    "ExportSavedReportResponse",
+    "CreateReportRequest",
+    "FetchReportResultRowsRequest",
+    "FetchReportResultRowsResponse",
+    "GetReportRequest",
+    "ListReportsRequest",
+    "ListReportsResponse",
     "Report",
+    "ReportDefinition",
+    "RunReportMetadata",
+    "RunReportRequest",
+    "RunReportResponse",
+    "Schedule",
+    "ScheduleOptions",
+    "UpdateReportRequest",
+    "RoleStatusEnum",
+    "Role",
     "GetRoleRequest",
     "ListRolesRequest",
     "ListRolesResponse",
-    "Role",
     "Size",
     "SizeTypeEnum",
-    "GetTeamRequest",
-    "ListTeamsRequest",
-    "ListTeamsResponse",
+    "TaxonomyCategory",
+    "GetTaxonomyCategoryRequest",
+    "ListTaxonomyCategoriesRequest",
+    "ListTaxonomyCategoriesResponse",
+    "TaxonomyTypeEnum",
     "Team",
-    "GetUserRequest",
-    "ListUsersRequest",
-    "ListUsersResponse",
+    "TimeUnitEnum",
     "User",
+    "GetUserRequest",
 )

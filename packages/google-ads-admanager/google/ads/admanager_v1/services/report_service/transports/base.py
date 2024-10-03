@@ -129,8 +129,33 @@ class ReportServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.export_saved_report: gapic_v1.method.wrap_method(
-                self.export_saved_report,
+            self.get_report: gapic_v1.method.wrap_method(
+                self.get_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_reports: gapic_v1.method.wrap_method(
+                self.list_reports,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_report: gapic_v1.method.wrap_method(
+                self.create_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_report: gapic_v1.method.wrap_method(
+                self.update_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.run_report: gapic_v1.method.wrap_method(
+                self.run_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_report_result_rows: gapic_v1.method.wrap_method(
+                self.fetch_report_result_rows,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -151,11 +176,62 @@ class ReportServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def export_saved_report(
+    def get_report(
         self,
     ) -> Callable[
-        [report_service.ExportSavedReportRequest],
+        [report_service.GetReportRequest],
+        Union[report_service.Report, Awaitable[report_service.Report]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_reports(
+        self,
+    ) -> Callable[
+        [report_service.ListReportsRequest],
+        Union[
+            report_service.ListReportsResponse,
+            Awaitable[report_service.ListReportsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_report(
+        self,
+    ) -> Callable[
+        [report_service.CreateReportRequest],
+        Union[report_service.Report, Awaitable[report_service.Report]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_report(
+        self,
+    ) -> Callable[
+        [report_service.UpdateReportRequest],
+        Union[report_service.Report, Awaitable[report_service.Report]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def run_report(
+        self,
+    ) -> Callable[
+        [report_service.RunReportRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_report_result_rows(
+        self,
+    ) -> Callable[
+        [report_service.FetchReportResultRowsRequest],
+        Union[
+            report_service.FetchReportResultRowsResponse,
+            Awaitable[report_service.FetchReportResultRowsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
