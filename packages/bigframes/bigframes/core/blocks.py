@@ -1557,10 +1557,11 @@ class Block:
         Returns a tuple of the dataframe and the overall number of rows of the query.
         """
 
+        # head caches full underlying expression, so row_count will be free after
         head_result = self.session._executor.head(self.expr, max_results)
         count = self.session._executor.get_row_count(self.expr)
 
-        arrow = self.session._executor.execute(self.expr).to_arrow_table()
+        arrow = head_result.to_arrow_table()
         df = io_pandas.arrow_to_pandas(arrow, schema=self.expr.schema)
         self._copy_index_to_pandas(df)
         return df, count, head_result.query_job
