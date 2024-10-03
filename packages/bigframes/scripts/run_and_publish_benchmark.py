@@ -17,10 +17,11 @@ import datetime
 import json
 import os
 import pathlib
+import re
 import subprocess
 import sys
 import tempfile
-from typing import Dict, List, Union
+from typing import Dict, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -30,7 +31,7 @@ LOGGING_NAME_ENV_VAR = "BIGFRAMES_PERFORMANCE_LOG_NAME"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 
-def run_benchmark_subprocess(args, log_env_name_var, filename=None, region=None):
+def run_benchmark_subprocess(args, log_env_name_var, file_path=None, region=None):
     """
     Runs a benchmark subprocess with configured environment variables. Adjusts PYTHONPATH,
     sets region-specific BigQuery location, and logs environment variables.
@@ -48,10 +49,37 @@ def run_benchmark_subprocess(args, log_env_name_var, filename=None, region=None)
     if region:
         env["BIGQUERY_LOCATION"] = region
     env[LOGGING_NAME_ENV_VAR] = log_env_name_var
-    subprocess.run(args, env=env, check=True)
+    try:
+        if file_path:  # Notebooks
+            duration_pattern = re.compile(r"(\d+\.\d+)s call")
+            process = subprocess.Popen(args, env=env, stdout=subprocess.PIPE, text=True)
+            assert process.stdout is not None
+            for line in process.stdout:
+                print(line, end="")
+                match = duration_pattern.search(line)
+                if match:
+                    duration = match.group(1)
+                    with open(f"{file_path}.local_exec_time_seconds", "w") as f:
+                        f.write(f"{duration}\n")
+            process.wait()
+            if process.returncode != 0:
+                raise subprocess.CalledProcessError(process.returncode, args)
+        else:  # Benchmarks
+            file_path = log_env_name_var
+            subprocess.run(args, env=env, check=True)
+    except Exception:
+        directory = pathlib.Path(file_path).parent
+        for file in directory.glob(f"{pathlib.Path(file_path).name}.*"):
+            if file.suffix != ".backup":
+                print(f"Benchmark failed, deleting: {file}")
+                file.unlink()
+        error_file = directory / f"{pathlib.Path(file_path).name}.error"
+        error_file.touch()
 
 
-def collect_benchmark_result(benchmark_path: str, iterations: int) -> pd.DataFrame:
+def collect_benchmark_result(
+    benchmark_path: str, iterations: int
+) -> Tuple[pd.DataFrame, Union[str, None]]:
     """Generate a DataFrame report on HTTP queries, bytes processed, slot time and execution time from log files."""
     path = pathlib.Path(benchmark_path)
     try:
@@ -59,25 +87,18 @@ def collect_benchmark_result(benchmark_path: str, iterations: int) -> pd.DataFra
         bytes_files = sorted(path.rglob("*.bytesprocessed"))
         millis_files = sorted(path.rglob("*.slotmillis"))
         bq_seconds_files = sorted(path.rglob("*.bq_exec_time_seconds"))
-
         local_seconds_files = sorted(path.rglob("*.local_exec_time_seconds"))
-        has_local_seconds = len(local_seconds_files) > 0
+        error_files = sorted(path.rglob("*.error"))
 
-        if has_local_seconds:
-            if not (
-                len(bytes_files)
-                == len(millis_files)
-                == len(local_seconds_files)
-                == len(bq_seconds_files)
-            ):
-                raise ValueError(
-                    "Mismatch in the number of report files for bytes, millis, and seconds."
-                )
-        else:
-            if not (len(bytes_files) == len(millis_files) == len(bq_seconds_files)):
-                raise ValueError(
-                    "Mismatch in the number of report files for bytes, millis, and seconds."
-                )
+        if not (
+            len(bytes_files)
+            == len(millis_files)
+            == len(local_seconds_files)
+            == len(bq_seconds_files)
+        ):
+            raise ValueError(
+                "Mismatch in the number of report files for bytes, millis, and seconds."
+            )
 
         for idx in range(len(bytes_files)):
             bytes_file = bytes_files[idx]
@@ -92,12 +113,11 @@ def collect_benchmark_result(benchmark_path: str, iterations: int) -> pd.DataFra
                     "File name mismatch among bytes, millis, and seconds reports."
                 )
 
-            if has_local_seconds:
-                local_seconds_file = local_seconds_files[idx]
-                if filename != local_seconds_file.relative_to(path).with_suffix(""):
-                    raise ValueError(
-                        "File name mismatch among bytes, millis, and seconds reports."
-                    )
+            local_seconds_file = local_seconds_files[idx]
+            if filename != local_seconds_file.relative_to(path).with_suffix(""):
+                raise ValueError(
+                    "File name mismatch among bytes, millis, and seconds reports."
+                )
 
             with open(bytes_file, "r") as file:
                 lines = file.read().splitlines()
@@ -108,12 +128,9 @@ def collect_benchmark_result(benchmark_path: str, iterations: int) -> pd.DataFra
                 lines = file.read().splitlines()
                 total_slot_millis = sum(int(line) for line in lines) / iterations
 
-            if has_local_seconds:
-                with open(local_seconds_file, "r") as file:
-                    lines = file.read().splitlines()
-                    local_seconds = sum(float(line) for line in lines) / iterations
-            else:
-                local_seconds = None
+            with open(local_seconds_file, "r") as file:
+                lines = file.read().splitlines()
+                local_seconds = sum(float(line) for line in lines) / iterations
 
             with open(bq_seconds_file, "r") as file:
                 lines = file.read().splitlines()
@@ -132,6 +149,7 @@ def collect_benchmark_result(benchmark_path: str, iterations: int) -> pd.DataFra
             path.rglob("*.slotmillis"),
             path.rglob("*.local_exec_time_seconds"),
             path.rglob("*.bq_exec_time_seconds"),
+            path.rglob("*.error"),
         ):
             for log_file in files_to_remove:
                 log_file.unlink()
@@ -170,13 +188,19 @@ def collect_benchmark_result(benchmark_path: str, iterations: int) -> pd.DataFra
             f" bigquery execution time: {round(row['BigQuery_Execution_Time_Sec'], 1)} seconds"
         )
 
-    geometric_mean_queries = geometric_mean(benchmark_metrics["Query_Count"])
-    geometric_mean_bytes = geometric_mean(benchmark_metrics["Bytes_Processed"])
-    geometric_mean_slot_millis = geometric_mean(benchmark_metrics["Slot_Millis"])
-    geometric_mean_local_seconds = geometric_mean(
+    geometric_mean_queries = geometric_mean_excluding_zeros(
+        benchmark_metrics["Query_Count"]
+    )
+    geometric_mean_bytes = geometric_mean_excluding_zeros(
+        benchmark_metrics["Bytes_Processed"]
+    )
+    geometric_mean_slot_millis = geometric_mean_excluding_zeros(
+        benchmark_metrics["Slot_Millis"]
+    )
+    geometric_mean_local_seconds = geometric_mean_excluding_zeros(
         benchmark_metrics["Local_Execution_Time_Sec"]
     )
-    geometric_mean_bq_seconds = geometric_mean(
+    geometric_mean_bq_seconds = geometric_mean_excluding_zeros(
         benchmark_metrics["BigQuery_Execution_Time_Sec"]
     )
 
@@ -188,15 +212,33 @@ def collect_benchmark_result(benchmark_path: str, iterations: int) -> pd.DataFra
         f"Geometric mean of BigQuery execution time: {geometric_mean_bq_seconds} seconds---"
     )
 
-    return benchmark_metrics.reset_index().rename(columns={"index": "Benchmark_Name"})
+    error_message = (
+        "\n"
+        + "\n".join(
+            [
+                f"Failed: {error_file.relative_to(path).with_suffix('')}"
+                for error_file in error_files
+            ]
+        )
+        if error_files
+        else None
+    )
+    return (
+        benchmark_metrics.reset_index().rename(columns={"index": "Benchmark_Name"}),
+        error_message,
+    )
 
 
-def geometric_mean(data):
+def geometric_mean_excluding_zeros(data):
     """
-    Calculate the geometric mean of a dataset, rounding the result to one decimal place.
-    Returns NaN if the dataset is empty or contains only NaN values.
+    Calculate the geometric mean of a dataset, excluding any zero values.
+    Returns NaN if the dataset is empty, contains only NaN values, or if
+    all non-NaN values are zeros.
+
+    The result is rounded to one decimal place.
     """
     data = data.dropna()
+    data = data[data != 0]
     if len(data) == 0:
         return np.nan
     log_data = np.log(data)
@@ -321,13 +363,15 @@ def run_notebook_benchmark(benchmark_file: str, region: str):
         "py.test",
         "--nbmake",
         "--nbmake-timeout=900",  # 15 minutes
+        "--durations=0",
+        "--color=yes",
     ]
     benchmark_args = (*pytest_command, benchmark_file)
 
     run_benchmark_subprocess(
         args=benchmark_args,
         log_env_name_var=log_env_name_var,
-        filename=export_file,
+        file_path=export_file,
         region=region,
     )
 
@@ -383,7 +427,7 @@ def main():
     args = parse_arguments()
 
     if args.publish_benchmarks:
-        benchmark_metrics = collect_benchmark_result(
+        benchmark_metrics, error_message = collect_benchmark_result(
             args.publish_benchmarks, args.iterations
         )
         # Output results to CSV without specifying a location
@@ -412,6 +456,9 @@ def main():
         # intended for local testing where the default behavior is not to publish results.
         elif project := os.getenv("GCLOUD_BENCH_PUBLISH_PROJECT", ""):
             publish_to_bigquery(benchmark_metrics, args.notebook, project)
+
+        if error_message:
+            raise Exception(error_message)
     elif args.notebook:
         run_notebook_benchmark(args.benchmark_path, args.region)
     else:

@@ -23,7 +23,6 @@ import pathlib
 import re
 import shutil
 import time
-import traceback
 from typing import Dict, List
 import warnings
 
@@ -794,10 +793,6 @@ def notebook(session: nox.Session):
             *notebooks,
         )
 
-        # Shared flag using multiprocessing.Manager() to indicate if
-        # any process encounters an error. This flag may be updated
-        # across different processes.
-        error_flag = multiprocessing.Manager().Value("i", False)
         processes = []
         for notebook in notebooks:
             args = (
@@ -808,8 +803,8 @@ def notebook(session: nox.Session):
             )
             if multi_process_mode:
                 process = multiprocessing.Process(
-                    target=_run_process,
-                    args=(session, args, error_flag),
+                    target=session.run,
+                    args=args,
                 )
                 process.start()
                 processes.append(process)
@@ -819,10 +814,6 @@ def notebook(session: nox.Session):
             else:
                 session.run(*args)
 
-        for process in processes:
-            process.join()
-
-        processes = []
         for notebook, regions in notebooks_reg.items():
             for region in regions:
                 region_args = (
@@ -834,8 +825,8 @@ def notebook(session: nox.Session):
                 )
                 if multi_process_mode:
                     process = multiprocessing.Process(
-                        target=_run_process,
-                        args=(session, region_args, error_flag),
+                        target=session.run,
+                        args=region_args,
                     )
                     process.start()
                     processes.append(process)
@@ -847,11 +838,6 @@ def notebook(session: nox.Session):
 
         for process in processes:
             process.join()
-
-        # Check the shared error flag and raise an exception if any process
-        # reported an error
-        if error_flag.value:
-            raise Exception("Errors occurred in one or more subprocesses.")
     finally:
         # Prevent our notebook changes from getting checked in to git
         # accidentally.
@@ -866,15 +852,6 @@ def notebook(session: nox.Session):
             "--notebook",
             "--publish-benchmarks=notebooks/",
         )
-
-
-def _run_process(session: nox.Session, args, error_flag):
-    try:
-        session.run(*args)
-    except Exception:
-        traceback_str = traceback.format_exc()
-        print(traceback_str)
-        error_flag.value = True
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
