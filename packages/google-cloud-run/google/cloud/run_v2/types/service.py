@@ -358,9 +358,24 @@ class Service(proto.Message):
         scaling (google.cloud.run_v2.types.ServiceScaling):
             Optional. Specifies service-level scaling
             settings
+        invoker_iam_disabled (bool):
+            Optional. Disables IAM permission check for
+            run.routes.invoke for callers of this service.
+            This setting should not be used with external
+            ingress.
         default_uri_disabled (bool):
             Optional. Disables public resolution of the
             default URI of this service.
+        urls (MutableSequence[str]):
+            Output only. All URLs serving traffic for
+            this Service.
+        custom_audiences (MutableSequence[str]):
+            One or more custom audiences that you want
+            this service to support. Specify each custom
+            audience as the full URL in a string. The custom
+            audiences are encoded in the token and used to
+            authenticate requests. For more information, see
+            https://cloud.google.com/run/docs/configuring/custom-audiences.
         observed_generation (int):
             Output only. The generation of this Service currently
             serving traffic. See comments in ``reconciling`` for
@@ -396,13 +411,6 @@ class Service(proto.Message):
         uri (str):
             Output only. The main URI in which this
             Service is serving traffic.
-        custom_audiences (MutableSequence[str]):
-            One or more custom audiences that you want
-            this service to support. Specify each custom
-            audience as the full URL in a string. The custom
-            audiences are encoded in the token and used to
-            authenticate requests. For more information, see
-            https://cloud.google.com/run/docs/configuring/custom-audiences.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
         reconciling (bool):
@@ -531,9 +539,21 @@ class Service(proto.Message):
         number=20,
         message=vendor_settings.ServiceScaling,
     )
+    invoker_iam_disabled: bool = proto.Field(
+        proto.BOOL,
+        number=21,
+    )
     default_uri_disabled: bool = proto.Field(
         proto.BOOL,
         number=22,
+    )
+    urls: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=24,
+    )
+    custom_audiences: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=37,
     )
     observed_generation: int = proto.Field(
         proto.INT64,
@@ -567,10 +587,6 @@ class Service(proto.Message):
     uri: str = proto.Field(
         proto.STRING,
         number=36,
-    )
-    custom_audiences: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=37,
     )
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,

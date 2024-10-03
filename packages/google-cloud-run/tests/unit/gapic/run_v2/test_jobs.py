@@ -8029,9 +8029,29 @@ def test_parse_job_path():
     assert expected == actual
 
 
-def test_secret_path():
+def test_policy_path():
     project = "oyster"
-    secret = "nudibranch"
+    expected = "projects/{project}/policy".format(
+        project=project,
+    )
+    actual = JobsClient.policy_path(project)
+    assert expected == actual
+
+
+def test_parse_policy_path():
+    expected = {
+        "project": "nudibranch",
+    }
+    path = JobsClient.policy_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = JobsClient.parse_policy_path(path)
+    assert expected == actual
+
+
+def test_secret_path():
+    project = "cuttlefish"
+    secret = "mussel"
     expected = "projects/{project}/secrets/{secret}".format(
         project=project,
         secret=secret,
@@ -8042,8 +8062,8 @@ def test_secret_path():
 
 def test_parse_secret_path():
     expected = {
-        "project": "cuttlefish",
-        "secret": "mussel",
+        "project": "winkle",
+        "secret": "nautilus",
     }
     path = JobsClient.secret_path(**expected)
 
@@ -8053,9 +8073,9 @@ def test_parse_secret_path():
 
 
 def test_secret_version_path():
-    project = "winkle"
-    secret = "nautilus"
-    version = "scallop"
+    project = "scallop"
+    secret = "abalone"
+    version = "squid"
     expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
         project=project,
         secret=secret,
@@ -8067,9 +8087,9 @@ def test_secret_version_path():
 
 def test_parse_secret_version_path():
     expected = {
-        "project": "abalone",
-        "secret": "squid",
-        "version": "clam",
+        "project": "clam",
+        "secret": "whelk",
+        "version": "octopus",
     }
     path = JobsClient.secret_version_path(**expected)
 
@@ -8079,7 +8099,7 @@ def test_parse_secret_version_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -8089,7 +8109,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nudibranch",
     }
     path = JobsClient.common_billing_account_path(**expected)
 
@@ -8099,7 +8119,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -8109,7 +8129,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "mussel",
     }
     path = JobsClient.common_folder_path(**expected)
 
@@ -8119,7 +8139,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -8129,7 +8149,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "nautilus",
     }
     path = JobsClient.common_organization_path(**expected)
 
@@ -8139,7 +8159,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -8149,7 +8169,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "abalone",
     }
     path = JobsClient.common_project_path(**expected)
 
@@ -8159,8 +8179,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -8171,8 +8191,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = JobsClient.common_location_path(**expected)
 
