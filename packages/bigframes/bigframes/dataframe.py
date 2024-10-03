@@ -74,6 +74,7 @@ import bigframes.operations as ops
 import bigframes.operations.aggregations
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.plotting as plotting
+import bigframes.operations.semantics
 import bigframes.operations.structs
 import bigframes.series
 import bigframes.series as bf_series
@@ -3875,3 +3876,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise bigframes.exceptions.NullIndexError(
                 f"DataFrame cannot perform {opname} as it has no index. Set an index using set_index."
             )
+
+    @property
+    def semantics(self):
+        return bigframes.operations.semantics.Semantics(self)
