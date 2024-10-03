@@ -90,6 +90,10 @@ def test_setter_if_session_started_but_setting_the_same_value(attribute):
     [
         (None,),
         ("us-central1",),
+        ("us-Central1",),
+        ("US-CENTRAL1",),
+        ("US",),
+        ("us",),
     ],
 )
 def test_location_set_to_valid_no_warning(valid_location):

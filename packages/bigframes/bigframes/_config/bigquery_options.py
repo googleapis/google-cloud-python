@@ -36,26 +36,36 @@ SESSION_STARTED_MESSAGE = (
 UNKNOWN_LOCATION_MESSAGE = "The location '{location}' is set to an unknown value. Did you mean '{possibility}'?"
 
 
-def _validate_location(value: Optional[str]):
+def _get_validated_location(value: Optional[str]) -> Optional[str]:
 
-    if value is None:
-        return
+    if value is None or value in bigframes.constants.ALL_BIGQUERY_LOCATIONS:
+        return value
 
-    if value not in bigframes.constants.ALL_BIGQUERY_LOCATIONS:
-        location = str(value)
-        possibility = min(
-            bigframes.constants.ALL_BIGQUERY_LOCATIONS,
-            key=lambda item: jellyfish.levenshtein_distance(location, item),
-        )
-        warnings.warn(
-            UNKNOWN_LOCATION_MESSAGE.format(location=location, possibility=possibility),
-            # There are many layers before we get to (possibly) the user's code:
-            # -> bpd.options.bigquery.location = "us-central-1"
-            # -> location.setter
-            # -> _validate_location
-            stacklevel=3,
-            category=bigframes.exceptions.UnknownLocationWarning,
-        )
+    location = str(value)
+
+    location_lowercase = location.lower()
+    if location_lowercase in bigframes.constants.BIGQUERY_REGIONS:
+        return location_lowercase
+
+    location_uppercase = location.upper()
+    if location_uppercase in bigframes.constants.BIGQUERY_MULTIREGIONS:
+        return location_uppercase
+
+    possibility = min(
+        bigframes.constants.ALL_BIGQUERY_LOCATIONS,
+        key=lambda item: jellyfish.levenshtein_distance(location, item),
+    )
+    warnings.warn(
+        UNKNOWN_LOCATION_MESSAGE.format(location=location, possibility=possibility),
+        # There are many layers before we get to (possibly) the user's code:
+        # -> bpd.options.bigquery.location = "us-central-1"
+        # -> location.setter
+        # -> _get_validated_location
+        stacklevel=3,
+        category=bigframes.exceptions.UnknownLocationWarning,
+    )
+
+    return value
 
 
 def _validate_ordering_mode(value: str) -> bigframes.enums.OrderingMode:
@@ -135,8 +145,7 @@ class BigQueryOptions:
     def location(self, value: Optional[str]):
         if self._session_started and self._location != value:
             raise ValueError(SESSION_STARTED_MESSAGE.format(attribute="location"))
-        _validate_location(value)
-        self._location = value
+        self._location = _get_validated_location(value)
 
     @property
     def project(self) -> Optional[str]:

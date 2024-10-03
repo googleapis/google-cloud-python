@@ -22,7 +22,9 @@ import bigframes.constants
 import bigframes.session.clients
 
 
-def _assert_bq_execution_location(session: bigframes.Session):
+def _assert_bq_execution_location(
+    session: bigframes.Session, expected_location: typing.Optional[str] = None
+):
     df = session.read_gbq(
         """
         SELECT "aaa" as name, 111 as number
@@ -33,10 +35,10 @@ def _assert_bq_execution_location(session: bigframes.Session):
     """
     )
 
-    assert (
-        typing.cast(bigquery.QueryJob, df.query_job).location
-        == session.bqclient.location
-    )
+    if expected_location is None:
+        expected_location = session._location
+
+    assert typing.cast(bigquery.QueryJob, df.query_job).location == expected_location
 
     result = (
         df[["name", "number"]]
@@ -47,8 +49,7 @@ def _assert_bq_execution_location(session: bigframes.Session):
     )
 
     assert (
-        typing.cast(bigquery.QueryJob, result.query_job).location
-        == session.bqclient.location
+        typing.cast(bigquery.QueryJob, result.query_job).location == expected_location
     )
 
 
@@ -85,6 +86,30 @@ def test_bq_location(bigquery_location):
 
     # assert that bigframes session honors the location
     _assert_bq_execution_location(session)
+
+
+@pytest.mark.parametrize(
+    ("set_location", "resolved_location"),
+    # Sort the set to avoid nondeterminism.
+    [
+        (loc.capitalize(), loc)
+        for loc in sorted(bigframes.constants.ALL_BIGQUERY_LOCATIONS)
+    ],
+)
+def test_bq_location_non_canonical(set_location, resolved_location):
+    session = bigframes.Session(
+        context=bigframes.BigQueryOptions(location=set_location)
+    )
+
+    assert session.bqclient.location == set_location
+
+    # by default global endpoint is used
+    assert (
+        session.bqclient._connection.API_BASE_URL == "https://bigquery.googleapis.com"
+    )
+
+    # assert that bigframes session honors the location
+    _assert_bq_execution_location(session, resolved_location)
 
 
 @pytest.mark.parametrize(
