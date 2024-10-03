@@ -111,6 +111,10 @@ class BigQueryOptions:
         The application name to amend to the user agent sent to Google APIs.
         The recommended format is  ``"application-name/major.minor.patch_version"``
         or ``"(gpn:PartnerName;)"`` for official Google partners.
+
+        Returns:
+            None or str:
+                Application name as a string if exists; otherwise None.
         """
         return self._application_name
 
@@ -124,7 +128,12 @@ class BigQueryOptions:
 
     @property
     def credentials(self) -> Optional[google.auth.credentials.Credentials]:
-        """The OAuth2 credentials to use for this client."""
+        """The OAuth2 credentials to use for this client.
+
+        Returns:
+            None or google.auth.credentials.Credentials:
+                google.auth.credentials.Credentials if exists; otherwise None.
+        """
         return self._credentials
 
     @credentials.setter
@@ -138,6 +147,10 @@ class BigQueryOptions:
         """Default location for job, datasets, and tables.
 
         For more information, see https://cloud.google.com/bigquery/docs/locations BigQuery locations.
+
+        Returns:
+            None or str:
+                Default location as a string; otherwise None.
         """
         return self._location
 
@@ -149,7 +162,12 @@ class BigQueryOptions:
 
     @property
     def project(self) -> Optional[str]:
-        """Google Cloud project ID to use for billing and as the default project."""
+        """Google Cloud project ID to use for billing and as the default project.
+
+        Returns:
+            None or str:
+                Google Cloud project ID as a string; otherwise None.
+        """
         return self._project
 
     @project.setter
@@ -172,6 +190,10 @@ class BigQueryOptions:
 
         If this option isn't provided, or project or location aren't provided,
         session will use its default project/location/connection_id as default connection.
+
+        Returns:
+            None or str:
+                Name of the BigQuery connection as a string; otherwise None.
         """
         return self._bq_connection
 
@@ -190,6 +212,12 @@ class BigQueryOptions:
         connection (default or user-provided) does not exist, or it does not have
         necessary permissions set up to support BigQuery DataFrames operations,
         then a runtime error will be reported.
+
+        Returns:
+            bool:
+                A boolean value, where True indicates a BigQuery connection is
+                not created or the connection does not have necessary
+                permissions set up; otherwise False.
         """
         return self._skip_bq_connection_check
 
@@ -212,6 +240,11 @@ class BigQueryOptions:
         Requires that ``location`` is set. For example, to connect to
         asia-northeast1-bigquery.googleapis.com, specify
         ``location='asia-northeast1'`` and ``use_regional_endpoints=True``.
+
+        Returns:
+            bool:
+              A boolean value, where True indicates that a location is set;
+              otherwise False.
         """
         return self._use_regional_endpoints
 
@@ -244,6 +277,10 @@ class BigQueryOptions:
         Cloud KMS CryptoKey Encrypter/Decrypter IAM role in the key's project.
         For more information, see https://cloud.google.com/bigquery/docs/customer-managed-encryption#assign_role
         Assign the Encrypter/Decrypter.
+
+        Returns:
+            None or str:
+                Name of the customer managed encryption key as a string; otherwise None.
         """
         return self._kms_key_name
 
@@ -256,7 +293,12 @@ class BigQueryOptions:
 
     @property
     def ordering_mode(self) -> Literal["strict", "partial"]:
-        """Controls whether total row order is always maintained for DataFrame/Series."""
+        """Controls whether total row order is always maintained for DataFrame/Series.
+
+        Returns:
+            Literal:
+                A literal string value of either strict or partial ordering mode.
+        """
         return self._ordering_mode.value
 
     @ordering_mode.setter

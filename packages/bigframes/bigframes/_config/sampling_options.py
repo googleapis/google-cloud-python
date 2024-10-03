@@ -33,14 +33,44 @@ class SamplingOptions:
     random_state: Optional[int] = None
 
     def with_max_download_size(self, max_rows: Optional[int]) -> SamplingOptions:
+        """Configures the maximum download size for data sampling in MB
+
+        Args:
+            max_rows (None or int):
+                An int value for the maximum row size.
+
+        Returns:
+            bigframes._config.sampling_options.SamplingOptions:
+                The configuration for data sampling.
+        """
         return SamplingOptions(
             max_rows, self.enable_downsampling, self.sampling_method, self.random_state
         )
 
     def with_method(self, method: Literal["head", "uniform"]) -> SamplingOptions:
+        """Configures the downsampling algorithms to be chosen from
+
+        Args:
+            method (None or Literal):
+                A literal string value of either head or uniform data sampling method.
+
+        Returns:
+            bigframes._config.sampling_options.SamplingOptions:
+                The configuration for data sampling.
+        """
         return SamplingOptions(self.max_download_size, True, method, self.random_state)
 
     def with_random_state(self, state: Optional[int]) -> SamplingOptions:
+        """Configures the seed for the uniform downsampling algorithm
+
+        Args:
+            state (None or int):
+                An int value for the data sampling random state
+
+        Returns:
+            bigframes._config.sampling_options.SamplingOptions:
+                The configuration for data sampling.
+        """
         return SamplingOptions(
             self.max_download_size,
             self.enable_downsampling,
@@ -49,6 +79,12 @@ class SamplingOptions:
         )
 
     def with_disabled(self) -> SamplingOptions:
+        """Configures whether to disable downsampling
+
+        Returns:
+            bigframes._config.sampling_options.SamplingOptions:
+                The configuration for data sampling.
+        """
         return SamplingOptions(
             self.max_download_size, False, self.sampling_method, self.random_state
         )
