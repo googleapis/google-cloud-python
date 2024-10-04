@@ -1641,6 +1641,8 @@ def test_get_conversation_dataset(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             conversation_count=1955,
+            satisfies_pzi=True,
+            satisfies_pzs=True,
         )
         response = client.get_conversation_dataset(request)
 
@@ -1656,6 +1658,8 @@ def test_get_conversation_dataset(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.conversation_count == 1955
+    assert response.satisfies_pzi is True
+    assert response.satisfies_pzs is True
 
 
 def test_get_conversation_dataset_empty_call():
@@ -1769,6 +1773,8 @@ async def test_get_conversation_dataset_empty_call_async():
                 display_name="display_name_value",
                 description="description_value",
                 conversation_count=1955,
+                satisfies_pzi=True,
+                satisfies_pzs=True,
             )
         )
         response = await client.get_conversation_dataset()
@@ -1844,6 +1850,8 @@ async def test_get_conversation_dataset_async(
                 display_name="display_name_value",
                 description="description_value",
                 conversation_count=1955,
+                satisfies_pzi=True,
+                satisfies_pzs=True,
             )
         )
         response = await client.get_conversation_dataset(request)
@@ -1860,6 +1868,8 @@ async def test_get_conversation_dataset_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.conversation_count == 1955
+    assert response.satisfies_pzi is True
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.asyncio
@@ -3336,6 +3346,8 @@ def test_create_conversation_dataset_rest(request_type):
         "input_config": {"gcs_source": {"uris": ["uris_value1", "uris_value2"]}},
         "conversation_info": {"language_code": "language_code_value"},
         "conversation_count": 1955,
+        "satisfies_pzi": True,
+        "satisfies_pzs": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3740,6 +3752,8 @@ def test_get_conversation_dataset_rest(request_type):
             display_name="display_name_value",
             description="description_value",
             conversation_count=1955,
+            satisfies_pzi=True,
+            satisfies_pzs=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -3759,6 +3773,8 @@ def test_get_conversation_dataset_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.conversation_count == 1955
+    assert response.satisfies_pzi is True
+    assert response.satisfies_pzs is True
 
 
 def test_get_conversation_dataset_rest_use_cached_wrapped_rpc():

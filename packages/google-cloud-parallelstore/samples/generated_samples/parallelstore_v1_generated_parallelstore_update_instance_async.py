@@ -15,15 +15,15 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ProcessDocument
+# Snippet for UpdateInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-documentai
+#   python3 -m pip install google-cloud-parallelstore
 
 
-# [START documentai_v1beta2_generated_DocumentUnderstandingService_ProcessDocument_async]
+# [START parallelstore_v1_generated_Parallelstore_UpdateInstance_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -31,26 +31,29 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import documentai_v1beta2
+from google.cloud import parallelstore_v1
 
 
-async def sample_process_document():
+async def sample_update_instance():
     # Create a client
-    client = documentai_v1beta2.DocumentUnderstandingServiceAsyncClient()
+    client = parallelstore_v1.ParallelstoreAsyncClient()
 
     # Initialize request argument(s)
-    input_config = documentai_v1beta2.InputConfig()
-    input_config.gcs_source.uri = "uri_value"
-    input_config.mime_type = "mime_type_value"
+    instance = parallelstore_v1.Instance()
+    instance.capacity_gib = 1247
 
-    request = documentai_v1beta2.ProcessDocumentRequest(
-        input_config=input_config,
+    request = parallelstore_v1.UpdateInstanceRequest(
+        instance=instance,
     )
 
     # Make the request
-    response = await client.process_document(request=request)
+    operation = client.update_instance(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = (await operation).result()
 
     # Handle the response
     print(response)
 
-# [END documentai_v1beta2_generated_DocumentUnderstandingService_ProcessDocument_async]
+# [END parallelstore_v1_generated_Parallelstore_UpdateInstance_async]

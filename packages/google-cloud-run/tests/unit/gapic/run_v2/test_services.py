@@ -1468,12 +1468,14 @@ def test_get_service(request_type, transport: str = "grpc"):
             client_version="client_version_value",
             ingress=vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL,
             launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+            invoker_iam_disabled=True,
             default_uri_disabled=True,
+            urls=["urls_value"],
+            custom_audiences=["custom_audiences_value"],
             observed_generation=2021,
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
             uri="uri_value",
-            custom_audiences=["custom_audiences_value"],
             satisfies_pzs=True,
             reconciling=True,
             etag="etag_value",
@@ -1498,12 +1500,14 @@ def test_get_service(request_type, transport: str = "grpc"):
     assert response.client_version == "client_version_value"
     assert response.ingress == vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
+    assert response.invoker_iam_disabled is True
     assert response.default_uri_disabled is True
+    assert response.urls == ["urls_value"]
+    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
     assert response.uri == "uri_value"
-    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
@@ -1615,12 +1619,14 @@ async def test_get_service_empty_call_async():
                 client_version="client_version_value",
                 ingress=vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL,
                 launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+                invoker_iam_disabled=True,
                 default_uri_disabled=True,
+                urls=["urls_value"],
+                custom_audiences=["custom_audiences_value"],
                 observed_generation=2021,
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
                 uri="uri_value",
-                custom_audiences=["custom_audiences_value"],
                 satisfies_pzs=True,
                 reconciling=True,
                 etag="etag_value",
@@ -1702,12 +1708,14 @@ async def test_get_service_async(
                 client_version="client_version_value",
                 ingress=vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL,
                 launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+                invoker_iam_disabled=True,
                 default_uri_disabled=True,
+                urls=["urls_value"],
+                custom_audiences=["custom_audiences_value"],
                 observed_generation=2021,
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
                 uri="uri_value",
-                custom_audiences=["custom_audiences_value"],
                 satisfies_pzs=True,
                 reconciling=True,
                 etag="etag_value",
@@ -1733,12 +1741,14 @@ async def test_get_service_async(
     assert response.client_version == "client_version_value"
     assert response.ingress == vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
+    assert response.invoker_iam_disabled is True
     assert response.default_uri_disabled is True
+    assert response.urls == ["urls_value"]
+    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
     assert response.uri == "uri_value"
-    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
@@ -4109,8 +4119,10 @@ def test_create_service_rest(request_type):
             "execution_environment": 1,
             "encryption_key": "encryption_key_value",
             "max_instance_request_concurrency": 3436,
+            "service_mesh": {"mesh": "mesh_value"},
             "session_affinity": True,
             "health_check_disabled": True,
+            "node_selector": {"accelerator": "accelerator_value"},
         },
         "traffic": [
             {
@@ -4120,8 +4132,11 @@ def test_create_service_rest(request_type):
                 "tag": "tag_value",
             }
         ],
-        "scaling": {"min_instance_count": 1920},
+        "scaling": {"min_instance_count": 1920, "scaling_mode": 1},
+        "invoker_iam_disabled": True,
         "default_uri_disabled": True,
+        "urls": ["urls_value1", "urls_value2"],
+        "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "observed_generation": 2021,
         "terminal_condition": {
             "type_": "type__value",
@@ -4146,7 +4161,6 @@ def test_create_service_rest(request_type):
             }
         ],
         "uri": "uri_value",
-        "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "satisfies_pzs": True,
         "reconciling": True,
         "etag": "etag_value",
@@ -4569,12 +4583,14 @@ def test_get_service_rest(request_type):
             client_version="client_version_value",
             ingress=vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL,
             launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+            invoker_iam_disabled=True,
             default_uri_disabled=True,
+            urls=["urls_value"],
+            custom_audiences=["custom_audiences_value"],
             observed_generation=2021,
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
             uri="uri_value",
-            custom_audiences=["custom_audiences_value"],
             satisfies_pzs=True,
             reconciling=True,
             etag="etag_value",
@@ -4603,12 +4619,14 @@ def test_get_service_rest(request_type):
     assert response.client_version == "client_version_value"
     assert response.ingress == vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
+    assert response.invoker_iam_disabled is True
     assert response.default_uri_disabled is True
+    assert response.urls == ["urls_value"]
+    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
     assert response.uri == "uri_value"
-    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
@@ -5369,8 +5387,10 @@ def test_update_service_rest(request_type):
             "execution_environment": 1,
             "encryption_key": "encryption_key_value",
             "max_instance_request_concurrency": 3436,
+            "service_mesh": {"mesh": "mesh_value"},
             "session_affinity": True,
             "health_check_disabled": True,
+            "node_selector": {"accelerator": "accelerator_value"},
         },
         "traffic": [
             {
@@ -5380,8 +5400,11 @@ def test_update_service_rest(request_type):
                 "tag": "tag_value",
             }
         ],
-        "scaling": {"min_instance_count": 1920},
+        "scaling": {"min_instance_count": 1920, "scaling_mode": 1},
+        "invoker_iam_disabled": True,
         "default_uri_disabled": True,
+        "urls": ["urls_value1", "urls_value2"],
+        "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "observed_generation": 2021,
         "terminal_condition": {
             "type_": "type__value",
@@ -5406,7 +5429,6 @@ def test_update_service_rest(request_type):
             }
         ],
         "uri": "uri_value",
-        "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "satisfies_pzs": True,
         "reconciling": True,
         "etag": "etag_value",
@@ -7487,11 +7509,57 @@ def test_parse_crypto_key_path():
     assert expected == actual
 
 
-def test_revision_path():
+def test_mesh_path():
     project = "whelk"
     location = "octopus"
-    service = "oyster"
-    revision = "nudibranch"
+    mesh = "oyster"
+    expected = "projects/{project}/locations/{location}/meshes/{mesh}".format(
+        project=project,
+        location=location,
+        mesh=mesh,
+    )
+    actual = ServicesClient.mesh_path(project, location, mesh)
+    assert expected == actual
+
+
+def test_parse_mesh_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "mesh": "mussel",
+    }
+    path = ServicesClient.mesh_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ServicesClient.parse_mesh_path(path)
+    assert expected == actual
+
+
+def test_policy_path():
+    project = "winkle"
+    expected = "projects/{project}/policy".format(
+        project=project,
+    )
+    actual = ServicesClient.policy_path(project)
+    assert expected == actual
+
+
+def test_parse_policy_path():
+    expected = {
+        "project": "nautilus",
+    }
+    path = ServicesClient.policy_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ServicesClient.parse_policy_path(path)
+    assert expected == actual
+
+
+def test_revision_path():
+    project = "scallop"
+    location = "abalone"
+    service = "squid"
+    revision = "clam"
     expected = "projects/{project}/locations/{location}/services/{service}/revisions/{revision}".format(
         project=project,
         location=location,
@@ -7504,10 +7572,10 @@ def test_revision_path():
 
 def test_parse_revision_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "service": "winkle",
-        "revision": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
+        "service": "oyster",
+        "revision": "nudibranch",
     }
     path = ServicesClient.revision_path(**expected)
 
@@ -7517,8 +7585,8 @@ def test_parse_revision_path():
 
 
 def test_secret_path():
-    project = "scallop"
-    secret = "abalone"
+    project = "cuttlefish"
+    secret = "mussel"
     expected = "projects/{project}/secrets/{secret}".format(
         project=project,
         secret=secret,
@@ -7529,8 +7597,8 @@ def test_secret_path():
 
 def test_parse_secret_path():
     expected = {
-        "project": "squid",
-        "secret": "clam",
+        "project": "winkle",
+        "secret": "nautilus",
     }
     path = ServicesClient.secret_path(**expected)
 
@@ -7540,9 +7608,9 @@ def test_parse_secret_path():
 
 
 def test_secret_version_path():
-    project = "whelk"
-    secret = "octopus"
-    version = "oyster"
+    project = "scallop"
+    secret = "abalone"
+    version = "squid"
     expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
         project=project,
         secret=secret,
@@ -7554,9 +7622,9 @@ def test_secret_version_path():
 
 def test_parse_secret_version_path():
     expected = {
-        "project": "nudibranch",
-        "secret": "cuttlefish",
-        "version": "mussel",
+        "project": "clam",
+        "secret": "whelk",
+        "version": "octopus",
     }
     path = ServicesClient.secret_version_path(**expected)
 
@@ -7566,9 +7634,9 @@ def test_parse_secret_version_path():
 
 
 def test_service_path():
-    project = "winkle"
-    location = "nautilus"
-    service = "scallop"
+    project = "oyster"
+    location = "nudibranch"
+    service = "cuttlefish"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project,
         location=location,
@@ -7580,9 +7648,9 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "service": "clam",
+        "project": "mussel",
+        "location": "winkle",
+        "service": "nautilus",
     }
     path = ServicesClient.service_path(**expected)
 
@@ -7592,7 +7660,7 @@ def test_parse_service_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -7602,7 +7670,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "abalone",
     }
     path = ServicesClient.common_billing_account_path(**expected)
 
@@ -7612,7 +7680,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -7622,7 +7690,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "clam",
     }
     path = ServicesClient.common_folder_path(**expected)
 
@@ -7632,7 +7700,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -7642,7 +7710,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "octopus",
     }
     path = ServicesClient.common_organization_path(**expected)
 
@@ -7652,7 +7720,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -7662,7 +7730,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "nudibranch",
     }
     path = ServicesClient.common_project_path(**expected)
 
@@ -7672,8 +7740,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -7684,8 +7752,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = ServicesClient.common_location_path(**expected)
 

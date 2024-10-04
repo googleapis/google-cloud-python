@@ -1409,7 +1409,8 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Args:
                 request (~.gc_space.CreateSpaceRequest):
-                    The request object. A request to create a named space.
+                    The request object. A request to create a named space
+                with no members.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

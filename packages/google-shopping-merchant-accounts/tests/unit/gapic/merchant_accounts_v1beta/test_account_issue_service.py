@@ -35,7 +35,6 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import json_format
-from google.type import datetime_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -1260,6 +1259,7 @@ def test_list_account_issues_non_empty_request_with_auto_populated_field():
         parent="parent_value",
         page_token="page_token_value",
         language_code="language_code_value",
+        time_zone="time_zone_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1276,6 +1276,7 @@ def test_list_account_issues_non_empty_request_with_auto_populated_field():
             parent="parent_value",
             page_token="page_token_value",
             language_code="language_code_value",
+            time_zone="time_zone_value",
         )
 
 

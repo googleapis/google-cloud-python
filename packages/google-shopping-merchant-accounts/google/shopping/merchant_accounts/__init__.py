@@ -36,6 +36,12 @@ from google.shopping.merchant_accounts_v1beta.services.accounts_service.async_cl
 from google.shopping.merchant_accounts_v1beta.services.accounts_service.client import (
     AccountsServiceClient,
 )
+from google.shopping.merchant_accounts_v1beta.services.autofeed_settings_service.async_client import (
+    AutofeedSettingsServiceAsyncClient,
+)
+from google.shopping.merchant_accounts_v1beta.services.autofeed_settings_service.client import (
+    AutofeedSettingsServiceClient,
+)
 from google.shopping.merchant_accounts_v1beta.services.business_identity_service.async_client import (
     BusinessIdentityServiceAsyncClient,
 )
@@ -125,6 +131,14 @@ from google.shopping.merchant_accounts_v1beta.types.accounts import (
     ListSubAccountsRequest,
     ListSubAccountsResponse,
     UpdateAccountRequest,
+)
+from google.shopping.merchant_accounts_v1beta.types.accountservices import (
+    AccountAggregation,
+)
+from google.shopping.merchant_accounts_v1beta.types.autofeedsettings import (
+    AutofeedSettings,
+    GetAutofeedSettingsRequest,
+    UpdateAutofeedSettingsRequest,
 )
 from google.shopping.merchant_accounts_v1beta.types.businessidentity import (
     BusinessIdentity,
@@ -234,6 +248,8 @@ __all__ = (
     "AccountsServiceAsyncClient",
     "AccountTaxServiceClient",
     "AccountTaxServiceAsyncClient",
+    "AutofeedSettingsServiceClient",
+    "AutofeedSettingsServiceAsyncClient",
     "BusinessIdentityServiceClient",
     "BusinessIdentityServiceAsyncClient",
     "BusinessInfoServiceClient",
@@ -274,6 +290,10 @@ __all__ = (
     "ListSubAccountsRequest",
     "ListSubAccountsResponse",
     "UpdateAccountRequest",
+    "AccountAggregation",
+    "AutofeedSettings",
+    "GetAutofeedSettingsRequest",
+    "UpdateAutofeedSettingsRequest",
     "BusinessIdentity",
     "GetBusinessIdentityRequest",
     "UpdateBusinessIdentityRequest",

@@ -35,6 +35,7 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.oauth2 import service_account
+from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
@@ -8880,6 +8881,17 @@ def test_create_transfer_config_rest(request_type):
             "start_time": {"seconds": 751, "nanos": 543},
             "end_time": {},
         },
+        "schedule_options_v2": {
+            "time_based_schedule": {
+                "schedule": "schedule_value",
+                "start_time": {},
+                "end_time": {},
+            },
+            "manual_schedule": {},
+            "event_driven_schedule": {
+                "pubsub_subscription": "pubsub_subscription_value"
+            },
+        },
         "data_refresh_window_days": 2543,
         "disabled": True,
         "update_time": {},
@@ -8891,6 +8903,16 @@ def test_create_transfer_config_rest(request_type):
         "email_preferences": {"enable_failure_email": True},
         "owner_info": {"email": "email_value"},
         "encryption_configuration": {"kms_key_name": {"value": "value_value"}},
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -9327,6 +9349,17 @@ def test_update_transfer_config_rest(request_type):
             "start_time": {"seconds": 751, "nanos": 543},
             "end_time": {},
         },
+        "schedule_options_v2": {
+            "time_based_schedule": {
+                "schedule": "schedule_value",
+                "start_time": {},
+                "end_time": {},
+            },
+            "manual_schedule": {},
+            "event_driven_schedule": {
+                "pubsub_subscription": "pubsub_subscription_value"
+            },
+        },
         "data_refresh_window_days": 2543,
         "disabled": True,
         "update_time": {},
@@ -9338,6 +9371,16 @@ def test_update_transfer_config_rest(request_type):
         "email_preferences": {"enable_failure_email": True},
         "owner_info": {"email": "email_value"},
         "encryption_configuration": {"kms_key_name": {"value": "value_value"}},
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

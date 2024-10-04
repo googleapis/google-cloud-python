@@ -66,6 +66,8 @@ class TermsOfServiceAgreementState(proto.Message):
             Identifier. The resource name of the terms of service
             version. Format:
             ``accounts/{account}/termsOfServiceAgreementState/{identifier}``
+            The identifier format is: ``{TermsOfServiceKind}-{country}``
+            For example, an identifier could be: ``MERCHANT_CENTER-US``
         region_code (str):
             Region code as defined by
             https://cldr.unicode.org/. This is the country
@@ -186,6 +188,7 @@ class GetTermsOfServiceAgreementStateRequest(proto.Message):
             Required. The resource name of the terms of service version.
             Format:
             ``accounts/{account}/termsOfServiceAgreementState/{identifier}``
+            The identifier format is: ``{TermsOfServiceKind}-{country}``
     """
 
     name: str = proto.Field(
