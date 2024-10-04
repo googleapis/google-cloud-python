@@ -24,7 +24,7 @@ if __name__ == "__main__":
         table_id,
         session,
         suffix,
-    ) = utils.get_dbbenchmark_configuration()
+    ) = utils.get_configuration(include_table_id=True)
     current_path = pathlib.Path(__file__).absolute()
 
     utils.get_execution_time(
