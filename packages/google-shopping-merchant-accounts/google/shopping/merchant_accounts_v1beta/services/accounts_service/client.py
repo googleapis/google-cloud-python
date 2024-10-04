@@ -904,9 +904,12 @@ class AccountsServiceClient(metaclass=AccountsServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified account regardless of its type:
-        standalone, MCA or sub-account. Deleting an MCA leads to
-        the deletion of all of its sub-accounts. Executing this
-        method requires admin access.
+        standalone, MCA or sub-account. Deleting an MCA leads to the
+        deletion of all of its sub-accounts. Executing this method
+        requires admin access. The deletion succeeds only if the account
+        does not provide services to any other account and has no
+        processed offers. You can use the ``force`` parameter to
+        override this.
 
         .. code-block:: python
 
@@ -1118,7 +1121,9 @@ class AccountsServiceClient(metaclass=AccountsServiceClientMeta):
         size or filters. This is not just listing the
         sub-accounts of an MCA, but all accounts the calling
         user has access to including other MCAs, linked
-        accounts, standalone accounts and so on.
+        accounts, standalone accounts and so on. If no filter is
+        provided, then it returns accounts the user is directly
+        added to.
 
         .. code-block:: python
 

@@ -2110,6 +2110,7 @@ def test_check_cloud_identity_accounts_exist_non_empty_request_with_auto_populat
     request = service.CheckCloudIdentityAccountsExistRequest(
         parent="parent_value",
         domain="domain_value",
+        primary_admin_email="primary_admin_email_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2125,6 +2126,7 @@ def test_check_cloud_identity_accounts_exist_non_empty_request_with_auto_populat
         assert args[0] == service.CheckCloudIdentityAccountsExistRequest(
             parent="parent_value",
             domain="domain_value",
+            primary_admin_email="primary_admin_email_value",
         )
 
 
@@ -3397,6 +3399,7 @@ def test_import_customer_non_empty_request_with_auto_populated_field():
     request = service.ImportCustomerRequest(
         domain="domain_value",
         cloud_identity_id="cloud_identity_id_value",
+        primary_admin_email="primary_admin_email_value",
         parent="parent_value",
         auth_token="auth_token_value",
         channel_partner_id="channel_partner_id_value",
@@ -3414,6 +3417,7 @@ def test_import_customer_non_empty_request_with_auto_populated_field():
         assert args[0] == service.ImportCustomerRequest(
             domain="domain_value",
             cloud_identity_id="cloud_identity_id_value",
+            primary_admin_email="primary_admin_email_value",
             parent="parent_value",
             auth_token="auth_token_value",
             channel_partner_id="channel_partner_id_value",
