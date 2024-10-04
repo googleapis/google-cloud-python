@@ -40,7 +40,7 @@ async def sample_streaming_analyze_content():
 
     # Initialize request argument(s)
     audio_config = dialogflow_v2.InputAudioConfig()
-    audio_config.audio_encoding = "AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE"
+    audio_config.audio_encoding = "AUDIO_ENCODING_ALAW"
     audio_config.sample_rate_hertz = 1817
     audio_config.language_code = "language_code_value"
 

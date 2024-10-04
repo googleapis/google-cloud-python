@@ -300,7 +300,7 @@ class ParallelstoreAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesAsyncPager:
-        r"""Lists Instances in a given project and location.
+        r"""Lists all instances in a given project and location.
 
         .. code-block:: python
 
@@ -331,16 +331,14 @@ class ParallelstoreAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.parallelstore_v1beta.types.ListInstancesRequest, dict]]):
-                The request object. Message for requesting list of
-                Instances
+                The request object. List instances request.
             parent (:class:`str`):
                 Required. The project and location for which to retrieve
                 instance information, in the format
-                ``projects/{project_id}/locations/{location}``. For
-                Parallelstore locations map to Google Cloud zones, for
-                example **us-central1-a**. To retrieve instance
-                information for all locations, use "-" for the
-                ``{location}`` value.
+                ``projects/{project_id}/locations/{location}``.
+
+                To retrieve instance information for all locations, use
+                "-" as the value of ``{location}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -353,11 +351,11 @@ class ParallelstoreAsyncClient:
 
         Returns:
             google.cloud.parallelstore_v1beta.services.parallelstore.pagers.ListInstancesAsyncPager:
-                Message for response to listing
-                Instances
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Response from
+                   [ListInstances][google.cloud.parallelstore.v1beta.Parallelstore.ListInstances].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -426,7 +424,7 @@ class ParallelstoreAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> parallelstore.Instance:
-        r"""Gets details of a single Instance.
+        r"""Gets details of a single instance.
 
         .. code-block:: python
 
@@ -456,7 +454,7 @@ class ParallelstoreAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.parallelstore_v1beta.types.GetInstanceRequest, dict]]):
-                The request object. Request to get an instance's details.
+                The request object. Get an instance's details.
             name (:class:`str`):
                 Required. The instance resource name, in the format
                 ``projects/{project_id}/locations/{location}/instances/{instance_id}``.
@@ -571,13 +569,12 @@ class ParallelstoreAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.parallelstore_v1beta.types.CreateInstanceRequest, dict]]):
-                The request object. Request for
-                [CreateInstance][google.cloud.parallelstore.v1beta.Parallelstore.CreateInstance]
+                The request object. Create a new Parallelstore instance.
             parent (:class:`str`):
                 Required. The instance's project and location, in the
                 format ``projects/{project}/locations/{location}``.
-                Locations map to Google Cloud zones, for example
-                **us-west1-b**.
+                Locations map to Google Cloud zones; for example,
+                ``us-west1-b``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -588,8 +585,7 @@ class ParallelstoreAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             instance_id (:class:`str`):
-                Required. The logical name of the Parallelstore instance
-                in the user project with the following restrictions:
+                Required. The name of the Parallelstore instance.
 
                 -  Must contain only lowercase letters, numbers, and
                    hyphens.
@@ -684,7 +680,7 @@ class ParallelstoreAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Updates the parameters of a single Instance.
+        r"""Updates the parameters of a single instance.
 
         .. code-block:: python
 
@@ -721,14 +717,14 @@ class ParallelstoreAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.parallelstore_v1beta.types.UpdateInstanceRequest, dict]]):
-                The request object. Message for updating a Instance
+                The request object. Update an instance.
             instance (:class:`google.cloud.parallelstore_v1beta.types.Instance`):
-                Required. The instance to update
+                Required. The instance to update.
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Mask of fields to update .Field mask is used
+                Required. Mask of fields to update. Field mask is used
                 to specify the fields to be overwritten in the Instance
                 resource by the update. At least one path must be
                 supplied in this field. The fields specified in the
@@ -820,7 +816,7 @@ class ParallelstoreAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Deletes a single Instance.
+        r"""Deletes a single instance.
 
         .. code-block:: python
 
@@ -854,7 +850,7 @@ class ParallelstoreAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.parallelstore_v1beta.types.DeleteInstanceRequest, dict]]):
-                The request object. Message for deleting a Instance
+                The request object. Delete an instance.
             name (:class:`str`):
                 Required. Name of the resource
                 This corresponds to the ``name`` field
@@ -944,8 +940,7 @@ class ParallelstoreAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""ImportData copies data from Cloud Storage to
-        Parallelstore.
+        r"""Copies data from Cloud Storage to Parallelstore.
 
         .. code-block:: python
 
@@ -983,9 +978,8 @@ class ParallelstoreAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.parallelstore_v1beta.types.ImportDataRequest, dict]]):
-                The request object. Message representing the request
-                importing data from parallelstore to
-                Cloud Storage.
+                The request object. Import data from Cloud Storage into a
+                Parallelstore instance.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -998,8 +992,8 @@ class ParallelstoreAsyncClient:
 
                 The result type for the operation will be
                 :class:`google.cloud.parallelstore_v1beta.types.ImportDataResponse`
-                ImportDataResponse is the response returned from
-                ImportData rpc.
+                The response to a request to import data to
+                Parallelstore.
 
         """
         # Create or coerce a protobuf request object.
@@ -1050,8 +1044,7 @@ class ParallelstoreAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""ExportData copies data from Parallelstore to Cloud
-        Storage
+        r"""Copies data from Parallelstore to Cloud Storage.
 
         .. code-block:: python
 
@@ -1089,9 +1082,8 @@ class ParallelstoreAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.parallelstore_v1beta.types.ExportDataRequest, dict]]):
-                The request object. Message representing the request
-                exporting data from Cloud Storage to
-                parallelstore.
+                The request object. Export data from Parallelstore to
+                Cloud Storage.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1104,8 +1096,8 @@ class ParallelstoreAsyncClient:
 
                 The result type for the operation will be
                 :class:`google.cloud.parallelstore_v1beta.types.ExportDataResponse`
-                ExportDataResponse is the response returned from
-                ExportData rpc
+                The response to a request to export data from
+                Parallelstore.
 
         """
         # Create or coerce a protobuf request object.

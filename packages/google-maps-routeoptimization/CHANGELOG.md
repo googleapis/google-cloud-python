@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-routeoptimization-v0.1.3...google-maps-routeoptimization-v0.1.4) (2024-09-30)
+
+
+### Features
+
+* A new field `route_token` is added to message `.google.maps.routeoptimization.v1.ShipmentRoute.Transition` ([32b254c](https://github.com/googleapis/google-cloud-python/commit/32b254c110626aff2194aceb93f131f745cfcf29))
+* Add support for generating route tokens  ([32b254c](https://github.com/googleapis/google-cloud-python/commit/32b254c110626aff2194aceb93f131f745cfcf29))
+
+
+### Documentation
+
+* A comment for field `code` in message `.google.maps.routeoptimization.v1.OptimizeToursValidationError` is changed ([32b254c](https://github.com/googleapis/google-cloud-python/commit/32b254c110626aff2194aceb93f131f745cfcf29))
+* A comment for field `populate_transition_polylines` in message `.google.maps.routeoptimization.v1.OptimizeToursRequest` is changed ([32b254c](https://github.com/googleapis/google-cloud-python/commit/32b254c110626aff2194aceb93f131f745cfcf29))
+* A comment for method `BatchOptimizeTours` in service `RouteOptimization` is changed ([32b254c](https://github.com/googleapis/google-cloud-python/commit/32b254c110626aff2194aceb93f131f745cfcf29))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-routeoptimization-v0.1.2...google-maps-routeoptimization-v0.1.3) (2024-09-16)
 
 

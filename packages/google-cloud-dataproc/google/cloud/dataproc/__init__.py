@@ -189,6 +189,7 @@ from google.cloud.dataproc_v1.types.sessions import (
     ListSessionsRequest,
     ListSessionsResponse,
     Session,
+    SparkConnectConfig,
     TerminateSessionRequest,
 )
 from google.cloud.dataproc_v1.types.shared import (
@@ -362,6 +363,7 @@ __all__ = (
     "ListSessionsRequest",
     "ListSessionsResponse",
     "Session",
+    "SparkConnectConfig",
     "TerminateSessionRequest",
     "AutotuningConfig",
     "EnvironmentConfig",
