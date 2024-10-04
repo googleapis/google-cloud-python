@@ -30,6 +30,10 @@ __protobuf__ = proto.module(
         "TransferState",
         "EmailPreferences",
         "ScheduleOptions",
+        "ScheduleOptionsV2",
+        "TimeBasedSchedule",
+        "ManualSchedule",
+        "EventDrivenSchedule",
         "UserInfo",
         "TransferConfig",
         "EncryptionConfiguration",
@@ -144,6 +148,130 @@ class ScheduleOptions(proto.Message):
     )
 
 
+class ScheduleOptionsV2(proto.Message):
+    r"""V2 options customizing different types of data transfer
+    schedule. This field supports existing time-based and manual
+    transfer schedule. Also supports Event-Driven transfer schedule.
+    ScheduleOptionsV2 cannot be used together with
+    ScheduleOptions/Schedule.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        time_based_schedule (google.cloud.bigquery_datatransfer_v1.types.TimeBasedSchedule):
+            Time based transfer schedule options. This is
+            the default schedule option.
+
+            This field is a member of `oneof`_ ``schedule``.
+        manual_schedule (google.cloud.bigquery_datatransfer_v1.types.ManualSchedule):
+            Manual transfer schedule. If set, the transfer run will not
+            be auto-scheduled by the system, unless the client invokes
+            StartManualTransferRuns. This is equivalent to
+            disable_auto_scheduling = true.
+
+            This field is a member of `oneof`_ ``schedule``.
+        event_driven_schedule (google.cloud.bigquery_datatransfer_v1.types.EventDrivenSchedule):
+            Event driven transfer schedule options. If
+            set, the transfer will be scheduled upon events
+            arrial.
+
+            This field is a member of `oneof`_ ``schedule``.
+    """
+
+    time_based_schedule: "TimeBasedSchedule" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="schedule",
+        message="TimeBasedSchedule",
+    )
+    manual_schedule: "ManualSchedule" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="schedule",
+        message="ManualSchedule",
+    )
+    event_driven_schedule: "EventDrivenSchedule" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="schedule",
+        message="EventDrivenSchedule",
+    )
+
+
+class TimeBasedSchedule(proto.Message):
+    r"""Options customizing the time based transfer schedule.
+    Options are migrated from the original ScheduleOptions message.
+
+    Attributes:
+        schedule (str):
+            Data transfer schedule. If the data source does not support
+            a custom schedule, this should be empty. If it is empty, the
+            default value for the data source will be used. The
+            specified times are in UTC. Examples of valid format:
+            ``1st,3rd monday of month 15:30``,
+            ``every wed,fri of jan,jun 13:15``, and
+            ``first sunday of quarter 00:00``. See more explanation
+            about the format here:
+            https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
+
+            NOTE: The minimum interval time between recurring transfers
+            depends on the data source; refer to the documentation for
+            your data source.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Specifies time to start scheduling transfer
+            runs. The first run will be scheduled at or
+            after the start time according to a recurrence
+            pattern defined in the schedule string. The
+            start time can be changed at any moment.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Defines time to stop scheduling transfer
+            runs. A transfer run cannot be scheduled at or
+            after the end time. The end time can be changed
+            at any moment.
+    """
+
+    schedule: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class ManualSchedule(proto.Message):
+    r"""Options customizing manual transfers schedule."""
+
+
+class EventDrivenSchedule(proto.Message):
+    r"""Options customizing EventDriven transfers schedule.
+
+    Attributes:
+        pubsub_subscription (str):
+            Pub/Sub subscription name used to receive
+            events. Only Google Cloud Storage data source
+            support this option. Format:
+            projects/{project}/subscriptions/{subscription}
+    """
+
+    pubsub_subscription: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class UserInfo(proto.Message):
     r"""Information about a user.
 
@@ -222,6 +350,11 @@ class TransferConfig(proto.Message):
         schedule_options (google.cloud.bigquery_datatransfer_v1.types.ScheduleOptions):
             Options customizing the data transfer
             schedule.
+        schedule_options_v2 (google.cloud.bigquery_datatransfer_v1.types.ScheduleOptionsV2):
+            Options customizing different types of data transfer
+            schedule. This field replaces "schedule" and
+            "schedule_options" fields. ScheduleOptionsV2 cannot be used
+            together with ScheduleOptions/Schedule.
         data_refresh_window_days (int):
             The number of days to look back to automatically refresh the
             data. For example, if ``data_refresh_window_days = 10``,
@@ -274,6 +407,10 @@ class TransferConfig(proto.Message):
             effect. Write methods will apply the key if it
             is present, or otherwise try to apply project
             default keys if it is absent.
+        error (google.rpc.status_pb2.Status):
+            Output only. Error code with detailed
+            information about reason of the latest config
+            failure.
     """
 
     name: str = proto.Field(
@@ -306,6 +443,11 @@ class TransferConfig(proto.Message):
         proto.MESSAGE,
         number=24,
         message="ScheduleOptions",
+    )
+    schedule_options_v2: "ScheduleOptionsV2" = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message="ScheduleOptionsV2",
     )
     data_refresh_window_days: int = proto.Field(
         proto.INT32,
@@ -357,6 +499,11 @@ class TransferConfig(proto.Message):
         proto.MESSAGE,
         number=28,
         message="EncryptionConfiguration",
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=32,
+        message=status_pb2.Status,
     )
 
 
