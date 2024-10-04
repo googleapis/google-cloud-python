@@ -46,6 +46,8 @@ class Type(proto.Enum):
             Resource deleted.
         TYPE_ROLLOUT_UPDATE (7):
             Rollout updated.
+        TYPE_DEPLOY_POLICY_EVALUATION (8):
+            Deploy Policy evaluation.
         TYPE_RENDER_STATUES_CHANGE (2):
             Deprecated: This field is never used. Use release_render log
             type instead.
@@ -57,6 +59,7 @@ class Type(proto.Enum):
     TYPE_RESTRICTION_VIOLATED = 5
     TYPE_RESOURCE_DELETED = 6
     TYPE_ROLLOUT_UPDATE = 7
+    TYPE_DEPLOY_POLICY_EVALUATION = 8
     TYPE_RENDER_STATUES_CHANGE = 2
 
 
