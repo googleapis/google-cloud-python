@@ -40,7 +40,7 @@ def sample_detect_intent():
 
     # Initialize request argument(s)
     query_input = dialogflow_v2.QueryInput()
-    query_input.audio_config.audio_encoding = "AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE"
+    query_input.audio_config.audio_encoding = "AUDIO_ENCODING_ALAW"
     query_input.audio_config.sample_rate_hertz = 1817
     query_input.audio_config.language_code = "language_code_value"
 
