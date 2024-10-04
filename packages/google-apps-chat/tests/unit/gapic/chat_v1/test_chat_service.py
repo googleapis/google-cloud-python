@@ -5744,6 +5744,7 @@ def test_get_space(request_type, transport: str = "grpc"):
             import_mode=True,
             admin_installed=True,
             space_uri="space_uri_value",
+            predefined_permission_settings=space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
         response = client.get_space(request)
 
@@ -6164,6 +6165,7 @@ def test_create_space(request_type, transport: str = "grpc"):
             import_mode=True,
             admin_installed=True,
             space_uri="space_uri_value",
+            predefined_permission_settings=gc_space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
         response = client.create_space(request)
 
@@ -6527,6 +6529,7 @@ def test_set_up_space(request_type, transport: str = "grpc"):
             import_mode=True,
             admin_installed=True,
             space_uri="space_uri_value",
+            predefined_permission_settings=space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
         response = client.set_up_space(request)
 
@@ -6810,6 +6813,7 @@ def test_update_space(request_type, transport: str = "grpc"):
             import_mode=True,
             admin_installed=True,
             space_uri="space_uri_value",
+            predefined_permission_settings=gc_space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
         response = client.update_space(request)
 
@@ -7883,6 +7887,7 @@ def test_find_direct_message(request_type, transport: str = "grpc"):
             import_mode=True,
             admin_installed=True,
             space_uri="space_uri_value",
+            predefined_permission_settings=space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
         response = client.find_direct_message(request)
 
@@ -13112,6 +13117,20 @@ def test_create_message_rest(request_type):
             },
             "access_settings": {"access_state": 1, "audience": "audience_value"},
             "space_uri": "space_uri_value",
+            "predefined_permission_settings": 1,
+            "permission_settings": {
+                "manage_members_and_groups": {
+                    "managers_allowed": True,
+                    "members_allowed": True,
+                },
+                "modify_space_details": {},
+                "toggle_history": {},
+                "use_at_mention_all": {},
+                "manage_apps": {},
+                "manage_webhooks": {},
+                "post_messages": {},
+                "reply_messages": {},
+            },
         },
         "fallback_text": "fallback_text_value",
         "action_response": {
@@ -15259,6 +15278,20 @@ def test_update_message_rest(request_type):
             },
             "access_settings": {"access_state": 1, "audience": "audience_value"},
             "space_uri": "space_uri_value",
+            "predefined_permission_settings": 1,
+            "permission_settings": {
+                "manage_members_and_groups": {
+                    "managers_allowed": True,
+                    "members_allowed": True,
+                },
+                "modify_space_details": {},
+                "toggle_history": {},
+                "use_at_mention_all": {},
+                "manage_apps": {},
+                "manage_webhooks": {},
+                "post_messages": {},
+                "reply_messages": {},
+            },
         },
         "fallback_text": "fallback_text_value",
         "action_response": {
@@ -17113,6 +17146,7 @@ def test_get_space_rest(request_type):
             import_mode=True,
             admin_installed=True,
             space_uri="space_uri_value",
+            predefined_permission_settings=space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
 
         # Wrap the value into a proper Response obj
@@ -17441,6 +17475,20 @@ def test_create_space_rest(request_type):
         },
         "access_settings": {"access_state": 1, "audience": "audience_value"},
         "space_uri": "space_uri_value",
+        "predefined_permission_settings": 1,
+        "permission_settings": {
+            "manage_members_and_groups": {
+                "managers_allowed": True,
+                "members_allowed": True,
+            },
+            "modify_space_details": {},
+            "toggle_history": {},
+            "use_at_mention_all": {},
+            "manage_apps": {},
+            "manage_webhooks": {},
+            "post_messages": {},
+            "reply_messages": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -17527,6 +17575,7 @@ def test_create_space_rest(request_type):
             import_mode=True,
             admin_installed=True,
             space_uri="space_uri_value",
+            predefined_permission_settings=gc_space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
 
         # Wrap the value into a proper Response obj
@@ -17843,6 +17892,7 @@ def test_set_up_space_rest(request_type):
             import_mode=True,
             admin_installed=True,
             space_uri="space_uri_value",
+            predefined_permission_settings=space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
 
         # Wrap the value into a proper Response obj
@@ -18110,6 +18160,20 @@ def test_update_space_rest(request_type):
         },
         "access_settings": {"access_state": 1, "audience": "audience_value"},
         "space_uri": "space_uri_value",
+        "predefined_permission_settings": 1,
+        "permission_settings": {
+            "manage_members_and_groups": {
+                "managers_allowed": True,
+                "members_allowed": True,
+            },
+            "modify_space_details": {},
+            "toggle_history": {},
+            "use_at_mention_all": {},
+            "manage_apps": {},
+            "manage_webhooks": {},
+            "post_messages": {},
+            "reply_messages": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -18196,6 +18260,7 @@ def test_update_space_rest(request_type):
             import_mode=True,
             admin_installed=True,
             space_uri="space_uri_value",
+            predefined_permission_settings=gc_space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
 
         # Wrap the value into a proper Response obj
@@ -19059,6 +19124,7 @@ def test_find_direct_message_rest(request_type):
             import_mode=True,
             admin_installed=True,
             space_uri="space_uri_value",
+            predefined_permission_settings=space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
 
         # Wrap the value into a proper Response obj

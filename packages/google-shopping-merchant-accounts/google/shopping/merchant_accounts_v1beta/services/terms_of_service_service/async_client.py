@@ -402,6 +402,8 @@ class TermsOfServiceServiceAsyncClient:
 
                 # Initialize request argument(s)
                 request = merchant_accounts_v1beta.RetrieveLatestTermsOfServiceRequest(
+                    region_code="region_code_value",
+                    kind="MERCHANT_CENTER",
                 )
 
                 # Make the request

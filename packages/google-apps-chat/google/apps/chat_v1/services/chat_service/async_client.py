@@ -314,19 +314,36 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gc_message.Message:
-        r"""Creates a message in a Google Chat space. The maximum message
-        size, including text and cards, is 32,000 bytes. For an example,
-        see `Send a
+        r"""Creates a message in a Google Chat space. For an example, see
+        `Send a
         message <https://developers.google.com/workspace/chat/create-messages>`__.
 
-        Calling this method requires
-        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__
-        and supports the following authentication types:
+        The ``create()`` method requires either user or app
+        authentication. Chat attributes the message sender differently
+        depending on the type of authentication that you use in your
+        request.
 
-        -  For text messages, user authentication or app authentication
-           are supported.
-        -  For card messages, only app authentication is supported.
-           (Only Chat apps can create card messages.)
+        The following image shows how Chat attributes a message when you
+        use app authentication. Chat displays the Chat app as the
+        message sender. The content of the message can contain text
+        (``text``), cards (``cardsV2``), and accessory widgets
+        (``accessoryWidgets``).
+
+        |Message sent with app authentication async client|
+
+        The following image shows how Chat attributes a message when you
+        use user authentication. Chat displays the user as the message
+        sender and attributes the Chat app to the message by displaying
+        its name. The content of message can only contain text
+        (``text``).
+
+        |Message sent with user authentication async client|
+
+        The maximum message size, including the message contents, is
+        32,000 bytes.
+
+        .. |Message sent with app authentication async client| image:: https://developers.google.com/workspace/chat/images/message-app-auth.svg
+        .. |Message sent with user authentication async client| image:: https://developers.google.com/workspace/chat/images/message-user-auth.svg
 
         .. code-block:: python
 
@@ -464,9 +481,12 @@ class ChatServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMessagesAsyncPager:
         r"""Lists messages in a space that the caller is a member of,
-        including messages from blocked members and spaces. For an
-        example, see `List
-        messages </chat/api/guides/v1/messages/list>`__. Requires `user
+        including messages from blocked members and spaces. If you list
+        messages from a space with no messages, the response is an empty
+        object. When using a REST/HTTP interface, the response contains
+        an empty JSON object, ``{}``. For an example, see `List
+        messages <https://developers.google.com/workspace/chat/api/guides/v1/messages/list>`__.
+        Requires `user
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
@@ -1759,14 +1779,20 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gc_space.Space:
-        r"""Creates a named space. Spaces grouped by topics aren't
-        supported. For an example, see `Create a
+        r"""Creates a space with no members. Can be used to create a named
+        space. Spaces grouped by topics aren't supported. For an
+        example, see `Create a
         space <https://developers.google.com/workspace/chat/create-spaces>`__.
 
         If you receive the error message ``ALREADY_EXISTS`` when
         creating a space, try a different ``displayName``. An existing
         space within the Google Workspace organization might already use
         this display name.
+
+        If you're a member of the `Developer Preview
+        program <https://developers.google.com/workspace/preview>`__,
+        you can create a group chat in import mode using
+        ``spaceType.GROUP_CHAT``.
 
         Requires `user
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
@@ -1787,7 +1813,11 @@ class ChatServiceAsyncClient:
                 client = chat_v1.ChatServiceAsyncClient()
 
                 # Initialize request argument(s)
+                space = chat_v1.Space()
+                space.predefined_permission_settings = "ANNOUNCEMENT_SPACE"
+
                 request = chat_v1.CreateSpaceRequest(
+                    space=space,
                 )
 
                 # Make the request
@@ -1798,16 +1828,22 @@ class ChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.chat_v1.types.CreateSpaceRequest, dict]]):
-                The request object. A request to create a named space.
+                The request object. A request to create a named space
+                with no members.
             space (:class:`google.apps.chat_v1.types.Space`):
                 Required. The ``displayName`` and ``spaceType`` fields
                 must be populated. Only ``SpaceType.SPACE`` is
                 supported.
 
-                If you receive the error message ``ALREADY_EXISTS`` when
-                creating a space, try a different ``displayName``. An
-                existing space within the Google Workspace organization
-                might already use this display name.
+                If you receive the error message ``ALREADY_EXISTS``, try
+                a different ``displayName``. An existing space within
+                the Google Workspace organization might already use this
+                display name.
+
+                If you're a member of the `Developer Preview
+                program <https://developers.google.com/workspace/preview>`__,
+                ``SpaceType.GROUP_CHAT`` can be used if ``importMode``
+                is set to true.
 
                 The space ``name`` is assigned on the server so anything
                 specified in this field will be ignored.
@@ -1952,7 +1988,11 @@ class ChatServiceAsyncClient:
                 client = chat_v1.ChatServiceAsyncClient()
 
                 # Initialize request argument(s)
+                space = chat_v1.Space()
+                space.predefined_permission_settings = "ANNOUNCEMENT_SPACE"
+
                 request = chat_v1.SetUpSpaceRequest(
+                    space=space,
                 )
 
                 # Make the request
@@ -2042,7 +2082,11 @@ class ChatServiceAsyncClient:
                 client = chat_v1.ChatServiceAsyncClient()
 
                 # Initialize request argument(s)
+                space = chat_v1.Space()
+                space.predefined_permission_settings = "ANNOUNCEMENT_SPACE"
+
                 request = chat_v1.UpdateSpaceRequest(
+                    space=space,
                 )
 
                 # Make the request
@@ -2067,68 +2111,73 @@ class ChatServiceAsyncClient:
                 Required. The updated field paths, comma separated if
                 there are multiple.
 
-                Currently supported field paths:
+                You can update the following fields for a space:
 
-                -  ``display_name`` (Only supports changing the display
-                   name of a space with the ``SPACE`` type, or when also
-                   including the ``space_type`` mask to change a
-                   ``GROUP_CHAT`` space type to ``SPACE``. Trying to
-                   update the display name of a ``GROUP_CHAT`` or a
-                   ``DIRECT_MESSAGE`` space results in an invalid
-                   argument error. If you receive the error message
-                   ``ALREADY_EXISTS`` when updating the ``displayName``,
-                   try a different ``displayName``. An existing space
-                   within the Google Workspace organization might
-                   already use this display name.)
+                ``space_details``: Updates the space's description.
+                Supports up to 150 characters.
 
-                -  ``space_type`` (Only supports changing a
-                   ``GROUP_CHAT`` space type to ``SPACE``. Include
-                   ``display_name`` together with ``space_type`` in the
-                   update mask and ensure that the specified space has a
-                   non-empty display name and the ``SPACE`` space type.
-                   Including the ``space_type`` mask and the ``SPACE``
-                   type in the specified space when updating the display
-                   name is optional if the existing space already has
-                   the ``SPACE`` type. Trying to update the space type
-                   in other ways results in an invalid argument error).
-                   ``space_type`` is not supported with admin access.
+                ``display_name``: Only supports updating the display
+                name for spaces where ``spaceType`` field is ``SPACE``.
+                If you receive the error message ``ALREADY_EXISTS``, try
+                a different value. An existing space within the Google
+                Workspace organization might already use this display
+                name.
 
-                -  ``space_details``
+                ``space_type``: Only supports changing a ``GROUP_CHAT``
+                space type to ``SPACE``. Include ``display_name``
+                together with ``space_type`` in the update mask and
+                ensure that the specified space has a non-empty display
+                name and the ``SPACE`` space type. Including the
+                ``space_type`` mask and the ``SPACE`` type in the
+                specified space when updating the display name is
+                optional if the existing space already has the ``SPACE``
+                type. Trying to update the space type in other ways
+                results in an invalid argument error. ``space_type`` is
+                not supported with ``useAdminAccess``.
 
-                -  ``space_history_state`` (Supports `turning history on
-                   or off for the
-                   space <https://support.google.com/chat/answer/7664687>`__
-                   if `the organization allows users to change their
-                   history
-                   setting <https://support.google.com/a/answer/7664184>`__.
-                   Warning: mutually exclusive with all other field
-                   paths.) ``space_history_state`` is not supported with
-                   admin access.
+                ``space_history_state``: Updates `space history
+                settings <https://support.google.com/chat/answer/7664687>`__
+                by turning history on or off for the space. Only
+                supported if history settings are enabled for the Google
+                Workspace organization. To update the space history
+                state, you must omit all other field masks in your
+                request. ``space_history_state`` is not supported with
+                ``useAdminAccess``.
 
-                -  ``access_settings.audience`` (Supports changing the
-                   `access
-                   setting <https://support.google.com/chat/answer/11971020>`__
-                   of who can discover the space, join the space, and
-                   preview the messages in space. If no audience is
-                   specified in the access setting, the space's access
-                   setting is updated to private. Warning: mutually
-                   exclusive with all other field paths.)
-                   ``access_settings.audience`` is not supported with
-                   admin access.
+                ``access_settings.audience``: Updates the `access
+                setting <https://support.google.com/chat/answer/11971020>`__
+                of who can discover the space, join the space, and
+                preview the messages in named space where ``spaceType``
+                field is ``SPACE``. If the existing space has a target
+                audience, you can remove the audience and restrict space
+                access by omitting a value for this field mask. To
+                update access settings for a space, the authenticating
+                user must be a space manager and omit all other field
+                masks in your request. You can't update this field if
+                the space is in `import
+                mode <https://developers.google.com/workspace/chat/import-data-overview>`__.
+                To learn more, see `Make a space discoverable to
+                specific
+                users <https://developers.google.com/workspace/chat/space-target-audience>`__.
+                ``access_settings.audience`` is not supported with
+                ``useAdminAccess``.
 
-                -  Developer Preview: Supports changing the `permission
-                   settings <https://support.google.com/chat/answer/13340792>`__
-                   of a space, supported field paths include:
-                   ``permission_settings.manage_members_and_groups``,
-                   ``permission_settings.modify_space_details``,
-                   ``permission_settings.toggle_history``,
-                   ``permission_settings.use_at_mention_all``,
-                   ``permission_settings.manage_apps``,
-                   ``permission_settings.manage_webhooks``,
-                   ``permission_settings.reply_messages`` (Warning:
-                   mutually exclusive with all other non-permission
-                   settings field paths). ``permission_settings`` is not
-                   supported with admin access.
+                ``permission_settings``: Supports changing the
+                `permission
+                settings <https://support.google.com/chat/answer/13340792>`__
+                of a space. When updating permission settings, you can
+                only specify ``permissionSettings`` field masks; you
+                cannot update other field masks at the same time.
+                ``permissionSettings`` is not supported with
+                ``useAdminAccess``. The supported field masks include:
+
+                -  ``permission_settings.manageMembersAndGroups``
+                -  ``permission_settings.modifySpaceDetails``
+                -  ``permission_settings.toggleHistory``
+                -  ``permission_settings.useAtMentionAll``
+                -  ``permission_settings.manageApps``
+                -  ``permission_settings.manageWebhooks``
+                -  ``permission_settings.replyMessages``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2495,46 +2544,25 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gc_membership.Membership:
-        r"""Creates a human membership or app membership for the calling
-        app. Creating memberships for other apps isn't supported. For an
-        example, see `Invite or add a user or a Google Chat app to a
-        space <https://developers.google.com/workspace/chat/create-members>`__.
-        When creating a membership, if the specified member has their
-        auto-accept policy turned off, then they're invited, and must
-        accept the space invitation before joining. Otherwise, creating
-        a membership adds the member directly to the specified space.
-        Requires `user
+        r"""Creates a membership for the calling Chat app, a user, or a
+        Google Group. Creating memberships for other Chat apps isn't
+        supported. When creating a membership, if the specified member
+        has their auto-accept policy turned off, then they're invited,
+        and must accept the space invitation before joining. Otherwise,
+        creating a membership adds the member directly to the specified
+        space. Requires `user
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
-        To specify the member to add, set the ``membership.member.name``
-        for the human or app member, or set the
-        ``membership.group_member.name`` for the group member.
+        For example usage, see:
 
-        -  To add the calling app to a space or a direct message between
-           two human users, use ``users/app``. Unable to add other apps
-           to the space.
+        -  `Invite or add a user to a
+           space <https://developers.google.com/workspace/chat/create-members#create-user-membership>`__.
 
-        -  To add a human user, use ``users/{user}``, where ``{user}``
-           can be the email address for the user. For users in the same
-           Workspace organization ``{user}`` can also be the ``id`` for
-           the person from the People API, or the ``id`` for the user in
-           the Directory API. For example, if the People API Person
-           profile ID for ``user@example.com`` is ``123456789``, you can
-           add the user to the space by setting the
-           ``membership.member.name`` to ``users/user@example.com`` or
-           ``users/123456789``.
+        -  `Invite or add a Google Group to a
+           space <https://developers.google.com/workspace/chat/create-members#create-group-membership>`__.
 
-        -  To add or invite a Google group in a named space, use
-           ``groups/{group}``, where ``{group}`` is the ``id`` for the
-           group from the Cloud Identity Groups API. For example, you
-           can use `Cloud Identity Groups lookup
-           API <https://cloud.google.com/identity/docs/reference/rest/v1/groups/lookup>`__
-           to retrieve the ID ``123456789`` for group email
-           ``group@example.com``, then you can add or invite the group
-           to a named space by setting the
-           ``membership.group_member.name`` to ``groups/123456789``.
-           Group email is not supported, and Google groups can only be
-           added as members in named spaces.
+        -  `Add the Chat app to a
+           space <https://developers.google.com/workspace/chat/create-members#create-membership-calling-api>`__.
 
         .. code-block:: python
 
@@ -3693,6 +3721,9 @@ class ChatServiceAsyncClient:
         For example, if you request an event about a new message but the
         message was later updated, the server returns the updated
         ``Message`` resource in the event payload.
+
+        Note: The ``permissionSettings`` field is not returned in the
+        Space object of the Space event data for this request.
 
         Requires `user
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.

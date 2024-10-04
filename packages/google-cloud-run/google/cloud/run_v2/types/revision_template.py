@@ -103,13 +103,20 @@ class RevisionTemplate(proto.Message):
             image. For more information, go to
             https://cloud.google.com/run/docs/securing/using-cmek
         max_instance_request_concurrency (int):
-            Optional. Sets the maximum number of requests
-            that each serving instance can receive.
+            Optional. Sets the maximum number of requests that each
+            serving instance can receive. If not specified or 0,
+            defaults to 80 when requested ``CPU >= 1`` and defaults to 1
+            when requested ``CPU < 1``.
+        service_mesh (google.cloud.run_v2.types.ServiceMesh):
+            Optional. Enables service mesh connectivity.
         session_affinity (bool):
             Optional. Enable session affinity.
         health_check_disabled (bool):
             Optional. Disables health checking containers
             during deployment.
+        node_selector (google.cloud.run_v2.types.NodeSelector):
+            Optional. The node selector for the revision
+            template.
     """
 
     revision: str = proto.Field(
@@ -168,6 +175,11 @@ class RevisionTemplate(proto.Message):
         proto.INT32,
         number=15,
     )
+    service_mesh: vendor_settings.ServiceMesh = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message=vendor_settings.ServiceMesh,
+    )
     session_affinity: bool = proto.Field(
         proto.BOOL,
         number=19,
@@ -175,6 +187,11 @@ class RevisionTemplate(proto.Message):
     health_check_disabled: bool = proto.Field(
         proto.BOOL,
         number=20,
+    )
+    node_selector: vendor_settings.NodeSelector = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=vendor_settings.NodeSelector,
     )
 
 

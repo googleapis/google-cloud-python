@@ -65,6 +65,12 @@ class BusinessInfo(proto.Message):
             business.
 
             This field is a member of `oneof`_ ``_customer_service``.
+        korean_business_registration_number (str):
+            Optional. The 10-digit `Korean business registration
+            number <https://support.google.com/merchants/answer/9037766>`__
+            separated with dashes in the format: XXX-XX-XXXXX.
+
+            This field is a member of `oneof`_ ``_korean_business_registration_number``.
     """
 
     name: str = proto.Field(
@@ -96,6 +102,11 @@ class BusinessInfo(proto.Message):
         number=5,
         optional=True,
         message=customerservice.CustomerService,
+    )
+    korean_business_registration_number: str = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
     )
 
 

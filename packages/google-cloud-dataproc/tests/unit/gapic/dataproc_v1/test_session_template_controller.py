@@ -3412,6 +3412,7 @@ def test_create_session_template_rest(request_type):
         "description": "description_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "jupyter_session": {"kernel": 1, "display_name": "display_name_value"},
+        "spark_connect_session": {},
         "creator": "creator_value",
         "labels": {},
         "runtime_config": {
@@ -3850,6 +3851,7 @@ def test_update_session_template_rest(request_type):
         "description": "description_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "jupyter_session": {"kernel": 1, "display_name": "display_name_value"},
+        "spark_connect_session": {},
         "creator": "creator_value",
         "labels": {},
         "runtime_config": {

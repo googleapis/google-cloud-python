@@ -59,6 +59,7 @@ class runCallTransformer(cst.CSTTransformer):
         'list_tasks': ('parent', 'page_size', 'page_token', 'show_deleted', ),
         'run_job': ('name', 'validate_only', 'etag', 'overrides', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
+        'submit_build': ('parent', 'storage_source', 'image_uri', 'buildpack_build', 'docker_build', 'service_account', 'worker_pool', 'tags', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_job': ('job', 'validate_only', 'allow_missing', ),
         'update_service': ('service', 'update_mask', 'validate_only', 'allow_missing', ),

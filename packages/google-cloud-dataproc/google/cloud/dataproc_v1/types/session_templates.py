@@ -175,6 +175,11 @@ class DeleteSessionTemplateRequest(proto.Message):
 class SessionTemplate(proto.Message):
     r"""A representation of a session template.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -188,6 +193,10 @@ class SessionTemplate(proto.Message):
             created.
         jupyter_session (google.cloud.dataproc_v1.types.JupyterConfig):
             Optional. Jupyter session config.
+
+            This field is a member of `oneof`_ ``session_config``.
+        spark_connect_session (google.cloud.dataproc_v1.types.SparkConnectConfig):
+            Optional. Spark Connect session config.
 
             This field is a member of `oneof`_ ``session_config``.
         creator (str):
@@ -235,6 +244,12 @@ class SessionTemplate(proto.Message):
         number=3,
         oneof="session_config",
         message=sessions.JupyterConfig,
+    )
+    spark_connect_session: sessions.SparkConnectConfig = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="session_config",
+        message=sessions.SparkConnectConfig,
     )
     creator: str = proto.Field(
         proto.STRING,

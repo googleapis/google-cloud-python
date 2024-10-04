@@ -279,7 +279,7 @@ class ParallelstoreGrpcTransport(ParallelstoreTransport):
     ]:
         r"""Return a callable for the list instances method over gRPC.
 
-        Lists Instances in a given project and location.
+        Lists all instances in a given project and location.
 
         Returns:
             Callable[[~.ListInstancesRequest],
@@ -305,7 +305,7 @@ class ParallelstoreGrpcTransport(ParallelstoreTransport):
     ) -> Callable[[parallelstore.GetInstanceRequest], parallelstore.Instance]:
         r"""Return a callable for the get instance method over gRPC.
 
-        Gets details of a single Instance.
+        Gets details of a single instance.
 
         Returns:
             Callable[[~.GetInstanceRequest],
@@ -358,7 +358,7 @@ class ParallelstoreGrpcTransport(ParallelstoreTransport):
     ) -> Callable[[parallelstore.UpdateInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the update instance method over gRPC.
 
-        Updates the parameters of a single Instance.
+        Updates the parameters of a single instance.
 
         Returns:
             Callable[[~.UpdateInstanceRequest],
@@ -384,7 +384,7 @@ class ParallelstoreGrpcTransport(ParallelstoreTransport):
     ) -> Callable[[parallelstore.DeleteInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete instance method over gRPC.
 
-        Deletes a single Instance.
+        Deletes a single instance.
 
         Returns:
             Callable[[~.DeleteInstanceRequest],
@@ -410,8 +410,7 @@ class ParallelstoreGrpcTransport(ParallelstoreTransport):
     ) -> Callable[[parallelstore.ImportDataRequest], operations_pb2.Operation]:
         r"""Return a callable for the import data method over gRPC.
 
-        ImportData copies data from Cloud Storage to
-        Parallelstore.
+        Copies data from Cloud Storage to Parallelstore.
 
         Returns:
             Callable[[~.ImportDataRequest],
@@ -437,8 +436,7 @@ class ParallelstoreGrpcTransport(ParallelstoreTransport):
     ) -> Callable[[parallelstore.ExportDataRequest], operations_pb2.Operation]:
         r"""Return a callable for the export data method over gRPC.
 
-        ExportData copies data from Parallelstore to Cloud
-        Storage
+        Copies data from Parallelstore to Cloud Storage.
 
         Returns:
             Callable[[~.ExportDataRequest],

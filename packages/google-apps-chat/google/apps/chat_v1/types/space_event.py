@@ -492,8 +492,9 @@ class ListSpaceEventsResponse(proto.Message):
 
     Attributes:
         space_events (MutableSequence[google.apps.chat_v1.types.SpaceEvent]):
-            Results are returned in chronological order
-            (oldest event first).
+            Results are returned in chronological order (oldest event
+            first). Note: The ``permissionSettings`` field is not
+            returned in the Space object for list requests.
         next_page_token (str):
             Continuation token used to fetch more events.
             If this field is omitted, there are no

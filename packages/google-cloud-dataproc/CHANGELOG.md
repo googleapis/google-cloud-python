@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.12.0...google-cloud-dataproc-v5.13.0) (2024-09-30)
+
+
+### Features
+
+* add support for Spark Connect sessions in Dataproc Serverless for Spark ([0d35003](https://github.com/googleapis/google-cloud-python/commit/0d350038411bbdcf10eb7fb6820084abcb362c5a))
+
+
+### Documentation
+
+* update docs for `filter` field in `ListSessionsRequest` ([0d35003](https://github.com/googleapis/google-cloud-python/commit/0d350038411bbdcf10eb7fb6820084abcb362c5a))
+
 ## [5.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.11.0...google-cloud-dataproc-v5.12.0) (2024-09-16)
 
 

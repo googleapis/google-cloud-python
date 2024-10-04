@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.shopping.merchant_accounts_v1beta.types import user
+from google.shopping.merchant_accounts_v1beta.types import accountservices, user
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.accounts.v1beta",
@@ -136,10 +135,14 @@ class CreateAndConfigureAccountRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_accept_terms_of_service``.
         service (MutableSequence[google.shopping.merchant_accounts_v1beta.types.CreateAndConfigureAccountRequest.AddAccountService]):
-            Optional. If specified, an account service
-            between the account to be created and the
-            provider account is initialized as part of the
-            creation.
+            Required. An account service between the account to be
+            created and the provider account is initialized as part of
+            the creation. At least one such service needs to be
+            provided. Currently exactly one of these needs to be
+            ``account_aggregation``, which means you can only create sub
+            accounts, not standalone account through this method.
+            Additional ``account_management`` or ``product_management``
+            services may be provided.
     """
 
     class AcceptTermsOfService(proto.Message):
@@ -147,8 +150,11 @@ class CreateAndConfigureAccountRequest(proto.Message):
 
         Attributes:
             name (str):
-                Required. The resource name of the terms of
-                service version.
+                Required. The resource name of the terms of service version
+                in the format ``termsOfService/{version}``. To retrieve the
+                latest version, use the
+                `termsOfService.retrieveLatest </merchant/api/reference/rest/accounts_v1beta/termsOfService/retrieveLatest>`__
+                method.
             region_code (str):
                 Required. Region code as defined by
                 `CLDR <https://cldr.unicode.org/>`__. This is either a
@@ -173,9 +179,11 @@ class CreateAndConfigureAccountRequest(proto.Message):
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
-            account_aggregation (google.protobuf.empty_pb2.Empty):
-                The provider is an aggregator for the
-                account.
+            account_aggregation (google.shopping.merchant_accounts_v1beta.types.AccountAggregation):
+                The provider is an
+                `aggregator <https://support.google.com/merchants/answer/188487>`__
+                for the account. Payload for service type Account
+                Aggregation.
 
                 This field is a member of `oneof`_ ``service_type``.
             provider (str):
@@ -185,11 +193,11 @@ class CreateAndConfigureAccountRequest(proto.Message):
                 This field is a member of `oneof`_ ``_provider``.
         """
 
-        account_aggregation: empty_pb2.Empty = proto.Field(
+        account_aggregation: accountservices.AccountAggregation = proto.Field(
             proto.MESSAGE,
-            number=2,
+            number=103,
             oneof="service_type",
-            message=empty_pb2.Empty,
+            message=accountservices.AccountAggregation,
         )
         provider: str = proto.Field(
             proto.STRING,
@@ -227,11 +235,19 @@ class DeleteAccountRequest(proto.Message):
         name (str):
             Required. The name of the account to delete. Format:
             ``accounts/{account}``
+        force (bool):
+            Optional. If set to ``true``, the account is deleted even if
+            it provides services to other accounts or has processed
+            offers.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 

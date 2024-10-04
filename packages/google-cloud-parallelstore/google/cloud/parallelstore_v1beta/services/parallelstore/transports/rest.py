@@ -628,8 +628,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
 
             Args:
                 request (~.parallelstore.CreateInstanceRequest):
-                    The request object. Request for
-                [CreateInstance][google.cloud.parallelstore.v1beta.Parallelstore.CreateInstance]
+                    The request object. Create a new Parallelstore instance.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -722,7 +721,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
 
             Args:
                 request (~.parallelstore.DeleteInstanceRequest):
-                    The request object. Message for deleting a Instance
+                    The request object. Delete an instance.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -808,9 +807,8 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
 
             Args:
                 request (~.parallelstore.ExportDataRequest):
-                    The request object. Message representing the request
-                exporting data from Cloud Storage to
-                parallelstore.
+                    The request object. Export data from Parallelstore to
+                Cloud Storage.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -903,7 +901,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
 
             Args:
                 request (~.parallelstore.GetInstanceRequest):
-                    The request object. Request to get an instance's details.
+                    The request object. Get an instance's details.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -988,9 +986,8 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
 
             Args:
                 request (~.parallelstore.ImportDataRequest):
-                    The request object. Message representing the request
-                importing data from parallelstore to
-                Cloud Storage.
+                    The request object. Import data from Cloud Storage into a
+                Parallelstore instance.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1083,8 +1080,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
 
             Args:
                 request (~.parallelstore.ListInstancesRequest):
-                    The request object. Message for requesting list of
-                Instances
+                    The request object. List instances request.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1093,8 +1089,8 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
 
             Returns:
                 ~.parallelstore.ListInstancesResponse:
-                    Message for response to listing
-                Instances
+                    Response from
+                [ListInstances][google.cloud.parallelstore.v1beta.Parallelstore.ListInstances].
 
             """
 
@@ -1173,7 +1169,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
 
             Args:
                 request (~.parallelstore.UpdateInstanceRequest):
-                    The request object. Message for updating a Instance
+                    The request object. Update an instance.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
