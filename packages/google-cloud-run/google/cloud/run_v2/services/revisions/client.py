@@ -242,6 +242,28 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def mesh_path(
+        project: str,
+        location: str,
+        mesh: str,
+    ) -> str:
+        """Returns a fully-qualified mesh string."""
+        return "projects/{project}/locations/{location}/meshes/{mesh}".format(
+            project=project,
+            location=location,
+            mesh=mesh,
+        )
+
+    @staticmethod
+    def parse_mesh_path(path: str) -> Dict[str, str]:
+        """Parses a mesh path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/meshes/(?P<mesh>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def revision_path(
         project: str,
         location: str,

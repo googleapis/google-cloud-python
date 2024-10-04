@@ -339,6 +339,8 @@ class TermsOfServiceAgreementStateServiceAsyncClient:
                 Required. The resource name of the terms of service
                 version. Format:
                 ``accounts/{account}/termsOfServiceAgreementState/{identifier}``
+                The identifier format is:
+                ``{TermsOfServiceKind}-{country}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

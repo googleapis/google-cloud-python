@@ -15,15 +15,15 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for BatchProcessDocuments
+# Snippet for SubmitBuild
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-documentai
+#   python3 -m pip install google-cloud-run
 
 
-# [START documentai_v1beta2_generated_DocumentUnderstandingService_BatchProcessDocuments_sync]
+# [START run_v2_generated_Builds_SubmitBuild_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -31,30 +31,28 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import documentai_v1beta2
+from google.cloud import run_v2
 
 
-def sample_batch_process_documents():
+def sample_submit_build():
     # Create a client
-    client = documentai_v1beta2.DocumentUnderstandingServiceClient()
+    client = run_v2.BuildsClient()
 
     # Initialize request argument(s)
-    requests = documentai_v1beta2.ProcessDocumentRequest()
-    requests.input_config.gcs_source.uri = "uri_value"
-    requests.input_config.mime_type = "mime_type_value"
+    storage_source = run_v2.StorageSource()
+    storage_source.bucket = "bucket_value"
+    storage_source.object_ = "object__value"
 
-    request = documentai_v1beta2.BatchProcessDocumentsRequest(
-        requests=requests,
+    request = run_v2.SubmitBuildRequest(
+        storage_source=storage_source,
+        parent="parent_value",
+        image_uri="image_uri_value",
     )
 
     # Make the request
-    operation = client.batch_process_documents(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    response = client.submit_build(request=request)
 
     # Handle the response
     print(response)
 
-# [END documentai_v1beta2_generated_DocumentUnderstandingService_BatchProcessDocuments_sync]
+# [END run_v2_generated_Builds_SubmitBuild_sync]

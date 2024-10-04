@@ -248,6 +248,8 @@ class Revision(proto.Message):
             key (CMEK) to use to encrypt this container
             image. For more information, go to
             https://cloud.google.com/run/docs/securing/using-cmek
+        service_mesh (google.cloud.run_v2.types.ServiceMesh):
+            Enables service mesh connectivity.
         encryption_key_revocation_action (google.cloud.run_v2.types.EncryptionKeyRevocationAction):
             The action to take if the encryption key is
             revoked.
@@ -280,6 +282,8 @@ class Revision(proto.Message):
         scaling_status (google.cloud.run_v2.types.RevisionScalingStatus):
             Output only. The current effective scaling
             settings for the revision.
+        node_selector (google.cloud.run_v2.types.NodeSelector):
+            The node selector for the revision.
         etag (str):
             Output only. A system-generated fingerprint
             for this version of the resource. May be used to
@@ -379,6 +383,11 @@ class Revision(proto.Message):
         proto.STRING,
         number=21,
     )
+    service_mesh: vendor_settings.ServiceMesh = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message=vendor_settings.ServiceMesh,
+    )
     encryption_key_revocation_action: vendor_settings.EncryptionKeyRevocationAction = (
         proto.Field(
             proto.ENUM,
@@ -420,6 +429,11 @@ class Revision(proto.Message):
         proto.MESSAGE,
         number=39,
         message=status.RevisionScalingStatus,
+    )
+    node_selector: vendor_settings.NodeSelector = proto.Field(
+        proto.MESSAGE,
+        number=40,
+        message=vendor_settings.NodeSelector,
     )
     etag: str = proto.Field(
         proto.STRING,

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .build import StorageSource, SubmitBuildRequest, SubmitBuildResponse
 from .condition import Condition
 from .execution import (
     CancelExecutionRequest,
@@ -91,12 +92,17 @@ from .vendor_settings import (
     EncryptionKeyRevocationAction,
     ExecutionEnvironment,
     IngressTraffic,
+    NodeSelector,
     RevisionScaling,
+    ServiceMesh,
     ServiceScaling,
     VpcAccess,
 )
 
 __all__ = (
+    "StorageSource",
+    "SubmitBuildRequest",
+    "SubmitBuildResponse",
     "Condition",
     "CancelExecutionRequest",
     "DeleteExecutionRequest",
@@ -157,7 +163,9 @@ __all__ = (
     "TrafficTargetStatus",
     "TrafficTargetAllocationType",
     "BinaryAuthorization",
+    "NodeSelector",
     "RevisionScaling",
+    "ServiceMesh",
     "ServiceScaling",
     "VpcAccess",
     "EncryptionKeyRevocationAction",

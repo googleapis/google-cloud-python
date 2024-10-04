@@ -2637,6 +2637,120 @@ def test_retrieve_latest_terms_of_service_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
+def test_retrieve_latest_terms_of_service_rest_required_fields(
+    request_type=termsofservice.RetrieveLatestTermsOfServiceRequest,
+):
+    transport_class = transports.TermsOfServiceServiceRestTransport
+
+    request_init = {}
+    request_init["region_code"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "regionCode" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).retrieve_latest_terms_of_service._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "regionCode" in jsonified_request
+    assert jsonified_request["regionCode"] == request_init["region_code"]
+
+    jsonified_request["regionCode"] = "region_code_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).retrieve_latest_terms_of_service._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "kind",
+            "region_code",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "regionCode" in jsonified_request
+    assert jsonified_request["regionCode"] == "region_code_value"
+
+    client = TermsOfServiceServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = termsofservice.TermsOfService()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = termsofservice.TermsOfService.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.retrieve_latest_terms_of_service(request)
+
+            expected_params = [
+                (
+                    "regionCode",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_retrieve_latest_terms_of_service_rest_unset_required_fields():
+    transport = transports.TermsOfServiceServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.retrieve_latest_terms_of_service._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "kind",
+                "regionCode",
+            )
+        )
+        & set(
+            (
+                "regionCode",
+                "kind",
+            )
+        )
+    )
+
+
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_retrieve_latest_terms_of_service_rest_interceptors(null_interceptor):
     transport = transports.TermsOfServiceServiceRestTransport(
