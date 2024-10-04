@@ -20,18 +20,19 @@ from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
-from google.shopping.merchant_accounts_v1beta.types import accounts
+from google.shopping.merchant_accounts_v1beta.types import autofeedsettings
 
-from .base import DEFAULT_CLIENT_INFO, AccountsServiceTransport
+from .base import DEFAULT_CLIENT_INFO, AutofeedSettingsServiceTransport
 
 
-class AccountsServiceGrpcTransport(AccountsServiceTransport):
-    """gRPC backend transport for AccountsService.
+class AutofeedSettingsServiceGrpcTransport(AutofeedSettingsServiceTransport):
+    """gRPC backend transport for AutofeedSettingsService.
 
-    Service to support Accounts API.
+    Service to support
+    `autofeed <https://support.google.com/merchants/answer/7538732>`__
+    setting.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -236,17 +237,18 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
         return self._grpc_channel
 
     @property
-    def get_account(self) -> Callable[[accounts.GetAccountRequest], accounts.Account]:
-        r"""Return a callable for the get account method over gRPC.
+    def get_autofeed_settings(
+        self,
+    ) -> Callable[
+        [autofeedsettings.GetAutofeedSettingsRequest], autofeedsettings.AutofeedSettings
+    ]:
+        r"""Return a callable for the get autofeed settings method over gRPC.
 
-        Retrieves an account from your Merchant Center
-        account. After inserting, updating, or deleting an
-        account, it may take several minutes before changes take
-        effect.
+        Retrieves the autofeed settings of an account.
 
         Returns:
-            Callable[[~.GetAccountRequest],
-                    ~.Account]:
+            Callable[[~.GetAutofeedSettingsRequest],
+                    ~.AutofeedSettings]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -254,27 +256,28 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_account" not in self._stubs:
-            self._stubs["get_account"] = self.grpc_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AccountsService/GetAccount",
-                request_serializer=accounts.GetAccountRequest.serialize,
-                response_deserializer=accounts.Account.deserialize,
+        if "get_autofeed_settings" not in self._stubs:
+            self._stubs["get_autofeed_settings"] = self.grpc_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1beta.AutofeedSettingsService/GetAutofeedSettings",
+                request_serializer=autofeedsettings.GetAutofeedSettingsRequest.serialize,
+                response_deserializer=autofeedsettings.AutofeedSettings.deserialize,
             )
-        return self._stubs["get_account"]
+        return self._stubs["get_autofeed_settings"]
 
     @property
-    def create_and_configure_account(
+    def update_autofeed_settings(
         self,
-    ) -> Callable[[accounts.CreateAndConfigureAccountRequest], accounts.Account]:
-        r"""Return a callable for the create and configure account method over gRPC.
+    ) -> Callable[
+        [autofeedsettings.UpdateAutofeedSettingsRequest],
+        autofeedsettings.AutofeedSettings,
+    ]:
+        r"""Return a callable for the update autofeed settings method over gRPC.
 
-        Creates a standalone Merchant Center account with
-        additional configuration. Adds the user that makes the
-        request as an admin for the new account.
+        Updates the autofeed settings of an account.
 
         Returns:
-            Callable[[~.CreateAndConfigureAccountRequest],
-                    ~.Account]:
+            Callable[[~.UpdateAutofeedSettingsRequest],
+                    ~.AutofeedSettings]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -282,136 +285,13 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_and_configure_account" not in self._stubs:
-            self._stubs["create_and_configure_account"] = self.grpc_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AccountsService/CreateAndConfigureAccount",
-                request_serializer=accounts.CreateAndConfigureAccountRequest.serialize,
-                response_deserializer=accounts.Account.deserialize,
+        if "update_autofeed_settings" not in self._stubs:
+            self._stubs["update_autofeed_settings"] = self.grpc_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1beta.AutofeedSettingsService/UpdateAutofeedSettings",
+                request_serializer=autofeedsettings.UpdateAutofeedSettingsRequest.serialize,
+                response_deserializer=autofeedsettings.AutofeedSettings.deserialize,
             )
-        return self._stubs["create_and_configure_account"]
-
-    @property
-    def delete_account(
-        self,
-    ) -> Callable[[accounts.DeleteAccountRequest], empty_pb2.Empty]:
-        r"""Return a callable for the delete account method over gRPC.
-
-        Deletes the specified account regardless of its type:
-        standalone, MCA or sub-account. Deleting an MCA leads to the
-        deletion of all of its sub-accounts. Executing this method
-        requires admin access. The deletion succeeds only if the account
-        does not provide services to any other account and has no
-        processed offers. You can use the ``force`` parameter to
-        override this.
-
-        Returns:
-            Callable[[~.DeleteAccountRequest],
-                    ~.Empty]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_account" not in self._stubs:
-            self._stubs["delete_account"] = self.grpc_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AccountsService/DeleteAccount",
-                request_serializer=accounts.DeleteAccountRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
-            )
-        return self._stubs["delete_account"]
-
-    @property
-    def update_account(
-        self,
-    ) -> Callable[[accounts.UpdateAccountRequest], accounts.Account]:
-        r"""Return a callable for the update account method over gRPC.
-
-        Updates an account regardless of its type:
-        standalone, MCA or sub-account. Executing this method
-        requires admin access.
-
-        Returns:
-            Callable[[~.UpdateAccountRequest],
-                    ~.Account]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_account" not in self._stubs:
-            self._stubs["update_account"] = self.grpc_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AccountsService/UpdateAccount",
-                request_serializer=accounts.UpdateAccountRequest.serialize,
-                response_deserializer=accounts.Account.deserialize,
-            )
-        return self._stubs["update_account"]
-
-    @property
-    def list_accounts(
-        self,
-    ) -> Callable[[accounts.ListAccountsRequest], accounts.ListAccountsResponse]:
-        r"""Return a callable for the list accounts method over gRPC.
-
-        Lists accounts accessible to the calling user and
-        matching the constraints of the request such as page
-        size or filters. This is not just listing the
-        sub-accounts of an MCA, but all accounts the calling
-        user has access to including other MCAs, linked
-        accounts, standalone accounts and so on. If no filter is
-        provided, then it returns accounts the user is directly
-        added to.
-
-        Returns:
-            Callable[[~.ListAccountsRequest],
-                    ~.ListAccountsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_accounts" not in self._stubs:
-            self._stubs["list_accounts"] = self.grpc_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AccountsService/ListAccounts",
-                request_serializer=accounts.ListAccountsRequest.serialize,
-                response_deserializer=accounts.ListAccountsResponse.deserialize,
-            )
-        return self._stubs["list_accounts"]
-
-    @property
-    def list_sub_accounts(
-        self,
-    ) -> Callable[[accounts.ListSubAccountsRequest], accounts.ListSubAccountsResponse]:
-        r"""Return a callable for the list sub accounts method over gRPC.
-
-        List all sub-accounts for a given multi client account. This is
-        a convenience wrapper for the more powerful ``ListAccounts``
-        method. This method will produce the same results as calling
-        ``ListsAccounts`` with the following filter:
-        ``relationship(providerId={parent} AND service(type="ACCOUNT_AGGREGATION"))``
-
-        Returns:
-            Callable[[~.ListSubAccountsRequest],
-                    ~.ListSubAccountsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_sub_accounts" not in self._stubs:
-            self._stubs["list_sub_accounts"] = self.grpc_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AccountsService/ListSubAccounts",
-                request_serializer=accounts.ListSubAccountsRequest.serialize,
-                response_deserializer=accounts.ListSubAccountsResponse.deserialize,
-            )
-        return self._stubs["list_sub_accounts"]
+        return self._stubs["update_autofeed_settings"]
 
     def close(self):
         self.grpc_channel.close()
@@ -421,4 +301,4 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
         return "grpc"
 
 
-__all__ = ("AccountsServiceGrpcTransport",)
+__all__ = ("AutofeedSettingsServiceGrpcTransport",)

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for RetrieveLatestTermsOfService
+# Snippet for UpdateAutofeedSettings
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-shopping-merchant-accounts
 
 
-# [START merchantapi_v1beta_generated_TermsOfServiceService_RetrieveLatestTermsOfService_async]
+# [START merchantapi_v1beta_generated_AutofeedSettingsService_UpdateAutofeedSettings_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,20 +34,22 @@
 from google.shopping import merchant_accounts_v1beta
 
 
-async def sample_retrieve_latest_terms_of_service():
+def sample_update_autofeed_settings():
     # Create a client
-    client = merchant_accounts_v1beta.TermsOfServiceServiceAsyncClient()
+    client = merchant_accounts_v1beta.AutofeedSettingsServiceClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1beta.RetrieveLatestTermsOfServiceRequest(
-        region_code="region_code_value",
-        kind="MERCHANT_CENTER",
+    autofeed_settings = merchant_accounts_v1beta.AutofeedSettings()
+    autofeed_settings.enable_products = True
+
+    request = merchant_accounts_v1beta.UpdateAutofeedSettingsRequest(
+        autofeed_settings=autofeed_settings,
     )
 
     # Make the request
-    response = await client.retrieve_latest_terms_of_service(request=request)
+    response = client.update_autofeed_settings(request=request)
 
     # Handle the response
     print(response)
 
-# [END merchantapi_v1beta_generated_TermsOfServiceService_RetrieveLatestTermsOfService_async]
+# [END merchantapi_v1beta_generated_AutofeedSettingsService_UpdateAutofeedSettings_sync]

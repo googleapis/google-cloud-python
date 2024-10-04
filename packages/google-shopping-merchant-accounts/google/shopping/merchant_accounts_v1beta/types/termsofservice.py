@@ -109,13 +109,13 @@ class RetrieveLatestTermsOfServiceRequest(proto.Message):
 
     Attributes:
         region_code (str):
-            Region code as defined by
+            Required. Region code as defined by
             `CLDR <https://cldr.unicode.org/>`__. This is either a
             country when the ToS applies specifically to that country or
             001 when it applies globally.
         kind (google.shopping.merchant_accounts_v1beta.types.TermsOfServiceKind):
-            The Kind this terms of service version
-            applies to.
+            Required. The Kind this terms of service
+            version applies to.
     """
 
     region_code: str = proto.Field(

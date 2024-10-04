@@ -21,20 +21,21 @@ from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.shopping.merchant_accounts_v1beta.types import accounts
+from google.shopping.merchant_accounts_v1beta.types import autofeedsettings
 
-from .base import DEFAULT_CLIENT_INFO, AccountsServiceTransport
-from .grpc import AccountsServiceGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, AutofeedSettingsServiceTransport
+from .grpc import AutofeedSettingsServiceGrpcTransport
 
 
-class AccountsServiceGrpcAsyncIOTransport(AccountsServiceTransport):
-    """gRPC AsyncIO backend transport for AccountsService.
+class AutofeedSettingsServiceGrpcAsyncIOTransport(AutofeedSettingsServiceTransport):
+    """gRPC AsyncIO backend transport for AutofeedSettingsService.
 
-    Service to support Accounts API.
+    Service to support
+    `autofeed <https://support.google.com/merchants/answer/7538732>`__
+    setting.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -240,49 +241,19 @@ class AccountsServiceGrpcAsyncIOTransport(AccountsServiceTransport):
         return self._grpc_channel
 
     @property
-    def get_account(
-        self,
-    ) -> Callable[[accounts.GetAccountRequest], Awaitable[accounts.Account]]:
-        r"""Return a callable for the get account method over gRPC.
-
-        Retrieves an account from your Merchant Center
-        account. After inserting, updating, or deleting an
-        account, it may take several minutes before changes take
-        effect.
-
-        Returns:
-            Callable[[~.GetAccountRequest],
-                    Awaitable[~.Account]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_account" not in self._stubs:
-            self._stubs["get_account"] = self.grpc_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AccountsService/GetAccount",
-                request_serializer=accounts.GetAccountRequest.serialize,
-                response_deserializer=accounts.Account.deserialize,
-            )
-        return self._stubs["get_account"]
-
-    @property
-    def create_and_configure_account(
+    def get_autofeed_settings(
         self,
     ) -> Callable[
-        [accounts.CreateAndConfigureAccountRequest], Awaitable[accounts.Account]
+        [autofeedsettings.GetAutofeedSettingsRequest],
+        Awaitable[autofeedsettings.AutofeedSettings],
     ]:
-        r"""Return a callable for the create and configure account method over gRPC.
+        r"""Return a callable for the get autofeed settings method over gRPC.
 
-        Creates a standalone Merchant Center account with
-        additional configuration. Adds the user that makes the
-        request as an admin for the new account.
+        Retrieves the autofeed settings of an account.
 
         Returns:
-            Callable[[~.CreateAndConfigureAccountRequest],
-                    Awaitable[~.Account]]:
+            Callable[[~.GetAutofeedSettingsRequest],
+                    Awaitable[~.AutofeedSettings]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -290,94 +261,28 @@ class AccountsServiceGrpcAsyncIOTransport(AccountsServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_and_configure_account" not in self._stubs:
-            self._stubs["create_and_configure_account"] = self.grpc_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AccountsService/CreateAndConfigureAccount",
-                request_serializer=accounts.CreateAndConfigureAccountRequest.serialize,
-                response_deserializer=accounts.Account.deserialize,
+        if "get_autofeed_settings" not in self._stubs:
+            self._stubs["get_autofeed_settings"] = self.grpc_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1beta.AutofeedSettingsService/GetAutofeedSettings",
+                request_serializer=autofeedsettings.GetAutofeedSettingsRequest.serialize,
+                response_deserializer=autofeedsettings.AutofeedSettings.deserialize,
             )
-        return self._stubs["create_and_configure_account"]
+        return self._stubs["get_autofeed_settings"]
 
     @property
-    def delete_account(
-        self,
-    ) -> Callable[[accounts.DeleteAccountRequest], Awaitable[empty_pb2.Empty]]:
-        r"""Return a callable for the delete account method over gRPC.
-
-        Deletes the specified account regardless of its type:
-        standalone, MCA or sub-account. Deleting an MCA leads to the
-        deletion of all of its sub-accounts. Executing this method
-        requires admin access. The deletion succeeds only if the account
-        does not provide services to any other account and has no
-        processed offers. You can use the ``force`` parameter to
-        override this.
-
-        Returns:
-            Callable[[~.DeleteAccountRequest],
-                    Awaitable[~.Empty]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_account" not in self._stubs:
-            self._stubs["delete_account"] = self.grpc_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AccountsService/DeleteAccount",
-                request_serializer=accounts.DeleteAccountRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
-            )
-        return self._stubs["delete_account"]
-
-    @property
-    def update_account(
-        self,
-    ) -> Callable[[accounts.UpdateAccountRequest], Awaitable[accounts.Account]]:
-        r"""Return a callable for the update account method over gRPC.
-
-        Updates an account regardless of its type:
-        standalone, MCA or sub-account. Executing this method
-        requires admin access.
-
-        Returns:
-            Callable[[~.UpdateAccountRequest],
-                    Awaitable[~.Account]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_account" not in self._stubs:
-            self._stubs["update_account"] = self.grpc_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AccountsService/UpdateAccount",
-                request_serializer=accounts.UpdateAccountRequest.serialize,
-                response_deserializer=accounts.Account.deserialize,
-            )
-        return self._stubs["update_account"]
-
-    @property
-    def list_accounts(
+    def update_autofeed_settings(
         self,
     ) -> Callable[
-        [accounts.ListAccountsRequest], Awaitable[accounts.ListAccountsResponse]
+        [autofeedsettings.UpdateAutofeedSettingsRequest],
+        Awaitable[autofeedsettings.AutofeedSettings],
     ]:
-        r"""Return a callable for the list accounts method over gRPC.
+        r"""Return a callable for the update autofeed settings method over gRPC.
 
-        Lists accounts accessible to the calling user and
-        matching the constraints of the request such as page
-        size or filters. This is not just listing the
-        sub-accounts of an MCA, but all accounts the calling
-        user has access to including other MCAs, linked
-        accounts, standalone accounts and so on. If no filter is
-        provided, then it returns accounts the user is directly
-        added to.
+        Updates the autofeed settings of an account.
 
         Returns:
-            Callable[[~.ListAccountsRequest],
-                    Awaitable[~.ListAccountsResponse]]:
+            Callable[[~.UpdateAutofeedSettingsRequest],
+                    Awaitable[~.AutofeedSettings]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -385,76 +290,24 @@ class AccountsServiceGrpcAsyncIOTransport(AccountsServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_accounts" not in self._stubs:
-            self._stubs["list_accounts"] = self.grpc_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AccountsService/ListAccounts",
-                request_serializer=accounts.ListAccountsRequest.serialize,
-                response_deserializer=accounts.ListAccountsResponse.deserialize,
+        if "update_autofeed_settings" not in self._stubs:
+            self._stubs["update_autofeed_settings"] = self.grpc_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1beta.AutofeedSettingsService/UpdateAutofeedSettings",
+                request_serializer=autofeedsettings.UpdateAutofeedSettingsRequest.serialize,
+                response_deserializer=autofeedsettings.AutofeedSettings.deserialize,
             )
-        return self._stubs["list_accounts"]
-
-    @property
-    def list_sub_accounts(
-        self,
-    ) -> Callable[
-        [accounts.ListSubAccountsRequest], Awaitable[accounts.ListSubAccountsResponse]
-    ]:
-        r"""Return a callable for the list sub accounts method over gRPC.
-
-        List all sub-accounts for a given multi client account. This is
-        a convenience wrapper for the more powerful ``ListAccounts``
-        method. This method will produce the same results as calling
-        ``ListsAccounts`` with the following filter:
-        ``relationship(providerId={parent} AND service(type="ACCOUNT_AGGREGATION"))``
-
-        Returns:
-            Callable[[~.ListSubAccountsRequest],
-                    Awaitable[~.ListSubAccountsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_sub_accounts" not in self._stubs:
-            self._stubs["list_sub_accounts"] = self.grpc_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AccountsService/ListSubAccounts",
-                request_serializer=accounts.ListSubAccountsRequest.serialize,
-                response_deserializer=accounts.ListSubAccountsResponse.deserialize,
-            )
-        return self._stubs["list_sub_accounts"]
+        return self._stubs["update_autofeed_settings"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.get_account: gapic_v1.method_async.wrap_method(
-                self.get_account,
+            self.get_autofeed_settings: gapic_v1.method_async.wrap_method(
+                self.get_autofeed_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_and_configure_account: gapic_v1.method_async.wrap_method(
-                self.create_and_configure_account,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.delete_account: gapic_v1.method_async.wrap_method(
-                self.delete_account,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.update_account: gapic_v1.method_async.wrap_method(
-                self.update_account,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.list_accounts: gapic_v1.method_async.wrap_method(
-                self.list_accounts,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.list_sub_accounts: gapic_v1.method_async.wrap_method(
-                self.list_sub_accounts,
+            self.update_autofeed_settings: gapic_v1.method_async.wrap_method(
+                self.update_autofeed_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -464,4 +317,4 @@ class AccountsServiceGrpcAsyncIOTransport(AccountsServiceTransport):
         return self.grpc_channel.close()
 
 
-__all__ = ("AccountsServiceGrpcAsyncIOTransport",)
+__all__ = ("AutofeedSettingsServiceGrpcAsyncIOTransport",)
