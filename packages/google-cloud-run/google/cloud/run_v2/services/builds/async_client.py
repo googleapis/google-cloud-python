@@ -42,72 +42,44 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api import launch_stage_pb2  # type: ignore
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.run_v2.services.revisions import pagers
-from google.cloud.run_v2.types import (
-    condition,
-    k8s_min,
-    revision,
-    status,
-    vendor_settings,
-)
+from google.cloud.run_v2.types import build
 
-from .client import RevisionsClient
-from .transports.base import DEFAULT_CLIENT_INFO, RevisionsTransport
-from .transports.grpc_asyncio import RevisionsGrpcAsyncIOTransport
+from .client import BuildsClient
+from .transports.base import DEFAULT_CLIENT_INFO, BuildsTransport
+from .transports.grpc_asyncio import BuildsGrpcAsyncIOTransport
 
 
-class RevisionsAsyncClient:
-    """Cloud Run Revision Control Plane API."""
+class BuildsAsyncClient:
+    """Cloud Run Build Control Plane API"""
 
-    _client: RevisionsClient
+    _client: BuildsClient
 
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = RevisionsClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = RevisionsClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = RevisionsClient._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = RevisionsClient._DEFAULT_UNIVERSE
+    DEFAULT_ENDPOINT = BuildsClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = BuildsClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = BuildsClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = BuildsClient._DEFAULT_UNIVERSE
 
-    connector_path = staticmethod(RevisionsClient.connector_path)
-    parse_connector_path = staticmethod(RevisionsClient.parse_connector_path)
-    crypto_key_path = staticmethod(RevisionsClient.crypto_key_path)
-    parse_crypto_key_path = staticmethod(RevisionsClient.parse_crypto_key_path)
-    mesh_path = staticmethod(RevisionsClient.mesh_path)
-    parse_mesh_path = staticmethod(RevisionsClient.parse_mesh_path)
-    revision_path = staticmethod(RevisionsClient.revision_path)
-    parse_revision_path = staticmethod(RevisionsClient.parse_revision_path)
-    secret_path = staticmethod(RevisionsClient.secret_path)
-    parse_secret_path = staticmethod(RevisionsClient.parse_secret_path)
-    secret_version_path = staticmethod(RevisionsClient.secret_version_path)
-    parse_secret_version_path = staticmethod(RevisionsClient.parse_secret_version_path)
-    service_path = staticmethod(RevisionsClient.service_path)
-    parse_service_path = staticmethod(RevisionsClient.parse_service_path)
-    common_billing_account_path = staticmethod(
-        RevisionsClient.common_billing_account_path
-    )
+    worker_pool_path = staticmethod(BuildsClient.worker_pool_path)
+    parse_worker_pool_path = staticmethod(BuildsClient.parse_worker_pool_path)
+    common_billing_account_path = staticmethod(BuildsClient.common_billing_account_path)
     parse_common_billing_account_path = staticmethod(
-        RevisionsClient.parse_common_billing_account_path
+        BuildsClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(RevisionsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(RevisionsClient.parse_common_folder_path)
-    common_organization_path = staticmethod(RevisionsClient.common_organization_path)
+    common_folder_path = staticmethod(BuildsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(BuildsClient.parse_common_folder_path)
+    common_organization_path = staticmethod(BuildsClient.common_organization_path)
     parse_common_organization_path = staticmethod(
-        RevisionsClient.parse_common_organization_path
+        BuildsClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(RevisionsClient.common_project_path)
-    parse_common_project_path = staticmethod(RevisionsClient.parse_common_project_path)
-    common_location_path = staticmethod(RevisionsClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        RevisionsClient.parse_common_location_path
-    )
+    common_project_path = staticmethod(BuildsClient.common_project_path)
+    parse_common_project_path = staticmethod(BuildsClient.parse_common_project_path)
+    common_location_path = staticmethod(BuildsClient.common_location_path)
+    parse_common_location_path = staticmethod(BuildsClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -120,9 +92,9 @@ class RevisionsAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            RevisionsAsyncClient: The constructed client.
+            BuildsAsyncClient: The constructed client.
         """
-        return RevisionsClient.from_service_account_info.__func__(RevisionsAsyncClient, info, *args, **kwargs)  # type: ignore
+        return BuildsClient.from_service_account_info.__func__(BuildsAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -136,9 +108,9 @@ class RevisionsAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            RevisionsAsyncClient: The constructed client.
+            BuildsAsyncClient: The constructed client.
         """
-        return RevisionsClient.from_service_account_file.__func__(RevisionsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return BuildsClient.from_service_account_file.__func__(BuildsAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -176,14 +148,14 @@ class RevisionsAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return RevisionsClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return BuildsClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
-    def transport(self) -> RevisionsTransport:
+    def transport(self) -> BuildsTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            RevisionsTransport: The transport used by the client instance.
+            BuildsTransport: The transport used by the client instance.
         """
         return self._client.transport
 
@@ -206,19 +178,19 @@ class RevisionsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = RevisionsClient.get_transport_class
+    get_transport_class = BuildsClient.get_transport_class
 
     def __init__(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[str, RevisionsTransport, Callable[..., RevisionsTransport]]
+            Union[str, BuildsTransport, Callable[..., BuildsTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the revisions async client.
+        """Instantiates the builds async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -226,10 +198,10 @@ class RevisionsAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,RevisionsTransport,Callable[..., RevisionsTransport]]]):
+            transport (Optional[Union[str,BuildsTransport,Callable[..., BuildsTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the RevisionsTransport constructor.
+                arguments as used in the BuildsTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -267,23 +239,22 @@ class RevisionsAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = RevisionsClient(
+        self._client = BuildsClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
             client_info=client_info,
         )
 
-    async def get_revision(
+    async def submit_build(
         self,
-        request: Optional[Union[revision.GetRevisionRequest, dict]] = None,
+        request: Optional[Union[build.SubmitBuildRequest, dict]] = None,
         *,
-        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> revision.Revision:
-        r"""Gets information about a Revision.
+    ) -> build.SubmitBuildResponse:
+        r"""Submits a build in a given project.
 
         .. code-block:: python
 
@@ -296,34 +267,31 @@ class RevisionsAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import run_v2
 
-            async def sample_get_revision():
+            async def sample_submit_build():
                 # Create a client
-                client = run_v2.RevisionsAsyncClient()
+                client = run_v2.BuildsAsyncClient()
 
                 # Initialize request argument(s)
-                request = run_v2.GetRevisionRequest(
-                    name="name_value",
+                storage_source = run_v2.StorageSource()
+                storage_source.bucket = "bucket_value"
+                storage_source.object_ = "object__value"
+
+                request = run_v2.SubmitBuildRequest(
+                    storage_source=storage_source,
+                    parent="parent_value",
+                    image_uri="image_uri_value",
                 )
 
                 # Make the request
-                response = await client.get_revision(request=request)
+                response = await client.submit_build(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.run_v2.types.GetRevisionRequest, dict]]):
-                The request object. Request message for obtaining a
-                Revision by its full name.
-            name (:class:`str`):
-                Required. The full name of the
-                Revision. Format:
-
-                projects/{project}/locations/{location}/services/{service}/revisions/{revision}
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
+            request (Optional[Union[google.cloud.run_v2.types.SubmitBuildRequest, dict]]):
+                The request object. Request message for submitting a
+                Build.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -331,154 +299,21 @@ class RevisionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.run_v2.types.Revision:
-                A Revision is an immutable snapshot
-                of code and configuration.  A Revision
-                references a container image. Revisions
-                are only created by updates to its
-                parent Service.
+            google.cloud.run_v2.types.SubmitBuildResponse:
+                Response message for submitting a
+                Build.
 
         """
         # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, revision.GetRevisionRequest):
-            request = revision.GetRevisionRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
+        if not isinstance(request, build.SubmitBuildRequest):
+            request = build.SubmitBuildRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_revision
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def list_revisions(
-        self,
-        request: Optional[Union[revision.ListRevisionsRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListRevisionsAsyncPager:
-        r"""Lists Revisions from a given Service, or from a given
-        location.  Results are sorted by creation time,
-        descending.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import run_v2
-
-            async def sample_list_revisions():
-                # Create a client
-                client = run_v2.RevisionsAsyncClient()
-
-                # Initialize request argument(s)
-                request = run_v2.ListRevisionsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_revisions(request=request)
-
-                # Handle the response
-                async for response in page_result:
-                    print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.run_v2.types.ListRevisionsRequest, dict]]):
-                The request object. Request message for retrieving a list
-                of Revisions.
-            parent (:class:`str`):
-                Required. The Service from which the
-                Revisions should be listed. To list all
-                Revisions across Services, use "-"
-                instead of Service name. Format:
-
-                projects/{project}/locations/{location}/services/{service}
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.run_v2.services.revisions.pagers.ListRevisionsAsyncPager:
-                Response message containing a list of
-                Revisions.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, revision.ListRevisionsRequest):
-            request = revision.ListRevisionsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_revisions
+            self._client._transport.submit_build
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -496,143 +331,6 @@ class RevisionsAsyncClient:
             retry=retry,
             timeout=timeout,
             metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListRevisionsAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def delete_revision(
-        self,
-        request: Optional[Union[revision.DeleteRevisionRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Deletes a Revision.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import run_v2
-
-            async def sample_delete_revision():
-                # Create a client
-                client = run_v2.RevisionsAsyncClient()
-
-                # Initialize request argument(s)
-                request = run_v2.DeleteRevisionRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                operation = client.delete_revision(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.run_v2.types.DeleteRevisionRequest, dict]]):
-                The request object. Request message for deleting a
-                retired Revision. Revision lifecycle is
-                usually managed by making changes to the
-                parent Service. Only retired revisions
-                can be deleted with this API.
-            name (:class:`str`):
-                Required. The name of the Revision to
-                delete. Format:
-
-                projects/{project}/locations/{location}/services/{service}/revisions/{revision}
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.run_v2.types.Revision` A Revision is an immutable snapshot of code and configuration. A Revision
-                   references a container image. Revisions are only
-                   created by updates to its parent Service.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, revision.DeleteRevisionRequest):
-            request = revision.DeleteRevisionRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_revision
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            revision.Revision,
-            metadata_type=revision.Revision,
         )
 
         # Done; return the response.
@@ -873,7 +571,7 @@ class RevisionsAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self) -> "RevisionsAsyncClient":
+    async def __aenter__(self) -> "BuildsAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -885,4 +583,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("RevisionsAsyncClient",)
+__all__ = ("BuildsAsyncClient",)

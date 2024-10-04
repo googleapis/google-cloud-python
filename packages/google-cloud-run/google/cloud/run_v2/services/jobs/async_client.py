@@ -82,6 +82,8 @@ class JobsAsyncClient:
     parse_execution_path = staticmethod(JobsClient.parse_execution_path)
     job_path = staticmethod(JobsClient.job_path)
     parse_job_path = staticmethod(JobsClient.parse_job_path)
+    policy_path = staticmethod(JobsClient.policy_path)
+    parse_policy_path = staticmethod(JobsClient.parse_policy_path)
     secret_path = staticmethod(JobsClient.secret_path)
     parse_secret_path = staticmethod(JobsClient.parse_secret_path)
     secret_version_path = staticmethod(JobsClient.secret_version_path)
