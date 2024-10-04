@@ -792,7 +792,11 @@ class AllocationPolicy(proto.Message):
             instance_template (str):
                 Name of an instance template used to create VMs. Named the
                 field as 'instance_template' instead of 'template' to avoid
-                c++ keyword conflict.
+                C++ keyword conflict.
+
+                Batch only supports global instance templates. You can
+                specify the global instance template as a full or partial
+                URL.
 
                 This field is a member of `oneof`_ ``policy_template``.
             install_gpu_drivers (bool):

@@ -91,6 +91,9 @@ class ConversationDataset(proto.Message):
     ImportConversationData on a dataset that already has data is not
     allowed).
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. ConversationDataset resource name. Format:
@@ -112,6 +115,17 @@ class ConversationDataset(proto.Message):
         conversation_count (int):
             Output only. The number of conversations this
             conversation dataset contains.
+        satisfies_pzi (bool):
+            Output only. A read only boolean field
+            reflecting Zone Isolation status of the dataset.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
+        satisfies_pzs (bool):
+            Output only. A read only boolean field
+            reflecting Zone Separation status of the
+            dataset.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
     """
 
     name: str = proto.Field(
@@ -144,6 +158,16 @@ class ConversationDataset(proto.Message):
     conversation_count: int = proto.Field(
         proto.INT64,
         number=7,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+        optional=True,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+        optional=True,
     )
 
 
