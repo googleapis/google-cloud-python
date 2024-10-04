@@ -22,7 +22,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package="google.cloud.parallelstore.v1beta",
+    package="google.cloud.parallelstore.v1",
     manifest={
         "TransferType",
         "FileStripeLevel",
@@ -117,7 +117,7 @@ class Instance(proto.Message):
         description (str):
             Optional. The description of the instance.
             2048 characters or less.
-        state (google.cloud.parallelstore_v1beta.types.Instance.State):
+        state (google.cloud.parallelstore_v1.types.Instance.State):
             Output only. The instance state.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the instance was
@@ -159,7 +159,7 @@ class Instance(proto.Message):
             network. This field is populated by the service
             and contains the value currently used by the
             service.
-        file_stripe_level (google.cloud.parallelstore_v1beta.types.FileStripeLevel):
+        file_stripe_level (google.cloud.parallelstore_v1.types.FileStripeLevel):
             Optional. Stripe level for files. Allowed values are:
 
             -  ``FILE_STRIPE_LEVEL_MIN``: offers the best performance
@@ -168,7 +168,7 @@ class Instance(proto.Message):
                workloads involving a mix of small and large files.
             -  ``FILE_STRIPE_LEVEL_MAX``: higher throughput performance
                for larger files.
-        directory_stripe_level (google.cloud.parallelstore_v1beta.types.DirectoryStripeLevel):
+        directory_stripe_level (google.cloud.parallelstore_v1.types.DirectoryStripeLevel):
             Optional. Stripe level for directories. Allowed values are:
 
             -  ``DIRECTORY_STRIPE_LEVEL_MIN``: recommended when
@@ -317,10 +317,10 @@ class ListInstancesRequest(proto.Message):
 
 class ListInstancesResponse(proto.Message):
     r"""Response from
-    [ListInstances][google.cloud.parallelstore.v1beta.Parallelstore.ListInstances].
+    [ListInstances][google.cloud.parallelstore.v1.Parallelstore.ListInstances].
 
     Attributes:
-        instances (MutableSequence[google.cloud.parallelstore_v1beta.types.Instance]):
+        instances (MutableSequence[google.cloud.parallelstore_v1.types.Instance]):
             The list of Parallelstore instances.
         next_page_token (str):
             A token identifying a page of results the
@@ -380,7 +380,7 @@ class CreateInstanceRequest(proto.Message):
             -  Must be between 1-63 characters.
             -  Must end with a number or a letter.
             -  Must be unique within the customer project / location
-        instance (google.cloud.parallelstore_v1beta.types.Instance):
+        instance (google.cloud.parallelstore_v1.types.Instance):
             Required. The instance to create.
         request_id (str):
             Optional. An optional request ID to identify
@@ -433,7 +433,7 @@ class UpdateInstanceRequest(proto.Message):
             resource by the update. At least one path must be supplied
             in this field. The fields specified in the update_mask are
             relative to the resource, not the full request.
-        instance (google.cloud.parallelstore_v1beta.types.Instance):
+        instance (google.cloud.parallelstore_v1.types.Instance):
             Required. The instance to update.
         request_id (str):
             Optional. An optional request ID to identify
@@ -641,12 +641,12 @@ class ImportDataRequest(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        source_gcs_bucket (google.cloud.parallelstore_v1beta.types.SourceGcsBucket):
+        source_gcs_bucket (google.cloud.parallelstore_v1.types.SourceGcsBucket):
             The Cloud Storage source bucket and,
             optionally, path inside the bucket.
 
             This field is a member of `oneof`_ ``source``.
-        destination_parallelstore (google.cloud.parallelstore_v1beta.types.DestinationParallelstore):
+        destination_parallelstore (google.cloud.parallelstore_v1.types.DestinationParallelstore):
             Parallelstore destination.
 
             This field is a member of `oneof`_ ``destination``.
@@ -718,11 +718,11 @@ class ExportDataRequest(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        source_parallelstore (google.cloud.parallelstore_v1beta.types.SourceParallelstore):
+        source_parallelstore (google.cloud.parallelstore_v1.types.SourceParallelstore):
             Parallelstore source.
 
             This field is a member of `oneof`_ ``source``.
-        destination_gcs_bucket (google.cloud.parallelstore_v1beta.types.DestinationGcsBucket):
+        destination_gcs_bucket (google.cloud.parallelstore_v1.types.DestinationGcsBucket):
             Cloud Storage destination.
 
             This field is a member of `oneof`_ ``destination``.
@@ -795,7 +795,7 @@ class ImportDataMetadata(proto.Message):
     r"""Metadata related to the data import operation.
 
     Attributes:
-        operation_metadata (google.cloud.parallelstore_v1beta.types.TransferOperationMetadata):
+        operation_metadata (google.cloud.parallelstore_v1.types.TransferOperationMetadata):
             Data transfer operation metadata.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the operation was
@@ -868,7 +868,7 @@ class ExportDataMetadata(proto.Message):
     r"""Metadata related to the data export operation.
 
     Attributes:
-        operation_metadata (google.cloud.parallelstore_v1beta.types.TransferOperationMetadata):
+        operation_metadata (google.cloud.parallelstore_v1.types.TransferOperationMetadata):
             Data transfer operation metadata.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the operation was
@@ -944,26 +944,26 @@ class TransferOperationMetadata(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        source_parallelstore (google.cloud.parallelstore_v1beta.types.SourceParallelstore):
+        source_parallelstore (google.cloud.parallelstore_v1.types.SourceParallelstore):
             Output only. Parallelstore source.
 
             This field is a member of `oneof`_ ``source``.
-        source_gcs_bucket (google.cloud.parallelstore_v1beta.types.SourceGcsBucket):
+        source_gcs_bucket (google.cloud.parallelstore_v1.types.SourceGcsBucket):
             Output only. Cloud Storage source.
 
             This field is a member of `oneof`_ ``source``.
-        destination_gcs_bucket (google.cloud.parallelstore_v1beta.types.DestinationGcsBucket):
+        destination_gcs_bucket (google.cloud.parallelstore_v1.types.DestinationGcsBucket):
             Output only. Cloud Storage destination.
 
             This field is a member of `oneof`_ ``destination``.
-        destination_parallelstore (google.cloud.parallelstore_v1beta.types.DestinationParallelstore):
+        destination_parallelstore (google.cloud.parallelstore_v1.types.DestinationParallelstore):
             Output only. Parallelstore destination.
 
             This field is a member of `oneof`_ ``destination``.
-        counters (google.cloud.parallelstore_v1beta.types.TransferCounters):
+        counters (google.cloud.parallelstore_v1.types.TransferCounters):
             Output only. The progress of the transfer
             operation.
-        transfer_type (google.cloud.parallelstore_v1beta.types.TransferType):
+        transfer_type (google.cloud.parallelstore_v1.types.TransferType):
             Output only. The type of transfer occurring.
     """
 

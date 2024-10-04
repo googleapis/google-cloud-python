@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import os
 import re
 from typing import (
     Callable,
@@ -27,26 +26,21 @@ from typing import (
     Tuple,
     Type,
     Union,
-    cast,
 )
-import warnings
 
-from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.parallelstore_v1beta import gapic_version as package_version
+from google.cloud.parallelstore_v1 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -56,51 +50,15 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.parallelstore_v1beta.services.parallelstore import pagers
-from google.cloud.parallelstore_v1beta.types import parallelstore
+from google.cloud.parallelstore_v1.services.parallelstore import pagers
+from google.cloud.parallelstore_v1.types import parallelstore
 
+from .client import ParallelstoreClient
 from .transports.base import DEFAULT_CLIENT_INFO, ParallelstoreTransport
-from .transports.grpc import ParallelstoreGrpcTransport
 from .transports.grpc_asyncio import ParallelstoreGrpcAsyncIOTransport
-from .transports.rest import ParallelstoreRestTransport
 
 
-class ParallelstoreClientMeta(type):
-    """Metaclass for the Parallelstore client.
-
-    This provides class-level methods for building and retrieving
-    support objects (e.g. transport) without polluting the client instance
-    objects.
-    """
-
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[ParallelstoreTransport]]
-    _transport_registry["grpc"] = ParallelstoreGrpcTransport
-    _transport_registry["grpc_asyncio"] = ParallelstoreGrpcAsyncIOTransport
-    _transport_registry["rest"] = ParallelstoreRestTransport
-
-    def get_transport_class(
-        cls,
-        label: Optional[str] = None,
-    ) -> Type[ParallelstoreTransport]:
-        """Returns an appropriate transport class.
-
-        Args:
-            label: The name of the desired transport. If none is
-                provided, then the first transport in the registry is used.
-
-        Returns:
-            The transport class to use.
-        """
-        # If a specific transport is requested, return that one.
-        if label:
-            return cls._transport_registry[label]
-
-        # No transport is requested; return the default (that is, the first one
-        # in the dictionary).
-        return next(iter(cls._transport_registry.values()))
-
-
-class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
+class ParallelstoreAsyncClient:
     """Service describing handlers for resources Configures and manages
     parallelstore resources.
 
@@ -124,44 +82,49 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
     -  ``projects/12345/locations/us-central1-c/instances/my-parallelstore-share``
     """
 
-    @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
-        """Converts api endpoint to mTLS endpoint.
+    _client: ParallelstoreClient
 
-        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
-        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-        Args:
-            api_endpoint (Optional[str]): the api endpoint to convert.
-        Returns:
-            str: converted mTLS api endpoint.
-        """
-        if not api_endpoint:
-            return api_endpoint
-
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
-
-        m = mtls_endpoint_re.match(api_endpoint)
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
-
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
-
+    # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = "parallelstore.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_ENDPOINT = ParallelstoreClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = ParallelstoreClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = ParallelstoreClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = ParallelstoreClient._DEFAULT_UNIVERSE
 
-    _DEFAULT_ENDPOINT_TEMPLATE = "parallelstore.{UNIVERSE_DOMAIN}"
-    _DEFAULT_UNIVERSE = "googleapis.com"
+    address_path = staticmethod(ParallelstoreClient.address_path)
+    parse_address_path = staticmethod(ParallelstoreClient.parse_address_path)
+    instance_path = staticmethod(ParallelstoreClient.instance_path)
+    parse_instance_path = staticmethod(ParallelstoreClient.parse_instance_path)
+    network_path = staticmethod(ParallelstoreClient.network_path)
+    parse_network_path = staticmethod(ParallelstoreClient.parse_network_path)
+    service_account_path = staticmethod(ParallelstoreClient.service_account_path)
+    parse_service_account_path = staticmethod(
+        ParallelstoreClient.parse_service_account_path
+    )
+    common_billing_account_path = staticmethod(
+        ParallelstoreClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        ParallelstoreClient.parse_common_billing_account_path
+    )
+    common_folder_path = staticmethod(ParallelstoreClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ParallelstoreClient.parse_common_folder_path
+    )
+    common_organization_path = staticmethod(
+        ParallelstoreClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        ParallelstoreClient.parse_common_organization_path
+    )
+    common_project_path = staticmethod(ParallelstoreClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        ParallelstoreClient.parse_common_project_path
+    )
+    common_location_path = staticmethod(ParallelstoreClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        ParallelstoreClient.parse_common_location_path
+    )
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -174,11 +137,9 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ParallelstoreClient: The constructed client.
+            ParallelstoreAsyncClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_info(info)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
+        return ParallelstoreClient.from_service_account_info.__func__(ParallelstoreAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -192,189 +153,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ParallelstoreClient: The constructed client.
+            ParallelstoreAsyncClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
+        return ParallelstoreClient.from_service_account_file.__func__(ParallelstoreAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
-    @property
-    def transport(self) -> ParallelstoreTransport:
-        """Returns the transport used by the client instance.
-
-        Returns:
-            ParallelstoreTransport: The transport used by the client
-                instance.
-        """
-        return self._transport
-
-    @staticmethod
-    def address_path(
-        project: str,
-        region: str,
-        address: str,
-    ) -> str:
-        """Returns a fully-qualified address string."""
-        return "projects/{project}/regions/{region}/addresses/{address}".format(
-            project=project,
-            region=region,
-            address=address,
-        )
-
-    @staticmethod
-    def parse_address_path(path: str) -> Dict[str, str]:
-        """Parses a address path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/addresses/(?P<address>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def instance_path(
-        project: str,
-        location: str,
-        instance: str,
-    ) -> str:
-        """Returns a fully-qualified instance string."""
-        return "projects/{project}/locations/{location}/instances/{instance}".format(
-            project=project,
-            location=location,
-            instance=instance,
-        )
-
-    @staticmethod
-    def parse_instance_path(path: str) -> Dict[str, str]:
-        """Parses a instance path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def network_path(
-        project: str,
-        network: str,
-    ) -> str:
-        """Returns a fully-qualified network string."""
-        return "projects/{project}/global/networks/{network}".format(
-            project=project,
-            network=network,
-        )
-
-    @staticmethod
-    def parse_network_path(path: str) -> Dict[str, str]:
-        """Parses a network path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/global/networks/(?P<network>.+?)$", path
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def service_account_path(
-        project: str,
-        service_account: str,
-    ) -> str:
-        """Returns a fully-qualified service_account string."""
-        return "projects/{project}/serviceAccounts/{service_account}".format(
-            project=project,
-            service_account=service_account,
-        )
-
-    @staticmethod
-    def parse_service_account_path(path: str) -> Dict[str, str]:
-        """Parses a service_account path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/serviceAccounts/(?P<service_account>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_billing_account_path(
-        billing_account: str,
-    ) -> str:
-        """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(
-            billing_account=billing_account,
-        )
-
-    @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
-        """Parse a billing_account path into its component segments."""
-        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_folder_path(
-        folder: str,
-    ) -> str:
-        """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(
-            folder=folder,
-        )
-
-    @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str, str]:
-        """Parse a folder path into its component segments."""
-        m = re.match(r"^folders/(?P<folder>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_organization_path(
-        organization: str,
-    ) -> str:
-        """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(
-            organization=organization,
-        )
-
-    @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str, str]:
-        """Parse a organization path into its component segments."""
-        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_project_path(
-        project: str,
-    ) -> str:
-        """Returns a fully-qualified project string."""
-        return "projects/{project}".format(
-            project=project,
-        )
-
-    @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str, str]:
-        """Parse a project path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_location_path(
-        project: str,
-        location: str,
-    ) -> str:
-        """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(
-            project=project,
-            location=location,
-        )
-
-    @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str, str]:
-        """Parse a location path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
-        return m.groupdict() if m else {}
-
     @classmethod
     def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
+        cls, client_options: Optional[ClientOptions] = None
     ):
-        """Deprecated. Return the API endpoint and client cert source for mutual TLS.
+        """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
         (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
@@ -404,197 +193,16 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
+        return ParallelstoreClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
-        warnings.warn(
-            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning,
-        )
-        if client_options is None:
-            client_options = client_options_lib.ClientOptions()
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-
-        # Figure out the client cert source to use.
-        client_cert_source = None
-        if use_client_cert == "true":
-            if client_options.client_cert_source:
-                client_cert_source = client_options.client_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = cls.DEFAULT_ENDPOINT
-
-        return api_endpoint, client_cert_source
-
-    @staticmethod
-    def _read_environment_variables():
-        """Returns the environment variables used by the client.
+    @property
+    def transport(self) -> ParallelstoreTransport:
+        """Returns the transport used by the client instance.
 
         Returns:
-            Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
-
-        Raises:
-            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
-                any of ["true", "false"].
-            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
-                is not any of ["auto", "never", "always"].
+            ParallelstoreTransport: The transport used by the client instance.
         """
-        use_client_cert = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-        ).lower()
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
-        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
-
-    @staticmethod
-    def _get_client_cert_source(provided_cert_source, use_cert_flag):
-        """Return the client cert source to be used by the client.
-
-        Args:
-            provided_cert_source (bytes): The client certificate source provided.
-            use_cert_flag (bool): A flag indicating whether to use the client certificate.
-
-        Returns:
-            bytes or None: The client cert source to be used by the client.
-        """
-        client_cert_source = None
-        if use_cert_flag:
-            if provided_cert_source:
-                client_cert_source = provided_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-        return client_cert_source
-
-    @staticmethod
-    def _get_api_endpoint(
-        api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
-        """Return the API endpoint used by the client.
-
-        Args:
-            api_override (str): The API endpoint override. If specified, this is always
-                the return value of this function and the other arguments are not used.
-            client_cert_source (bytes): The client certificate source used by the client.
-            universe_domain (str): The universe domain used by the client.
-            use_mtls_endpoint (str): How to use the mTLS endpoint, which depends also on the other parameters.
-                Possible values are "always", "auto", or "never".
-
-        Returns:
-            str: The API endpoint to be used by the client.
-        """
-        if api_override is not None:
-            api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
-            _default_universe = ParallelstoreClient._DEFAULT_UNIVERSE
-            if universe_domain != _default_universe:
-                raise MutualTLSChannelError(
-                    f"mTLS is not supported in any universe other than {_default_universe}."
-                )
-            api_endpoint = ParallelstoreClient.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = ParallelstoreClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=universe_domain
-            )
-        return api_endpoint
-
-    @staticmethod
-    def _get_universe_domain(
-        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-    ) -> str:
-        """Return the universe domain used by the client.
-
-        Args:
-            client_universe_domain (Optional[str]): The universe domain configured via the client options.
-            universe_domain_env (Optional[str]): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
-
-        Returns:
-            str: The universe domain to be used by the client.
-
-        Raises:
-            ValueError: If the universe domain is an empty string.
-        """
-        universe_domain = ParallelstoreClient._DEFAULT_UNIVERSE
-        if client_universe_domain is not None:
-            universe_domain = client_universe_domain
-        elif universe_domain_env is not None:
-            universe_domain = universe_domain_env
-        if len(universe_domain.strip()) == 0:
-            raise ValueError("Universe Domain cannot be an empty string.")
-        return universe_domain
-
-    @staticmethod
-    def _compare_universes(
-        client_universe: str, credentials: ga_credentials.Credentials
-    ) -> bool:
-        """Returns True iff the universe domains used by the client and credentials match.
-
-        Args:
-            client_universe (str): The universe domain configured via the client options.
-            credentials (ga_credentials.Credentials): The credentials being used in the client.
-
-        Returns:
-            bool: True iff client_universe matches the universe in credentials.
-
-        Raises:
-            ValueError: when client_universe does not match the universe in credentials.
-        """
-
-        default_universe = ParallelstoreClient._DEFAULT_UNIVERSE
-        credentials_universe = getattr(credentials, "universe_domain", default_universe)
-
-        if client_universe != credentials_universe:
-            raise ValueError(
-                "The configured universe domain "
-                f"({client_universe}) does not match the universe domain "
-                f"found in the credentials ({credentials_universe}). "
-                "If you haven't configured the universe domain explicitly, "
-                f"`{default_universe}` is the default."
-            )
-        return True
-
-    def _validate_universe_domain(self):
-        """Validates client's and credentials' universe domains are consistent.
-
-        Returns:
-            bool: True iff the configured universe domain is valid.
-
-        Raises:
-            ValueError: If the configured universe domain is not valid.
-        """
-        self._is_universe_domain_valid = (
-            self._is_universe_domain_valid
-            or ParallelstoreClient._compare_universes(
-                self.universe_domain, self.transport._credentials
-            )
-        )
-        return self._is_universe_domain_valid
+        return self._client.transport
 
     @property
     def api_endpoint(self):
@@ -603,16 +211,19 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         Returns:
             str: The API endpoint used by the client instance.
         """
-        return self._api_endpoint
+        return self._client._api_endpoint
 
     @property
     def universe_domain(self) -> str:
         """Return the universe domain used by the client instance.
 
         Returns:
-            str: The universe domain used by the client instance.
+            str: The universe domain used
+                by the client instance.
         """
-        return self._universe_domain
+        return self._client._universe_domain
+
+    get_transport_class = ParallelstoreClient.get_transport_class
 
     def __init__(
         self,
@@ -620,11 +231,11 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
             Union[str, ParallelstoreTransport, Callable[..., ParallelstoreTransport]]
-        ] = None,
-        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+        ] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the parallelstore client.
+        """Instantiates the parallelstore async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -633,7 +244,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
             transport (Optional[Union[str,ParallelstoreTransport,Callable[..., ParallelstoreTransport]]]):
-                The transport to use, or a Callable that constructs and returns a new transport.
+                The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
                 arguments as used in the ParallelstoreTransport constructor.
                 If set to None, a transport is chosen automatically.
@@ -659,7 +270,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 set, no client certificate will be used.
 
                 3. The ``universe_domain`` property can be used to override the
-                default "googleapis.com" universe. Note that the ``api_endpoint``
+                default "googleapis.com" universe. Note that ``api_endpoint``
                 property still takes precedence; and ``universe_domain`` is
                 currently not supported for mTLS.
 
@@ -670,102 +281,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 your own client library.
 
         Raises:
-            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client_options = client_options
-        if isinstance(self._client_options, dict):
-            self._client_options = client_options_lib.from_dict(self._client_options)
-        if self._client_options is None:
-            self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(
-            client_options_lib.ClientOptions, self._client_options
+        self._client = ParallelstoreClient(
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
-        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
-
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ParallelstoreClient._read_environment_variables()
-        self._client_cert_source = ParallelstoreClient._get_client_cert_source(
-            self._client_options.client_cert_source, self._use_client_cert
-        )
-        self._universe_domain = ParallelstoreClient._get_universe_domain(
-            universe_domain_opt, self._universe_domain_env
-        )
-        self._api_endpoint = None  # updated below, depending on `transport`
-
-        # Initialize the universe domain validation.
-        self._is_universe_domain_valid = False
-
-        api_key_value = getattr(self._client_options, "api_key", None)
-        if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
-            )
-
-        # Save or instantiate the transport.
-        # Ordinarily, we provide the transport, but allowing a custom transport
-        # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, ParallelstoreTransport)
-        if transport_provided:
-            # transport is a ParallelstoreTransport instance.
-            if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
-            if self._client_options.scopes:
-                raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
-                )
-            self._transport = cast(ParallelstoreTransport, transport)
-            self._api_endpoint = self._transport.host
-
-        self._api_endpoint = (
-            self._api_endpoint
-            or ParallelstoreClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint,
-            )
-        )
-
-        if not transport_provided:
-            import google.auth._default  # type: ignore
-
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
-
-            transport_init: Union[
-                Type[ParallelstoreTransport], Callable[..., ParallelstoreTransport]
-            ] = (
-                ParallelstoreClient.get_transport_class(transport)
-                if isinstance(transport, str) or transport is None
-                else cast(Callable[..., ParallelstoreTransport], transport)
-            )
-            # initialize with the provided callable or the passed in class
-            self._transport = transport_init(
-                credentials=credentials,
-                credentials_file=self._client_options.credentials_file,
-                host=self._api_endpoint,
-                scopes=self._client_options.scopes,
-                client_cert_source_for_mtls=self._client_cert_source,
-                quota_project_id=self._client_options.quota_project_id,
-                client_info=client_info,
-                always_use_jwt_access=True,
-                api_audience=self._client_options.api_audience,
-            )
-
-    def list_instances(
+    async def list_instances(
         self,
         request: Optional[Union[parallelstore.ListInstancesRequest, dict]] = None,
         *,
@@ -773,7 +299,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListInstancesPager:
+    ) -> pagers.ListInstancesAsyncPager:
         r"""Lists all instances in a given project and location.
 
         .. code-block:: python
@@ -785,14 +311,14 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
-            def sample_list_instances():
+            async def sample_list_instances():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreAsyncClient()
 
                 # Initialize request argument(s)
-                request = parallelstore_v1beta.ListInstancesRequest(
+                request = parallelstore_v1.ListInstancesRequest(
                     parent="parent_value",
                 )
 
@@ -800,13 +326,13 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 page_result = client.list_instances(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.ListInstancesRequest, dict]):
+            request (Optional[Union[google.cloud.parallelstore_v1.types.ListInstancesRequest, dict]]):
                 The request object. List instances request.
-            parent (str):
+            parent (:class:`str`):
                 Required. The project and location for which to retrieve
                 instance information, in the format
                 ``projects/{project_id}/locations/{location}``.
@@ -817,16 +343,16 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.parallelstore_v1beta.services.parallelstore.pagers.ListInstancesPager:
+            google.cloud.parallelstore_v1.services.parallelstore.pagers.ListInstancesAsyncPager:
                 Response from
-                   [ListInstances][google.cloud.parallelstore.v1beta.Parallelstore.ListInstances].
+                   [ListInstances][google.cloud.parallelstore.v1.Parallelstore.ListInstances].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -846,14 +372,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, parallelstore.ListInstancesRequest):
             request = parallelstore.ListInstancesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_instances]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instances
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -862,10 +391,10 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -873,8 +402,8 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListInstancesPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListInstancesAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -886,7 +415,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         # Done; return the response.
         return response
 
-    def get_instance(
+    async def get_instance(
         self,
         request: Optional[Union[parallelstore.GetInstanceRequest, dict]] = None,
         *,
@@ -906,41 +435,41 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
-            def sample_get_instance():
+            async def sample_get_instance():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreAsyncClient()
 
                 # Initialize request argument(s)
-                request = parallelstore_v1beta.GetInstanceRequest(
+                request = parallelstore_v1.GetInstanceRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = client.get_instance(request=request)
+                response = await client.get_instance(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.GetInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.parallelstore_v1.types.GetInstanceRequest, dict]]):
                 The request object. Get an instance's details.
-            name (str):
+            name (:class:`str`):
                 Required. The instance resource name, in the format
                 ``projects/{project_id}/locations/{location}/instances/{instance_id}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.parallelstore_v1beta.types.Instance:
+            google.cloud.parallelstore_v1.types.Instance:
                 A Parallelstore instance.
         """
         # Create or coerce a protobuf request object.
@@ -957,14 +486,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, parallelstore.GetInstanceRequest):
             request = parallelstore.GetInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -973,10 +505,10 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -986,7 +518,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         # Done; return the response.
         return response
 
-    def create_instance(
+    async def create_instance(
         self,
         request: Optional[Union[parallelstore.CreateInstanceRequest, dict]] = None,
         *,
@@ -996,7 +528,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Creates a Parallelstore instance in a given project
         and location.
 
@@ -1009,17 +541,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
-            def sample_create_instance():
+            async def sample_create_instance():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreAsyncClient()
 
                 # Initialize request argument(s)
-                instance = parallelstore_v1beta.Instance()
+                instance = parallelstore_v1.Instance()
                 instance.capacity_gib = 1247
 
-                request = parallelstore_v1beta.CreateInstanceRequest(
+                request = parallelstore_v1.CreateInstanceRequest(
                     parent="parent_value",
                     instance_id="instance_id_value",
                     instance=instance,
@@ -1030,15 +562,15 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.CreateInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.parallelstore_v1.types.CreateInstanceRequest, dict]]):
                 The request object. Create a new Parallelstore instance.
-            parent (str):
+            parent (:class:`str`):
                 Required. The instance's project and location, in the
                 format ``projects/{project}/locations/{location}``.
                 Locations map to Google Cloud zones; for example,
@@ -1047,12 +579,12 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            instance (google.cloud.parallelstore_v1beta.types.Instance):
+            instance (:class:`google.cloud.parallelstore_v1.types.Instance`):
                 Required. The instance to create.
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            instance_id (str):
+            instance_id (:class:`str`):
                 Required. The name of the Parallelstore instance.
 
                 -  Must contain only lowercase letters, numbers, and
@@ -1065,19 +597,19 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 This corresponds to the ``instance_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.parallelstore_v1beta.types.Instance`
-                A Parallelstore instance.
+                :class:`google.cloud.parallelstore_v1.types.Instance` A
+                Parallelstore instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1094,18 +626,21 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, parallelstore.CreateInstanceRequest):
             request = parallelstore.CreateInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if instance is not None:
-                request.instance = instance
-            if instance_id is not None:
-                request.instance_id = instance_id
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if instance is not None:
+            request.instance = instance
+        if instance_id is not None:
+            request.instance_id = instance_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1114,10 +649,10 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1125,9 +660,9 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             parallelstore.Instance,
             metadata_type=parallelstore.OperationMetadata,
         )
@@ -1135,7 +670,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         # Done; return the response.
         return response
 
-    def update_instance(
+    async def update_instance(
         self,
         request: Optional[Union[parallelstore.UpdateInstanceRequest, dict]] = None,
         *,
@@ -1144,7 +679,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single instance.
 
         .. code-block:: python
@@ -1156,17 +691,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
-            def sample_update_instance():
+            async def sample_update_instance():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreAsyncClient()
 
                 # Initialize request argument(s)
-                instance = parallelstore_v1beta.Instance()
+                instance = parallelstore_v1.Instance()
                 instance.capacity_gib = 1247
 
-                request = parallelstore_v1beta.UpdateInstanceRequest(
+                request = parallelstore_v1.UpdateInstanceRequest(
                     instance=instance,
                 )
 
@@ -1175,20 +710,20 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.UpdateInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.parallelstore_v1.types.UpdateInstanceRequest, dict]]):
                 The request object. Update an instance.
-            instance (google.cloud.parallelstore_v1beta.types.Instance):
+            instance (:class:`google.cloud.parallelstore_v1.types.Instance`):
                 Required. The instance to update.
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Mask of fields to update. Field mask is used
                 to specify the fields to be overwritten in the Instance
                 resource by the update. At least one path must be
@@ -1199,19 +734,19 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.parallelstore_v1beta.types.Instance`
-                A Parallelstore instance.
+                :class:`google.cloud.parallelstore_v1.types.Instance` A
+                Parallelstore instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1228,16 +763,19 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, parallelstore.UpdateInstanceRequest):
             request = parallelstore.UpdateInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if instance is not None:
-                request.instance = instance
-            if update_mask is not None:
-                request.update_mask = update_mask
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if instance is not None:
+            request.instance = instance
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1248,10 +786,10 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1259,9 +797,9 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             parallelstore.Instance,
             metadata_type=parallelstore.OperationMetadata,
         )
@@ -1269,7 +807,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         # Done; return the response.
         return response
 
-    def delete_instance(
+    async def delete_instance(
         self,
         request: Optional[Union[parallelstore.DeleteInstanceRequest, dict]] = None,
         *,
@@ -1277,7 +815,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Deletes a single instance.
 
         .. code-block:: python
@@ -1289,14 +827,14 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
-            def sample_delete_instance():
+            async def sample_delete_instance():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreAsyncClient()
 
                 # Initialize request argument(s)
-                request = parallelstore_v1beta.DeleteInstanceRequest(
+                request = parallelstore_v1.DeleteInstanceRequest(
                     name="name_value",
                 )
 
@@ -1305,27 +843,27 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.DeleteInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.parallelstore_v1.types.DeleteInstanceRequest, dict]]):
                 The request object. Delete an instance.
-            name (str):
+            name (:class:`str`):
                 Required. Name of the resource
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
@@ -1354,14 +892,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, parallelstore.DeleteInstanceRequest):
             request = parallelstore.DeleteInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1370,10 +911,10 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1381,9 +922,9 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=parallelstore.OperationMetadata,
         )
@@ -1391,14 +932,14 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         # Done; return the response.
         return response
 
-    def import_data(
+    async def import_data(
         self,
         request: Optional[Union[parallelstore.ImportDataRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Copies data from Cloud Storage to Parallelstore.
 
         .. code-block:: python
@@ -1410,17 +951,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
-            def sample_import_data():
+            async def sample_import_data():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreAsyncClient()
 
                 # Initialize request argument(s)
-                source_gcs_bucket = parallelstore_v1beta.SourceGcsBucket()
+                source_gcs_bucket = parallelstore_v1.SourceGcsBucket()
                 source_gcs_bucket.uri = "uri_value"
 
-                request = parallelstore_v1beta.ImportDataRequest(
+                request = parallelstore_v1.ImportDataRequest(
                     source_gcs_bucket=source_gcs_bucket,
                     name="name_value",
                 )
@@ -1430,27 +971,27 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.ImportDataRequest, dict]):
+            request (Optional[Union[google.cloud.parallelstore_v1.types.ImportDataRequest, dict]]):
                 The request object. Import data from Cloud Storage into a
                 Parallelstore instance.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.parallelstore_v1beta.types.ImportDataResponse`
+                :class:`google.cloud.parallelstore_v1.types.ImportDataResponse`
                 The response to a request to import data to
                 Parallelstore.
 
@@ -1463,7 +1004,9 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.import_data]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_data
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1472,10 +1015,10 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1483,9 +1026,9 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             parallelstore.ImportDataResponse,
             metadata_type=parallelstore.ImportDataMetadata,
         )
@@ -1493,14 +1036,14 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         # Done; return the response.
         return response
 
-    def export_data(
+    async def export_data(
         self,
         request: Optional[Union[parallelstore.ExportDataRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Copies data from Parallelstore to Cloud Storage.
 
         .. code-block:: python
@@ -1512,17 +1055,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
-            def sample_export_data():
+            async def sample_export_data():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreAsyncClient()
 
                 # Initialize request argument(s)
-                destination_gcs_bucket = parallelstore_v1beta.DestinationGcsBucket()
+                destination_gcs_bucket = parallelstore_v1.DestinationGcsBucket()
                 destination_gcs_bucket.uri = "uri_value"
 
-                request = parallelstore_v1beta.ExportDataRequest(
+                request = parallelstore_v1.ExportDataRequest(
                     destination_gcs_bucket=destination_gcs_bucket,
                     name="name_value",
                 )
@@ -1532,27 +1075,27 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.ExportDataRequest, dict]):
+            request (Optional[Union[google.cloud.parallelstore_v1.types.ExportDataRequest, dict]]):
                 The request object. Export data from Parallelstore to
                 Cloud Storage.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.parallelstore_v1beta.types.ExportDataResponse`
+                :class:`google.cloud.parallelstore_v1.types.ExportDataResponse`
                 The response to a request to export data from
                 Parallelstore.
 
@@ -1565,7 +1108,9 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.export_data]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_data
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1574,10 +1119,10 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1585,9 +1130,9 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             parallelstore.ExportDataResponse,
             metadata_type=parallelstore.ExportDataMetadata,
         )
@@ -1595,20 +1140,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self) -> "ParallelstoreClient":
-        return self
-
-    def __exit__(self, type, value, traceback):
-        """Releases underlying transport's resources.
-
-        .. warning::
-            ONLY use as a context manager if the transport is NOT shared
-            with other clients! Exiting the with block will CLOSE the transport
-            and may cause errors in other clients!
-        """
-        self.transport.close()
-
-    def list_operations(
+    async def list_operations(
         self,
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
@@ -1622,7 +1154,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             request (:class:`~.operations_pb2.ListOperationsRequest`):
                 The request object. Request message for
                 `ListOperations` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1639,8 +1171,8 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_operations,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_operations,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -1652,10 +1184,10 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1665,7 +1197,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         # Done; return the response.
         return response
 
-    def get_operation(
+    async def get_operation(
         self,
         request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
@@ -1679,7 +1211,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             request (:class:`~.operations_pb2.GetOperationRequest`):
                 The request object. Request message for
                 `GetOperation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1696,8 +1228,8 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_operation,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_operation,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -1709,10 +1241,10 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1722,7 +1254,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         # Done; return the response.
         return response
 
-    def delete_operation(
+    async def delete_operation(
         self,
         request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
@@ -1741,7 +1273,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             request (:class:`~.operations_pb2.DeleteOperationRequest`):
                 The request object. Request message for
                 `DeleteOperation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1757,8 +1289,8 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.delete_operation,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_operation,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -1770,17 +1302,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        rpc(
+        await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    def cancel_operation(
+    async def cancel_operation(
         self,
         request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
@@ -1798,7 +1330,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             request (:class:`~.operations_pb2.CancelOperationRequest`):
                 The request object. Request message for
                 `CancelOperation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1814,8 +1346,8 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.cancel_operation,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.cancel_operation,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -1827,17 +1359,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        rpc(
+        await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    def get_location(
+    async def get_location(
         self,
         request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
@@ -1851,7 +1383,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             request (:class:`~.location_pb2.GetLocationRequest`):
                 The request object. Request message for
                 `GetLocation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1868,8 +1400,8 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_location,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_location,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -1881,10 +1413,10 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1894,7 +1426,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         # Done; return the response.
         return response
 
-    def list_locations(
+    async def list_locations(
         self,
         request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
@@ -1908,7 +1440,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             request (:class:`~.location_pb2.ListLocationsRequest`):
                 The request object. Request message for
                 `ListLocations` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1925,8 +1457,8 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_locations,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_locations,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -1938,10 +1470,10 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1951,10 +1483,16 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         # Done; return the response.
         return response
 
+    async def __aenter__(self) -> "ParallelstoreAsyncClient":
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.transport.close()
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
 
-__all__ = ("ParallelstoreClient",)
+__all__ = ("ParallelstoreAsyncClient",)

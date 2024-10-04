@@ -13,27 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
-from google.api_core import retry_async as retries
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
 
-from google.cloud.parallelstore_v1beta.types import parallelstore
+from google.cloud.parallelstore_v1.types import parallelstore
 
 from .base import DEFAULT_CLIENT_INFO, ParallelstoreTransport
-from .grpc import ParallelstoreGrpcTransport
 
 
-class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
-    """gRPC AsyncIO backend transport for Parallelstore.
+class ParallelstoreGrpcTransport(ParallelstoreTransport):
+    """gRPC backend transport for Parallelstore.
 
     Service describing handlers for resources Configures and manages
     parallelstore resources.
@@ -65,50 +62,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _grpc_channel: aio.Channel
-    _stubs: Dict[str, Callable] = {}
-
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "parallelstore.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
-        """Create and return a gRPC AsyncIO channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            aio.Channel: A gRPC AsyncIO channel object.
-        """
-
-        return grpc_helpers_async.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
-            scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs,
-        )
+    _stubs: Dict[str, Callable]
 
     def __init__(
         self,
@@ -117,7 +71,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
+        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -141,10 +95,9 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if a ``channel`` instance is provided.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if a ``channel`` instance is provided.
+            channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]]):
                 A ``Channel`` instance through which to make calls, or a Callable
                 that constructs and returns one. If set to None, ``self.create_channel``
                 is used to create the channel. If a Callable is given, it will be called
@@ -174,7 +127,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
                 be used for service account credentials.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -182,20 +135,21 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
-        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
+        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if isinstance(channel, aio.Channel):
+        if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
             credentials = None
             self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
+
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -251,18 +205,60 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @property
-    def grpc_channel(self) -> aio.Channel:
-        """Create the channel designed to connect to this service.
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "parallelstore.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
+        """Create and return a gRPC channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            grpc.Channel: A gRPC channel object.
 
-        This property caches on the instance; repeated calls return
-        the same channel.
+        Raises:
+            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
         """
-        # Return the channel from cache.
+
+        return grpc_helpers.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
+        )
+
+    @property
+    def grpc_channel(self) -> grpc.Channel:
+        """Return the channel designed to connect to this service."""
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsAsyncClient:
+    def operations_client(self) -> operations_v1.OperationsClient:
         """Create the client designed to process long-running operations.
 
         This property caches on the instance; repeated calls return the same
@@ -270,9 +266,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -281,8 +275,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
     def list_instances(
         self,
     ) -> Callable[
-        [parallelstore.ListInstancesRequest],
-        Awaitable[parallelstore.ListInstancesResponse],
+        [parallelstore.ListInstancesRequest], parallelstore.ListInstancesResponse
     ]:
         r"""Return a callable for the list instances method over gRPC.
 
@@ -290,7 +283,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
 
         Returns:
             Callable[[~.ListInstancesRequest],
-                    Awaitable[~.ListInstancesResponse]]:
+                    ~.ListInstancesResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -300,7 +293,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "list_instances" not in self._stubs:
             self._stubs["list_instances"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/ListInstances",
+                "/google.cloud.parallelstore.v1.Parallelstore/ListInstances",
                 request_serializer=parallelstore.ListInstancesRequest.serialize,
                 response_deserializer=parallelstore.ListInstancesResponse.deserialize,
             )
@@ -309,16 +302,14 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
     @property
     def get_instance(
         self,
-    ) -> Callable[
-        [parallelstore.GetInstanceRequest], Awaitable[parallelstore.Instance]
-    ]:
+    ) -> Callable[[parallelstore.GetInstanceRequest], parallelstore.Instance]:
         r"""Return a callable for the get instance method over gRPC.
 
         Gets details of a single instance.
 
         Returns:
             Callable[[~.GetInstanceRequest],
-                    Awaitable[~.Instance]]:
+                    ~.Instance]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -328,7 +319,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "get_instance" not in self._stubs:
             self._stubs["get_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/GetInstance",
+                "/google.cloud.parallelstore.v1.Parallelstore/GetInstance",
                 request_serializer=parallelstore.GetInstanceRequest.serialize,
                 response_deserializer=parallelstore.Instance.deserialize,
             )
@@ -337,9 +328,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
     @property
     def create_instance(
         self,
-    ) -> Callable[
-        [parallelstore.CreateInstanceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    ) -> Callable[[parallelstore.CreateInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create instance method over gRPC.
 
         Creates a Parallelstore instance in a given project
@@ -347,7 +336,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
 
         Returns:
             Callable[[~.CreateInstanceRequest],
-                    Awaitable[~.Operation]]:
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -357,7 +346,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "create_instance" not in self._stubs:
             self._stubs["create_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/CreateInstance",
+                "/google.cloud.parallelstore.v1.Parallelstore/CreateInstance",
                 request_serializer=parallelstore.CreateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -366,16 +355,14 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
     @property
     def update_instance(
         self,
-    ) -> Callable[
-        [parallelstore.UpdateInstanceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    ) -> Callable[[parallelstore.UpdateInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the update instance method over gRPC.
 
         Updates the parameters of a single instance.
 
         Returns:
             Callable[[~.UpdateInstanceRequest],
-                    Awaitable[~.Operation]]:
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -385,7 +372,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "update_instance" not in self._stubs:
             self._stubs["update_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/UpdateInstance",
+                "/google.cloud.parallelstore.v1.Parallelstore/UpdateInstance",
                 request_serializer=parallelstore.UpdateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -394,16 +381,14 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
     @property
     def delete_instance(
         self,
-    ) -> Callable[
-        [parallelstore.DeleteInstanceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    ) -> Callable[[parallelstore.DeleteInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete instance method over gRPC.
 
         Deletes a single instance.
 
         Returns:
             Callable[[~.DeleteInstanceRequest],
-                    Awaitable[~.Operation]]:
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -413,7 +398,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "delete_instance" not in self._stubs:
             self._stubs["delete_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/DeleteInstance",
+                "/google.cloud.parallelstore.v1.Parallelstore/DeleteInstance",
                 request_serializer=parallelstore.DeleteInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -422,16 +407,14 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
     @property
     def import_data(
         self,
-    ) -> Callable[
-        [parallelstore.ImportDataRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    ) -> Callable[[parallelstore.ImportDataRequest], operations_pb2.Operation]:
         r"""Return a callable for the import data method over gRPC.
 
         Copies data from Cloud Storage to Parallelstore.
 
         Returns:
             Callable[[~.ImportDataRequest],
-                    Awaitable[~.Operation]]:
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -441,7 +424,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "import_data" not in self._stubs:
             self._stubs["import_data"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/ImportData",
+                "/google.cloud.parallelstore.v1.Parallelstore/ImportData",
                 request_serializer=parallelstore.ImportDataRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -450,16 +433,14 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
     @property
     def export_data(
         self,
-    ) -> Callable[
-        [parallelstore.ExportDataRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    ) -> Callable[[parallelstore.ExportDataRequest], operations_pb2.Operation]:
         r"""Return a callable for the export data method over gRPC.
 
         Copies data from Parallelstore to Cloud Storage.
 
         Returns:
             Callable[[~.ExportDataRequest],
-                    Awaitable[~.Operation]]:
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -469,54 +450,14 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "export_data" not in self._stubs:
             self._stubs["export_data"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/ExportData",
+                "/google.cloud.parallelstore.v1.Parallelstore/ExportData",
                 request_serializer=parallelstore.ExportDataRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["export_data"]
 
-    def _prep_wrapped_messages(self, client_info):
-        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
-        self._wrapped_methods = {
-            self.list_instances: gapic_v1.method_async.wrap_method(
-                self.list_instances,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.get_instance: gapic_v1.method_async.wrap_method(
-                self.get_instance,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.create_instance: gapic_v1.method_async.wrap_method(
-                self.create_instance,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.update_instance: gapic_v1.method_async.wrap_method(
-                self.update_instance,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.delete_instance: gapic_v1.method_async.wrap_method(
-                self.delete_instance,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.import_data: gapic_v1.method_async.wrap_method(
-                self.import_data,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.export_data: gapic_v1.method_async.wrap_method(
-                self.export_data,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-        }
-
     def close(self):
-        return self.grpc_channel.close()
+        self.grpc_channel.close()
 
     @property
     def delete_operation(
@@ -624,5 +565,9 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
             )
         return self._stubs["get_location"]
 
+    @property
+    def kind(self) -> str:
+        return "grpc"
 
-__all__ = ("ParallelstoreGrpcAsyncIOTransport",)
+
+__all__ = ("ParallelstoreGrpcTransport",)

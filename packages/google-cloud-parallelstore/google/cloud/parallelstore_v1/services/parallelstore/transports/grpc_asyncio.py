@@ -26,7 +26,7 @@ from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.parallelstore_v1beta.types import parallelstore
+from google.cloud.parallelstore_v1.types import parallelstore
 
 from .base import DEFAULT_CLIENT_INFO, ParallelstoreTransport
 from .grpc import ParallelstoreGrpcTransport
@@ -300,7 +300,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "list_instances" not in self._stubs:
             self._stubs["list_instances"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/ListInstances",
+                "/google.cloud.parallelstore.v1.Parallelstore/ListInstances",
                 request_serializer=parallelstore.ListInstancesRequest.serialize,
                 response_deserializer=parallelstore.ListInstancesResponse.deserialize,
             )
@@ -328,7 +328,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "get_instance" not in self._stubs:
             self._stubs["get_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/GetInstance",
+                "/google.cloud.parallelstore.v1.Parallelstore/GetInstance",
                 request_serializer=parallelstore.GetInstanceRequest.serialize,
                 response_deserializer=parallelstore.Instance.deserialize,
             )
@@ -357,7 +357,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "create_instance" not in self._stubs:
             self._stubs["create_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/CreateInstance",
+                "/google.cloud.parallelstore.v1.Parallelstore/CreateInstance",
                 request_serializer=parallelstore.CreateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -385,7 +385,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "update_instance" not in self._stubs:
             self._stubs["update_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/UpdateInstance",
+                "/google.cloud.parallelstore.v1.Parallelstore/UpdateInstance",
                 request_serializer=parallelstore.UpdateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -413,7 +413,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "delete_instance" not in self._stubs:
             self._stubs["delete_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/DeleteInstance",
+                "/google.cloud.parallelstore.v1.Parallelstore/DeleteInstance",
                 request_serializer=parallelstore.DeleteInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -441,7 +441,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "import_data" not in self._stubs:
             self._stubs["import_data"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/ImportData",
+                "/google.cloud.parallelstore.v1.Parallelstore/ImportData",
                 request_serializer=parallelstore.ImportDataRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -469,7 +469,7 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
         # to pass in the functions for each.
         if "export_data" not in self._stubs:
             self._stubs["export_data"] = self.grpc_channel.unary_unary(
-                "/google.cloud.parallelstore.v1beta.Parallelstore/ExportData",
+                "/google.cloud.parallelstore.v1.Parallelstore/ExportData",
                 request_serializer=parallelstore.ExportDataRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )

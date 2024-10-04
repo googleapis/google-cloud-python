@@ -41,7 +41,7 @@ from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.parallelstore_v1beta import gapic_version as package_version
+from google.cloud.parallelstore_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -56,8 +56,8 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.parallelstore_v1beta.services.parallelstore import pagers
-from google.cloud.parallelstore_v1beta.types import parallelstore
+from google.cloud.parallelstore_v1.services.parallelstore import pagers
+from google.cloud.parallelstore_v1.types import parallelstore
 
 from .transports.base import DEFAULT_CLIENT_INFO, ParallelstoreTransport
 from .transports.grpc import ParallelstoreGrpcTransport
@@ -785,14 +785,14 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
             def sample_list_instances():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreClient()
 
                 # Initialize request argument(s)
-                request = parallelstore_v1beta.ListInstancesRequest(
+                request = parallelstore_v1.ListInstancesRequest(
                     parent="parent_value",
                 )
 
@@ -804,7 +804,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.ListInstancesRequest, dict]):
+            request (Union[google.cloud.parallelstore_v1.types.ListInstancesRequest, dict]):
                 The request object. List instances request.
             parent (str):
                 Required. The project and location for which to retrieve
@@ -824,9 +824,9 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.parallelstore_v1beta.services.parallelstore.pagers.ListInstancesPager:
+            google.cloud.parallelstore_v1.services.parallelstore.pagers.ListInstancesPager:
                 Response from
-                   [ListInstances][google.cloud.parallelstore.v1beta.Parallelstore.ListInstances].
+                   [ListInstances][google.cloud.parallelstore.v1.Parallelstore.ListInstances].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -906,14 +906,14 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
             def sample_get_instance():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreClient()
 
                 # Initialize request argument(s)
-                request = parallelstore_v1beta.GetInstanceRequest(
+                request = parallelstore_v1.GetInstanceRequest(
                     name="name_value",
                 )
 
@@ -924,7 +924,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.GetInstanceRequest, dict]):
+            request (Union[google.cloud.parallelstore_v1.types.GetInstanceRequest, dict]):
                 The request object. Get an instance's details.
             name (str):
                 Required. The instance resource name, in the format
@@ -940,7 +940,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.parallelstore_v1beta.types.Instance:
+            google.cloud.parallelstore_v1.types.Instance:
                 A Parallelstore instance.
         """
         # Create or coerce a protobuf request object.
@@ -1009,17 +1009,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
             def sample_create_instance():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreClient()
 
                 # Initialize request argument(s)
-                instance = parallelstore_v1beta.Instance()
+                instance = parallelstore_v1.Instance()
                 instance.capacity_gib = 1247
 
-                request = parallelstore_v1beta.CreateInstanceRequest(
+                request = parallelstore_v1.CreateInstanceRequest(
                     parent="parent_value",
                     instance_id="instance_id_value",
                     instance=instance,
@@ -1036,7 +1036,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.CreateInstanceRequest, dict]):
+            request (Union[google.cloud.parallelstore_v1.types.CreateInstanceRequest, dict]):
                 The request object. Create a new Parallelstore instance.
             parent (str):
                 Required. The instance's project and location, in the
@@ -1047,7 +1047,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            instance (google.cloud.parallelstore_v1beta.types.Instance):
+            instance (google.cloud.parallelstore_v1.types.Instance):
                 Required. The instance to create.
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1076,8 +1076,8 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.parallelstore_v1beta.types.Instance`
-                A Parallelstore instance.
+                :class:`google.cloud.parallelstore_v1.types.Instance` A
+                Parallelstore instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1156,17 +1156,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
             def sample_update_instance():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreClient()
 
                 # Initialize request argument(s)
-                instance = parallelstore_v1beta.Instance()
+                instance = parallelstore_v1.Instance()
                 instance.capacity_gib = 1247
 
-                request = parallelstore_v1beta.UpdateInstanceRequest(
+                request = parallelstore_v1.UpdateInstanceRequest(
                     instance=instance,
                 )
 
@@ -1181,9 +1181,9 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.UpdateInstanceRequest, dict]):
+            request (Union[google.cloud.parallelstore_v1.types.UpdateInstanceRequest, dict]):
                 The request object. Update an instance.
-            instance (google.cloud.parallelstore_v1beta.types.Instance):
+            instance (google.cloud.parallelstore_v1.types.Instance):
                 Required. The instance to update.
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1210,8 +1210,8 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.parallelstore_v1beta.types.Instance`
-                A Parallelstore instance.
+                :class:`google.cloud.parallelstore_v1.types.Instance` A
+                Parallelstore instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1289,14 +1289,14 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
             def sample_delete_instance():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreClient()
 
                 # Initialize request argument(s)
-                request = parallelstore_v1beta.DeleteInstanceRequest(
+                request = parallelstore_v1.DeleteInstanceRequest(
                     name="name_value",
                 )
 
@@ -1311,7 +1311,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.DeleteInstanceRequest, dict]):
+            request (Union[google.cloud.parallelstore_v1.types.DeleteInstanceRequest, dict]):
                 The request object. Delete an instance.
             name (str):
                 Required. Name of the resource
@@ -1410,17 +1410,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
             def sample_import_data():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreClient()
 
                 # Initialize request argument(s)
-                source_gcs_bucket = parallelstore_v1beta.SourceGcsBucket()
+                source_gcs_bucket = parallelstore_v1.SourceGcsBucket()
                 source_gcs_bucket.uri = "uri_value"
 
-                request = parallelstore_v1beta.ImportDataRequest(
+                request = parallelstore_v1.ImportDataRequest(
                     source_gcs_bucket=source_gcs_bucket,
                     name="name_value",
                 )
@@ -1436,7 +1436,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.ImportDataRequest, dict]):
+            request (Union[google.cloud.parallelstore_v1.types.ImportDataRequest, dict]):
                 The request object. Import data from Cloud Storage into a
                 Parallelstore instance.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1450,7 +1450,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.parallelstore_v1beta.types.ImportDataResponse`
+                :class:`google.cloud.parallelstore_v1.types.ImportDataResponse`
                 The response to a request to import data to
                 Parallelstore.
 
@@ -1512,17 +1512,17 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import parallelstore_v1beta
+            from google.cloud import parallelstore_v1
 
             def sample_export_data():
                 # Create a client
-                client = parallelstore_v1beta.ParallelstoreClient()
+                client = parallelstore_v1.ParallelstoreClient()
 
                 # Initialize request argument(s)
-                destination_gcs_bucket = parallelstore_v1beta.DestinationGcsBucket()
+                destination_gcs_bucket = parallelstore_v1.DestinationGcsBucket()
                 destination_gcs_bucket.uri = "uri_value"
 
-                request = parallelstore_v1beta.ExportDataRequest(
+                request = parallelstore_v1.ExportDataRequest(
                     destination_gcs_bucket=destination_gcs_bucket,
                     name="name_value",
                 )
@@ -1538,7 +1538,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.parallelstore_v1beta.types.ExportDataRequest, dict]):
+            request (Union[google.cloud.parallelstore_v1.types.ExportDataRequest, dict]):
                 The request object. Export data from Parallelstore to
                 Cloud Storage.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1552,7 +1552,7 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.parallelstore_v1beta.types.ExportDataResponse`
+                :class:`google.cloud.parallelstore_v1.types.ExportDataResponse`
                 The response to a request to export data from
                 Parallelstore.
 

@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.parallelstore_v1beta.types import parallelstore
+from google.cloud.parallelstore_v1.types import parallelstore
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import ParallelstoreTransport
@@ -560,26 +560,26 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
                 "google.longrunning.Operations.CancelOperation": [
                     {
                         "method": "post",
-                        "uri": "/v1beta/{name=projects/*/locations/*/operations/*}:cancel",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
                         "body": "*",
                     },
                 ],
                 "google.longrunning.Operations.DeleteOperation": [
                     {
                         "method": "delete",
-                        "uri": "/v1beta/{name=projects/*/locations/*/operations/*}",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                     },
                 ],
                 "google.longrunning.Operations.GetOperation": [
                     {
                         "method": "get",
-                        "uri": "/v1beta/{name=projects/*/locations/*/operations/*}",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                     },
                 ],
                 "google.longrunning.Operations.ListOperations": [
                     {
                         "method": "get",
-                        "uri": "/v1beta/{name=projects/*/locations/*}/operations",
+                        "uri": "/v1/{name=projects/*/locations/*}/operations",
                     },
                 ],
             }
@@ -590,7 +590,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
                 credentials=self._credentials,
                 scopes=self._scopes,
                 http_options=http_options,
-                path_prefix="v1beta",
+                path_prefix="v1",
             )
 
             self._operations_client = operations_v1.AbstractOperationsClient(
@@ -646,7 +646,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1beta/{parent=projects/*/locations/*}/instances",
+                    "uri": "/v1/{parent=projects/*/locations/*}/instances",
                     "body": "instance",
                 },
             ]
@@ -739,7 +739,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
-                    "uri": "/v1beta/{name=projects/*/locations/*/instances/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/instances/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
@@ -826,7 +826,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1beta/{name=projects/*/locations/*/instances/*}:exportData",
+                    "uri": "/v1/{name=projects/*/locations/*/instances/*}:exportData",
                     "body": "*",
                 },
             ]
@@ -916,7 +916,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/instances/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/instances/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
@@ -1005,7 +1005,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1beta/{name=projects/*/locations/*/instances/*}:importData",
+                    "uri": "/v1/{name=projects/*/locations/*/instances/*}:importData",
                     "body": "*",
                 },
             ]
@@ -1090,14 +1090,14 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             Returns:
                 ~.parallelstore.ListInstancesResponse:
                     Response from
-                [ListInstances][google.cloud.parallelstore.v1beta.Parallelstore.ListInstances].
+                [ListInstances][google.cloud.parallelstore.v1.Parallelstore.ListInstances].
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1beta/{parent=projects/*/locations/*}/instances",
+                    "uri": "/v1/{parent=projects/*/locations/*}/instances",
                 },
             ]
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
@@ -1187,7 +1187,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/v1beta/{instance.name=projects/*/locations/*/instances/*}",
+                    "uri": "/v1/{instance.name=projects/*/locations/*/instances/*}",
                     "body": "instance",
                 },
             ]
@@ -1325,7 +1325,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*}",
+                    "uri": "/v1/{name=projects/*/locations/*}",
                 },
             ]
 
@@ -1391,7 +1391,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1beta/{name=projects/*}/locations",
+                    "uri": "/v1/{name=projects/*}/locations",
                 },
             ]
 
@@ -1454,7 +1454,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1beta/{name=projects/*/locations/*/operations/*}:cancel",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
                     "body": "*",
                 },
             ]
@@ -1519,7 +1519,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
-                    "uri": "/v1beta/{name=projects/*/locations/*/operations/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                 },
             ]
 
@@ -1584,7 +1584,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/operations/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                 },
             ]
 
@@ -1650,7 +1650,7 @@ class ParallelstoreRestTransport(ParallelstoreTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*}/operations",
+                    "uri": "/v1/{name=projects/*/locations/*}/operations",
                 },
             ]
 
