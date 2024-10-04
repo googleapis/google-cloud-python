@@ -2849,6 +2849,50 @@ class TestClient(unittest.TestCase):
         self.assertEqual(fields["x-goog-signature"], EXPECTED_SIGN)
         self.assertEqual(fields["policy"], EXPECTED_POLICY)
 
+    def test_get_signed_policy_v4_with_access_token_sa_email(self):
+        import datetime
+
+        BUCKET_NAME = "bucket-name"
+        BLOB_NAME = "object-name"
+        EXPECTED_SIGN = "0c4003044105"
+        EXPECTED_POLICY = "eyJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJidWNrZXQtbmFtZSJ9LHsiYWNsIjoicHJpdmF0ZSJ9LFsic3RhcnRzLXdpdGgiLCIkQ29udGVudC1UeXBlIiwidGV4dC9wbGFpbiJdLHsiYnVja2V0IjoiYnVja2V0LW5hbWUifSx7ImtleSI6Im9iamVjdC1uYW1lIn0seyJ4LWdvb2ctZGF0ZSI6IjIwMjAwMzEyVDExNDcxNloifSx7IngtZ29vZy1jcmVkZW50aWFsIjoidGVzdEBtYWlsLmNvbS8yMDIwMDMxMi9hdXRvL3N0b3JhZ2UvZ29vZzRfcmVxdWVzdCJ9LHsieC1nb29nLWFsZ29yaXRobSI6IkdPT0c0LVJTQS1TSEEyNTYifV0sImV4cGlyYXRpb24iOiIyMDIwLTAzLTI2VDAwOjAwOjEwWiJ9"
+
+        project = "PROJECT"
+        credentials = _make_credentials(project=project)
+        client = self._make_one(credentials=credentials)
+
+        dtstamps_patch, now_patch, expire_secs_patch = _time_functions_patches()
+        with dtstamps_patch, now_patch, expire_secs_patch:
+            with mock.patch(
+                "google.cloud.storage.client._sign_message", return_value=b"DEADBEEF"
+            ):
+                policy = client.generate_signed_post_policy_v4(
+                    BUCKET_NAME,
+                    BLOB_NAME,
+                    expiration=datetime.datetime(2020, 3, 12),
+                    conditions=[
+                        {"bucket": BUCKET_NAME},
+                        {"acl": "private"},
+                        ["starts-with", "$Content-Type", "text/plain"],
+                    ],
+                    service_account_email="test@mail.com",
+                    access_token="token",
+                )
+        self.assertEqual(
+            policy["url"], "https://storage.googleapis.com/" + BUCKET_NAME + "/"
+        )
+        fields = policy["fields"]
+
+        self.assertEqual(fields["key"], BLOB_NAME)
+        self.assertEqual(fields["x-goog-algorithm"], "GOOG4-RSA-SHA256")
+        self.assertEqual(fields["x-goog-date"], "20200312T114716Z")
+        self.assertEqual(
+            fields["x-goog-credential"],
+            "test@mail.com/20200312/auto/storage/goog4_request",
+        )
+        self.assertEqual(fields["x-goog-signature"], EXPECTED_SIGN)
+        self.assertEqual(fields["policy"], EXPECTED_POLICY)
+
 
 class Test__item_to_bucket(unittest.TestCase):
     def _call_fut(self, iterator, item):

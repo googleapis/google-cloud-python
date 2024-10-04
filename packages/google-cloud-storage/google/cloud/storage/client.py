@@ -1724,13 +1724,16 @@ class Client(ClientWithProject):
             )
 
         credentials = self._credentials if credentials is None else credentials
-        ensure_signed_credentials(credentials)
+        client_email = service_account_email
+        if not access_token or not service_account_email:
+            ensure_signed_credentials(credentials)
+            client_email = credentials.signer_email
 
         # prepare policy conditions and fields
         timestamp, datestamp = get_v4_now_dtstamps()
 
         x_goog_credential = "{email}/{datestamp}/auto/storage/goog4_request".format(
-            email=credentials.signer_email, datestamp=datestamp
+            email=client_email, datestamp=datestamp
         )
         required_conditions = [
             {"bucket": bucket_name},

@@ -415,6 +415,55 @@ def test_generate_signed_post_policy_v4(
     assert blob.download_as_bytes() == payload
 
 
+@pytest.mark.skipif(
+    _helpers.is_api_endpoint_override,
+    reason="Test does not yet support endpoint override",
+)
+def test_generate_signed_post_policy_v4_access_token_sa_email(
+    storage_client, signing_bucket, blobs_to_delete, service_account, no_mtls
+):
+    client = iam_credentials_v1.IAMCredentialsClient()
+    service_account_email = service_account.service_account_email
+    name = path_template.expand(
+        "projects/{project}/serviceAccounts/{service_account}",
+        project="-",
+        service_account=service_account_email,
+    )
+    scope = [
+        "https://www.googleapis.com/auth/devstorage.read_write",
+        "https://www.googleapis.com/auth/iam",
+    ]
+    response = client.generate_access_token(name=name, scope=scope)
+
+    now = _NOW(_UTC).replace(tzinfo=None)
+    blob_name = "post_policy_obj_email2.txt"
+    payload = b"DEADBEEF"
+    with open(blob_name, "wb") as f:
+        f.write(payload)
+    policy = storage_client.generate_signed_post_policy_v4(
+        signing_bucket.name,
+        blob_name,
+        conditions=[
+            {"bucket": signing_bucket.name},
+            ["starts-with", "$Content-Type", "text/pla"],
+        ],
+        expiration=now + datetime.timedelta(hours=1),
+        fields={"content-type": "text/plain"},
+        service_account_email=service_account_email,
+        access_token=response.access_token,
+    )
+    with open(blob_name, "r") as f:
+        files = {"file": (blob_name, f)}
+        response = requests.post(policy["url"], data=policy["fields"], files=files)
+
+    os.remove(blob_name)
+    assert response.status_code == 204
+
+    blob = signing_bucket.get_blob(blob_name)
+    blobs_to_delete.append(blob)
+    assert blob.download_as_bytes() == payload
+
+
 def test_generate_signed_post_policy_v4_invalid_field(
     storage_client, buckets_to_delete, blobs_to_delete, service_account, no_mtls
 ):
