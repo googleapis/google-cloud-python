@@ -39,7 +39,11 @@ async def sample_create_space():
     client = chat_v1.ChatServiceAsyncClient()
 
     # Initialize request argument(s)
+    space = chat_v1.Space()
+    space.predefined_permission_settings = "ANNOUNCEMENT_SPACE"
+
     request = chat_v1.CreateSpaceRequest(
+        space=space,
     )
 
     # Make the request

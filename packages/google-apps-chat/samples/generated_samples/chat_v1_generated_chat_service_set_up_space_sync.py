@@ -39,7 +39,11 @@ def sample_set_up_space():
     client = chat_v1.ChatServiceClient()
 
     # Initialize request argument(s)
+    space = chat_v1.Space()
+    space.predefined_permission_settings = "ANNOUNCEMENT_SPACE"
+
     request = chat_v1.SetUpSpaceRequest(
+        space=space,
     )
 
     # Make the request
