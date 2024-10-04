@@ -5,6 +5,40 @@
   "protoPackage": "google.cloud.run.v2",
   "schema": "1.0",
   "services": {
+    "Builds": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BuildsClient",
+          "rpcs": {
+            "SubmitBuild": {
+              "methods": [
+                "submit_build"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BuildsAsyncClient",
+          "rpcs": {
+            "SubmitBuild": {
+              "methods": [
+                "submit_build"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "BuildsClient",
+          "rpcs": {
+            "SubmitBuild": {
+              "methods": [
+                "submit_build"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Executions": {
       "clients": {
         "grpc": {

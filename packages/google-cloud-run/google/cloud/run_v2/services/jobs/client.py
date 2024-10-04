@@ -286,6 +286,21 @@ class JobsClient(metaclass=JobsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def policy_path(
+        project: str,
+    ) -> str:
+        """Returns a fully-qualified policy string."""
+        return "projects/{project}/policy".format(
+            project=project,
+        )
+
+    @staticmethod
+    def parse_policy_path(path: str) -> Dict[str, str]:
+        """Parses a policy path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/policy$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def secret_path(
         project: str,
         secret: str,

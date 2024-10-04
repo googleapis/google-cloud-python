@@ -18,11 +18,13 @@ from google.cloud.run_v2 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from .services.builds import BuildsAsyncClient, BuildsClient
 from .services.executions import ExecutionsAsyncClient, ExecutionsClient
 from .services.jobs import JobsAsyncClient, JobsClient
 from .services.revisions import RevisionsAsyncClient, RevisionsClient
 from .services.services import ServicesAsyncClient, ServicesClient
 from .services.tasks import TasksAsyncClient, TasksClient
+from .types.build import StorageSource, SubmitBuildRequest, SubmitBuildResponse
 from .types.condition import Condition
 from .types.execution import (
     CancelExecutionRequest,
@@ -101,18 +103,22 @@ from .types.vendor_settings import (
     EncryptionKeyRevocationAction,
     ExecutionEnvironment,
     IngressTraffic,
+    NodeSelector,
     RevisionScaling,
+    ServiceMesh,
     ServiceScaling,
     VpcAccess,
 )
 
 __all__ = (
+    "BuildsAsyncClient",
     "ExecutionsAsyncClient",
     "JobsAsyncClient",
     "RevisionsAsyncClient",
     "ServicesAsyncClient",
     "TasksAsyncClient",
     "BinaryAuthorization",
+    "BuildsClient",
     "CancelExecutionRequest",
     "CloudSqlInstance",
     "Condition",
@@ -156,6 +162,7 @@ __all__ = (
     "ListTasksRequest",
     "ListTasksResponse",
     "NFSVolumeSource",
+    "NodeSelector",
     "Probe",
     "ResourceRequirements",
     "Revision",
@@ -167,8 +174,12 @@ __all__ = (
     "SecretKeySelector",
     "SecretVolumeSource",
     "Service",
+    "ServiceMesh",
     "ServiceScaling",
     "ServicesClient",
+    "StorageSource",
+    "SubmitBuildRequest",
+    "SubmitBuildResponse",
     "TCPSocketAction",
     "Task",
     "TaskAttemptResult",
