@@ -329,7 +329,7 @@ class ChatServiceAsyncClient:
         (``text``), cards (``cardsV2``), and accessory widgets
         (``accessoryWidgets``).
 
-        |Message sent with app authentication|
+        |Message sent with app authentication async client|
 
         The following image shows how Chat attributes a message when you
         use user authentication. Chat displays the user as the message
@@ -337,13 +337,13 @@ class ChatServiceAsyncClient:
         its name. The content of message can only contain text
         (``text``).
 
-        |Message sent with user authentication|
+        |Message sent with user authentication async client|
 
         The maximum message size, including the message contents, is
         32,000 bytes.
 
-        .. |Message sent with app authentication| image:: https://developers.google.com/workspace/chat/images/message-app-auth.svg
-        .. |Message sent with user authentication| image:: https://developers.google.com/workspace/chat/images/message-user-auth.svg
+        .. |Message sent with app authentication async client| image:: https://developers.google.com/workspace/chat/images/message-app-auth.svg
+        .. |Message sent with user authentication async client| image:: https://developers.google.com/workspace/chat/images/message-user-auth.svg
 
         .. code-block:: python
 
