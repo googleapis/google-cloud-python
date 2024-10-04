@@ -37,6 +37,12 @@ from .accounts import (
     ListSubAccountsResponse,
     UpdateAccountRequest,
 )
+from .accountservices import AccountAggregation
+from .autofeedsettings import (
+    AutofeedSettings,
+    GetAutofeedSettingsRequest,
+    UpdateAutofeedSettingsRequest,
+)
 from .businessidentity import (
     BusinessIdentity,
     GetBusinessIdentityRequest,
@@ -151,6 +157,10 @@ __all__ = (
     "ListSubAccountsRequest",
     "ListSubAccountsResponse",
     "UpdateAccountRequest",
+    "AccountAggregation",
+    "AutofeedSettings",
+    "GetAutofeedSettingsRequest",
+    "UpdateAutofeedSettingsRequest",
     "BusinessIdentity",
     "GetBusinessIdentityRequest",
     "UpdateBusinessIdentityRequest",

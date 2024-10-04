@@ -2,6 +2,9 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Parallelstore API.
+By default, you will get version ``parallelstore_v1beta``.
+
 
 API Reference
 -------------
@@ -10,6 +13,14 @@ API Reference
 
     parallelstore_v1beta/services_
     parallelstore_v1beta/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    parallelstore_v1/services_
+    parallelstore_v1/types_
 
 
 Changelog
