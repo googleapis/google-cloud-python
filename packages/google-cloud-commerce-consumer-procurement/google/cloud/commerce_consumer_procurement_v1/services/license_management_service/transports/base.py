@@ -18,7 +18,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, operations_v1
+from google.api_core import gapic_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -29,8 +29,7 @@ from google.cloud.commerce_consumer_procurement_v1 import (
     gapic_version as package_version,
 )
 from google.cloud.commerce_consumer_procurement_v1.types import (
-    order,
-    procurement_service,
+    license_management_service,
 )
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -38,8 +37,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class ConsumerProcurementServiceTransport(abc.ABC):
-    """Abstract transport class for ConsumerProcurementService."""
+class LicenseManagementServiceTransport(abc.ABC):
+    """Abstract transport class for LicenseManagementService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -134,46 +133,28 @@ class ConsumerProcurementServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.place_order: gapic_v1.method.wrap_method(
-                self.place_order,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_order: gapic_v1.method.wrap_method(
-                self.get_order,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_orders: gapic_v1.method.wrap_method(
-                self.list_orders,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.modify_order: gapic_v1.method.wrap_method(
-                self.modify_order,
+            self.get_license_pool: gapic_v1.method.wrap_method(
+                self.get_license_pool,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.cancel_order: gapic_v1.method.wrap_method(
-                self.cancel_order,
+            self.update_license_pool: gapic_v1.method.wrap_method(
+                self.update_license_pool,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.assign: gapic_v1.method.wrap_method(
+                self.assign,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.unassign: gapic_v1.method.wrap_method(
+                self.unassign,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.enumerate_licensed_users: gapic_v1.method.wrap_method(
+                self.enumerate_licensed_users,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -189,55 +170,62 @@ class ConsumerProcurementServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def operations_client(self):
-        """Return the client designed to process long-running operations."""
-        raise NotImplementedError()
-
-    @property
-    def place_order(
+    def get_license_pool(
         self,
     ) -> Callable[
-        [procurement_service.PlaceOrderRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_order(
-        self,
-    ) -> Callable[
-        [procurement_service.GetOrderRequest],
-        Union[order.Order, Awaitable[order.Order]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_orders(
-        self,
-    ) -> Callable[
-        [procurement_service.ListOrdersRequest],
+        [license_management_service.GetLicensePoolRequest],
         Union[
-            procurement_service.ListOrdersResponse,
-            Awaitable[procurement_service.ListOrdersResponse],
+            license_management_service.LicensePool,
+            Awaitable[license_management_service.LicensePool],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def modify_order(
+    def update_license_pool(
         self,
     ) -> Callable[
-        [procurement_service.ModifyOrderRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [license_management_service.UpdateLicensePoolRequest],
+        Union[
+            license_management_service.LicensePool,
+            Awaitable[license_management_service.LicensePool],
+        ],
     ]:
         raise NotImplementedError()
 
     @property
-    def cancel_order(
+    def assign(
         self,
     ) -> Callable[
-        [procurement_service.CancelOrderRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [license_management_service.AssignRequest],
+        Union[
+            license_management_service.AssignResponse,
+            Awaitable[license_management_service.AssignResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def unassign(
+        self,
+    ) -> Callable[
+        [license_management_service.UnassignRequest],
+        Union[
+            license_management_service.UnassignResponse,
+            Awaitable[license_management_service.UnassignResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def enumerate_licensed_users(
+        self,
+    ) -> Callable[
+        [license_management_service.EnumerateLicensedUsersRequest],
+        Union[
+            license_management_service.EnumerateLicensedUsersResponse,
+            Awaitable[license_management_service.EnumerateLicensedUsersResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -255,4 +243,4 @@ class ConsumerProcurementServiceTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("ConsumerProcurementServiceTransport",)
+__all__ = ("LicenseManagementServiceTransport",)

@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "ConsumerProcurementServiceClient",
           "rpcs": {
+            "CancelOrder": {
+              "methods": [
+                "cancel_order"
+              ]
+            },
             "GetOrder": {
               "methods": [
                 "get_order"
@@ -18,6 +23,11 @@
             "ListOrders": {
               "methods": [
                 "list_orders"
+              ]
+            },
+            "ModifyOrder": {
+              "methods": [
+                "modify_order"
               ]
             },
             "PlaceOrder": {
@@ -30,6 +40,11 @@
         "grpc-async": {
           "libraryClient": "ConsumerProcurementServiceAsyncClient",
           "rpcs": {
+            "CancelOrder": {
+              "methods": [
+                "cancel_order"
+              ]
+            },
             "GetOrder": {
               "methods": [
                 "get_order"
@@ -38,6 +53,11 @@
             "ListOrders": {
               "methods": [
                 "list_orders"
+              ]
+            },
+            "ModifyOrder": {
+              "methods": [
+                "modify_order"
               ]
             },
             "PlaceOrder": {
@@ -50,6 +70,11 @@
         "rest": {
           "libraryClient": "ConsumerProcurementServiceClient",
           "rpcs": {
+            "CancelOrder": {
+              "methods": [
+                "cancel_order"
+              ]
+            },
             "GetOrder": {
               "methods": [
                 "get_order"
@@ -60,9 +85,108 @@
                 "list_orders"
               ]
             },
+            "ModifyOrder": {
+              "methods": [
+                "modify_order"
+              ]
+            },
             "PlaceOrder": {
               "methods": [
                 "place_order"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "LicenseManagementService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "LicenseManagementServiceClient",
+          "rpcs": {
+            "Assign": {
+              "methods": [
+                "assign"
+              ]
+            },
+            "EnumerateLicensedUsers": {
+              "methods": [
+                "enumerate_licensed_users"
+              ]
+            },
+            "GetLicensePool": {
+              "methods": [
+                "get_license_pool"
+              ]
+            },
+            "Unassign": {
+              "methods": [
+                "unassign"
+              ]
+            },
+            "UpdateLicensePool": {
+              "methods": [
+                "update_license_pool"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "LicenseManagementServiceAsyncClient",
+          "rpcs": {
+            "Assign": {
+              "methods": [
+                "assign"
+              ]
+            },
+            "EnumerateLicensedUsers": {
+              "methods": [
+                "enumerate_licensed_users"
+              ]
+            },
+            "GetLicensePool": {
+              "methods": [
+                "get_license_pool"
+              ]
+            },
+            "Unassign": {
+              "methods": [
+                "unassign"
+              ]
+            },
+            "UpdateLicensePool": {
+              "methods": [
+                "update_license_pool"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "LicenseManagementServiceClient",
+          "rpcs": {
+            "Assign": {
+              "methods": [
+                "assign"
+              ]
+            },
+            "EnumerateLicensedUsers": {
+              "methods": [
+                "enumerate_licensed_users"
+              ]
+            },
+            "GetLicensePool": {
+              "methods": [
+                "get_license_pool"
+              ]
+            },
+            "Unassign": {
+              "methods": [
+                "unassign"
+              ]
+            },
+            "UpdateLicensePool": {
+              "methods": [
+                "update_license_pool"
               ]
             }
           }
