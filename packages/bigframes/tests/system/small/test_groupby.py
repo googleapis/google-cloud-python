@@ -421,6 +421,34 @@ def test_dataframe_groupby_getitem(
     pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
+def test_dataframe_groupby_getitem_error(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    col_names = ["float64_col", "int64_col", "bool_col", "string_col"]
+    with pytest.raises(KeyError, match="\"Columns not found: 'not_in_group'\""):
+        (
+            scalars_df_index[col_names]
+            .groupby("string_col")["not_in_group"]
+            .min()
+            .to_pandas()
+        )
+
+
+def test_dataframe_groupby_getitem_multiple_columns_error(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    col_names = ["float64_col", "int64_col", "bool_col", "string_col"]
+    with pytest.raises(KeyError, match="\"Columns not found: 'col1', 'col2'\""):
+        (
+            scalars_df_index[col_names]
+            .groupby("string_col")["col1", "col2"]
+            .min()
+            .to_pandas()
+        )
+
+
 def test_dataframe_groupby_getitem_list(
     scalars_df_index,
     scalars_pandas_df_index,
