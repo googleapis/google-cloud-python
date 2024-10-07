@@ -1670,7 +1670,11 @@ def test_df_apply_axis_1_aggregates(session, scalars_dfs):
                     (3, 4): ["pq", "rs", "tu"],
                     (5.0, "six", 7): [8, 9, 10],
                     'raise Exception("hacked!")': [11, 12, 13],
-                }
+                },
+                # Default pandas index has non-numpy type, whereas bigframes is
+                # always numpy-based type, so let's use the index compatible
+                # with bigframes. See more details in b/369689696.
+                index=pandas.Index([0, 1, 2], dtype=pandas.Int64Dtype()),
             ),
             id="all-kinds-of-column-names",
         ),
@@ -1681,17 +1685,22 @@ def test_df_apply_axis_1_aggregates(session, scalars_dfs):
                     "y": [1.5, 3.75, 5],
                     "z": ["pq", "rs", "tu"],
                 },
-                index=pandas.MultiIndex.from_tuples(
-                    [
-                        ("a", 100),
-                        ("a", 200),
-                        ("b", 300),
-                    ]
+                index=pandas.MultiIndex.from_frame(
+                    pandas.DataFrame(
+                        {
+                            "idx0": pandas.Series(
+                                ["a", "a", "b"], dtype=pandas.StringDtype()
+                            ),
+                            "idx1": pandas.Series(
+                                [100, 200, 300], dtype=pandas.Int64Dtype()
+                            ),
+                        }
+                    )
                 ),
             ),
             id="multiindex",
             marks=pytest.mark.skip(
-                reason="TODO(b/368639580) revert this skip after fix"
+                reason="TODO: revert this skip after this pandas bug is fixed: https://github.com/pandas-dev/pandas/issues/59908"
             ),
         ),
         pytest.param(
@@ -1701,6 +1710,10 @@ def test_df_apply_axis_1_aggregates(session, scalars_dfs):
                     [20, 3.75, "rs"],
                     [30, 8.0, "tu"],
                 ],
+                # Default pandas index has non-numpy type, whereas bigframes is
+                # always numpy-based type, so let's use the index compatible
+                # with bigframes. See more details in b/369689696.
+                index=pandas.Index([0, 1, 2], dtype=pandas.Int64Dtype()),
                 columns=pandas.MultiIndex.from_arrays(
                     [
                         ["first", "last_two", "last_two"],
@@ -1729,10 +1742,8 @@ def test_df_apply_axis_1_complex(session, pd_df):
 
         def serialize_row(row):
             custom = {
-                "name": row.name.item() if hasattr(row.name, "item") else row.name,
-                "index": [
-                    idx.item() if hasattr(idx, "item") else idx for idx in row.index
-                ],
+                "name": row.name,
+                "index": [idx for idx in row.index],
                 "values": [
                     val.item() if hasattr(val, "item") else val for val in row.values
                 ],
@@ -1756,12 +1767,7 @@ def test_df_apply_axis_1_complex(session, pd_df):
         bf_result = bf_df.apply(serialize_row_remote, axis=1).to_pandas()
         pd_result = pd_df.apply(serialize_row, axis=1)
 
-        # bf_result.dtype is 'string[pyarrow]' while pd_result.dtype is 'object'
-        # , ignore this mismatch by using check_dtype=False.
-        #
-        # bf_result.index[0].dtype is 'string[pyarrow]' while
-        # pd_result.index[0].dtype is 'object', ignore this mismatch by using
-        # check_index_type=False.
+        # ignore known dtype difference between pandas and bigframes
         pandas.testing.assert_series_equal(
             pd_result, bf_result, check_dtype=False, check_index_type=False
         )
