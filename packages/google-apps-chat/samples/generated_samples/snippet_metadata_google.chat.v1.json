@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-apps-chat",
-    "version": "0.1.11"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -728,12 +728,12 @@
       "regionTag": "chat_v1_generated_ChatService_CreateSpace_async",
       "segments": [
         {
-          "end": 50,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -743,18 +743,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 48,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -808,12 +808,12 @@
       "regionTag": "chat_v1_generated_ChatService_CreateSpace_sync",
       "segments": [
         {
-          "end": 50,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -823,18 +823,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 48,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3749,12 +3749,12 @@
       "regionTag": "chat_v1_generated_ChatService_SetUpSpace_async",
       "segments": [
         {
-          "end": 50,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -3764,18 +3764,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 48,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3825,12 +3825,12 @@
       "regionTag": "chat_v1_generated_ChatService_SetUpSpace_sync",
       "segments": [
         {
-          "end": 50,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -3840,18 +3840,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 48,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4417,12 +4417,12 @@
       "regionTag": "chat_v1_generated_ChatService_UpdateSpace_async",
       "segments": [
         {
-          "end": 50,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -4432,18 +4432,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 48,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4501,12 +4501,12 @@
       "regionTag": "chat_v1_generated_ChatService_UpdateSpace_sync",
       "segments": [
         {
-          "end": 50,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -4516,18 +4516,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 48,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],

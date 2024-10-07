@@ -28,7 +28,9 @@ __protobuf__ = proto.module(
         "VpcAccess",
         "BinaryAuthorization",
         "RevisionScaling",
+        "ServiceMesh",
         "ServiceScaling",
+        "NodeSelector",
     },
 )
 
@@ -46,11 +48,14 @@ class IngressTraffic(proto.Enum):
         INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER (3):
             Both internal and Google Cloud Load Balancer
             traffic is allowed.
+        INGRESS_TRAFFIC_NONE (4):
+            No ingress traffic is allowed.
     """
     INGRESS_TRAFFIC_UNSPECIFIED = 0
     INGRESS_TRAFFIC_ALL = 1
     INGRESS_TRAFFIC_INTERNAL_ONLY = 2
     INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER = 3
+    INGRESS_TRAFFIC_NONE = 4
 
 
 class ExecutionEnvironment(proto.Enum):
@@ -94,12 +99,11 @@ class VpcAccess(proto.Message):
 
     Attributes:
         connector (str):
-            VPC Access connector name.
-            Format:
-            projects/{project}/locations/{location}/connectors/{connector},
-            where {project} can be project id or number.
-            For more information on sending traffic to a VPC
-            network via a connector, visit
+            VPC Access connector name. Format:
+            ``projects/{project}/locations/{location}/connectors/{connector}``,
+            where ``{project}`` can be project id or number. For more
+            information on sending traffic to a VPC network via a
+            connector, visit
             https://cloud.google.com/run/docs/configuring/vpc-connectors.
         egress (google.cloud.run_v2.types.VpcAccess.VpcEgress):
             Optional. Traffic VPC egress settings. If not provided, it
@@ -201,9 +205,8 @@ class BinaryAuthorization(proto.Message):
 
             This field is a member of `oneof`_ ``binauthz_method``.
         policy (str):
-            Optional. The path to a binary authorization
-            policy. Format:
-            projects/{project}/platforms/cloudRun/{policy-name}
+            Optional. The path to a binary authorization policy. Format:
+            ``projects/{project}/platforms/cloudRun/{policy-name}``
 
             This field is a member of `oneof`_ ``binauthz_method``.
         breakglass_justification (str):
@@ -238,7 +241,11 @@ class RevisionScaling(proto.Message):
             that this resource should have.
         max_instance_count (int):
             Optional. Maximum number of serving instances
-            that this resource should have.
+            that this resource should have. When
+            unspecified, the field is set to the server
+            default value of
+            100. For more information see
+            https://cloud.google.com/run/docs/configuring/max-instances
     """
 
     min_instance_count: int = proto.Field(
@@ -248,6 +255,23 @@ class RevisionScaling(proto.Message):
     max_instance_count: int = proto.Field(
         proto.INT32,
         number=2,
+    )
+
+
+class ServiceMesh(proto.Message):
+    r"""Settings for Cloud Service Mesh. For more information see
+    https://cloud.google.com/service-mesh/docs/overview.
+
+    Attributes:
+        mesh (str):
+            The Mesh resource name. Format:
+            ``projects/{project}/locations/global/meshes/{mesh}``, where
+            ``{project}`` can be project id or number.
+    """
+
+    mesh: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -261,11 +285,50 @@ class ServiceScaling(proto.Message):
             service. This number of instances is divided
             among all revisions with specified traffic based
             on the percent of traffic they are receiving.
-            (BETA)
+        scaling_mode (google.cloud.run_v2.types.ServiceScaling.ScalingMode):
+            Optional. The scaling mode for the service.
     """
+
+    class ScalingMode(proto.Enum):
+        r"""The scaling mode for the service. If not provided, it
+        defaults to AUTOMATIC.
+
+        Values:
+            SCALING_MODE_UNSPECIFIED (0):
+                Unspecified.
+            AUTOMATIC (1):
+                Scale based on traffic between min and max
+                instances.
+            MANUAL (2):
+                Scale to exactly min instances and ignore max
+                instances.
+        """
+        SCALING_MODE_UNSPECIFIED = 0
+        AUTOMATIC = 1
+        MANUAL = 2
 
     min_instance_count: int = proto.Field(
         proto.INT32,
+        number=1,
+    )
+    scaling_mode: ScalingMode = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=ScalingMode,
+    )
+
+
+class NodeSelector(proto.Message):
+    r"""Hardware constraints configuration.
+
+    Attributes:
+        accelerator (str):
+            Required. GPU accelerator type to attach to
+            an instance.
+    """
+
+    accelerator: str = proto.Field(
+        proto.STRING,
         number=1,
     )
 

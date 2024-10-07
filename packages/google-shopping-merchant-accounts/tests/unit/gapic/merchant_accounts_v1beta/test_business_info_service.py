@@ -1216,6 +1216,7 @@ def test_get_business_info(request_type, transport: str = "grpc"):
         call.return_value = businessinfo.BusinessInfo(
             name="name_value",
             phone_verification_state=phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED,
+            korean_business_registration_number="korean_business_registration_number_value",
         )
         response = client.get_business_info(request)
 
@@ -1231,6 +1232,10 @@ def test_get_business_info(request_type, transport: str = "grpc"):
     assert (
         response.phone_verification_state
         == phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED
+    )
+    assert (
+        response.korean_business_registration_number
+        == "korean_business_registration_number_value"
     )
 
 
@@ -1340,6 +1345,7 @@ async def test_get_business_info_empty_call_async():
             businessinfo.BusinessInfo(
                 name="name_value",
                 phone_verification_state=phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED,
+                korean_business_registration_number="korean_business_registration_number_value",
             )
         )
         response = await client.get_business_info()
@@ -1412,6 +1418,7 @@ async def test_get_business_info_async(
             businessinfo.BusinessInfo(
                 name="name_value",
                 phone_verification_state=phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED,
+                korean_business_registration_number="korean_business_registration_number_value",
             )
         )
         response = await client.get_business_info(request)
@@ -1428,6 +1435,10 @@ async def test_get_business_info_async(
     assert (
         response.phone_verification_state
         == phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED
+    )
+    assert (
+        response.korean_business_registration_number
+        == "korean_business_registration_number_value"
     )
 
 
@@ -1612,6 +1623,7 @@ def test_update_business_info(request_type, transport: str = "grpc"):
         call.return_value = businessinfo.BusinessInfo(
             name="name_value",
             phone_verification_state=phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED,
+            korean_business_registration_number="korean_business_registration_number_value",
         )
         response = client.update_business_info(request)
 
@@ -1627,6 +1639,10 @@ def test_update_business_info(request_type, transport: str = "grpc"):
     assert (
         response.phone_verification_state
         == phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED
+    )
+    assert (
+        response.korean_business_registration_number
+        == "korean_business_registration_number_value"
     )
 
 
@@ -1734,6 +1750,7 @@ async def test_update_business_info_empty_call_async():
             businessinfo.BusinessInfo(
                 name="name_value",
                 phone_verification_state=phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED,
+                korean_business_registration_number="korean_business_registration_number_value",
             )
         )
         response = await client.update_business_info()
@@ -1806,6 +1823,7 @@ async def test_update_business_info_async(
             businessinfo.BusinessInfo(
                 name="name_value",
                 phone_verification_state=phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED,
+                korean_business_registration_number="korean_business_registration_number_value",
             )
         )
         response = await client.update_business_info(request)
@@ -1822,6 +1840,10 @@ async def test_update_business_info_async(
     assert (
         response.phone_verification_state
         == phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED
+    )
+    assert (
+        response.korean_business_registration_number
+        == "korean_business_registration_number_value"
     )
 
 
@@ -2014,6 +2036,7 @@ def test_get_business_info_rest(request_type):
         return_value = businessinfo.BusinessInfo(
             name="name_value",
             phone_verification_state=phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED,
+            korean_business_registration_number="korean_business_registration_number_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2033,6 +2056,10 @@ def test_get_business_info_rest(request_type):
     assert (
         response.phone_verification_state
         == phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED
+    )
+    assert (
+        response.korean_business_registration_number
+        == "korean_business_registration_number_value"
     )
 
 
@@ -2341,6 +2368,7 @@ def test_update_business_info_rest(request_type):
         },
         "phone_verification_state": 1,
         "customer_service": {"uri": "uri_value", "email": "email_value", "phone": {}},
+        "korean_business_registration_number": "korean_business_registration_number_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -2417,6 +2445,7 @@ def test_update_business_info_rest(request_type):
         return_value = businessinfo.BusinessInfo(
             name="name_value",
             phone_verification_state=phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED,
+            korean_business_registration_number="korean_business_registration_number_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2436,6 +2465,10 @@ def test_update_business_info_rest(request_type):
     assert (
         response.phone_verification_state
         == phoneverificationstate.PhoneVerificationState.PHONE_VERIFICATION_STATE_VERIFIED
+    )
+    assert (
+        response.korean_business_registration_number
+        == "korean_business_registration_number_value"
     )
 
 

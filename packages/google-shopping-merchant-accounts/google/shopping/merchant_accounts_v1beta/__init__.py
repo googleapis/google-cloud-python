@@ -27,6 +27,10 @@ from .services.account_tax_service import (
     AccountTaxServiceClient,
 )
 from .services.accounts_service import AccountsServiceAsyncClient, AccountsServiceClient
+from .services.autofeed_settings_service import (
+    AutofeedSettingsServiceAsyncClient,
+    AutofeedSettingsServiceClient,
+)
 from .services.business_identity_service import (
     BusinessIdentityServiceAsyncClient,
     BusinessIdentityServiceClient,
@@ -82,6 +86,12 @@ from .types.accounts import (
     ListSubAccountsRequest,
     ListSubAccountsResponse,
     UpdateAccountRequest,
+)
+from .types.accountservices import AccountAggregation
+from .types.autofeedsettings import (
+    AutofeedSettings,
+    GetAutofeedSettingsRequest,
+    UpdateAutofeedSettingsRequest,
 )
 from .types.businessidentity import (
     BusinessIdentity,
@@ -182,6 +192,7 @@ __all__ = (
     "AccountIssueServiceAsyncClient",
     "AccountTaxServiceAsyncClient",
     "AccountsServiceAsyncClient",
+    "AutofeedSettingsServiceAsyncClient",
     "BusinessIdentityServiceAsyncClient",
     "BusinessInfoServiceAsyncClient",
     "EmailPreferencesServiceAsyncClient",
@@ -197,12 +208,15 @@ __all__ = (
     "Accepted",
     "AccessRight",
     "Account",
+    "AccountAggregation",
     "AccountIssue",
     "AccountIssueServiceClient",
     "AccountTax",
     "AccountTaxServiceClient",
     "AccountsServiceClient",
     "Address",
+    "AutofeedSettings",
+    "AutofeedSettingsServiceClient",
     "BusinessDayConfig",
     "BusinessIdentity",
     "BusinessIdentityServiceClient",
@@ -226,6 +240,7 @@ __all__ = (
     "EnableProgramRequest",
     "GetAccountRequest",
     "GetAccountTaxRequest",
+    "GetAutofeedSettingsRequest",
     "GetBusinessIdentityRequest",
     "GetBusinessInfoRequest",
     "GetEmailPreferencesRequest",
@@ -285,6 +300,7 @@ __all__ = (
     "UnclaimHomepageRequest",
     "UpdateAccountRequest",
     "UpdateAccountTaxRequest",
+    "UpdateAutofeedSettingsRequest",
     "UpdateBusinessIdentityRequest",
     "UpdateBusinessInfoRequest",
     "UpdateEmailPreferencesRequest",

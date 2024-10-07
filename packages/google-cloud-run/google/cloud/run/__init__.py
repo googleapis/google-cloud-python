@@ -18,6 +18,8 @@ from google.cloud.run import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.run_v2.services.builds.async_client import BuildsAsyncClient
+from google.cloud.run_v2.services.builds.client import BuildsClient
 from google.cloud.run_v2.services.executions.async_client import ExecutionsAsyncClient
 from google.cloud.run_v2.services.executions.client import ExecutionsClient
 from google.cloud.run_v2.services.jobs.async_client import JobsAsyncClient
@@ -28,6 +30,11 @@ from google.cloud.run_v2.services.services.async_client import ServicesAsyncClie
 from google.cloud.run_v2.services.services.client import ServicesClient
 from google.cloud.run_v2.services.tasks.async_client import TasksAsyncClient
 from google.cloud.run_v2.services.tasks.client import TasksClient
+from google.cloud.run_v2.types.build import (
+    StorageSource,
+    SubmitBuildRequest,
+    SubmitBuildResponse,
+)
 from google.cloud.run_v2.types.condition import Condition
 from google.cloud.run_v2.types.execution import (
     CancelExecutionRequest,
@@ -106,12 +113,16 @@ from google.cloud.run_v2.types.vendor_settings import (
     EncryptionKeyRevocationAction,
     ExecutionEnvironment,
     IngressTraffic,
+    NodeSelector,
     RevisionScaling,
+    ServiceMesh,
     ServiceScaling,
     VpcAccess,
 )
 
 __all__ = (
+    "BuildsClient",
+    "BuildsAsyncClient",
     "ExecutionsClient",
     "ExecutionsAsyncClient",
     "JobsClient",
@@ -122,6 +133,9 @@ __all__ = (
     "ServicesAsyncClient",
     "TasksClient",
     "TasksAsyncClient",
+    "StorageSource",
+    "SubmitBuildRequest",
+    "SubmitBuildResponse",
     "Condition",
     "CancelExecutionRequest",
     "DeleteExecutionRequest",
@@ -182,7 +196,9 @@ __all__ = (
     "TrafficTargetStatus",
     "TrafficTargetAllocationType",
     "BinaryAuthorization",
+    "NodeSelector",
     "RevisionScaling",
+    "ServiceMesh",
     "ServiceScaling",
     "VpcAccess",
     "EncryptionKeyRevocationAction",

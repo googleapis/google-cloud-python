@@ -24,6 +24,25 @@ from google.cloud.commerce_consumer_procurement_v1.services.consumer_procurement
 from google.cloud.commerce_consumer_procurement_v1.services.consumer_procurement_service.client import (
     ConsumerProcurementServiceClient,
 )
+from google.cloud.commerce_consumer_procurement_v1.services.license_management_service.async_client import (
+    LicenseManagementServiceAsyncClient,
+)
+from google.cloud.commerce_consumer_procurement_v1.services.license_management_service.client import (
+    LicenseManagementServiceClient,
+)
+from google.cloud.commerce_consumer_procurement_v1.types.license_management_service import (
+    AssignmentProtocol,
+    AssignRequest,
+    AssignResponse,
+    EnumerateLicensedUsersRequest,
+    EnumerateLicensedUsersResponse,
+    GetLicensePoolRequest,
+    LicensedUser,
+    LicensePool,
+    UnassignRequest,
+    UnassignResponse,
+    UpdateLicensePoolRequest,
+)
 from google.cloud.commerce_consumer_procurement_v1.types.order import (
     LineItem,
     LineItemChange,
@@ -36,9 +55,14 @@ from google.cloud.commerce_consumer_procurement_v1.types.order import (
     Subscription,
 )
 from google.cloud.commerce_consumer_procurement_v1.types.procurement_service import (
+    AutoRenewalBehavior,
+    CancelOrderMetadata,
+    CancelOrderRequest,
     GetOrderRequest,
     ListOrdersRequest,
     ListOrdersResponse,
+    ModifyOrderMetadata,
+    ModifyOrderRequest,
     PlaceOrderMetadata,
     PlaceOrderRequest,
 )
@@ -46,6 +70,19 @@ from google.cloud.commerce_consumer_procurement_v1.types.procurement_service imp
 __all__ = (
     "ConsumerProcurementServiceClient",
     "ConsumerProcurementServiceAsyncClient",
+    "LicenseManagementServiceClient",
+    "LicenseManagementServiceAsyncClient",
+    "AssignmentProtocol",
+    "AssignRequest",
+    "AssignResponse",
+    "EnumerateLicensedUsersRequest",
+    "EnumerateLicensedUsersResponse",
+    "GetLicensePoolRequest",
+    "LicensedUser",
+    "LicensePool",
+    "UnassignRequest",
+    "UnassignResponse",
+    "UpdateLicensePoolRequest",
     "LineItem",
     "LineItemChange",
     "LineItemInfo",
@@ -55,9 +92,14 @@ __all__ = (
     "LineItemChangeState",
     "LineItemChangeStateReasonType",
     "LineItemChangeType",
+    "CancelOrderMetadata",
+    "CancelOrderRequest",
     "GetOrderRequest",
     "ListOrdersRequest",
     "ListOrdersResponse",
+    "ModifyOrderMetadata",
+    "ModifyOrderRequest",
     "PlaceOrderMetadata",
     "PlaceOrderRequest",
+    "AutoRenewalBehavior",
 )
