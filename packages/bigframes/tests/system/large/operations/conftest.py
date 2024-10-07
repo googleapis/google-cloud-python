@@ -24,3 +24,10 @@ def gemini_flash_model(session, bq_connection) -> llm.GeminiTextGenerator:
         connection_name=bq_connection,
         model_name="gemini-1.5-flash-001",
     )
+
+
+@pytest.fixture(scope="session")
+def text_embedding_generator(session, bq_connection) -> llm.TextEmbeddingGenerator:
+    return llm.TextEmbeddingGenerator(
+        session=session, connection_name=bq_connection, model_name="text-embedding-004"
+    )

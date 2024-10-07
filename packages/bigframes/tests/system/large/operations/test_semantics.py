@@ -302,3 +302,65 @@ def test_join_invalid_model_raise_error():
 
     with pytest.raises(ValueError):
         cities.semantics.join(countries, "{city} is in {country}", None)
+
+
+@pytest.mark.parametrize(
+    "score_column",
+    [
+        pytest.param(None, id="no_score_column"),
+        pytest.param("distance", id="has_score_column"),
+    ],
+)
+def test_search(session, text_embedding_generator, score_column):
+    bigframes.options.experiments.semantic_operators = True
+    df = dataframe.DataFrame(
+        data={"creatures": ["salmon", "sea urchin", "baboons", "frog", "chimpanzee"]},
+        session=session,
+    )
+
+    actual_result = df.semantics.search(
+        "creatures",
+        "monkey",
+        top_k=2,
+        model=text_embedding_generator,
+        score_column=score_column,
+    ).to_pandas()
+
+    expected_result = pd.Series(
+        ["baboons", "chimpanzee"], index=[2, 4], name="creatures"
+    )
+    pandas.testing.assert_series_equal(
+        actual_result["creatures"],
+        expected_result,
+        check_dtype=False,
+        check_index_type=False,
+    )
+
+    if score_column is None:
+        assert len(actual_result.columns) == 1
+    else:
+        assert score_column in actual_result.columns
+
+
+def test_search_invalid_column_raises_error(session, text_embedding_generator):
+    bigframes.options.experiments.semantic_operators = True
+    df = dataframe.DataFrame(
+        data={"creatures": ["salmon", "sea urchin", "baboons", "frog", "chimpanzee"]},
+        session=session,
+    )
+
+    with pytest.raises(ValueError):
+        df.semantics.search(
+            "whatever", "monkey", top_k=2, model=text_embedding_generator
+        )
+
+
+def test_search_invalid_model_raises_error(session):
+    bigframes.options.experiments.semantic_operators = True
+    df = dataframe.DataFrame(
+        data={"creatures": ["salmon", "sea urchin", "baboons", "frog", "chimpanzee"]},
+        session=session,
+    )
+
+    with pytest.raises(TypeError):
+        df.semantics.search("creatures", "monkey", top_k=2, model=None)

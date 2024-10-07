@@ -15,7 +15,7 @@
 
 import re
 import typing
-from typing import List
+from typing import List, Optional
 
 import bigframes
 
@@ -278,6 +278,100 @@ class Semantics:
         joined_df = self._df.merge(other, how="cross", suffixes=("_left", "_right"))
 
         return joined_df.semantics.filter(instruction, model).reset_index(drop=True)
+
+    def search(
+        self,
+        search_column: str,
+        query: str,
+        top_k: int,
+        model,
+        score_column: Optional[str] = None,
+    ):
+        """
+        Performs semantic search on the DataFrame.
+
+        ** Examples: **
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> import bigframes
+            >>> bigframes.options.experiments.semantic_operators = True
+
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-004")
+
+            >>> df = bpd.DataFrame({"creatures": ["salmon", "sea urchin", "frog", "chimpanzee"]})
+            >>> df.semantics.search("creatures", "monkey", top_k=1, model=model, score_column='distance')
+                creatures  distance
+            3  chimpanzee  0.781101
+            <BLANKLINE>
+            [1 rows x 2 columns]
+
+        Args:
+            search_column:
+                The name of the column to search from.
+            query (str):
+                The search query.
+            top_k (int):
+                The number of nearest neighbors to return.
+            model (TextEmbeddingGenerator):
+                A TextEmbeddingGenerator provided by Bigframes ML package.
+            score_column (Optional[str], default None):
+                The name of the the additional column containning the similarity scores. If None,
+                this column won't be attached to the result.
+
+        Returns:
+            DataFrame: the DataFrame with the search result.
+
+        Raises:
+            ValueError: when the search_column is not found from the the data frame.
+            TypeError: when the provided model is not TextEmbeddingGenerator.
+        """
+
+        if search_column not in self._df.columns:
+            raise ValueError(f"Column {search_column} not found")
+
+        import bigframes.ml.llm as llm
+
+        if not isinstance(model, llm.TextEmbeddingGenerator):
+            raise TypeError(f"Expect a text embedding model, but got: {type(model)}")
+
+        embedded_df = model.predict(self._df[search_column])
+        embedded_table = embedded_df.reset_index().to_gbq()
+
+        import bigframes.pandas as bpd
+
+        embedding_result_column = "ml_generate_embedding_result"
+        query_df = model.predict(bpd.DataFrame({"query_id": [query]})).rename(
+            columns={"content": "query_id", embedding_result_column: "embedding"}
+        )
+
+        import bigframes.bigquery as bbq
+
+        search_result = (
+            bbq.vector_search(
+                base_table=embedded_table,
+                column_to_search=embedding_result_column,
+                query=query_df,
+                top_k=top_k,
+            )
+            .rename(columns={"content": search_column})
+            .set_index("index")
+        )
+
+        search_result.index.name = self._df.index.name
+
+        if score_column is not None:
+            search_result = search_result.rename(columns={"distance": score_column})[
+                [search_column, score_column]
+            ]
+        else:
+            search_result = search_result[[search_column]]
+
+        import bigframes.dataframe
+
+        return typing.cast(bigframes.dataframe.DataFrame, search_result)
 
 
 def _validate_model(model):
