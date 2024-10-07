@@ -160,3 +160,145 @@ def test_map_invalid_model_raise_error():
             "food",
             None,
         )
+
+
+def test_join(session, gemini_flash_model):
+    bigframes.options.experiments.semantic_operators = True
+    cities = dataframe.DataFrame(
+        data={
+            "city": ["Seattle", "Berlin"],
+        },
+        session=session,
+    )
+    countries = dataframe.DataFrame(
+        data={"country": ["USA", "UK", "Germany"]},
+        session=session,
+    )
+
+    actual_df = cities.semantics.join(
+        countries,
+        "{city} belongs to {country}",
+        gemini_flash_model,
+    ).to_pandas()
+
+    expected_df = pd.DataFrame(
+        {
+            "city": ["Seattle", "Berlin"],
+            "country": ["USA", "Germany"],
+        }
+    )
+    pandas.testing.assert_frame_equal(
+        actual_df,
+        expected_df,
+        check_dtype=False,
+        check_index_type=False,
+        check_column_type=False,
+    )
+
+
+def test_self_join(session, gemini_flash_model):
+    bigframes.options.experiments.semantic_operators = True
+    animals = dataframe.DataFrame(
+        data={
+            "animal": ["spider", "capybara"],
+        },
+        session=session,
+    )
+
+    actual_df = animals.semantics.join(
+        animals,
+        "{animal_left} is heavier than {animal_right}",
+        gemini_flash_model,
+    ).to_pandas()
+
+    expected_df = pd.DataFrame(
+        {
+            "animal_left": ["capybara"],
+            "animal_right": ["spider"],
+        }
+    )
+    pandas.testing.assert_frame_equal(
+        actual_df,
+        expected_df,
+        check_dtype=False,
+        check_index_type=False,
+        check_column_type=False,
+    )
+
+
+def test_join_data_too_large_raise_error(session, gemini_flash_model):
+    bigframes.options.experiments.semantic_operators = True
+    cities = dataframe.DataFrame(
+        data={
+            "city": ["Seattle", "Berlin"],
+        },
+        session=session,
+    )
+    countries = dataframe.DataFrame(
+        data={"country": ["USA", "UK", "Germany"]},
+        session=session,
+    )
+
+    with pytest.raises(ValueError):
+        cities.semantics.join(
+            countries, "{city} belongs to {country}", gemini_flash_model, max_rows=1
+        )
+
+
+@pytest.mark.parametrize(
+    ("instruction", "error_pattern"),
+    [
+        ("No column reference", "No column references"),
+        pytest.param(
+            "{city} is in {continent}", r"Column .+ not found", id="non_existing_column"
+        ),
+        pytest.param(
+            "{city} is in {country}",
+            r"Ambiguous column reference: .+",
+            id="ambiguous_column",
+        ),
+        pytest.param(
+            "{city_left} is in {country}",
+            r"Unnecessary suffix for .+",
+            id="suffix_on_left_unique_column",
+        ),
+        pytest.param(
+            "{city} is in {region_right}",
+            r"Unnecessary suffix for .+",
+            id="suffix_on_right_unique_column",
+        ),
+        pytest.param(
+            "{city_right} is in {country}", r"Column .+ not found", id="wrong_suffix"
+        ),
+        pytest.param(
+            "{city} is in {continent_right}",
+            r"Column .+ not found",
+            id="suffix_on_non_existing_column",
+        ),
+    ],
+)
+def test_join_invalid_instruction_raise_error(
+    instruction, error_pattern, gemini_flash_model
+):
+    bigframes.options.experiments.semantic_operators = True
+    df1 = dataframe.DataFrame(
+        {"city": ["Seattle", "Berlin"], "country": ["USA", "Germany"]}
+    )
+    df2 = dataframe.DataFrame(
+        {
+            "country": ["USA", "UK", "Germany"],
+            "region": ["North America", "Europe", "Europe"],
+        }
+    )
+
+    with pytest.raises(ValueError, match=error_pattern):
+        df1.semantics.join(df2, instruction, gemini_flash_model)
+
+
+def test_join_invalid_model_raise_error():
+    bigframes.options.experiments.semantic_operators = True
+    cities = dataframe.DataFrame({"city": ["Seattle", "Berlin"]})
+    countries = dataframe.DataFrame({"country": ["USA", "UK", "Germany"]})
+
+    with pytest.raises(ValueError):
+        cities.semantics.join(countries, "{city} is in {country}", None)
