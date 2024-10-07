@@ -97,16 +97,25 @@ def test_setter_if_session_started_but_setting_the_same_value(attribute):
     ],
 )
 def test_location_set_to_valid_no_warning(valid_location):
-    options = bigquery_options.BigQueryOptions()
-    # Ensure that no warnings are emitted.
-    # https://docs.pytest.org/en/7.0.x/how-to/capture-warnings.html#additional-use-cases-of-warnings-in-tests
-    with warnings.catch_warnings():
-        # Turn matching UnknownLocationWarning into exceptions.
-        # https://docs.python.org/3/library/warnings.html#warning-filter
-        warnings.simplefilter(
-            "error", category=bigframes.exceptions.UnknownLocationWarning
-        )
+    # test setting location through constructor
+    def set_location_in_ctor():
+        bigquery_options.BigQueryOptions(location=valid_location)
+
+    # test setting location property
+    def set_location_property():
+        options = bigquery_options.BigQueryOptions()
         options.location = valid_location
+
+    for op in [set_location_in_ctor, set_location_property]:
+        # Ensure that no warnings are emitted.
+        # https://docs.pytest.org/en/7.0.x/how-to/capture-warnings.html#additional-use-cases-of-warnings-in-tests
+        with warnings.catch_warnings():
+            # Turn matching UnknownLocationWarning into exceptions.
+            # https://docs.python.org/3/library/warnings.html#warning-filter
+            warnings.simplefilter(
+                "error", category=bigframes.exceptions.UnknownLocationWarning
+            )
+            op()
 
 
 @pytest.mark.parametrize(
@@ -126,11 +135,20 @@ def test_location_set_to_valid_no_warning(valid_location):
     ],
 )
 def test_location_set_to_invalid_warning(invalid_location, possibility):
-    options = bigquery_options.BigQueryOptions()
-    with pytest.warns(
-        bigframes.exceptions.UnknownLocationWarning,
-        match=re.escape(
-            f"The location '{invalid_location}' is set to an unknown value. Did you mean '{possibility}'?"
-        ),
-    ):
+    # test setting location through constructor
+    def set_location_in_ctor():
+        bigquery_options.BigQueryOptions(location=invalid_location)
+
+    # test setting location property
+    def set_location_property():
+        options = bigquery_options.BigQueryOptions()
         options.location = invalid_location
+
+    for op in [set_location_in_ctor, set_location_property]:
+        with pytest.warns(
+            bigframes.exceptions.UnknownLocationWarning,
+            match=re.escape(
+                f"The location '{invalid_location}' is set to an unknown value. Did you mean '{possibility}'?"
+            ),
+        ):
+            op()

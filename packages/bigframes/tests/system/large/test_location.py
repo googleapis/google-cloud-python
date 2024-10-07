@@ -101,7 +101,7 @@ def test_bq_location_non_canonical(set_location, resolved_location):
         context=bigframes.BigQueryOptions(location=set_location)
     )
 
-    assert session.bqclient.location == set_location
+    assert session.bqclient.location == resolved_location
 
     # by default global endpoint is used
     assert (

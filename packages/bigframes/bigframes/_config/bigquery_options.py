@@ -94,7 +94,7 @@ class BigQueryOptions:
     ):
         self._credentials = credentials
         self._project = project
-        self._location = location
+        self._location = _get_validated_location(location)
         self._bq_connection = bq_connection
         self._use_regional_endpoints = use_regional_endpoints
         self._application_name = application_name
