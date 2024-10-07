@@ -20,13 +20,7 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -45,12 +39,11 @@ except AttributeError:  # pragma: NO COVER
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.commerce_consumer_procurement_v1.types import (
-    order,
-    procurement_service,
+    license_management_service,
 )
 
-from .base import ConsumerProcurementServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .base import LicenseManagementServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -59,8 +52,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class ConsumerProcurementServiceRestInterceptor:
-    """Interceptor for ConsumerProcurementService.
+class LicenseManagementServiceRestInterceptor:
+    """Interceptor for LicenseManagementService.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -70,165 +63,174 @@ class ConsumerProcurementServiceRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the ConsumerProcurementServiceRestTransport.
+    instance of a custom subclass when constructing the LicenseManagementServiceRestTransport.
 
     .. code-block:: python
-        class MyCustomConsumerProcurementServiceInterceptor(ConsumerProcurementServiceRestInterceptor):
-            def pre_cancel_order(self, request, metadata):
+        class MyCustomLicenseManagementServiceInterceptor(LicenseManagementServiceRestInterceptor):
+            def pre_assign(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_cancel_order(self, response):
+            def post_assign(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_get_order(self, request, metadata):
+            def pre_enumerate_licensed_users(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_order(self, response):
+            def post_enumerate_licensed_users(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_list_orders(self, request, metadata):
+            def pre_get_license_pool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_orders(self, response):
+            def post_get_license_pool(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_modify_order(self, request, metadata):
+            def pre_unassign(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_modify_order(self, response):
+            def post_unassign(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_place_order(self, request, metadata):
+            def pre_update_license_pool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_place_order(self, response):
+            def post_update_license_pool(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-        transport = ConsumerProcurementServiceRestTransport(interceptor=MyCustomConsumerProcurementServiceInterceptor())
-        client = ConsumerProcurementServiceClient(transport=transport)
+        transport = LicenseManagementServiceRestTransport(interceptor=MyCustomLicenseManagementServiceInterceptor())
+        client = LicenseManagementServiceClient(transport=transport)
 
 
     """
 
-    def pre_cancel_order(
+    def pre_assign(
         self,
-        request: procurement_service.CancelOrderRequest,
+        request: license_management_service.AssignRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[procurement_service.CancelOrderRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for cancel_order
+    ) -> Tuple[license_management_service.AssignRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for assign
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the ConsumerProcurementService server.
+        before they are sent to the LicenseManagementService server.
         """
         return request, metadata
 
-    def post_cancel_order(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for cancel_order
+    def post_assign(
+        self, response: license_management_service.AssignResponse
+    ) -> license_management_service.AssignResponse:
+        """Post-rpc interceptor for assign
 
         Override in a subclass to manipulate the response
-        after it is returned by the ConsumerProcurementService server but before
+        after it is returned by the LicenseManagementService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_get_order(
+    def pre_enumerate_licensed_users(
         self,
-        request: procurement_service.GetOrderRequest,
+        request: license_management_service.EnumerateLicensedUsersRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[procurement_service.GetOrderRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for get_order
+    ) -> Tuple[
+        license_management_service.EnumerateLicensedUsersRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for enumerate_licensed_users
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the ConsumerProcurementService server.
+        before they are sent to the LicenseManagementService server.
         """
         return request, metadata
 
-    def post_get_order(self, response: order.Order) -> order.Order:
-        """Post-rpc interceptor for get_order
+    def post_enumerate_licensed_users(
+        self, response: license_management_service.EnumerateLicensedUsersResponse
+    ) -> license_management_service.EnumerateLicensedUsersResponse:
+        """Post-rpc interceptor for enumerate_licensed_users
 
         Override in a subclass to manipulate the response
-        after it is returned by the ConsumerProcurementService server but before
+        after it is returned by the LicenseManagementService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_list_orders(
+    def pre_get_license_pool(
         self,
-        request: procurement_service.ListOrdersRequest,
+        request: license_management_service.GetLicensePoolRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[procurement_service.ListOrdersRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for list_orders
+    ) -> Tuple[
+        license_management_service.GetLicensePoolRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_license_pool
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the ConsumerProcurementService server.
+        before they are sent to the LicenseManagementService server.
         """
         return request, metadata
 
-    def post_list_orders(
-        self, response: procurement_service.ListOrdersResponse
-    ) -> procurement_service.ListOrdersResponse:
-        """Post-rpc interceptor for list_orders
+    def post_get_license_pool(
+        self, response: license_management_service.LicensePool
+    ) -> license_management_service.LicensePool:
+        """Post-rpc interceptor for get_license_pool
 
         Override in a subclass to manipulate the response
-        after it is returned by the ConsumerProcurementService server but before
+        after it is returned by the LicenseManagementService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_modify_order(
+    def pre_unassign(
         self,
-        request: procurement_service.ModifyOrderRequest,
+        request: license_management_service.UnassignRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[procurement_service.ModifyOrderRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for modify_order
+    ) -> Tuple[license_management_service.UnassignRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for unassign
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the ConsumerProcurementService server.
+        before they are sent to the LicenseManagementService server.
         """
         return request, metadata
 
-    def post_modify_order(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for modify_order
+    def post_unassign(
+        self, response: license_management_service.UnassignResponse
+    ) -> license_management_service.UnassignResponse:
+        """Post-rpc interceptor for unassign
 
         Override in a subclass to manipulate the response
-        after it is returned by the ConsumerProcurementService server but before
+        after it is returned by the LicenseManagementService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_place_order(
+    def pre_update_license_pool(
         self,
-        request: procurement_service.PlaceOrderRequest,
+        request: license_management_service.UpdateLicensePoolRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[procurement_service.PlaceOrderRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for place_order
+    ) -> Tuple[
+        license_management_service.UpdateLicensePoolRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_license_pool
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the ConsumerProcurementService server.
+        before they are sent to the LicenseManagementService server.
         """
         return request, metadata
 
-    def post_place_order(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for place_order
+    def post_update_license_pool(
+        self, response: license_management_service.LicensePool
+    ) -> license_management_service.LicensePool:
+        """Post-rpc interceptor for update_license_pool
 
         Override in a subclass to manipulate the response
-        after it is returned by the ConsumerProcurementService server but before
+        after it is returned by the LicenseManagementService server but before
         it is returned to user code.
         """
         return response
@@ -241,7 +243,7 @@ class ConsumerProcurementServiceRestInterceptor:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the ConsumerProcurementService server.
+        before they are sent to the LicenseManagementService server.
         """
         return request, metadata
 
@@ -251,30 +253,23 @@ class ConsumerProcurementServiceRestInterceptor:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the ConsumerProcurementService server but before
+        after it is returned by the LicenseManagementService server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class ConsumerProcurementServiceRestStub:
+class LicenseManagementServiceRestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: ConsumerProcurementServiceRestInterceptor
+    _interceptor: LicenseManagementServiceRestInterceptor
 
 
-class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTransport):
-    """REST backend transport for ConsumerProcurementService.
+class LicenseManagementServiceRestTransport(LicenseManagementServiceTransport):
+    """REST backend transport for LicenseManagementService.
 
-    ConsumerProcurementService allows customers to make purchases of
-    products served by the Cloud Commerce platform.
-
-    When purchases are made, the
-    [ConsumerProcurementService][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService]
-    programs the appropriate backends, including both Google's own
-    infrastructure, as well as third-party systems, and to enable
-    billing setup for charging for the procured item.
+    Service for managing licenses.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -296,7 +291,7 @@ class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTranspor
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[ConsumerProcurementServiceRestInterceptor] = None,
+        interceptor: Optional[LicenseManagementServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -355,49 +350,14 @@ class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTranspor
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
         )
-        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or ConsumerProcurementServiceRestInterceptor()
+        self._interceptor = interceptor or LicenseManagementServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    @property
-    def operations_client(self) -> operations_v1.AbstractOperationsClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            http_options: Dict[str, List[Dict[str, str]]] = {
-                "google.longrunning.Operations.GetOperation": [
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=billingAccounts/*/orders/*/operations/*}",
-                    },
-                ],
-            }
-
-            rest_transport = operations_v1.OperationsRestTransport(
-                host=self._host,
-                # use the credentials which are saved
-                credentials=self._credentials,
-                scopes=self._scopes,
-                http_options=http_options,
-                path_prefix="v1",
-            )
-
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
-
-        # Return the client from cache.
-        return self._operations_client
-
-    class _CancelOrder(ConsumerProcurementServiceRestStub):
+    class _Assign(LicenseManagementServiceRestStub):
         def __hash__(self):
-            return hash("CancelOrder")
+            return hash("Assign")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -411,18 +371,18 @@ class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTranspor
 
         def __call__(
             self,
-            request: procurement_service.CancelOrderRequest,
+            request: license_management_service.AssignRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the cancel order method over HTTP.
+        ) -> license_management_service.AssignResponse:
+            r"""Call the assign method over HTTP.
 
             Args:
-                request (~.procurement_service.CancelOrderRequest):
+                request (~.license_management_service.AssignRequest):
                     The request object. Request message for
-                [ConsumerProcurementService.CancelOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.CancelOrder].
+                [LicenseManagementService.Assign][google.cloud.commerce.consumer.procurement.v1.LicenseManagementService.Assign].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -430,218 +390,119 @@ class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTranspor
                     sent along with the request as metadata.
 
             Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=billingAccounts/*/orders/*}:cancel",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_cancel_order(request, metadata)
-            pb_request = procurement_service.CancelOrderRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_cancel_order(resp)
-            return resp
-
-    class _GetOrder(ConsumerProcurementServiceRestStub):
-        def __hash__(self):
-            return hash("GetOrder")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: procurement_service.GetOrderRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> order.Order:
-            r"""Call the get order method over HTTP.
-
-            Args:
-                request (~.procurement_service.GetOrderRequest):
-                    The request object. Request message for
-                [ConsumerProcurementService.GetOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.GetOrder]
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.order.Order:
-                    Represents a purchase made by a
-                customer on Cloud Marketplace. Creating
-                an order makes sure that both the Google
-                backend systems as well as external
-                service provider's systems (if needed)
-                allow use of purchased products and
-                ensures the appropriate billing events
-                occur.
-
-                An Order can be made against one Product
-                with multiple add-ons (optional) or one
-                Quote which might reference multiple
-                products.
-
-                Customers typically choose a price plan
-                for each Product purchased when they
-                create an order and can change their
-                plan later, if the product allows.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=billingAccounts/*/orders/*}",
-                },
-            ]
-            request, metadata = self._interceptor.pre_get_order(request, metadata)
-            pb_request = procurement_service.GetOrderRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = order.Order()
-            pb_resp = order.Order.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_get_order(resp)
-            return resp
-
-    class _ListOrders(ConsumerProcurementServiceRestStub):
-        def __hash__(self):
-            return hash("ListOrders")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: procurement_service.ListOrdersRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> procurement_service.ListOrdersResponse:
-            r"""Call the list orders method over HTTP.
-
-            Args:
-                request (~.procurement_service.ListOrdersRequest):
-                    The request object. Request message for
-                [ConsumerProcurementService.ListOrders][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.ListOrders].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.procurement_service.ListOrdersResponse:
+                ~.license_management_service.AssignResponse:
                     Response message for
-                [ConsumerProcurementService.ListOrders][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.ListOrders].
+                [LicenseManagementService.Assign][google.cloud.commerce.consumer.procurement.v1.LicenseManagementService.Assign].
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=billingAccounts/*/orders/*/licensePool}:assign",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_assign(request, metadata)
+            pb_request = license_management_service.AssignRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = license_management_service.AssignResponse()
+            pb_resp = license_management_service.AssignResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_assign(resp)
+            return resp
+
+    class _EnumerateLicensedUsers(LicenseManagementServiceRestStub):
+        def __hash__(self):
+            return hash("EnumerateLicensedUsers")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: license_management_service.EnumerateLicensedUsersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> license_management_service.EnumerateLicensedUsersResponse:
+            r"""Call the enumerate licensed users method over HTTP.
+
+            Args:
+                request (~.license_management_service.EnumerateLicensedUsersRequest):
+                    The request object. Request message for
+                [LicenseManagementService.EnumerateLicensedUsers][google.cloud.commerce.consumer.procurement.v1.LicenseManagementService.EnumerateLicensedUsers].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.license_management_service.EnumerateLicensedUsersResponse:
+                    Response message for
+                [LicenseManagementService.EnumerateLicensedUsers][google.cloud.commerce.consumer.procurement.v1.LicenseManagementService.EnumerateLicensedUsers].
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{parent=billingAccounts/*}/orders",
+                    "uri": "/v1/{parent=billingAccounts/*/orders/*/licensePool}:enumerateLicensedUsers",
                 },
             ]
-            request, metadata = self._interceptor.pre_list_orders(request, metadata)
-            pb_request = procurement_service.ListOrdersRequest.pb(request)
+            request, metadata = self._interceptor.pre_enumerate_licensed_users(
+                request, metadata
+            )
+            pb_request = license_management_service.EnumerateLicensedUsersRequest.pb(
+                request
+            )
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -674,16 +535,16 @@ class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTranspor
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = procurement_service.ListOrdersResponse()
-            pb_resp = procurement_service.ListOrdersResponse.pb(resp)
+            resp = license_management_service.EnumerateLicensedUsersResponse()
+            pb_resp = license_management_service.EnumerateLicensedUsersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_list_orders(resp)
+            resp = self._interceptor.post_enumerate_licensed_users(resp)
             return resp
 
-    class _ModifyOrder(ConsumerProcurementServiceRestStub):
+    class _GetLicensePool(LicenseManagementServiceRestStub):
         def __hash__(self):
-            return hash("ModifyOrder")
+            return hash("GetLicensePool")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -697,18 +558,18 @@ class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTranspor
 
         def __call__(
             self,
-            request: procurement_service.ModifyOrderRequest,
+            request: license_management_service.GetLicensePoolRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the modify order method over HTTP.
+        ) -> license_management_service.LicensePool:
+            r"""Call the get license pool method over HTTP.
 
             Args:
-                request (~.procurement_service.ModifyOrderRequest):
-                    The request object. Request message for
-                [ConsumerProcurementService.ModifyOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.ModifyOrder].
+                request (~.license_management_service.GetLicensePoolRequest):
+                    The request object. Request message for getting a license
+                pool.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -716,22 +577,111 @@ class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTranspor
                     sent along with the request as metadata.
 
             Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
+                ~.license_management_service.LicensePool:
+                    A license pool represents a pool of
+                licenses that can be assigned to users.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=billingAccounts/*/orders/*/licensePool}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_license_pool(
+                request, metadata
+            )
+            pb_request = license_management_service.GetLicensePoolRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = license_management_service.LicensePool()
+            pb_resp = license_management_service.LicensePool.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_license_pool(resp)
+            return resp
+
+    class _Unassign(LicenseManagementServiceRestStub):
+        def __hash__(self):
+            return hash("Unassign")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: license_management_service.UnassignRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> license_management_service.UnassignResponse:
+            r"""Call the unassign method over HTTP.
+
+            Args:
+                request (~.license_management_service.UnassignRequest):
+                    The request object. Request message for
+                [LicenseManagementService.Unassign][google.cloud.commerce.consumer.procurement.v1.LicenseManagementService.Unassign].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.license_management_service.UnassignResponse:
+                    Response message for
+                [LicenseManagementService.Unassign][google.cloud.commerce.consumer.procurement.v1.LicenseManagementService.Unassign].
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1/{name=billingAccounts/*/orders/*}:modify",
+                    "uri": "/v1/{parent=billingAccounts/*/orders/*/licensePool}:unassign",
                     "body": "*",
                 },
             ]
-            request, metadata = self._interceptor.pre_modify_order(request, metadata)
-            pb_request = procurement_service.ModifyOrderRequest.pb(request)
+            request, metadata = self._interceptor.pre_unassign(request, metadata)
+            pb_request = license_management_service.UnassignRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -770,16 +720,20 @@ class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTranspor
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_modify_order(resp)
+            resp = license_management_service.UnassignResponse()
+            pb_resp = license_management_service.UnassignResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_unassign(resp)
             return resp
 
-    class _PlaceOrder(ConsumerProcurementServiceRestStub):
+    class _UpdateLicensePool(LicenseManagementServiceRestStub):
         def __hash__(self):
-            return hash("PlaceOrder")
+            return hash("UpdateLicensePool")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -791,18 +745,18 @@ class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTranspor
 
         def __call__(
             self,
-            request: procurement_service.PlaceOrderRequest,
+            request: license_management_service.UpdateLicensePoolRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the place order method over HTTP.
+        ) -> license_management_service.LicensePool:
+            r"""Call the update license pool method over HTTP.
 
             Args:
-                request (~.procurement_service.PlaceOrderRequest):
-                    The request object. Request message for
-                [ConsumerProcurementService.PlaceOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.PlaceOrder].
+                request (~.license_management_service.UpdateLicensePoolRequest):
+                    The request object. Request message for updating a
+                license pool.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -810,22 +764,23 @@ class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTranspor
                     sent along with the request as metadata.
 
             Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
+                ~.license_management_service.LicensePool:
+                    A license pool represents a pool of
+                licenses that can be assigned to users.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
-                    "method": "post",
-                    "uri": "/v1/{parent=billingAccounts/*}/orders:place",
-                    "body": "*",
+                    "method": "patch",
+                    "uri": "/v1/{license_pool.name=billingAccounts/*/orders/*/licensePool/*}",
+                    "body": "license_pool",
                 },
             ]
-            request, metadata = self._interceptor.pre_place_order(request, metadata)
-            pb_request = procurement_service.PlaceOrderRequest.pb(request)
+            request, metadata = self._interceptor.pre_update_license_pool(
+                request, metadata
+            )
+            pb_request = license_management_service.UpdateLicensePoolRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -864,56 +819,73 @@ class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTranspor
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_place_order(resp)
+            resp = license_management_service.LicensePool()
+            pb_resp = license_management_service.LicensePool.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_license_pool(resp)
             return resp
 
     @property
-    def cancel_order(
-        self,
-    ) -> Callable[[procurement_service.CancelOrderRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._CancelOrder(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def get_order(self) -> Callable[[procurement_service.GetOrderRequest], order.Order]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetOrder(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def list_orders(
+    def assign(
         self,
     ) -> Callable[
-        [procurement_service.ListOrdersRequest], procurement_service.ListOrdersResponse
+        [license_management_service.AssignRequest],
+        license_management_service.AssignResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListOrders(self._session, self._host, self._interceptor)  # type: ignore
+        return self._Assign(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def modify_order(
+    def enumerate_licensed_users(
         self,
-    ) -> Callable[[procurement_service.ModifyOrderRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [license_management_service.EnumerateLicensedUsersRequest],
+        license_management_service.EnumerateLicensedUsersResponse,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ModifyOrder(self._session, self._host, self._interceptor)  # type: ignore
+        return self._EnumerateLicensedUsers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def place_order(
+    def get_license_pool(
         self,
-    ) -> Callable[[procurement_service.PlaceOrderRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [license_management_service.GetLicensePoolRequest],
+        license_management_service.LicensePool,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PlaceOrder(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetLicensePool(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def unassign(
+        self,
+    ) -> Callable[
+        [license_management_service.UnassignRequest],
+        license_management_service.UnassignResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._Unassign(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_license_pool(
+        self,
+    ) -> Callable[
+        [license_management_service.UpdateLicensePoolRequest],
+        license_management_service.LicensePool,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateLicensePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(ConsumerProcurementServiceRestStub):
+    class _GetOperation(LicenseManagementServiceRestStub):
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -983,4 +955,4 @@ class ConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTranspor
         self._session.close()
 
 
-__all__ = ("ConsumerProcurementServiceRestTransport",)
+__all__ = ("LicenseManagementServiceRestTransport",)
