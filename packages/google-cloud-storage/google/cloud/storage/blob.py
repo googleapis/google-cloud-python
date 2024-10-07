@@ -137,6 +137,10 @@ _DOWNLOAD_AS_STRING_DEPRECATED = (
     "Blob.download_as_string() is deprecated and will be removed in future. "
     "Use Blob.download_as_bytes() instead."
 )
+_FROM_STRING_DEPRECATED = (
+    "Blob.from_string() is deprecated and will be removed in future. "
+    "Use Blob.from_uri() instead."
+)
 _GS_URL_REGEX_PATTERN = re.compile(
     r"(?P<scheme>gs)://(?P<bucket_name>[a-z0-9_.-]+)/(?P<object_name>.+)"
 )
@@ -389,7 +393,7 @@ class Blob(_PropertyMixin):
         )
 
     @classmethod
-    def from_string(cls, uri, client=None):
+    def from_uri(cls, uri, client=None):
         """Get a constructor for blob object by URI.
 
         .. code-block:: python
@@ -397,7 +401,7 @@ class Blob(_PropertyMixin):
             from google.cloud import storage
             from google.cloud.storage.blob import Blob
             client = storage.Client()
-            blob = Blob.from_string("gs://bucket/object", client=client)
+            blob = Blob.from_uri("gs://bucket/object", client=client)
 
         :type uri: str
         :param uri: The blob uri following a gs://bucket/object pattern.
@@ -418,6 +422,35 @@ class Blob(_PropertyMixin):
             raise ValueError("URI pattern must be gs://bucket/object")
         bucket = Bucket(client, name=match.group("bucket_name"))
         return cls(match.group("object_name"), bucket)
+
+    @classmethod
+    def from_string(cls, uri, client=None):
+        """(Deprecated) Get a constructor for blob object by URI.
+
+        .. note::
+           Deprecated alias for :meth:`from_uri`.
+
+        .. code-block:: python
+
+            from google.cloud import storage
+            from google.cloud.storage.blob import Blob
+            client = storage.Client()
+            blob = Blob.from_string("gs://bucket/object", client=client)
+
+        :type uri: str
+        :param uri: The blob uri following a gs://bucket/object pattern.
+          Both a bucket and object name is required to construct a blob object.
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  Application code should
+            *always* pass ``client``.
+
+        :rtype: :class:`google.cloud.storage.blob.Blob`
+        :returns: The blob object created.
+        """
+        warnings.warn(_FROM_STRING_DEPRECATED, PendingDeprecationWarning, stacklevel=2)
+        return Blob.from_uri(uri=uri, client=client)
 
     def generate_signed_url(
         self,

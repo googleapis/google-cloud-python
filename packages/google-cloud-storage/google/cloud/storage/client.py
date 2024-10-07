@@ -1202,7 +1202,7 @@ class Client(ClientWithProject):
         """
 
         if not isinstance(blob_or_uri, Blob):
-            blob_or_uri = Blob.from_string(blob_or_uri)
+            blob_or_uri = Blob.from_uri(blob_or_uri)
 
         blob_or_uri._prep_and_do_download(
             file_obj,

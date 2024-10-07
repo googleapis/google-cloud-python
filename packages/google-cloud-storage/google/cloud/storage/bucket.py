@@ -85,6 +85,9 @@ _LOCATION_SETTER_MESSAGE = (
     "valid before the bucket is created. Instead, pass the location "
     "to `Bucket.create`."
 )
+_FROM_STRING_MESSAGE = (
+    "Bucket.from_string() is deprecated. " "Use Bucket.from_uri() instead."
+)
 
 
 def _blobs_page_start(iterator, page, response):
@@ -778,8 +781,40 @@ class Bucket(_PropertyMixin):
         return params
 
     @classmethod
+    def from_uri(cls, uri, client=None):
+        """Get a constructor for bucket object by URI.
+
+        .. code-block:: python
+
+            from google.cloud import storage
+            from google.cloud.storage.bucket import Bucket
+            client = storage.Client()
+            bucket = Bucket.from_uri("gs://bucket", client=client)
+
+        :type uri: str
+        :param uri: The bucket uri pass to get bucket object.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: (Optional) The client to use.  Application code should
+            *always* pass ``client``.
+
+        :rtype: :class:`google.cloud.storage.bucket.Bucket`
+        :returns: The bucket object created.
+        """
+        scheme, netloc, path, query, frag = urlsplit(uri)
+
+        if scheme != "gs":
+            raise ValueError("URI scheme must be gs")
+
+        return cls(client, name=netloc)
+
+    @classmethod
     def from_string(cls, uri, client=None):
         """Get a constructor for bucket object by URI.
+
+        .. note::
+           Deprecated alias for :meth:`from_uri`.
 
         .. code-block:: python
 
@@ -799,12 +834,8 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The bucket object created.
         """
-        scheme, netloc, path, query, frag = urlsplit(uri)
-
-        if scheme != "gs":
-            raise ValueError("URI scheme must be gs")
-
-        return cls(client, name=netloc)
+        warnings.warn(_FROM_STRING_MESSAGE, PendingDeprecationWarning, stacklevel=2)
+        return Bucket.from_uri(uri=uri, client=client)
 
     def blob(
         self,

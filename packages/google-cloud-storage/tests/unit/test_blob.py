@@ -5905,7 +5905,49 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.soft_delete_time)
         self.assertIsNone(blob.hard_delete_time)
 
-    def test_from_string_w_valid_uri(self):
+    def test_from_uri_w_valid_uri(self):
+        from google.cloud.storage.blob import Blob
+
+        client = self._make_client()
+        basic_uri = "gs://bucket_name/b"
+        blob = Blob.from_uri(basic_uri, client)
+
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.client, client)
+        self.assertEqual(blob.name, "b")
+        self.assertEqual(blob.bucket.name, "bucket_name")
+
+        nested_uri = "gs://bucket_name/path1/path2/b#name"
+        blob = Blob.from_uri(nested_uri, client)
+
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.client, client)
+        self.assertEqual(blob.name, "path1/path2/b#name")
+        self.assertEqual(blob.bucket.name, "bucket_name")
+
+    def test_from_uri_w_invalid_uri(self):
+        from google.cloud.storage.blob import Blob
+
+        client = self._make_client()
+
+        with pytest.raises(ValueError):
+            Blob.from_uri("http://bucket_name/b", client)
+
+    def test_from_uri_w_domain_name_bucket(self):
+        from google.cloud.storage.blob import Blob
+
+        client = self._make_client()
+        uri = "gs://buckets.example.com/b"
+        blob = Blob.from_uri(uri, client)
+
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.client, client)
+        self.assertEqual(blob.name, "b")
+        self.assertEqual(blob.bucket.name, "buckets.example.com")
+
+    @mock.patch("warnings.warn")
+    def test_from_string(self, mock_warn):
+        from google.cloud.storage.blob import _FROM_STRING_DEPRECATED
         from google.cloud.storage.blob import Blob
 
         client = self._make_client()
@@ -5925,25 +5967,11 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.name, "path1/path2/b#name")
         self.assertEqual(blob.bucket.name, "bucket_name")
 
-    def test_from_string_w_invalid_uri(self):
-        from google.cloud.storage.blob import Blob
-
-        client = self._make_client()
-
-        with pytest.raises(ValueError):
-            Blob.from_string("http://bucket_name/b", client)
-
-    def test_from_string_w_domain_name_bucket(self):
-        from google.cloud.storage.blob import Blob
-
-        client = self._make_client()
-        uri = "gs://buckets.example.com/b"
-        blob = Blob.from_string(uri, client)
-
-        self.assertIsInstance(blob, Blob)
-        self.assertIs(blob.client, client)
-        self.assertEqual(blob.name, "b")
-        self.assertEqual(blob.bucket.name, "buckets.example.com")
+        mock_warn.assert_any_call(
+            _FROM_STRING_DEPRECATED,
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
 
     def test_open(self):
         from io import TextIOWrapper
