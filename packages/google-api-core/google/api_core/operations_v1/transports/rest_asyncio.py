@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,40 +14,42 @@
 # limitations under the License.
 #
 
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import json
+from typing import Any, Callable, Coroutine, Dict, Optional, Sequence, Tuple
 
-from requests import __version__ as requests_version
+from google.auth import __version__ as auth_version
+
+try:
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession  # type: ignore
+except ImportError as e:  # pragma: NO COVER
+    raise ImportError(
+        "The `async_rest` extra of `google-api-core` is required to use long-running operations.  Install it by running "
+        "`pip install google-api-core[async_rest]`."
+    ) from e
 
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import path_template  # type: ignore
 from google.api_core import rest_helpers  # type: ignore
-from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.api_core import retry_async as retries_async  # type: ignore
+from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format  # type: ignore
-import google.protobuf
 
-import grpc
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO, OperationsTransport
-
-PROTOBUF_VERSION = google.protobuf.__version__
-
-OptionalRetry = Union[retries.Retry, object]
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
     grpc_version=None,
-    rest_version=f"requests@{requests_version}",
+    rest_version=f"google-auth@{auth_version}",
 )
 
 
-class OperationsRestTransport(OperationsTransport):
-    """REST backend transport for Operations.
+class AsyncOperationsRestTransport(OperationsTransport):
+    """Asynchronous REST backend transport for Operations.
 
-    Manages long-running operations with an API service.
+    Manages async long-running operations with an API service.
 
     When an API method normally takes long time to complete, it can be
     designed to return [Operation][google.api_core.operations_v1.Operation] to the
@@ -69,7 +71,7 @@ class OperationsRestTransport(OperationsTransport):
         self,
         *,
         host: str = "longrunning.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials: Optional[ga_credentials_async.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
@@ -79,28 +81,21 @@ class OperationsRestTransport(OperationsTransport):
         url_scheme: str = "https",
         http_options: Optional[Dict] = None,
         path_prefix: str = "v1",
+        # TODO(https://github.com/googleapis/python-api-core/issues/715): Add docstring for `credentials_file` to async REST transport.
+        # TODO(https://github.com/googleapis/python-api-core/issues/716): Add docstring for `scopes` to async REST transport.
+        # TODO(https://github.com/googleapis/python-api-core/issues/717): Add docstring for `quota_project_id` to async REST transport.
+        # TODO(https://github.com/googleapis/python-api-core/issues/718): Add docstring for `client_cert_source` to async REST transport.
     ) -> None:
         """Instantiate the transport.
 
         Args:
             host (Optional[str]):
                  The hostname to connect to.
-            credentials (Optional[google.auth.credentials.Credentials]): The
+            credentials (Optional[google.auth.aio.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
@@ -118,46 +113,125 @@ class OperationsRestTransport(OperationsTransport):
                 "v1" by default.
 
         """
-        # Run the base constructor
-        # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
-        # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
-        # credentials object
+        unsupported_params = {
+            # TODO(https://github.com/googleapis/python-api-core/issues/715): Add support for `credentials_file` to async REST transport.
+            "google.api_core.client_options.ClientOptions.credentials_file": credentials_file,
+            # TODO(https://github.com/googleapis/python-api-core/issues/716): Add support for `scopes` to async REST transport.
+            "google.api_core.client_options.ClientOptions.scopes": scopes,
+            # TODO(https://github.com/googleapis/python-api-core/issues/717): Add support for `quota_project_id` to async REST transport.
+            "google.api_core.client_options.ClientOptions.quota_project_id": quota_project_id,
+            # TODO(https://github.com/googleapis/python-api-core/issues/718): Add support for `client_cert_source` to async REST transport.
+            "google.api_core.client_options.ClientOptions.client_cert_source": client_cert_source_for_mtls,
+            # TODO(https://github.com/googleapis/python-api-core/issues/718): Add support for `client_cert_source` to async REST transport.
+            "google.api_core.client_options.ClientOptions.client_cert_source": client_cert_source_for_mtls,
+        }
+        provided_unsupported_params = [
+            name for name, value in unsupported_params.items() if value is not None
+        ]
+        if provided_unsupported_params:
+            raise core_exceptions.AsyncRestUnsupportedParameterError(
+                f"The following provided parameters are not supported for `transport=rest_asyncio`: {', '.join(provided_unsupported_params)}"
+            )
+
         super().__init__(
             host=host,
-            credentials=credentials,
+            # TODO(https://github.com/googleapis/python-api-core/issues/709): Remove `type: ignore` when the linked issue is resolved.
+            credentials=credentials,  # type: ignore
             client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
+            # TODO(https://github.com/googleapis/python-api-core/issues/725): Set always_use_jwt_access token when supported.
+            always_use_jwt_access=False,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
-        if client_cert_source_for_mtls:
-            self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        # TODO(https://github.com/googleapis/python-api-core/issues/708): add support for
+        # `default_host` in AsyncAuthorizedSession for feature parity with the synchronous
+        # code.
+        # TODO(https://github.com/googleapis/python-api-core/issues/709): Remove `type: ignore` when the linked issue is resolved.
+        self._session = AsyncAuthorizedSession(self._credentials)  # type: ignore
         # TODO(https://github.com/googleapis/python-api-core/issues/720): Add wrap logic directly to the property methods for callables.
         self._prep_wrapped_messages(client_info)
         self._http_options = http_options or {}
         self._path_prefix = path_prefix
 
-    def _list_operations(
+    def _prep_wrapped_messages(self, client_info):
+        # Precompute the wrapped methods.
+        self._wrapped_methods = {
+            self.list_operations: gapic_v1.method_async.wrap_method(
+                self.list_operations,
+                default_retry=retries_async.AsyncRetry(
+                    initial=0.5,
+                    maximum=10.0,
+                    multiplier=2.0,
+                    predicate=retries_async.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=10.0,
+                ),
+                default_timeout=10.0,
+                client_info=client_info,
+                kind="rest_asyncio",
+            ),
+            self.get_operation: gapic_v1.method_async.wrap_method(
+                self.get_operation,
+                default_retry=retries_async.AsyncRetry(
+                    initial=0.5,
+                    maximum=10.0,
+                    multiplier=2.0,
+                    predicate=retries_async.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=10.0,
+                ),
+                default_timeout=10.0,
+                client_info=client_info,
+                kind="rest_asyncio",
+            ),
+            self.delete_operation: gapic_v1.method_async.wrap_method(
+                self.delete_operation,
+                default_retry=retries_async.AsyncRetry(
+                    initial=0.5,
+                    maximum=10.0,
+                    multiplier=2.0,
+                    predicate=retries_async.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=10.0,
+                ),
+                default_timeout=10.0,
+                client_info=client_info,
+                kind="rest_asyncio",
+            ),
+            self.cancel_operation: gapic_v1.method_async.wrap_method(
+                self.cancel_operation,
+                default_retry=retries_async.AsyncRetry(
+                    initial=0.5,
+                    maximum=10.0,
+                    multiplier=2.0,
+                    predicate=retries_async.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=10.0,
+                ),
+                default_timeout=10.0,
+                client_info=client_info,
+                kind="rest_asyncio",
+            ),
+        }
+
+    async def _list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
         *,
-        # TODO(https://github.com/googleapis/python-api-core/issues/723): Leverage `retry`
+        # TODO(https://github.com/googleapis/python-api-core/issues/722): Leverage `retry`
         # to allow configuring retryable error codes.
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        retry=gapic_v1.method_async.DEFAULT,
         timeout: Optional[float] = None,
-        compression: Optional[grpc.Compression] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
-        r"""Call the list operations method over HTTP.
+        r"""Asynchronously call the list operations method over HTTP.
 
         Args:
             request (~.operations_pb2.ListOperationsRequest):
                 The request object. The request message for
                 [Operations.ListOperations][google.api_core.operations_v1.Operations.ListOperations].
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -199,43 +273,42 @@ class OperationsRestTransport(OperationsTransport):
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
         # TODO(https://github.com/googleapis/python-api-core/issues/721): Update incorrect use of `uri`` variable name.
-        response = getattr(self._session, method)(
+        response = await getattr(self._session, method)(
             "{host}{uri}".format(host=self._host, uri=uri),
             timeout=timeout,
             headers=headers,
             params=rest_helpers.flatten_query_params(query_params),
         )
+        content = await response.read()
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
         if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            payload = json.loads(content.decode("utf-8"))
+            request_url = "{host}{uri}".format(host=self._host, uri=uri)
+            raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
 
         # Return the response
         api_response = operations_pb2.ListOperationsResponse()
-        json_format.Parse(response.content, api_response, ignore_unknown_fields=False)
+        json_format.Parse(content, api_response, ignore_unknown_fields=False)
         return api_response
 
-    def _get_operation(
+    async def _get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
         *,
-        # TODO(https://github.com/googleapis/python-api-core/issues/723): Leverage `retry`
+        # TODO(https://github.com/googleapis/python-api-core/issues/722): Leverage `retry`
         # to allow configuring retryable error codes.
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        retry=gapic_v1.method_async.DEFAULT,
         timeout: Optional[float] = None,
-        compression: Optional[grpc.Compression] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
-        r"""Call the get operation method over HTTP.
+        r"""Asynchronously call the get operation method over HTTP.
 
         Args:
             request (~.operations_pb2.GetOperationRequest):
                 The request object. The request message for
                 [Operations.GetOperation][google.api_core.operations_v1.Operations.GetOperation].
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -278,35 +351,37 @@ class OperationsRestTransport(OperationsTransport):
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
         # TODO(https://github.com/googleapis/python-api-core/issues/721): Update incorrect use of `uri`` variable name.
-        response = getattr(self._session, method)(
+        response = await getattr(self._session, method)(
             "{host}{uri}".format(host=self._host, uri=uri),
             timeout=timeout,
             headers=headers,
             params=rest_helpers.flatten_query_params(query_params),
         )
+        content = await response.read()
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
         if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            payload = json.loads(content.decode("utf-8"))
+            request_url = "{host}{uri}".format(host=self._host, uri=uri)
+            raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
 
         # Return the response
         api_response = operations_pb2.Operation()
-        json_format.Parse(response.content, api_response, ignore_unknown_fields=False)
+        json_format.Parse(content, api_response, ignore_unknown_fields=False)
         return api_response
 
-    def _delete_operation(
+    async def _delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
         *,
-        # TODO(https://github.com/googleapis/python-api-core/issues/723): Leverage `retry`
+        # TODO(https://github.com/googleapis/python-api-core/issues/722): Leverage `retry`
         # to allow configuring retryable error codes.
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        retry=gapic_v1.method_async.DEFAULT,
         timeout: Optional[float] = None,
-        compression: Optional[grpc.Compression] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> empty_pb2.Empty:
-        r"""Call the delete operation method over HTTP.
+        r"""Asynchronously call the delete operation method over HTTP.
 
         Args:
             request (~.operations_pb2.DeleteOperationRequest):
@@ -350,7 +425,7 @@ class OperationsRestTransport(OperationsTransport):
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
         # TODO(https://github.com/googleapis/python-api-core/issues/721): Update incorrect use of `uri`` variable name.
-        response = getattr(self._session, method)(
+        response = await getattr(self._session, method)(
             "{host}{uri}".format(host=self._host, uri=uri),
             timeout=timeout,
             headers=headers,
@@ -360,30 +435,31 @@ class OperationsRestTransport(OperationsTransport):
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
         if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            content = await response.read()
+            payload = json.loads(content.decode("utf-8"))
+            request_url = "{host}{uri}".format(host=self._host, uri=uri)
+            raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
 
         return empty_pb2.Empty()
 
-    def _cancel_operation(
+    async def _cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
         *,
-        # TODO(https://github.com/googleapis/python-api-core/issues/723): Leverage `retry`
+        # TODO(https://github.com/googleapis/python-api-core/issues/722): Leverage `retry`
         # to allow configuring retryable error codes.
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        retry=gapic_v1.method_async.DEFAULT,
         timeout: Optional[float] = None,
-        compression: Optional[grpc.Compression] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
+        # TODO(https://github.com/googleapis/python-api-core/issues/722): Add `retry` parameter
+        # to allow configuring retryable error codes.
     ) -> empty_pb2.Empty:
-        r"""Call the cancel operation method over HTTP.
+        r"""Asynchronously call the cancel operation method over HTTP.
 
         Args:
             request (~.operations_pb2.CancelOperationRequest):
                 The request object. The request message for
                 [Operations.CancelOperation][google.api_core.operations_v1.Operations.CancelOperation].
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -428,7 +504,7 @@ class OperationsRestTransport(OperationsTransport):
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
         # TODO(https://github.com/googleapis/python-api-core/issues/721): Update incorrect use of `uri`` variable name.
-        response = getattr(self._session, method)(
+        response = await getattr(self._session, method)(
             "{host}{uri}".format(host=self._host, uri=uri),
             timeout=timeout,
             headers=headers,
@@ -439,7 +515,10 @@ class OperationsRestTransport(OperationsTransport):
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
         if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            content = await response.read()
+            payload = json.loads(content.decode("utf-8"))
+            request_url = "{host}{uri}".format(host=self._host, uri=uri)
+            raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
 
         return empty_pb2.Empty()
 
@@ -447,27 +526,35 @@ class OperationsRestTransport(OperationsTransport):
     def list_operations(
         self,
     ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
+        [operations_pb2.ListOperationsRequest],
+        Coroutine[Any, Any, operations_pb2.ListOperationsResponse],
     ]:
         return self._list_operations
 
     @property
     def get_operation(
         self,
-    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Coroutine[Any, Any, operations_pb2.Operation],
+    ]:
         return self._get_operation
 
     @property
     def delete_operation(
         self,
-    ) -> Callable[[operations_pb2.DeleteOperationRequest], empty_pb2.Empty]:
+    ) -> Callable[
+        [operations_pb2.DeleteOperationRequest], Coroutine[Any, Any, empty_pb2.Empty]
+    ]:
         return self._delete_operation
 
     @property
     def cancel_operation(
         self,
-    ) -> Callable[[operations_pb2.CancelOperationRequest], empty_pb2.Empty]:
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest], Coroutine[Any, Any, empty_pb2.Empty]
+    ]:
         return self._cancel_operation
 
 
-__all__ = ("OperationsRestTransport",)
+__all__ = ("AsyncOperationsRestTransport",)

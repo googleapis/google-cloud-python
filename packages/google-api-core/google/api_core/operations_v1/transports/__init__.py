@@ -14,16 +14,26 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+from typing import cast, Dict, Tuple
 
 from .base import OperationsTransport
 from .rest import OperationsRestTransport
 
-
 # Compile a registry of transports.
-_transport_registry = OrderedDict()
-_transport_registry["rest"] = OperationsRestTransport
+_transport_registry: Dict[str, OperationsTransport] = OrderedDict()
+_transport_registry["rest"] = cast(OperationsTransport, OperationsRestTransport)
 
-__all__ = (
-    "OperationsTransport",
-    "OperationsRestTransport",
-)
+__all__: Tuple[str, ...] = ("OperationsTransport", "OperationsRestTransport")
+
+try:
+    from .rest_asyncio import AsyncOperationsRestTransport
+
+    __all__ += ("AsyncOperationsRestTransport",)
+    _transport_registry["rest_asyncio"] = cast(
+        OperationsTransport, AsyncOperationsRestTransport
+    )
+except ImportError:
+    # This import requires the `async_rest` extra.
+    # Don't raise an exception if `AsyncOperationsRestTransport` cannot be imported
+    # as other transports are still available.
+    pass

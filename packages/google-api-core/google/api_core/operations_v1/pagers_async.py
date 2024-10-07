@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 #
 from typing import (
     Callable,
-    Iterator,
+    AsyncIterator,
     Sequence,
     Tuple,
 )
@@ -24,7 +24,7 @@ from google.longrunning import operations_pb2
 from google.api_core.operations_v1.pagers_base import ListOperationsPagerBase
 
 
-class ListOperationsPager(ListOperationsPagerBase):
+class ListOperationsAsyncPager(ListOperationsPagerBase):
     """A pager for iterating through ``list_operations`` requests.
 
     This class thinly wraps an initial
@@ -55,13 +55,17 @@ class ListOperationsPager(ListOperationsPagerBase):
         )
 
     @property
-    def pages(self) -> Iterator[operations_pb2.ListOperationsResponse]:
+    async def pages(self) -> AsyncIterator[operations_pb2.ListOperationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[operations_pb2.Operation]:
-        for page in self.pages:
-            yield from page.operations
+    def __aiter__(self) -> AsyncIterator[operations_pb2.Operation]:
+        async def async_generator():
+            async for page in self.pages:
+                for operation in page.operations:
+                    yield operation
+
+        return async_generator()
