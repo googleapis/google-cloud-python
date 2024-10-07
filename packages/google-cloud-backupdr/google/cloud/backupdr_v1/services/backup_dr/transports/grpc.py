@@ -531,38 +531,6 @@ class BackupDRGrpcTransport(BackupDRTransport):
         return self._stubs["delete_backup_vault"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
-        r"""Return a callable for the test iam permissions method over gRPC.
-
-        Returns the caller's permissions on a BackupVault
-        resource.
-        A caller is not required to have Google IAM permission
-        to make this request.
-
-        Returns:
-            Callable[[~.TestIamPermissionsRequest],
-                    ~.TestIamPermissionsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/TestIamPermissions",
-                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
-                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
-            )
-        return self._stubs["test_iam_permissions"]
-
-    @property
     def list_data_sources(
         self,
     ) -> Callable[
@@ -641,174 +609,6 @@ class BackupDRGrpcTransport(BackupDRTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_data_source"]
-
-    @property
-    def remove_data_source(
-        self,
-    ) -> Callable[[backupvault.RemoveDataSourceRequest], operations_pb2.Operation]:
-        r"""Return a callable for the remove data source method over gRPC.
-
-        Deletes a DataSource. This is a custom method instead
-        of a standard delete method because external clients
-        will not delete DataSources except for BackupDR backup
-        appliances.
-
-        Returns:
-            Callable[[~.RemoveDataSourceRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "remove_data_source" not in self._stubs:
-            self._stubs["remove_data_source"] = self.grpc_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/RemoveDataSource",
-                request_serializer=backupvault.RemoveDataSourceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["remove_data_source"]
-
-    @property
-    def set_internal_status(
-        self,
-    ) -> Callable[[backupvault.SetInternalStatusRequest], operations_pb2.Operation]:
-        r"""Return a callable for the set internal status method over gRPC.
-
-        Sets the internal status of a DataSource.
-
-        Returns:
-            Callable[[~.SetInternalStatusRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "set_internal_status" not in self._stubs:
-            self._stubs["set_internal_status"] = self.grpc_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/SetInternalStatus",
-                request_serializer=backupvault.SetInternalStatusRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["set_internal_status"]
-
-    @property
-    def initiate_backup(
-        self,
-    ) -> Callable[
-        [backupvault.InitiateBackupRequest], backupvault.InitiateBackupResponse
-    ]:
-        r"""Return a callable for the initiate backup method over gRPC.
-
-        Internal only.
-        Initiates a backup.
-
-        Returns:
-            Callable[[~.InitiateBackupRequest],
-                    ~.InitiateBackupResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "initiate_backup" not in self._stubs:
-            self._stubs["initiate_backup"] = self.grpc_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/InitiateBackup",
-                request_serializer=backupvault.InitiateBackupRequest.serialize,
-                response_deserializer=backupvault.InitiateBackupResponse.deserialize,
-            )
-        return self._stubs["initiate_backup"]
-
-    @property
-    def abandon_backup(
-        self,
-    ) -> Callable[[backupvault.AbandonBackupRequest], operations_pb2.Operation]:
-        r"""Return a callable for the abandon backup method over gRPC.
-
-        Internal only.
-        Abandons a backup.
-
-        Returns:
-            Callable[[~.AbandonBackupRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "abandon_backup" not in self._stubs:
-            self._stubs["abandon_backup"] = self.grpc_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/AbandonBackup",
-                request_serializer=backupvault.AbandonBackupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["abandon_backup"]
-
-    @property
-    def finalize_backup(
-        self,
-    ) -> Callable[[backupvault.FinalizeBackupRequest], operations_pb2.Operation]:
-        r"""Return a callable for the finalize backup method over gRPC.
-
-        Internal only.
-        Finalize a backup that was started by a call to
-        InitiateBackup.
-
-        Returns:
-            Callable[[~.FinalizeBackupRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "finalize_backup" not in self._stubs:
-            self._stubs["finalize_backup"] = self.grpc_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/FinalizeBackup",
-                request_serializer=backupvault.FinalizeBackupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["finalize_backup"]
-
-    @property
-    def fetch_access_token(
-        self,
-    ) -> Callable[
-        [backupvault.FetchAccessTokenRequest], backupvault.FetchAccessTokenResponse
-    ]:
-        r"""Return a callable for the fetch access token method over gRPC.
-
-        Internal only.
-        Fetch access token for a given data source.
-
-        Returns:
-            Callable[[~.FetchAccessTokenRequest],
-                    ~.FetchAccessTokenResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "fetch_access_token" not in self._stubs:
-            self._stubs["fetch_access_token"] = self.grpc_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/FetchAccessToken",
-                request_serializer=backupvault.FetchAccessTokenRequest.serialize,
-                response_deserializer=backupvault.FetchAccessTokenResponse.deserialize,
-            )
-        return self._stubs["fetch_access_token"]
 
     @property
     def list_backups(
@@ -1305,6 +1105,86 @@ class BackupDRGrpcTransport(BackupDRTransport):
                 response_deserializer=locations_pb2.Location.FromString,
             )
         return self._stubs["get_location"]
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the set iam policy method over gRPC.
+        Sets the IAM access control policy on the specified
+        function. Replaces any existing policy.
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/SetIamPolicy",
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the get iam policy method over gRPC.
+        Gets the IAM access control policy for a function.
+        Returns an empty policy if the function exists and does
+        not have a policy set.
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/GetIamPolicy",
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
+    ]:
+        r"""Return a callable for the test iam permissions method over gRPC.
+        Tests the specified permissions against the IAM access control
+        policy for a function. If the function does not exist, this will
+        return an empty set of permissions, not a NOT_FOUND error.
+        Returns:
+            Callable[[~.TestIamPermissionsRequest],
+                    ~.TestIamPermissionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/TestIamPermissions",
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
+            )
+        return self._stubs["test_iam_permissions"]
 
     @property
     def kind(self) -> str:

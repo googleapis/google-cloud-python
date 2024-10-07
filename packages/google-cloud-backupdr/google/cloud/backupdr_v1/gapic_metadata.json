@@ -10,11 +10,6 @@
         "grpc": {
           "libraryClient": "BackupDRClient",
           "rpcs": {
-            "AbandonBackup": {
-              "methods": [
-                "abandon_backup"
-              ]
-            },
             "CreateBackupPlan": {
               "methods": [
                 "create_backup_plan"
@@ -60,19 +55,9 @@
                 "delete_management_server"
               ]
             },
-            "FetchAccessToken": {
-              "methods": [
-                "fetch_access_token"
-              ]
-            },
             "FetchUsableBackupVaults": {
               "methods": [
                 "fetch_usable_backup_vaults"
-              ]
-            },
-            "FinalizeBackup": {
-              "methods": [
-                "finalize_backup"
               ]
             },
             "GetBackup": {
@@ -105,11 +90,6 @@
                 "get_management_server"
               ]
             },
-            "InitiateBackup": {
-              "methods": [
-                "initiate_backup"
-              ]
-            },
             "ListBackupPlanAssociations": {
               "methods": [
                 "list_backup_plan_associations"
@@ -140,24 +120,9 @@
                 "list_management_servers"
               ]
             },
-            "RemoveDataSource": {
-              "methods": [
-                "remove_data_source"
-              ]
-            },
             "RestoreBackup": {
               "methods": [
                 "restore_backup"
-              ]
-            },
-            "SetInternalStatus": {
-              "methods": [
-                "set_internal_status"
-              ]
-            },
-            "TestIamPermissions": {
-              "methods": [
-                "test_iam_permissions"
               ]
             },
             "TriggerBackup": {
@@ -185,11 +150,6 @@
         "grpc-async": {
           "libraryClient": "BackupDRAsyncClient",
           "rpcs": {
-            "AbandonBackup": {
-              "methods": [
-                "abandon_backup"
-              ]
-            },
             "CreateBackupPlan": {
               "methods": [
                 "create_backup_plan"
@@ -235,19 +195,9 @@
                 "delete_management_server"
               ]
             },
-            "FetchAccessToken": {
-              "methods": [
-                "fetch_access_token"
-              ]
-            },
             "FetchUsableBackupVaults": {
               "methods": [
                 "fetch_usable_backup_vaults"
-              ]
-            },
-            "FinalizeBackup": {
-              "methods": [
-                "finalize_backup"
               ]
             },
             "GetBackup": {
@@ -280,11 +230,6 @@
                 "get_management_server"
               ]
             },
-            "InitiateBackup": {
-              "methods": [
-                "initiate_backup"
-              ]
-            },
             "ListBackupPlanAssociations": {
               "methods": [
                 "list_backup_plan_associations"
@@ -315,24 +260,9 @@
                 "list_management_servers"
               ]
             },
-            "RemoveDataSource": {
-              "methods": [
-                "remove_data_source"
-              ]
-            },
             "RestoreBackup": {
               "methods": [
                 "restore_backup"
-              ]
-            },
-            "SetInternalStatus": {
-              "methods": [
-                "set_internal_status"
-              ]
-            },
-            "TestIamPermissions": {
-              "methods": [
-                "test_iam_permissions"
               ]
             },
             "TriggerBackup": {
@@ -360,11 +290,6 @@
         "rest": {
           "libraryClient": "BackupDRClient",
           "rpcs": {
-            "AbandonBackup": {
-              "methods": [
-                "abandon_backup"
-              ]
-            },
             "CreateBackupPlan": {
               "methods": [
                 "create_backup_plan"
@@ -410,19 +335,9 @@
                 "delete_management_server"
               ]
             },
-            "FetchAccessToken": {
-              "methods": [
-                "fetch_access_token"
-              ]
-            },
             "FetchUsableBackupVaults": {
               "methods": [
                 "fetch_usable_backup_vaults"
-              ]
-            },
-            "FinalizeBackup": {
-              "methods": [
-                "finalize_backup"
               ]
             },
             "GetBackup": {
@@ -455,11 +370,6 @@
                 "get_management_server"
               ]
             },
-            "InitiateBackup": {
-              "methods": [
-                "initiate_backup"
-              ]
-            },
             "ListBackupPlanAssociations": {
               "methods": [
                 "list_backup_plan_associations"
@@ -490,24 +400,9 @@
                 "list_management_servers"
               ]
             },
-            "RemoveDataSource": {
-              "methods": [
-                "remove_data_source"
-              ]
-            },
             "RestoreBackup": {
               "methods": [
                 "restore_backup"
-              ]
-            },
-            "SetInternalStatus": {
-              "methods": [
-                "set_internal_status"
-              ]
-            },
-            "TestIamPermissions": {
-              "methods": [
-                "test_iam_permissions"
               ]
             },
             "TriggerBackup": {

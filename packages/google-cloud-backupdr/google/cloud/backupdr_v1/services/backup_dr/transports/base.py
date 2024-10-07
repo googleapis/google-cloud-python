@@ -250,11 +250,6 @@ class BackupDRTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.test_iam_permissions: gapic_v1.method.wrap_method(
-                self.test_iam_permissions,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.list_data_sources: gapic_v1.method.wrap_method(
                 self.list_data_sources,
                 default_retry=retries.Retry(
@@ -286,36 +281,6 @@ class BackupDRTransport(abc.ABC):
             self.update_data_source: gapic_v1.method.wrap_method(
                 self.update_data_source,
                 default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.remove_data_source: gapic_v1.method.wrap_method(
-                self.remove_data_source,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.set_internal_status: gapic_v1.method.wrap_method(
-                self.set_internal_status,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.initiate_backup: gapic_v1.method.wrap_method(
-                self.initiate_backup,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.abandon_backup: gapic_v1.method.wrap_method(
-                self.abandon_backup,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.finalize_backup: gapic_v1.method.wrap_method(
-                self.finalize_backup,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.fetch_access_token: gapic_v1.method.wrap_method(
-                self.fetch_access_token,
-                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_backups: gapic_v1.method.wrap_method(
@@ -522,18 +487,6 @@ class BackupDRTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def list_data_sources(
         self,
     ) -> Callable[
@@ -560,66 +513,6 @@ class BackupDRTransport(abc.ABC):
     ) -> Callable[
         [backupvault.UpdateDataSourceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def remove_data_source(
-        self,
-    ) -> Callable[
-        [backupvault.RemoveDataSourceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def set_internal_status(
-        self,
-    ) -> Callable[
-        [backupvault.SetInternalStatusRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def initiate_backup(
-        self,
-    ) -> Callable[
-        [backupvault.InitiateBackupRequest],
-        Union[
-            backupvault.InitiateBackupResponse,
-            Awaitable[backupvault.InitiateBackupResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def abandon_backup(
-        self,
-    ) -> Callable[
-        [backupvault.AbandonBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def finalize_backup(
-        self,
-    ) -> Callable[
-        [backupvault.FinalizeBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def fetch_access_token(
-        self,
-    ) -> Callable[
-        [backupvault.FetchAccessTokenRequest],
-        Union[
-            backupvault.FetchAccessTokenResponse,
-            Awaitable[backupvault.FetchAccessTokenResponse],
-        ],
     ]:
         raise NotImplementedError()
 
@@ -791,6 +684,36 @@ class BackupDRTransport(abc.ABC):
     def delete_operation(
         self,
     ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property

@@ -45,7 +45,6 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.backupdr_v1.types import (
@@ -80,14 +79,6 @@ class BackupDRRestInterceptor:
 
     .. code-block:: python
         class MyCustomBackupDRInterceptor(BackupDRRestInterceptor):
-            def pre_abandon_backup(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_abandon_backup(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_create_backup_plan(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -160,27 +151,11 @@ class BackupDRRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_fetch_access_token(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_fetch_access_token(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_fetch_usable_backup_vaults(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_fetch_usable_backup_vaults(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_finalize_backup(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_finalize_backup(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -232,14 +207,6 @@ class BackupDRRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_initiate_backup(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_initiate_backup(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_list_backup_plan_associations(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -288,35 +255,11 @@ class BackupDRRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_remove_data_source(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_remove_data_source(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_restore_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_restore_backup(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_set_internal_status(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_set_internal_status(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_test_iam_permissions(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_test_iam_permissions(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -357,29 +300,6 @@ class BackupDRRestInterceptor:
 
 
     """
-
-    def pre_abandon_backup(
-        self,
-        request: backupvault.AbandonBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.AbandonBackupRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for abandon_backup
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the BackupDR server.
-        """
-        return request, metadata
-
-    def post_abandon_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for abandon_backup
-
-        Override in a subclass to manipulate the response
-        after it is returned by the BackupDR server but before
-        it is returned to user code.
-        """
-        return response
 
     def pre_create_backup_plan(
         self,
@@ -594,29 +514,6 @@ class BackupDRRestInterceptor:
         """
         return response
 
-    def pre_fetch_access_token(
-        self,
-        request: backupvault.FetchAccessTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.FetchAccessTokenRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for fetch_access_token
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the BackupDR server.
-        """
-        return request, metadata
-
-    def post_fetch_access_token(
-        self, response: backupvault.FetchAccessTokenResponse
-    ) -> backupvault.FetchAccessTokenResponse:
-        """Post-rpc interceptor for fetch_access_token
-
-        Override in a subclass to manipulate the response
-        after it is returned by the BackupDR server but before
-        it is returned to user code.
-        """
-        return response
-
     def pre_fetch_usable_backup_vaults(
         self,
         request: backupvault.FetchUsableBackupVaultsRequest,
@@ -633,29 +530,6 @@ class BackupDRRestInterceptor:
         self, response: backupvault.FetchUsableBackupVaultsResponse
     ) -> backupvault.FetchUsableBackupVaultsResponse:
         """Post-rpc interceptor for fetch_usable_backup_vaults
-
-        Override in a subclass to manipulate the response
-        after it is returned by the BackupDR server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_finalize_backup(
-        self,
-        request: backupvault.FinalizeBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.FinalizeBackupRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for finalize_backup
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the BackupDR server.
-        """
-        return request, metadata
-
-    def post_finalize_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for finalize_backup
 
         Override in a subclass to manipulate the response
         after it is returned by the BackupDR server but before
@@ -792,29 +666,6 @@ class BackupDRRestInterceptor:
         self, response: backupdr.ManagementServer
     ) -> backupdr.ManagementServer:
         """Post-rpc interceptor for get_management_server
-
-        Override in a subclass to manipulate the response
-        after it is returned by the BackupDR server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_initiate_backup(
-        self,
-        request: backupvault.InitiateBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.InitiateBackupRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for initiate_backup
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the BackupDR server.
-        """
-        return request, metadata
-
-    def post_initiate_backup(
-        self, response: backupvault.InitiateBackupResponse
-    ) -> backupvault.InitiateBackupResponse:
-        """Post-rpc interceptor for initiate_backup
 
         Override in a subclass to manipulate the response
         after it is returned by the BackupDR server but before
@@ -963,29 +814,6 @@ class BackupDRRestInterceptor:
         """
         return response
 
-    def pre_remove_data_source(
-        self,
-        request: backupvault.RemoveDataSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.RemoveDataSourceRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for remove_data_source
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the BackupDR server.
-        """
-        return request, metadata
-
-    def post_remove_data_source(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for remove_data_source
-
-        Override in a subclass to manipulate the response
-        after it is returned by the BackupDR server but before
-        it is returned to user code.
-        """
-        return response
-
     def pre_restore_backup(
         self,
         request: backupvault.RestoreBackupRequest,
@@ -1002,52 +830,6 @@ class BackupDRRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_backup
-
-        Override in a subclass to manipulate the response
-        after it is returned by the BackupDR server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_set_internal_status(
-        self,
-        request: backupvault.SetInternalStatusRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.SetInternalStatusRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for set_internal_status
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the BackupDR server.
-        """
-        return request, metadata
-
-    def post_set_internal_status(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for set_internal_status
-
-        Override in a subclass to manipulate the response
-        after it is returned by the BackupDR server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for test_iam_permissions
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the BackupDR server.
-        """
-        return request, metadata
-
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
-        """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
         after it is returned by the BackupDR server but before
@@ -1186,6 +968,71 @@ class BackupDRRestInterceptor:
         self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BackupDR server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_iam_policy(
+        self,
+        request: iam_policy_pb2.GetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackupDR server.
+        """
+        return request, metadata
+
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BackupDR server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_iam_policy(
+        self,
+        request: iam_policy_pb2.SetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackupDR server.
+        """
+        return request, metadata
+
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BackupDR server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_test_iam_permissions(
+        self,
+        request: iam_policy_pb2.TestIamPermissionsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackupDR server.
+        """
+        return request, metadata
+
+    def post_test_iam_permissions(
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
         after it is returned by the BackupDR server but before
@@ -1431,99 +1278,6 @@ class BackupDRRestTransport(BackupDRTransport):
 
         # Return the client from cache.
         return self._operations_client
-
-    class _AbandonBackup(BackupDRRestStub):
-        def __hash__(self):
-            return hash("AbandonBackup")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: backupvault.AbandonBackupRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the abandon backup method over HTTP.
-
-            Args:
-                request (~.backupvault.AbandonBackupRequest):
-                    The request object. request message for AbandonBackup.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{data_source=projects/*/locations/*/backupVaults/*/dataSources/*}:abandonBackup",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_abandon_backup(request, metadata)
-            pb_request = backupvault.AbandonBackupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_abandon_backup(resp)
-            return resp
 
     class _CreateBackupPlan(BackupDRRestStub):
         def __hash__(self):
@@ -2361,102 +2115,6 @@ class BackupDRRestTransport(BackupDRTransport):
             resp = self._interceptor.post_delete_management_server(resp)
             return resp
 
-    class _FetchAccessToken(BackupDRRestStub):
-        def __hash__(self):
-            return hash("FetchAccessToken")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: backupvault.FetchAccessTokenRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> backupvault.FetchAccessTokenResponse:
-            r"""Call the fetch access token method over HTTP.
-
-            Args:
-                request (~.backupvault.FetchAccessTokenRequest):
-                    The request object. Request message for FetchAccessToken.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.backupvault.FetchAccessTokenResponse:
-                    Response message for
-                FetchAccessToken.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/backupVaults/*/dataSources/*}:fetchAccessToken",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_fetch_access_token(
-                request, metadata
-            )
-            pb_request = backupvault.FetchAccessTokenRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = backupvault.FetchAccessTokenResponse()
-            pb_resp = backupvault.FetchAccessTokenResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_fetch_access_token(resp)
-            return resp
-
     class _FetchUsableBackupVaults(BackupDRRestStub):
         def __hash__(self):
             return hash("FetchUsableBackupVaults")
@@ -2546,99 +2204,6 @@ class BackupDRRestTransport(BackupDRTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_fetch_usable_backup_vaults(resp)
-            return resp
-
-    class _FinalizeBackup(BackupDRRestStub):
-        def __hash__(self):
-            return hash("FinalizeBackup")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: backupvault.FinalizeBackupRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the finalize backup method over HTTP.
-
-            Args:
-                request (~.backupvault.FinalizeBackupRequest):
-                    The request object. Message for finalizing a Backup.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{data_source=projects/*/locations/*/backupVaults/*/dataSources/*}:finalizeBackup",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_finalize_backup(request, metadata)
-            pb_request = backupvault.FinalizeBackupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_finalize_backup(resp)
             return resp
 
     class _GetBackup(BackupDRRestStub):
@@ -3181,98 +2746,6 @@ class BackupDRRestTransport(BackupDRTransport):
             resp = self._interceptor.post_get_management_server(resp)
             return resp
 
-    class _InitiateBackup(BackupDRRestStub):
-        def __hash__(self):
-            return hash("InitiateBackup")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: backupvault.InitiateBackupRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> backupvault.InitiateBackupResponse:
-            r"""Call the initiate backup method over HTTP.
-
-            Args:
-                request (~.backupvault.InitiateBackupRequest):
-                    The request object. request message for InitiateBackup.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.backupvault.InitiateBackupResponse:
-                    Response message for InitiateBackup.
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{data_source=projects/*/locations/*/backupVaults/*/dataSources/*}:initiateBackup",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_initiate_backup(request, metadata)
-            pb_request = backupvault.InitiateBackupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = backupvault.InitiateBackupResponse()
-            pb_resp = backupvault.InitiateBackupResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_initiate_backup(resp)
-            return resp
-
     class _ListBackupPlanAssociations(BackupDRRestStub):
         def __hash__(self):
             return hash("ListBackupPlanAssociations")
@@ -3810,101 +3283,6 @@ class BackupDRRestTransport(BackupDRTransport):
             resp = self._interceptor.post_list_management_servers(resp)
             return resp
 
-    class _RemoveDataSource(BackupDRRestStub):
-        def __hash__(self):
-            return hash("RemoveDataSource")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: backupvault.RemoveDataSourceRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the remove data source method over HTTP.
-
-            Args:
-                request (~.backupvault.RemoveDataSourceRequest):
-                    The request object. Message for deleting a DataSource.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/backupVaults/*/dataSources/*}:remove",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_remove_data_source(
-                request, metadata
-            )
-            pb_request = backupvault.RemoveDataSourceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_remove_data_source(resp)
-            return resp
-
     class _RestoreBackup(BackupDRRestStub):
         def __hash__(self):
             return hash("RestoreBackup")
@@ -3997,196 +3375,6 @@ class BackupDRRestTransport(BackupDRTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_restore_backup(resp)
-            return resp
-
-    class _SetInternalStatus(BackupDRRestStub):
-        def __hash__(self):
-            return hash("SetInternalStatus")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: backupvault.SetInternalStatusRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the set internal status method over HTTP.
-
-            Args:
-                request (~.backupvault.SetInternalStatusRequest):
-                    The request object. Request message for SetStatusInternal
-                method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{data_source=projects/*/locations/*/backupVaults/*/dataSources/*}:setInternalStatus",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_set_internal_status(
-                request, metadata
-            )
-            pb_request = backupvault.SetInternalStatusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_set_internal_status(resp)
-            return resp
-
-    class _TestIamPermissions(BackupDRRestStub):
-        def __hash__(self):
-            return hash("TestIamPermissions")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: iam_policy_pb2.TestIamPermissionsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> iam_policy_pb2.TestIamPermissionsResponse:
-            r"""Call the test iam permissions method over HTTP.
-
-            Args:
-                request (~.iam_policy_pb2.TestIamPermissionsRequest):
-                    The request object. Request message for ``TestIamPermissions`` method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.iam_policy_pb2.TestIamPermissionsResponse:
-                    Response message for ``TestIamPermissions`` method.
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/backupVaults/*}:testIamPermissions",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = iam_policy_pb2.TestIamPermissionsResponse()
-            pb_resp = resp
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
     class _TriggerBackup(BackupDRRestStub):
@@ -4576,14 +3764,6 @@ class BackupDRRestTransport(BackupDRTransport):
             return resp
 
     @property
-    def abandon_backup(
-        self,
-    ) -> Callable[[backupvault.AbandonBackupRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._AbandonBackup(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
     def create_backup_plan(
         self,
     ) -> Callable[[backupplan.CreateBackupPlanRequest], operations_pb2.Operation]:
@@ -4662,16 +3842,6 @@ class BackupDRRestTransport(BackupDRTransport):
         return self._DeleteManagementServer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_access_token(
-        self,
-    ) -> Callable[
-        [backupvault.FetchAccessTokenRequest], backupvault.FetchAccessTokenResponse
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._FetchAccessToken(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
     def fetch_usable_backup_vaults(
         self,
     ) -> Callable[
@@ -4681,14 +3851,6 @@ class BackupDRRestTransport(BackupDRTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchUsableBackupVaults(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def finalize_backup(
-        self,
-    ) -> Callable[[backupvault.FinalizeBackupRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._FinalizeBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_backup(
@@ -4740,16 +3902,6 @@ class BackupDRRestTransport(BackupDRTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetManagementServer(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def initiate_backup(
-        self,
-    ) -> Callable[
-        [backupvault.InitiateBackupRequest], backupvault.InitiateBackupResponse
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._InitiateBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_backup_plan_associations(
@@ -4811,39 +3963,12 @@ class BackupDRRestTransport(BackupDRTransport):
         return self._ListManagementServers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_data_source(
-        self,
-    ) -> Callable[[backupvault.RemoveDataSourceRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._RemoveDataSource(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
     def restore_backup(
         self,
     ) -> Callable[[backupvault.RestoreBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestoreBackup(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def set_internal_status(
-        self,
-    ) -> Callable[[backupvault.SetInternalStatusRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._SetInternalStatus(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def trigger_backup(
@@ -5009,6 +4134,212 @@ class BackupDRRestTransport(BackupDRTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_list_locations(resp)
+            return resp
+
+    @property
+    def get_iam_policy(self):
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetIamPolicy(BackupDRRestStub):
+        def __call__(
+            self,
+            request: iam_policy_pb2.GetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the get iam policy method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.GetIamPolicyRequest):
+                    The request object for GetIamPolicy method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                policy_pb2.Policy: Response from GetIamPolicy method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=projects/*/locations/*/managementServers/*}:getIamPolicy",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = policy_pb2.Policy()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_get_iam_policy(resp)
+            return resp
+
+    @property
+    def set_iam_policy(self):
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _SetIamPolicy(BackupDRRestStub):
+        def __call__(
+            self,
+            request: iam_policy_pb2.SetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the set iam policy method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.SetIamPolicyRequest):
+                    The request object for SetIamPolicy method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                policy_pb2.Policy: Response from SetIamPolicy method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/managementServers/*}:setIamPolicy",
+                    "body": "*",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            body = json.dumps(transcoded_request["body"])
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = policy_pb2.Policy()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_set_iam_policy(resp)
+            return resp
+
+    @property
+    def test_iam_permissions(self):
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _TestIamPermissions(BackupDRRestStub):
+        def __call__(
+            self,
+            request: iam_policy_pb2.TestIamPermissionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> iam_policy_pb2.TestIamPermissionsResponse:
+            r"""Call the test iam permissions method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.TestIamPermissionsRequest):
+                    The request object for TestIamPermissions method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/managementServers/*}:testIamPermissions",
+                    "body": "*",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_test_iam_permissions(
+                request, metadata
+            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            body = json.dumps(transcoded_request["body"])
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = iam_policy_pb2.TestIamPermissionsResponse()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
     @property
