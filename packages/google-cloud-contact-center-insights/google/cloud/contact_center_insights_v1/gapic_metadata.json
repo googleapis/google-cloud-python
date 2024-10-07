@@ -95,6 +95,11 @@
                 "export_insights_data"
               ]
             },
+            "ExportIssueModel": {
+              "methods": [
+                "export_issue_model"
+              ]
+            },
             "GetAnalysis": {
               "methods": [
                 "get_analysis"
@@ -103,6 +108,11 @@
             "GetConversation": {
               "methods": [
                 "get_conversation"
+              ]
+            },
+            "GetEncryptionSpec": {
+              "methods": [
+                "get_encryption_spec"
               ]
             },
             "GetIssue": {
@@ -130,9 +140,19 @@
                 "get_view"
               ]
             },
+            "ImportIssueModel": {
+              "methods": [
+                "import_issue_model"
+              ]
+            },
             "IngestConversations": {
               "methods": [
                 "ingest_conversations"
+              ]
+            },
+            "InitializeEncryptionSpec": {
+              "methods": [
+                "initialize_encryption_spec"
               ]
             },
             "ListAnalyses": {
@@ -295,6 +315,11 @@
                 "export_insights_data"
               ]
             },
+            "ExportIssueModel": {
+              "methods": [
+                "export_issue_model"
+              ]
+            },
             "GetAnalysis": {
               "methods": [
                 "get_analysis"
@@ -303,6 +328,11 @@
             "GetConversation": {
               "methods": [
                 "get_conversation"
+              ]
+            },
+            "GetEncryptionSpec": {
+              "methods": [
+                "get_encryption_spec"
               ]
             },
             "GetIssue": {
@@ -330,9 +360,19 @@
                 "get_view"
               ]
             },
+            "ImportIssueModel": {
+              "methods": [
+                "import_issue_model"
+              ]
+            },
             "IngestConversations": {
               "methods": [
                 "ingest_conversations"
+              ]
+            },
+            "InitializeEncryptionSpec": {
+              "methods": [
+                "initialize_encryption_spec"
               ]
             },
             "ListAnalyses": {
@@ -495,6 +535,11 @@
                 "export_insights_data"
               ]
             },
+            "ExportIssueModel": {
+              "methods": [
+                "export_issue_model"
+              ]
+            },
             "GetAnalysis": {
               "methods": [
                 "get_analysis"
@@ -503,6 +548,11 @@
             "GetConversation": {
               "methods": [
                 "get_conversation"
+              ]
+            },
+            "GetEncryptionSpec": {
+              "methods": [
+                "get_encryption_spec"
               ]
             },
             "GetIssue": {
@@ -530,9 +580,19 @@
                 "get_view"
               ]
             },
+            "ImportIssueModel": {
+              "methods": [
+                "import_issue_model"
+              ]
+            },
             "IngestConversations": {
               "methods": [
                 "ingest_conversations"
+              ]
+            },
+            "InitializeEncryptionSpec": {
+              "methods": [
+                "initialize_encryption_spec"
               ]
             },
             "ListAnalyses": {

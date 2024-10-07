@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
         "AnalysisResult",
         "IssueModelResult",
         "ConversationLevelSentiment",
+        "ConversationLevelSilence",
         "IssueAssignment",
         "CallAnnotation",
         "AnnotationBoundary",
@@ -55,6 +56,7 @@ __protobuf__ = proto.module(
         "PhraseMatchRuleConfig",
         "ExactMatchConfig",
         "Settings",
+        "EncryptionSpec",
         "RedactionConfig",
         "SpeechConfig",
         "RuntimeAnnotation",
@@ -129,6 +131,11 @@ class Conversation(proto.Message):
         quality_metadata (google.cloud.contact_center_insights_v1.types.Conversation.QualityMetadata):
             Conversation metadata related to quality
             management.
+        metadata_json (str):
+            Input only. JSON Metadata encoded as a
+            string. This field is primarily used by Insights
+            integrations with various telphony systems and
+            must be in one of Insights' supported formats.
         transcript (google.cloud.contact_center_insights_v1.types.Conversation.Transcript):
             Output only. The conversation transcript.
         medium (google.cloud.contact_center_insights_v1.types.Conversation.Medium):
@@ -482,6 +489,10 @@ class Conversation(proto.Message):
         number=24,
         message=QualityMetadata,
     )
+    metadata_json: str = proto.Field(
+        proto.STRING,
+        number=25,
+    )
     transcript: Transcript = proto.Field(
         proto.MESSAGE,
         number=8,
@@ -691,6 +702,9 @@ class AnalysisResult(proto.Message):
             sentiments (MutableSequence[google.cloud.contact_center_insights_v1.types.ConversationLevelSentiment]):
                 Overall conversation-level sentiment for each
                 channel of the call.
+            silence (google.cloud.contact_center_insights_v1.types.ConversationLevelSilence):
+                Overall conversation-level silence during the
+                call.
             intents (MutableMapping[str, google.cloud.contact_center_insights_v1.types.Intent]):
                 All the matched intents in the call.
             phrase_matchers (MutableMapping[str, google.cloud.contact_center_insights_v1.types.PhraseMatchData]):
@@ -715,6 +729,11 @@ class AnalysisResult(proto.Message):
             proto.MESSAGE,
             number=4,
             message="ConversationLevelSentiment",
+        )
+        silence: "ConversationLevelSilence" = proto.Field(
+            proto.MESSAGE,
+            number=11,
+            message="ConversationLevelSilence",
         )
         intents: MutableMapping[str, "Intent"] = proto.MapField(
             proto.STRING,
@@ -788,6 +807,28 @@ class ConversationLevelSentiment(proto.Message):
         proto.MESSAGE,
         number=2,
         message="SentimentData",
+    )
+
+
+class ConversationLevelSilence(proto.Message):
+    r"""Conversation-level silence data.
+
+    Attributes:
+        silence_duration (google.protobuf.duration_pb2.Duration):
+            Amount of time calculated to be in silence.
+        silence_percentage (float):
+            Percentage of the total conversation spent in
+            silence.
+    """
+
+    silence_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    silence_percentage: float = proto.Field(
+        proto.FLOAT,
+        number=2,
     )
 
 
@@ -1456,6 +1497,8 @@ class Issue(proto.Message):
             Output only. Resource names of the sample
             representative utterances that match to this
             issue.
+        display_description (str):
+            Representative description of the issue.
     """
 
     name: str = proto.Field(
@@ -1479,6 +1522,10 @@ class Issue(proto.Message):
     sample_utterances: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
+    )
+    display_description: str = proto.Field(
+        proto.STRING,
+        number=14,
     )
 
 
@@ -1764,7 +1811,11 @@ class ExactMatchConfig(proto.Message):
 
 
 class Settings(proto.Message):
-    r"""The settings resource.
+    r"""The CCAI Insights project wide settings. Use these settings to
+    configure the behavior of Insights. View these settings with
+    ```getsettings`` <https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations/getSettings>`__
+    and change the settings with
+    ```updateSettings`` <https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations/updateSettings>`__.
 
     Attributes:
         name (str):
@@ -1807,21 +1858,30 @@ class Settings(proto.Message):
                created.
             -  "export-insights-data": Notify each time an export is
                complete.
+            -  "ingest-conversations": Notify each time an
+               IngestConversations LRO is complete.
             -  "update-conversation": Notify each time a conversation is
                updated via UpdateConversation.
+            -  "upload-conversation": Notify when an UploadConversation
+               LRO is complete.
 
             Values are Pub/Sub topics. The format of each Pub/Sub topic
             is: projects/{project}/topics/{topic}
         analysis_config (google.cloud.contact_center_insights_v1.types.Settings.AnalysisConfig):
             Default analysis settings.
         redaction_config (google.cloud.contact_center_insights_v1.types.RedactionConfig):
-            Default DLP redaction resources to be applied
-            while ingesting conversations.
+            Default DLP redaction resources to be applied while
+            ingesting conversations. This applies to conversations
+            ingested from the ``UploadConversation`` and
+            ``IngestConversations`` endpoints, including conversations
+            coming from CCAI Platform.
         speech_config (google.cloud.contact_center_insights_v1.types.SpeechConfig):
-            Optional. Default Speech-to-Text resources to
-            be used while ingesting audio files. Optional,
-            CCAI Insights will create a default if not
-            provided.
+            Optional. Default Speech-to-Text resources to use while
+            ingesting audio files. Optional, CCAI Insights will create a
+            default if not provided. This applies to conversations
+            ingested from the ``UploadConversation`` and
+            ``IngestConversations`` endpoints, including conversations
+            coming from CCAI Platform.
     """
 
     class AnalysisConfig(proto.Message):
@@ -1900,9 +1960,44 @@ class Settings(proto.Message):
     )
 
 
+class EncryptionSpec(proto.Message):
+    r"""A customer-managed encryption key specification that can be
+    applied to all created resources (e.g. Conversation).
+
+    Attributes:
+        name (str):
+            Immutable. The resource name of the
+            encryption key specification resource. Format:
+
+            projects/{project}/locations/{location}/encryptionSpec
+        kms_key (str):
+            Required. The name of customer-managed encryption key that
+            is used to secure a resource and its sub-resources. If
+            empty, the resource is secured by the default Google
+            encryption key. Only the key in the same location as this
+            resource is allowed to be used for encryption. Format:
+            ``projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{key}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    kms_key: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class RedactionConfig(proto.Message):
-    r"""DLP resources used for redaction while ingesting
-    conversations.
+    r"""DLP resources used for redaction while ingesting conversations. DLP
+    settings are applied to conversations ingested from the
+    ``UploadConversation`` and ``IngestConversations`` endpoints,
+    including conversation coming from CCAI Platform. They are not
+    applied to conversations ingested from the ``CreateConversation``
+    endpoint or the Dialogflow / Agent Assist runtime integrations. When
+    using Dialogflow / Agent Assist runtime integrations, redaction
+    should be performed in Dialogflow / Agent Assist.
 
     Attributes:
         deidentify_template (str):
@@ -1926,7 +2021,11 @@ class RedactionConfig(proto.Message):
 
 
 class SpeechConfig(proto.Message):
-    r"""Speech-to-Text configuration.
+    r"""Speech-to-Text configuration. Speech-to-Text settings are applied to
+    conversations ingested from the ``UploadConversation`` and
+    ``IngestConversations`` endpoints, including conversation coming
+    from CCAI Platform. They are not applied to conversations ingested
+    from the ``CreateConversation`` endpoint.
 
     Attributes:
         speech_recognizer (str):
@@ -1991,7 +2090,55 @@ class RuntimeAnnotation(proto.Message):
         answer_feedback (google.cloud.contact_center_insights_v1.types.AnswerFeedback):
             The feedback that the customer has about the answer in
             ``data``.
+        user_input (google.cloud.contact_center_insights_v1.types.RuntimeAnnotation.UserInput):
+            Explicit input used for generating the answer
     """
+
+    class UserInput(proto.Message):
+        r"""Explicit input used for generating the answer
+
+        Attributes:
+            query (str):
+                Query text. Article Search uses this to store
+                the input query used to generate the search
+                results.
+            generator_name (str):
+                The resource name of associated generator. Format:
+                ``projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>``
+            query_source (google.cloud.contact_center_insights_v1.types.RuntimeAnnotation.UserInput.QuerySource):
+                Query source for the answer.
+        """
+
+        class QuerySource(proto.Enum):
+            r"""The source of the query.
+
+            Values:
+                QUERY_SOURCE_UNSPECIFIED (0):
+                    Unknown query source.
+                AGENT_QUERY (1):
+                    The query is from agents.
+                SUGGESTED_QUERY (2):
+                    The query is a query from previous
+                    suggestions, e.g. from a preceding
+                    SuggestKnowledgeAssist response.
+            """
+            QUERY_SOURCE_UNSPECIFIED = 0
+            AGENT_QUERY = 1
+            SUGGESTED_QUERY = 2
+
+        query: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        generator_name: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        query_source: "RuntimeAnnotation.UserInput.QuerySource" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="RuntimeAnnotation.UserInput.QuerySource",
+        )
 
     article_suggestion: "ArticleSuggestionData" = proto.Field(
         proto.MESSAGE,
@@ -2054,6 +2201,11 @@ class RuntimeAnnotation(proto.Message):
         proto.MESSAGE,
         number=5,
         message="AnswerFeedback",
+    )
+    user_input: UserInput = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message=UserInput,
     )
 
 
@@ -2566,9 +2718,12 @@ class AnnotatorSelector(proto.Message):
                     Unspecified summarization model.
                 BASELINE_MODEL (1):
                     The CCAI baseline model.
+                BASELINE_MODEL_V2_0 (2):
+                    The CCAI baseline model, V2.0.
             """
             SUMMARIZATION_MODEL_UNSPECIFIED = 0
             BASELINE_MODEL = 1
+            BASELINE_MODEL_V2_0 = 2
 
         conversation_profile: str = proto.Field(
             proto.STRING,

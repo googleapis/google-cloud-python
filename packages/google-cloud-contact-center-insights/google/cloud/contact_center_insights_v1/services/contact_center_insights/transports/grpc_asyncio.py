@@ -270,7 +270,9 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     ]:
         r"""Return a callable for the create conversation method over gRPC.
 
-        Creates a conversation.
+        Creates a conversation. Note that this method does not support
+        audio transcription or redaction. Use ``conversations.upload``
+        instead.
 
         Returns:
             Callable[[~.CreateConversationRequest],
@@ -299,9 +301,9 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     ]:
         r"""Return a callable for the upload conversation method over gRPC.
 
-        Create a longrunning conversation upload operation.
-        This method differs from CreateConversation by allowing
-        audio transcription and optional DLP redaction.
+        Create a long-running conversation upload operation. This method
+        differs from ``CreateConversation`` by allowing audio
+        transcription and optional DLP redaction.
 
         Returns:
             Callable[[~.UploadConversationRequest],
@@ -876,6 +878,64 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["undeploy_issue_model"]
 
     @property
+    def export_issue_model(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ExportIssueModelRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the export issue model method over gRPC.
+
+        Exports an issue model to the provided destination.
+
+        Returns:
+            Callable[[~.ExportIssueModelRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_issue_model" not in self._stubs:
+            self._stubs["export_issue_model"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ExportIssueModel",
+                request_serializer=contact_center_insights.ExportIssueModelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_issue_model"]
+
+    @property
+    def import_issue_model(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ImportIssueModelRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the import issue model method over gRPC.
+
+        Imports an issue model from a Cloud Storage bucket.
+
+        Returns:
+            Callable[[~.ImportIssueModelRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_issue_model" not in self._stubs:
+            self._stubs["import_issue_model"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ImportIssueModel",
+                request_serializer=contact_center_insights.ImportIssueModelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["import_issue_model"]
+
+    @property
     def get_issue(
         self,
     ) -> Callable[
@@ -1247,6 +1307,70 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["update_settings"]
 
     @property
+    def get_encryption_spec(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetEncryptionSpecRequest],
+        Awaitable[resources.EncryptionSpec],
+    ]:
+        r"""Return a callable for the get encryption spec method over gRPC.
+
+        Gets location-level encryption key specification.
+
+        Returns:
+            Callable[[~.GetEncryptionSpecRequest],
+                    Awaitable[~.EncryptionSpec]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_encryption_spec" not in self._stubs:
+            self._stubs["get_encryption_spec"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetEncryptionSpec",
+                request_serializer=contact_center_insights.GetEncryptionSpecRequest.serialize,
+                response_deserializer=resources.EncryptionSpec.deserialize,
+            )
+        return self._stubs["get_encryption_spec"]
+
+    @property
+    def initialize_encryption_spec(
+        self,
+    ) -> Callable[
+        [contact_center_insights.InitializeEncryptionSpecRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the initialize encryption spec method over gRPC.
+
+        Initializes a location-level encryption key
+        specification.  An error will be thrown if the location
+        has resources already created before the initialization.
+        Once the encryption specification is initialized at a
+        location, it is immutable and all newly created
+        resources under the location will be encrypted with the
+        existing specification.
+
+        Returns:
+            Callable[[~.InitializeEncryptionSpecRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "initialize_encryption_spec" not in self._stubs:
+            self._stubs["initialize_encryption_spec"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/InitializeEncryptionSpec",
+                request_serializer=contact_center_insights.InitializeEncryptionSpecRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["initialize_encryption_spec"]
+
+    @property
     def create_view(
         self,
     ) -> Callable[
@@ -1493,6 +1617,16 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.export_issue_model: gapic_v1.method_async.wrap_method(
+                self.export_issue_model,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.import_issue_model: gapic_v1.method_async.wrap_method(
+                self.import_issue_model,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_issue: gapic_v1.method_async.wrap_method(
                 self.get_issue,
                 default_timeout=None,
@@ -1555,6 +1689,16 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
             ),
             self.update_settings: gapic_v1.method_async.wrap_method(
                 self.update_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_encryption_spec: gapic_v1.method_async.wrap_method(
+                self.get_encryption_spec,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.initialize_encryption_spec: gapic_v1.method_async.wrap_method(
+                self.initialize_encryption_spec,
                 default_timeout=None,
                 client_info=client_info,
             ),
