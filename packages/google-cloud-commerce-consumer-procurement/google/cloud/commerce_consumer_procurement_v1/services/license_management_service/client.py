@@ -50,27 +50,24 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
-from google.cloud.commerce_consumer_procurement_v1.services.consumer_procurement_service import (
+from google.cloud.commerce_consumer_procurement_v1.services.license_management_service import (
     pagers,
 )
 from google.cloud.commerce_consumer_procurement_v1.types import (
-    order,
-    procurement_service,
+    license_management_service,
 )
 
-from .transports.base import DEFAULT_CLIENT_INFO, ConsumerProcurementServiceTransport
-from .transports.grpc import ConsumerProcurementServiceGrpcTransport
-from .transports.grpc_asyncio import ConsumerProcurementServiceGrpcAsyncIOTransport
-from .transports.rest import ConsumerProcurementServiceRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, LicenseManagementServiceTransport
+from .transports.grpc import LicenseManagementServiceGrpcTransport
+from .transports.grpc_asyncio import LicenseManagementServiceGrpcAsyncIOTransport
+from .transports.rest import LicenseManagementServiceRestTransport
 
 
-class ConsumerProcurementServiceClientMeta(type):
-    """Metaclass for the ConsumerProcurementService client.
+class LicenseManagementServiceClientMeta(type):
+    """Metaclass for the LicenseManagementService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
@@ -79,15 +76,15 @@ class ConsumerProcurementServiceClientMeta(type):
 
     _transport_registry = (
         OrderedDict()
-    )  # type: Dict[str, Type[ConsumerProcurementServiceTransport]]
-    _transport_registry["grpc"] = ConsumerProcurementServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = ConsumerProcurementServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = ConsumerProcurementServiceRestTransport
+    )  # type: Dict[str, Type[LicenseManagementServiceTransport]]
+    _transport_registry["grpc"] = LicenseManagementServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = LicenseManagementServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = LicenseManagementServiceRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[ConsumerProcurementServiceTransport]:
+    ) -> Type[LicenseManagementServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -106,16 +103,8 @@ class ConsumerProcurementServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClientMeta):
-    """ConsumerProcurementService allows customers to make purchases of
-    products served by the Cloud Commerce platform.
-
-    When purchases are made, the
-    [ConsumerProcurementService][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService]
-    programs the appropriate backends, including both Google's own
-    infrastructure, as well as third-party systems, and to enable
-    billing setup for charging for the procured item.
-    """
+class LicenseManagementServiceClient(metaclass=LicenseManagementServiceClientMeta):
+    """Service for managing licenses."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -167,7 +156,7 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ConsumerProcurementServiceClient: The constructed client.
+            LicenseManagementServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -185,7 +174,7 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ConsumerProcurementServiceClient: The constructed client.
+            LicenseManagementServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -194,48 +183,32 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> ConsumerProcurementServiceTransport:
+    def transport(self) -> LicenseManagementServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            ConsumerProcurementServiceTransport: The transport used by the client
+            LicenseManagementServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
 
     @staticmethod
-    def offer_path(
-        service: str,
-        offer: str,
-    ) -> str:
-        """Returns a fully-qualified offer string."""
-        return "services/{service}/standardOffers/{offer}".format(
-            service=service,
-            offer=offer,
-        )
-
-    @staticmethod
-    def parse_offer_path(path: str) -> Dict[str, str]:
-        """Parses a offer path into its component segments."""
-        m = re.match(r"^services/(?P<service>.+?)/standardOffers/(?P<offer>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def order_path(
+    def license_pool_path(
         billing_account: str,
         order: str,
     ) -> str:
-        """Returns a fully-qualified order string."""
-        return "billingAccounts/{billing_account}/orders/{order}".format(
+        """Returns a fully-qualified license_pool string."""
+        return "billingAccounts/{billing_account}/orders/{order}/licensePool".format(
             billing_account=billing_account,
             order=order,
         )
 
     @staticmethod
-    def parse_order_path(path: str) -> Dict[str, str]:
-        """Parses a order path into its component segments."""
+    def parse_license_pool_path(path: str) -> Dict[str, str]:
+        """Parses a license_pool path into its component segments."""
         m = re.match(
-            r"^billingAccounts/(?P<billing_account>.+?)/orders/(?P<order>.+?)$", path
+            r"^billingAccounts/(?P<billing_account>.+?)/orders/(?P<order>.+?)/licensePool$",
+            path,
         )
         return m.groupdict() if m else {}
 
@@ -458,15 +431,15 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = ConsumerProcurementServiceClient._DEFAULT_UNIVERSE
+            _default_universe = LicenseManagementServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = ConsumerProcurementServiceClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = LicenseManagementServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = (
-                ConsumerProcurementServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+                LicenseManagementServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
                     UNIVERSE_DOMAIN=universe_domain
                 )
             )
@@ -488,7 +461,7 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = ConsumerProcurementServiceClient._DEFAULT_UNIVERSE
+        universe_domain = LicenseManagementServiceClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -514,7 +487,7 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
             ValueError: when client_universe does not match the universe in credentials.
         """
 
-        default_universe = ConsumerProcurementServiceClient._DEFAULT_UNIVERSE
+        default_universe = LicenseManagementServiceClient._DEFAULT_UNIVERSE
         credentials_universe = getattr(credentials, "universe_domain", default_universe)
 
         if client_universe != credentials_universe:
@@ -538,7 +511,7 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
         """
         self._is_universe_domain_valid = (
             self._is_universe_domain_valid
-            or ConsumerProcurementServiceClient._compare_universes(
+            or LicenseManagementServiceClient._compare_universes(
                 self.universe_domain, self.transport._credentials
             )
         )
@@ -569,14 +542,14 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
         transport: Optional[
             Union[
                 str,
-                ConsumerProcurementServiceTransport,
-                Callable[..., ConsumerProcurementServiceTransport],
+                LicenseManagementServiceTransport,
+                Callable[..., LicenseManagementServiceTransport],
             ]
         ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the consumer procurement service client.
+        """Instantiates the license management service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -584,10 +557,10 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,ConsumerProcurementServiceTransport,Callable[..., ConsumerProcurementServiceTransport]]]):
+            transport (Optional[Union[str,LicenseManagementServiceTransport,Callable[..., LicenseManagementServiceTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the ConsumerProcurementServiceTransport constructor.
+                arguments as used in the LicenseManagementServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -640,13 +613,13 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = ConsumerProcurementServiceClient._read_environment_variables()
+        ) = LicenseManagementServiceClient._read_environment_variables()
         self._client_cert_source = (
-            ConsumerProcurementServiceClient._get_client_cert_source(
+            LicenseManagementServiceClient._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert
             )
         )
-        self._universe_domain = ConsumerProcurementServiceClient._get_universe_domain(
+        self._universe_domain = LicenseManagementServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -663,9 +636,9 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, ConsumerProcurementServiceTransport)
+        transport_provided = isinstance(transport, LicenseManagementServiceTransport)
         if transport_provided:
-            # transport is a ConsumerProcurementServiceTransport instance.
+            # transport is a LicenseManagementServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -676,12 +649,12 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(ConsumerProcurementServiceTransport, transport)
+            self._transport = cast(LicenseManagementServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
         self._api_endpoint = (
             self._api_endpoint
-            or ConsumerProcurementServiceClient._get_api_endpoint(
+            or LicenseManagementServiceClient._get_api_endpoint(
                 self._client_options.api_endpoint,
                 self._client_cert_source,
                 self._universe_domain,
@@ -700,12 +673,12 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
                 )
 
             transport_init: Union[
-                Type[ConsumerProcurementServiceTransport],
-                Callable[..., ConsumerProcurementServiceTransport],
+                Type[LicenseManagementServiceTransport],
+                Callable[..., LicenseManagementServiceTransport],
             ] = (
-                ConsumerProcurementServiceClient.get_transport_class(transport)
+                LicenseManagementServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(Callable[..., ConsumerProcurementServiceTransport], transport)
+                else cast(Callable[..., LicenseManagementServiceTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -720,137 +693,18 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
                 api_audience=self._client_options.api_audience,
             )
 
-    def place_order(
+    def get_license_pool(
         self,
-        request: Optional[Union[procurement_service.PlaceOrderRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Creates a new
-        [Order][google.cloud.commerce.consumer.procurement.v1.Order].
-
-        This API only supports GCP spend-based committed use discounts
-        specified by GCP documentation.
-
-        The returned long-running operation is in-progress until the
-        backend completes the creation of the resource. Once completed,
-        the order is in
-        [OrderState.ORDER_STATE_ACTIVE][google.cloud.commerce.consumer.procurement.v1.OrderState.ORDER_STATE_ACTIVE].
-        In case of failure, the order resource will be removed.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import commerce_consumer_procurement_v1
-
-            def sample_place_order():
-                # Create a client
-                client = commerce_consumer_procurement_v1.ConsumerProcurementServiceClient()
-
-                # Initialize request argument(s)
-                request = commerce_consumer_procurement_v1.PlaceOrderRequest(
-                    parent="parent_value",
-                    display_name="display_name_value",
-                )
-
-                # Make the request
-                operation = client.place_order(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.commerce_consumer_procurement_v1.types.PlaceOrderRequest, dict]):
-                The request object. Request message for
-                [ConsumerProcurementService.PlaceOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.PlaceOrder].
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.commerce_consumer_procurement_v1.types.Order` Represents a purchase made by a customer on Cloud Marketplace.
-                   Creating an order makes sure that both the Google
-                   backend systems as well as external service
-                   provider's systems (if needed) allow use of purchased
-                   products and ensures the appropriate billing events
-                   occur.
-
-                   An Order can be made against one Product with
-                   multiple add-ons (optional) or one Quote which might
-                   reference multiple products.
-
-                   Customers typically choose a price plan for each
-                   Product purchased when they create an order and can
-                   change their plan later, if the product allows.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, procurement_service.PlaceOrderRequest):
-            request = procurement_service.PlaceOrderRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.place_order]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            order.Order,
-            metadata_type=procurement_service.PlaceOrderMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def get_order(
-        self,
-        request: Optional[Union[procurement_service.GetOrderRequest, dict]] = None,
+        request: Optional[
+            Union[license_management_service.GetLicensePoolRequest, dict]
+        ] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> order.Order:
-        r"""Returns the requested
-        [Order][google.cloud.commerce.consumer.procurement.v1.Order]
-        resource.
+    ) -> license_management_service.LicensePool:
+        r"""Gets the license pool.
 
         .. code-block:: python
 
@@ -863,28 +717,28 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import commerce_consumer_procurement_v1
 
-            def sample_get_order():
+            def sample_get_license_pool():
                 # Create a client
-                client = commerce_consumer_procurement_v1.ConsumerProcurementServiceClient()
+                client = commerce_consumer_procurement_v1.LicenseManagementServiceClient()
 
                 # Initialize request argument(s)
-                request = commerce_consumer_procurement_v1.GetOrderRequest(
+                request = commerce_consumer_procurement_v1.GetLicensePoolRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = client.get_order(request=request)
+                response = client.get_license_pool(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.commerce_consumer_procurement_v1.types.GetOrderRequest, dict]):
-                The request object. Request message for
-                [ConsumerProcurementService.GetOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.GetOrder]
+            request (Union[google.cloud.commerce_consumer_procurement_v1.types.GetLicensePoolRequest, dict]):
+                The request object. Request message for getting a license
+                pool.
             name (str):
-                Required. The name of the order to
-                retrieve.
+                Required. The name of the license pool to get. Format:
+                ``billingAccounts/{billing_account}/orders/{order}/licensePool``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -896,25 +750,9 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.commerce_consumer_procurement_v1.types.Order:
-                Represents a purchase made by a
-                customer on Cloud Marketplace. Creating
-                an order makes sure that both the Google
-                backend systems as well as external
-                service provider's systems (if needed)
-                allow use of purchased products and
-                ensures the appropriate billing events
-                occur.
-
-                An Order can be made against one Product
-                with multiple add-ons (optional) or one
-                Quote which might reference multiple
-                products.
-
-                Customers typically choose a price plan
-                for each Product purchased when they
-                create an order and can change their
-                plan later, if the product allows.
+            google.cloud.commerce_consumer_procurement_v1.types.LicensePool:
+                A license pool represents a pool of
+                licenses that can be assigned to users.
 
         """
         # Create or coerce a protobuf request object.
@@ -929,8 +767,8 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, procurement_service.GetOrderRequest):
-            request = procurement_service.GetOrderRequest(request)
+        if not isinstance(request, license_management_service.GetLicensePoolRequest):
+            request = license_management_service.GetLicensePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -938,7 +776,7 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_order]
+        rpc = self._transport._wrapped_methods[self._transport.get_license_pool]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -960,19 +798,20 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
         # Done; return the response.
         return response
 
-    def list_orders(
+    def update_license_pool(
         self,
-        request: Optional[Union[procurement_service.ListOrdersRequest, dict]] = None,
+        request: Optional[
+            Union[license_management_service.UpdateLicensePoolRequest, dict]
+        ] = None,
         *,
-        parent: Optional[str] = None,
+        license_pool: Optional[license_management_service.LicensePool] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListOrdersPager:
-        r"""Lists
-        [Order][google.cloud.commerce.consumer.procurement.v1.Order]
-        resources that the user has access to, within the scope of the
-        parent resource.
+    ) -> license_management_service.LicensePool:
+        r"""Updates the license pool if one exists for this
+        Order.
 
         .. code-block:: python
 
@@ -985,31 +824,368 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import commerce_consumer_procurement_v1
 
-            def sample_list_orders():
+            def sample_update_license_pool():
                 # Create a client
-                client = commerce_consumer_procurement_v1.ConsumerProcurementServiceClient()
+                client = commerce_consumer_procurement_v1.LicenseManagementServiceClient()
 
                 # Initialize request argument(s)
-                request = commerce_consumer_procurement_v1.ListOrdersRequest(
+                request = commerce_consumer_procurement_v1.UpdateLicensePoolRequest(
+                )
+
+                # Make the request
+                response = client.update_license_pool(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.commerce_consumer_procurement_v1.types.UpdateLicensePoolRequest, dict]):
+                The request object. Request message for updating a
+                license pool.
+            license_pool (google.cloud.commerce_consumer_procurement_v1.types.LicensePool):
+                Required. The license pool to update.
+
+                The license pool's name field is used to identify the
+                license pool to update. Format:
+                ``billingAccounts/{billing_account}/orders/{order}/licensePool``.
+
+                This corresponds to the ``license_pool`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to
+                update.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.commerce_consumer_procurement_v1.types.LicensePool:
+                A license pool represents a pool of
+                licenses that can be assigned to users.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([license_pool, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, license_management_service.UpdateLicensePoolRequest):
+            request = license_management_service.UpdateLicensePoolRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if license_pool is not None:
+                request.license_pool = license_pool
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_license_pool]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("license_pool.name", request.license_pool.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def assign(
+        self,
+        request: Optional[Union[license_management_service.AssignRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        usernames: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> license_management_service.AssignResponse:
+        r"""Assigns a license to a user.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import commerce_consumer_procurement_v1
+
+            def sample_assign():
+                # Create a client
+                client = commerce_consumer_procurement_v1.LicenseManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = commerce_consumer_procurement_v1.AssignRequest(
+                    parent="parent_value",
+                    usernames=['usernames_value1', 'usernames_value2'],
+                )
+
+                # Make the request
+                response = client.assign(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.commerce_consumer_procurement_v1.types.AssignRequest, dict]):
+                The request object. Request message for
+                [LicenseManagementService.Assign][google.cloud.commerce.consumer.procurement.v1.LicenseManagementService.Assign].
+            parent (str):
+                Required. License pool name.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            usernames (MutableSequence[str]):
+                Required. Username. Format: ``name@domain.com``.
+                This corresponds to the ``usernames`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.commerce_consumer_procurement_v1.types.AssignResponse:
+                Response message for
+                   [LicenseManagementService.Assign][google.cloud.commerce.consumer.procurement.v1.LicenseManagementService.Assign].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, usernames])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, license_management_service.AssignRequest):
+            request = license_management_service.AssignRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if usernames is not None:
+                request.usernames = usernames
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.assign]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def unassign(
+        self,
+        request: Optional[
+            Union[license_management_service.UnassignRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        usernames: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> license_management_service.UnassignResponse:
+        r"""Unassigns a license from a user.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import commerce_consumer_procurement_v1
+
+            def sample_unassign():
+                # Create a client
+                client = commerce_consumer_procurement_v1.LicenseManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = commerce_consumer_procurement_v1.UnassignRequest(
+                    parent="parent_value",
+                    usernames=['usernames_value1', 'usernames_value2'],
+                )
+
+                # Make the request
+                response = client.unassign(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.commerce_consumer_procurement_v1.types.UnassignRequest, dict]):
+                The request object. Request message for
+                [LicenseManagementService.Unassign][google.cloud.commerce.consumer.procurement.v1.LicenseManagementService.Unassign].
+            parent (str):
+                Required. License pool name.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            usernames (MutableSequence[str]):
+                Required. Username. Format: ``name@domain.com``.
+                This corresponds to the ``usernames`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.commerce_consumer_procurement_v1.types.UnassignResponse:
+                Response message for
+                   [LicenseManagementService.Unassign][google.cloud.commerce.consumer.procurement.v1.LicenseManagementService.Unassign].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, usernames])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, license_management_service.UnassignRequest):
+            request = license_management_service.UnassignRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if usernames is not None:
+                request.usernames = usernames
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.unassign]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def enumerate_licensed_users(
+        self,
+        request: Optional[
+            Union[license_management_service.EnumerateLicensedUsersRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.EnumerateLicensedUsersPager:
+        r"""Enumerates all users assigned a license.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import commerce_consumer_procurement_v1
+
+            def sample_enumerate_licensed_users():
+                # Create a client
+                client = commerce_consumer_procurement_v1.LicenseManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = commerce_consumer_procurement_v1.EnumerateLicensedUsersRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_orders(request=request)
+                page_result = client.enumerate_licensed_users(request=request)
 
                 # Handle the response
                 for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.commerce_consumer_procurement_v1.types.ListOrdersRequest, dict]):
+            request (Union[google.cloud.commerce_consumer_procurement_v1.types.EnumerateLicensedUsersRequest, dict]):
                 The request object. Request message for
-                [ConsumerProcurementService.ListOrders][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.ListOrders].
+                [LicenseManagementService.EnumerateLicensedUsers][google.cloud.commerce.consumer.procurement.v1.LicenseManagementService.EnumerateLicensedUsers].
             parent (str):
-                Required. The parent resource to query for orders. This
-                field has the form
-                ``billingAccounts/{billing-account-id}``.
-
+                Required. License pool name.
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1020,9 +1196,9 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.commerce_consumer_procurement_v1.services.consumer_procurement_service.pagers.ListOrdersPager:
+            google.cloud.commerce_consumer_procurement_v1.services.license_management_service.pagers.EnumerateLicensedUsersPager:
                 Response message for
-                   [ConsumerProcurementService.ListOrders][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.ListOrders].
+                   [LicenseManagementService.EnumerateLicensedUsers][google.cloud.commerce.consumer.procurement.v1.LicenseManagementService.EnumerateLicensedUsers].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1040,8 +1216,10 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, procurement_service.ListOrdersRequest):
-            request = procurement_service.ListOrdersRequest(request)
+        if not isinstance(
+            request, license_management_service.EnumerateLicensedUsersRequest
+        ):
+            request = license_management_service.EnumerateLicensedUsersRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -1049,7 +1227,7 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_orders]
+        rpc = self._transport._wrapped_methods[self._transport.enumerate_licensed_users]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1070,7 +1248,7 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers.ListOrdersPager(
+        response = pagers.EnumerateLicensedUsersPager(
             method=rpc,
             request=request,
             response=response,
@@ -1082,227 +1260,7 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
         # Done; return the response.
         return response
 
-    def modify_order(
-        self,
-        request: Optional[Union[procurement_service.ModifyOrderRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Modifies an existing
-        [Order][google.cloud.commerce.consumer.procurement.v1.Order]
-        resource.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import commerce_consumer_procurement_v1
-
-            def sample_modify_order():
-                # Create a client
-                client = commerce_consumer_procurement_v1.ConsumerProcurementServiceClient()
-
-                # Initialize request argument(s)
-                request = commerce_consumer_procurement_v1.ModifyOrderRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                operation = client.modify_order(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.commerce_consumer_procurement_v1.types.ModifyOrderRequest, dict]):
-                The request object. Request message for
-                [ConsumerProcurementService.ModifyOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.ModifyOrder].
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.commerce_consumer_procurement_v1.types.Order` Represents a purchase made by a customer on Cloud Marketplace.
-                   Creating an order makes sure that both the Google
-                   backend systems as well as external service
-                   provider's systems (if needed) allow use of purchased
-                   products and ensures the appropriate billing events
-                   occur.
-
-                   An Order can be made against one Product with
-                   multiple add-ons (optional) or one Quote which might
-                   reference multiple products.
-
-                   Customers typically choose a price plan for each
-                   Product purchased when they create an order and can
-                   change their plan later, if the product allows.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, procurement_service.ModifyOrderRequest):
-            request = procurement_service.ModifyOrderRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.modify_order]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            order.Order,
-            metadata_type=procurement_service.ModifyOrderMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def cancel_order(
-        self,
-        request: Optional[Union[procurement_service.CancelOrderRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Cancels an existing
-        [Order][google.cloud.commerce.consumer.procurement.v1.Order].
-        Every product procured in the Order will be cancelled.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import commerce_consumer_procurement_v1
-
-            def sample_cancel_order():
-                # Create a client
-                client = commerce_consumer_procurement_v1.ConsumerProcurementServiceClient()
-
-                # Initialize request argument(s)
-                request = commerce_consumer_procurement_v1.CancelOrderRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                operation = client.cancel_order(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.commerce_consumer_procurement_v1.types.CancelOrderRequest, dict]):
-                The request object. Request message for
-                [ConsumerProcurementService.CancelOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.CancelOrder].
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.commerce_consumer_procurement_v1.types.Order` Represents a purchase made by a customer on Cloud Marketplace.
-                   Creating an order makes sure that both the Google
-                   backend systems as well as external service
-                   provider's systems (if needed) allow use of purchased
-                   products and ensures the appropriate billing events
-                   occur.
-
-                   An Order can be made against one Product with
-                   multiple add-ons (optional) or one Quote which might
-                   reference multiple products.
-
-                   Customers typically choose a price plan for each
-                   Product purchased when they create an order and can
-                   change their plan later, if the product allows.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, procurement_service.CancelOrderRequest):
-            request = procurement_service.CancelOrderRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.cancel_order]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            order.Order,
-            metadata_type=procurement_service.CancelOrderMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def __enter__(self) -> "ConsumerProcurementServiceClient":
+    def __enter__(self) -> "LicenseManagementServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -1378,4 +1336,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("ConsumerProcurementServiceClient",)
+__all__ = ("LicenseManagementServiceClient",)

@@ -17,7 +17,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
+from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -26,27 +26,17 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.commerce_consumer_procurement_v1.types import (
-    order,
-    procurement_service,
+    license_management_service,
 )
 
-from .base import DEFAULT_CLIENT_INFO, ConsumerProcurementServiceTransport
-from .grpc import ConsumerProcurementServiceGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, LicenseManagementServiceTransport
+from .grpc import LicenseManagementServiceGrpcTransport
 
 
-class ConsumerProcurementServiceGrpcAsyncIOTransport(
-    ConsumerProcurementServiceTransport
-):
-    """gRPC AsyncIO backend transport for ConsumerProcurementService.
+class LicenseManagementServiceGrpcAsyncIOTransport(LicenseManagementServiceTransport):
+    """gRPC AsyncIO backend transport for LicenseManagementService.
 
-    ConsumerProcurementService allows customers to make purchases of
-    products served by the Cloud Commerce platform.
-
-    When purchases are made, the
-    [ConsumerProcurementService][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService]
-    programs the appropriate backends, including both Google's own
-    infrastructure, as well as third-party systems, and to enable
-    billing setup for charging for the procured item.
+    Service for managing licenses.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -173,7 +163,6 @@ class ConsumerProcurementServiceGrpcAsyncIOTransport(
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
-        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -253,44 +242,19 @@ class ConsumerProcurementServiceGrpcAsyncIOTransport(
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsAsyncClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Quick check: Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
-            )
-
-        # Return the client from cache.
-        return self._operations_client
-
-    @property
-    def place_order(
+    def get_license_pool(
         self,
     ) -> Callable[
-        [procurement_service.PlaceOrderRequest], Awaitable[operations_pb2.Operation]
+        [license_management_service.GetLicensePoolRequest],
+        Awaitable[license_management_service.LicensePool],
     ]:
-        r"""Return a callable for the place order method over gRPC.
+        r"""Return a callable for the get license pool method over gRPC.
 
-        Creates a new
-        [Order][google.cloud.commerce.consumer.procurement.v1.Order].
-
-        This API only supports GCP spend-based committed use discounts
-        specified by GCP documentation.
-
-        The returned long-running operation is in-progress until the
-        backend completes the creation of the resource. Once completed,
-        the order is in
-        [OrderState.ORDER_STATE_ACTIVE][google.cloud.commerce.consumer.procurement.v1.OrderState.ORDER_STATE_ACTIVE].
-        In case of failure, the order resource will be removed.
+        Gets the license pool.
 
         Returns:
-            Callable[[~.PlaceOrderRequest],
-                    Awaitable[~.Operation]]:
+            Callable[[~.GetLicensePoolRequest],
+                    Awaitable[~.LicensePool]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -298,59 +262,29 @@ class ConsumerProcurementServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "place_order" not in self._stubs:
-            self._stubs["place_order"] = self.grpc_channel.unary_unary(
-                "/google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService/PlaceOrder",
-                request_serializer=procurement_service.PlaceOrderRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "get_license_pool" not in self._stubs:
+            self._stubs["get_license_pool"] = self.grpc_channel.unary_unary(
+                "/google.cloud.commerce.consumer.procurement.v1.LicenseManagementService/GetLicensePool",
+                request_serializer=license_management_service.GetLicensePoolRequest.serialize,
+                response_deserializer=license_management_service.LicensePool.deserialize,
             )
-        return self._stubs["place_order"]
+        return self._stubs["get_license_pool"]
 
     @property
-    def get_order(
-        self,
-    ) -> Callable[[procurement_service.GetOrderRequest], Awaitable[order.Order]]:
-        r"""Return a callable for the get order method over gRPC.
-
-        Returns the requested
-        [Order][google.cloud.commerce.consumer.procurement.v1.Order]
-        resource.
-
-        Returns:
-            Callable[[~.GetOrderRequest],
-                    Awaitable[~.Order]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_order" not in self._stubs:
-            self._stubs["get_order"] = self.grpc_channel.unary_unary(
-                "/google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService/GetOrder",
-                request_serializer=procurement_service.GetOrderRequest.serialize,
-                response_deserializer=order.Order.deserialize,
-            )
-        return self._stubs["get_order"]
-
-    @property
-    def list_orders(
+    def update_license_pool(
         self,
     ) -> Callable[
-        [procurement_service.ListOrdersRequest],
-        Awaitable[procurement_service.ListOrdersResponse],
+        [license_management_service.UpdateLicensePoolRequest],
+        Awaitable[license_management_service.LicensePool],
     ]:
-        r"""Return a callable for the list orders method over gRPC.
+        r"""Return a callable for the update license pool method over gRPC.
 
-        Lists
-        [Order][google.cloud.commerce.consumer.procurement.v1.Order]
-        resources that the user has access to, within the scope of the
-        parent resource.
+        Updates the license pool if one exists for this
+        Order.
 
         Returns:
-            Callable[[~.ListOrdersRequest],
-                    Awaitable[~.ListOrdersResponse]]:
+            Callable[[~.UpdateLicensePoolRequest],
+                    Awaitable[~.LicensePool]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -358,29 +292,28 @@ class ConsumerProcurementServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_orders" not in self._stubs:
-            self._stubs["list_orders"] = self.grpc_channel.unary_unary(
-                "/google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService/ListOrders",
-                request_serializer=procurement_service.ListOrdersRequest.serialize,
-                response_deserializer=procurement_service.ListOrdersResponse.deserialize,
+        if "update_license_pool" not in self._stubs:
+            self._stubs["update_license_pool"] = self.grpc_channel.unary_unary(
+                "/google.cloud.commerce.consumer.procurement.v1.LicenseManagementService/UpdateLicensePool",
+                request_serializer=license_management_service.UpdateLicensePoolRequest.serialize,
+                response_deserializer=license_management_service.LicensePool.deserialize,
             )
-        return self._stubs["list_orders"]
+        return self._stubs["update_license_pool"]
 
     @property
-    def modify_order(
+    def assign(
         self,
     ) -> Callable[
-        [procurement_service.ModifyOrderRequest], Awaitable[operations_pb2.Operation]
+        [license_management_service.AssignRequest],
+        Awaitable[license_management_service.AssignResponse],
     ]:
-        r"""Return a callable for the modify order method over gRPC.
+        r"""Return a callable for the assign method over gRPC.
 
-        Modifies an existing
-        [Order][google.cloud.commerce.consumer.procurement.v1.Order]
-        resource.
+        Assigns a license to a user.
 
         Returns:
-            Callable[[~.ModifyOrderRequest],
-                    Awaitable[~.Operation]]:
+            Callable[[~.AssignRequest],
+                    Awaitable[~.AssignResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -388,29 +321,28 @@ class ConsumerProcurementServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "modify_order" not in self._stubs:
-            self._stubs["modify_order"] = self.grpc_channel.unary_unary(
-                "/google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService/ModifyOrder",
-                request_serializer=procurement_service.ModifyOrderRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "assign" not in self._stubs:
+            self._stubs["assign"] = self.grpc_channel.unary_unary(
+                "/google.cloud.commerce.consumer.procurement.v1.LicenseManagementService/Assign",
+                request_serializer=license_management_service.AssignRequest.serialize,
+                response_deserializer=license_management_service.AssignResponse.deserialize,
             )
-        return self._stubs["modify_order"]
+        return self._stubs["assign"]
 
     @property
-    def cancel_order(
+    def unassign(
         self,
     ) -> Callable[
-        [procurement_service.CancelOrderRequest], Awaitable[operations_pb2.Operation]
+        [license_management_service.UnassignRequest],
+        Awaitable[license_management_service.UnassignResponse],
     ]:
-        r"""Return a callable for the cancel order method over gRPC.
+        r"""Return a callable for the unassign method over gRPC.
 
-        Cancels an existing
-        [Order][google.cloud.commerce.consumer.procurement.v1.Order].
-        Every product procured in the Order will be cancelled.
+        Unassigns a license from a user.
 
         Returns:
-            Callable[[~.CancelOrderRequest],
-                    Awaitable[~.Operation]]:
+            Callable[[~.UnassignRequest],
+                    Awaitable[~.UnassignResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -418,57 +350,68 @@ class ConsumerProcurementServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "cancel_order" not in self._stubs:
-            self._stubs["cancel_order"] = self.grpc_channel.unary_unary(
-                "/google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService/CancelOrder",
-                request_serializer=procurement_service.CancelOrderRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "unassign" not in self._stubs:
+            self._stubs["unassign"] = self.grpc_channel.unary_unary(
+                "/google.cloud.commerce.consumer.procurement.v1.LicenseManagementService/Unassign",
+                request_serializer=license_management_service.UnassignRequest.serialize,
+                response_deserializer=license_management_service.UnassignResponse.deserialize,
             )
-        return self._stubs["cancel_order"]
+        return self._stubs["unassign"]
+
+    @property
+    def enumerate_licensed_users(
+        self,
+    ) -> Callable[
+        [license_management_service.EnumerateLicensedUsersRequest],
+        Awaitable[license_management_service.EnumerateLicensedUsersResponse],
+    ]:
+        r"""Return a callable for the enumerate licensed users method over gRPC.
+
+        Enumerates all users assigned a license.
+
+        Returns:
+            Callable[[~.EnumerateLicensedUsersRequest],
+                    Awaitable[~.EnumerateLicensedUsersResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "enumerate_licensed_users" not in self._stubs:
+            self._stubs["enumerate_licensed_users"] = self.grpc_channel.unary_unary(
+                "/google.cloud.commerce.consumer.procurement.v1.LicenseManagementService/EnumerateLicensedUsers",
+                request_serializer=license_management_service.EnumerateLicensedUsersRequest.serialize,
+                response_deserializer=license_management_service.EnumerateLicensedUsersResponse.deserialize,
+            )
+        return self._stubs["enumerate_licensed_users"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.place_order: gapic_v1.method_async.wrap_method(
-                self.place_order,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_order: gapic_v1.method_async.wrap_method(
-                self.get_order,
-                default_retry=retries.AsyncRetry(
-                    initial=1.0,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_orders: gapic_v1.method_async.wrap_method(
-                self.list_orders,
-                default_retry=retries.AsyncRetry(
-                    initial=1.0,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.modify_order: gapic_v1.method_async.wrap_method(
-                self.modify_order,
+            self.get_license_pool: gapic_v1.method_async.wrap_method(
+                self.get_license_pool,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.cancel_order: gapic_v1.method_async.wrap_method(
-                self.cancel_order,
+            self.update_license_pool: gapic_v1.method_async.wrap_method(
+                self.update_license_pool,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.assign: gapic_v1.method_async.wrap_method(
+                self.assign,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.unassign: gapic_v1.method_async.wrap_method(
+                self.unassign,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.enumerate_licensed_users: gapic_v1.method_async.wrap_method(
+                self.enumerate_licensed_users,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -495,4 +438,4 @@ class ConsumerProcurementServiceGrpcAsyncIOTransport(
         return self._stubs["get_operation"]
 
 
-__all__ = ("ConsumerProcurementServiceGrpcAsyncIOTransport",)
+__all__ = ("LicenseManagementServiceGrpcAsyncIOTransport",)
