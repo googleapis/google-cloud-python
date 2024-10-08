@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.1.3...google-shopping-merchant-accounts-v0.2.0) (2024-10-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* The type of an existing field `time_zone` is changed from `message` to `string` in message `.google.shopping.merchant.accounts.v1beta.ListAccountIssuesRequest`
+* An existing field `account_aggregation` is removed from message `.google.shopping.merchant.accounts.v1beta.CreateAndConfigureAccountRequest`
+* Changed field behavior for an existing field `service` in message `.google.shopping.merchant.accounts.v1beta.CreateAndConfigureAccountRequest`
+* Changed field behavior for an existing field `region_code` in message `.google.shopping.merchant.accounts.v1beta.RetrieveLatestTermsOfServiceRequest`
+* Changed field behavior for an existing field `kind` in message `.google.shopping.merchant.accounts.v1beta.RetrieveLatestTermsOfServiceRequest`
+
+### Features
+
+* A new field `account_aggregation` is added to message `.google.shopping.merchant.accounts.v1beta.CreateAndConfigureAccountRequest` ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+* A new field `korean_business_registration_number` is added to message `.google.shopping.merchant.accounts.v1beta.BusinessInfo` ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+* A new message `AccountAggregation` is added ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+* A new message `AutofeedSettings` is added ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+* A new message `GetAutofeedSettingsRequest` is added ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+* A new message `UpdateAutofeedSettingsRequest` is added ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+* A new resource_definition `[merchantapi.googleapis.com/AutofeedSettings](https://www.google.com/url?sa=D&q=http%3A%2F%2Fmerchantapi.googleapis.com%2FAutofeedSettings)` is added ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+* A new service `AutofeedSettingsService` is added ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+* add 'force' parameter for accounts.delete method ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+
+
+### Bug Fixes
+
+* An existing field `account_aggregation` is removed from message `.google.shopping.merchant.accounts.v1beta.CreateAndConfigureAccountRequest` ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+* Changed field behavior for an existing field `kind` in message `.google.shopping.merchant.accounts.v1beta.RetrieveLatestTermsOfServiceRequest` ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+* Changed field behavior for an existing field `region_code` in message `.google.shopping.merchant.accounts.v1beta.RetrieveLatestTermsOfServiceRequest` ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+* Changed field behavior for an existing field `service` in message `.google.shopping.merchant.accounts.v1beta.CreateAndConfigureAccountRequest` ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+* The type of an existing field `time_zone` is changed from `message` to `string` in message `.google.shopping.merchant.accounts.v1beta.ListAccountIssuesRequest` ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+
+
+### Documentation
+
+* updated descriptions for the DeleteAccount and ListAccounts RPCs ([8d79ca8](https://github.com/googleapis/google-cloud-python/commit/8d79ca81a3f2f01a1f0c77231e77566860f1d4ab))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.1.2...google-shopping-merchant-accounts-v0.1.3) (2024-07-30)
 
 

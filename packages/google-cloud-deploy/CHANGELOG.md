@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.0.1...google-cloud-deploy-v2.1.0) (2024-10-08)
+
+
+### Features
+
+* added support for deploy policies ([bbe5daf](https://github.com/googleapis/google-cloud-python/commit/bbe5daf0c71a02ae780c7609d433787dec1bc168))
+
+
+### Documentation
+
+* Minor documentation updates ([bbe5daf](https://github.com/googleapis/google-cloud-python/commit/bbe5daf0c71a02ae780c7609d433787dec1bc168))
+
 ## [2.0.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.0.0...google-cloud-deploy-v2.0.1) (2024-08-08)
 
 

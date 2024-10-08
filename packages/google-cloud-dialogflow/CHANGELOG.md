@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.32.0...google-cloud-dialogflow-v2.33.0) (2024-10-08)
+
+
+### Features
+
+* add ALAW encoding value to Audio encoding enum ([c169348](https://github.com/googleapis/google-cloud-python/commit/c1693486f314261e3799547ee6f5e53dd7e687fc))
+* created new boolean fields in conversation dataset for zone isolation and zone separation compliance status ([c169348](https://github.com/googleapis/google-cloud-python/commit/c1693486f314261e3799547ee6f5e53dd7e687fc))
+
 ## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.31.0...google-cloud-dialogflow-v2.32.0) (2024-09-23)
 
 

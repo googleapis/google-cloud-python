@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.11...google-apps-chat-v0.1.12) (2024-10-08)
+
+
+### Features
+
+* Add doc for import mode external users support ([3881914](https://github.com/googleapis/google-cloud-python/commit/3881914b43b47bf2ee187f62447ef9eccc851749))
+* Add doc for permission settings & announcement space support ([3881914](https://github.com/googleapis/google-cloud-python/commit/3881914b43b47bf2ee187f62447ef9eccc851749))
+
+
+### Documentation
+
+* Discoverable space docs improvement ([3881914](https://github.com/googleapis/google-cloud-python/commit/3881914b43b47bf2ee187f62447ef9eccc851749))
+* Memberships API dev docs improvement ([3881914](https://github.com/googleapis/google-cloud-python/commit/3881914b43b47bf2ee187f62447ef9eccc851749))
+* Messages API dev docs improvement ([3881914](https://github.com/googleapis/google-cloud-python/commit/3881914b43b47bf2ee187f62447ef9eccc851749))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.10...google-apps-chat-v0.1.11) (2024-09-16)
 
 

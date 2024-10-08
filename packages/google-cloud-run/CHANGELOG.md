@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.10.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.8...google-cloud-run-v0.10.9) (2024-10-08)
+
+
+### Features
+
+* add Builds API ([6dde382](https://github.com/googleapis/google-cloud-python/commit/6dde3826c7c13ff1fcc840495811f58648e0678e))
+* add GPU configuration to Services ([6dde382](https://github.com/googleapis/google-cloud-python/commit/6dde3826c7c13ff1fcc840495811f58648e0678e))
+* add INGRESS_TRAFFIC_NONE to Services ([6dde382](https://github.com/googleapis/google-cloud-python/commit/6dde3826c7c13ff1fcc840495811f58648e0678e))
+* add Service Mesh configuration to Services ([6dde382](https://github.com/googleapis/google-cloud-python/commit/6dde3826c7c13ff1fcc840495811f58648e0678e))
+* add ServiceScaling to Services ([6dde382](https://github.com/googleapis/google-cloud-python/commit/6dde3826c7c13ff1fcc840495811f58648e0678e))
+
+
+### Documentation
+
+* fixed formatting of some documentation ([6dde382](https://github.com/googleapis/google-cloud-python/commit/6dde3826c7c13ff1fcc840495811f58648e0678e))
+
 ## [0.10.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.7...google-cloud-run-v0.10.8) (2024-07-30)
 
 

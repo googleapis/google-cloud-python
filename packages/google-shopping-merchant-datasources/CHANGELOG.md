@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-datasources-v0.1.2...google-shopping-merchant-datasources-v0.1.3) (2024-10-08)
+
+
+### Features
+
+* Add FileUploads service ([c859d14](https://github.com/googleapis/google-cloud-python/commit/c859d14990dbdf2c59a09265b1c91479f134aaa6))
+* adding some more information about supplemental data sources ([c859d14](https://github.com/googleapis/google-cloud-python/commit/c859d14990dbdf2c59a09265b1c91479f134aaa6))
+
+
+### Documentation
+
+* A comment for enum value `PRODUCTS` in enum `Channel` is changed ([c859d14](https://github.com/googleapis/google-cloud-python/commit/c859d14990dbdf2c59a09265b1c91479f134aaa6))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-datasources-v0.1.1...google-shopping-merchant-datasources-v0.1.2) (2024-07-30)
 
 

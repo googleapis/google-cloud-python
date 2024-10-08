@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.1.3...google-cloud-backupdr-v0.1.4) (2024-10-08)
+
+
+### Features
+
+* [google-cloud-backupdr] Client library for the backupvault api is added ([27c262d](https://github.com/googleapis/google-cloud-python/commit/27c262d51c5d9f055152d9448f5fb6759da4bdb3))
+* Add backupplan proto ([27c262d](https://github.com/googleapis/google-cloud-python/commit/27c262d51c5d9f055152d9448f5fb6759da4bdb3))
+* Add backupplanassociation proto ([27c262d](https://github.com/googleapis/google-cloud-python/commit/27c262d51c5d9f055152d9448f5fb6759da4bdb3))
+* Add backupvault_ba proto ([27c262d](https://github.com/googleapis/google-cloud-python/commit/27c262d51c5d9f055152d9448f5fb6759da4bdb3))
+* Add backupvault_gce proto ([27c262d](https://github.com/googleapis/google-cloud-python/commit/27c262d51c5d9f055152d9448f5fb6759da4bdb3))
+
+
+### Documentation
+
+* A comment for field `management_servers` in message `.google.cloud.backupdr.v1.ListManagementServersResponse` is changed ([27c262d](https://github.com/googleapis/google-cloud-python/commit/27c262d51c5d9f055152d9448f5fb6759da4bdb3))
+* A comment for field `name` in message `.google.cloud.backupdr.v1.GetManagementServerRequest` is changed ([27c262d](https://github.com/googleapis/google-cloud-python/commit/27c262d51c5d9f055152d9448f5fb6759da4bdb3))
+* A comment for field `oauth2_client_id` in message `.google.cloud.backupdr.v1.ManagementServer` is changed ([27c262d](https://github.com/googleapis/google-cloud-python/commit/27c262d51c5d9f055152d9448f5fb6759da4bdb3))
+* A comment for field `parent` in message `.google.cloud.backupdr.v1.CreateManagementServerRequest` is changed ([27c262d](https://github.com/googleapis/google-cloud-python/commit/27c262d51c5d9f055152d9448f5fb6759da4bdb3))
+* A comment for field `parent` in message `.google.cloud.backupdr.v1.ListManagementServersRequest` is changed ([27c262d](https://github.com/googleapis/google-cloud-python/commit/27c262d51c5d9f055152d9448f5fb6759da4bdb3))
+* A comment for field `requested_cancellation` in message `.google.cloud.backupdr.v1.OperationMetadata` is changed ([27c262d](https://github.com/googleapis/google-cloud-python/commit/27c262d51c5d9f055152d9448f5fb6759da4bdb3))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.1.2...google-cloud-backupdr-v0.1.3) (2024-07-30)
 
 

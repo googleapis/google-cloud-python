@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.18.5...google-cloud-channel-v1.19.0) (2024-10-08)
+
+
+### Features
+
+* Add support for importing team customer from a different reseller ([c38431b](https://github.com/googleapis/google-cloud-python/commit/c38431b363fd4f18bb692593f401e3ac3759637c))
+* Add support for primary_admin_email as customer_identity for ImportCustomer ([c38431b](https://github.com/googleapis/google-cloud-python/commit/c38431b363fd4f18bb692593f401e3ac3759637c))
+* Add support to look up team customer Cloud Identity information ([c38431b](https://github.com/googleapis/google-cloud-python/commit/c38431b363fd4f18bb692593f401e3ac3759637c))
+
+
+### Documentation
+
+* Clarify the expected value of the domain field for team type customers ([c38431b](https://github.com/googleapis/google-cloud-python/commit/c38431b363fd4f18bb692593f401e3ac3759637c))
+
 ## [1.18.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.18.4...google-cloud-channel-v1.18.5) (2024-07-30)
 
 

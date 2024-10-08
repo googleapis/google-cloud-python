@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.32.0...google-cloud-documentai-v2.33.0) (2024-10-08)
+
+
+### Features
+
+* Removed deprecated api versions ([eeab5c1](https://github.com/googleapis/google-cloud-python/commit/eeab5c1ee68559605ab3dc251314d45bd92191cd))
+
 ## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.31.0...google-cloud-documentai-v2.32.0) (2024-09-06)
 
 

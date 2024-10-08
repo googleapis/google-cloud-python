@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.17.5...google-cloud-contact-center-insights-v1.18.0) (2024-10-08)
+
+
+### Features
+
+* Add CMEK InitializeLroSpec ([e4ac435](https://github.com/googleapis/google-cloud-python/commit/e4ac435aaa9508e33090091232ff35df860bfd37))
+* Add import / export IssueModel ([e4ac435](https://github.com/googleapis/google-cloud-python/commit/e4ac435aaa9508e33090091232ff35df860bfd37))
+* Add metadata import to IngestConversations ([e4ac435](https://github.com/googleapis/google-cloud-python/commit/e4ac435aaa9508e33090091232ff35df860bfd37))
+* Add sampling to IngestConversations ([e4ac435](https://github.com/googleapis/google-cloud-python/commit/e4ac435aaa9508e33090091232ff35df860bfd37))
+
+
+### Documentation
+
+* Add a comment for valid `order_by` values in ListConversations ([e4ac435](https://github.com/googleapis/google-cloud-python/commit/e4ac435aaa9508e33090091232ff35df860bfd37))
+* Add a comment for valid `update_mask` values in UpdateConversation ([e4ac435](https://github.com/googleapis/google-cloud-python/commit/e4ac435aaa9508e33090091232ff35df860bfd37))
+
 ## [1.17.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.17.4...google-cloud-contact-center-insights-v1.17.5) (2024-07-30)
 
 

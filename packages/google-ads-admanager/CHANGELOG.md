@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.1.2...google-ads-admanager-v0.2.0) (2024-10-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* Removed closed beta services that had data discrepancies with the SOAP API
+
+### Features
+
+* Added support for Interactive Reporting  ([6db79dc](https://github.com/googleapis/google-cloud-python/commit/6db79dc964b540f1c9c21d96122e4916aca66d98))
+
+
+### Bug Fixes
+
+* Removed closed beta services that had data discrepancies with the SOAP API ([6db79dc](https://github.com/googleapis/google-cloud-python/commit/6db79dc964b540f1c9c21d96122e4916aca66d98))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.1.1...google-ads-admanager-v0.1.2) (2024-07-30)
 
 
