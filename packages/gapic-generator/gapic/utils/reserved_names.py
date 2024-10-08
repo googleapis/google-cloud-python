@@ -89,6 +89,8 @@ RESERVED_NAMES = frozenset(
         "exec",
         "help",
         # Comes from Protoplus
-        "ignore_unknown_fields"
+        "ignore_unknown_fields",
+        "self",  # Refer to PEP8 https://peps.python.org/pep-0008/#function-and-method-arguments
+        "cls",  # Refer PEP8 https://peps.python.org/pep-0008/#function-and-method-arguments
     ]
 )
