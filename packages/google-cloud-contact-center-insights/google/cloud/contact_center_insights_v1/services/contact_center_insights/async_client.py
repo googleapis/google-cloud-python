@@ -89,6 +89,12 @@ class ContactCenterInsightsAsyncClient:
     parse_conversation_profile_path = staticmethod(
         ContactCenterInsightsClient.parse_conversation_profile_path
     )
+    encryption_spec_path = staticmethod(
+        ContactCenterInsightsClient.encryption_spec_path
+    )
+    parse_encryption_spec_path = staticmethod(
+        ContactCenterInsightsClient.parse_encryption_spec_path
+    )
     issue_path = staticmethod(ContactCenterInsightsClient.issue_path)
     parse_issue_path = staticmethod(ContactCenterInsightsClient.parse_issue_path)
     issue_model_path = staticmethod(ContactCenterInsightsClient.issue_model_path)
@@ -320,7 +326,9 @@ class ContactCenterInsightsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Conversation:
-        r"""Creates a conversation.
+        r"""Creates a conversation. Note that this method does not support
+        audio transcription or redaction. Use ``conversations.upload``
+        instead.
 
         .. code-block:: python
 
@@ -448,9 +456,9 @@ class ContactCenterInsightsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Create a longrunning conversation upload operation.
-        This method differs from CreateConversation by allowing
-        audio transcription and optional DLP redaction.
+        r"""Create a long-running conversation upload operation. This method
+        differs from ``CreateConversation`` by allowing audio
+        transcription and optional DLP redaction.
 
         .. code-block:: python
 
@@ -590,7 +598,21 @@ class ContactCenterInsightsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                The list of fields to be updated.
+                The list of fields to be updated. All possible fields
+                can be updated by passing ``*``, or a subset of the
+                following updateable fields can be provided:
+
+                -  ``agent_id``
+                -  ``language_code``
+                -  ``labels``
+                -  ``metadata``
+                -  ``quality_metadata``
+                -  ``call_metadata``
+                -  ``start_time``
+                -  ``expire_time`` or ``ttl``
+                -  ``data_source.gcs_source.audio_uri`` or
+                   ``data_source.dialogflow_source.audio_uri``
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2801,6 +2823,256 @@ class ContactCenterInsightsAsyncClient:
         # Done; return the response.
         return response
 
+    async def export_issue_model(
+        self,
+        request: Optional[
+            Union[contact_center_insights.ExportIssueModelRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Exports an issue model to the provided destination.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_export_issue_model():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                gcs_destination = contact_center_insights_v1.GcsDestination()
+                gcs_destination.object_uri = "object_uri_value"
+
+                request = contact_center_insights_v1.ExportIssueModelRequest(
+                    gcs_destination=gcs_destination,
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.export_issue_model(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ExportIssueModelRequest, dict]]):
+                The request object. Request to export an issue model.
+            name (:class:`str`):
+                Required. The issue model to export.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.contact_center_insights_v1.types.ExportIssueModelResponse`
+                Response from export issue model
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ExportIssueModelRequest):
+            request = contact_center_insights.ExportIssueModelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_issue_model
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            contact_center_insights.ExportIssueModelResponse,
+            metadata_type=contact_center_insights.ExportIssueModelMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def import_issue_model(
+        self,
+        request: Optional[
+            Union[contact_center_insights.ImportIssueModelRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Imports an issue model from a Cloud Storage bucket.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_import_issue_model():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                gcs_source = contact_center_insights_v1.GcsSource()
+                gcs_source.object_uri = "object_uri_value"
+
+                request = contact_center_insights_v1.ImportIssueModelRequest(
+                    gcs_source=gcs_source,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.import_issue_model(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ImportIssueModelRequest, dict]]):
+                The request object. Request to import an issue model.
+            parent (:class:`str`):
+                Required. The parent resource of the
+                issue model.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.contact_center_insights_v1.types.ImportIssueModelResponse`
+                Response from import issue model
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ImportIssueModelRequest):
+            request = contact_center_insights.ImportIssueModelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_issue_model
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            contact_center_insights.ImportIssueModelResponse,
+            metadata_type=contact_center_insights.ImportIssueModelMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def get_issue(
         self,
         request: Optional[Union[contact_center_insights.GetIssueRequest, dict]] = None,
@@ -4061,7 +4333,13 @@ class ContactCenterInsightsAsyncClient:
 
         Returns:
             google.cloud.contact_center_insights_v1.types.Settings:
-                The settings resource.
+                The CCAI Insights project wide settings.
+                   Use these settings to configure the behavior of
+                   Insights. View these settings with
+                   [getsettings](https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations/getSettings)
+                   and change the settings with
+                   [updateSettings](https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations/updateSettings).
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -4172,7 +4450,13 @@ class ContactCenterInsightsAsyncClient:
 
         Returns:
             google.cloud.contact_center_insights_v1.types.Settings:
-                The settings resource.
+                The CCAI Insights project wide settings.
+                   Use these settings to configure the behavior of
+                   Insights. View these settings with
+                   [getsettings](https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations/getSettings)
+                   and change the settings with
+                   [updateSettings](https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations/updateSettings).
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -4219,6 +4503,256 @@ class ContactCenterInsightsAsyncClient:
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_encryption_spec(
+        self,
+        request: Optional[
+            Union[contact_center_insights.GetEncryptionSpecRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.EncryptionSpec:
+        r"""Gets location-level encryption key specification.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_get_encryption_spec():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.GetEncryptionSpecRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_encryption_spec(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetEncryptionSpecRequest, dict]]):
+                The request object. The request to get location-level
+                encryption specification.
+            name (:class:`str`):
+                Required. The name of the encryption
+                spec resource to get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.EncryptionSpec:
+                A customer-managed encryption key
+                specification that can be applied to all
+                created resources (e.g. Conversation).
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.GetEncryptionSpecRequest):
+            request = contact_center_insights.GetEncryptionSpecRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_encryption_spec
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def initialize_encryption_spec(
+        self,
+        request: Optional[
+            Union[contact_center_insights.InitializeEncryptionSpecRequest, dict]
+        ] = None,
+        *,
+        encryption_spec: Optional[resources.EncryptionSpec] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Initializes a location-level encryption key
+        specification.  An error will be thrown if the location
+        has resources already created before the initialization.
+        Once the encryption specification is initialized at a
+        location, it is immutable and all newly created
+        resources under the location will be encrypted with the
+        existing specification.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_initialize_encryption_spec():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                encryption_spec = contact_center_insights_v1.EncryptionSpec()
+                encryption_spec.kms_key = "kms_key_value"
+
+                request = contact_center_insights_v1.InitializeEncryptionSpecRequest(
+                    encryption_spec=encryption_spec,
+                )
+
+                # Make the request
+                operation = client.initialize_encryption_spec(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.InitializeEncryptionSpecRequest, dict]]):
+                The request object. The request to initialize a
+                location-level encryption specification.
+            encryption_spec (:class:`google.cloud.contact_center_insights_v1.types.EncryptionSpec`):
+                Required. The encryption spec used for CMEK encryption.
+                It is required that the kms key is in the same region as
+                the endpoint. The same key will be used for all
+                provisioned resources, if encryption is available. If
+                the kms_key_name is left empty, no encryption will be
+                enforced.
+
+                This corresponds to the ``encryption_spec`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.contact_center_insights_v1.types.InitializeEncryptionSpecResponse`
+                The response to initialize a location-level encryption
+                specification.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([encryption_spec])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.InitializeEncryptionSpecRequest
+        ):
+            request = contact_center_insights.InitializeEncryptionSpecRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if encryption_spec is not None:
+            request.encryption_spec = encryption_spec
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.initialize_encryption_spec
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("encryption_spec.name", request.encryption_spec.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            contact_center_insights.InitializeEncryptionSpecResponse,
+            metadata_type=contact_center_insights.InitializeEncryptionSpecMetadata,
         )
 
         # Done; return the response.

@@ -1230,6 +1230,7 @@ def test_create_conversation(request_type, transport: str = "grpc"):
             name="name_value",
             language_code="language_code_value",
             agent_id="agent_id_value",
+            metadata_json="metadata_json_value",
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
             obfuscated_user_id="obfuscated_user_id_value",
@@ -1247,6 +1248,7 @@ def test_create_conversation(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.language_code == "language_code_value"
     assert response.agent_id == "agent_id_value"
+    assert response.metadata_json == "metadata_json_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
     assert response.obfuscated_user_id == "obfuscated_user_id_value"
@@ -1363,6 +1365,7 @@ async def test_create_conversation_empty_call_async():
                 name="name_value",
                 language_code="language_code_value",
                 agent_id="agent_id_value",
+                metadata_json="metadata_json_value",
                 medium=resources.Conversation.Medium.PHONE_CALL,
                 turn_count=1105,
                 obfuscated_user_id="obfuscated_user_id_value",
@@ -1440,6 +1443,7 @@ async def test_create_conversation_async(
                 name="name_value",
                 language_code="language_code_value",
                 agent_id="agent_id_value",
+                metadata_json="metadata_json_value",
                 medium=resources.Conversation.Medium.PHONE_CALL,
                 turn_count=1105,
                 obfuscated_user_id="obfuscated_user_id_value",
@@ -1458,6 +1462,7 @@ async def test_create_conversation_async(
     assert response.name == "name_value"
     assert response.language_code == "language_code_value"
     assert response.agent_id == "agent_id_value"
+    assert response.metadata_json == "metadata_json_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
     assert response.obfuscated_user_id == "obfuscated_user_id_value"
@@ -1983,6 +1988,7 @@ def test_update_conversation(request_type, transport: str = "grpc"):
             name="name_value",
             language_code="language_code_value",
             agent_id="agent_id_value",
+            metadata_json="metadata_json_value",
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
             obfuscated_user_id="obfuscated_user_id_value",
@@ -2000,6 +2006,7 @@ def test_update_conversation(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.language_code == "language_code_value"
     assert response.agent_id == "agent_id_value"
+    assert response.metadata_json == "metadata_json_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
     assert response.obfuscated_user_id == "obfuscated_user_id_value"
@@ -2110,6 +2117,7 @@ async def test_update_conversation_empty_call_async():
                 name="name_value",
                 language_code="language_code_value",
                 agent_id="agent_id_value",
+                metadata_json="metadata_json_value",
                 medium=resources.Conversation.Medium.PHONE_CALL,
                 turn_count=1105,
                 obfuscated_user_id="obfuscated_user_id_value",
@@ -2187,6 +2195,7 @@ async def test_update_conversation_async(
                 name="name_value",
                 language_code="language_code_value",
                 agent_id="agent_id_value",
+                metadata_json="metadata_json_value",
                 medium=resources.Conversation.Medium.PHONE_CALL,
                 turn_count=1105,
                 obfuscated_user_id="obfuscated_user_id_value",
@@ -2205,6 +2214,7 @@ async def test_update_conversation_async(
     assert response.name == "name_value"
     assert response.language_code == "language_code_value"
     assert response.agent_id == "agent_id_value"
+    assert response.metadata_json == "metadata_json_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
     assert response.obfuscated_user_id == "obfuscated_user_id_value"
@@ -2412,6 +2422,7 @@ def test_get_conversation(request_type, transport: str = "grpc"):
             name="name_value",
             language_code="language_code_value",
             agent_id="agent_id_value",
+            metadata_json="metadata_json_value",
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
             obfuscated_user_id="obfuscated_user_id_value",
@@ -2429,6 +2440,7 @@ def test_get_conversation(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.language_code == "language_code_value"
     assert response.agent_id == "agent_id_value"
+    assert response.metadata_json == "metadata_json_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
     assert response.obfuscated_user_id == "obfuscated_user_id_value"
@@ -2535,6 +2547,7 @@ async def test_get_conversation_empty_call_async():
                 name="name_value",
                 language_code="language_code_value",
                 agent_id="agent_id_value",
+                metadata_json="metadata_json_value",
                 medium=resources.Conversation.Medium.PHONE_CALL,
                 turn_count=1105,
                 obfuscated_user_id="obfuscated_user_id_value",
@@ -2610,6 +2623,7 @@ async def test_get_conversation_async(
                 name="name_value",
                 language_code="language_code_value",
                 agent_id="agent_id_value",
+                metadata_json="metadata_json_value",
                 medium=resources.Conversation.Medium.PHONE_CALL,
                 turn_count=1105,
                 obfuscated_user_id="obfuscated_user_id_value",
@@ -2628,6 +2642,7 @@ async def test_get_conversation_async(
     assert response.name == "name_value"
     assert response.language_code == "language_code_value"
     assert response.agent_id == "agent_id_value"
+    assert response.metadata_json == "metadata_json_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
     assert response.obfuscated_user_id == "obfuscated_user_id_value"
@@ -2855,6 +2870,7 @@ def test_list_conversations_non_empty_request_with_auto_populated_field():
         parent="parent_value",
         page_token="page_token_value",
         filter="filter_value",
+        order_by="order_by_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2871,6 +2887,7 @@ def test_list_conversations_non_empty_request_with_auto_populated_field():
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
+            order_by="order_by_value",
         )
 
 
@@ -9762,6 +9779,786 @@ async def test_undeploy_issue_model_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        contact_center_insights.ExportIssueModelRequest,
+        dict,
+    ],
+)
+def test_export_issue_model(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_issue_model), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.export_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ExportIssueModelRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_export_issue_model_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_issue_model), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.export_issue_model()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ExportIssueModelRequest()
+
+
+def test_export_issue_model_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.ExportIssueModelRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_issue_model), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.export_issue_model(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ExportIssueModelRequest(
+            name="name_value",
+        )
+
+
+def test_export_issue_model_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.export_issue_model in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.export_issue_model
+        ] = mock_rpc
+        request = {}
+        client.export_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.export_issue_model(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_export_issue_model_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_issue_model), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.export_issue_model()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ExportIssueModelRequest()
+
+
+@pytest.mark.asyncio
+async def test_export_issue_model_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.export_issue_model
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.export_issue_model
+        ] = mock_rpc
+
+        request = {}
+        await client.export_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.export_issue_model(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_export_issue_model_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.ExportIssueModelRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_issue_model), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.export_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ExportIssueModelRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_export_issue_model_async_from_dict():
+    await test_export_issue_model_async(request_type=dict)
+
+
+def test_export_issue_model_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ExportIssueModelRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_issue_model), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_export_issue_model_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ExportIssueModelRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_issue_model), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.export_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_export_issue_model_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_issue_model), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.export_issue_model(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_export_issue_model_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.export_issue_model(
+            contact_center_insights.ExportIssueModelRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_export_issue_model_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_issue_model), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.export_issue_model(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_export_issue_model_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.export_issue_model(
+            contact_center_insights.ExportIssueModelRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ImportIssueModelRequest,
+        dict,
+    ],
+)
+def test_import_issue_model(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_issue_model), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.import_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ImportIssueModelRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_import_issue_model_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_issue_model), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.import_issue_model()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ImportIssueModelRequest()
+
+
+def test_import_issue_model_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.ImportIssueModelRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_issue_model), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.import_issue_model(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ImportIssueModelRequest(
+            parent="parent_value",
+        )
+
+
+def test_import_issue_model_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.import_issue_model in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.import_issue_model
+        ] = mock_rpc
+        request = {}
+        client.import_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.import_issue_model(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_import_issue_model_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_issue_model), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_issue_model()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ImportIssueModelRequest()
+
+
+@pytest.mark.asyncio
+async def test_import_issue_model_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.import_issue_model
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.import_issue_model
+        ] = mock_rpc
+
+        request = {}
+        await client.import_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.import_issue_model(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_import_issue_model_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.ImportIssueModelRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_issue_model), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ImportIssueModelRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_import_issue_model_async_from_dict():
+    await test_import_issue_model_async(request_type=dict)
+
+
+def test_import_issue_model_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ImportIssueModelRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_issue_model), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.import_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_import_issue_model_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ImportIssueModelRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_issue_model), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.import_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_import_issue_model_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_issue_model), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.import_issue_model(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_import_issue_model_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.import_issue_model(
+            contact_center_insights.ImportIssueModelRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_issue_model_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_issue_model), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.import_issue_model(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_import_issue_model_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.import_issue_model(
+            contact_center_insights.ImportIssueModelRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         contact_center_insights.GetIssueRequest,
         dict,
     ],
@@ -9783,6 +10580,7 @@ def test_get_issue(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             sample_utterances=["sample_utterances_value"],
+            display_description="display_description_value",
         )
         response = client.get_issue(request)
 
@@ -9797,6 +10595,7 @@ def test_get_issue(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.sample_utterances == ["sample_utterances_value"]
+    assert response.display_description == "display_description_value"
 
 
 def test_get_issue_empty_call():
@@ -9898,6 +10697,7 @@ async def test_get_issue_empty_call_async():
                 name="name_value",
                 display_name="display_name_value",
                 sample_utterances=["sample_utterances_value"],
+                display_description="display_description_value",
             )
         )
         response = await client.get_issue()
@@ -9968,6 +10768,7 @@ async def test_get_issue_async(
                 name="name_value",
                 display_name="display_name_value",
                 sample_utterances=["sample_utterances_value"],
+                display_description="display_description_value",
             )
         )
         response = await client.get_issue(request)
@@ -9983,6 +10784,7 @@ async def test_get_issue_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.sample_utterances == ["sample_utterances_value"]
+    assert response.display_description == "display_description_value"
 
 
 @pytest.mark.asyncio
@@ -10511,6 +11313,7 @@ def test_update_issue(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             sample_utterances=["sample_utterances_value"],
+            display_description="display_description_value",
         )
         response = client.update_issue(request)
 
@@ -10525,6 +11328,7 @@ def test_update_issue(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.sample_utterances == ["sample_utterances_value"]
+    assert response.display_description == "display_description_value"
 
 
 def test_update_issue_empty_call():
@@ -10622,6 +11426,7 @@ async def test_update_issue_empty_call_async():
                 name="name_value",
                 display_name="display_name_value",
                 sample_utterances=["sample_utterances_value"],
+                display_description="display_description_value",
             )
         )
         response = await client.update_issue()
@@ -10694,6 +11499,7 @@ async def test_update_issue_async(
                 name="name_value",
                 display_name="display_name_value",
                 sample_utterances=["sample_utterances_value"],
+                display_description="display_description_value",
             )
         )
         response = await client.update_issue(request)
@@ -10709,6 +11515,7 @@ async def test_update_issue_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.sample_utterances == ["sample_utterances_value"]
+    assert response.display_description == "display_description_value"
 
 
 @pytest.mark.asyncio
@@ -14955,6 +15762,786 @@ async def test_update_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        contact_center_insights.GetEncryptionSpecRequest,
+        dict,
+    ],
+)
+def test_get_encryption_spec(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.EncryptionSpec(
+            name="name_value",
+            kms_key="kms_key_value",
+        )
+        response = client.get_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.GetEncryptionSpecRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.EncryptionSpec)
+    assert response.name == "name_value"
+    assert response.kms_key == "kms_key_value"
+
+
+def test_get_encryption_spec_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_encryption_spec), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_encryption_spec()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.GetEncryptionSpecRequest()
+
+
+def test_get_encryption_spec_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.GetEncryptionSpecRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_encryption_spec), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_encryption_spec(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.GetEncryptionSpecRequest(
+            name="name_value",
+        )
+
+
+def test_get_encryption_spec_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_encryption_spec in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_encryption_spec
+        ] = mock_rpc
+        request = {}
+        client.get_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_encryption_spec(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_encryption_spec_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.EncryptionSpec(
+                name="name_value",
+                kms_key="kms_key_value",
+            )
+        )
+        response = await client.get_encryption_spec()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.GetEncryptionSpecRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_encryption_spec_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_encryption_spec
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_encryption_spec
+        ] = mock_rpc
+
+        request = {}
+        await client.get_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_encryption_spec(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_encryption_spec_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.GetEncryptionSpecRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.EncryptionSpec(
+                name="name_value",
+                kms_key="kms_key_value",
+            )
+        )
+        response = await client.get_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.GetEncryptionSpecRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.EncryptionSpec)
+    assert response.name == "name_value"
+    assert response.kms_key == "kms_key_value"
+
+
+@pytest.mark.asyncio
+async def test_get_encryption_spec_async_from_dict():
+    await test_get_encryption_spec_async(request_type=dict)
+
+
+def test_get_encryption_spec_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetEncryptionSpecRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_encryption_spec), "__call__"
+    ) as call:
+        call.return_value = resources.EncryptionSpec()
+        client.get_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_encryption_spec_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetEncryptionSpecRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_encryption_spec), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.EncryptionSpec()
+        )
+        await client.get_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_encryption_spec_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.EncryptionSpec()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_encryption_spec(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_encryption_spec_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_encryption_spec(
+            contact_center_insights.GetEncryptionSpecRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_encryption_spec_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.EncryptionSpec()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.EncryptionSpec()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_encryption_spec(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_encryption_spec_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_encryption_spec(
+            contact_center_insights.GetEncryptionSpecRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.InitializeEncryptionSpecRequest,
+        dict,
+    ],
+)
+def test_initialize_encryption_spec(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.InitializeEncryptionSpecRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_initialize_encryption_spec_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.initialize_encryption_spec()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.InitializeEncryptionSpecRequest()
+
+
+def test_initialize_encryption_spec_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.InitializeEncryptionSpecRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.initialize_encryption_spec(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.InitializeEncryptionSpecRequest()
+
+
+def test_initialize_encryption_spec_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.initialize_encryption_spec
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.initialize_encryption_spec
+        ] = mock_rpc
+        request = {}
+        client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.initialize_encryption_spec(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.initialize_encryption_spec()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.InitializeEncryptionSpecRequest()
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.initialize_encryption_spec
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.initialize_encryption_spec
+        ] = mock_rpc
+
+        request = {}
+        await client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.initialize_encryption_spec(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.InitializeEncryptionSpecRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.InitializeEncryptionSpecRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_async_from_dict():
+    await test_initialize_encryption_spec_async(request_type=dict)
+
+
+def test_initialize_encryption_spec_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.InitializeEncryptionSpecRequest()
+
+    request.encryption_spec.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "encryption_spec.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.InitializeEncryptionSpecRequest()
+
+    request.encryption_spec.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "encryption_spec.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_initialize_encryption_spec_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.initialize_encryption_spec(
+            encryption_spec=resources.EncryptionSpec(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].encryption_spec
+        mock_val = resources.EncryptionSpec(name="name_value")
+        assert arg == mock_val
+
+
+def test_initialize_encryption_spec_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.initialize_encryption_spec(
+            contact_center_insights.InitializeEncryptionSpecRequest(),
+            encryption_spec=resources.EncryptionSpec(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.initialize_encryption_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.initialize_encryption_spec(
+            encryption_spec=resources.EncryptionSpec(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].encryption_spec
+        mock_val = resources.EncryptionSpec(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_initialize_encryption_spec_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.initialize_encryption_spec(
+            contact_center_insights.InitializeEncryptionSpecRequest(),
+            encryption_spec=resources.EncryptionSpec(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         contact_center_insights.CreateViewRequest,
         dict,
     ],
@@ -17040,6 +18627,7 @@ def test_create_conversation_rest(request_type):
                 }
             ],
         },
+        "metadata_json": "metadata_json_value",
         "transcript": {
             "transcript_segments": [
                 {
@@ -17114,6 +18702,7 @@ def test_create_conversation_rest(request_type):
                     ],
                     "entities": {},
                     "sentiments": [{"channel_tag": 1140, "sentiment_data": {}}],
+                    "silence": {"silence_duration": {}, "silence_percentage": 0.1888},
                     "intents": {},
                     "phrase_matchers": {},
                     "issue_model_result": {
@@ -17191,6 +18780,11 @@ def test_create_conversation_rest(request_type):
                     "correctness_level": 1,
                     "clicked": True,
                     "displayed": True,
+                },
+                "user_input": {
+                    "query": "query_value",
+                    "generator_name": "generator_name_value",
+                    "query_source": 1,
                 },
             }
         ],
@@ -17275,6 +18869,7 @@ def test_create_conversation_rest(request_type):
             name="name_value",
             language_code="language_code_value",
             agent_id="agent_id_value",
+            metadata_json="metadata_json_value",
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
             obfuscated_user_id="obfuscated_user_id_value",
@@ -17296,6 +18891,7 @@ def test_create_conversation_rest(request_type):
     assert response.name == "name_value"
     assert response.language_code == "language_code_value"
     assert response.agent_id == "agent_id_value"
+    assert response.metadata_json == "metadata_json_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
     assert response.obfuscated_user_id == "obfuscated_user_id_value"
@@ -17899,6 +19495,7 @@ def test_update_conversation_rest(request_type):
                 }
             ],
         },
+        "metadata_json": "metadata_json_value",
         "transcript": {
             "transcript_segments": [
                 {
@@ -17973,6 +19570,7 @@ def test_update_conversation_rest(request_type):
                     ],
                     "entities": {},
                     "sentiments": [{"channel_tag": 1140, "sentiment_data": {}}],
+                    "silence": {"silence_duration": {}, "silence_percentage": 0.1888},
                     "intents": {},
                     "phrase_matchers": {},
                     "issue_model_result": {
@@ -18050,6 +19648,11 @@ def test_update_conversation_rest(request_type):
                     "correctness_level": 1,
                     "clicked": True,
                     "displayed": True,
+                },
+                "user_input": {
+                    "query": "query_value",
+                    "generator_name": "generator_name_value",
+                    "query_source": 1,
                 },
             }
         ],
@@ -18134,6 +19737,7 @@ def test_update_conversation_rest(request_type):
             name="name_value",
             language_code="language_code_value",
             agent_id="agent_id_value",
+            metadata_json="metadata_json_value",
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
             obfuscated_user_id="obfuscated_user_id_value",
@@ -18155,6 +19759,7 @@ def test_update_conversation_rest(request_type):
     assert response.name == "name_value"
     assert response.language_code == "language_code_value"
     assert response.agent_id == "agent_id_value"
+    assert response.metadata_json == "metadata_json_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
     assert response.obfuscated_user_id == "obfuscated_user_id_value"
@@ -18464,6 +20069,7 @@ def test_get_conversation_rest(request_type):
             name="name_value",
             language_code="language_code_value",
             agent_id="agent_id_value",
+            metadata_json="metadata_json_value",
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
             obfuscated_user_id="obfuscated_user_id_value",
@@ -18485,6 +20091,7 @@ def test_get_conversation_rest(request_type):
     assert response.name == "name_value"
     assert response.language_code == "language_code_value"
     assert response.agent_id == "agent_id_value"
+    assert response.metadata_json == "metadata_json_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
     assert response.obfuscated_user_id == "obfuscated_user_id_value"
@@ -18872,6 +20479,7 @@ def test_list_conversations_rest_required_fields(
     assert not set(unset_fields) - set(
         (
             "filter",
+            "order_by",
             "page_size",
             "page_token",
             "view",
@@ -18936,6 +20544,7 @@ def test_list_conversations_rest_unset_required_fields():
         set(
             (
                 "filter",
+                "orderBy",
                 "pageSize",
                 "pageToken",
                 "view",
@@ -19507,6 +21116,10 @@ def test_create_analysis_rest(request_type):
                 ],
                 "entities": {},
                 "sentiments": [{"channel_tag": 1140, "sentiment_data": {}}],
+                "silence": {
+                    "silence_duration": {"seconds": 751, "nanos": 543},
+                    "silence_percentage": 0.1888,
+                },
                 "intents": {},
                 "phrase_matchers": {},
                 "issue_model_result": {
@@ -24495,6 +26108,618 @@ def test_undeploy_issue_model_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        contact_center_insights.ExportIssueModelRequest,
+        dict,
+    ],
+)
+def test_export_issue_model_rest(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/issueModels/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.export_issue_model(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_export_issue_model_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.export_issue_model in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.export_issue_model
+        ] = mock_rpc
+
+        request = {}
+        client.export_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.export_issue_model(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_export_issue_model_rest_required_fields(
+    request_type=contact_center_insights.ExportIssueModelRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).export_issue_model._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).export_issue_model._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.export_issue_model(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_export_issue_model_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.export_issue_model._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_issue_model_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_export_issue_model"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_export_issue_model"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.ExportIssueModelRequest.pb(
+            contact_center_insights.ExportIssueModelRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = contact_center_insights.ExportIssueModelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_issue_model(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_export_issue_model_rest_bad_request(
+    transport: str = "rest",
+    request_type=contact_center_insights.ExportIssueModelRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/issueModels/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.export_issue_model(request)
+
+
+def test_export_issue_model_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/issueModels/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.export_issue_model(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/issueModels/*}:export"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_export_issue_model_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.export_issue_model(
+            contact_center_insights.ExportIssueModelRequest(),
+            name="name_value",
+        )
+
+
+def test_export_issue_model_rest_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ImportIssueModelRequest,
+        dict,
+    ],
+)
+def test_import_issue_model_rest(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.import_issue_model(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_import_issue_model_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.import_issue_model in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.import_issue_model
+        ] = mock_rpc
+
+        request = {}
+        client.import_issue_model(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.import_issue_model(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_import_issue_model_rest_required_fields(
+    request_type=contact_center_insights.ImportIssueModelRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).import_issue_model._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).import_issue_model._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.import_issue_model(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_import_issue_model_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.import_issue_model._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_import_issue_model_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_import_issue_model"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_import_issue_model"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.ImportIssueModelRequest.pb(
+            contact_center_insights.ImportIssueModelRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = contact_center_insights.ImportIssueModelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.import_issue_model(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_import_issue_model_rest_bad_request(
+    transport: str = "rest",
+    request_type=contact_center_insights.ImportIssueModelRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.import_issue_model(request)
+
+
+def test_import_issue_model_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.import_issue_model(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/issueModels:import"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_import_issue_model_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.import_issue_model(
+            contact_center_insights.ImportIssueModelRequest(),
+            parent="parent_value",
+        )
+
+
+def test_import_issue_model_rest_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         contact_center_insights.GetIssueRequest,
         dict,
     ],
@@ -24518,6 +26743,7 @@ def test_get_issue_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             sample_utterances=["sample_utterances_value"],
+            display_description="display_description_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -24536,6 +26762,7 @@ def test_get_issue_rest(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.sample_utterances == ["sample_utterances_value"]
+    assert response.display_description == "display_description_value"
 
 
 def test_get_issue_rest_use_cached_wrapped_rpc():
@@ -25130,6 +27357,7 @@ def test_update_issue_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "sample_utterances": ["sample_utterances_value1", "sample_utterances_value2"],
+        "display_description": "display_description_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -25207,6 +27435,7 @@ def test_update_issue_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             sample_utterances=["sample_utterances_value"],
+            display_description="display_description_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -25225,6 +27454,7 @@ def test_update_issue_rest(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.sample_utterances == ["sample_utterances_value"]
+    assert response.display_description == "display_description_value"
 
 
 def test_update_issue_rest_use_cached_wrapped_rpc():
@@ -28997,6 +31227,627 @@ def test_update_settings_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        contact_center_insights.GetEncryptionSpecRequest,
+        dict,
+    ],
+)
+def test_get_encryption_spec_rest(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/encryptionSpec"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.EncryptionSpec(
+            name="name_value",
+            kms_key="kms_key_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.EncryptionSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_encryption_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.EncryptionSpec)
+    assert response.name == "name_value"
+    assert response.kms_key == "kms_key_value"
+
+
+def test_get_encryption_spec_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_encryption_spec in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_encryption_spec
+        ] = mock_rpc
+
+        request = {}
+        client.get_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_encryption_spec(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_encryption_spec_rest_required_fields(
+    request_type=contact_center_insights.GetEncryptionSpecRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_encryption_spec._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_encryption_spec._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.EncryptionSpec()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.EncryptionSpec.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_encryption_spec(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_encryption_spec_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_encryption_spec._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_encryption_spec_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_get_encryption_spec"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_get_encryption_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.GetEncryptionSpecRequest.pb(
+            contact_center_insights.GetEncryptionSpecRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.EncryptionSpec.to_json(
+            resources.EncryptionSpec()
+        )
+
+        request = contact_center_insights.GetEncryptionSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.EncryptionSpec()
+
+        client.get_encryption_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_encryption_spec_rest_bad_request(
+    transport: str = "rest",
+    request_type=contact_center_insights.GetEncryptionSpecRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/encryptionSpec"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_encryption_spec(request)
+
+
+def test_get_encryption_spec_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.EncryptionSpec()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/encryptionSpec"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.EncryptionSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_encryption_spec(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/encryptionSpec}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_encryption_spec_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_encryption_spec(
+            contact_center_insights.GetEncryptionSpecRequest(),
+            name="name_value",
+        )
+
+
+def test_get_encryption_spec_rest_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.InitializeEncryptionSpecRequest,
+        dict,
+    ],
+)
+def test_initialize_encryption_spec_rest(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "encryption_spec": {"name": "projects/sample1/locations/sample2/encryptionSpec"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.initialize_encryption_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_initialize_encryption_spec_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.initialize_encryption_spec
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.initialize_encryption_spec
+        ] = mock_rpc
+
+        request = {}
+        client.initialize_encryption_spec(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.initialize_encryption_spec(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_initialize_encryption_spec_rest_required_fields(
+    request_type=contact_center_insights.InitializeEncryptionSpecRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).initialize_encryption_spec._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).initialize_encryption_spec._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.initialize_encryption_spec(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_initialize_encryption_spec_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.initialize_encryption_spec._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("encryptionSpec",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_initialize_encryption_spec_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_initialize_encryption_spec",
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "pre_initialize_encryption_spec",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.InitializeEncryptionSpecRequest.pb(
+            contact_center_insights.InitializeEncryptionSpecRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = contact_center_insights.InitializeEncryptionSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.initialize_encryption_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_encryption_spec_rest_bad_request(
+    transport: str = "rest",
+    request_type=contact_center_insights.InitializeEncryptionSpecRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "encryption_spec": {"name": "projects/sample1/locations/sample2/encryptionSpec"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.initialize_encryption_spec(request)
+
+
+def test_initialize_encryption_spec_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "encryption_spec": {
+                "name": "projects/sample1/locations/sample2/encryptionSpec"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            encryption_spec=resources.EncryptionSpec(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.initialize_encryption_spec(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{encryption_spec.name=projects/*/locations/*/encryptionSpec}:initialize"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_initialize_encryption_spec_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.initialize_encryption_spec(
+            contact_center_insights.InitializeEncryptionSpecRequest(),
+            encryption_spec=resources.EncryptionSpec(name="name_value"),
+        )
+
+
+def test_initialize_encryption_spec_rest_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         contact_center_insights.CreateViewRequest,
         dict,
     ],
@@ -30889,6 +33740,8 @@ def test_contact_center_insights_base_transport():
         "delete_issue_model",
         "deploy_issue_model",
         "undeploy_issue_model",
+        "export_issue_model",
+        "import_issue_model",
         "get_issue",
         "list_issues",
         "update_issue",
@@ -30902,6 +33755,8 @@ def test_contact_center_insights_base_transport():
         "calculate_stats",
         "get_settings",
         "update_settings",
+        "get_encryption_spec",
+        "initialize_encryption_spec",
         "create_view",
         "get_view",
         "list_views",
@@ -31257,6 +34112,12 @@ def test_contact_center_insights_client_transport_session_collision(transport_na
     session1 = client1.transport.undeploy_issue_model._session
     session2 = client2.transport.undeploy_issue_model._session
     assert session1 != session2
+    session1 = client1.transport.export_issue_model._session
+    session2 = client2.transport.export_issue_model._session
+    assert session1 != session2
+    session1 = client1.transport.import_issue_model._session
+    session2 = client2.transport.import_issue_model._session
+    assert session1 != session2
     session1 = client1.transport.get_issue._session
     session2 = client2.transport.get_issue._session
     assert session1 != session2
@@ -31295,6 +34156,12 @@ def test_contact_center_insights_client_transport_session_collision(transport_na
     assert session1 != session2
     session1 = client1.transport.update_settings._session
     session2 = client2.transport.update_settings._session
+    assert session1 != session2
+    session1 = client1.transport.get_encryption_spec._session
+    session2 = client2.transport.get_encryption_spec._session
+    assert session1 != session2
+    session1 = client1.transport.initialize_encryption_spec._session
+    session2 = client2.transport.initialize_encryption_spec._session
     assert session1 != session2
     session1 = client1.transport.create_view._session
     session2 = client2.transport.create_view._session
@@ -31562,11 +34429,34 @@ def test_parse_conversation_profile_path():
     assert expected == actual
 
 
-def test_issue_path():
+def test_encryption_spec_path():
     project = "winkle"
     location = "nautilus"
-    issue_model = "scallop"
-    issue = "abalone"
+    expected = "projects/{project}/locations/{location}/encryptionSpec".format(
+        project=project,
+        location=location,
+    )
+    actual = ContactCenterInsightsClient.encryption_spec_path(project, location)
+    assert expected == actual
+
+
+def test_parse_encryption_spec_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+    }
+    path = ContactCenterInsightsClient.encryption_spec_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContactCenterInsightsClient.parse_encryption_spec_path(path)
+    assert expected == actual
+
+
+def test_issue_path():
+    project = "squid"
+    location = "clam"
+    issue_model = "whelk"
+    issue = "octopus"
     expected = "projects/{project}/locations/{location}/issueModels/{issue_model}/issues/{issue}".format(
         project=project,
         location=location,
@@ -31581,10 +34471,10 @@ def test_issue_path():
 
 def test_parse_issue_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "issue_model": "whelk",
-        "issue": "octopus",
+        "project": "oyster",
+        "location": "nudibranch",
+        "issue_model": "cuttlefish",
+        "issue": "mussel",
     }
     path = ContactCenterInsightsClient.issue_path(**expected)
 
@@ -31594,9 +34484,9 @@ def test_parse_issue_path():
 
 
 def test_issue_model_path():
-    project = "oyster"
-    location = "nudibranch"
-    issue_model = "cuttlefish"
+    project = "winkle"
+    location = "nautilus"
+    issue_model = "scallop"
     expected = (
         "projects/{project}/locations/{location}/issueModels/{issue_model}".format(
             project=project,
@@ -31612,9 +34502,9 @@ def test_issue_model_path():
 
 def test_parse_issue_model_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "issue_model": "nautilus",
+        "project": "abalone",
+        "location": "squid",
+        "issue_model": "clam",
     }
     path = ContactCenterInsightsClient.issue_model_path(**expected)
 
@@ -31624,9 +34514,9 @@ def test_parse_issue_model_path():
 
 
 def test_participant_path():
-    project = "scallop"
-    conversation = "abalone"
-    participant = "squid"
+    project = "whelk"
+    conversation = "octopus"
+    participant = "oyster"
     expected = "projects/{project}/conversations/{conversation}/participants/{participant}".format(
         project=project,
         conversation=conversation,
@@ -31640,9 +34530,9 @@ def test_participant_path():
 
 def test_parse_participant_path():
     expected = {
-        "project": "clam",
-        "conversation": "whelk",
-        "participant": "octopus",
+        "project": "nudibranch",
+        "conversation": "cuttlefish",
+        "participant": "mussel",
     }
     path = ContactCenterInsightsClient.participant_path(**expected)
 
@@ -31652,9 +34542,9 @@ def test_parse_participant_path():
 
 
 def test_phrase_matcher_path():
-    project = "oyster"
-    location = "nudibranch"
-    phrase_matcher = "cuttlefish"
+    project = "winkle"
+    location = "nautilus"
+    phrase_matcher = "scallop"
     expected = "projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}".format(
         project=project,
         location=location,
@@ -31668,9 +34558,9 @@ def test_phrase_matcher_path():
 
 def test_parse_phrase_matcher_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "phrase_matcher": "nautilus",
+        "project": "abalone",
+        "location": "squid",
+        "phrase_matcher": "clam",
     }
     path = ContactCenterInsightsClient.phrase_matcher_path(**expected)
 
@@ -31680,9 +34570,9 @@ def test_parse_phrase_matcher_path():
 
 
 def test_recognizer_path():
-    project = "scallop"
-    location = "abalone"
-    recognizer = "squid"
+    project = "whelk"
+    location = "octopus"
+    recognizer = "oyster"
     expected = (
         "projects/{project}/locations/{location}/recognizers/{recognizer}".format(
             project=project,
@@ -31696,9 +34586,9 @@ def test_recognizer_path():
 
 def test_parse_recognizer_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "recognizer": "octopus",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "recognizer": "mussel",
     }
     path = ContactCenterInsightsClient.recognizer_path(**expected)
 
@@ -31708,8 +34598,8 @@ def test_parse_recognizer_path():
 
 
 def test_settings_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}/settings".format(
         project=project,
         location=location,
@@ -31720,8 +34610,8 @@ def test_settings_path():
 
 def test_parse_settings_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = ContactCenterInsightsClient.settings_path(**expected)
 
@@ -31731,9 +34621,9 @@ def test_parse_settings_path():
 
 
 def test_view_path():
-    project = "winkle"
-    location = "nautilus"
-    view = "scallop"
+    project = "squid"
+    location = "clam"
+    view = "whelk"
     expected = "projects/{project}/locations/{location}/views/{view}".format(
         project=project,
         location=location,
@@ -31745,9 +34635,9 @@ def test_view_path():
 
 def test_parse_view_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "view": "clam",
+        "project": "octopus",
+        "location": "oyster",
+        "view": "nudibranch",
     }
     path = ContactCenterInsightsClient.view_path(**expected)
 
@@ -31757,7 +34647,7 @@ def test_parse_view_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -31767,7 +34657,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "mussel",
     }
     path = ContactCenterInsightsClient.common_billing_account_path(**expected)
 
@@ -31777,7 +34667,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -31787,7 +34677,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "nautilus",
     }
     path = ContactCenterInsightsClient.common_folder_path(**expected)
 
@@ -31797,7 +34687,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -31807,7 +34697,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "abalone",
     }
     path = ContactCenterInsightsClient.common_organization_path(**expected)
 
@@ -31817,7 +34707,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -31827,7 +34717,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "clam",
     }
     path = ContactCenterInsightsClient.common_project_path(**expected)
 
@@ -31837,8 +34727,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -31849,8 +34739,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = ContactCenterInsightsClient.common_location_path(**expected)
 
