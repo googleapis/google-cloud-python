@@ -394,20 +394,6 @@ class ArrayValue:
             output_name,
         )
 
-    def _reproject_to_table(self) -> ArrayValue:
-        """
-        Internal operators that projects the internal representation into a
-        new ibis table expression where each value column is a direct
-        reference to a column in that table expression. Needed after
-        some operations such as window operations that cannot be used
-        recursively in projections.
-        """
-        return ArrayValue(
-            nodes.ReprojectOpNode(
-                child=self.node,
-            )
-        )
-
     def relational_join(
         self,
         other: ArrayValue,

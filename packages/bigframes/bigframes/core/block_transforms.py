@@ -196,8 +196,7 @@ def interpolate(block: blocks.Block, method: str = "linear") -> blocks.Block:
         else:
             output_column_ids.append(column)
 
-    # Force reproject since used `skip_project_unsafe` perviously
-    block = block.select_columns(output_column_ids)._force_reproject()
+    block = block.select_columns(output_column_ids)
     return block.with_column_labels(original_labels)
 
 

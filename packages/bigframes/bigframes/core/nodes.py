@@ -931,19 +931,6 @@ class WindowOpNode(UnaryNode):
         return self.transform_children(lambda x: x.prune(consumed_ids))
 
 
-# TODO: Remove this op
-@dataclass(frozen=True, eq=False)
-class ReprojectOpNode(UnaryNode):
-    @property
-    def variables_introduced(self) -> int:
-        return 0
-
-    @property
-    def relation_ops_created(self) -> int:
-        # This op is not a real transformation, just a hint to the sql generator
-        return 0
-
-
 @dataclass(frozen=True, eq=False)
 class RandomSampleNode(UnaryNode):
     fraction: float

@@ -336,10 +336,6 @@ class Compiler:
         return result if ordered else result.to_unordered()
 
     @_compile_node.register
-    def compile_reproject(self, node: nodes.ReprojectOpNode, ordered: bool = True):
-        return self.compile_node(node.child, ordered)._reproject_to_table()
-
-    @_compile_node.register
     def compile_explode(self, node: nodes.ExplodeNode, ordered: bool = True):
         return self.compile_node(node.child, ordered).explode(node.column_ids)
 

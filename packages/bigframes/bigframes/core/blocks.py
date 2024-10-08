@@ -2433,15 +2433,6 @@ class Block:
             # Always sort mult-index join
             return join_multi_indexed(self, other, how=how, sort=sort)
 
-    def _force_reproject(self) -> Block:
-        """Forces a reprojection of the underlying tables expression. Used to force predicate/order application before subsequent operations."""
-        return Block(
-            self._expr._reproject_to_table(),
-            index_columns=self.index_columns,
-            column_labels=self.column_labels,
-            index_labels=self.index.names,
-        )
-
     def is_monotonic_increasing(
         self, column_id: typing.Union[str, Sequence[str]]
     ) -> bool:
