@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.ads.admanager_v1.types import ad_unit_service
+from google.ads.admanager_v1.types import ad_unit_messages, ad_unit_service
 
 from .base import AdUnitServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -81,6 +81,14 @@ class AdUnitServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_ad_unit_sizes(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_ad_unit_sizes(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = AdUnitServiceRestTransport(interceptor=MyCustomAdUnitServiceInterceptor())
         client = AdUnitServiceClient(transport=transport)
 
@@ -100,8 +108,8 @@ class AdUnitServiceRestInterceptor:
         return request, metadata
 
     def post_get_ad_unit(
-        self, response: ad_unit_service.AdUnit
-    ) -> ad_unit_service.AdUnit:
+        self, response: ad_unit_messages.AdUnit
+    ) -> ad_unit_messages.AdUnit:
         """Post-rpc interceptor for get_ad_unit
 
         Override in a subclass to manipulate the response
@@ -126,6 +134,29 @@ class AdUnitServiceRestInterceptor:
         self, response: ad_unit_service.ListAdUnitsResponse
     ) -> ad_unit_service.ListAdUnitsResponse:
         """Post-rpc interceptor for list_ad_units
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AdUnitService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_ad_unit_sizes(
+        self,
+        request: ad_unit_service.ListAdUnitSizesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[ad_unit_service.ListAdUnitSizesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_ad_unit_sizes
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AdUnitService server.
+        """
+        return request, metadata
+
+    def post_list_ad_unit_sizes(
+        self, response: ad_unit_service.ListAdUnitSizesResponse
+    ) -> ad_unit_service.ListAdUnitSizesResponse:
+        """Post-rpc interceptor for list_ad_unit_sizes
 
         Override in a subclass to manipulate the response
         after it is returned by the AdUnitService server but before
@@ -274,7 +305,7 @@ class AdUnitServiceRestTransport(AdUnitServiceTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> ad_unit_service.AdUnit:
+        ) -> ad_unit_messages.AdUnit:
             r"""Call the get ad unit method over HTTP.
 
             Args:
@@ -287,7 +318,7 @@ class AdUnitServiceRestTransport(AdUnitServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.ad_unit_service.AdUnit:
+                ~.ad_unit_messages.AdUnit:
                     The AdUnit resource.
             """
 
@@ -331,8 +362,8 @@ class AdUnitServiceRestTransport(AdUnitServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = ad_unit_service.AdUnit()
-            pb_resp = ad_unit_service.AdUnit.pb(resp)
+            resp = ad_unit_messages.AdUnit()
+            pb_resp = ad_unit_messages.AdUnit.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_ad_unit(resp)
@@ -427,10 +458,101 @@ class AdUnitServiceRestTransport(AdUnitServiceTransport):
             resp = self._interceptor.post_list_ad_units(resp)
             return resp
 
+    class _ListAdUnitSizes(AdUnitServiceRestStub):
+        def __hash__(self):
+            return hash("ListAdUnitSizes")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: ad_unit_service.ListAdUnitSizesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> ad_unit_service.ListAdUnitSizesResponse:
+            r"""Call the list ad unit sizes method over HTTP.
+
+            Args:
+                request (~.ad_unit_service.ListAdUnitSizesRequest):
+                    The request object. Request object for ListAdUnitSizes
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.ad_unit_service.ListAdUnitSizesResponse:
+                    Response object for
+                ListAdUnitSizesRequest containing
+                matching AdUnitSizes.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=networks/*}/adUnitSizes",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_ad_unit_sizes(
+                request, metadata
+            )
+            pb_request = ad_unit_service.ListAdUnitSizesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = ad_unit_service.ListAdUnitSizesResponse()
+            pb_resp = ad_unit_service.ListAdUnitSizesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_ad_unit_sizes(resp)
+            return resp
+
     @property
     def get_ad_unit(
         self,
-    ) -> Callable[[ad_unit_service.GetAdUnitRequest], ad_unit_service.AdUnit]:
+    ) -> Callable[[ad_unit_service.GetAdUnitRequest], ad_unit_messages.AdUnit]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAdUnit(self._session, self._host, self._interceptor)  # type: ignore
@@ -444,6 +566,17 @@ class AdUnitServiceRestTransport(AdUnitServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAdUnits(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_ad_unit_sizes(
+        self,
+    ) -> Callable[
+        [ad_unit_service.ListAdUnitSizesRequest],
+        ad_unit_service.ListAdUnitSizesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAdUnitSizes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):
@@ -476,11 +609,11 @@ class AdUnitServiceRestTransport(AdUnitServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                 },
             ]
 

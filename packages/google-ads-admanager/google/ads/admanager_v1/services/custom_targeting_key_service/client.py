@@ -53,6 +53,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.ads.admanager_v1.services.custom_targeting_key_service import pagers
 from google.ads.admanager_v1.types import (
     custom_targeting_key_enums,
+    custom_targeting_key_messages,
     custom_targeting_key_service,
 )
 
@@ -712,7 +713,7 @@ class CustomTargetingKeyServiceClient(metaclass=CustomTargetingKeyServiceClientM
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> custom_targeting_key_service.CustomTargetingKey:
+    ) -> custom_targeting_key_messages.CustomTargetingKey:
         r"""API to retrieve a ``CustomTargetingKey`` object.
 
         .. code-block:: python

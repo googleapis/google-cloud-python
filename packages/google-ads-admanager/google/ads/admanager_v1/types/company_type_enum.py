@@ -55,9 +55,6 @@ class CompanyTypeEnum(proto.Message):
             AD_NETWORK (5):
                 A company representing multiple advertisers
                 and agencies.
-            VIEWABILITY_PROVIDER (6):
-                A third-party that measures creative
-                viewability.
         """
         COMPANY_TYPE_UNSPECIFIED = 0
         ADVERTISER = 1
@@ -65,7 +62,6 @@ class CompanyTypeEnum(proto.Message):
         AGENCY = 3
         HOUSE_AGENCY = 4
         AD_NETWORK = 5
-        VIEWABILITY_PROVIDER = 6
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

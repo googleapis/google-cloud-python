@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.ads.admanager_v1.types import ad_unit_service
+from google.ads.admanager_v1.types import ad_unit_messages, ad_unit_service
 
 
 class ListAdUnitsPager:
@@ -107,9 +107,83 @@ class ListAdUnitsPager:
             )
             yield self._response
 
-    def __iter__(self) -> Iterator[ad_unit_service.AdUnit]:
+    def __iter__(self) -> Iterator[ad_unit_messages.AdUnit]:
         for page in self.pages:
             yield from page.ad_units
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAdUnitSizesPager:
+    """A pager for iterating through ``list_ad_unit_sizes`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.ads.admanager_v1.types.ListAdUnitSizesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``ad_unit_sizes`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAdUnitSizes`` requests and continue to iterate
+    through the ``ad_unit_sizes`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.ads.admanager_v1.types.ListAdUnitSizesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., ad_unit_service.ListAdUnitSizesResponse],
+        request: ad_unit_service.ListAdUnitSizesRequest,
+        response: ad_unit_service.ListAdUnitSizesResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.ads.admanager_v1.types.ListAdUnitSizesRequest):
+                The initial request object.
+            response (google.ads.admanager_v1.types.ListAdUnitSizesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = ad_unit_service.ListAdUnitSizesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[ad_unit_service.ListAdUnitSizesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[ad_unit_messages.AdUnitSize]:
+        for page in self.pages:
+            yield from page.ad_unit_sizes
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

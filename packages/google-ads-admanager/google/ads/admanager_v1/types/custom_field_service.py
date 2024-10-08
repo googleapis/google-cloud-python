@@ -19,123 +19,16 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.ads.admanager_v1.types import custom_field_enums
+from google.ads.admanager_v1.types import custom_field_messages
 
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
     manifest={
-        "CustomField",
-        "CustomFieldOption",
         "GetCustomFieldRequest",
         "ListCustomFieldsRequest",
         "ListCustomFieldsResponse",
     },
 )
-
-
-class CustomField(proto.Message):
-    r"""The ``CustomField`` resource.
-
-    Attributes:
-        name (str):
-            Identifier. The resource name of the ``CustomField``.
-            Format:
-            ``networks/{network_code}/customFields/{custom_field_id}``
-        custom_field_id (int):
-            Output only. ``CustomField`` ID.
-        display_name (str):
-            Required. The display name of the ``CustomField``.
-
-            This value has a maximum length of 127 characters.
-        description (str):
-            Optional. The description of the ``CustomField``.
-
-            This value has a maximum length of 511 characters.
-        status (google.ads.admanager_v1.types.CustomFieldStatusEnum.CustomFieldStatus):
-            Output only. The status of the ``CustomField``.
-        entity_type (google.ads.admanager_v1.types.CustomFieldEntityTypeEnum.CustomFieldEntityType):
-            Required. The type of entity the ``CustomField`` can be
-            applied to.
-        data_type (google.ads.admanager_v1.types.CustomFieldDataTypeEnum.CustomFieldDataType):
-            Required. The data type of the ``CustomField``.
-        visibility (google.ads.admanager_v1.types.CustomFieldVisibilityEnum.CustomFieldVisibility):
-            Required. The visibility of the ``CustomField``.
-        options (MutableSequence[google.ads.admanager_v1.types.CustomFieldOption]):
-            Optional. The drop-down options for the ``CustomField``.
-
-            Only applicable for ``CustomField`` with the drop-down data
-            type.
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    custom_field_id: int = proto.Field(
-        proto.INT64,
-        number=2,
-    )
-    display_name: str = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-    description: str = proto.Field(
-        proto.STRING,
-        number=4,
-    )
-    status: custom_field_enums.CustomFieldStatusEnum.CustomFieldStatus = proto.Field(
-        proto.ENUM,
-        number=5,
-        enum=custom_field_enums.CustomFieldStatusEnum.CustomFieldStatus,
-    )
-    entity_type: custom_field_enums.CustomFieldEntityTypeEnum.CustomFieldEntityType = (
-        proto.Field(
-            proto.ENUM,
-            number=7,
-            enum=custom_field_enums.CustomFieldEntityTypeEnum.CustomFieldEntityType,
-        )
-    )
-    data_type: custom_field_enums.CustomFieldDataTypeEnum.CustomFieldDataType = (
-        proto.Field(
-            proto.ENUM,
-            number=8,
-            enum=custom_field_enums.CustomFieldDataTypeEnum.CustomFieldDataType,
-        )
-    )
-    visibility: custom_field_enums.CustomFieldVisibilityEnum.CustomFieldVisibility = (
-        proto.Field(
-            proto.ENUM,
-            number=9,
-            enum=custom_field_enums.CustomFieldVisibilityEnum.CustomFieldVisibility,
-        )
-    )
-    options: MutableSequence["CustomFieldOption"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=10,
-        message="CustomFieldOption",
-    )
-
-
-class CustomFieldOption(proto.Message):
-    r"""An option for a drop-down ``CustomField``.
-
-    Attributes:
-        custom_field_option_id (int):
-            Output only. ``CustomFieldOption`` ID.
-        display_name (str):
-            Required. The display name of the ``CustomFieldOption``.
-
-            This value has a maximum length of 127 characters.
-    """
-
-    custom_field_option_id: int = proto.Field(
-        proto.INT64,
-        number=1,
-    )
-    display_name: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
 
 
 class GetCustomFieldRequest(proto.Message):
@@ -176,11 +69,12 @@ class ListCustomFieldsRequest(proto.Message):
             page token.
         filter (str):
             Optional. Expression to filter the response.
-            See syntax details at https://google.aip.dev/160
+            See syntax details at
+            https://developers.google.com/ad-manager/api/beta/filters
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at
-            https://google.aip.dev/132#ordering
+            https://developers.google.com/ad-manager/api/beta/filters#order
         skip (int):
             Optional. Number of individual resources to
             skip while paginating.
@@ -234,18 +128,20 @@ class ListCustomFieldsResponse(proto.Message):
             parameter ``$fields`` or ``fields``, or by using the
             HTTP/gRPC header ``X-Goog-FieldMask``.
 
-            For more information, see `System
-            Parameters <https://cloud.google.com/apis/docs/system-parameters>`__.
+            For more information, see
+            https://developers.google.com/ad-manager/api/beta/field-masks
     """
 
     @property
     def raw_page(self):
         return self
 
-    custom_fields: MutableSequence["CustomField"] = proto.RepeatedField(
+    custom_fields: MutableSequence[
+        custom_field_messages.CustomField
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message="CustomField",
+        message=custom_field_messages.CustomField,
     )
     next_page_token: str = proto.Field(
         proto.STRING,

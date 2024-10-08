@@ -51,7 +51,7 @@ except AttributeError:  # pragma: NO COVER
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.role_service import pagers
-from google.ads.admanager_v1.types import role_service
+from google.ads.admanager_v1.types import role_enums, role_messages, role_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, RoleServiceTransport
 from .transports.rest import RoleServiceRestTransport
@@ -91,7 +91,7 @@ class RoleServiceClientMeta(type):
 
 
 class RoleServiceClient(metaclass=RoleServiceClientMeta):
-    """Provides methods for handling Role objects."""
+    """Provides methods for handling ``Role`` objects."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -688,8 +688,8 @@ class RoleServiceClient(metaclass=RoleServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> role_service.Role:
-        r"""API to retrieve a Role object.
+    ) -> role_messages.Role:
+        r"""API to retrieve a ``Role`` object.
 
         .. code-block:: python
 
@@ -719,7 +719,7 @@ class RoleServiceClient(metaclass=RoleServiceClientMeta):
 
         Args:
             request (Union[google.ads.admanager_v1.types.GetRoleRequest, dict]):
-                The request object. Request object for GetRole method.
+                The request object. Request object for ``GetRole`` method.
             name (str):
                 Required. The resource name of the Role. Format:
                 ``networks/{network_code}/roles/{role_id}``
@@ -789,7 +789,7 @@ class RoleServiceClient(metaclass=RoleServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRolesPager:
-        r"""API to retrieve a list of Role objects.
+        r"""API to retrieve a list of ``Role`` objects.
 
         .. code-block:: python
 
@@ -820,7 +820,7 @@ class RoleServiceClient(metaclass=RoleServiceClientMeta):
 
         Args:
             request (Union[google.ads.admanager_v1.types.ListRolesRequest, dict]):
-                The request object. Request object for ListRoles method.
+                The request object. Request object for ``ListRoles`` method.
             parent (str):
                 Required. The parent, which owns this collection of
                 Roles. Format: ``networks/{network_code}``
@@ -836,12 +836,11 @@ class RoleServiceClient(metaclass=RoleServiceClientMeta):
 
         Returns:
             google.ads.admanager_v1.services.role_service.pagers.ListRolesPager:
-                Response object for ListRolesRequest
-                containing matching Role resources.
+                Response object for ListRolesRequest containing matching
+                Role objects.
 
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.

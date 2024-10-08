@@ -36,6 +36,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import json_format
+from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -52,6 +53,7 @@ from google.ads.admanager_v1.services.company_service import (
 from google.ads.admanager_v1.types import (
     applied_label,
     company_credit_status_enum,
+    company_messages,
     company_service,
     company_type_enum,
 )
@@ -977,7 +979,7 @@ def test_get_company_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = company_service.Company(
+        return_value = company_messages.Company(
             name="name_value",
             company_id=1059,
             display_name="display_name_value",
@@ -991,13 +993,14 @@ def test_get_company_rest(request_type):
             credit_status=company_credit_status_enum.CompanyCreditStatusEnum.CompanyCreditStatus.ACTIVE,
             primary_contact="primary_contact_value",
             applied_teams=["applied_teams_value"],
+            third_party_company_id=2348,
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = company_service.Company.pb(return_value)
+        return_value = company_messages.Company.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -1005,7 +1008,7 @@ def test_get_company_rest(request_type):
         response = client.get_company(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, company_service.Company)
+    assert isinstance(response, company_messages.Company)
     assert response.name == "name_value"
     assert response.company_id == 1059
     assert response.display_name == "display_name_value"
@@ -1022,6 +1025,7 @@ def test_get_company_rest(request_type):
     )
     assert response.primary_contact == "primary_contact_value"
     assert response.applied_teams == ["applied_teams_value"]
+    assert response.third_party_company_id == 2348
 
 
 def test_get_company_rest_use_cached_wrapped_rpc():
@@ -1100,7 +1104,7 @@ def test_get_company_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = company_service.Company()
+    return_value = company_messages.Company()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -1121,7 +1125,7 @@ def test_get_company_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = company_service.Company.pb(return_value)
+            return_value = company_messages.Company.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -1176,8 +1180,8 @@ def test_get_company_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = company_service.Company.to_json(
-            company_service.Company()
+        req.return_value._content = company_messages.Company.to_json(
+            company_messages.Company()
         )
 
         request = company_service.GetCompanyRequest()
@@ -1186,7 +1190,7 @@ def test_get_company_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = company_service.Company()
+        post.return_value = company_messages.Company()
 
         client.get_company(
             request,
@@ -1233,7 +1237,7 @@ def test_get_company_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = company_service.Company()
+        return_value = company_messages.Company()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"name": "networks/sample1/companies/sample2"}
@@ -1248,7 +1252,7 @@ def test_get_company_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = company_service.Company.pb(return_value)
+        return_value = company_messages.Company.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1617,9 +1621,9 @@ def test_list_companies_rest_pager(transport: str = "rest"):
         response = (
             company_service.ListCompaniesResponse(
                 companies=[
-                    company_service.Company(),
-                    company_service.Company(),
-                    company_service.Company(),
+                    company_messages.Company(),
+                    company_messages.Company(),
+                    company_messages.Company(),
                 ],
                 next_page_token="abc",
             ),
@@ -1629,14 +1633,14 @@ def test_list_companies_rest_pager(transport: str = "rest"):
             ),
             company_service.ListCompaniesResponse(
                 companies=[
-                    company_service.Company(),
+                    company_messages.Company(),
                 ],
                 next_page_token="ghi",
             ),
             company_service.ListCompaniesResponse(
                 companies=[
-                    company_service.Company(),
-                    company_service.Company(),
+                    company_messages.Company(),
+                    company_messages.Company(),
                 ],
             ),
         )
@@ -1659,7 +1663,7 @@ def test_list_companies_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, company_service.Company) for i in results)
+        assert all(isinstance(i, company_messages.Company) for i in results)
 
         pages = list(client.list_companies(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -2166,7 +2170,7 @@ def test_get_operation_rest_bad_request(
 
     request = request_type()
     request = json_format.ParseDict(
-        {"name": "networks/sample1/operations/reports/exports/sample2"}, request
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2193,7 +2197,7 @@ def test_get_operation_rest(request_type):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request_init = {"name": "networks/sample1/operations/reports/exports/sample2"}
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:

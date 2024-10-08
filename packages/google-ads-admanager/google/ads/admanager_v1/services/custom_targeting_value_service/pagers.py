@@ -38,7 +38,10 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.ads.admanager_v1.types import custom_targeting_value_service
+from google.ads.admanager_v1.types import (
+    custom_targeting_value_messages,
+    custom_targeting_value_service,
+)
 
 
 class ListCustomTargetingValuesPager:
@@ -113,7 +116,9 @@ class ListCustomTargetingValuesPager:
             )
             yield self._response
 
-    def __iter__(self) -> Iterator[custom_targeting_value_service.CustomTargetingValue]:
+    def __iter__(
+        self,
+    ) -> Iterator[custom_targeting_value_messages.CustomTargetingValue]:
         for page in self.pages:
             yield from page.custom_targeting_values
 

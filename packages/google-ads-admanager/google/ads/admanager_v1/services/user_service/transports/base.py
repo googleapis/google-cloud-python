@@ -26,7 +26,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.ads.admanager_v1 import gapic_version as package_version
-from google.ads.admanager_v1.types import user_service
+from google.ads.admanager_v1.types import user_messages, user_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -134,11 +134,6 @@ class UserServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_users: gapic_v1.method.wrap_method(
-                self.list_users,
-                default_timeout=None,
-                client_info=client_info,
-            ),
         }
 
     def close(self):
@@ -155,18 +150,7 @@ class UserServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [user_service.GetUserRequest],
-        Union[user_service.User, Awaitable[user_service.User]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_users(
-        self,
-    ) -> Callable[
-        [user_service.ListUsersRequest],
-        Union[
-            user_service.ListUsersResponse, Awaitable[user_service.ListUsersResponse]
-        ],
+        Union[user_messages.User, Awaitable[user_messages.User]],
     ]:
         raise NotImplementedError()
 

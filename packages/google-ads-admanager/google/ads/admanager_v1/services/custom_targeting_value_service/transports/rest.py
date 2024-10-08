@@ -38,7 +38,10 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.ads.admanager_v1.types import custom_targeting_value_service
+from google.ads.admanager_v1.types import (
+    custom_targeting_value_messages,
+    custom_targeting_value_service,
+)
 
 from .base import CustomTargetingValueServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -103,8 +106,8 @@ class CustomTargetingValueServiceRestInterceptor:
         return request, metadata
 
     def post_get_custom_targeting_value(
-        self, response: custom_targeting_value_service.CustomTargetingValue
-    ) -> custom_targeting_value_service.CustomTargetingValue:
+        self, response: custom_targeting_value_messages.CustomTargetingValue
+    ) -> custom_targeting_value_messages.CustomTargetingValue:
         """Post-rpc interceptor for get_custom_targeting_value
 
         Override in a subclass to manipulate the response
@@ -280,7 +283,7 @@ class CustomTargetingValueServiceRestTransport(CustomTargetingValueServiceTransp
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> custom_targeting_value_service.CustomTargetingValue:
+        ) -> custom_targeting_value_messages.CustomTargetingValue:
             r"""Call the get custom targeting
             value method over HTTP.
 
@@ -294,7 +297,7 @@ class CustomTargetingValueServiceRestTransport(CustomTargetingValueServiceTransp
                         sent along with the request as metadata.
 
                 Returns:
-                    ~.custom_targeting_value_service.CustomTargetingValue:
+                    ~.custom_targeting_value_messages.CustomTargetingValue:
                         The ``CustomTargetingValue`` resource.
             """
 
@@ -344,8 +347,8 @@ class CustomTargetingValueServiceRestTransport(CustomTargetingValueServiceTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = custom_targeting_value_service.CustomTargetingValue()
-            pb_resp = custom_targeting_value_service.CustomTargetingValue.pb(resp)
+            resp = custom_targeting_value_messages.CustomTargetingValue()
+            pb_resp = custom_targeting_value_messages.CustomTargetingValue.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_custom_targeting_value(resp)
@@ -454,7 +457,7 @@ class CustomTargetingValueServiceRestTransport(CustomTargetingValueServiceTransp
         self,
     ) -> Callable[
         [custom_targeting_value_service.GetCustomTargetingValueRequest],
-        custom_targeting_value_service.CustomTargetingValue,
+        custom_targeting_value_messages.CustomTargetingValue,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -502,11 +505,11 @@ class CustomTargetingValueServiceRestTransport(CustomTargetingValueServiceTransp
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                 },
             ]
 

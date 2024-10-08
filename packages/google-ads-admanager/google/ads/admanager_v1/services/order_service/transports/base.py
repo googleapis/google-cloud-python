@@ -26,7 +26,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.ads.admanager_v1 import gapic_version as package_version
-from google.ads.admanager_v1.types import order_service
+from google.ads.admanager_v1.types import order_messages, order_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -155,7 +155,7 @@ class OrderServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [order_service.GetOrderRequest],
-        Union[order_service.Order, Awaitable[order_service.Order]],
+        Union[order_messages.Order, Awaitable[order_messages.Order]],
     ]:
         raise NotImplementedError()
 

@@ -49,7 +49,7 @@ from google.ads.admanager_v1.services.role_service import (
     pagers,
     transports,
 )
-from google.ads.admanager_v1.types import role_service
+from google.ads.admanager_v1.types import role_enums, role_messages, role_service
 
 
 def client_cert_source_callback():
@@ -951,15 +951,20 @@ def test_get_role_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = role_service.Role(
+        return_value = role_messages.Role(
             name="name_value",
+            role_id=734,
+            display_name="display_name_value",
+            description="description_value",
+            built_in=True,
+            status=role_enums.RoleStatusEnum.RoleStatus.ACTIVE,
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = role_service.Role.pb(return_value)
+        return_value = role_messages.Role.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -967,8 +972,13 @@ def test_get_role_rest(request_type):
         response = client.get_role(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, role_service.Role)
+    assert isinstance(response, role_messages.Role)
     assert response.name == "name_value"
+    assert response.role_id == 734
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.built_in is True
+    assert response.status == role_enums.RoleStatusEnum.RoleStatus.ACTIVE
 
 
 def test_get_role_rest_use_cached_wrapped_rpc():
@@ -1045,7 +1055,7 @@ def test_get_role_rest_required_fields(request_type=role_service.GetRoleRequest)
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = role_service.Role()
+    return_value = role_messages.Role()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -1066,7 +1076,7 @@ def test_get_role_rest_required_fields(request_type=role_service.GetRoleRequest)
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = role_service.Role.pb(return_value)
+            return_value = role_messages.Role.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -1119,7 +1129,7 @@ def test_get_role_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = role_service.Role.to_json(role_service.Role())
+        req.return_value._content = role_messages.Role.to_json(role_messages.Role())
 
         request = role_service.GetRoleRequest()
         metadata = [
@@ -1127,7 +1137,7 @@ def test_get_role_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = role_service.Role()
+        post.return_value = role_messages.Role()
 
         client.get_role(
             request,
@@ -1174,7 +1184,7 @@ def test_get_role_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = role_service.Role()
+        return_value = role_messages.Role()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"name": "networks/sample1/roles/sample2"}
@@ -1189,7 +1199,7 @@ def test_get_role_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = role_service.Role.pb(return_value)
+        return_value = role_messages.Role.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1554,9 +1564,9 @@ def test_list_roles_rest_pager(transport: str = "rest"):
         response = (
             role_service.ListRolesResponse(
                 roles=[
-                    role_service.Role(),
-                    role_service.Role(),
-                    role_service.Role(),
+                    role_messages.Role(),
+                    role_messages.Role(),
+                    role_messages.Role(),
                 ],
                 next_page_token="abc",
             ),
@@ -1566,14 +1576,14 @@ def test_list_roles_rest_pager(transport: str = "rest"):
             ),
             role_service.ListRolesResponse(
                 roles=[
-                    role_service.Role(),
+                    role_messages.Role(),
                 ],
                 next_page_token="ghi",
             ),
             role_service.ListRolesResponse(
                 roles=[
-                    role_service.Role(),
-                    role_service.Role(),
+                    role_messages.Role(),
+                    role_messages.Role(),
                 ],
             ),
         )
@@ -1594,7 +1604,7 @@ def test_list_roles_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, role_service.Role) for i in results)
+        assert all(isinstance(i, role_messages.Role) for i in results)
 
         pages = list(client.list_roles(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -2032,7 +2042,7 @@ def test_get_operation_rest_bad_request(
 
     request = request_type()
     request = json_format.ParseDict(
-        {"name": "networks/sample1/operations/reports/exports/sample2"}, request
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2059,7 +2069,7 @@ def test_get_operation_rest(request_type):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request_init = {"name": "networks/sample1/operations/reports/exports/sample2"}
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:

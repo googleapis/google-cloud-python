@@ -26,7 +26,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.ads.admanager_v1 import gapic_version as package_version
-from google.ads.admanager_v1.types import custom_field_service
+from google.ads.admanager_v1.types import custom_field_messages, custom_field_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -156,8 +156,8 @@ class CustomFieldServiceTransport(abc.ABC):
     ) -> Callable[
         [custom_field_service.GetCustomFieldRequest],
         Union[
-            custom_field_service.CustomField,
-            Awaitable[custom_field_service.CustomField],
+            custom_field_messages.CustomField,
+            Awaitable[custom_field_messages.CustomField],
         ],
     ]:
         raise NotImplementedError()

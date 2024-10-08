@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.ads.admanager_v1.types import company_service
+from google.ads.admanager_v1.types import company_messages, company_service
 
 from .base import CompanyServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -100,8 +100,8 @@ class CompanyServiceRestInterceptor:
         return request, metadata
 
     def post_get_company(
-        self, response: company_service.Company
-    ) -> company_service.Company:
+        self, response: company_messages.Company
+    ) -> company_messages.Company:
         """Post-rpc interceptor for get_company
 
         Override in a subclass to manipulate the response
@@ -274,7 +274,7 @@ class CompanyServiceRestTransport(CompanyServiceTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> company_service.Company:
+        ) -> company_messages.Company:
             r"""Call the get company method over HTTP.
 
             Args:
@@ -287,7 +287,7 @@ class CompanyServiceRestTransport(CompanyServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.company_service.Company:
+                ~.company_messages.Company:
                     The ``Company`` resource.
             """
 
@@ -331,8 +331,8 @@ class CompanyServiceRestTransport(CompanyServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = company_service.Company()
-            pb_resp = company_service.Company.pb(resp)
+            resp = company_messages.Company()
+            pb_resp = company_messages.Company.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_company(resp)
@@ -374,7 +374,7 @@ class CompanyServiceRestTransport(CompanyServiceTransport):
             Returns:
                 ~.company_service.ListCompaniesResponse:
                     Response object for ``ListCompaniesRequest`` containing
-                matching ``Company`` resources.
+                matching ``Company`` objects.
 
             """
 
@@ -428,7 +428,7 @@ class CompanyServiceRestTransport(CompanyServiceTransport):
     @property
     def get_company(
         self,
-    ) -> Callable[[company_service.GetCompanyRequest], company_service.Company]:
+    ) -> Callable[[company_service.GetCompanyRequest], company_messages.Company]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCompany(self._session, self._host, self._interceptor)  # type: ignore
@@ -474,11 +474,11 @@ class CompanyServiceRestTransport(CompanyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                 },
             ]
 

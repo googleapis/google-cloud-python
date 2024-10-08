@@ -52,7 +52,11 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.placement_service import pagers
-from google.ads.admanager_v1.types import placement_enums, placement_service
+from google.ads.admanager_v1.types import (
+    placement_enums,
+    placement_messages,
+    placement_service,
+)
 
 from .transports.base import DEFAULT_CLIENT_INFO, PlacementServiceTransport
 from .transports.rest import PlacementServiceRestTransport
@@ -716,7 +720,7 @@ class PlacementServiceClient(metaclass=PlacementServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> placement_service.Placement:
+    ) -> placement_messages.Placement:
         r"""API to retrieve a ``Placement`` object.
 
         .. code-block:: python

@@ -26,7 +26,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.ads.admanager_v1 import gapic_version as package_version
-from google.ads.admanager_v1.types import network_service
+from google.ads.admanager_v1.types import network_messages, network_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -134,6 +134,11 @@ class NetworkServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_networks: gapic_v1.method.wrap_method(
+                self.list_networks,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -150,7 +155,19 @@ class NetworkServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [network_service.GetNetworkRequest],
-        Union[network_service.Network, Awaitable[network_service.Network]],
+        Union[network_messages.Network, Awaitable[network_messages.Network]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_networks(
+        self,
+    ) -> Callable[
+        [network_service.ListNetworksRequest],
+        Union[
+            network_service.ListNetworksResponse,
+            Awaitable[network_service.ListNetworksResponse],
+        ],
     ]:
         raise NotImplementedError()
 

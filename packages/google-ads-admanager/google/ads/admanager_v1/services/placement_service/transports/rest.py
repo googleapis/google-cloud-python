@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.ads.admanager_v1.types import placement_service
+from google.ads.admanager_v1.types import placement_messages, placement_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import PlacementServiceTransport
@@ -100,8 +100,8 @@ class PlacementServiceRestInterceptor:
         return request, metadata
 
     def post_get_placement(
-        self, response: placement_service.Placement
-    ) -> placement_service.Placement:
+        self, response: placement_messages.Placement
+    ) -> placement_messages.Placement:
         """Post-rpc interceptor for get_placement
 
         Override in a subclass to manipulate the response
@@ -274,7 +274,7 @@ class PlacementServiceRestTransport(PlacementServiceTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> placement_service.Placement:
+        ) -> placement_messages.Placement:
             r"""Call the get placement method over HTTP.
 
             Args:
@@ -287,7 +287,7 @@ class PlacementServiceRestTransport(PlacementServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.placement_service.Placement:
+                ~.placement_messages.Placement:
                     The ``Placement`` resource.
             """
 
@@ -331,8 +331,8 @@ class PlacementServiceRestTransport(PlacementServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = placement_service.Placement()
-            pb_resp = placement_service.Placement.pb(resp)
+            resp = placement_messages.Placement()
+            pb_resp = placement_messages.Placement.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_placement(resp)
@@ -428,7 +428,9 @@ class PlacementServiceRestTransport(PlacementServiceTransport):
     @property
     def get_placement(
         self,
-    ) -> Callable[[placement_service.GetPlacementRequest], placement_service.Placement]:
+    ) -> Callable[
+        [placement_service.GetPlacementRequest], placement_messages.Placement
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPlacement(self._session, self._host, self._interceptor)  # type: ignore
@@ -475,11 +477,11 @@ class PlacementServiceRestTransport(PlacementServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                 },
             ]
 

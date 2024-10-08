@@ -71,11 +71,51 @@ class ReportServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomReportServiceInterceptor(ReportServiceRestInterceptor):
-            def pre_export_saved_report(self, request, metadata):
+            def pre_create_report(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_export_saved_report(self, response):
+            def post_create_report(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_fetch_report_result_rows(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_report_result_rows(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_report(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_report(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_reports(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_reports(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_run_report(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_run_report(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_report(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_report(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -85,22 +125,135 @@ class ReportServiceRestInterceptor:
 
     """
 
-    def pre_export_saved_report(
+    def pre_create_report(
         self,
-        request: report_service.ExportSavedReportRequest,
+        request: report_service.CreateReportRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[report_service.ExportSavedReportRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for export_saved_report
+    ) -> Tuple[report_service.CreateReportRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_report
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the ReportService server.
         """
         return request, metadata
 
-    def post_export_saved_report(
+    def post_create_report(
+        self, response: report_service.Report
+    ) -> report_service.Report:
+        """Post-rpc interceptor for create_report
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ReportService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_fetch_report_result_rows(
+        self,
+        request: report_service.FetchReportResultRowsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[report_service.FetchReportResultRowsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for fetch_report_result_rows
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReportService server.
+        """
+        return request, metadata
+
+    def post_fetch_report_result_rows(
+        self, response: report_service.FetchReportResultRowsResponse
+    ) -> report_service.FetchReportResultRowsResponse:
+        """Post-rpc interceptor for fetch_report_result_rows
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ReportService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_report(
+        self,
+        request: report_service.GetReportRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[report_service.GetReportRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_report
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReportService server.
+        """
+        return request, metadata
+
+    def post_get_report(self, response: report_service.Report) -> report_service.Report:
+        """Post-rpc interceptor for get_report
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ReportService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_reports(
+        self,
+        request: report_service.ListReportsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[report_service.ListReportsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_reports
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReportService server.
+        """
+        return request, metadata
+
+    def post_list_reports(
+        self, response: report_service.ListReportsResponse
+    ) -> report_service.ListReportsResponse:
+        """Post-rpc interceptor for list_reports
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ReportService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_run_report(
+        self,
+        request: report_service.RunReportRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[report_service.RunReportRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for run_report
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReportService server.
+        """
+        return request, metadata
+
+    def post_run_report(
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for export_saved_report
+        """Post-rpc interceptor for run_report
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ReportService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_report(
+        self,
+        request: report_service.UpdateReportRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[report_service.UpdateReportRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_report
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReportService server.
+        """
+        return request, metadata
+
+    def post_update_report(
+        self, response: report_service.Report
+    ) -> report_service.Report:
+        """Post-rpc interceptor for update_report
 
         Override in a subclass to manipulate the response
         after it is returned by the ReportService server but before
@@ -142,7 +295,7 @@ class ReportServiceRestStub:
 class ReportServiceRestTransport(ReportServiceTransport):
     """REST backend transport for ReportService.
 
-    Provides methods for interacting with Reports.
+    Provides methods for interacting with reports.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -242,11 +395,11 @@ class ReportServiceRestTransport(ReportServiceTransport):
                 "google.longrunning.Operations.GetOperation": [
                     {
                         "method": "get",
-                        "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
+                        "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                     },
                     {
                         "method": "get",
-                        "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
+                        "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                     },
                 ],
             }
@@ -267,9 +420,9 @@ class ReportServiceRestTransport(ReportServiceTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _ExportSavedReport(ReportServiceRestStub):
+    class _CreateReport(ReportServiceRestStub):
         def __hash__(self):
-            return hash("ExportSavedReport")
+            return hash("CreateReport")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -283,18 +436,361 @@ class ReportServiceRestTransport(ReportServiceTransport):
 
         def __call__(
             self,
-            request: report_service.ExportSavedReportRequest,
+            request: report_service.CreateReportRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> report_service.Report:
+            r"""Call the create report method over HTTP.
+
+            Args:
+                request (~.report_service.CreateReportRequest):
+                    The request object. Request object for ``CreateReport`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.report_service.Report:
+                    The ``Report`` resource.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=networks/*}/reports",
+                    "body": "report",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_report(request, metadata)
+            pb_request = report_service.CreateReportRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = report_service.Report()
+            pb_resp = report_service.Report.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_report(resp)
+            return resp
+
+    class _FetchReportResultRows(ReportServiceRestStub):
+        def __hash__(self):
+            return hash("FetchReportResultRows")
+
+        def __call__(
+            self,
+            request: report_service.FetchReportResultRowsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> report_service.FetchReportResultRowsResponse:
+            r"""Call the fetch report result rows method over HTTP.
+
+            Args:
+                request (~.report_service.FetchReportResultRowsRequest):
+                    The request object. The request message for the fetch
+                report result rows endpoint.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.report_service.FetchReportResultRowsResponse:
+                    The response message for the fetch
+                report result rows endpoint.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=networks/*/reports/*/results/*}:fetchRows",
+                },
+            ]
+            request, metadata = self._interceptor.pre_fetch_report_result_rows(
+                request, metadata
+            )
+            pb_request = report_service.FetchReportResultRowsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = report_service.FetchReportResultRowsResponse()
+            pb_resp = report_service.FetchReportResultRowsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_fetch_report_result_rows(resp)
+            return resp
+
+    class _GetReport(ReportServiceRestStub):
+        def __hash__(self):
+            return hash("GetReport")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: report_service.GetReportRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> report_service.Report:
+            r"""Call the get report method over HTTP.
+
+            Args:
+                request (~.report_service.GetReportRequest):
+                    The request object. Request object for ``GetReport`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.report_service.Report:
+                    The ``Report`` resource.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=networks/*/reports/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_report(request, metadata)
+            pb_request = report_service.GetReportRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = report_service.Report()
+            pb_resp = report_service.Report.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_report(resp)
+            return resp
+
+    class _ListReports(ReportServiceRestStub):
+        def __hash__(self):
+            return hash("ListReports")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: report_service.ListReportsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> report_service.ListReportsResponse:
+            r"""Call the list reports method over HTTP.
+
+            Args:
+                request (~.report_service.ListReportsRequest):
+                    The request object. Request object for ``ListReports`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.report_service.ListReportsResponse:
+                    Response object for ``ListReportsResponse`` containing
+                matching ``Report`` objects.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=networks/*}/reports",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_reports(request, metadata)
+            pb_request = report_service.ListReportsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = report_service.ListReportsResponse()
+            pb_resp = report_service.ListReportsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_reports(resp)
+            return resp
+
+    class _RunReport(ReportServiceRestStub):
+        def __hash__(self):
+            return hash("RunReport")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: report_service.RunReportRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
-            r"""Call the export saved report method over HTTP.
+            r"""Call the run report method over HTTP.
 
             Args:
-                request (~.report_service.ExportSavedReportRequest):
-                    The request object. Request proto for the configuration
-                of a report run.
+                request (~.report_service.RunReportRequest):
+                    The request object. Request message for a running a
+                report.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -312,14 +808,12 @@ class ReportServiceRestTransport(ReportServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1/{report=networks/*/reports/*}:exportSavedReport",
+                    "uri": "/v1/{name=networks/*/reports/*}:run",
                     "body": "*",
                 },
             ]
-            request, metadata = self._interceptor.pre_export_saved_report(
-                request, metadata
-            )
-            pb_request = report_service.ExportSavedReportRequest.pb(request)
+            request, metadata = self._interceptor.pre_run_report(request, metadata)
+            pb_request = report_service.RunReportRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -360,16 +854,155 @@ class ReportServiceRestTransport(ReportServiceTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_export_saved_report(resp)
+            resp = self._interceptor.post_run_report(resp)
+            return resp
+
+    class _UpdateReport(ReportServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateReport")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: report_service.UpdateReportRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> report_service.Report:
+            r"""Call the update report method over HTTP.
+
+            Args:
+                request (~.report_service.UpdateReportRequest):
+                    The request object. Request object for ``UpdateReport`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.report_service.Report:
+                    The ``Report`` resource.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{report.name=networks/*/reports/*}",
+                    "body": "report",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_report(request, metadata)
+            pb_request = report_service.UpdateReportRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = report_service.Report()
+            pb_resp = report_service.Report.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_report(resp)
             return resp
 
     @property
-    def export_saved_report(
+    def create_report(
         self,
-    ) -> Callable[[report_service.ExportSavedReportRequest], operations_pb2.Operation]:
+    ) -> Callable[[report_service.CreateReportRequest], report_service.Report]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ExportSavedReport(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateReport(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def fetch_report_result_rows(
+        self,
+    ) -> Callable[
+        [report_service.FetchReportResultRowsRequest],
+        report_service.FetchReportResultRowsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchReportResultRows(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_report(
+        self,
+    ) -> Callable[[report_service.GetReportRequest], report_service.Report]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetReport(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_reports(
+        self,
+    ) -> Callable[
+        [report_service.ListReportsRequest], report_service.ListReportsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListReports(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def run_report(
+        self,
+    ) -> Callable[[report_service.RunReportRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RunReport(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_report(
+        self,
+    ) -> Callable[[report_service.UpdateReportRequest], report_service.Report]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):
@@ -402,11 +1035,11 @@ class ReportServiceRestTransport(ReportServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                 },
             ]
 

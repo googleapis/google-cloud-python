@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.ads.admanager_v1.types import role_service
+from google.ads.admanager_v1.types import role_messages, role_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import RoleServiceTransport
@@ -97,7 +97,7 @@ class RoleServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_role(self, response: role_service.Role) -> role_service.Role:
+    def post_get_role(self, response: role_messages.Role) -> role_messages.Role:
         """Post-rpc interceptor for get_role
 
         Override in a subclass to manipulate the response
@@ -163,7 +163,7 @@ class RoleServiceRestStub:
 class RoleServiceRestTransport(RoleServiceTransport):
     """REST backend transport for RoleService.
 
-    Provides methods for handling Role objects.
+    Provides methods for handling ``Role`` objects.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -270,12 +270,12 @@ class RoleServiceRestTransport(RoleServiceTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> role_service.Role:
+        ) -> role_messages.Role:
             r"""Call the get role method over HTTP.
 
             Args:
                 request (~.role_service.GetRoleRequest):
-                    The request object. Request object for GetRole method.
+                    The request object. Request object for ``GetRole`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -283,8 +283,8 @@ class RoleServiceRestTransport(RoleServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.role_service.Role:
-                    The Role resource.
+                ~.role_messages.Role:
+                    The ``Role`` resource.
             """
 
             http_options: List[Dict[str, str]] = [
@@ -327,8 +327,8 @@ class RoleServiceRestTransport(RoleServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = role_service.Role()
-            pb_resp = role_service.Role.pb(resp)
+            resp = role_messages.Role()
+            pb_resp = role_messages.Role.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_role(resp)
@@ -360,7 +360,7 @@ class RoleServiceRestTransport(RoleServiceTransport):
 
             Args:
                 request (~.role_service.ListRolesRequest):
-                    The request object. Request object for ListRoles method.
+                    The request object. Request object for ``ListRoles`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -369,8 +369,8 @@ class RoleServiceRestTransport(RoleServiceTransport):
 
             Returns:
                 ~.role_service.ListRolesResponse:
-                    Response object for ListRolesRequest
-                containing matching Role resources.
+                    Response object for ``ListRolesRequest`` containing
+                matching ``Role`` objects.
 
             """
 
@@ -422,7 +422,7 @@ class RoleServiceRestTransport(RoleServiceTransport):
             return resp
 
     @property
-    def get_role(self) -> Callable[[role_service.GetRoleRequest], role_service.Role]:
+    def get_role(self) -> Callable[[role_service.GetRoleRequest], role_messages.Role]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRole(self._session, self._host, self._interceptor)  # type: ignore
@@ -466,11 +466,11 @@ class RoleServiceRestTransport(RoleServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                 },
             ]
 

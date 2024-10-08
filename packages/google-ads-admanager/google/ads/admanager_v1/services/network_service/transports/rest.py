@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.ads.admanager_v1.types import network_service
+from google.ads.admanager_v1.types import network_messages, network_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import NetworkServiceTransport
@@ -73,6 +73,14 @@ class NetworkServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_networks(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_networks(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = NetworkServiceRestTransport(interceptor=MyCustomNetworkServiceInterceptor())
         client = NetworkServiceClient(transport=transport)
 
@@ -92,9 +100,32 @@ class NetworkServiceRestInterceptor:
         return request, metadata
 
     def post_get_network(
-        self, response: network_service.Network
-    ) -> network_service.Network:
+        self, response: network_messages.Network
+    ) -> network_messages.Network:
         """Post-rpc interceptor for get_network
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetworkService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_networks(
+        self,
+        request: network_service.ListNetworksRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[network_service.ListNetworksRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_networks
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkService server.
+        """
+        return request, metadata
+
+    def post_list_networks(
+        self, response: network_service.ListNetworksResponse
+    ) -> network_service.ListNetworksResponse:
+        """Post-rpc interceptor for list_networks
 
         Override in a subclass to manipulate the response
         after it is returned by the NetworkService server but before
@@ -243,7 +274,7 @@ class NetworkServiceRestTransport(NetworkServiceTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> network_service.Network:
+        ) -> network_messages.Network:
             r"""Call the get network method over HTTP.
 
             Args:
@@ -256,7 +287,7 @@ class NetworkServiceRestTransport(NetworkServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.network_service.Network:
+                ~.network_messages.Network:
                     The Network resource.
             """
 
@@ -300,20 +331,104 @@ class NetworkServiceRestTransport(NetworkServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = network_service.Network()
-            pb_resp = network_service.Network.pb(resp)
+            resp = network_messages.Network()
+            pb_resp = network_messages.Network.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_network(resp)
             return resp
 
+    class _ListNetworks(NetworkServiceRestStub):
+        def __hash__(self):
+            return hash("ListNetworks")
+
+        def __call__(
+            self,
+            request: network_service.ListNetworksRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> network_service.ListNetworksResponse:
+            r"""Call the list networks method over HTTP.
+
+            Args:
+                request (~.network_service.ListNetworksRequest):
+                    The request object. Request object for ``ListNetworks`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.network_service.ListNetworksResponse:
+                    Response object for ``ListNetworks`` method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/networks",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_networks(request, metadata)
+            pb_request = network_service.ListNetworksRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = network_service.ListNetworksResponse()
+            pb_resp = network_service.ListNetworksResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_networks(resp)
+            return resp
+
     @property
     def get_network(
         self,
-    ) -> Callable[[network_service.GetNetworkRequest], network_service.Network]:
+    ) -> Callable[[network_service.GetNetworkRequest], network_messages.Network]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNetwork(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_networks(
+        self,
+    ) -> Callable[
+        [network_service.ListNetworksRequest], network_service.ListNetworksResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListNetworks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):
@@ -346,11 +461,11 @@ class NetworkServiceRestTransport(NetworkServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                 },
             ]
 

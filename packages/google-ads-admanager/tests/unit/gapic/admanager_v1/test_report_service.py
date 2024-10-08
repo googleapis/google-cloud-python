@@ -44,7 +44,12 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
+from google.type import dayofweek_pb2  # type: ignore
+from google.type import timeofday_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -55,6 +60,7 @@ from requests.sessions import Session
 
 from google.ads.admanager_v1.services.report_service import (
     ReportServiceClient,
+    pagers,
     transports,
 )
 from google.ads.admanager_v1.types import report_service
@@ -959,39 +965,52 @@ def test_report_service_client_client_options_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        report_service.ExportSavedReportRequest,
+        report_service.GetReportRequest,
         dict,
     ],
 )
-def test_export_saved_report_rest(request_type):
+def test_get_report_rest(request_type):
     client = ReportServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"report": "networks/sample1/reports/sample2"}
+    request_init = {"name": "networks/sample1/reports/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
+        return_value = report_service.Report(
+            name="name_value",
+            report_id=968,
+            visibility=report_service.Report.Visibility.DRAFT,
+            display_name="display_name_value",
+            locale="locale_value",
+        )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = report_service.Report.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.export_saved_report(request)
+        response = client.get_report(request)
 
     # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
+    assert isinstance(response, report_service.Report)
+    assert response.name == "name_value"
+    assert response.report_id == 968
+    assert response.visibility == report_service.Report.Visibility.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.locale == "locale_value"
 
 
-def test_export_saved_report_rest_use_cached_wrapped_rpc():
+def test_get_report_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
@@ -1005,38 +1024,1338 @@ def test_export_saved_report_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.export_saved_report in client._transport._wrapped_methods
-        )
+        assert client._transport.get_report in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.export_saved_report
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_report] = mock_rpc
 
         request = {}
-        client.export_saved_report(request)
+        client.get_report(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.export_saved_report(request)
+        client.get_report(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_export_saved_report_rest_required_fields(
-    request_type=report_service.ExportSavedReportRequest,
+def test_get_report_rest_required_fields(request_type=report_service.GetReportRequest):
+    transport_class = transports.ReportServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = report_service.Report()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = report_service.Report.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_report(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_report_rest_unset_required_fields():
+    transport = transports.ReportServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_report._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_report_rest_interceptors(null_interceptor):
+    transport = transports.ReportServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReportServiceRestInterceptor(),
+    )
+    client = ReportServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReportServiceRestInterceptor, "post_get_report"
+    ) as post, mock.patch.object(
+        transports.ReportServiceRestInterceptor, "pre_get_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = report_service.GetReportRequest.pb(
+            report_service.GetReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = report_service.Report.to_json(
+            report_service.Report()
+        )
+
+        request = report_service.GetReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = report_service.Report()
+
+        client.get_report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_report_rest_bad_request(
+    transport: str = "rest", request_type=report_service.GetReportRequest
+):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "networks/sample1/reports/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_report(request)
+
+
+def test_get_report_rest_flattened():
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = report_service.Report()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "networks/sample1/reports/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = report_service.Report.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_report(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=networks/*/reports/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_report_rest_flattened_error(transport: str = "rest"):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_report(
+            report_service.GetReportRequest(),
+            name="name_value",
+        )
+
+
+def test_get_report_rest_error():
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        report_service.ListReportsRequest,
+        dict,
+    ],
+)
+def test_list_reports_rest(request_type):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = report_service.ListReportsResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = report_service.ListReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_reports(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListReportsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+def test_list_reports_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ReportServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_reports in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_reports] = mock_rpc
+
+        request = {}
+        client.list_reports(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_reports(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_reports_rest_required_fields(
+    request_type=report_service.ListReportsRequest,
+):
+    transport_class = transports.ReportServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_reports._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_reports._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+            "skip",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = report_service.ListReportsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = report_service.ListReportsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_reports(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_reports_rest_unset_required_fields():
+    transport = transports.ReportServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_reports._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+                "skip",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_reports_rest_interceptors(null_interceptor):
+    transport = transports.ReportServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReportServiceRestInterceptor(),
+    )
+    client = ReportServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReportServiceRestInterceptor, "post_list_reports"
+    ) as post, mock.patch.object(
+        transports.ReportServiceRestInterceptor, "pre_list_reports"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = report_service.ListReportsRequest.pb(
+            report_service.ListReportsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = report_service.ListReportsResponse.to_json(
+            report_service.ListReportsResponse()
+        )
+
+        request = report_service.ListReportsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = report_service.ListReportsResponse()
+
+        client.list_reports(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_reports_rest_bad_request(
+    transport: str = "rest", request_type=report_service.ListReportsRequest
+):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_reports(request)
+
+
+def test_list_reports_rest_flattened():
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = report_service.ListReportsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "networks/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = report_service.ListReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_reports(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=networks/*}/reports" % client.transport._host, args[1]
+        )
+
+
+def test_list_reports_rest_flattened_error(transport: str = "rest"):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_reports(
+            report_service.ListReportsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_reports_rest_pager(transport: str = "rest"):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            report_service.ListReportsResponse(
+                reports=[
+                    report_service.Report(),
+                    report_service.Report(),
+                    report_service.Report(),
+                ],
+                next_page_token="abc",
+            ),
+            report_service.ListReportsResponse(
+                reports=[],
+                next_page_token="def",
+            ),
+            report_service.ListReportsResponse(
+                reports=[
+                    report_service.Report(),
+                ],
+                next_page_token="ghi",
+            ),
+            report_service.ListReportsResponse(
+                reports=[
+                    report_service.Report(),
+                    report_service.Report(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            report_service.ListReportsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "networks/sample1"}
+
+        pager = client.list_reports(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, report_service.Report) for i in results)
+
+        pages = list(client.list_reports(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        report_service.CreateReportRequest,
+        dict,
+    ],
+)
+def test_create_report_rest(request_type):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request_init["report"] = {
+        "name": "name_value",
+        "report_id": 968,
+        "visibility": 1,
+        "report_definition": {
+            "dimensions": [242],
+            "metrics": [61],
+            "filters": [
+                {
+                    "field_filter": {
+                        "field": {"dimension": 242, "metric": 61},
+                        "operation": 1,
+                        "values": [
+                            {
+                                "int_value": 967,
+                                "double_value": 0.12710000000000002,
+                                "string_value": "string_value_value",
+                                "bool_value": True,
+                                "int_list_value": {"values": [657, 658]},
+                                "string_list_value": {
+                                    "values": ["values_value1", "values_value2"]
+                                },
+                                "bytes_value": b"bytes_value_blob",
+                            }
+                        ],
+                        "slice_": {"dimension": 242, "value": {}},
+                        "time_period_index": 1800,
+                        "metric_value_type": 1,
+                    },
+                    "not_filter": {},
+                    "and_filter": {"filters": {}},
+                    "or_filter": {},
+                }
+            ],
+            "time_zone": "time_zone_value",
+            "currency_code": "currency_code_value",
+            "date_range": {
+                "fixed": {
+                    "start_date": {"year": 433, "month": 550, "day": 318},
+                    "end_date": {},
+                },
+                "relative": 1,
+            },
+            "comparison_date_range": {},
+            "custom_dimension_key_ids": [2568, 2569],
+            "line_item_custom_field_ids": [2739, 2740],
+            "order_custom_field_ids": [2329, 2330],
+            "creative_custom_field_ids": [2640, 2641],
+            "report_type": 1,
+            "time_period_column": 1,
+            "flags": [{"filters": {}, "name": "name_value"}],
+            "sorts": [
+                {
+                    "field": {},
+                    "descending": True,
+                    "slice_": {},
+                    "time_period_index": 1800,
+                    "metric_value_type": 1,
+                }
+            ],
+        },
+        "display_name": "display_name_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "create_time": {},
+        "locale": "locale_value",
+        "schedule_options": {
+            "schedule": {
+                "weekly_schedule": {"weekly_scheduled_days": [1]},
+                "monthly_schedule": {"monthly_scheduled_days": [2348, 2349]},
+                "start_date": {},
+                "end_date": {},
+                "frequency": 1,
+                "start_time": {
+                    "hours": 561,
+                    "minutes": 773,
+                    "seconds": 751,
+                    "nanos": 543,
+                },
+            },
+            "delivery_condition": 1,
+            "flags": {},
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = report_service.CreateReportRequest.meta.fields["report"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["report"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["report"][field])):
+                    del request_init["report"][field][i][subfield]
+            else:
+                del request_init["report"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = report_service.Report(
+            name="name_value",
+            report_id=968,
+            visibility=report_service.Report.Visibility.DRAFT,
+            display_name="display_name_value",
+            locale="locale_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = report_service.Report.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_report(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, report_service.Report)
+    assert response.name == "name_value"
+    assert response.report_id == 968
+    assert response.visibility == report_service.Report.Visibility.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.locale == "locale_value"
+
+
+def test_create_report_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ReportServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_report in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_report] = mock_rpc
+
+        request = {}
+        client.create_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_report(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_report_rest_required_fields(
+    request_type=report_service.CreateReportRequest,
+):
+    transport_class = transports.ReportServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = report_service.Report()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = report_service.Report.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_report(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_report_rest_unset_required_fields():
+    transport = transports.ReportServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_report._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "report",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_report_rest_interceptors(null_interceptor):
+    transport = transports.ReportServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReportServiceRestInterceptor(),
+    )
+    client = ReportServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReportServiceRestInterceptor, "post_create_report"
+    ) as post, mock.patch.object(
+        transports.ReportServiceRestInterceptor, "pre_create_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = report_service.CreateReportRequest.pb(
+            report_service.CreateReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = report_service.Report.to_json(
+            report_service.Report()
+        )
+
+        request = report_service.CreateReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = report_service.Report()
+
+        client.create_report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_report_rest_bad_request(
+    transport: str = "rest", request_type=report_service.CreateReportRequest
+):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_report(request)
+
+
+def test_create_report_rest_flattened():
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = report_service.Report()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "networks/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            report=report_service.Report(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = report_service.Report.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_report(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=networks/*}/reports" % client.transport._host, args[1]
+        )
+
+
+def test_create_report_rest_flattened_error(transport: str = "rest"):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_report(
+            report_service.CreateReportRequest(),
+            parent="parent_value",
+            report=report_service.Report(name="name_value"),
+        )
+
+
+def test_create_report_rest_error():
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        report_service.UpdateReportRequest,
+        dict,
+    ],
+)
+def test_update_report_rest(request_type):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"report": {"name": "networks/sample1/reports/sample2"}}
+    request_init["report"] = {
+        "name": "networks/sample1/reports/sample2",
+        "report_id": 968,
+        "visibility": 1,
+        "report_definition": {
+            "dimensions": [242],
+            "metrics": [61],
+            "filters": [
+                {
+                    "field_filter": {
+                        "field": {"dimension": 242, "metric": 61},
+                        "operation": 1,
+                        "values": [
+                            {
+                                "int_value": 967,
+                                "double_value": 0.12710000000000002,
+                                "string_value": "string_value_value",
+                                "bool_value": True,
+                                "int_list_value": {"values": [657, 658]},
+                                "string_list_value": {
+                                    "values": ["values_value1", "values_value2"]
+                                },
+                                "bytes_value": b"bytes_value_blob",
+                            }
+                        ],
+                        "slice_": {"dimension": 242, "value": {}},
+                        "time_period_index": 1800,
+                        "metric_value_type": 1,
+                    },
+                    "not_filter": {},
+                    "and_filter": {"filters": {}},
+                    "or_filter": {},
+                }
+            ],
+            "time_zone": "time_zone_value",
+            "currency_code": "currency_code_value",
+            "date_range": {
+                "fixed": {
+                    "start_date": {"year": 433, "month": 550, "day": 318},
+                    "end_date": {},
+                },
+                "relative": 1,
+            },
+            "comparison_date_range": {},
+            "custom_dimension_key_ids": [2568, 2569],
+            "line_item_custom_field_ids": [2739, 2740],
+            "order_custom_field_ids": [2329, 2330],
+            "creative_custom_field_ids": [2640, 2641],
+            "report_type": 1,
+            "time_period_column": 1,
+            "flags": [{"filters": {}, "name": "name_value"}],
+            "sorts": [
+                {
+                    "field": {},
+                    "descending": True,
+                    "slice_": {},
+                    "time_period_index": 1800,
+                    "metric_value_type": 1,
+                }
+            ],
+        },
+        "display_name": "display_name_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "create_time": {},
+        "locale": "locale_value",
+        "schedule_options": {
+            "schedule": {
+                "weekly_schedule": {"weekly_scheduled_days": [1]},
+                "monthly_schedule": {"monthly_scheduled_days": [2348, 2349]},
+                "start_date": {},
+                "end_date": {},
+                "frequency": 1,
+                "start_time": {
+                    "hours": 561,
+                    "minutes": 773,
+                    "seconds": 751,
+                    "nanos": 543,
+                },
+            },
+            "delivery_condition": 1,
+            "flags": {},
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = report_service.UpdateReportRequest.meta.fields["report"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["report"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["report"][field])):
+                    del request_init["report"][field][i][subfield]
+            else:
+                del request_init["report"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = report_service.Report(
+            name="name_value",
+            report_id=968,
+            visibility=report_service.Report.Visibility.DRAFT,
+            display_name="display_name_value",
+            locale="locale_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = report_service.Report.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_report(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, report_service.Report)
+    assert response.name == "name_value"
+    assert response.report_id == 968
+    assert response.visibility == report_service.Report.Visibility.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.locale == "locale_value"
+
+
+def test_update_report_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ReportServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_report in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_report] = mock_rpc
+
+        request = {}
+        client.update_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_report(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_report_rest_required_fields(
+    request_type=report_service.UpdateReportRequest,
 ):
     transport_class = transports.ReportServiceRestTransport
 
@@ -1051,17 +2370,328 @@ def test_export_saved_report_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).export_saved_report._get_unset_required_fields(jsonified_request)
+    ).update_report._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).export_saved_report._get_unset_required_fields(jsonified_request)
+    ).update_report._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
+
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = report_service.Report()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = report_service.Report.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_report(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_report_rest_unset_required_fields():
+    transport = transports.ReportServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_report._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "report",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_report_rest_interceptors(null_interceptor):
+    transport = transports.ReportServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReportServiceRestInterceptor(),
+    )
+    client = ReportServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReportServiceRestInterceptor, "post_update_report"
+    ) as post, mock.patch.object(
+        transports.ReportServiceRestInterceptor, "pre_update_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = report_service.UpdateReportRequest.pb(
+            report_service.UpdateReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = report_service.Report.to_json(
+            report_service.Report()
+        )
+
+        request = report_service.UpdateReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = report_service.Report()
+
+        client.update_report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_report_rest_bad_request(
+    transport: str = "rest", request_type=report_service.UpdateReportRequest
+):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"report": {"name": "networks/sample1/reports/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_report(request)
+
+
+def test_update_report_rest_flattened():
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = report_service.Report()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"report": {"name": "networks/sample1/reports/sample2"}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            report=report_service.Report(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = report_service.Report.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_report(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{report.name=networks/*/reports/*}" % client.transport._host, args[1]
+        )
+
+
+def test_update_report_rest_flattened_error(transport: str = "rest"):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_report(
+            report_service.UpdateReportRequest(),
+            report=report_service.Report(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_report_rest_error():
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        report_service.RunReportRequest,
+        dict,
+    ],
+)
+def test_run_report_rest(request_type):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "networks/sample1/reports/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.run_report(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_run_report_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ReportServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.run_report in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.run_report] = mock_rpc
+
+        request = {}
+        client.run_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.run_report(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_run_report_rest_required_fields(request_type=report_service.RunReportRequest):
+    transport_class = transports.ReportServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).run_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).run_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
 
     client = ReportServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1095,24 +2725,24 @@ def test_export_saved_report_rest_required_fields(
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.export_saved_report(request)
+            response = client.run_report(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_export_saved_report_rest_unset_required_fields():
+def test_run_report_rest_unset_required_fields():
     transport = transports.ReportServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.export_saved_report._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("format",)))
+    unset_fields = transport.run_report._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_export_saved_report_rest_interceptors(null_interceptor):
+def test_run_report_rest_interceptors(null_interceptor):
     transport = transports.ReportServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
@@ -1127,14 +2757,14 @@ def test_export_saved_report_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         operation.Operation, "_set_result_from_operation"
     ), mock.patch.object(
-        transports.ReportServiceRestInterceptor, "post_export_saved_report"
+        transports.ReportServiceRestInterceptor, "post_run_report"
     ) as post, mock.patch.object(
-        transports.ReportServiceRestInterceptor, "pre_export_saved_report"
+        transports.ReportServiceRestInterceptor, "pre_run_report"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = report_service.ExportSavedReportRequest.pb(
-            report_service.ExportSavedReportRequest()
+        pb_message = report_service.RunReportRequest.pb(
+            report_service.RunReportRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -1150,7 +2780,7 @@ def test_export_saved_report_rest_interceptors(null_interceptor):
             operations_pb2.Operation()
         )
 
-        request = report_service.ExportSavedReportRequest()
+        request = report_service.RunReportRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -1158,7 +2788,7 @@ def test_export_saved_report_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
 
-        client.export_saved_report(
+        client.run_report(
             request,
             metadata=[
                 ("key", "val"),
@@ -1170,8 +2800,8 @@ def test_export_saved_report_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_export_saved_report_rest_bad_request(
-    transport: str = "rest", request_type=report_service.ExportSavedReportRequest
+def test_run_report_rest_bad_request(
+    transport: str = "rest", request_type=report_service.RunReportRequest
 ):
     client = ReportServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1179,7 +2809,7 @@ def test_export_saved_report_rest_bad_request(
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"report": "networks/sample1/reports/sample2"}
+    request_init = {"name": "networks/sample1/reports/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -1191,10 +2821,10 @@ def test_export_saved_report_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.export_saved_report(request)
+        client.run_report(request)
 
 
-def test_export_saved_report_rest_flattened():
+def test_run_report_rest_flattened():
     client = ReportServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
@@ -1206,11 +2836,11 @@ def test_export_saved_report_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"report": "networks/sample1/reports/sample2"}
+        sample_request = {"name": "networks/sample1/reports/sample2"}
 
         # get truthy value for each flattened field
         mock_args = dict(
-            report="report_value",
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -1221,20 +2851,18 @@ def test_export_saved_report_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.export_saved_report(**mock_args)
+        client.run_report(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{report=networks/*/reports/*}:exportSavedReport"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{name=networks/*/reports/*}:run" % client.transport._host, args[1]
         )
 
 
-def test_export_saved_report_rest_flattened_error(transport: str = "rest"):
+def test_run_report_rest_flattened_error(transport: str = "rest"):
     client = ReportServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1243,16 +2871,302 @@ def test_export_saved_report_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.export_saved_report(
-            report_service.ExportSavedReportRequest(),
-            report="report_value",
+        client.run_report(
+            report_service.RunReportRequest(),
+            name="name_value",
         )
 
 
-def test_export_saved_report_rest_error():
+def test_run_report_rest_error():
     client = ReportServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        report_service.FetchReportResultRowsRequest,
+        dict,
+    ],
+)
+def test_fetch_report_result_rows_rest(request_type):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "networks/sample1/reports/sample2/results/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = report_service.FetchReportResultRowsResponse(
+            total_row_count=1635,
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = report_service.FetchReportResultRowsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.fetch_report_result_rows(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FetchReportResultRowsPager)
+    assert response.total_row_count == 1635
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_fetch_report_result_rows_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ReportServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.fetch_report_result_rows
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.fetch_report_result_rows
+        ] = mock_rpc
+
+        request = {}
+        client.fetch_report_result_rows(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.fetch_report_result_rows(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_fetch_report_result_rows_rest_interceptors(null_interceptor):
+    transport = transports.ReportServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReportServiceRestInterceptor(),
+    )
+    client = ReportServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ReportServiceRestInterceptor, "post_fetch_report_result_rows"
+    ) as post, mock.patch.object(
+        transports.ReportServiceRestInterceptor, "pre_fetch_report_result_rows"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = report_service.FetchReportResultRowsRequest.pb(
+            report_service.FetchReportResultRowsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            report_service.FetchReportResultRowsResponse.to_json(
+                report_service.FetchReportResultRowsResponse()
+            )
+        )
+
+        request = report_service.FetchReportResultRowsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = report_service.FetchReportResultRowsResponse()
+
+        client.fetch_report_result_rows(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_fetch_report_result_rows_rest_bad_request(
+    transport: str = "rest", request_type=report_service.FetchReportResultRowsRequest
+):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "networks/sample1/reports/sample2/results/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.fetch_report_result_rows(request)
+
+
+def test_fetch_report_result_rows_rest_flattened():
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = report_service.FetchReportResultRowsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "networks/sample1/reports/sample2/results/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = report_service.FetchReportResultRowsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.fetch_report_result_rows(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=networks/*/reports/*/results/*}:fetchRows"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_fetch_report_result_rows_rest_flattened_error(transport: str = "rest"):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.fetch_report_result_rows(
+            report_service.FetchReportResultRowsRequest(),
+            name="name_value",
+        )
+
+
+def test_fetch_report_result_rows_rest_pager(transport: str = "rest"):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            report_service.FetchReportResultRowsResponse(
+                rows=[
+                    report_service.Report.DataTable.Row(),
+                    report_service.Report.DataTable.Row(),
+                    report_service.Report.DataTable.Row(),
+                ],
+                next_page_token="abc",
+            ),
+            report_service.FetchReportResultRowsResponse(
+                rows=[],
+                next_page_token="def",
+            ),
+            report_service.FetchReportResultRowsResponse(
+                rows=[
+                    report_service.Report.DataTable.Row(),
+                ],
+                next_page_token="ghi",
+            ),
+            report_service.FetchReportResultRowsResponse(
+                rows=[
+                    report_service.Report.DataTable.Row(),
+                    report_service.Report.DataTable.Row(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            report_service.FetchReportResultRowsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"name": "networks/sample1/reports/sample2/results/sample3"}
+
+        pager = client.fetch_report_result_rows(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, report_service.Report.DataTable.Row) for i in results)
+
+        pages = list(client.fetch_report_result_rows(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_credentials_transport_error():
@@ -1365,7 +3279,12 @@ def test_report_service_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "export_saved_report",
+        "get_report",
+        "list_reports",
+        "create_report",
+        "update_report",
+        "run_report",
+        "fetch_report_result_rows",
         "get_operation",
     )
     for method in methods:
@@ -1520,14 +3439,49 @@ def test_report_service_client_transport_session_collision(transport_name):
         credentials=creds2,
         transport=transport_name,
     )
-    session1 = client1.transport.export_saved_report._session
-    session2 = client2.transport.export_saved_report._session
+    session1 = client1.transport.get_report._session
+    session2 = client2.transport.get_report._session
+    assert session1 != session2
+    session1 = client1.transport.list_reports._session
+    session2 = client2.transport.list_reports._session
+    assert session1 != session2
+    session1 = client1.transport.create_report._session
+    session2 = client2.transport.create_report._session
+    assert session1 != session2
+    session1 = client1.transport.update_report._session
+    session2 = client2.transport.update_report._session
+    assert session1 != session2
+    session1 = client1.transport.run_report._session
+    session2 = client2.transport.run_report._session
+    assert session1 != session2
+    session1 = client1.transport.fetch_report_result_rows._session
+    session2 = client2.transport.fetch_report_result_rows._session
     assert session1 != session2
 
 
-def test_report_path():
+def test_network_path():
     network_code = "squid"
-    report = "clam"
+    expected = "networks/{network_code}".format(
+        network_code=network_code,
+    )
+    actual = ReportServiceClient.network_path(network_code)
+    assert expected == actual
+
+
+def test_parse_network_path():
+    expected = {
+        "network_code": "clam",
+    }
+    path = ReportServiceClient.network_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ReportServiceClient.parse_network_path(path)
+    assert expected == actual
+
+
+def test_report_path():
+    network_code = "whelk"
+    report = "octopus"
     expected = "networks/{network_code}/reports/{report}".format(
         network_code=network_code,
         report=report,
@@ -1538,8 +3492,8 @@ def test_report_path():
 
 def test_parse_report_path():
     expected = {
-        "network_code": "whelk",
-        "report": "octopus",
+        "network_code": "oyster",
+        "report": "nudibranch",
     }
     path = ReportServiceClient.report_path(**expected)
 
@@ -1549,7 +3503,7 @@ def test_parse_report_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1559,7 +3513,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "mussel",
     }
     path = ReportServiceClient.common_billing_account_path(**expected)
 
@@ -1569,7 +3523,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -1579,7 +3533,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "nautilus",
     }
     path = ReportServiceClient.common_folder_path(**expected)
 
@@ -1589,7 +3543,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -1599,7 +3553,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "abalone",
     }
     path = ReportServiceClient.common_organization_path(**expected)
 
@@ -1609,7 +3563,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -1619,7 +3573,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "clam",
     }
     path = ReportServiceClient.common_project_path(**expected)
 
@@ -1629,8 +3583,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -1641,8 +3595,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = ReportServiceClient.common_location_path(**expected)
 
@@ -1684,7 +3638,7 @@ def test_get_operation_rest_bad_request(
 
     request = request_type()
     request = json_format.ParseDict(
-        {"name": "networks/sample1/operations/reports/exports/sample2"}, request
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -1711,7 +3665,7 @@ def test_get_operation_rest(request_type):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request_init = {"name": "networks/sample1/operations/reports/exports/sample2"}
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:

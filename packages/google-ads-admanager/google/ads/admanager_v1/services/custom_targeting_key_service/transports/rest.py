@@ -38,7 +38,10 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.ads.admanager_v1.types import custom_targeting_key_service
+from google.ads.admanager_v1.types import (
+    custom_targeting_key_messages,
+    custom_targeting_key_service,
+)
 
 from .base import CustomTargetingKeyServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -103,8 +106,8 @@ class CustomTargetingKeyServiceRestInterceptor:
         return request, metadata
 
     def post_get_custom_targeting_key(
-        self, response: custom_targeting_key_service.CustomTargetingKey
-    ) -> custom_targeting_key_service.CustomTargetingKey:
+        self, response: custom_targeting_key_messages.CustomTargetingKey
+    ) -> custom_targeting_key_messages.CustomTargetingKey:
         """Post-rpc interceptor for get_custom_targeting_key
 
         Override in a subclass to manipulate the response
@@ -280,7 +283,7 @@ class CustomTargetingKeyServiceRestTransport(CustomTargetingKeyServiceTransport)
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> custom_targeting_key_service.CustomTargetingKey:
+        ) -> custom_targeting_key_messages.CustomTargetingKey:
             r"""Call the get custom targeting key method over HTTP.
 
             Args:
@@ -293,7 +296,7 @@ class CustomTargetingKeyServiceRestTransport(CustomTargetingKeyServiceTransport)
                     sent along with the request as metadata.
 
             Returns:
-                ~.custom_targeting_key_service.CustomTargetingKey:
+                ~.custom_targeting_key_messages.CustomTargetingKey:
                     The ``CustomTargetingKey`` resource.
             """
 
@@ -341,8 +344,8 @@ class CustomTargetingKeyServiceRestTransport(CustomTargetingKeyServiceTransport)
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = custom_targeting_key_service.CustomTargetingKey()
-            pb_resp = custom_targeting_key_service.CustomTargetingKey.pb(resp)
+            resp = custom_targeting_key_messages.CustomTargetingKey()
+            pb_resp = custom_targeting_key_messages.CustomTargetingKey.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_custom_targeting_key(resp)
@@ -447,7 +450,7 @@ class CustomTargetingKeyServiceRestTransport(CustomTargetingKeyServiceTransport)
         self,
     ) -> Callable[
         [custom_targeting_key_service.GetCustomTargetingKeyRequest],
-        custom_targeting_key_service.CustomTargetingKey,
+        custom_targeting_key_messages.CustomTargetingKey,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -495,11 +498,11 @@ class CustomTargetingKeyServiceRestTransport(CustomTargetingKeyServiceTransport)
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                 },
             ]
 

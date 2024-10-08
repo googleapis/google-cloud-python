@@ -50,7 +50,13 @@ from google.ads.admanager_v1.services.order_service import (
     pagers,
     transports,
 )
-from google.ads.admanager_v1.types import applied_label, order_service
+from google.ads.admanager_v1.types import (
+    applied_label,
+    custom_field_value,
+    order_enums,
+    order_messages,
+    order_service,
+)
 
 
 def client_cert_source_callback():
@@ -956,7 +962,7 @@ def test_get_order_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = order_service.Order(
+        return_value = order_messages.Order(
             name="name_value",
             order_id=840,
             display_name="display_name_value",
@@ -970,12 +976,13 @@ def test_get_order_rest(request_type):
             effective_teams=["effective_teams_value"],
             creator="creator_value",
             currency_code="currency_code_value",
+            unlimited_end_time=True,
             external_order_id=1802,
             archived=True,
             last_modified_by_app="last_modified_by_app_value",
             notes="notes_value",
             po_number="po_number_value",
-            status=order_service.Order.Status.DRAFT,
+            status=order_enums.OrderStatusEnum.OrderStatus.DRAFT,
             salesperson="salesperson_value",
             secondary_salespeople=["secondary_salespeople_value"],
             secondary_traffickers=["secondary_traffickers_value"],
@@ -985,7 +992,7 @@ def test_get_order_rest(request_type):
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = order_service.Order.pb(return_value)
+        return_value = order_messages.Order.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -993,7 +1000,7 @@ def test_get_order_rest(request_type):
         response = client.get_order(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, order_service.Order)
+    assert isinstance(response, order_messages.Order)
     assert response.name == "name_value"
     assert response.order_id == 840
     assert response.display_name == "display_name_value"
@@ -1007,12 +1014,13 @@ def test_get_order_rest(request_type):
     assert response.effective_teams == ["effective_teams_value"]
     assert response.creator == "creator_value"
     assert response.currency_code == "currency_code_value"
+    assert response.unlimited_end_time is True
     assert response.external_order_id == 1802
     assert response.archived is True
     assert response.last_modified_by_app == "last_modified_by_app_value"
     assert response.notes == "notes_value"
     assert response.po_number == "po_number_value"
-    assert response.status == order_service.Order.Status.DRAFT
+    assert response.status == order_enums.OrderStatusEnum.OrderStatus.DRAFT
     assert response.salesperson == "salesperson_value"
     assert response.secondary_salespeople == ["secondary_salespeople_value"]
     assert response.secondary_traffickers == ["secondary_traffickers_value"]
@@ -1092,7 +1100,7 @@ def test_get_order_rest_required_fields(request_type=order_service.GetOrderReque
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = order_service.Order()
+    return_value = order_messages.Order()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -1113,7 +1121,7 @@ def test_get_order_rest_required_fields(request_type=order_service.GetOrderReque
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = order_service.Order.pb(return_value)
+            return_value = order_messages.Order.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -1166,7 +1174,7 @@ def test_get_order_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = order_service.Order.to_json(order_service.Order())
+        req.return_value._content = order_messages.Order.to_json(order_messages.Order())
 
         request = order_service.GetOrderRequest()
         metadata = [
@@ -1174,7 +1182,7 @@ def test_get_order_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = order_service.Order()
+        post.return_value = order_messages.Order()
 
         client.get_order(
             request,
@@ -1221,7 +1229,7 @@ def test_get_order_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = order_service.Order()
+        return_value = order_messages.Order()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"name": "networks/sample1/orders/sample2"}
@@ -1236,7 +1244,7 @@ def test_get_order_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = order_service.Order.pb(return_value)
+        return_value = order_messages.Order.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1603,9 +1611,9 @@ def test_list_orders_rest_pager(transport: str = "rest"):
         response = (
             order_service.ListOrdersResponse(
                 orders=[
-                    order_service.Order(),
-                    order_service.Order(),
-                    order_service.Order(),
+                    order_messages.Order(),
+                    order_messages.Order(),
+                    order_messages.Order(),
                 ],
                 next_page_token="abc",
             ),
@@ -1615,14 +1623,14 @@ def test_list_orders_rest_pager(transport: str = "rest"):
             ),
             order_service.ListOrdersResponse(
                 orders=[
-                    order_service.Order(),
+                    order_messages.Order(),
                 ],
                 next_page_token="ghi",
             ),
             order_service.ListOrdersResponse(
                 orders=[
-                    order_service.Order(),
-                    order_service.Order(),
+                    order_messages.Order(),
+                    order_messages.Order(),
                 ],
             ),
         )
@@ -1643,7 +1651,7 @@ def test_list_orders_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, order_service.Order) for i in results)
+        assert all(isinstance(i, order_messages.Order) for i in results)
 
         pages = list(client.list_orders(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -1948,9 +1956,32 @@ def test_parse_contact_path():
     assert expected == actual
 
 
-def test_label_path():
+def test_custom_field_path():
     network_code = "winkle"
-    label = "nautilus"
+    custom_field = "nautilus"
+    expected = "networks/{network_code}/customFields/{custom_field}".format(
+        network_code=network_code,
+        custom_field=custom_field,
+    )
+    actual = OrderServiceClient.custom_field_path(network_code, custom_field)
+    assert expected == actual
+
+
+def test_parse_custom_field_path():
+    expected = {
+        "network_code": "scallop",
+        "custom_field": "abalone",
+    }
+    path = OrderServiceClient.custom_field_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = OrderServiceClient.parse_custom_field_path(path)
+    assert expected == actual
+
+
+def test_label_path():
+    network_code = "squid"
+    label = "clam"
     expected = "networks/{network_code}/labels/{label}".format(
         network_code=network_code,
         label=label,
@@ -1961,8 +1992,8 @@ def test_label_path():
 
 def test_parse_label_path():
     expected = {
-        "network_code": "scallop",
-        "label": "abalone",
+        "network_code": "whelk",
+        "label": "octopus",
     }
     path = OrderServiceClient.label_path(**expected)
 
@@ -1972,7 +2003,7 @@ def test_parse_label_path():
 
 
 def test_network_path():
-    network_code = "squid"
+    network_code = "oyster"
     expected = "networks/{network_code}".format(
         network_code=network_code,
     )
@@ -1982,7 +2013,7 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "network_code": "clam",
+        "network_code": "nudibranch",
     }
     path = OrderServiceClient.network_path(**expected)
 
@@ -1992,8 +2023,8 @@ def test_parse_network_path():
 
 
 def test_order_path():
-    network_code = "whelk"
-    order = "octopus"
+    network_code = "cuttlefish"
+    order = "mussel"
     expected = "networks/{network_code}/orders/{order}".format(
         network_code=network_code,
         order=order,
@@ -2004,8 +2035,8 @@ def test_order_path():
 
 def test_parse_order_path():
     expected = {
-        "network_code": "oyster",
-        "order": "nudibranch",
+        "network_code": "winkle",
+        "order": "nautilus",
     }
     path = OrderServiceClient.order_path(**expected)
 
@@ -2015,8 +2046,8 @@ def test_parse_order_path():
 
 
 def test_team_path():
-    network_code = "cuttlefish"
-    team = "mussel"
+    network_code = "scallop"
+    team = "abalone"
     expected = "networks/{network_code}/teams/{team}".format(
         network_code=network_code,
         team=team,
@@ -2027,8 +2058,8 @@ def test_team_path():
 
 def test_parse_team_path():
     expected = {
-        "network_code": "winkle",
-        "team": "nautilus",
+        "network_code": "squid",
+        "team": "clam",
     }
     path = OrderServiceClient.team_path(**expected)
 
@@ -2038,8 +2069,8 @@ def test_parse_team_path():
 
 
 def test_user_path():
-    network_code = "scallop"
-    user = "abalone"
+    network_code = "whelk"
+    user = "octopus"
     expected = "networks/{network_code}/users/{user}".format(
         network_code=network_code,
         user=user,
@@ -2050,8 +2081,8 @@ def test_user_path():
 
 def test_parse_user_path():
     expected = {
-        "network_code": "squid",
-        "user": "clam",
+        "network_code": "oyster",
+        "user": "nudibranch",
     }
     path = OrderServiceClient.user_path(**expected)
 
@@ -2061,7 +2092,7 @@ def test_parse_user_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2071,7 +2102,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "mussel",
     }
     path = OrderServiceClient.common_billing_account_path(**expected)
 
@@ -2081,7 +2112,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -2091,7 +2122,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "nautilus",
     }
     path = OrderServiceClient.common_folder_path(**expected)
 
@@ -2101,7 +2132,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -2111,7 +2142,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "abalone",
     }
     path = OrderServiceClient.common_organization_path(**expected)
 
@@ -2121,7 +2152,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -2131,7 +2162,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "clam",
     }
     path = OrderServiceClient.common_project_path(**expected)
 
@@ -2141,8 +2172,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -2153,8 +2184,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = OrderServiceClient.common_location_path(**expected)
 
@@ -2196,7 +2227,7 @@ def test_get_operation_rest_bad_request(
 
     request = request_type()
     request = json_format.ParseDict(
-        {"name": "networks/sample1/operations/reports/exports/sample2"}, request
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2223,7 +2254,7 @@ def test_get_operation_rest(request_type):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request_init = {"name": "networks/sample1/operations/reports/exports/sample2"}
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:

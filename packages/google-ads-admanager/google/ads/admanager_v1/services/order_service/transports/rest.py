@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.ads.admanager_v1.types import order_service
+from google.ads.admanager_v1.types import order_messages, order_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import OrderServiceTransport
@@ -99,7 +99,7 @@ class OrderServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_order(self, response: order_service.Order) -> order_service.Order:
+    def post_get_order(self, response: order_messages.Order) -> order_messages.Order:
         """Post-rpc interceptor for get_order
 
         Override in a subclass to manipulate the response
@@ -272,7 +272,7 @@ class OrderServiceRestTransport(OrderServiceTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> order_service.Order:
+        ) -> order_messages.Order:
             r"""Call the get order method over HTTP.
 
             Args:
@@ -285,7 +285,7 @@ class OrderServiceRestTransport(OrderServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.order_service.Order:
+                ~.order_messages.Order:
                     The ``Order`` resource.
             """
 
@@ -329,8 +329,8 @@ class OrderServiceRestTransport(OrderServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = order_service.Order()
-            pb_resp = order_service.Order.pb(resp)
+            resp = order_messages.Order()
+            pb_resp = order_messages.Order.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_order(resp)
@@ -426,7 +426,7 @@ class OrderServiceRestTransport(OrderServiceTransport):
     @property
     def get_order(
         self,
-    ) -> Callable[[order_service.GetOrderRequest], order_service.Order]:
+    ) -> Callable[[order_service.GetOrderRequest], order_messages.Order]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOrder(self._session, self._host, self._interceptor)  # type: ignore
@@ -470,11 +470,11 @@ class OrderServiceRestTransport(OrderServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
+                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                 },
             ]
 

@@ -26,7 +26,10 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.ads.admanager_v1 import gapic_version as package_version
-from google.ads.admanager_v1.types import custom_targeting_key_service
+from google.ads.admanager_v1.types import (
+    custom_targeting_key_messages,
+    custom_targeting_key_service,
+)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -156,8 +159,8 @@ class CustomTargetingKeyServiceTransport(abc.ABC):
     ) -> Callable[
         [custom_targeting_key_service.GetCustomTargetingKeyRequest],
         Union[
-            custom_targeting_key_service.CustomTargetingKey,
-            Awaitable[custom_targeting_key_service.CustomTargetingKey],
+            custom_targeting_key_messages.CustomTargetingKey,
+            Awaitable[custom_targeting_key_messages.CustomTargetingKey],
         ],
     ]:
         raise NotImplementedError()
