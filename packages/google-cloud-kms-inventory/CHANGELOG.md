@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.8...google-cloud-kms-inventory-v0.2.9) (2024-10-08)
+
+
+### Bug Fixes
+
+* **deps:** allow google-cloud-kms 3.x ([bd7ac53](https://github.com/googleapis/google-cloud-python/commit/bd7ac5328808f9aadfad08404348bc1cc473ff08))
+
 ## [0.2.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.7...google-cloud-kms-inventory-v0.2.8) (2024-07-30)
 
 

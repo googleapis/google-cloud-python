@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.15.7...google-cloud-bigquery-datatransfer-v3.16.0) (2024-10-08)
+
+
+### Features
+
+* Add scheduleOptionsV2 and Error fields for TransferConfig ([052585c](https://github.com/googleapis/google-cloud-python/commit/052585c63dfa172b7f88fdb5882eda446fc47bfe))
+
 ## [3.15.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.15.6...google-cloud-bigquery-datatransfer-v3.15.7) (2024-09-04)
 
 

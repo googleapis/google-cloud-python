@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.29](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.28...google-cloud-batch-v0.17.29) (2024-10-08)
+
+
+### Documentation
+
+* Clarify Batch only supports global custom instance template now ([023d099](https://github.com/googleapis/google-cloud-python/commit/023d09955a2b4e013a3506d2dbed45c3e7e4a696))
+
 ## [0.17.28](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.27...google-cloud-batch-v0.17.28) (2024-09-16)
 
 

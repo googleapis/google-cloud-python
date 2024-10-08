@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.3...google-cloud-parallelstore-v0.2.4) (2024-10-08)
+
+
+### Features
+
+* [google-cloud-parallelstore] adding v1 version of our api ([7f9bc3a](https://github.com/googleapis/google-cloud-python/commit/7f9bc3a7a504956eaf6eff5b80d77a15eda9e0b6))
+* add UPGRADING state to Parallelstore state ([7f9bc3a](https://github.com/googleapis/google-cloud-python/commit/7f9bc3a7a504956eaf6eff5b80d77a15eda9e0b6))
+
+
+### Documentation
+
+* [google-cloud-parallelstore] cleanup of Parallelstore API descriptions ([7f9bc3a](https://github.com/googleapis/google-cloud-python/commit/7f9bc3a7a504956eaf6eff5b80d77a15eda9e0b6))
+* [google-cloud-parallelstore] minor documentation formatting fix for Parallelstore ([7f9bc3a](https://github.com/googleapis/google-cloud-python/commit/7f9bc3a7a504956eaf6eff5b80d77a15eda9e0b6))
+* minor documentation formatting fix for Parallelstore ([7f9bc3a](https://github.com/googleapis/google-cloud-python/commit/7f9bc3a7a504956eaf6eff5b80d77a15eda9e0b6))
+
 ## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.2...google-cloud-parallelstore-v0.2.3) (2024-08-01)
 
 

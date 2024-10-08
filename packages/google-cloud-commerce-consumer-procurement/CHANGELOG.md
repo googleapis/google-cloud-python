@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-commerce-consumer-procurement-v0.1.7...google-cloud-commerce-consumer-procurement-v0.1.8) (2024-10-08)
+
+
+### Features
+
+* add Order modification RPCs and License Management Service ([852d797](https://github.com/googleapis/google-cloud-python/commit/852d797f21d4809c32d98b384c60bf9852b14216))
+
+
+### Documentation
+
+* A comment for enum value `LINE_ITEM_CHANGE_STATE_ABANDONED` in enum `LineItemChangeState` is changed ([852d797](https://github.com/googleapis/google-cloud-python/commit/852d797f21d4809c32d98b384c60bf9852b14216))
+* A comment for enum value `LINE_ITEM_CHANGE_STATE_ACTIVATING` in enum `LineItemChangeState` is changed ([852d797](https://github.com/googleapis/google-cloud-python/commit/852d797f21d4809c32d98b384c60bf9852b14216))
+* A comment for enum value `LINE_ITEM_CHANGE_STATE_APPROVED` in enum `LineItemChangeState` is changed ([852d797](https://github.com/googleapis/google-cloud-python/commit/852d797f21d4809c32d98b384c60bf9852b14216))
+* A comment for enum value `LINE_ITEM_CHANGE_STATE_COMPLETED` in enum `LineItemChangeState` is changed ([852d797](https://github.com/googleapis/google-cloud-python/commit/852d797f21d4809c32d98b384c60bf9852b14216))
+* A comment for enum value `LINE_ITEM_CHANGE_STATE_PENDING_APPROVAL` in enum `LineItemChangeState` is changed ([852d797](https://github.com/googleapis/google-cloud-python/commit/852d797f21d4809c32d98b384c60bf9852b14216))
+* A comment for enum value `LINE_ITEM_CHANGE_STATE_REJECTED` in enum `LineItemChangeState` is changed ([852d797](https://github.com/googleapis/google-cloud-python/commit/852d797f21d4809c32d98b384c60bf9852b14216))
+* A comment for field `filter` in message `.google.cloud.commerce.consumer.procurement.v1.ListOrdersRequest` is changed ([852d797](https://github.com/googleapis/google-cloud-python/commit/852d797f21d4809c32d98b384c60bf9852b14216))
+* A comment for field `request_id` in message `.google.cloud.commerce.consumer.procurement.v1.PlaceOrderRequest` is changed ([852d797](https://github.com/googleapis/google-cloud-python/commit/852d797f21d4809c32d98b384c60bf9852b14216))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-commerce-consumer-procurement-v0.1.6...google-cloud-commerce-consumer-procurement-v0.1.7) (2024-07-30)
 
 
