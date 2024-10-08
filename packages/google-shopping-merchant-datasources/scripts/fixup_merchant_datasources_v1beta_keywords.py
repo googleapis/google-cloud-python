@@ -43,6 +43,7 @@ class merchant_datasourcesCallTransformer(cst.CSTTransformer):
         'delete_data_source': ('name', ),
         'fetch_data_source': ('name', ),
         'get_data_source': ('name', ),
+        'get_file_upload': ('name', ),
         'list_data_sources': ('parent', 'page_size', 'page_token', ),
         'update_data_source': ('data_source', 'update_mask', ),
     }

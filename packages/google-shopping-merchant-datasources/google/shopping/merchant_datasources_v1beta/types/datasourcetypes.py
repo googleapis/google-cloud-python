@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
         "LocalInventoryDataSource",
         "RegionalInventoryDataSource",
         "PromotionDataSource",
+        "DataSourceReference",
     },
 )
 
@@ -76,6 +77,10 @@ class PrimaryProductDataSource(proto.Message):
             Optional. The countries where the items may be displayed.
             Represented as a `CLDR territory
             code <https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml>`__.
+        default_rule (google.shopping.merchant_datasources_v1beta.types.PrimaryProductDataSource.DefaultRule):
+            Optional. Default rule management of the data
+            source. If set, the linked data sources will be
+            replaced.
     """
 
     class Channel(proto.Enum):
@@ -93,12 +98,52 @@ class PrimaryProductDataSource(proto.Message):
                 Local product.
             PRODUCTS (3):
                 Unified data source for both local and online
-                products.
+                products. Note: Products management through the
+                API is not possible for this channel.
         """
         CHANNEL_UNSPECIFIED = 0
         ONLINE_PRODUCTS = 1
         LOCAL_PRODUCTS = 2
         PRODUCTS = 3
+
+    class DefaultRule(proto.Message):
+        r"""Default rule management of the data source.
+
+        Attributes:
+            take_from_data_sources (MutableSequence[google.shopping.merchant_datasources_v1beta.types.DataSourceReference]):
+                Required. The list of data sources linked in the `default
+                rule <https://support.google.com/merchants/answer/7450276>`__.
+                This list is ordered by the default rule priority of joining
+                the data. It might include none or multiple references to
+                ``self`` and supplemental data sources.
+
+                The list must not be empty.
+
+                To link the data source to the default rule, you need to add
+                a new reference to this list (in sequential order).
+
+                To unlink the data source from the default rule, you need to
+                remove the given reference from this list. To create
+                attribute rules that are different from the default rule,
+                see `Set up your attribute
+                rules <//support.google.com/merchants/answer/14994083>`__.
+
+                Changing the order of this list will result in changing the
+                priority of data sources in the default rule.
+
+                For example, providing the following list: [``1001``,
+                ``self``] will take attribute values from supplemental data
+                source ``1001``, and fallback to ``self`` if the attribute
+                is not set in ``1001``.
+        """
+
+        take_from_data_sources: MutableSequence[
+            "DataSourceReference"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="DataSourceReference",
+        )
 
     channel: Channel = proto.Field(
         proto.ENUM,
@@ -119,10 +164,22 @@ class PrimaryProductDataSource(proto.Message):
         proto.STRING,
         number=6,
     )
+    default_rule: DefaultRule = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=DefaultRule,
+    )
 
 
 class SupplementalProductDataSource(proto.Message):
     r"""The supplemental data source for local and online products.
+    Supplemental API data sources must not have ``feedLabel`` and
+    ``contentLanguage`` fields set. You can only use supplemental data
+    sources to update existing products. For information about creating
+    a supplemental data source, see `Create a supplemental data source
+    and link it to the primary data
+    source </merchant/api/guides/data-sources/overview#create-supplemental-data-source>`__.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -159,6 +216,12 @@ class SupplementalProductDataSource(proto.Message):
             produts without that restriction.
 
             This field is a member of `oneof`_ ``_content_language``.
+        referencing_primary_data_sources (MutableSequence[google.shopping.merchant_datasources_v1beta.types.DataSourceReference]):
+            Output only. The (unordered and deduplicated)
+            list of all primary data sources linked to this
+            data source in either default or custom rules.
+            Supplemental data source cannot be deleted
+            before all links are removed.
     """
 
     feed_label: str = proto.Field(
@@ -170,6 +233,13 @@ class SupplementalProductDataSource(proto.Message):
         proto.STRING,
         number=5,
         optional=True,
+    )
+    referencing_primary_data_sources: MutableSequence[
+        "DataSourceReference"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message="DataSourceReference",
     )
 
 
@@ -254,6 +324,52 @@ class PromotionDataSource(proto.Message):
     content_language: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class DataSourceReference(proto.Message):
+    r"""Data source reference can be used to manage related data
+    sources within the data source service.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        self_ (bool):
+            Self should be used to reference the primary
+            data source itself.
+
+            This field is a member of `oneof`_ ``data_source_id``.
+        primary_data_source_name (str):
+            Optional. The name of the primary data source. Format:
+            ``accounts/{account}/dataSources/{datasource}``
+
+            This field is a member of `oneof`_ ``data_source_id``.
+        supplemental_data_source_name (str):
+            Optional. The name of the supplemental data source. Format:
+            ``accounts/{account}/dataSources/{datasource}``
+
+            This field is a member of `oneof`_ ``data_source_id``.
+    """
+
+    self_: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        oneof="data_source_id",
+    )
+    primary_data_source_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="data_source_id",
+    )
+    supplemental_data_source_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="data_source_id",
     )
 
 

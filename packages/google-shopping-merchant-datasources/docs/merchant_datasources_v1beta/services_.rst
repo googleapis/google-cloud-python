@@ -4,3 +4,4 @@ Services for Google Shopping Merchant Datasources v1beta API
     :maxdepth: 2
 
     data_sources_service
+    file_uploads_service
