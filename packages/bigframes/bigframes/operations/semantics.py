@@ -18,6 +18,8 @@ import typing
 from typing import List, Optional
 
 import bigframes
+import bigframes.core.guid
+import bigframes.dtypes as dtypes
 
 
 class Semantics:
@@ -27,6 +29,171 @@ class Semantics:
 
         self._df = df
 
+    def agg(
+        self,
+        instruction: str,
+        model,
+        cluster_column: typing.Optional[str] = None,
+        max_agg_rows: int = 10,
+    ):
+        """
+        Performs an aggregation over all rows of the table.
+
+        This method recursively aggregates the input data to produce partial answers
+        in parallel, until a single answer remains.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> bpd.options.experiments.semantic_operators = True
+
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
+
+            >>> df = bpd.DataFrame(
+            ... {
+            ...     "Movies": [
+            ...         "Titanic",
+            ...         "The Wolf of Wall Street",
+            ...         "Inception",
+            ...     ],
+            ...     "Year": [1997, 2013, 2010],
+            ... })
+            >>> df.semantics.agg(
+            ...     "Find the first name shared by all actors in {Movies}. One word answer.",
+            ...     model=model,
+            ... )
+            0    Leonardo
+            <BLANKLINE>
+            Name: Movies, dtype: string
+
+        Args:
+            instruction (str):
+                An instruction on how to map the data. This value must contain
+                column references by name enclosed in braces.
+                For example, to reference a column named "movies", use "{movies}" in the
+                instruction, like: "Find actor names shared by all {movies}."
+
+            model (bigframes.ml.llm.GeminiTextGenerator):
+                A GeminiTextGenerator provided by the Bigframes ML package.
+
+            cluster_column (Optional[str], default None):
+                If set, aggregates each cluster before performing aggregations across
+                clusters. Clustering based on semantic similarity can improve accuracy
+                of the sementic aggregations.
+
+            max_agg_rows (int, default 10):
+                The maxinum number of rows to be aggregated at a time.
+
+        Returns:
+            bigframes.dataframe.DataFrame: A new DataFrame with the aggregated answers.
+
+        Raises:
+            NotImplementedError: when the semantic operator experiment is off.
+            ValueError: when the instruction refers to a non-existing column, or when
+                more than one columns are referred to.
+        """
+        self._validate_model(model)
+
+        columns = self._parse_columns(instruction)
+        for column in columns:
+            if column not in self._df.columns:
+                raise ValueError(f"Column {column} not found.")
+        if len(columns) > 1:
+            raise NotImplementedError(
+                "Semantic aggregations are limited to a single column."
+            )
+        column = columns[0]
+
+        if max_agg_rows <= 1:
+            raise ValueError(
+                f"Invalid value for `max_agg_rows`: {max_agg_rows}."
+                "It must be greater than 1."
+            )
+
+        import bigframes.bigquery as bbq
+        import bigframes.dataframe
+        import bigframes.series
+
+        df: bigframes.dataframe.DataFrame = self._df.copy()
+        user_instruction = self._format_instruction(instruction, columns)
+
+        num_cluster = 1
+        if cluster_column is not None:
+            if cluster_column not in df.columns:
+                raise ValueError(f"Cluster column `{cluster_column}` not found.")
+
+            if df[cluster_column].dtype != dtypes.INT_DTYPE:
+                raise TypeError(
+                    "Cluster column must be an integer type, not "
+                    f"{type(df[cluster_column])}"
+                )
+
+            num_cluster = len(df[cluster_column].unique())
+            df = df.sort_values(cluster_column)
+        else:
+            cluster_column = bigframes.core.guid.generate_guid("pid")
+            df[cluster_column] = 0
+
+        aggregation_group_id = bigframes.core.guid.generate_guid("agg")
+        group_row_index = bigframes.core.guid.generate_guid("gid")
+        llm_prompt = bigframes.core.guid.generate_guid("prompt")
+        df = (
+            df.reset_index(drop=True)
+            .reset_index()
+            .rename(columns={"index": aggregation_group_id})
+        )
+
+        output_instruction = (
+            "Answer user instructions using the provided context from various sources. "
+            "Combine all relevant information into a single, concise, well-structured response. "
+            f"Instruction: {user_instruction}.\n\n"
+        )
+
+        while len(df) > 1:
+            df[group_row_index] = (df[aggregation_group_id] % max_agg_rows + 1).astype(
+                dtypes.STRING_DTYPE
+            )
+            df[aggregation_group_id] = (df[aggregation_group_id] / max_agg_rows).astype(
+                dtypes.INT_DTYPE
+            )
+            df[llm_prompt] = "\t\nSource #" + df[group_row_index] + ": " + df[column]
+
+            if len(df) > num_cluster:
+                # Aggregate within each partition
+                agg_df = bbq.array_agg(
+                    df.groupby(by=[cluster_column, aggregation_group_id])
+                )
+            else:
+                # Aggregate cross partitions
+                agg_df = bbq.array_agg(df.groupby(by=[aggregation_group_id]))
+                agg_df[cluster_column] = agg_df[cluster_column].list[0]
+
+            # Skip if the aggregated group only has a single item
+            single_row_df: bigframes.series.Series = bbq.array_to_string(
+                agg_df[agg_df[group_row_index].list.len() <= 1][column],
+                delimiter="",
+            )
+            prompt_s: bigframes.series.Series = bbq.array_to_string(
+                agg_df[agg_df[group_row_index].list.len() > 1][llm_prompt],
+                delimiter="",
+            )
+            prompt_s = output_instruction + prompt_s  # type:ignore
+
+            # Run model
+            predict_df = typing.cast(
+                bigframes.dataframe.DataFrame, model.predict(prompt_s)
+            )
+            agg_df[column] = predict_df["ml_generate_text_llm_result"].combine_first(
+                single_row_df
+            )
+
+            agg_df = agg_df.reset_index()
+            df = agg_df[[aggregation_group_id, cluster_column, column]]
+
+        return df[column]
+
     def filter(self, instruction: str, model):
         """
         Filters the DataFrame with the semantics of the user instruction.
@@ -35,9 +202,7 @@ class Semantics:
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
-
-            >>> import bigframes
-            >>> bigframes.options.experiments.semantic_operators = True
+            >>> bpd.options.experiments.semantic_operators = True
 
             >>> import bigframes.ml.llm as llm
             >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
@@ -68,14 +233,22 @@ class Semantics:
             ValueError: when the instruction refers to a non-existing column, or when no
                 columns are referred to.
         """
-        _validate_model(model)
+        self._validate_model(model)
+        columns = self._parse_columns(instruction)
+        for column in columns:
+            if column not in self._df.columns:
+                raise ValueError(f"Column {column} not found.")
 
+        user_instruction = self._format_instruction(instruction, columns)
         output_instruction = "Based on the provided context, reply to the following claim by only True or False:"
 
         from bigframes.dataframe import DataFrame
 
         results = typing.cast(
-            DataFrame, model.predict(self._make_prompt(instruction, output_instruction))
+            DataFrame,
+            model.predict(
+                self._make_prompt(columns, user_instruction, output_instruction)
+            ),
         )
 
         return self._df[
@@ -90,9 +263,7 @@ class Semantics:
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
-
-            >>> import bigframes
-            >>> bigframes.options.experiments.semantic_operators = True
+            >>> bpd.options.experiments.semantic_operators = True
 
             >>> import bigframes.ml.llm as llm
             >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
@@ -129,8 +300,13 @@ class Semantics:
             ValueError: when the instruction refers to a non-existing column, or when no
                 columns are referred to.
         """
-        _validate_model(model)
+        self._validate_model(model)
+        columns = self._parse_columns(instruction)
+        for column in columns:
+            if column not in self._df.columns:
+                raise ValueError(f"Column {column} not found.")
 
+        user_instruction = self._format_instruction(instruction, columns)
         output_instruction = (
             "Based on the provided contenxt, answer the following instruction:"
         )
@@ -139,33 +315,14 @@ class Semantics:
 
         results = typing.cast(
             Series,
-            model.predict(self._make_prompt(instruction, output_instruction))[
-                "ml_generate_text_llm_result"
-            ],
+            model.predict(
+                self._make_prompt(columns, user_instruction, output_instruction)
+            )["ml_generate_text_llm_result"],
         )
 
         from bigframes.core.reshape import concat
 
         return concat([self._df, results.rename(output_column)], axis=1)
-
-    def _make_prompt(self, user_instruction: str, output_instruction: str):
-        columns = _parse_columns(user_instruction)
-
-        for column in columns:
-            if column not in self._df.columns:
-                raise ValueError(f"Column {column} not found.")
-
-        # Replace column references with names.
-        user_instruction = user_instruction.format(**{col: col for col in columns})
-
-        prompt_df = self._df[columns].copy()
-        prompt_df["prompt"] = f"{output_instruction}\n{user_instruction}\nContext: "
-
-        # Combine context from multiple columns.
-        for col in columns:
-            prompt_df["prompt"] += f"{col} is `" + prompt_df[col] + "`\n"
-
-        return prompt_df["prompt"]
 
     def join(self, other, instruction: str, model, max_rows: int = 1000):
         """
@@ -176,9 +333,7 @@ class Semantics:
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
-
-            >>> import bigframes
-            >>> bigframes.options.experiments.semantic_operators = True
+            >>> bpd.options.experiments.semantic_operators = True
 
             >>> import bigframes.ml.llm as llm
             >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
@@ -221,7 +376,8 @@ class Semantics:
         Raises:
             ValueError if the amount of data that will be sent for LLM processing is larger than max_rows.
         """
-        _validate_model(model)
+        self._validate_model(model)
+        columns = self._parse_columns(instruction)
 
         joined_table_rows = len(self._df) * len(other)
 
@@ -229,8 +385,6 @@ class Semantics:
             raise ValueError(
                 f"Number of rows that need processing is {joined_table_rows}, which exceeds row limit {max_rows}."
             )
-
-        columns = _parse_columns(instruction)
 
         left_columns = []
         right_columns = []
@@ -373,18 +527,40 @@ class Semantics:
 
         return typing.cast(bigframes.dataframe.DataFrame, search_result)
 
+    def _make_prompt(
+        self, columns: List[str], user_instruction: str, output_instruction: str
+    ):
+        prompt_df = self._df[columns].copy()
+        prompt_df["prompt"] = f"{output_instruction}\n{user_instruction}\nContext: "
 
-def _validate_model(model):
-    from bigframes.ml.llm import GeminiTextGenerator
+        # Combine context from multiple columns.
+        for col in columns:
+            prompt_df["prompt"] += f"{col} is `" + prompt_df[col] + "`\n"
 
-    if not isinstance(model, GeminiTextGenerator):
-        raise ValueError("Model is not GeminiText Generator")
+        return prompt_df["prompt"]
 
+    def _parse_columns(self, instruction: str) -> List[str]:
+        """Extracts column names enclosed in curly braces from the user instruction.
+        For example, _parse_columns("{city} is in {continent}") == ["city", "continent"]
+        """
+        columns = re.findall(r"(?<!{)\{(?!{)(.*?)\}(?!\})", instruction)
 
-def _parse_columns(instruction: str) -> List[str]:
-    columns = re.findall(r"(?<!{)\{(?!{)(.*?)\}(?!\})", instruction)
+        if not columns:
+            raise ValueError("No column references.")
 
-    if not columns:
-        raise ValueError("No column references")
+        return columns
 
-    return columns
+    @staticmethod
+    def _format_instruction(instruction: str, columns: List[str]) -> str:
+        """Extracts column names enclosed in curly braces from the user instruction.
+        For example, `_format_instruction(["city", "continent"], "{city} is in {continent}")
+         == "city is in continent"`
+        """
+        return instruction.format(**{col: col for col in columns})
+
+    @staticmethod
+    def _validate_model(model):
+        from bigframes.ml.llm import GeminiTextGenerator
+
+        if not isinstance(model, GeminiTextGenerator):
+            raise ValueError("Model is not GeminiText Generator")
