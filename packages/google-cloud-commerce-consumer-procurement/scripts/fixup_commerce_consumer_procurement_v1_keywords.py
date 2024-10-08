@@ -39,9 +39,16 @@ def partition(
 class commerce_consumer_procurementCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'assign': ('parent', 'usernames', ),
+        'cancel_order': ('name', 'etag', 'cancellation_policy', ),
+        'enumerate_licensed_users': ('parent', 'page_size', 'page_token', ),
+        'get_license_pool': ('name', ),
         'get_order': ('name', ),
         'list_orders': ('parent', 'page_size', 'page_token', 'filter', ),
+        'modify_order': ('name', 'modifications', 'display_name', 'etag', ),
         'place_order': ('parent', 'display_name', 'line_item_info', 'request_id', ),
+        'unassign': ('parent', 'usernames', ),
+        'update_license_pool': ('license_pool', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

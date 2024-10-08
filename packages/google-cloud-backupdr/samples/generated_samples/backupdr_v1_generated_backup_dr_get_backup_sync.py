@@ -15,15 +15,15 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for BatchProcessDocuments
+# Snippet for GetBackup
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-documentai
+#   python3 -m pip install google-cloud-backupdr
 
 
-# [START documentai_v1beta2_generated_DocumentUnderstandingService_BatchProcessDocuments_async]
+# [START backupdr_v1_generated_BackupDR_GetBackup_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -31,30 +31,22 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import documentai_v1beta2
+from google.cloud import backupdr_v1
 
 
-async def sample_batch_process_documents():
+def sample_get_backup():
     # Create a client
-    client = documentai_v1beta2.DocumentUnderstandingServiceAsyncClient()
+    client = backupdr_v1.BackupDRClient()
 
     # Initialize request argument(s)
-    requests = documentai_v1beta2.ProcessDocumentRequest()
-    requests.input_config.gcs_source.uri = "uri_value"
-    requests.input_config.mime_type = "mime_type_value"
-
-    request = documentai_v1beta2.BatchProcessDocumentsRequest(
-        requests=requests,
+    request = backupdr_v1.GetBackupRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.batch_process_documents(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = (await operation).result()
+    response = client.get_backup(request=request)
 
     # Handle the response
     print(response)
 
-# [END documentai_v1beta2_generated_DocumentUnderstandingService_BatchProcessDocuments_async]
+# [END backupdr_v1_generated_BackupDR_GetBackup_sync]

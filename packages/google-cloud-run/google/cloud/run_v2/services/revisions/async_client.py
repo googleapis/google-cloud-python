@@ -80,6 +80,8 @@ class RevisionsAsyncClient:
     parse_connector_path = staticmethod(RevisionsClient.parse_connector_path)
     crypto_key_path = staticmethod(RevisionsClient.crypto_key_path)
     parse_crypto_key_path = staticmethod(RevisionsClient.parse_crypto_key_path)
+    mesh_path = staticmethod(RevisionsClient.mesh_path)
+    parse_mesh_path = staticmethod(RevisionsClient.parse_mesh_path)
     revision_path = staticmethod(RevisionsClient.revision_path)
     parse_revision_path = staticmethod(RevisionsClient.parse_revision_path)
     secret_path = staticmethod(RevisionsClient.secret_path)

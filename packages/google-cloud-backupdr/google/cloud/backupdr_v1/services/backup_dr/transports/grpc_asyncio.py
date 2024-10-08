@@ -28,7 +28,12 @@ from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.backupdr_v1.types import backupdr
+from google.cloud.backupdr_v1.types import (
+    backupdr,
+    backupplan,
+    backupplanassociation,
+    backupvault,
+)
 
 from .base import DEFAULT_CLIENT_INFO, BackupDRTransport
 from .grpc import BackupDRGrpcTransport
@@ -374,6 +379,665 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
             )
         return self._stubs["delete_management_server"]
 
+    @property
+    def create_backup_vault(
+        self,
+    ) -> Callable[
+        [backupvault.CreateBackupVaultRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create backup vault method over gRPC.
+
+        Creates a new BackupVault in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateBackupVaultRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_backup_vault" not in self._stubs:
+            self._stubs["create_backup_vault"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/CreateBackupVault",
+                request_serializer=backupvault.CreateBackupVaultRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_backup_vault"]
+
+    @property
+    def list_backup_vaults(
+        self,
+    ) -> Callable[
+        [backupvault.ListBackupVaultsRequest],
+        Awaitable[backupvault.ListBackupVaultsResponse],
+    ]:
+        r"""Return a callable for the list backup vaults method over gRPC.
+
+        Lists BackupVaults in a given project and location.
+
+        Returns:
+            Callable[[~.ListBackupVaultsRequest],
+                    Awaitable[~.ListBackupVaultsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backup_vaults" not in self._stubs:
+            self._stubs["list_backup_vaults"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/ListBackupVaults",
+                request_serializer=backupvault.ListBackupVaultsRequest.serialize,
+                response_deserializer=backupvault.ListBackupVaultsResponse.deserialize,
+            )
+        return self._stubs["list_backup_vaults"]
+
+    @property
+    def fetch_usable_backup_vaults(
+        self,
+    ) -> Callable[
+        [backupvault.FetchUsableBackupVaultsRequest],
+        Awaitable[backupvault.FetchUsableBackupVaultsResponse],
+    ]:
+        r"""Return a callable for the fetch usable backup vaults method over gRPC.
+
+        FetchUsableBackupVaults lists usable BackupVaults in
+        a given project and location. Usable BackupVault are the
+        ones that user has backupdr.backupVaults.get permission.
+
+        Returns:
+            Callable[[~.FetchUsableBackupVaultsRequest],
+                    Awaitable[~.FetchUsableBackupVaultsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_usable_backup_vaults" not in self._stubs:
+            self._stubs["fetch_usable_backup_vaults"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/FetchUsableBackupVaults",
+                request_serializer=backupvault.FetchUsableBackupVaultsRequest.serialize,
+                response_deserializer=backupvault.FetchUsableBackupVaultsResponse.deserialize,
+            )
+        return self._stubs["fetch_usable_backup_vaults"]
+
+    @property
+    def get_backup_vault(
+        self,
+    ) -> Callable[
+        [backupvault.GetBackupVaultRequest], Awaitable[backupvault.BackupVault]
+    ]:
+        r"""Return a callable for the get backup vault method over gRPC.
+
+        Gets details of a BackupVault.
+
+        Returns:
+            Callable[[~.GetBackupVaultRequest],
+                    Awaitable[~.BackupVault]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup_vault" not in self._stubs:
+            self._stubs["get_backup_vault"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/GetBackupVault",
+                request_serializer=backupvault.GetBackupVaultRequest.serialize,
+                response_deserializer=backupvault.BackupVault.deserialize,
+            )
+        return self._stubs["get_backup_vault"]
+
+    @property
+    def update_backup_vault(
+        self,
+    ) -> Callable[
+        [backupvault.UpdateBackupVaultRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update backup vault method over gRPC.
+
+        Updates the settings of a BackupVault.
+
+        Returns:
+            Callable[[~.UpdateBackupVaultRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_backup_vault" not in self._stubs:
+            self._stubs["update_backup_vault"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/UpdateBackupVault",
+                request_serializer=backupvault.UpdateBackupVaultRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_backup_vault"]
+
+    @property
+    def delete_backup_vault(
+        self,
+    ) -> Callable[
+        [backupvault.DeleteBackupVaultRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete backup vault method over gRPC.
+
+        Deletes a BackupVault.
+
+        Returns:
+            Callable[[~.DeleteBackupVaultRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backup_vault" not in self._stubs:
+            self._stubs["delete_backup_vault"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/DeleteBackupVault",
+                request_serializer=backupvault.DeleteBackupVaultRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_backup_vault"]
+
+    @property
+    def list_data_sources(
+        self,
+    ) -> Callable[
+        [backupvault.ListDataSourcesRequest],
+        Awaitable[backupvault.ListDataSourcesResponse],
+    ]:
+        r"""Return a callable for the list data sources method over gRPC.
+
+        Lists DataSources in a given project and location.
+
+        Returns:
+            Callable[[~.ListDataSourcesRequest],
+                    Awaitable[~.ListDataSourcesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_data_sources" not in self._stubs:
+            self._stubs["list_data_sources"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/ListDataSources",
+                request_serializer=backupvault.ListDataSourcesRequest.serialize,
+                response_deserializer=backupvault.ListDataSourcesResponse.deserialize,
+            )
+        return self._stubs["list_data_sources"]
+
+    @property
+    def get_data_source(
+        self,
+    ) -> Callable[
+        [backupvault.GetDataSourceRequest], Awaitable[backupvault.DataSource]
+    ]:
+        r"""Return a callable for the get data source method over gRPC.
+
+        Gets details of a DataSource.
+
+        Returns:
+            Callable[[~.GetDataSourceRequest],
+                    Awaitable[~.DataSource]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_data_source" not in self._stubs:
+            self._stubs["get_data_source"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/GetDataSource",
+                request_serializer=backupvault.GetDataSourceRequest.serialize,
+                response_deserializer=backupvault.DataSource.deserialize,
+            )
+        return self._stubs["get_data_source"]
+
+    @property
+    def update_data_source(
+        self,
+    ) -> Callable[
+        [backupvault.UpdateDataSourceRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update data source method over gRPC.
+
+        Updates the settings of a DataSource.
+
+        Returns:
+            Callable[[~.UpdateDataSourceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_data_source" not in self._stubs:
+            self._stubs["update_data_source"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/UpdateDataSource",
+                request_serializer=backupvault.UpdateDataSourceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_data_source"]
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[
+        [backupvault.ListBackupsRequest], Awaitable[backupvault.ListBackupsResponse]
+    ]:
+        r"""Return a callable for the list backups method over gRPC.
+
+        Lists Backups in a given project and location.
+
+        Returns:
+            Callable[[~.ListBackupsRequest],
+                    Awaitable[~.ListBackupsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backups" not in self._stubs:
+            self._stubs["list_backups"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/ListBackups",
+                request_serializer=backupvault.ListBackupsRequest.serialize,
+                response_deserializer=backupvault.ListBackupsResponse.deserialize,
+            )
+        return self._stubs["list_backups"]
+
+    @property
+    def get_backup(
+        self,
+    ) -> Callable[[backupvault.GetBackupRequest], Awaitable[backupvault.Backup]]:
+        r"""Return a callable for the get backup method over gRPC.
+
+        Gets details of a Backup.
+
+        Returns:
+            Callable[[~.GetBackupRequest],
+                    Awaitable[~.Backup]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup" not in self._stubs:
+            self._stubs["get_backup"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/GetBackup",
+                request_serializer=backupvault.GetBackupRequest.serialize,
+                response_deserializer=backupvault.Backup.deserialize,
+            )
+        return self._stubs["get_backup"]
+
+    @property
+    def update_backup(
+        self,
+    ) -> Callable[
+        [backupvault.UpdateBackupRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update backup method over gRPC.
+
+        Updates the settings of a Backup.
+
+        Returns:
+            Callable[[~.UpdateBackupRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_backup" not in self._stubs:
+            self._stubs["update_backup"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/UpdateBackup",
+                request_serializer=backupvault.UpdateBackupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_backup"]
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[
+        [backupvault.DeleteBackupRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete backup method over gRPC.
+
+        Deletes a Backup.
+
+        Returns:
+            Callable[[~.DeleteBackupRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backup" not in self._stubs:
+            self._stubs["delete_backup"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/DeleteBackup",
+                request_serializer=backupvault.DeleteBackupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_backup"]
+
+    @property
+    def restore_backup(
+        self,
+    ) -> Callable[
+        [backupvault.RestoreBackupRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the restore backup method over gRPC.
+
+        Restore from a Backup
+
+        Returns:
+            Callable[[~.RestoreBackupRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "restore_backup" not in self._stubs:
+            self._stubs["restore_backup"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/RestoreBackup",
+                request_serializer=backupvault.RestoreBackupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["restore_backup"]
+
+    @property
+    def create_backup_plan(
+        self,
+    ) -> Callable[
+        [backupplan.CreateBackupPlanRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create backup plan method over gRPC.
+
+        Create a BackupPlan
+
+        Returns:
+            Callable[[~.CreateBackupPlanRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_backup_plan" not in self._stubs:
+            self._stubs["create_backup_plan"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/CreateBackupPlan",
+                request_serializer=backupplan.CreateBackupPlanRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_backup_plan"]
+
+    @property
+    def get_backup_plan(
+        self,
+    ) -> Callable[[backupplan.GetBackupPlanRequest], Awaitable[backupplan.BackupPlan]]:
+        r"""Return a callable for the get backup plan method over gRPC.
+
+        Gets details of a single BackupPlan.
+
+        Returns:
+            Callable[[~.GetBackupPlanRequest],
+                    Awaitable[~.BackupPlan]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup_plan" not in self._stubs:
+            self._stubs["get_backup_plan"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/GetBackupPlan",
+                request_serializer=backupplan.GetBackupPlanRequest.serialize,
+                response_deserializer=backupplan.BackupPlan.deserialize,
+            )
+        return self._stubs["get_backup_plan"]
+
+    @property
+    def list_backup_plans(
+        self,
+    ) -> Callable[
+        [backupplan.ListBackupPlansRequest],
+        Awaitable[backupplan.ListBackupPlansResponse],
+    ]:
+        r"""Return a callable for the list backup plans method over gRPC.
+
+        Lists BackupPlans in a given project and location.
+
+        Returns:
+            Callable[[~.ListBackupPlansRequest],
+                    Awaitable[~.ListBackupPlansResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backup_plans" not in self._stubs:
+            self._stubs["list_backup_plans"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/ListBackupPlans",
+                request_serializer=backupplan.ListBackupPlansRequest.serialize,
+                response_deserializer=backupplan.ListBackupPlansResponse.deserialize,
+            )
+        return self._stubs["list_backup_plans"]
+
+    @property
+    def delete_backup_plan(
+        self,
+    ) -> Callable[
+        [backupplan.DeleteBackupPlanRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete backup plan method over gRPC.
+
+        Deletes a single BackupPlan.
+
+        Returns:
+            Callable[[~.DeleteBackupPlanRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backup_plan" not in self._stubs:
+            self._stubs["delete_backup_plan"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/DeleteBackupPlan",
+                request_serializer=backupplan.DeleteBackupPlanRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_backup_plan"]
+
+    @property
+    def create_backup_plan_association(
+        self,
+    ) -> Callable[
+        [backupplanassociation.CreateBackupPlanAssociationRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create backup plan association method over gRPC.
+
+        Create a BackupPlanAssociation
+
+        Returns:
+            Callable[[~.CreateBackupPlanAssociationRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_backup_plan_association" not in self._stubs:
+            self._stubs[
+                "create_backup_plan_association"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/CreateBackupPlanAssociation",
+                request_serializer=backupplanassociation.CreateBackupPlanAssociationRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_backup_plan_association"]
+
+    @property
+    def get_backup_plan_association(
+        self,
+    ) -> Callable[
+        [backupplanassociation.GetBackupPlanAssociationRequest],
+        Awaitable[backupplanassociation.BackupPlanAssociation],
+    ]:
+        r"""Return a callable for the get backup plan association method over gRPC.
+
+        Gets details of a single BackupPlanAssociation.
+
+        Returns:
+            Callable[[~.GetBackupPlanAssociationRequest],
+                    Awaitable[~.BackupPlanAssociation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup_plan_association" not in self._stubs:
+            self._stubs["get_backup_plan_association"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/GetBackupPlanAssociation",
+                request_serializer=backupplanassociation.GetBackupPlanAssociationRequest.serialize,
+                response_deserializer=backupplanassociation.BackupPlanAssociation.deserialize,
+            )
+        return self._stubs["get_backup_plan_association"]
+
+    @property
+    def list_backup_plan_associations(
+        self,
+    ) -> Callable[
+        [backupplanassociation.ListBackupPlanAssociationsRequest],
+        Awaitable[backupplanassociation.ListBackupPlanAssociationsResponse],
+    ]:
+        r"""Return a callable for the list backup plan associations method over gRPC.
+
+        Lists BackupPlanAssociations in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListBackupPlanAssociationsRequest],
+                    Awaitable[~.ListBackupPlanAssociationsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backup_plan_associations" not in self._stubs:
+            self._stubs[
+                "list_backup_plan_associations"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/ListBackupPlanAssociations",
+                request_serializer=backupplanassociation.ListBackupPlanAssociationsRequest.serialize,
+                response_deserializer=backupplanassociation.ListBackupPlanAssociationsResponse.deserialize,
+            )
+        return self._stubs["list_backup_plan_associations"]
+
+    @property
+    def delete_backup_plan_association(
+        self,
+    ) -> Callable[
+        [backupplanassociation.DeleteBackupPlanAssociationRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete backup plan association method over gRPC.
+
+        Deletes a single BackupPlanAssociation.
+
+        Returns:
+            Callable[[~.DeleteBackupPlanAssociationRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backup_plan_association" not in self._stubs:
+            self._stubs[
+                "delete_backup_plan_association"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/DeleteBackupPlanAssociation",
+                request_serializer=backupplanassociation.DeleteBackupPlanAssociationRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_backup_plan_association"]
+
+    @property
+    def trigger_backup(
+        self,
+    ) -> Callable[
+        [backupplanassociation.TriggerBackupRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the trigger backup method over gRPC.
+
+        Triggers a new Backup.
+
+        Returns:
+            Callable[[~.TriggerBackupRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "trigger_backup" not in self._stubs:
+            self._stubs["trigger_backup"] = self.grpc_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/TriggerBackup",
+                request_serializer=backupplanassociation.TriggerBackupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["trigger_backup"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -413,6 +1077,202 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
             self.delete_management_server: gapic_v1.method_async.wrap_method(
                 self.delete_management_server,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_backup_vault: gapic_v1.method_async.wrap_method(
+                self.create_backup_vault,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_backup_vaults: gapic_v1.method_async.wrap_method(
+                self.list_backup_vaults,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.fetch_usable_backup_vaults: gapic_v1.method_async.wrap_method(
+                self.fetch_usable_backup_vaults,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_backup_vault: gapic_v1.method_async.wrap_method(
+                self.get_backup_vault,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_backup_vault: gapic_v1.method_async.wrap_method(
+                self.update_backup_vault,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_backup_vault: gapic_v1.method_async.wrap_method(
+                self.delete_backup_vault,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_data_sources: gapic_v1.method_async.wrap_method(
+                self.list_data_sources,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_data_source: gapic_v1.method_async.wrap_method(
+                self.get_data_source,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_data_source: gapic_v1.method_async.wrap_method(
+                self.update_data_source,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_backups: gapic_v1.method_async.wrap_method(
+                self.list_backups,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_backup: gapic_v1.method_async.wrap_method(
+                self.get_backup,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_backup: gapic_v1.method_async.wrap_method(
+                self.update_backup,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_backup: gapic_v1.method_async.wrap_method(
+                self.delete_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.restore_backup: gapic_v1.method_async.wrap_method(
+                self.restore_backup,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_backup_plan: gapic_v1.method_async.wrap_method(
+                self.create_backup_plan,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_backup_plan: gapic_v1.method_async.wrap_method(
+                self.get_backup_plan,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_backup_plans: gapic_v1.method_async.wrap_method(
+                self.list_backup_plans,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_backup_plan: gapic_v1.method_async.wrap_method(
+                self.delete_backup_plan,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_backup_plan_association: gapic_v1.method_async.wrap_method(
+                self.create_backup_plan_association,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_backup_plan_association: gapic_v1.method_async.wrap_method(
+                self.get_backup_plan_association,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_backup_plan_associations: gapic_v1.method_async.wrap_method(
+                self.list_backup_plan_associations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_backup_plan_association: gapic_v1.method_async.wrap_method(
+                self.delete_backup_plan_association,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.trigger_backup: gapic_v1.method_async.wrap_method(
+                self.trigger_backup,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }

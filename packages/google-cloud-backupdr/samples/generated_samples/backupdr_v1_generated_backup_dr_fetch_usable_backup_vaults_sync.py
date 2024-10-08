@@ -15,15 +15,15 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ProcessDocument
+# Snippet for FetchUsableBackupVaults
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-documentai
+#   python3 -m pip install google-cloud-backupdr
 
 
-# [START documentai_v1beta2_generated_DocumentUnderstandingService_ProcessDocument_async]
+# [START backupdr_v1_generated_BackupDR_FetchUsableBackupVaults_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -31,26 +31,23 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import documentai_v1beta2
+from google.cloud import backupdr_v1
 
 
-async def sample_process_document():
+def sample_fetch_usable_backup_vaults():
     # Create a client
-    client = documentai_v1beta2.DocumentUnderstandingServiceAsyncClient()
+    client = backupdr_v1.BackupDRClient()
 
     # Initialize request argument(s)
-    input_config = documentai_v1beta2.InputConfig()
-    input_config.gcs_source.uri = "uri_value"
-    input_config.mime_type = "mime_type_value"
-
-    request = documentai_v1beta2.ProcessDocumentRequest(
-        input_config=input_config,
+    request = backupdr_v1.FetchUsableBackupVaultsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.process_document(request=request)
+    page_result = client.fetch_usable_backup_vaults(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END documentai_v1beta2_generated_DocumentUnderstandingService_ProcessDocument_async]
+# [END backupdr_v1_generated_BackupDR_FetchUsableBackupVaults_sync]

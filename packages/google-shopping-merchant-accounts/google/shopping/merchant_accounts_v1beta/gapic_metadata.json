@@ -212,6 +212,55 @@
         }
       }
     },
+    "AutofeedSettingsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AutofeedSettingsServiceClient",
+          "rpcs": {
+            "GetAutofeedSettings": {
+              "methods": [
+                "get_autofeed_settings"
+              ]
+            },
+            "UpdateAutofeedSettings": {
+              "methods": [
+                "update_autofeed_settings"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AutofeedSettingsServiceAsyncClient",
+          "rpcs": {
+            "GetAutofeedSettings": {
+              "methods": [
+                "get_autofeed_settings"
+              ]
+            },
+            "UpdateAutofeedSettings": {
+              "methods": [
+                "update_autofeed_settings"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AutofeedSettingsServiceClient",
+          "rpcs": {
+            "GetAutofeedSettings": {
+              "methods": [
+                "get_autofeed_settings"
+              ]
+            },
+            "UpdateAutofeedSettings": {
+              "methods": [
+                "update_autofeed_settings"
+              ]
+            }
+          }
+        }
+      }
+    },
     "BusinessIdentityService": {
       "clients": {
         "grpc": {

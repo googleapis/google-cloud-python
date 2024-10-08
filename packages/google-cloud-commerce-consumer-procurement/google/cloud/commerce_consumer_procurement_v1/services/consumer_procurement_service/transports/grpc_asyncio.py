@@ -366,6 +366,66 @@ class ConsumerProcurementServiceGrpcAsyncIOTransport(
             )
         return self._stubs["list_orders"]
 
+    @property
+    def modify_order(
+        self,
+    ) -> Callable[
+        [procurement_service.ModifyOrderRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the modify order method over gRPC.
+
+        Modifies an existing
+        [Order][google.cloud.commerce.consumer.procurement.v1.Order]
+        resource.
+
+        Returns:
+            Callable[[~.ModifyOrderRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "modify_order" not in self._stubs:
+            self._stubs["modify_order"] = self.grpc_channel.unary_unary(
+                "/google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService/ModifyOrder",
+                request_serializer=procurement_service.ModifyOrderRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["modify_order"]
+
+    @property
+    def cancel_order(
+        self,
+    ) -> Callable[
+        [procurement_service.CancelOrderRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the cancel order method over gRPC.
+
+        Cancels an existing
+        [Order][google.cloud.commerce.consumer.procurement.v1.Order].
+        Every product procured in the Order will be cancelled.
+
+        Returns:
+            Callable[[~.CancelOrderRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_order" not in self._stubs:
+            self._stubs["cancel_order"] = self.grpc_channel.unary_unary(
+                "/google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService/CancelOrder",
+                request_serializer=procurement_service.CancelOrderRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["cancel_order"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -400,6 +460,16 @@ class ConsumerProcurementServiceGrpcAsyncIOTransport(
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.modify_order: gapic_v1.method_async.wrap_method(
+                self.modify_order,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_order: gapic_v1.method_async.wrap_method(
+                self.cancel_order,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }

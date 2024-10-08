@@ -127,7 +127,12 @@ class CheckCloudIdentityAccountsExistRequest(proto.Message):
             the format: accounts/{account_id}
         domain (str):
             Required. Domain to fetch for Cloud Identity
-            account customer.
+            account customers, including domain and team
+            customers. For team customers, please use the
+            domain for their emails.
+        primary_admin_email (str):
+            Optional. Primary admin email to fetch for
+            Cloud Identity account team customer.
     """
 
     parent: str = proto.Field(
@@ -137,6 +142,10 @@ class CheckCloudIdentityAccountsExistRequest(proto.Message):
     domain: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    primary_admin_email: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -159,6 +168,11 @@ class CloudIdentityCustomerAccount(proto.Message):
         customer_cloud_identity_id (str):
             If existing = true, the Cloud Identity ID of
             the customer.
+        customer_type (google.cloud.channel_v1.types.CloudIdentityInfo.CustomerType):
+            If existing = true, the type of the customer.
+        channel_partner_cloud_identity_id (str):
+            If existing = true, and is 2-tier customer,
+            the channel partner of the customer.
     """
 
     existing: bool = proto.Field(
@@ -176,6 +190,15 @@ class CloudIdentityCustomerAccount(proto.Message):
     customer_cloud_identity_id: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    customer_type: common.CloudIdentityInfo.CustomerType = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=common.CloudIdentityInfo.CustomerType,
+    )
+    channel_partner_cloud_identity_id: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -374,6 +397,10 @@ class ImportCustomerRequest(proto.Message):
             Required. Customer's Cloud Identity ID
 
             This field is a member of `oneof`_ ``customer_identity``.
+        primary_admin_email (str):
+            Required. Customer's primary admin email.
+
+            This field is a member of `oneof`_ ``customer_identity``.
         parent (str):
             Required. The resource name of the reseller's account.
             Parent takes the format: accounts/{account_id} or
@@ -411,6 +438,11 @@ class ImportCustomerRequest(proto.Message):
     cloud_identity_id: str = proto.Field(
         proto.STRING,
         number=3,
+        oneof="customer_identity",
+    )
+    primary_admin_email: str = proto.Field(
+        proto.STRING,
+        number=8,
         oneof="customer_identity",
     )
     parent: str = proto.Field(

@@ -50,6 +50,11 @@
                 "create_delivery_pipeline"
               ]
             },
+            "CreateDeployPolicy": {
+              "methods": [
+                "create_deploy_policy"
+              ]
+            },
             "CreateRelease": {
               "methods": [
                 "create_release"
@@ -80,6 +85,11 @@
                 "delete_delivery_pipeline"
               ]
             },
+            "DeleteDeployPolicy": {
+              "methods": [
+                "delete_deploy_policy"
+              ]
+            },
             "DeleteTarget": {
               "methods": [
                 "delete_target"
@@ -108,6 +118,11 @@
             "GetDeliveryPipeline": {
               "methods": [
                 "get_delivery_pipeline"
+              ]
+            },
+            "GetDeployPolicy": {
+              "methods": [
+                "get_deploy_policy"
               ]
             },
             "GetJobRun": {
@@ -153,6 +168,11 @@
             "ListDeliveryPipelines": {
               "methods": [
                 "list_delivery_pipelines"
+              ]
+            },
+            "ListDeployPolicies": {
+              "methods": [
+                "list_deploy_policies"
               ]
             },
             "ListJobRuns": {
@@ -203,6 +223,11 @@
             "UpdateDeliveryPipeline": {
               "methods": [
                 "update_delivery_pipeline"
+              ]
+            },
+            "UpdateDeployPolicy": {
+              "methods": [
+                "update_deploy_policy"
               ]
             },
             "UpdateTarget": {
@@ -255,6 +280,11 @@
                 "create_delivery_pipeline"
               ]
             },
+            "CreateDeployPolicy": {
+              "methods": [
+                "create_deploy_policy"
+              ]
+            },
             "CreateRelease": {
               "methods": [
                 "create_release"
@@ -285,6 +315,11 @@
                 "delete_delivery_pipeline"
               ]
             },
+            "DeleteDeployPolicy": {
+              "methods": [
+                "delete_deploy_policy"
+              ]
+            },
             "DeleteTarget": {
               "methods": [
                 "delete_target"
@@ -313,6 +348,11 @@
             "GetDeliveryPipeline": {
               "methods": [
                 "get_delivery_pipeline"
+              ]
+            },
+            "GetDeployPolicy": {
+              "methods": [
+                "get_deploy_policy"
               ]
             },
             "GetJobRun": {
@@ -358,6 +398,11 @@
             "ListDeliveryPipelines": {
               "methods": [
                 "list_delivery_pipelines"
+              ]
+            },
+            "ListDeployPolicies": {
+              "methods": [
+                "list_deploy_policies"
               ]
             },
             "ListJobRuns": {
@@ -408,6 +453,11 @@
             "UpdateDeliveryPipeline": {
               "methods": [
                 "update_delivery_pipeline"
+              ]
+            },
+            "UpdateDeployPolicy": {
+              "methods": [
+                "update_deploy_policy"
               ]
             },
             "UpdateTarget": {
@@ -460,6 +510,11 @@
                 "create_delivery_pipeline"
               ]
             },
+            "CreateDeployPolicy": {
+              "methods": [
+                "create_deploy_policy"
+              ]
+            },
             "CreateRelease": {
               "methods": [
                 "create_release"
@@ -490,6 +545,11 @@
                 "delete_delivery_pipeline"
               ]
             },
+            "DeleteDeployPolicy": {
+              "methods": [
+                "delete_deploy_policy"
+              ]
+            },
             "DeleteTarget": {
               "methods": [
                 "delete_target"
@@ -518,6 +578,11 @@
             "GetDeliveryPipeline": {
               "methods": [
                 "get_delivery_pipeline"
+              ]
+            },
+            "GetDeployPolicy": {
+              "methods": [
+                "get_deploy_policy"
               ]
             },
             "GetJobRun": {
@@ -563,6 +628,11 @@
             "ListDeliveryPipelines": {
               "methods": [
                 "list_delivery_pipelines"
+              ]
+            },
+            "ListDeployPolicies": {
+              "methods": [
+                "list_deploy_policies"
               ]
             },
             "ListJobRuns": {
@@ -613,6 +683,11 @@
             "UpdateDeliveryPipeline": {
               "methods": [
                 "update_delivery_pipeline"
+              ]
+            },
+            "UpdateDeployPolicy": {
+              "methods": [
+                "update_deploy_policy"
               ]
             },
             "UpdateTarget": {

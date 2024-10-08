@@ -167,6 +167,16 @@ class ConsumerProcurementServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.modify_order: gapic_v1.method.wrap_method(
+                self.modify_order,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_order: gapic_v1.method.wrap_method(
+                self.cancel_order,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -210,6 +220,24 @@ class ConsumerProcurementServiceTransport(abc.ABC):
             procurement_service.ListOrdersResponse,
             Awaitable[procurement_service.ListOrdersResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def modify_order(
+        self,
+    ) -> Callable[
+        [procurement_service.ModifyOrderRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_order(
+        self,
+    ) -> Callable[
+        [procurement_service.CancelOrderRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
