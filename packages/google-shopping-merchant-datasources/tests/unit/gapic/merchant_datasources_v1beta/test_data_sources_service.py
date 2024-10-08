@@ -4369,7 +4369,7 @@ def test_create_data_source_rest(request_type):
             "default_rule": {
                 "take_from_data_sources": [
                     {
-                        "self": True,
+                        "self_": True,
                         "primary_data_source_name": "primary_data_source_name_value",
                         "supplemental_data_source_name": "supplemental_data_source_name_value",
                     }
@@ -4826,7 +4826,7 @@ def test_update_data_source_rest(request_type):
             "default_rule": {
                 "take_from_data_sources": [
                     {
-                        "self": True,
+                        "self_": True,
                         "primary_data_source_name": "primary_data_source_name_value",
                         "supplemental_data_source_name": "supplemental_data_source_name_value",
                     }

@@ -339,7 +339,7 @@ class DataSourceReference(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        self (bool):
+        self_ (bool):
             Self should be used to reference the primary
             data source itself.
 
@@ -356,7 +356,7 @@ class DataSourceReference(proto.Message):
             This field is a member of `oneof`_ ``data_source_id``.
     """
 
-    self: bool = proto.Field(
+    self_: bool = proto.Field(
         proto.BOOL,
         number=1,
         oneof="data_source_id",
