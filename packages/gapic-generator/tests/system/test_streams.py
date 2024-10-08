@@ -115,40 +115,54 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     @pytest.mark.asyncio
     async def test_async_unary_stream_reader(async_echo):
         content = 'The hail in Wales falls mainly on the snails.'
-        call = await async_echo.expand({
+        stream = await async_echo.expand({
             'content': content,
         }, metadata=_METADATA)
 
+        # Note: gRPC exposes `read`, REST exposes `__anext__` to read
+        # a chunk of response from the stream.
+        response_attr = '__anext__' if "rest" in str(
+            async_echo.transport).lower() else 'read'
+
         # Consume the response and ensure it matches what we expect.
-        # with pytest.raises(exceptions.NotFound) as exc:
         for ground_truth in content.split(' '):
-            response = await call.read()
+            response = await getattr(stream, response_attr)()
             assert response.content == ground_truth
         assert ground_truth == 'snails.'
 
-        trailing_metadata = await call.trailing_metadata()
-        assert _METADATA[0] in trailing_metadata.items()
+        # Note: trailing metadata is part of a gRPC response.
+        if "grpc" in str(async_echo.transport).lower():
+            trailing_metadata = await stream.trailing_metadata()
+            assert _METADATA[0] in trailing_metadata.items()
 
     @pytest.mark.asyncio
     async def test_async_unary_stream_async_generator(async_echo):
         content = 'The hail in Wales falls mainly on the snails.'
-        call = await async_echo.expand({
+        stream = await async_echo.expand({
             'content': content,
         }, metadata=_METADATA)
 
         # Consume the response and ensure it matches what we expect.
-        # with pytest.raises(exceptions.NotFound) as exc:
         tokens = iter(content.split(' '))
-        async for response in call:
+        async for response in stream:
             ground_truth = next(tokens)
             assert response.content == ground_truth
         assert ground_truth == 'snails.'
 
-        trailing_metadata = await call.trailing_metadata()
-        assert _METADATA[0] in trailing_metadata.items()
+        # Note: trailing metadata is part of a gRPC response.
+        if "grpc" in str(async_echo.transport).lower():
+            trailing_metadata = await stream.trailing_metadata()
+            assert _METADATA[0] in trailing_metadata.items()
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_iterable(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
+        # NOTE: There are currently no plans for supporting async rest client-streaming.
+        if "rest" in str(async_echo.transport).lower():
+            with pytest.raises(NotImplementedError):
+                call = await async_echo.collect()
+            return
+
         requests = []
         requests.append(showcase.EchoRequest(content="hello"))
         requests.append(showcase.EchoRequest(content="world!"))
@@ -159,6 +173,12 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_async_generator(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
+        # NOTE: There are currently no plans for supporting async rest client-streaming.
+        if "rest" in str(async_echo.transport).lower():
+            with pytest.raises(NotImplementedError):
+                call = await async_echo.collect()
+            return
 
         async def async_generator():
             yield showcase.EchoRequest(content="hello")
@@ -170,6 +190,12 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_writer(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
+        # NOTE: There are currently no plans for supporting async rest client-streaming.
+        if "rest" in str(async_echo.transport).lower():
+            with pytest.raises(NotImplementedError):
+                call = await async_echo.collect()
+            return
         call = await async_echo.collect()
         await call.write(showcase.EchoRequest(content="hello"))
         await call.write(showcase.EchoRequest(content="world!"))
@@ -180,6 +206,13 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_passing_dict(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
+        # NOTE: There are currently no plans for supporting async rest client-streaming.
+        if "rest" in str(async_echo.transport).lower():
+            with pytest.raises(NotImplementedError):
+                call = await async_echo.collect()
+            return
+
         requests = [{'content': 'hello'}, {'content': 'world!'}]
         call = await async_echo.collect(iter(requests))
         response = await call
@@ -187,6 +220,13 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_reader_writier(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
+        # NOTE: There are currently no plans for supporting async rest client-streaming.
+        if "rest" in str(async_echo.transport).lower():
+            with pytest.raises(NotImplementedError):
+                call = await async_echo.chat(metadata=_METADATA)
+            return
+
         call = await async_echo.chat(metadata=_METADATA)
         await call.write(showcase.EchoRequest(content="hello"))
         await call.write(showcase.EchoRequest(content="world!"))
@@ -203,6 +243,12 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_async_generator(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
+        # NOTE: There are currently no plans for supporting async rest client-streaming.
+        if "rest" in str(async_echo.transport).lower():
+            with pytest.raises(NotImplementedError):
+                call = await async_echo.chat(metadata=_METADATA)
+            return
 
         async def async_generator():
             yield showcase.EchoRequest(content="hello")
@@ -220,6 +266,13 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_passing_dict(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
+        # NOTE: There are currently no plans for supporting async rest client-streaming.
+        if "rest" in str(async_echo.transport).lower():
+            with pytest.raises(NotImplementedError):
+                call = await async_echo.chat(metadata=_METADATA)
+            return
+
         requests = [{'content': 'hello'}, {'content': 'world!'}]
         call = await async_echo.chat(iter(requests), metadata=_METADATA)
 

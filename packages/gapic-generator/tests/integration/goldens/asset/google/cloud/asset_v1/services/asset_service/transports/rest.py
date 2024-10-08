@@ -265,6 +265,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_analyze_iam_policy_longrunning(self, request: asset_service.AnalyzeIamPolicyLongrunningRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeIamPolicyLongrunningRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for analyze_iam_policy_longrunning
 
@@ -281,6 +282,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_analyze_move(self, request: asset_service.AnalyzeMoveRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeMoveRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for analyze_move
 
@@ -297,6 +299,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_analyze_org_policies(self, request: asset_service.AnalyzeOrgPoliciesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeOrgPoliciesRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for analyze_org_policies
 
@@ -313,6 +316,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_analyze_org_policy_governed_assets(self, request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for analyze_org_policy_governed_assets
 
@@ -329,6 +333,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_analyze_org_policy_governed_containers(self, request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedContainersRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for analyze_org_policy_governed_containers
 
@@ -345,6 +350,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_batch_get_assets_history(self, request: asset_service.BatchGetAssetsHistoryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.BatchGetAssetsHistoryRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for batch_get_assets_history
 
@@ -361,6 +367,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_batch_get_effective_iam_policies(self, request: asset_service.BatchGetEffectiveIamPoliciesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.BatchGetEffectiveIamPoliciesRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for batch_get_effective_iam_policies
 
@@ -377,6 +384,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_create_feed(self, request: asset_service.CreateFeedRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.CreateFeedRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for create_feed
 
@@ -393,6 +401,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_create_saved_query(self, request: asset_service.CreateSavedQueryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.CreateSavedQueryRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for create_saved_query
 
@@ -409,6 +418,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_delete_feed(self, request: asset_service.DeleteFeedRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.DeleteFeedRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_feed
 
@@ -441,6 +451,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_feed(self, request: asset_service.GetFeedRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.GetFeedRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_feed
 
@@ -457,6 +468,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_saved_query(self, request: asset_service.GetSavedQueryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.GetSavedQueryRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_saved_query
 
@@ -473,6 +485,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_assets(self, request: asset_service.ListAssetsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.ListAssetsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_assets
 
@@ -489,6 +502,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_feeds(self, request: asset_service.ListFeedsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.ListFeedsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_feeds
 
@@ -505,6 +519,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_saved_queries(self, request: asset_service.ListSavedQueriesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.ListSavedQueriesRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_saved_queries
 
@@ -521,6 +536,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_query_assets(self, request: asset_service.QueryAssetsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.QueryAssetsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for query_assets
 
@@ -537,6 +553,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_search_all_iam_policies(self, request: asset_service.SearchAllIamPoliciesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.SearchAllIamPoliciesRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for search_all_iam_policies
 
@@ -553,6 +570,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_search_all_resources(self, request: asset_service.SearchAllResourcesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.SearchAllResourcesRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for search_all_resources
 
@@ -569,6 +587,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_update_feed(self, request: asset_service.UpdateFeedRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.UpdateFeedRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for update_feed
 
@@ -585,6 +604,7 @@ class AssetServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_update_saved_query(self, request: asset_service.UpdateSavedQueryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.UpdateSavedQueryRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for update_saved_query
 
@@ -2618,6 +2638,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
         return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetOperation(_BaseAssetServiceRestTransport._BaseGetOperation, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("AssetServiceRestTransport.GetOperation")
+
         @staticmethod
         def _get_response(
             host,
@@ -2677,8 +2700,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 

@@ -1004,204 +1004,6 @@ def test_{{ method_name }}_raw_page_lro():
 {% with method_name = method.safe_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}{% if method.http_options %}
 {# TODO(kbandes): remove this if condition when lro and client streaming are supported. #}
 {% if not method.client_streaming %}
-@pytest.mark.parametrize("request_type", [
-    {{ method.input.ident }},
-    dict,
-])
-def test_{{ method_name }}_rest(request_type):
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {{ method.http_options[0].sample_request(method) }}
-    {% for field in method.body_fields.values() %}
-    {% if not field.oneof or field.proto3_optional %}
-    {# ignore oneof fields that might conflict with sample_request #}
-    request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = {{ method.input.ident }}.meta.fields["{{ field.name }}"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else: # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["{{ field.name }}"].items(): # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["{{ field.name }}"][field])):
-                    del request_init["{{ field.name }}"][field][i][subfield]
-            else:
-                del request_init["{{ field.name }}"][field][subfield]
-    {% endif %}
-    {% endfor %}
-    request = request_type(**request_init)
-    {% if method.client_streaming %}
-    requests = [request]
-    {% endif %}
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        {% if method.void %}
-        return_value = None
-        {% elif method.lro %}
-        return_value = operations_pb2.Operation(name='operations/spam')
-        {% elif method.extended_lro %}
-        return_value = {{ method.extended_lro.operation_type.ident }}(
-            {% for field in method.extended_lro.operation_type.fields.values() | rejectattr('message')%}
-            {% if not field.oneof or field.proto3_optional %}
-              {{ field.name }}={{ field.mock_value }},
-            {% endif %}{% endfor %}
-            {# This is a hack to only pick one field #}
-            {% for oneof_fields in method.output.oneof_fields().values() %}
-            {% if (oneof_fields | rejectattr('message') | list) %}
-            {% with field = (oneof_fields | rejectattr('message') | first) %}
-            {{ field.name }}={{ field.mock_value }},
-            {% endwith %}
-            {% endif %}
-            {% endfor %}
-        )
-        {% else %}
-        return_value = {{ method.output.ident }}(
-            {% for field in method.output.fields.values() | rejectattr('message')%}
-            {% if not field.oneof or field.proto3_optional %}
-              {{ field.name }}={{ field.mock_value }},
-              {% endif %}{% endfor %}
-            {# This is a hack to only pick one field #}
-            {% for oneof_fields in method.output.oneof_fields().values() %}
-            {% if (oneof_fields | rejectattr('message') | list) %}
-            {% with field = (oneof_fields | rejectattr('message') | first) %}
-            {{ field.name }}={{ field.mock_value }},
-            {% endwith %}
-            {% endif %}
-            {% endfor %}
-        )
-        {% endif %}
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        {% if method.void %}
-        json_return_value = ''
-        {% elif method.lro %}
-        json_return_value = json_format.MessageToJson(return_value)
-        {% else %}
-        {% if method.output.ident.is_proto_plus_type %}
-        # Convert return value to protobuf type
-        return_value = {{ method.output.ident }}.pb(return_value)
-        {% endif %}
-        json_return_value = json_format.MessageToJson(return_value)
-        {% endif %}
-
-        {% if method.server_streaming %}
-        json_return_value = "[{}]".format(json_return_value)
-        {% endif %}
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        {% if method.client_streaming %}
-        response = client.{{ method_name }}(iter(requests))
-        {% elif method.server_streaming %}
-        with mock.patch.object(response_value, 'iter_content') as iter_content:
-            iter_content.return_value = iter(json_return_value)
-            response = client.{{ method_name }}(request)
-        {% else %}
-        response = client.{{ method_name }}(request)
-        {% endif %}
-
-    {% if "next_page_token" in method_output.fields.values()|map(attribute='name', default="") and not method.paged_result_field %}
-    {# Cheeser assertion to force code coverage for bad paginated methods #}
-    assert response.raw_page is response
-
-    {% endif %}
-
-    {% if method.server_streaming %}
-    assert isinstance(response, Iterable)
-    response = next(response)
-    {% endif %}
-
-    # Establish that the response is the type that we expect.
-    {% if method.void %}
-    assert response is None
-    {% elif method.lro %}
-    assert response.operation.name == "operations/spam"
-    {% elif method.extended_lro and not full_extended_lro %}
-    assert isinstance(response, {{ method.extended_lro.operation_type.ident }})
-    {% else %}
-    assert isinstance(response, {{ method.client_output.ident }})
-    {% for field in method_output.fields.values() | rejectattr('message') %}
-    {% if not field.oneof or field.proto3_optional %}
-    {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
-    {% if field.repeated %}
-    for index in range(len(response.{{ field.name }})):
-        assert math.isclose(
-            response.{{ field.name }}[index],
-            {{ field.mock_value }}[index],
-            rel_tol=1e-6,
-        )
-    {% else %}{# field.repeated #}
-    assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
-    {% endif %}{# field.repeated #}
-    {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
-    assert response.{{ field.name }} is {{ field.mock_value }}
-    {% else %}
-    assert response.{{ field.name }} == {{ field.mock_value }}
-    {% endif %}
-    {% endif %}{# end oneof/optional #}
-    {% endfor %}
-    {% endif %}
-
 def test_{{ method_name }}_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1408,98 +1210,6 @@ def test_{{ method_name }}_rest_unset_required_fields():
     assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{ param.name|camel_case }}", {% endfor %})))
 
     {% endif %}{# required_fields #}
-
-
-{% if not method.client_streaming %}
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_{{ method_name }}_rest_interceptors(null_interceptor):
-    transport = transports.{{ service.name }}RestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.{{ service.name}}RestInterceptor(),
-        )
-    client = {{ service.client_name }}(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         {% if method.lro %}
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         {% endif %}
-         {% if not method.void %}
-         mock.patch.object(transports.{{ service.name }}RestInterceptor, "post_{{method.name|snake_case}}") as post, \
-         {% endif %}
-         mock.patch.object(transports.{{ service.name }}RestInterceptor, "pre_{{ method.name|snake_case }}") as pre:
-        pre.assert_not_called()
-        {% if not method.void %}
-        post.assert_not_called()
-        {% endif %}
-        {% if method.input.ident.is_proto_plus_type %}
-        pb_message = {{ method.input.ident }}.pb({{ method.input.ident }}())
-        {% else %}
-        pb_message = {{ method.input.ident }}()
-        {% endif %}
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        {% if not method.void %}
-        req.return_value._content = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json({{ method.output.ident }}()){% else %}json_format.MessageToJson({{ method.output.ident }}()){% endif %}
-
-        {% if method.server_streaming %}
-        req.return_value._content = "[{}]".format(req.return_value._content)
-        {% endif %}
-
-        {% endif %}
-
-        request = {{ method.input.ident }}()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        {% if not method.void %}
-        post.return_value = {{ method.output.ident }}()
-        {% endif %}
-
-        client.{{ method_name }}(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        {% if not method.void %}
-        post.assert_called_once()
-        {% endif %}
-
-{% endif %}{# streaming #}
-
-
-def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_type={{ method.input.ident }}):
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {{ method.http_options[0].sample_request(method) }}
-    request = request_type(**request_init)
-    {% if method.client_streaming %}
-    requests = [request]
-    {% endif %}
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        {% if method.client_streaming %}
-        client.{{ method_name }}(iter(requests))
-        {% else %}
-        client.{{ method_name }}(request)
-        {% endif %}
 
 
 {% if method.flattened_fields and not method.client_streaming %}
@@ -1709,25 +1419,7 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
-{%- else %}{# paged_result_field #}
-
-def test_{{ method_name }}_rest_error():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-    {%- if not method.http_options %}
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.{{ method_name }}({})
-    assert (
-        "Method {{ method.name }} is not available over REST transport"
-        in str(not_implemented_error.value)
-    )
-
-    {%- endif %}{# not method.http_options #}
-{% endif %}{# flattened_fields #}
+{%- endif %}{# paged_result_field #}
 
 {% else %}{# this is an lro or streaming method #}
 def test_{{ method_name }}_rest_unimplemented():
@@ -1862,11 +1554,592 @@ def test_{{ method_name }}_rest_no_http_options():
 {% macro transport_kind_test(service, api, transport, is_async) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
 def test_transport_kind_{{ transport_name }}():
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
     transport = {{ get_client(service, is_async) }}.get_transport_class("{{ transport_name }}")(
         credentials={{get_credentials(is_async)}}
     )
     assert transport.kind == "{{ transport_name }}"
+
 {% endmacro %}{# transport_kind_test #}
+
+{% macro lro_client_test(service, api, transport, is_async) %}
+{% if 'rest' in transport %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+def test_{{ service.name|snake_case }}_{{ transport_name }}_lro_client():
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
+    client = {{ get_client(service=service, is_async=is_async) }}(
+        credentials={{ get_credentials(is_async=is_async) }},
+        transport="{{ transport_name }}",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        {% if is_async %}operations_v1.AsyncOperationsRestClient{% else %}operations_v1.AbstractOperationsClient{% endif %},
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+{% endif %}{# 'rest' in transport #}
+{% endmacro %}{# lro_client_test #}
+
+
+{% macro transport_close_test(service, api, transport, is_async) %}
+{% set async_prefix = get_async_prefix(is_async) %}
+{% set async_decorator = get_async_decorator(is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% set close_session = {
+    'rest': "_session",
+    'grpc': "_grpc_channel"}
+-%}
+{{async_decorator}}
+{{async_prefix}}def test_transport_close_{{transport_name}}():
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
+    client = {{ get_client(service, is_async) }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{transport_name}}"
+    )
+    with mock.patch.object(type(getattr(client.transport, "{{close_session[transport]}}")), "close") as close:
+        {{async_prefix}}with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+{% endmacro %}
+
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove / Update this test macro when async rest is GA. #}
+{% macro async_rest_unsupported_params_test(service) %}
+def test_unsupported_parameter_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    options = client_options.ClientOptions(quota_project_id="octopus")
+    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2137): Remove `type: ignore` once we add a version check for google-api-core. #}
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
+        client = {{ get_client(service, True) }}(
+            credentials={{get_credentials(True)}},
+            transport="rest_asyncio",
+            client_options=options
+    )
+
+{% endmacro %}
+
+{# get_await_prefix sets an "await" keyword
+ # to a method call if is_async=True.
+#}
+{% macro get_await_prefix(is_async) %}
+{{- "await " if is_async else "" -}}
+{% endmacro %}
+
+{# get_async_prefix sets an "async" keyword
+ # to a method definition if is_async=True.
+#}
+{% macro get_async_prefix(is_async) %}
+{{- "async " if is_async else "" -}}
+{% endmacro %}
+
+{# get_async_decorator sets a "@pytest.mark.asyncio" decorator
+ # to an async test method if is_async=True.
+#}
+{% macro get_async_decorator(is_async) %}
+{{- "@pytest.mark.asyncio " if is_async else "" -}}
+{% endmacro %}
+
+{# is_rest_unsupported_method renders:
+ # 'True' if transport is REST (sync or async) and method is a client_streaming method.
+ # 'False' otherwise.
+ # NOTE: There are no plans to add support for client streaming.
+#}
+{% macro is_rest_unsupported_method(method, is_async) %}
+{%- if method.client_streaming -%}
+{{'True'}}
+{%- else -%}
+{{'False'}}
+{%- endif -%}
+{% endmacro %}
+
+{# run_transport_tests_for_config generates all the rest specific tests for both
+# sync and async transport.
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2142): Continue migrating the test cases
+# in macro::run_transport_tests_for_config into here, and then delete that macro in favor of this one.
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2153): As a follow up, migrate gRPC test cases
+# into `run_transport_tests_for_config` and make any of the rest specific specific macros which are called within more generic. 
+#}
+{% macro run_transport_tests_for_config(service, api, transport, is_async) %}
+{% for method in service.methods.values() %}
+{% if is_rest_unsupported_method(method, is_async) == 'True' or not method.http_options %}
+{{ rest_method_not_implemented_error(service, method, transport, is_async) }}
+{% else %}
+{% if 'rest' in transport %}
+{{ bad_request_test(service, method, transport, is_async) }}
+{{ call_success_test(service, method, transport, is_async) }}
+{{ inteceptor_class_test(service, method, transport, is_async) }}
+{% endif %}{# if 'rest' in transport #}
+{% endif %}{# is_rest_unsupported_method(method, is_async) == 'False' and method.http_options #}
+{% endfor %}{# for method in service.methods.values() #}
+{% for name, sig in api.mixin_api_signatures.items() %}
+{% if 'rest' in transport %}
+{{ bad_request_mixins_test(service, api, name, sig, transport, is_async) }}
+{{ call_success_mixins_test(service, api, name, sig, transport, is_async) }}
+{% endif %}{# if 'rest' in transport #}
+{% endfor %}
+{{ initialize_client_with_transport_test(service, transport, is_async) }}
+{% endmacro %}
+
+{# rest_method_not_implemented_error generates tests for methods
+ # which are not supported for rest transport.
+#}
+{% macro rest_method_not_implemented_error(service, method, transport, is_async) %}
+{% if 'rest' in transport %}
+{% set await_prefix = get_await_prefix(is_async) %}
+{% set async_prefix = get_async_prefix(is_async) %}
+{% set async_decorator = get_async_decorator(is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% set method_name = method.name|snake_case %}
+{{async_decorator}}
+{{async_prefix}}def test_{{ method_name }}_{{transport_name}}_error():
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
+
+    client = {{ get_client(service, is_async) }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{transport_name}}"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        {{await_prefix}}client.{{ method_name }}({})
+    assert (
+        "Method {{ method.name }} is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+{% endif %}{# if 'rest' in transport #}
+{% endmacro %}
+
+{# initialize_client_with_transport_test adds coverage for transport clients.
+ # Note: This test case is needed because we aren't unconditionally 
+ # generating the not implemented coverage test for every client.
+#}
+{% macro initialize_client_with_transport_test(service, transport, is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+def test_initialize_client_w_{{transport_name}}():
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
+    client = {{ get_client(service, is_async) }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{transport_name}}"
+    )
+    assert client is not None
+
+{% endmacro %}
+
+{# bad_request_test generates tests for rest methods
+ # which raise a google.api.core.exceptions.BadRequest error.
+#}
+{% macro bad_request_test(service, method, transport, is_async) %}
+{% set await_prefix = get_await_prefix(is_async) %}
+{% set async_prefix = get_async_prefix(is_async) %}
+{% set async_decorator = get_async_decorator(is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% set method_name = method.name|snake_case %}
+{% set mocked_session = "AsyncAuthorizedSession" if is_async else "Session" %}
+{{ async_decorator }}
+{{ async_prefix }}def test_{{ method_name }}_{{transport_name}}_bad_request(request_type={{ method.input.ident }}):
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2157): Refactor this macro to include `gRPC` coverage. #}
+{% if 'grpc' in transport %}
+    raise NotImplementedError("gRPC is currently not supported for this test case.")
+{% else %}{# 'rest' in transport #}
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
+    client = {{ get_client(service, is_async) }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{transport_name}}"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {{ method.http_options[0].sample_request(method) }}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object({{mocked_session}}, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        {% if is_async %}
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        {% else %}
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        {% endif %}{# if is_async #}
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        {{ await_prefix }}client.{{ method_name }}(request)
+
+{% endif %}{# if 'grpc' in transport #}
+{% endmacro %}
+
+{# bad_request_mixins_test generates tests for rest mixin methods
+ # which raise a google.api.core.exceptions.BadRequest error.
+#}
+{% macro bad_request_mixins_test(service, api, name, sig, transport, is_async=False) %}
+{% set await_prefix = get_await_prefix(is_async) %}
+{% set async_prefix = get_async_prefix(is_async) %}
+{% set async_decorator = get_async_decorator(is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% set method_name = name|snake_case %}
+{% set mocked_session = "AsyncAuthorizedSession" if is_async else "Session" %}
+{{ async_decorator }}
+{{ async_prefix }}def test_{{ method_name }}_{{ transport_name }}_bad_request(request_type={{ sig.request_type }}):
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2157): Refactor this macro to include `gRPC` coverage. #}
+{% if 'grpc' in transport %}
+    raise NotImplementedError("gRPC is currently not supported for this test case.")
+{% else %}{# 'rest' in transport #}
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
+    client = {{ get_client(service, is_async) }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{transport_name}}",
+    )
+    request = request_type()
+    request = json_format.ParseDict({{ api.mixin_http_options["{}".format(name)][0].sample_request }}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object({{mocked_session}}, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        {% if is_async %}
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        {% else %}
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        {% endif %}{# if is_async #}
+        response_value.status_code = 400
+        {% if is_async %}
+        response_value.request = mock.Mock()
+        {% else %}
+        response_value.request = Request()
+        {% endif %}
+        req.return_value = response_value
+        {{ await_prefix }}client.{{ method_name }}(request)
+{% endif %}{# if 'grpc' in transport #}
+{% endmacro %}
+
+{# call_success_test generates tests for rest methods
+ # when they make a successful request.
+ # NOTE: Currently, this macro does not support the following method
+ # types: [method.paged_result_field].
+ # As support is added for the above methods, the relevant guard can be removed from within the macro
+ # TODO(https://github.com/googleapis/gapic-generator-python/issues/2142): Clean up `rest_required_tests` as we add support for each of the method types metioned above.
+#}
+{% macro call_success_test(service, method, transport, is_async) %}
+{% set await_prefix = get_await_prefix(is_async) %}
+{% set async_prefix = get_async_prefix(is_async) %}
+{% set async_decorator = get_async_decorator(is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% set method_name = method.name|snake_case %}
+{# NOTE: set method_output to method.extended_lro.operation_type for the following method types:
+ # (method.extended_lro and not full_extended_lro)
+#}
+{% set method_output = method.output %}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2143): Update the guard below as we add support for each method, and keep it in sync with the guard in
+ # `rest_required_tests`, which should be the exact opposite. Remove it once we have all the methods supported in async rest transport that are supported in sync rest transport.
+ #}
+{{ async_decorator }}
+@pytest.mark.parametrize("request_type", [
+  {{ method.input.ident }},
+  dict,
+])
+{{async_prefix}}def test_{{method_name}}_{{transport_name}}_call_success(request_type):
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2157): Refactor this macro to include `gRPC` coverage. #}
+{% if 'grpc' in transport %}
+    raise NotImplementedError("gRPC is currently not supported for this test case.")
+{% else %}{# 'rest' in transport #}
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
+    client = {{ get_client(service, is_async) }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{transport_name}}"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {{ method.http_options[0].sample_request(method) }}
+    {% for field in method.body_fields.values() %}
+    {% if not field.oneof or field.proto3_optional %}
+    {# ignore oneof fields that might conflict with sample_request #}
+    request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = {{ method.input.ident }}.meta.fields["{{ field.name }}"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else: # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["{{ field.name }}"].items(): # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["{{ field.name }}"][field])):
+                    del request_init["{{ field.name }}"][field][i][subfield]
+            else:
+                del request_init["{{ field.name }}"][field][subfield]
+    {% endif %}
+    {% endfor %}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        {% if method.void %}
+        return_value = None
+        {% elif method.lro %}
+        return_value = operations_pb2.Operation(name='operations/spam')
+        {% elif method.extended_lro %}
+        return_value = {{ method.extended_lro.operation_type.ident }}(
+            {% for field in method.extended_lro.operation_type.fields.values() | rejectattr('message')%}
+            {% if not field.oneof or field.proto3_optional %}
+              {{ field.name }}={{ field.mock_value }},
+            {% endif %}{% endfor %}
+            {# This is a hack to only pick one field #}
+            {% for oneof_fields in method.output.oneof_fields().values() %}
+            {% if (oneof_fields | rejectattr('message') | list) %}
+            {% with field = (oneof_fields | rejectattr('message') | first) %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endwith %}
+            {% endif %}
+            {% endfor %}
+        )
+        {% else %}
+        return_value = {{ method.output.ident }}(
+            {% for field in method.output.fields.values() | rejectattr('message')%}
+            {% if not field.oneof or field.proto3_optional %}
+              {{ field.name }}={{ field.mock_value }},
+              {% endif %}{% endfor %}
+            {# This is a hack to only pick one field #}
+            {% for oneof_fields in method.output.oneof_fields().values() %}
+            {% if (oneof_fields | rejectattr('message') | list) %}
+            {% with field = (oneof_fields | rejectattr('message') | first) %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endwith %}
+            {% endif %}
+            {% endfor %}
+        )
+        {% endif %}{# method.void #}
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        {% if method.void %}
+        json_return_value = ''
+        {% else %}{# method.void #}
+        {% if method.output.ident.is_proto_plus_type %}
+
+        # Convert return value to protobuf type
+        return_value = {{ method.output.ident }}.pb(return_value)
+        {% endif %}{# method.output.ident.is_proto_plus_type #}
+        json_return_value = json_format.MessageToJson(return_value)
+        {% endif %}{# method.void #}
+        {% if method.server_streaming %}
+        json_return_value = "[{}]".format(json_return_value)
+        {% if is_async %}
+        response_value.content.return_value = mock_async_gen(json_return_value)
+        {% else %}{# not is_async #}
+        response_value.iter_content = mock.Mock(return_value=iter(json_return_value))
+        {% endif %}{# is_async #}
+        {% else %}{# not method.streaming #}
+        {% if is_async %}
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        {% else %}{# not is_async #}
+        response_value.content = json_return_value.encode('UTF-8')
+        {% endif %}{# is_async #}
+        {% endif %}{# method.server_streaming #}
+        req.return_value = response_value
+        response = {{ await_prefix }}client.{{ method_name }}(request)
+    {% if "next_page_token" in method_output.fields.values()|map(attribute='name', default="") and not method.paged_result_field %}
+    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2199): The following assert statement is added to force
+     # code coverage for bad paginated methods. Investigate what bad paginated methods are, and follow up on why this assertion is required.
+    #}
+
+    assert response.raw_page is response
+    {% endif %}
+    
+    {% if method.server_streaming %}
+    {% if is_async %}
+    assert isinstance(response, AsyncIterable)
+    response = await response.__anext__()
+    {% else %}
+    assert isinstance(response, Iterable)
+    response = next(response)
+    {% endif %}
+    {% endif %}
+    
+    # Establish that the response is the type that we expect.
+    {% if method.void %}
+    assert response is None
+    {% elif method.lro %}
+    json_return_value = json_format.MessageToJson(return_value)
+    {% else %}
+    {% if is_async %}
+    assert isinstance(response, {{ method.client_output_async.ident }})
+    {% else %}
+    assert isinstance(response, {{ method.client_output.ident }})
+    {% endif %}
+    {% for field in method_output.fields.values() | rejectattr('message') %}
+    {% if not field.oneof or field.proto3_optional %}
+    {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
+    {% if field.repeated %}
+    for index in range(len(response.{{ field.name }})):
+        assert math.isclose(
+            response.{{ field.name }}[index],
+            {{ field.mock_value }}[index],
+            rel_tol=1e-6,
+        )
+    {% else %}{# field.repeated #}
+    assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
+    {% endif %}{# field.repeated #}
+    {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
+    assert response.{{ field.name }} is {{ field.mock_value }}
+    {% else %}
+    assert response.{{ field.name }} == {{ field.mock_value }}
+    {% endif %}{# field.field_pb.type in [1, 2] #}
+    {% endif %}{# not field.oneof or field.proto3_optional #}
+    {% endfor %}{# field in method_output.fields.values() | rejectattr('message') #}
+    {% endif %}{# method.void #}
+
+{% endif %}{# if 'grpc' in transport #}
+{% endmacro %}{# call_success_test #}
+
+{# call_success_mixins_test generates tests for rest mixin methods
+ # when they make a successful request.
+#}
+{% macro call_success_mixins_test(service, api, name, sig, transport, is_async=False) %}
+{% set await_prefix = get_await_prefix(is_async) %}
+{% set async_prefix = get_async_prefix(is_async) %}
+{% set async_decorator = get_async_decorator(is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% set method_name = name|snake_case %}
+{% set mocked_session = "AsyncAuthorizedSession" if is_async else "Session" %}
+{{ async_decorator }}
+@pytest.mark.parametrize("request_type", [
+    {{ sig.request_type }},
+    dict,
+])
+{{ async_prefix }}def test_{{ method_name }}_{{ transport_name }}(request_type):
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2157): Refactor this macro to include `gRPC` coverage. #}
+{% if 'grpc' in transport %}
+    raise NotImplementedError("gRPC is currently not supported for this test case.")
+{% else %}{# 'rest' in transport #}
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
+    client = {{ get_client(service, is_async) }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{transport_name}}",
+    )
+
+    request_init = {{ api.mixin_http_options["{}".format(name)][0].sample_request }}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object({{mocked_session}}, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        {% if sig.response_type == "None" %}
+        return_value = None
+        {% else %}
+        return_value = {{ sig.response_type }}()
+        {% endif %}
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        {% if sig.response_type == "None" %}
+        json_return_value = '{}'
+        {% else %}
+        json_return_value = json_format.MessageToJson(return_value)
+        {% endif %}
+        {% if is_async %}
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        {% else %}
+        response_value.content = json_return_value.encode('UTF-8')
+        {% endif %}
+
+        req.return_value = response_value
+
+        response = {{ await_prefix }}client.{{ method_name }}(request)
+
+    # Establish that the response is the type that we expect.
+    {% if sig.response_type == "None" %}
+    assert response is None
+    {% else %}
+    assert isinstance(response, {{ sig.response_type }})
+    {% endif %}
+{% endif %}{# if 'grpc' in transport #}
+{% endmacro %}{# call_success_mixins_test #}
 
 {% macro empty_call_test(service, api, transport, is_async) %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2159): 
@@ -1905,3 +2178,95 @@ def test_transport_kind_{{ transport_name }}():
 {% endfor %}{# method in service.methods.values() #}
 {% endif %}
 {% endmacro %}{# routing_parameter_test #}
+
+{# inteceptor_class_test generates tests for rest interceptors. #}
+{% macro inteceptor_class_test(service, method, transport, is_async) %}
+{% set await_prefix = get_await_prefix(is_async) %}
+{% set async_prefix = get_async_prefix(is_async) %}
+{% set async_decorator = get_async_decorator(is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% set method_name = method.name|snake_case %}
+{% set async_method_prefix = "Async" if is_async else "" %}
+{{async_decorator}}
+@pytest.mark.parametrize("null_interceptor", [True, False])
+{{async_prefix}}def test_{{ method_name }}_{{transport_name}}_interceptors(null_interceptor):
+{% if 'grpc' in transport %}
+    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2191):
+     # Currently this macro only supports REST. It should be updated to support gRPC
+     # transport as well.
+    #}
+    raise NotImplementedError("gRPC is currently not supported for this test case.")
+{% else %}{# 'rest' in transport #}
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
+    transport = transports.{{async_method_prefix}}{{ service.name }}RestTransport(
+        credentials={{get_credentials(is_async)}},
+        interceptor=None if null_interceptor else transports.{{async_method_prefix}}{{ service.name}}RestInterceptor(),
+        )
+    client = {{ get_client(service, is_async) }}(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        {% if method.lro %}
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        {% endif %}
+        {% if not method.void %}
+        mock.patch.object(transports.{{async_method_prefix}}{{ service.name }}RestInterceptor, "post_{{method.name|snake_case}}") as post, \
+        {% endif %}
+        mock.patch.object(transports.{{async_method_prefix}}{{ service.name }}RestInterceptor, "pre_{{ method.name|snake_case }}") as pre:
+        pre.assert_not_called()
+        {% if not method.void %}
+        post.assert_not_called()
+        {% endif %}
+        {% if method.input.ident.is_proto_plus_type %}
+        pb_message = {{ method.input.ident }}.pb({{ method.input.ident }}())
+        {% else %}
+        pb_message = {{ method.input.ident }}()
+        {% endif %}{# if method.input.ident.is_proto_plus_type #}
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        {% if not method.void %}
+        return_value = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json({{ method.output.ident }}()){% else %}json_format.MessageToJson({{ method.output.ident }}()){% endif %}
+
+        {% if method.server_streaming %}
+        {% if is_async %}
+        req.return_value.content.return_value = mock_async_gen(return_value)
+        {% else %}{# not is_async #}
+        req.return_value.iter_content = mock.Mock(return_value=iter(return_value))
+        {% endif %}{# end is_async #}
+        {% else %}{# not method.server_streaming #}
+        {% if is_async %}
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+        {% else %}{# not is_async #}
+        req.return_value.content = return_value
+        {% endif %}{# end is_async #}
+        {% endif %}{# end method.server_streaming #}
+        {% endif %}{# end not method.void #}
+
+        request = {{ method.input.ident }}()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        {% if not method.void %}
+        post.return_value = {{ method.output.ident }}()
+        {% endif %}
+
+        {{await_prefix}}client.{{ method_name }}(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        {% if not method.void %}
+        post.assert_called_once()
+        {% endif %}
+{% endif %}{# end 'grpc' in transport #}
+{% endmacro%}

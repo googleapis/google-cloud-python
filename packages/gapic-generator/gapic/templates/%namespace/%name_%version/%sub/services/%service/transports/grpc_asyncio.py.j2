@@ -388,7 +388,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         return self._stubs["test_iam_permissions"]
     {% endif %}
 
-    {{ shared_macros.prep_wrapped_messages_async_method(service)|indent(4) }}
+    {{ shared_macros.prep_wrapped_messages_async_method(api, service)|indent(4) }}
 
     {{ shared_macros.wrap_async_method_macro()|indent(4) }}
 

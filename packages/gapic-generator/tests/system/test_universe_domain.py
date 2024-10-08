@@ -73,9 +73,9 @@ def test_universe_domain_validation_fail(parametrized_echo, channel_creator, tra
     # Make this test unconditional once the minimum supported version of
     # google-auth becomes 2.23.0 or higher.
     google_auth_major, google_auth_minor, _ = [
-        int(part) for part in google.auth.__version__.split(".")
+        part for part in google.auth.__version__.split(".")
     ]
-    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+    if int(google_auth_major) > 2 or (int(google_auth_major) == 2 and int(google_auth_minor) >= 23):
         assert parametrized_echo.transport._credentials.universe_domain == credential_universe
         if transport_name == "rest":
             assert parametrized_echo.api_endpoint == "http://" + transport_endpoint

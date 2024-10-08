@@ -55,8 +55,9 @@ jobs:
     strategy:
       # Run showcase tests on the lowest and highest supported runtimes
       matrix:
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `showcase_w_rest_async` target when async rest is GA.
         python: ["3.7", "3.12"]
-        target: [showcase, showcase_alternative_templates]
+        target: [showcase, showcase_alternative_templates, showcase_w_rest_async]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

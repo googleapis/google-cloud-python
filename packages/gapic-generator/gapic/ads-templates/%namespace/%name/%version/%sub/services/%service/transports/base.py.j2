@@ -150,7 +150,14 @@ class {{ service.name }}Transport(abc.ABC):
                 default_timeout={{ method.timeout }},
                 client_info=client_info,
             ),
-            {% endfor %} {# precomputed wrappers loop #}
+            {% endfor %}{# method in service.methods.values() #}
+            {% for method_name in api.mixin_api_methods.keys() %}
+            self.{{ method_name|snake_case }}: gapic_v1.method.wrap_method(
+                self.{{ method_name|snake_case }},
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            {% endfor %} {# method_name in api.mixin_api_methods.keys() #}
         }
 
     def close(self):

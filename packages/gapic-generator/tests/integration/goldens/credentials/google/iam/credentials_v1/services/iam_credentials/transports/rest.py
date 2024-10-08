@@ -118,6 +118,7 @@ class IAMCredentialsRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_generate_id_token(self, request: common.GenerateIdTokenRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[common.GenerateIdTokenRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for generate_id_token
 
@@ -134,6 +135,7 @@ class IAMCredentialsRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_sign_blob(self, request: common.SignBlobRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[common.SignBlobRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for sign_blob
 
@@ -150,6 +152,7 @@ class IAMCredentialsRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_sign_jwt(self, request: common.SignJwtRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[common.SignJwtRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for sign_jwt
 

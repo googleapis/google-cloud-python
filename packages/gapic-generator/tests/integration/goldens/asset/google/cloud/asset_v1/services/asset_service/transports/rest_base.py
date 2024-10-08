@@ -19,7 +19,6 @@ from google.api_core import gapic_v1
 
 from google.protobuf import json_format
 from .base import AssetServiceTransport, DEFAULT_CLIENT_INFO
-from google.auth import credentials as ga_credentials  # type: ignore
 
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
@@ -45,7 +44,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     def __init__(self, *,
             host: str = 'cloudasset.googleapis.com',
-            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials: Optional[Any] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             url_scheme: str = 'https',
@@ -55,7 +54,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         Args:
             host (Optional[str]):
                  The hostname to connect to (default: 'cloudasset.googleapis.com').
-            credentials (Optional[google.auth.credentials.Credentials]): The
+            credentials (Optional[Any]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
@@ -987,6 +986,8 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
             return query_params
 
     class _BaseGetOperation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         @staticmethod
         def _get_http_options():

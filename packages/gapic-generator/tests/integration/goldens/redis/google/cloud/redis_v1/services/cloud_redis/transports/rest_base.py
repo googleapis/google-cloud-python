@@ -20,7 +20,6 @@ from google.api_core import gapic_v1
 from google.protobuf import json_format
 from google.cloud.location import locations_pb2 # type: ignore
 from .base import CloudRedisTransport, DEFAULT_CLIENT_INFO
-from google.auth import credentials as ga_credentials  # type: ignore
 
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
@@ -45,7 +44,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
     def __init__(self, *,
             host: str = 'redis.googleapis.com',
-            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials: Optional[Any] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             url_scheme: str = 'https',
@@ -55,7 +54,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         Args:
             host (Optional[str]):
                  The hostname to connect to (default: 'redis.googleapis.com').
-            credentials (Optional[google.auth.credentials.Credentials]): The
+            credentials (Optional[Any]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
@@ -555,6 +554,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseGetLocation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         @staticmethod
         def _get_http_options():
@@ -578,6 +579,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseListLocations:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         @staticmethod
         def _get_http_options():
@@ -601,6 +604,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseCancelOperation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         @staticmethod
         def _get_http_options():
@@ -624,6 +629,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseDeleteOperation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         @staticmethod
         def _get_http_options():
@@ -647,6 +654,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseGetOperation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         @staticmethod
         def _get_http_options():
@@ -670,6 +679,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseListOperations:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         @staticmethod
         def _get_http_options():

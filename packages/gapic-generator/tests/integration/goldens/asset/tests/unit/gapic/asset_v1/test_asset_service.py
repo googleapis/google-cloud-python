@@ -23,7 +23,7 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
-from collections.abc import Iterable
+from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
 import json
 import math
@@ -70,6 +70,11 @@ from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import google.auth
 
+
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
@@ -8925,37 +8930,6 @@ async def test_analyze_org_policy_governed_assets_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [
-    asset_service.ExportAssetsRequest,
-    dict,
-])
-def test_export_assets_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name='operations/spam')
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.export_assets(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
 def test_export_assets_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9069,110 +9043,6 @@ def test_export_assets_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent", "outputConfig", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_export_assets_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_export_assets") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_export_assets") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.ExportAssetsRequest.pb(asset_service.ExportAssetsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = asset_service.ExportAssetsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.export_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_export_assets_rest_bad_request(transport: str = 'rest', request_type=asset_service.ExportAssetsRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.export_assets(request)
-
-
-def test_export_assets_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.ListAssetsRequest,
-    dict,
-])
-def test_list_assets_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.ListAssetsResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.ListAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_assets(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAssetsPager)
-    assert response.next_page_token == 'next_page_token_value'
-
 def test_list_assets_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9284,66 +9154,6 @@ def test_list_assets_rest_unset_required_fields():
 
     unset_fields = transport.list_assets._get_unset_required_fields({})
     assert set(unset_fields) == (set(("assetTypes", "contentType", "pageSize", "pageToken", "readTime", "relationshipTypes", )) & set(("parent", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_assets_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_assets") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_assets") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.ListAssetsRequest.pb(asset_service.ListAssetsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.ListAssetsResponse.to_json(asset_service.ListAssetsResponse())
-
-        request = asset_service.ListAssetsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.ListAssetsResponse()
-
-        client.list_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_assets_rest_bad_request(transport: str = 'rest', request_type=asset_service.ListAssetsRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_assets(request)
 
 
 def test_list_assets_rest_flattened():
@@ -9461,40 +9271,6 @@ def test_list_assets_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [
-    asset_service.BatchGetAssetsHistoryRequest,
-    dict,
-])
-def test_batch_get_assets_history_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.BatchGetAssetsHistoryResponse(
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.BatchGetAssetsHistoryResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.batch_get_assets_history(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
-
 def test_batch_get_assets_history_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9607,117 +9383,6 @@ def test_batch_get_assets_history_rest_unset_required_fields():
     unset_fields = transport.batch_get_assets_history._get_unset_required_fields({})
     assert set(unset_fields) == (set(("assetNames", "contentType", "readTimeWindow", "relationshipTypes", )) & set(("parent", )))
 
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_get_assets_history_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_assets_history") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_batch_get_assets_history") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.BatchGetAssetsHistoryRequest.pb(asset_service.BatchGetAssetsHistoryRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.BatchGetAssetsHistoryResponse.to_json(asset_service.BatchGetAssetsHistoryResponse())
-
-        request = asset_service.BatchGetAssetsHistoryRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.BatchGetAssetsHistoryResponse()
-
-        client.batch_get_assets_history(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_get_assets_history_rest_bad_request(transport: str = 'rest', request_type=asset_service.BatchGetAssetsHistoryRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_get_assets_history(request)
-
-
-def test_batch_get_assets_history_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.CreateFeedRequest,
-    dict,
-])
-def test_create_feed_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.Feed(
-              name='name_value',
-              asset_names=['asset_names_value'],
-              asset_types=['asset_types_value'],
-              content_type=asset_service.ContentType.RESOURCE,
-              relationship_types=['relationship_types_value'],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.Feed.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.create_feed(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, asset_service.Feed)
-    assert response.name == 'name_value'
-    assert response.asset_names == ['asset_names_value']
-    assert response.asset_types == ['asset_types_value']
-    assert response.content_type == asset_service.ContentType.RESOURCE
-    assert response.relationship_types == ['relationship_types_value']
 
 def test_create_feed_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -9835,66 +9500,6 @@ def test_create_feed_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent", "feedId", "feed", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_feed_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_feed") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_create_feed") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.CreateFeedRequest.pb(asset_service.CreateFeedRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.Feed.to_json(asset_service.Feed())
-
-        request = asset_service.CreateFeedRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.Feed()
-
-        client.create_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_feed_rest_bad_request(transport: str = 'rest', request_type=asset_service.CreateFeedRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_feed(request)
-
-
 def test_create_feed_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9947,57 +9552,6 @@ def test_create_feed_rest_flattened_error(transport: str = 'rest'):
             parent='parent_value',
         )
 
-
-def test_create_feed_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.GetFeedRequest,
-    dict,
-])
-def test_get_feed_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'sample1/sample2/feeds/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.Feed(
-              name='name_value',
-              asset_names=['asset_names_value'],
-              asset_types=['asset_types_value'],
-              content_type=asset_service.ContentType.RESOURCE,
-              relationship_types=['relationship_types_value'],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.Feed.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.get_feed(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, asset_service.Feed)
-    assert response.name == 'name_value'
-    assert response.asset_names == ['asset_names_value']
-    assert response.asset_types == ['asset_types_value']
-    assert response.content_type == asset_service.ContentType.RESOURCE
-    assert response.relationship_types == ['relationship_types_value']
 
 def test_get_feed_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10110,66 +9664,6 @@ def test_get_feed_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_feed_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_feed") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_get_feed") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.GetFeedRequest.pb(asset_service.GetFeedRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.Feed.to_json(asset_service.Feed())
-
-        request = asset_service.GetFeedRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.Feed()
-
-        client.get_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_feed_rest_bad_request(transport: str = 'rest', request_type=asset_service.GetFeedRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'sample1/sample2/feeds/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_feed(request)
-
-
 def test_get_feed_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10222,47 +9716,6 @@ def test_get_feed_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
         )
 
-
-def test_get_feed_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.ListFeedsRequest,
-    dict,
-])
-def test_list_feeds_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.ListFeedsResponse(
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.ListFeedsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_feeds(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, asset_service.ListFeedsResponse)
 
 def test_list_feeds_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10375,66 +9828,6 @@ def test_list_feeds_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_feeds_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_feeds") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_feeds") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.ListFeedsRequest.pb(asset_service.ListFeedsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.ListFeedsResponse.to_json(asset_service.ListFeedsResponse())
-
-        request = asset_service.ListFeedsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.ListFeedsResponse()
-
-        client.list_feeds(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_feeds_rest_bad_request(transport: str = 'rest', request_type=asset_service.ListFeedsRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_feeds(request)
-
-
 def test_list_feeds_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10487,57 +9880,6 @@ def test_list_feeds_rest_flattened_error(transport: str = 'rest'):
             parent='parent_value',
         )
 
-
-def test_list_feeds_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.UpdateFeedRequest,
-    dict,
-])
-def test_update_feed_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'feed': {'name': 'sample1/sample2/feeds/sample3'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.Feed(
-              name='name_value',
-              asset_names=['asset_names_value'],
-              asset_types=['asset_types_value'],
-              content_type=asset_service.ContentType.RESOURCE,
-              relationship_types=['relationship_types_value'],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.Feed.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.update_feed(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, asset_service.Feed)
-    assert response.name == 'name_value'
-    assert response.asset_names == ['asset_names_value']
-    assert response.asset_types == ['asset_types_value']
-    assert response.content_type == asset_service.ContentType.RESOURCE
-    assert response.relationship_types == ['relationship_types_value']
 
 def test_update_feed_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10646,66 +9988,6 @@ def test_update_feed_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("feed", "updateMask", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_feed_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_feed") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_update_feed") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.UpdateFeedRequest.pb(asset_service.UpdateFeedRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.Feed.to_json(asset_service.Feed())
-
-        request = asset_service.UpdateFeedRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.Feed()
-
-        client.update_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_feed_rest_bad_request(transport: str = 'rest', request_type=asset_service.UpdateFeedRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'feed': {'name': 'sample1/sample2/feeds/sample3'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_feed(request)
-
-
 def test_update_feed_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10758,44 +10040,6 @@ def test_update_feed_rest_flattened_error(transport: str = 'rest'):
             feed=asset_service.Feed(name='name_value'),
         )
 
-
-def test_update_feed_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.DeleteFeedRequest,
-    dict,
-])
-def test_delete_feed_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'sample1/sample2/feeds/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ''
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.delete_feed(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 def test_delete_feed_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10905,61 +10149,6 @@ def test_delete_feed_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_feed_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_delete_feed") as pre:
-        pre.assert_not_called()
-        pb_message = asset_service.DeleteFeedRequest.pb(asset_service.DeleteFeedRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = asset_service.DeleteFeedRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-
-
-def test_delete_feed_rest_bad_request(transport: str = 'rest', request_type=asset_service.DeleteFeedRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'sample1/sample2/feeds/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_feed(request)
-
-
 def test_delete_feed_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11010,49 +10199,6 @@ def test_delete_feed_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
         )
 
-
-def test_delete_feed_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.SearchAllResourcesRequest,
-    dict,
-])
-def test_search_all_resources_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.SearchAllResourcesResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.search_all_resources(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchAllResourcesPager)
-    assert response.next_page_token == 'next_page_token_value'
 
 def test_search_all_resources_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -11165,66 +10311,6 @@ def test_search_all_resources_rest_unset_required_fields():
 
     unset_fields = transport.search_all_resources._get_unset_required_fields({})
     assert set(unset_fields) == (set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", "readMask", )) & set(("scope", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_search_all_resources_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_search_all_resources") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_search_all_resources") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.SearchAllResourcesRequest.pb(asset_service.SearchAllResourcesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.SearchAllResourcesResponse.to_json(asset_service.SearchAllResourcesResponse())
-
-        request = asset_service.SearchAllResourcesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.SearchAllResourcesResponse()
-
-        client.search_all_resources(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_search_all_resources_rest_bad_request(transport: str = 'rest', request_type=asset_service.SearchAllResourcesRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.search_all_resources(request)
 
 
 def test_search_all_resources_rest_flattened():
@@ -11346,42 +10432,6 @@ def test_search_all_resources_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [
-    asset_service.SearchAllIamPoliciesRequest,
-    dict,
-])
-def test_search_all_iam_policies_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.SearchAllIamPoliciesResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.search_all_iam_policies(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchAllIamPoliciesPager)
-    assert response.next_page_token == 'next_page_token_value'
-
 def test_search_all_iam_policies_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11493,66 +10543,6 @@ def test_search_all_iam_policies_rest_unset_required_fields():
 
     unset_fields = transport.search_all_iam_policies._get_unset_required_fields({})
     assert set(unset_fields) == (set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", )) & set(("scope", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_search_all_iam_policies_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_search_all_iam_policies") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_search_all_iam_policies") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.SearchAllIamPoliciesRequest.pb(asset_service.SearchAllIamPoliciesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.SearchAllIamPoliciesResponse.to_json(asset_service.SearchAllIamPoliciesResponse())
-
-        request = asset_service.SearchAllIamPoliciesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.SearchAllIamPoliciesResponse()
-
-        client.search_all_iam_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_search_all_iam_policies_rest_bad_request(transport: str = 'rest', request_type=asset_service.SearchAllIamPoliciesRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.search_all_iam_policies(request)
 
 
 def test_search_all_iam_policies_rest_flattened():
@@ -11672,42 +10662,6 @@ def test_search_all_iam_policies_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [
-    asset_service.AnalyzeIamPolicyRequest,
-    dict,
-])
-def test_analyze_iam_policy_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'analysis_query': {'scope': 'sample1/sample2'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.AnalyzeIamPolicyResponse(
-              fully_explored=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeIamPolicyResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.analyze_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
-    assert response.fully_explored is True
-
 def test_analyze_iam_policy_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11816,104 +10770,6 @@ def test_analyze_iam_policy_rest_unset_required_fields():
     assert set(unset_fields) == (set(("analysisQuery", "executionTimeout", "savedAnalysisQuery", )) & set(("analysisQuery", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_analyze_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_iam_policy") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_iam_policy") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.AnalyzeIamPolicyRequest.pb(asset_service.AnalyzeIamPolicyRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.AnalyzeIamPolicyResponse.to_json(asset_service.AnalyzeIamPolicyResponse())
-
-        request = asset_service.AnalyzeIamPolicyRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.AnalyzeIamPolicyResponse()
-
-        client.analyze_iam_policy(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_analyze_iam_policy_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeIamPolicyRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'analysis_query': {'scope': 'sample1/sample2'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.analyze_iam_policy(request)
-
-
-def test_analyze_iam_policy_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.AnalyzeIamPolicyLongrunningRequest,
-    dict,
-])
-def test_analyze_iam_policy_longrunning_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'analysis_query': {'scope': 'sample1/sample2'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name='operations/spam')
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.analyze_iam_policy_longrunning(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
 def test_analyze_iam_policy_longrunning_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -12021,108 +10877,6 @@ def test_analyze_iam_policy_longrunning_rest_unset_required_fields():
     unset_fields = transport.analyze_iam_policy_longrunning._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("analysisQuery", "outputConfig", )))
 
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_iam_policy_longrunning") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_iam_policy_longrunning") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.AnalyzeIamPolicyLongrunningRequest.pb(asset_service.AnalyzeIamPolicyLongrunningRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = asset_service.AnalyzeIamPolicyLongrunningRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.analyze_iam_policy_longrunning(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_analyze_iam_policy_longrunning_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeIamPolicyLongrunningRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'analysis_query': {'scope': 'sample1/sample2'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.analyze_iam_policy_longrunning(request)
-
-
-def test_analyze_iam_policy_longrunning_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.AnalyzeMoveRequest,
-    dict,
-])
-def test_analyze_move_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'resource': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.AnalyzeMoveResponse(
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.analyze_move(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, asset_service.AnalyzeMoveResponse)
 
 def test_analyze_move_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -12248,111 +11002,6 @@ def test_analyze_move_rest_unset_required_fields():
     assert set(unset_fields) == (set(("destinationParent", "view", )) & set(("resource", "destinationParent", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_analyze_move_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_move") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_move") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.AnalyzeMoveRequest.pb(asset_service.AnalyzeMoveRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.AnalyzeMoveResponse.to_json(asset_service.AnalyzeMoveResponse())
-
-        request = asset_service.AnalyzeMoveRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.AnalyzeMoveResponse()
-
-        client.analyze_move(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_analyze_move_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeMoveRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'resource': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.analyze_move(request)
-
-
-def test_analyze_move_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.QueryAssetsRequest,
-    dict,
-])
-def test_query_assets_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.QueryAssetsResponse(
-              job_reference='job_reference_value',
-              done=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.QueryAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.query_assets(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, asset_service.QueryAssetsResponse)
-    assert response.job_reference == 'job_reference_value'
-    assert response.done is True
-
 def test_query_assets_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -12464,179 +11113,6 @@ def test_query_assets_rest_unset_required_fields():
     unset_fields = transport.query_assets._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent", )))
 
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_query_assets_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_query_assets") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_query_assets") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.QueryAssetsRequest.pb(asset_service.QueryAssetsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.QueryAssetsResponse.to_json(asset_service.QueryAssetsResponse())
-
-        request = asset_service.QueryAssetsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.QueryAssetsResponse()
-
-        client.query_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_query_assets_rest_bad_request(transport: str = 'rest', request_type=asset_service.QueryAssetsRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.query_assets(request)
-
-
-def test_query_assets_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.CreateSavedQueryRequest,
-    dict,
-])
-def test_create_saved_query_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request_init["saved_query"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = asset_service.CreateSavedQueryRequest.meta.fields["saved_query"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else: # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["saved_query"].items(): # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["saved_query"][field])):
-                    del request_init["saved_query"][field][i][subfield]
-            else:
-                del request_init["saved_query"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.SavedQuery(
-              name='name_value',
-              description='description_value',
-              creator='creator_value',
-              last_updater='last_updater_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.SavedQuery.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.create_saved_query(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, asset_service.SavedQuery)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.creator == 'creator_value'
-    assert response.last_updater == 'last_updater_value'
 
 def test_create_saved_query_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -12763,66 +11239,6 @@ def test_create_saved_query_rest_unset_required_fields():
     assert set(unset_fields) == (set(("savedQueryId", )) & set(("parent", "savedQuery", "savedQueryId", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_saved_query_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_saved_query") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_create_saved_query") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.CreateSavedQueryRequest.pb(asset_service.CreateSavedQueryRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
-
-        request = asset_service.CreateSavedQueryRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.SavedQuery()
-
-        client.create_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_saved_query_rest_bad_request(transport: str = 'rest', request_type=asset_service.CreateSavedQueryRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_saved_query(request)
-
-
 def test_create_saved_query_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12879,55 +11295,6 @@ def test_create_saved_query_rest_flattened_error(transport: str = 'rest'):
             saved_query_id='saved_query_id_value',
         )
 
-
-def test_create_saved_query_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.GetSavedQueryRequest,
-    dict,
-])
-def test_get_saved_query_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.SavedQuery(
-              name='name_value',
-              description='description_value',
-              creator='creator_value',
-              last_updater='last_updater_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.SavedQuery.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.get_saved_query(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, asset_service.SavedQuery)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.creator == 'creator_value'
-    assert response.last_updater == 'last_updater_value'
 
 def test_get_saved_query_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -13040,66 +11407,6 @@ def test_get_saved_query_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_saved_query_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_saved_query") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_get_saved_query") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.GetSavedQueryRequest.pb(asset_service.GetSavedQueryRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
-
-        request = asset_service.GetSavedQueryRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.SavedQuery()
-
-        client.get_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_saved_query_rest_bad_request(transport: str = 'rest', request_type=asset_service.GetSavedQueryRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_saved_query(request)
-
-
 def test_get_saved_query_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13152,49 +11459,6 @@ def test_get_saved_query_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
         )
 
-
-def test_get_saved_query_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.ListSavedQueriesRequest,
-    dict,
-])
-def test_list_saved_queries_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.ListSavedQueriesResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_saved_queries(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListSavedQueriesPager)
-    assert response.next_page_token == 'next_page_token_value'
 
 def test_list_saved_queries_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -13307,66 +11571,6 @@ def test_list_saved_queries_rest_unset_required_fields():
 
     unset_fields = transport.list_saved_queries._get_unset_required_fields({})
     assert set(unset_fields) == (set(("filter", "pageSize", "pageToken", )) & set(("parent", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_saved_queries_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_saved_queries") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_saved_queries") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.ListSavedQueriesRequest.pb(asset_service.ListSavedQueriesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.ListSavedQueriesResponse.to_json(asset_service.ListSavedQueriesResponse())
-
-        request = asset_service.ListSavedQueriesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.ListSavedQueriesResponse()
-
-        client.list_saved_queries(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_saved_queries_rest_bad_request(transport: str = 'rest', request_type=asset_service.ListSavedQueriesRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_saved_queries(request)
 
 
 def test_list_saved_queries_rest_flattened():
@@ -13484,112 +11688,6 @@ def test_list_saved_queries_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [
-    asset_service.UpdateSavedQueryRequest,
-    dict,
-])
-def test_update_saved_query_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
-    request_init["saved_query"] = {'name': 'sample1/sample2/savedQueries/sample3', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = asset_service.UpdateSavedQueryRequest.meta.fields["saved_query"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else: # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["saved_query"].items(): # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["saved_query"][field])):
-                    del request_init["saved_query"][field][i][subfield]
-            else:
-                del request_init["saved_query"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.SavedQuery(
-              name='name_value',
-              description='description_value',
-              creator='creator_value',
-              last_updater='last_updater_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.SavedQuery.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.update_saved_query(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, asset_service.SavedQuery)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.creator == 'creator_value'
-    assert response.last_updater == 'last_updater_value'
-
 def test_update_saved_query_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -13699,66 +11797,6 @@ def test_update_saved_query_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask", )) & set(("savedQuery", "updateMask", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_saved_query_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_saved_query") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_update_saved_query") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.UpdateSavedQueryRequest.pb(asset_service.UpdateSavedQueryRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
-
-        request = asset_service.UpdateSavedQueryRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.SavedQuery()
-
-        client.update_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_saved_query_rest_bad_request(transport: str = 'rest', request_type=asset_service.UpdateSavedQueryRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_saved_query(request)
-
-
 def test_update_saved_query_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13813,44 +11851,6 @@ def test_update_saved_query_rest_flattened_error(transport: str = 'rest'):
             update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
         )
 
-
-def test_update_saved_query_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.DeleteSavedQueryRequest,
-    dict,
-])
-def test_delete_saved_query_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ''
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.delete_saved_query(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 def test_delete_saved_query_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -13960,61 +11960,6 @@ def test_delete_saved_query_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_saved_query_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_delete_saved_query") as pre:
-        pre.assert_not_called()
-        pb_message = asset_service.DeleteSavedQueryRequest.pb(asset_service.DeleteSavedQueryRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = asset_service.DeleteSavedQueryRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-
-
-def test_delete_saved_query_rest_bad_request(transport: str = 'rest', request_type=asset_service.DeleteSavedQueryRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_saved_query(request)
-
-
 def test_delete_saved_query_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14065,47 +12010,6 @@ def test_delete_saved_query_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
         )
 
-
-def test_delete_saved_query_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.BatchGetEffectiveIamPoliciesRequest,
-    dict,
-])
-def test_batch_get_effective_iam_policies_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.BatchGetEffectiveIamPoliciesResponse(
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.batch_get_effective_iam_policies(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
 
 def test_batch_get_effective_iam_policies_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -14231,109 +12135,6 @@ def test_batch_get_effective_iam_policies_rest_unset_required_fields():
     assert set(unset_fields) == (set(("names", )) & set(("scope", "names", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_effective_iam_policies") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_batch_get_effective_iam_policies") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.BatchGetEffectiveIamPoliciesRequest.pb(asset_service.BatchGetEffectiveIamPoliciesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(asset_service.BatchGetEffectiveIamPoliciesResponse())
-
-        request = asset_service.BatchGetEffectiveIamPoliciesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
-
-        client.batch_get_effective_iam_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_get_effective_iam_policies_rest_bad_request(transport: str = 'rest', request_type=asset_service.BatchGetEffectiveIamPoliciesRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_get_effective_iam_policies(request)
-
-
-def test_batch_get_effective_iam_policies_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.AnalyzeOrgPoliciesRequest,
-    dict,
-])
-def test_analyze_org_policies_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.AnalyzeOrgPoliciesResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.analyze_org_policies(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
-    assert response.next_page_token == 'next_page_token_value'
-
 def test_analyze_org_policies_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -14458,66 +12259,6 @@ def test_analyze_org_policies_rest_unset_required_fields():
     assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_analyze_org_policies_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policies") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policies") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.AnalyzeOrgPoliciesRequest.pb(asset_service.AnalyzeOrgPoliciesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.AnalyzeOrgPoliciesResponse.to_json(asset_service.AnalyzeOrgPoliciesResponse())
-
-        request = asset_service.AnalyzeOrgPoliciesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.AnalyzeOrgPoliciesResponse()
-
-        client.analyze_org_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_analyze_org_policies_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeOrgPoliciesRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.analyze_org_policies(request)
-
-
 def test_analyze_org_policies_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14636,42 +12377,6 @@ def test_analyze_org_policies_rest_pager(transport: str = 'rest'):
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
-    dict,
-])
-def test_analyze_org_policy_governed_containers_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.analyze_org_policy_governed_containers(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
-    assert response.next_page_token == 'next_page_token_value'
 
 def test_analyze_org_policy_governed_containers_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -14797,66 +12502,6 @@ def test_analyze_org_policy_governed_containers_rest_unset_required_fields():
     assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_analyze_org_policy_governed_containers_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_containers") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_containers") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.AnalyzeOrgPolicyGovernedContainersRequest.pb(asset_service.AnalyzeOrgPolicyGovernedContainersRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedContainersResponse())
-
-        request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
-
-        client.analyze_org_policy_governed_containers(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_analyze_org_policy_governed_containers_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.analyze_org_policy_governed_containers(request)
-
-
 def test_analyze_org_policy_governed_containers_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14975,42 +12620,6 @@ def test_analyze_org_policy_governed_containers_rest_pager(transport: str = 'res
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
-    dict,
-])
-def test_analyze_org_policy_governed_assets_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.analyze_org_policy_governed_assets(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
-    assert response.next_page_token == 'next_page_token_value'
 
 def test_analyze_org_policy_governed_assets_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -15134,66 +12743,6 @@ def test_analyze_org_policy_governed_assets_rest_unset_required_fields():
 
     unset_fields = transport.analyze_org_policy_governed_assets._get_unset_required_fields({})
     assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_assets") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_assets") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.pb(asset_service.AnalyzeOrgPolicyGovernedAssetsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse())
-
-        request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
-
-        client.analyze_org_policy_governed_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_analyze_org_policy_governed_assets_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.analyze_org_policy_governed_assets(request)
 
 
 def test_analyze_org_policy_governed_assets_rest_flattened():
@@ -15407,6 +12956,14 @@ def test_transport_kind_grpc():
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    assert client is not None
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
@@ -15920,6 +13477,14 @@ def test_transport_kind_grpc_asyncio():
         credentials=async_anonymous_credentials()
     )
     assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    assert client is not None
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
@@ -16541,6 +14106,2487 @@ def test_transport_kind_rest():
     assert transport.kind == "rest"
 
 
+def test_export_assets_rest_bad_request(request_type=asset_service.ExportAssetsRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.export_assets(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.ExportAssetsRequest,
+  dict,
+])
+def test_export_assets_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.export_assets(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_assets_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_export_assets") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_export_assets") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.ExportAssetsRequest.pb(asset_service.ExportAssetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = asset_service.ExportAssetsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_assets_rest_bad_request(request_type=asset_service.ListAssetsRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_assets(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.ListAssetsRequest,
+  dict,
+])
+def test_list_assets_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.ListAssetsResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.ListAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_assets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAssetsPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_assets_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_assets") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_assets") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.ListAssetsRequest.pb(asset_service.ListAssetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.ListAssetsResponse.to_json(asset_service.ListAssetsResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.ListAssetsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.ListAssetsResponse()
+
+        client.list_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_get_assets_history_rest_bad_request(request_type=asset_service.BatchGetAssetsHistoryRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_get_assets_history(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.BatchGetAssetsHistoryRequest,
+  dict,
+])
+def test_batch_get_assets_history_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.BatchGetAssetsHistoryResponse(
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.BatchGetAssetsHistoryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.batch_get_assets_history(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_get_assets_history_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_assets_history") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_batch_get_assets_history") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.BatchGetAssetsHistoryRequest.pb(asset_service.BatchGetAssetsHistoryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.BatchGetAssetsHistoryResponse.to_json(asset_service.BatchGetAssetsHistoryResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.BatchGetAssetsHistoryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.BatchGetAssetsHistoryResponse()
+
+        client.batch_get_assets_history(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_feed_rest_bad_request(request_type=asset_service.CreateFeedRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_feed(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.CreateFeedRequest,
+  dict,
+])
+def test_create_feed_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.Feed(
+              name='name_value',
+              asset_names=['asset_names_value'],
+              asset_types=['asset_types_value'],
+              content_type=asset_service.ContentType.RESOURCE,
+              relationship_types=['relationship_types_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.Feed.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.create_feed(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.Feed)
+    assert response.name == 'name_value'
+    assert response.asset_names == ['asset_names_value']
+    assert response.asset_types == ['asset_types_value']
+    assert response.content_type == asset_service.ContentType.RESOURCE
+    assert response.relationship_types == ['relationship_types_value']
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_feed_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_feed") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_create_feed") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.CreateFeedRequest.pb(asset_service.CreateFeedRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.Feed.to_json(asset_service.Feed())
+        req.return_value.content = return_value
+
+        request = asset_service.CreateFeedRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.Feed()
+
+        client.create_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_feed_rest_bad_request(request_type=asset_service.GetFeedRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/feeds/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_feed(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.GetFeedRequest,
+  dict,
+])
+def test_get_feed_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/feeds/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.Feed(
+              name='name_value',
+              asset_names=['asset_names_value'],
+              asset_types=['asset_types_value'],
+              content_type=asset_service.ContentType.RESOURCE,
+              relationship_types=['relationship_types_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.Feed.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_feed(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.Feed)
+    assert response.name == 'name_value'
+    assert response.asset_names == ['asset_names_value']
+    assert response.asset_types == ['asset_types_value']
+    assert response.content_type == asset_service.ContentType.RESOURCE
+    assert response.relationship_types == ['relationship_types_value']
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_feed_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_feed") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_get_feed") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.GetFeedRequest.pb(asset_service.GetFeedRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.Feed.to_json(asset_service.Feed())
+        req.return_value.content = return_value
+
+        request = asset_service.GetFeedRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.Feed()
+
+        client.get_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_feeds_rest_bad_request(request_type=asset_service.ListFeedsRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_feeds(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.ListFeedsRequest,
+  dict,
+])
+def test_list_feeds_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.ListFeedsResponse(
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.ListFeedsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_feeds(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.ListFeedsResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_feeds_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_feeds") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_feeds") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.ListFeedsRequest.pb(asset_service.ListFeedsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.ListFeedsResponse.to_json(asset_service.ListFeedsResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.ListFeedsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.ListFeedsResponse()
+
+        client.list_feeds(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_feed_rest_bad_request(request_type=asset_service.UpdateFeedRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'feed': {'name': 'sample1/sample2/feeds/sample3'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_feed(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.UpdateFeedRequest,
+  dict,
+])
+def test_update_feed_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'feed': {'name': 'sample1/sample2/feeds/sample3'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.Feed(
+              name='name_value',
+              asset_names=['asset_names_value'],
+              asset_types=['asset_types_value'],
+              content_type=asset_service.ContentType.RESOURCE,
+              relationship_types=['relationship_types_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.Feed.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_feed(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.Feed)
+    assert response.name == 'name_value'
+    assert response.asset_names == ['asset_names_value']
+    assert response.asset_types == ['asset_types_value']
+    assert response.content_type == asset_service.ContentType.RESOURCE
+    assert response.relationship_types == ['relationship_types_value']
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_feed_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_feed") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_update_feed") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.UpdateFeedRequest.pb(asset_service.UpdateFeedRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.Feed.to_json(asset_service.Feed())
+        req.return_value.content = return_value
+
+        request = asset_service.UpdateFeedRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.Feed()
+
+        client.update_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_feed_rest_bad_request(request_type=asset_service.DeleteFeedRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/feeds/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_feed(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.DeleteFeedRequest,
+  dict,
+])
+def test_delete_feed_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/feeds/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ''
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.delete_feed(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_feed_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_delete_feed") as pre:
+        pre.assert_not_called()
+        pb_message = asset_service.DeleteFeedRequest.pb(asset_service.DeleteFeedRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = asset_service.DeleteFeedRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+
+
+def test_search_all_resources_rest_bad_request(request_type=asset_service.SearchAllResourcesRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.search_all_resources(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.SearchAllResourcesRequest,
+  dict,
+])
+def test_search_all_resources_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SearchAllResourcesResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.search_all_resources(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchAllResourcesPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_all_resources_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_search_all_resources") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_search_all_resources") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.SearchAllResourcesRequest.pb(asset_service.SearchAllResourcesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.SearchAllResourcesResponse.to_json(asset_service.SearchAllResourcesResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.SearchAllResourcesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SearchAllResourcesResponse()
+
+        client.search_all_resources(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_all_iam_policies_rest_bad_request(request_type=asset_service.SearchAllIamPoliciesRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.search_all_iam_policies(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.SearchAllIamPoliciesRequest,
+  dict,
+])
+def test_search_all_iam_policies_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SearchAllIamPoliciesResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.search_all_iam_policies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchAllIamPoliciesPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_all_iam_policies_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_search_all_iam_policies") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_search_all_iam_policies") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.SearchAllIamPoliciesRequest.pb(asset_service.SearchAllIamPoliciesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.SearchAllIamPoliciesResponse.to_json(asset_service.SearchAllIamPoliciesResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.SearchAllIamPoliciesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SearchAllIamPoliciesResponse()
+
+        client.search_all_iam_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_analyze_iam_policy_rest_bad_request(request_type=asset_service.AnalyzeIamPolicyRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'analysis_query': {'scope': 'sample1/sample2'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.analyze_iam_policy(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeIamPolicyRequest,
+  dict,
+])
+def test_analyze_iam_policy_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'analysis_query': {'scope': 'sample1/sample2'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeIamPolicyResponse(
+              fully_explored=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeIamPolicyResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
+    assert response.fully_explored is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_iam_policy") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_iam_policy") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeIamPolicyRequest.pb(asset_service.AnalyzeIamPolicyRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.AnalyzeIamPolicyResponse.to_json(asset_service.AnalyzeIamPolicyResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.AnalyzeIamPolicyRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeIamPolicyResponse()
+
+        client.analyze_iam_policy(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_analyze_iam_policy_longrunning_rest_bad_request(request_type=asset_service.AnalyzeIamPolicyLongrunningRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'analysis_query': {'scope': 'sample1/sample2'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.analyze_iam_policy_longrunning(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeIamPolicyLongrunningRequest,
+  dict,
+])
+def test_analyze_iam_policy_longrunning_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'analysis_query': {'scope': 'sample1/sample2'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_iam_policy_longrunning(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_iam_policy_longrunning") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_iam_policy_longrunning") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeIamPolicyLongrunningRequest.pb(asset_service.AnalyzeIamPolicyLongrunningRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = asset_service.AnalyzeIamPolicyLongrunningRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.analyze_iam_policy_longrunning(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_analyze_move_rest_bad_request(request_type=asset_service.AnalyzeMoveRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'resource': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.analyze_move(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeMoveRequest,
+  dict,
+])
+def test_analyze_move_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'resource': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeMoveResponse(
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_move(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_move_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_move") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_move") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeMoveRequest.pb(asset_service.AnalyzeMoveRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.AnalyzeMoveResponse.to_json(asset_service.AnalyzeMoveResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.AnalyzeMoveRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeMoveResponse()
+
+        client.analyze_move(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_query_assets_rest_bad_request(request_type=asset_service.QueryAssetsRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.query_assets(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.QueryAssetsRequest,
+  dict,
+])
+def test_query_assets_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.QueryAssetsResponse(
+              job_reference='job_reference_value',
+              done=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.QueryAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.query_assets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.QueryAssetsResponse)
+    assert response.job_reference == 'job_reference_value'
+    assert response.done is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_query_assets_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_query_assets") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_query_assets") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.QueryAssetsRequest.pb(asset_service.QueryAssetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.QueryAssetsResponse.to_json(asset_service.QueryAssetsResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.QueryAssetsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.QueryAssetsResponse()
+
+        client.query_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_saved_query_rest_bad_request(request_type=asset_service.CreateSavedQueryRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_saved_query(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.CreateSavedQueryRequest,
+  dict,
+])
+def test_create_saved_query_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request_init["saved_query"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = asset_service.CreateSavedQueryRequest.meta.fields["saved_query"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else: # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["saved_query"].items(): # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["saved_query"][field])):
+                    del request_init["saved_query"][field][i][subfield]
+            else:
+                del request_init["saved_query"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SavedQuery(
+              name='name_value',
+              description='description_value',
+              creator='creator_value',
+              last_updater='last_updater_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.create_saved_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.creator == 'creator_value'
+    assert response.last_updater == 'last_updater_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_saved_query_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_saved_query") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_create_saved_query") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.CreateSavedQueryRequest.pb(asset_service.CreateSavedQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
+        req.return_value.content = return_value
+
+        request = asset_service.CreateSavedQueryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SavedQuery()
+
+        client.create_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_saved_query_rest_bad_request(request_type=asset_service.GetSavedQueryRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_saved_query(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.GetSavedQueryRequest,
+  dict,
+])
+def test_get_saved_query_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SavedQuery(
+              name='name_value',
+              description='description_value',
+              creator='creator_value',
+              last_updater='last_updater_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_saved_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.creator == 'creator_value'
+    assert response.last_updater == 'last_updater_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_saved_query_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_saved_query") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_get_saved_query") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.GetSavedQueryRequest.pb(asset_service.GetSavedQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
+        req.return_value.content = return_value
+
+        request = asset_service.GetSavedQueryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SavedQuery()
+
+        client.get_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_saved_queries_rest_bad_request(request_type=asset_service.ListSavedQueriesRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_saved_queries(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.ListSavedQueriesRequest,
+  dict,
+])
+def test_list_saved_queries_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.ListSavedQueriesResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_saved_queries(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSavedQueriesPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_saved_queries_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_saved_queries") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_saved_queries") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.ListSavedQueriesRequest.pb(asset_service.ListSavedQueriesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.ListSavedQueriesResponse.to_json(asset_service.ListSavedQueriesResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.ListSavedQueriesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.ListSavedQueriesResponse()
+
+        client.list_saved_queries(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_saved_query_rest_bad_request(request_type=asset_service.UpdateSavedQueryRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_saved_query(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.UpdateSavedQueryRequest,
+  dict,
+])
+def test_update_saved_query_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
+    request_init["saved_query"] = {'name': 'sample1/sample2/savedQueries/sample3', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = asset_service.UpdateSavedQueryRequest.meta.fields["saved_query"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else: # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["saved_query"].items(): # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["saved_query"][field])):
+                    del request_init["saved_query"][field][i][subfield]
+            else:
+                del request_init["saved_query"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SavedQuery(
+              name='name_value',
+              description='description_value',
+              creator='creator_value',
+              last_updater='last_updater_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_saved_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.creator == 'creator_value'
+    assert response.last_updater == 'last_updater_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_saved_query_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_saved_query") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_update_saved_query") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.UpdateSavedQueryRequest.pb(asset_service.UpdateSavedQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
+        req.return_value.content = return_value
+
+        request = asset_service.UpdateSavedQueryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SavedQuery()
+
+        client.update_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_saved_query_rest_bad_request(request_type=asset_service.DeleteSavedQueryRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_saved_query(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.DeleteSavedQueryRequest,
+  dict,
+])
+def test_delete_saved_query_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ''
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.delete_saved_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_saved_query_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_delete_saved_query") as pre:
+        pre.assert_not_called()
+        pb_message = asset_service.DeleteSavedQueryRequest.pb(asset_service.DeleteSavedQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = asset_service.DeleteSavedQueryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+
+
+def test_batch_get_effective_iam_policies_rest_bad_request(request_type=asset_service.BatchGetEffectiveIamPoliciesRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_get_effective_iam_policies(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.BatchGetEffectiveIamPoliciesRequest,
+  dict,
+])
+def test_batch_get_effective_iam_policies_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.BatchGetEffectiveIamPoliciesResponse(
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.batch_get_effective_iam_policies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_effective_iam_policies") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_batch_get_effective_iam_policies") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.BatchGetEffectiveIamPoliciesRequest.pb(asset_service.BatchGetEffectiveIamPoliciesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(asset_service.BatchGetEffectiveIamPoliciesResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.BatchGetEffectiveIamPoliciesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
+
+        client.batch_get_effective_iam_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_analyze_org_policies_rest_bad_request(request_type=asset_service.AnalyzeOrgPoliciesRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.analyze_org_policies(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeOrgPoliciesRequest,
+  dict,
+])
+def test_analyze_org_policies_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeOrgPoliciesResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_org_policies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_org_policies_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policies") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policies") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeOrgPoliciesRequest.pb(asset_service.AnalyzeOrgPoliciesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.AnalyzeOrgPoliciesResponse.to_json(asset_service.AnalyzeOrgPoliciesResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.AnalyzeOrgPoliciesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+
+        client.analyze_org_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_analyze_org_policy_governed_containers_rest_bad_request(request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.analyze_org_policy_governed_containers(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
+  dict,
+])
+def test_analyze_org_policy_governed_containers_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_org_policy_governed_containers(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_org_policy_governed_containers_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_containers") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_containers") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeOrgPolicyGovernedContainersRequest.pb(asset_service.AnalyzeOrgPolicyGovernedContainersRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedContainersResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+
+        client.analyze_org_policy_governed_containers(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_analyze_org_policy_governed_assets_rest_bad_request(request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.analyze_org_policy_governed_assets(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
+  dict,
+])
+def test_analyze_org_policy_governed_assets_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_org_policy_governed_assets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_assets") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_assets") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.pb(asset_service.AnalyzeOrgPolicyGovernedAssetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+
+        client.analyze_org_policy_governed_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'sample1/sample2/operations/sample3/sample4'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.GetOperationRequest,
+    dict,
+])
+def test_get_operation_rest(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'sample1/sample2/operations/sample3/sample4'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+def test_initialize_client_w_rest():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    assert client is not None
+
+
+def test_asset_service_rest_lro_client():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = AssetServiceClient(
@@ -16788,23 +16834,6 @@ def test_asset_service_http_transport_client_cert_source_for_mtls():
             client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_asset_service_rest_lro_client():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize("transport_name", [
@@ -17303,65 +17332,6 @@ def test_client_with_default_client_info():
         )
         prep.assert_called_once_with(client_info)
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = AssetServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_operation_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.GetOperationRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'sample1/sample2/operations/sample3/sample4'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-@pytest.mark.parametrize("request_type", [
-    operations_pb2.GetOperationRequest,
-    dict,
-])
-def test_get_operation_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'sample1/sample2/operations/sample3/sample4'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
 
 def test_get_operation(transport: str = "grpc"):
     client = AssetServiceClient(
@@ -17492,21 +17462,39 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = AssetServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport
-        )
-        with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
 
 def test_client_ctx():
     transports = [

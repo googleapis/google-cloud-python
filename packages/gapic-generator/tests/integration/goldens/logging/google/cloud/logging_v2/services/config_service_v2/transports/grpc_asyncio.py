@@ -1430,6 +1430,21 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def _wrap_method(self, func, *args, **kwargs):

@@ -241,6 +241,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_create_channel_connection(self, request: eventarc.CreateChannelConnectionRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.CreateChannelConnectionRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for create_channel_connection
 
@@ -257,6 +258,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_create_trigger(self, request: eventarc.CreateTriggerRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.CreateTriggerRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for create_trigger
 
@@ -273,6 +275,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_delete_channel(self, request: eventarc.DeleteChannelRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.DeleteChannelRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_channel
 
@@ -289,6 +292,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_delete_channel_connection(self, request: eventarc.DeleteChannelConnectionRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.DeleteChannelConnectionRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_channel_connection
 
@@ -305,6 +309,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_delete_trigger(self, request: eventarc.DeleteTriggerRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.DeleteTriggerRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_trigger
 
@@ -321,6 +326,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_channel(self, request: eventarc.GetChannelRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.GetChannelRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_channel
 
@@ -337,6 +343,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_channel_connection(self, request: eventarc.GetChannelConnectionRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.GetChannelConnectionRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_channel_connection
 
@@ -353,6 +360,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_google_channel_config(self, request: eventarc.GetGoogleChannelConfigRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.GetGoogleChannelConfigRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_google_channel_config
 
@@ -369,6 +377,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_provider(self, request: eventarc.GetProviderRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.GetProviderRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_provider
 
@@ -385,6 +394,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_trigger(self, request: eventarc.GetTriggerRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.GetTriggerRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_trigger
 
@@ -401,6 +411,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_channel_connections(self, request: eventarc.ListChannelConnectionsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.ListChannelConnectionsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_channel_connections
 
@@ -417,6 +428,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_channels(self, request: eventarc.ListChannelsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.ListChannelsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_channels
 
@@ -433,6 +445,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_providers(self, request: eventarc.ListProvidersRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.ListProvidersRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_providers
 
@@ -449,6 +462,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_triggers(self, request: eventarc.ListTriggersRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.ListTriggersRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_triggers
 
@@ -465,6 +479,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_update_channel(self, request: eventarc.UpdateChannelRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.UpdateChannelRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for update_channel
 
@@ -481,6 +496,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_update_google_channel_config(self, request: eventarc.UpdateGoogleChannelConfigRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.UpdateGoogleChannelConfigRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for update_google_channel_config
 
@@ -497,6 +513,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_update_trigger(self, request: eventarc.UpdateTriggerRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.UpdateTriggerRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for update_trigger
 
@@ -534,6 +551,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_locations(
         self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
@@ -554,6 +572,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_iam_policy(
         self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
@@ -574,6 +593,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_set_iam_policy(
         self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
@@ -594,6 +614,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_test_iam_permissions(
         self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
@@ -614,6 +635,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_cancel_operation(
         self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
@@ -634,6 +656,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_delete_operation(
         self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
@@ -654,6 +677,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_operation(
         self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
@@ -674,6 +698,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_operations(
         self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
@@ -2346,6 +2371,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetLocation(_BaseEventarcRestTransport._BaseGetLocation, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.GetLocation")
+
         @staticmethod
         def _get_response(
             host,
@@ -2405,8 +2433,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -2415,6 +2444,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore
 
     class _ListLocations(_BaseEventarcRestTransport._BaseListLocations, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.ListLocations")
+
         @staticmethod
         def _get_response(
             host,
@@ -2474,8 +2506,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -2484,6 +2517,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._GetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetIamPolicy(_BaseEventarcRestTransport._BaseGetIamPolicy, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.GetIamPolicy")
+
         @staticmethod
         def _get_response(
             host,
@@ -2543,8 +2579,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
@@ -2553,6 +2590,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._SetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
 
     class _SetIamPolicy(_BaseEventarcRestTransport._BaseSetIamPolicy, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.SetIamPolicy")
+
         @staticmethod
         def _get_response(
             host,
@@ -2615,8 +2655,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
@@ -2625,6 +2666,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._TestIamPermissions(self._session, self._host, self._interceptor) # type: ignore
 
     class _TestIamPermissions(_BaseEventarcRestTransport._BaseTestIamPermissions, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.TestIamPermissions")
+
         @staticmethod
         def _get_response(
             host,
@@ -2687,8 +2731,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = iam_policy_pb2.TestIamPermissionsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
@@ -2697,6 +2742,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _CancelOperation(_BaseEventarcRestTransport._BaseCancelOperation, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.CancelOperation")
+
         @staticmethod
         def _get_response(
             host,
@@ -2763,6 +2811,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _DeleteOperation(_BaseEventarcRestTransport._BaseDeleteOperation, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.DeleteOperation")
+
         @staticmethod
         def _get_response(
             host,
@@ -2826,6 +2877,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetOperation(_BaseEventarcRestTransport._BaseGetOperation, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.GetOperation")
+
         @staticmethod
         def _get_response(
             host,
@@ -2885,8 +2939,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -2895,6 +2950,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
 
     class _ListOperations(_BaseEventarcRestTransport._BaseListOperations, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.ListOperations")
+
         @staticmethod
         def _get_response(
             host,
@@ -2954,8 +3012,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

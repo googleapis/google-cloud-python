@@ -148,13 +148,17 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     @pytest.mark.asyncio
     async def test_async_unary_error(async_echo):
         message = "Bad things! Bad things!"
-        with pytest.raises(exceptions.InvalidArgument) as exc:
+        expected_err_message = message if "grpc_asyncio" in str(
+            async_echo.transport) else f"POST http://localhost:7469/v1beta1/echo:echo: {message}"
+        # Note: InvalidArgument is from gRPC, BadRequest from http (no MTLS)
+        with pytest.raises((exceptions.InvalidArgument, exceptions.BadRequest)) as exc:
             await async_echo.echo(
                 {
                     "error": {
-                        "code": code_pb2.Code.Value("INVALID_ARGUMENT"),
+                        "code": code_pb2.Code.Value("INVALID_ARGUMENT",),
                         "message": message,
                     },
                 }
             )
-        assert exc.value.message == message
+        assert exc.value.code == 400
+        assert exc.value.message == expected_err_message

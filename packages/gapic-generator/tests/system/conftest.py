@@ -24,6 +24,7 @@ try:
     from google.auth.aio import credentials as ga_credentials_async
 
     HAS_GOOGLE_AUTH_AIO = True
+# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined.
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 import google.auth
@@ -37,6 +38,16 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     import asyncio
     from google.showcase import EchoAsyncClient
     from google.showcase import IdentityAsyncClient
+    try:
+        from google.showcase_v1beta1.services.echo.transports import AsyncEchoRestTransport
+        HAS_ASYNC_REST_ECHO_TRANSPORT = True
+    except:
+        HAS_ASYNC_REST_ECHO_TRANSPORT = False
+    try:
+        from google.showcase_v1beta1.services.identity.transports import AsyncIdentityRestTransport
+        HAS_ASYNC_REST_IDENTITY_TRANSPORT = True
+    except:
+        HAS_ASYNC_REST_IDENTITY_TRANSPORT = False
 
     # TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
     # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
@@ -57,23 +68,29 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     def event_loop():
         return asyncio.get_event_loop()
 
-    @pytest.fixture
-    def async_echo(use_mtls, event_loop):
+    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
+    def async_echo(use_mtls, request, event_loop):
+        transport = request.param
+        if transport == "rest_asyncio" and not HAS_ASYNC_REST_ECHO_TRANSPORT:
+            pytest.skip("Skipping test with async rest.")
         return construct_client(
             EchoAsyncClient,
             use_mtls,
-            transport_name="grpc_asyncio",
-            channel_creator=aio.insecure_channel,
+            transport_name=transport,
+            channel_creator=aio.insecure_channel if request.param == "grpc_asyncio" else None,
             credentials=async_anonymous_credentials(),
         )
 
-    @pytest.fixture
-    def async_identity(use_mtls, event_loop):
+    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
+    def async_identity(use_mtls, request, event_loop):
+        transport = request.param
+        if transport == "rest_asyncio" and not HAS_ASYNC_REST_IDENTITY_TRANSPORT:
+            pytest.skip("Skipping test with async rest.")
         return construct_client(
             IdentityAsyncClient,
             use_mtls,
-            transport_name="grpc_asyncio",
-            channel_creator=aio.insecure_channel,
+            transport_name=transport,
+            channel_creator=aio.insecure_channel if request.param == "grpc_asyncio" else None,
             credentials=async_anonymous_credentials(),
         )
 
@@ -135,7 +152,7 @@ def construct_client(
                 credentials=credentials,
                 channel=channel_creator(transport_endpoint),
             )
-        elif transport_name == "rest":
+        elif transport_name in ["rest", "rest_asyncio"]:
             # The custom host explicitly bypasses https.
             transport = transport_cls(
                 credentials=credentials,

@@ -20,10 +20,6 @@ from google import showcase
 
 
 def test_lro(echo):
-    if isinstance(echo.transport, type(echo).get_transport_class("rest")):
-        # (TODO: dovs) Temporarily disabling rest
-        return
-
     future = echo.wait({
         'end_time': datetime.now(tz=timezone.utc) + timedelta(seconds=1),
         'success': {
@@ -39,6 +35,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_lro_async(async_echo):
+
         future = await async_echo.wait({
             'end_time': datetime.now(tz=timezone.utc) + timedelta(seconds=1),
             'success': {

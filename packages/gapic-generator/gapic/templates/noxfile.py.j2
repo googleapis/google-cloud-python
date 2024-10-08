@@ -74,6 +74,7 @@ def unit(session, protobuf_implementation):
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },
     )
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2201) Add a `unit_rest_async` nox session to run tests with [async_rest] extra installed. #}
 
 @nox.session(python=ALL_PYTHON[-1])
 @nox.parametrize(

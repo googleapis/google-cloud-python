@@ -20,7 +20,7 @@ except ImportError:  # pragma: NO COVER
 import grpc
 from grpc.experimental import aio
 {% if "rest" in opts.transport %}
-from collections.abc import Iterable
+from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
 import json
 {% endif %}
@@ -30,6 +30,16 @@ from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
 {% if 'rest' in opts.transport %}
+{% if rest_async_io_enabled %}
+try:
+    import aiohttp  # type: ignore
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession
+    from google.api_core.operations_v1 import AsyncOperationsRestClient
+    HAS_ASYNC_REST_EXTRA = True
+{# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
+except ImportError: # pragma: NO COVER
+    HAS_ASYNC_REST_EXTRA = False
+{% endif %}{# if rest_async_io_enabled #}
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -39,6 +49,7 @@ from google.protobuf import json_format
 try:
     from google.auth.aio import credentials as ga_credentials_async
     HAS_GOOGLE_AUTH_AIO = True
+{# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
 except ImportError: # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
@@ -90,6 +101,11 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
 {{ shared_macros.add_google_api_core_version_header_import(service.version) }}
+
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
@@ -1053,12 +1069,18 @@ def test_transport_adc(transport_class):
 {% endfor %}
 {% for conf in configs %}
 {{ test_macros.transport_kind_test(**conf) }}
-
+{{ test_macros.run_transport_tests_for_config(**conf) }}
 {{ test_macros.empty_call_test(**conf) }}
 
 {{ test_macros.routing_parameter_test(**conf) }}
+{% if service.has_lro %}
+{{ test_macros.lro_client_test(**conf) }}
+{% endif %}{# service.has_lro #}
 {% endfor %}
-
+{% if rest_async_io_enabled %}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the below macro when async rest is GA and supports all required parameters. #}
+{{ test_macros.async_rest_unsupported_params_test(service) }}
+{% endif %}
 {% if 'grpc' in opts.transport %}
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
@@ -1362,26 +1384,6 @@ def test_{{ service.name|snake_case }}_http_transport_client_cert_source_for_mtl
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
-
-{% if service.has_lro -%}
-def test_{{ service.name|snake_case }}_rest_lro_client():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
-{%- endif %}
-
-
 {% endif %} {# rest #}
 
 @pytest.mark.parametrize("transport_name", [
@@ -1672,40 +1674,11 @@ def test_client_with_default_client_info():
         )
         prep.assert_called_once_with(client_info)
 
-{% if 'grpc' in opts.transport %}
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = {{ service.async_client_name }}(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-{% endif %}
-
 {% include 'tests/unit/gapic/%name_%version/%sub/_test_mixins.py.j2' %}
 
-def test_transport_close():
-    transports = {
-        {% if 'rest' in opts.transport %}
-        "rest": "_session",
-        {% endif %}
-        {% if 'grpc' in opts.transport %}
-        "grpc": "_grpc_channel",
-        {% endif %}
-    }
-
-    for transport, close_name in transports.items():
-        client = {{ service.client_name }}(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport
-        )
-        with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+{% for conf in configs %}
+{{ test_macros.transport_close_test(**conf) }}
+{% endfor %}
 
 def test_client_ctx():
     transports = [

@@ -304,7 +304,18 @@ def showcase_library(
             f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
             # Install the library with a constraints file.
-            session.install("-e", tmp_dir, "-r", constraints_path)
+            if session.python == "3.7":
+                session.install("-e", tmp_dir, "-r", constraints_path)
+                if rest_async_io_enabled:
+                    # NOTE: We re-install `google-api-core` and `google-auth` to override the respective
+                    # versions for each specified in constraints-3.7.txt. This is needed because async REST
+                    # is not supported with the minimum version of `google-api-core` and `google-auth`.
+                    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2208): Update the minimum supported version of api-core to `2.21.0` when released.
+                    session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc, async_rest]==2.21.0rc0")
+                    # session.install('--no-cache-dir', '--force-reinstall', "google-api-core==2.20.0")
+                    session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]==2.35.0")
+            else:
+                session.install("-e", tmp_dir + ("[async_rest]" if rest_async_io_enabled else ""), "-r", constraints_path)
         else:
             # The ads templates do not have constraints files.
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
@@ -324,6 +335,33 @@ def showcase(
     """Run the Showcase test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
+        session.install("pytest", "pytest-asyncio")
+        test_directory = Path("tests", "system")
+        ignore_file = env.get("IGNORE_FILE")
+        pytest_command = [
+            "py.test",
+            "--quiet",
+            *(session.posargs or [str(test_directory)]),
+        ]
+        if ignore_file:
+            ignore_path = test_directory / ignore_file
+            pytest_command.extend(["--ignore", str(ignore_path)])
+
+        session.run(
+            *pytest_command,
+            env=env,
+        )
+
+@nox.session(python=ALL_PYTHON)
+def showcase_w_rest_async(
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    env: typing.Optional[typing.Dict[str, str]] = {},
+):
+    """Run the Showcase test suite."""
+
+    with showcase_library(session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True):
         session.install("pytest", "pytest-asyncio")
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
@@ -393,7 +431,7 @@ def showcase_mtls_alternative_templates(session):
     )
 
 
-def run_showcase_unit_tests(session, fail_under=100):
+def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
     session.install(
         "coverage",
         "pytest",
@@ -402,22 +440,38 @@ def run_showcase_unit_tests(session, fail_under=100):
         "asyncmock; python_version < '3.8'",
         "pytest-asyncio",
     )
-
     # Run the tests.
-    session.run(
-        "py.test",
-        *(
-            session.posargs
-            or [
-                "-n=auto",
-                "--quiet",
-                "--cov=google",
-                "--cov-append",
-                f"--cov-fail-under={str(fail_under)}",
-                path.join("tests", "unit"),
-            ]
-        ),
-    )
+    # NOTE: async rest is not supported against the minimum supported version of google-api-core.
+    # Therefore, we ignore the coverage requirement in this case.
+    if session.python == "3.7" and rest_async_io_enabled:
+        session.run(
+            "py.test",
+            *(
+                session.posargs
+                or [
+                    "-n=auto",
+                    "--quiet",
+                    "--cov=google",
+                    "--cov-append",
+                    path.join("tests", "unit"),
+                ]
+            ),
+        )
+    else:
+        session.run(
+            "py.test",
+            *(
+                session.posargs
+                or [
+                    "-n=auto",
+                    "--quiet",
+                    "--cov=google",
+                    "--cov-append",
+                    f"--cov-fail-under={str(fail_under)}",
+                    path.join("tests", "unit"),
+                ]
+            ),
+        )
 
 
 @nox.session(python=ALL_PYTHON)
@@ -440,7 +494,7 @@ def showcase_unit_w_rest_async(
     """Run the generated unit tests with async rest transport against the Showcase library."""
     with showcase_library(session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True) as lib:
         session.chdir(lib)
-        run_showcase_unit_tests(session)
+        run_showcase_unit_tests(session, rest_async_io_enabled=True)
 
 
 @nox.session(python=ALL_PYTHON)

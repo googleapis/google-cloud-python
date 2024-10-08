@@ -1,3 +1,5 @@
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
 {% extends '_base.py.j2' %}
 {% from '_pypi_packages.j2' import pypi_packages %}
 {% block content %}
@@ -46,6 +48,15 @@ dependencies = [
     {% endif %}
     {% endfor %}
 ]
+extras = {
+{% if rest_async_io_enabled %}
+    "async_rest": [
+        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2208): Update the minimum supported version of api-core to `2.21.0` when released. #}
+        "google-api-core[grpc] >= 2.21.0rc0, < 3.0.0dev",
+        "google-auth[aiohttp] >= 2.35.0, <3.0.0dev"
+    ],
+{% endif %}
+}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/{{ api.naming.warehouse_package_name }}"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
@@ -88,6 +99,7 @@ setuptools.setup(
     packages=packages,
     python_requires=">=3.7",
     install_requires=dependencies,
+    extras_require=extras,
     include_package_data=True,
     zip_safe=False,
 )
