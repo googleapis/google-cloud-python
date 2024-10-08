@@ -233,18 +233,29 @@ class BigQueryOptions:
     def use_regional_endpoints(self) -> bool:
         """Flag to connect to regional API endpoints.
 
-        .. deprecated:: 0.13.0
-            Use of regional endpoints is a feature in Preview and
-            available only in selected regions and projects.
+        .. note::
+            Use of regional endpoints is a feature in Preview and available only
+            in regions "europe-west3", "europe-west9", "europe-west8",
+            "me-central2", "us-east4" and "us-west1".
 
-        Requires that ``location`` is set. For example, to connect to
-        asia-northeast1-bigquery.googleapis.com, specify
-        ``location='asia-northeast1'`` and ``use_regional_endpoints=True``.
+        .. deprecated:: 0.13.0
+            Use of locational endpoints is available only in selected projects.
+
+        Requires that ``location`` is set. For supported regions, for example
+        ``europe-west3``, you need to specify ``location='europe-west3'`` and
+        ``use_regional_endpoints=True``, and then BigQuery DataFrames would
+        connect to the BigQuery endpoint ``bigquery.europe-west3.rep.googleapis.com``.
+        For not supported regions, for example ``asia-northeast1``, when you
+        specify ``location='asia-northeast1'`` and ``use_regional_endpoints=True``,
+        a different endpoint (called locational endpoint, now deprecated, used
+        to provide weaker promise on the request remaining within the location
+        during transit) ``europe-west3-bigquery.googleapis.com`` would be used.
 
         Returns:
             bool:
-              A boolean value, where True indicates that a location is set;
-              otherwise False.
+              A boolean value, where True indicates that regional endpoints
+              would be used for BigQuery and BigQuery storage APIs; otherwise
+              global endpoints would be used.
         """
         return self._use_regional_endpoints
 

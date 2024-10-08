@@ -80,9 +80,10 @@ ALL_BIGQUERY_LOCATIONS = frozenset(BIGQUERY_REGIONS.union(BIGQUERY_MULTIREGIONS)
 # https://cloud.google.com/storage/docs/regional-endpoints
 REP_ENABLED_BIGQUERY_LOCATIONS = frozenset(
     {
-        "me-central2",
-        "europe-west9",
         "europe-west3",
+        "europe-west9",
+        "europe-west8",
+        "me-central2",
         "us-east4",
         "us-west1",
     }

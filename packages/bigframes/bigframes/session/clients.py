@@ -31,20 +31,12 @@ import google.cloud.resourcemanager_v3
 import ibis
 import pydata_google_auth
 
+import bigframes.constants
 import bigframes.version
 
 _ENV_DEFAULT_PROJECT = "GOOGLE_CLOUD_PROJECT"
 _APPLICATION_NAME = f"bigframes/{bigframes.version.__version__} ibis/{ibis.__version__}"
 _SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
-
-# Regions for which Regional Endpoints (REPs) are supported
-_REP_SUPPORTED_REGIONS = {
-    "me-central2",
-    "europe-west9",
-    "europe-west3",
-    "us-east4",
-    "us-west1",
-}
 
 
 # BigQuery is a REST API, which requires the protocol as part of the URL.
@@ -129,7 +121,8 @@ class ClientsProvider:
                 api_endpoint=(
                     _BIGQUERY_REGIONAL_ENDPOINT
                     if self._location is not None
-                    and self._location.lower() in _REP_SUPPORTED_REGIONS
+                    and self._location.lower()
+                    in bigframes.constants.REP_ENABLED_BIGQUERY_LOCATIONS
                     else _BIGQUERY_LOCATIONAL_ENDPOINT
                 ).format(location=self._location),
             )
@@ -201,7 +194,8 @@ class ClientsProvider:
                     api_endpoint=(
                         _BIGQUERYSTORAGE_REGIONAL_ENDPOINT
                         if self._location is not None
-                        and self._location.lower() in _REP_SUPPORTED_REGIONS
+                        and self._location.lower()
+                        in bigframes.constants.REP_ENABLED_BIGQUERY_LOCATIONS
                         else _BIGQUERYSTORAGE_LOCATIONAL_ENDPOINT
                     ).format(location=self._location),
                 )
