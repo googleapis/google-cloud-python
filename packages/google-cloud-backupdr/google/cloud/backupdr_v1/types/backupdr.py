@@ -195,7 +195,7 @@ class ManagementServer(proto.Message):
         oauth2_client_id (str):
             Output only. The OAuth 2.0 client id is required to make API
             calls to the BackupDR instance API of this ManagementServer.
-            This is the value that should be provided in the ‘aud’ field
+            This is the value that should be provided in the 'aud' field
             of the OIDC ID Token (see openid specification
             https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
         workforce_identity_based_oauth2_client_id (google.cloud.backupdr_v1.types.WorkforceIdentityBasedOAuth2ClientID):
@@ -350,10 +350,10 @@ class ListManagementServersRequest(proto.Message):
         parent (str):
             Required. The project and location for which to retrieve
             management servers information, in the format
-            ``projects/{project_id}/locations/{location}``. In Cloud
-            BackupDR, locations map to GCP regions, for example
+            'projects/{project_id}/locations/{location}'. In Cloud
+            BackupDR, locations map to Google Cloud regions, for example
             **us-central1**. To retrieve management servers for all
-            locations, use "-" for the ``{location}`` value.
+            locations, use "-" for the '{location}' value.
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. If
@@ -401,15 +401,16 @@ class ListManagementServersResponse(proto.Message):
 
     Attributes:
         management_servers (MutableSequence[google.cloud.backupdr_v1.types.ManagementServer]):
-            The list of ManagementServer instances in the project for
-            the specified location.
+            The list of ManagementServer instances in the
+            project for the specified location.
 
-            If the ``{location}`` value in the request is "-", the
-            response contains a list of instances from all locations. In
-            case any location is unreachable, the response will only
-            return management servers in reachable locations and the
-            'unreachable' field will be populated with a list of
-            unreachable locations.
+            If the '{location}' value in the request is "-",
+            the response contains a list of instances from
+            all locations. In case any location is
+            unreachable, the response will only return
+            management servers in reachable locations and
+            the 'unreachable' field will be populated with a
+            list of unreachable locations.
         next_page_token (str):
             A token identifying a page of results the
             server should return.
@@ -443,7 +444,7 @@ class GetManagementServerRequest(proto.Message):
         name (str):
             Required. Name of the management server resource name, in
             the format
-            ``projects/{project_id}/locations/{location}/managementServers/{resource_name}``
+            'projects/{project_id}/locations/{location}/managementServers/{resource_name}'
     """
 
     name: str = proto.Field(
@@ -458,9 +459,9 @@ class CreateManagementServerRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The management server project and location in the
-            format ``projects/{project_id}/locations/{location}``. In
-            Cloud Backup and DR locations map to GCP regions, for
-            example **us-central1**.
+            format 'projects/{project_id}/locations/{location}'. In
+            Cloud Backup and DR locations map to Google Cloud regions,
+            for example **us-central1**.
         management_server_id (str):
             Required. The name of the management server
             to create. The name must be unique for the
@@ -571,7 +572,7 @@ class OperationMetadata(proto.Message):
             cancellation of the operation. Operations that have
             successfully been cancelled have [Operation.error][] value
             with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to ``Code.CANCELLED``.
+            1, corresponding to 'Code.CANCELLED'.
         api_version (str):
             Output only. API version used to start the
             operation.

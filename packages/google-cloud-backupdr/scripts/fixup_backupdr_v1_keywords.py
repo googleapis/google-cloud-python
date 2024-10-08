@@ -39,10 +39,33 @@ def partition(
 class backupdrCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'create_backup_plan': ('parent', 'backup_plan_id', 'backup_plan', 'request_id', ),
+        'create_backup_plan_association': ('parent', 'backup_plan_association_id', 'backup_plan_association', 'request_id', ),
+        'create_backup_vault': ('parent', 'backup_vault_id', 'backup_vault', 'request_id', 'validate_only', ),
         'create_management_server': ('parent', 'management_server_id', 'management_server', 'request_id', ),
+        'delete_backup': ('name', 'request_id', ),
+        'delete_backup_plan': ('name', 'request_id', ),
+        'delete_backup_plan_association': ('name', 'request_id', ),
+        'delete_backup_vault': ('name', 'request_id', 'force', 'etag', 'validate_only', 'allow_missing', ),
         'delete_management_server': ('name', 'request_id', ),
+        'fetch_usable_backup_vaults': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'get_backup': ('name', 'view', ),
+        'get_backup_plan': ('name', ),
+        'get_backup_plan_association': ('name', ),
+        'get_backup_vault': ('name', 'view', ),
+        'get_data_source': ('name', ),
         'get_management_server': ('name', ),
+        'list_backup_plan_associations': ('parent', 'page_size', 'page_token', 'filter', ),
+        'list_backup_plans': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_backups': ('parent', 'page_size', 'page_token', 'filter', 'order_by', 'view', ),
+        'list_backup_vaults': ('parent', 'page_size', 'page_token', 'filter', 'order_by', 'view', ),
+        'list_data_sources': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_management_servers': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'restore_backup': ('name', 'request_id', 'compute_instance_target_environment', 'compute_instance_restore_properties', ),
+        'trigger_backup': ('name', 'rule_id', 'request_id', ),
+        'update_backup': ('update_mask', 'backup', 'request_id', ),
+        'update_backup_vault': ('update_mask', 'backup_vault', 'request_id', 'validate_only', 'force', ),
+        'update_data_source': ('update_mask', 'data_source', 'request_id', 'allow_missing', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
