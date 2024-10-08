@@ -4367,7 +4367,7 @@ class ReportDefinition(proto.Message):
             This field is a member of `oneof`_ ``_comparison_date_range``.
         custom_dimension_key_ids (MutableSequence[int]):
             Optional. Custom Dimension keys that represent
-            `CUSTOM_DIMENSION_*` dimensions dimensions. The index of this repeated
+            `CUSTOM_DIMENSION_*` dimensions. The index of this repeated
             field corresponds to the index on each dimension. For
             example, custom_dimension_key_ids[0] describes
             CUSTOM_DIMENSION_0_VALUE_ID and CUSTOM_DIMENSION_0_VALUE.

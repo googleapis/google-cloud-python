@@ -182,7 +182,7 @@ replacements:
       packages/google-ads-admanager/google/ads/admanager_v1/types/report_service.py,
     ]
     before: CUSTOM_DIMENSION_\\\*
-    after: "`CUSTOM_DIMENSION_*` dimensions"
+    after: "`CUSTOM_DIMENSION_*`"
     count: 1
   - paths: [
       packages/google-ads-admanager/google/ads/admanager_v1/types/report_service.py,
