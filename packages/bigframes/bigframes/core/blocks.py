@@ -1390,7 +1390,7 @@ class Block:
                 expr,
                 column_labels=self.column_labels,
                 index_columns=self.index_columns,
-                index_labels=self.column_labels.names,
+                index_labels=self._index_labels,
             )
 
     def _standard_stats(self, column_id) -> typing.Sequence[agg_ops.UnaryAggregateOp]:

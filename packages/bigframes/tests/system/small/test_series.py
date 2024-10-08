@@ -3852,6 +3852,28 @@ def test_series_explode(data):
         pytest.param([5, 1, 3, 2], False, id="ignore_unordered_index"),
         pytest.param(["z", "x", "a", "b"], True, id="str_index"),
         pytest.param(["z", "x", "a", "b"], False, id="ignore_str_index"),
+        pytest.param(
+            pd.Index(["z", "x", "a", "b"], name="idx"), True, id="str_named_index"
+        ),
+        pytest.param(
+            pd.Index(["z", "x", "a", "b"], name="idx"),
+            False,
+            id="ignore_str_named_index",
+        ),
+        pytest.param(
+            pd.MultiIndex.from_frame(
+                pd.DataFrame({"idx0": [5, 1, 3, 2], "idx1": ["z", "x", "a", "b"]})
+            ),
+            True,
+            id="multi_index",
+        ),
+        pytest.param(
+            pd.MultiIndex.from_frame(
+                pd.DataFrame({"idx0": [5, 1, 3, 2], "idx1": ["z", "x", "a", "b"]})
+            ),
+            False,
+            id="ignore_multi_index",
+        ),
     ],
 )
 def test_series_explode_w_index(index, ignore_index):
