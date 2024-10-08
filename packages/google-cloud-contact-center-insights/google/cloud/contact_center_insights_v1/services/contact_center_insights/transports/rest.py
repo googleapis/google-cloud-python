@@ -191,6 +191,14 @@ class ContactCenterInsightsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_export_issue_model(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_export_issue_model(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_analysis(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -204,6 +212,14 @@ class ContactCenterInsightsRestInterceptor:
                 return request, metadata
 
             def post_get_conversation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_encryption_spec(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_encryption_spec(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -247,11 +263,27 @@ class ContactCenterInsightsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_import_issue_model(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_import_issue_model(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_ingest_conversations(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_ingest_conversations(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_initialize_encryption_spec(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_initialize_encryption_spec(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -738,6 +770,31 @@ class ContactCenterInsightsRestInterceptor:
         """
         return response
 
+    def pre_export_issue_model(
+        self,
+        request: contact_center_insights.ExportIssueModelRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.ExportIssueModelRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for export_issue_model
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_export_issue_model(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for export_issue_model
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_analysis(
         self,
         request: contact_center_insights.GetAnalysisRequest,
@@ -777,6 +834,31 @@ class ContactCenterInsightsRestInterceptor:
         self, response: resources.Conversation
     ) -> resources.Conversation:
         """Post-rpc interceptor for get_conversation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_encryption_spec(
+        self,
+        request: contact_center_insights.GetEncryptionSpecRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.GetEncryptionSpecRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_encryption_spec
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_get_encryption_spec(
+        self, response: resources.EncryptionSpec
+    ) -> resources.EncryptionSpec:
+        """Post-rpc interceptor for get_encryption_spec
 
         Override in a subclass to manipulate the response
         after it is returned by the ContactCenterInsights server but before
@@ -895,6 +977,31 @@ class ContactCenterInsightsRestInterceptor:
         """
         return response
 
+    def pre_import_issue_model(
+        self,
+        request: contact_center_insights.ImportIssueModelRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.ImportIssueModelRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for import_issue_model
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_import_issue_model(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for import_issue_model
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_ingest_conversations(
         self,
         request: contact_center_insights.IngestConversationsRequest,
@@ -913,6 +1020,32 @@ class ContactCenterInsightsRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for ingest_conversations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_initialize_encryption_spec(
+        self,
+        request: contact_center_insights.InitializeEncryptionSpecRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.InitializeEncryptionSpecRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for initialize_encryption_spec
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_initialize_encryption_spec(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for initialize_encryption_spec
 
         Override in a subclass to manipulate the response
         after it is returned by the ContactCenterInsights server but before
@@ -2960,6 +3093,101 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
             resp = self._interceptor.post_export_insights_data(resp)
             return resp
 
+    class _ExportIssueModel(ContactCenterInsightsRestStub):
+        def __hash__(self):
+            return hash("ExportIssueModel")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: contact_center_insights.ExportIssueModelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the export issue model method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.ExportIssueModelRequest):
+                    The request object. Request to export an issue model.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/issueModels/*}:export",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_export_issue_model(
+                request, metadata
+            )
+            pb_request = contact_center_insights.ExportIssueModelRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_export_issue_model(resp)
+            return resp
+
     class _GetAnalysis(ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("GetAnalysis")
@@ -3130,6 +3358,97 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_conversation(resp)
+            return resp
+
+    class _GetEncryptionSpec(ContactCenterInsightsRestStub):
+        def __hash__(self):
+            return hash("GetEncryptionSpec")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: contact_center_insights.GetEncryptionSpecRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.EncryptionSpec:
+            r"""Call the get encryption spec method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.GetEncryptionSpecRequest):
+                    The request object. The request to get location-level
+                encryption specification.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.EncryptionSpec:
+                    A customer-managed encryption key
+                specification that can be applied to all
+                created resources (e.g. Conversation).
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/encryptionSpec}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_encryption_spec(
+                request, metadata
+            )
+            pb_request = contact_center_insights.GetEncryptionSpecRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.EncryptionSpec()
+            pb_resp = resources.EncryptionSpec.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_encryption_spec(resp)
             return resp
 
     class _GetIssue(ContactCenterInsightsRestStub):
@@ -3426,7 +3745,13 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
             Returns:
                 ~.resources.Settings:
-                    The settings resource.
+                    The CCAI Insights project wide settings. Use these
+                settings to configure the behavior of Insights. View
+                these settings with
+                ```getsettings`` <https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations/getSettings>`__
+                and change the settings with
+                ```updateSettings`` <https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations/updateSettings>`__.
+
             """
 
             http_options: List[Dict[str, str]] = [
@@ -3561,6 +3886,101 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
             resp = self._interceptor.post_get_view(resp)
             return resp
 
+    class _ImportIssueModel(ContactCenterInsightsRestStub):
+        def __hash__(self):
+            return hash("ImportIssueModel")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: contact_center_insights.ImportIssueModelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the import issue model method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.ImportIssueModelRequest):
+                    The request object. Request to import an issue model.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/issueModels:import",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_import_issue_model(
+                request, metadata
+            )
+            pb_request = contact_center_insights.ImportIssueModelRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_import_issue_model(resp)
+            return resp
+
     class _IngestConversations(ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("IngestConversations")
@@ -3654,6 +4074,105 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_ingest_conversations(resp)
+            return resp
+
+    class _InitializeEncryptionSpec(ContactCenterInsightsRestStub):
+        def __hash__(self):
+            return hash("InitializeEncryptionSpec")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: contact_center_insights.InitializeEncryptionSpecRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the initialize encryption
+            spec method over HTTP.
+
+                Args:
+                    request (~.contact_center_insights.InitializeEncryptionSpecRequest):
+                        The request object. The request to initialize a
+                    location-level encryption specification.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{encryption_spec.name=projects/*/locations/*/encryptionSpec}:initialize",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_initialize_encryption_spec(
+                request, metadata
+            )
+            pb_request = contact_center_insights.InitializeEncryptionSpecRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_initialize_encryption_spec(resp)
             return resp
 
     class _ListAnalyses(ContactCenterInsightsRestStub):
@@ -4685,7 +5204,13 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
             Returns:
                 ~.resources.Settings:
-                    The settings resource.
+                    The CCAI Insights project wide settings. Use these
+                settings to configure the behavior of Insights. View
+                these settings with
+                ```getsettings`` <https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations/getSettings>`__
+                and change the settings with
+                ```updateSettings`` <https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations/updateSettings>`__.
+
             """
 
             http_options: List[Dict[str, str]] = [
@@ -5094,6 +5619,16 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         return self._ExportInsightsData(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def export_issue_model(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ExportIssueModelRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExportIssueModel(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_analysis(
         self,
     ) -> Callable[[contact_center_insights.GetAnalysisRequest], resources.Analysis]:
@@ -5110,6 +5645,16 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConversation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_encryption_spec(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetEncryptionSpecRequest], resources.EncryptionSpec
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetEncryptionSpec(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_issue(
@@ -5154,6 +5699,16 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         return self._GetView(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def import_issue_model(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ImportIssueModelRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ImportIssueModel(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def ingest_conversations(
         self,
     ) -> Callable[
@@ -5162,6 +5717,17 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._IngestConversations(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def initialize_encryption_spec(
+        self,
+    ) -> Callable[
+        [contact_center_insights.InitializeEncryptionSpecRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._InitializeEncryptionSpec(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_analyses(

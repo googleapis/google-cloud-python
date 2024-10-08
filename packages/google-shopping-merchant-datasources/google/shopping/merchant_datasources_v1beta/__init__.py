@@ -22,6 +22,10 @@ from .services.data_sources_service import (
     DataSourcesServiceAsyncClient,
     DataSourcesServiceClient,
 )
+from .services.file_uploads_service import (
+    FileUploadsServiceAsyncClient,
+    FileUploadsServiceClient,
+)
 from .types.datasources import (
     CreateDataSourceRequest,
     DataSource,
@@ -33,6 +37,7 @@ from .types.datasources import (
     UpdateDataSourceRequest,
 )
 from .types.datasourcetypes import (
+    DataSourceReference,
     LocalInventoryDataSource,
     PrimaryProductDataSource,
     PromotionDataSource,
@@ -40,16 +45,22 @@ from .types.datasourcetypes import (
     SupplementalProductDataSource,
 )
 from .types.fileinputs import FileInput
+from .types.fileuploads import FileUpload, GetFileUploadRequest
 
 __all__ = (
     "DataSourcesServiceAsyncClient",
+    "FileUploadsServiceAsyncClient",
     "CreateDataSourceRequest",
     "DataSource",
+    "DataSourceReference",
     "DataSourcesServiceClient",
     "DeleteDataSourceRequest",
     "FetchDataSourceRequest",
     "FileInput",
+    "FileUpload",
+    "FileUploadsServiceClient",
     "GetDataSourceRequest",
+    "GetFileUploadRequest",
     "ListDataSourcesRequest",
     "ListDataSourcesResponse",
     "LocalInventoryDataSource",

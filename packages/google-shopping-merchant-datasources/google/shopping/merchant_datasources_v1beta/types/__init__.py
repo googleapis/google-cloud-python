@@ -24,6 +24,7 @@ from .datasources import (
     UpdateDataSourceRequest,
 )
 from .datasourcetypes import (
+    DataSourceReference,
     LocalInventoryDataSource,
     PrimaryProductDataSource,
     PromotionDataSource,
@@ -31,6 +32,7 @@ from .datasourcetypes import (
     SupplementalProductDataSource,
 )
 from .fileinputs import FileInput
+from .fileuploads import FileUpload, GetFileUploadRequest
 
 __all__ = (
     "CreateDataSourceRequest",
@@ -41,10 +43,13 @@ __all__ = (
     "ListDataSourcesRequest",
     "ListDataSourcesResponse",
     "UpdateDataSourceRequest",
+    "DataSourceReference",
     "LocalInventoryDataSource",
     "PrimaryProductDataSource",
     "PromotionDataSource",
     "RegionalInventoryDataSource",
     "SupplementalProductDataSource",
     "FileInput",
+    "FileUpload",
+    "GetFileUploadRequest",
 )

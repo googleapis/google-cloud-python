@@ -113,6 +113,40 @@
           }
         }
       }
+    },
+    "FileUploadsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "FileUploadsServiceClient",
+          "rpcs": {
+            "GetFileUpload": {
+              "methods": [
+                "get_file_upload"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "FileUploadsServiceAsyncClient",
+          "rpcs": {
+            "GetFileUpload": {
+              "methods": [
+                "get_file_upload"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "FileUploadsServiceClient",
+          "rpcs": {
+            "GetFileUpload": {
+              "methods": [
+                "get_file_upload"
+              ]
+            }
+          }
+        }
+      }
     }
   }
 }

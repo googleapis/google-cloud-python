@@ -24,6 +24,12 @@ from google.shopping.merchant_datasources_v1beta.services.data_sources_service.a
 from google.shopping.merchant_datasources_v1beta.services.data_sources_service.client import (
     DataSourcesServiceClient,
 )
+from google.shopping.merchant_datasources_v1beta.services.file_uploads_service.async_client import (
+    FileUploadsServiceAsyncClient,
+)
+from google.shopping.merchant_datasources_v1beta.services.file_uploads_service.client import (
+    FileUploadsServiceClient,
+)
 from google.shopping.merchant_datasources_v1beta.types.datasources import (
     CreateDataSourceRequest,
     DataSource,
@@ -35,6 +41,7 @@ from google.shopping.merchant_datasources_v1beta.types.datasources import (
     UpdateDataSourceRequest,
 )
 from google.shopping.merchant_datasources_v1beta.types.datasourcetypes import (
+    DataSourceReference,
     LocalInventoryDataSource,
     PrimaryProductDataSource,
     PromotionDataSource,
@@ -42,10 +49,16 @@ from google.shopping.merchant_datasources_v1beta.types.datasourcetypes import (
     SupplementalProductDataSource,
 )
 from google.shopping.merchant_datasources_v1beta.types.fileinputs import FileInput
+from google.shopping.merchant_datasources_v1beta.types.fileuploads import (
+    FileUpload,
+    GetFileUploadRequest,
+)
 
 __all__ = (
     "DataSourcesServiceClient",
     "DataSourcesServiceAsyncClient",
+    "FileUploadsServiceClient",
+    "FileUploadsServiceAsyncClient",
     "CreateDataSourceRequest",
     "DataSource",
     "DeleteDataSourceRequest",
@@ -54,10 +67,13 @@ __all__ = (
     "ListDataSourcesRequest",
     "ListDataSourcesResponse",
     "UpdateDataSourceRequest",
+    "DataSourceReference",
     "LocalInventoryDataSource",
     "PrimaryProductDataSource",
     "PromotionDataSource",
     "RegionalInventoryDataSource",
     "SupplementalProductDataSource",
     "FileInput",
+    "FileUpload",
+    "GetFileUploadRequest",
 )

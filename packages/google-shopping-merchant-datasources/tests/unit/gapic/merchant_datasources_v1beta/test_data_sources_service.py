@@ -4366,10 +4366,20 @@ def test_create_data_source_rest(request_type):
             "feed_label": "feed_label_value",
             "content_language": "content_language_value",
             "countries": ["countries_value1", "countries_value2"],
+            "default_rule": {
+                "take_from_data_sources": [
+                    {
+                        "self_": True,
+                        "primary_data_source_name": "primary_data_source_name_value",
+                        "supplemental_data_source_name": "supplemental_data_source_name_value",
+                    }
+                ]
+            },
         },
         "supplemental_product_data_source": {
             "feed_label": "feed_label_value",
             "content_language": "content_language_value",
+            "referencing_primary_data_sources": {},
         },
         "local_inventory_data_source": {
             "feed_label": "feed_label_value",
@@ -4813,10 +4823,20 @@ def test_update_data_source_rest(request_type):
             "feed_label": "feed_label_value",
             "content_language": "content_language_value",
             "countries": ["countries_value1", "countries_value2"],
+            "default_rule": {
+                "take_from_data_sources": [
+                    {
+                        "self_": True,
+                        "primary_data_source_name": "primary_data_source_name_value",
+                        "supplemental_data_source_name": "supplemental_data_source_name_value",
+                    }
+                ]
+            },
         },
         "supplemental_product_data_source": {
             "feed_label": "feed_label_value",
             "content_language": "content_language_value",
+            "referencing_primary_data_sources": {},
         },
         "local_inventory_data_source": {
             "feed_label": "feed_label_value",

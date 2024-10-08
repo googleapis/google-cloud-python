@@ -71,6 +71,12 @@ __protobuf__ = proto.module(
         "UndeployIssueModelRequest",
         "UndeployIssueModelResponse",
         "UndeployIssueModelMetadata",
+        "ExportIssueModelRequest",
+        "ExportIssueModelResponse",
+        "ExportIssueModelMetadata",
+        "ImportIssueModelRequest",
+        "ImportIssueModelResponse",
+        "ImportIssueModelMetadata",
         "GetIssueRequest",
         "ListIssuesRequest",
         "ListIssuesResponse",
@@ -86,6 +92,10 @@ __protobuf__ = proto.module(
         "UpdatePhraseMatcherRequest",
         "GetSettingsRequest",
         "UpdateSettingsRequest",
+        "GetEncryptionSpecRequest",
+        "InitializeEncryptionSpecRequest",
+        "InitializeEncryptionSpecResponse",
+        "InitializeEncryptionSpecMetadata",
         "CreateViewRequest",
         "GetViewRequest",
         "ListViewsRequest",
@@ -394,7 +404,7 @@ class UploadConversationRequest(proto.Message):
 
 
 class UploadConversationMetadata(proto.Message):
-    r"""The metadata for an UploadConversation operation.
+    r"""The metadata for an ``UploadConversation`` operation.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -449,9 +459,9 @@ class ListConversationsRequest(proto.Message):
         page_size (int):
             The maximum number of conversations to return
             in the response. A valid page size ranges from 0
-            to 1,000 inclusive. If the page size is zero or
-            unspecified, a default page size of 100 will be
-            chosen. Note that a call might return fewer
+            to 100,000 inclusive. If the page size is zero
+            or unspecified, a default page size of 100 will
+            be chosen. Note that a call might return fewer
             results than the requested page size.
         page_token (str):
             The value returned by the last
@@ -462,6 +472,23 @@ class ListConversationsRequest(proto.Message):
             A filter to reduce results to a specific
             subset. Useful for querying conversations with
             specific properties.
+        order_by (str):
+            Optional. The attribute by which to order conversations in
+            the response. If empty, conversations will be ordered by
+            descending creation time. Supported values are one of the
+            following:
+
+            -  create_time
+            -  customer_satisfaction_rating
+            -  duration
+            -  latest_analysis
+            -  start_time
+            -  turn_count
+
+            The default sort order is ascending. To specify order,
+            append ``asc`` or ``desc`` (``create_time desc``). For more
+            details, see `Google AIPs
+            Ordering <https://google.aip.dev/132#ordering>`__.
         view (google.cloud.contact_center_insights_v1.types.ConversationView):
             The level of details of the conversation. Default is
             ``BASIC``.
@@ -482,6 +509,10 @@ class ListConversationsRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
     view: "ConversationView" = proto.Field(
         proto.ENUM,
@@ -549,7 +580,20 @@ class UpdateConversationRequest(proto.Message):
             Required. The new values for the
             conversation.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to be updated.
+            The list of fields to be updated. All possible fields can be
+            updated by passing ``*``, or a subset of the following
+            updateable fields can be provided:
+
+            -  ``agent_id``
+            -  ``language_code``
+            -  ``labels``
+            -  ``metadata``
+            -  ``quality_metadata``
+            -  ``call_metadata``
+            -  ``start_time``
+            -  ``expire_time`` or ``ttl``
+            -  ``data_source.gcs_source.audio_uri`` or
+               ``data_source.dialogflow_source.audio_uri``
     """
 
     conversation: resources.Conversation = proto.Field(
@@ -619,10 +663,21 @@ class IngestConversationsRequest(proto.Message):
             Optional. Default Speech-to-Text
             configuration. Optional, will default to the
             config specified in Settings.
+        sample_size (int):
+            Optional. If set, this fields indicates the
+            number of objects to ingest from the Cloud
+            Storage bucket. If empty, the entire bucket will
+            be ingested. Unless they are first deleted,
+            conversations produced through sampling won't be
+            ingested by subsequent ingest requests.
+
+            This field is a member of `oneof`_ ``_sample_size``.
     """
 
     class GcsSource(proto.Message):
         r"""Configuration for Cloud Storage bucket sources.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             bucket_uri (str):
@@ -631,6 +686,22 @@ class IngestConversationsRequest(proto.Message):
             bucket_object_type (google.cloud.contact_center_insights_v1.types.IngestConversationsRequest.GcsSource.BucketObjectType):
                 Optional. Specifies the type of the objects in
                 ``bucket_uri``.
+            metadata_bucket_uri (str):
+                Optional. The Cloud Storage path to the conversation
+                metadata. Note that: [1] Metadata files are expected to be
+                in JSON format. [2] Metadata and source files (transcripts
+                or audio) must be in separate buckets. [3] A source file and
+                its corresponding metadata file must share the same name to
+                be properly ingested, E.g.
+                ``gs://bucket/audio/conversation1.mp3`` and
+                ``gs://bucket/metadata/conversation1.json``.
+
+                This field is a member of `oneof`_ ``_metadata_bucket_uri``.
+            custom_metadata_keys (MutableSequence[str]):
+                Optional. Custom keys to extract as conversation labels from
+                metadata files in ``metadata_bucket_uri``. Keys not included
+                in this field will be ignored. Note that there is a limit of
+                20 labels per conversation.
         """
 
         class BucketObjectType(proto.Enum):
@@ -660,6 +731,15 @@ class IngestConversationsRequest(proto.Message):
                 enum="IngestConversationsRequest.GcsSource.BucketObjectType",
             )
         )
+        metadata_bucket_uri: str = proto.Field(
+            proto.STRING,
+            number=3,
+            optional=True,
+        )
+        custom_metadata_keys: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=12,
+        )
 
     class TranscriptObjectConfig(proto.Message):
         r"""Configuration for processing transcript objects.
@@ -681,8 +761,10 @@ class IngestConversationsRequest(proto.Message):
 
         Attributes:
             agent_id (str):
-                An opaque, user-specified string representing
-                the human agent who handled the conversations.
+                Optional. An opaque, user-specified string representing a
+                human agent who handled all conversations in the import.
+                Note that this will be overridden if per-conversation
+                metadata is provided through the ``metadata_bucket_uri``.
             agent_channel (int):
                 Optional. Indicates which of the channels, 1
                 or 2, contains the agent. Note that this must be
@@ -738,6 +820,11 @@ class IngestConversationsRequest(proto.Message):
         proto.MESSAGE,
         number=6,
         message=resources.SpeechConfig,
+    )
+    sample_size: int = proto.Field(
+        proto.INT32,
+        number=7,
+        optional=True,
     )
 
 
@@ -1559,6 +1646,163 @@ class UndeployIssueModelMetadata(proto.Message):
     )
 
 
+class ExportIssueModelRequest(proto.Message):
+    r"""Request to export an issue model.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_destination (google.cloud.contact_center_insights_v1.types.ExportIssueModelRequest.GcsDestination):
+            Google Cloud Storage URI to export the issue
+            model to.
+
+            This field is a member of `oneof`_ ``Destination``.
+        name (str):
+            Required. The issue model to export.
+    """
+
+    class GcsDestination(proto.Message):
+        r"""Google Cloud Storage Object URI to save the issue model to.
+
+        Attributes:
+            object_uri (str):
+                Required. Format: ``gs://<bucket-name>/<object-name>``
+        """
+
+        object_uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    gcs_destination: GcsDestination = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="Destination",
+        message=GcsDestination,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ExportIssueModelResponse(proto.Message):
+    r"""Response from export issue model"""
+
+
+class ExportIssueModelMetadata(proto.Message):
+    r"""Metadata used for export issue model.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation was created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation finished running.
+        request (google.cloud.contact_center_insights_v1.types.ExportIssueModelRequest):
+            The original export request.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    request: "ExportIssueModelRequest" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ExportIssueModelRequest",
+    )
+
+
+class ImportIssueModelRequest(proto.Message):
+    r"""Request to import an issue model.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_source (google.cloud.contact_center_insights_v1.types.ImportIssueModelRequest.GcsSource):
+            Google Cloud Storage source message.
+
+            This field is a member of `oneof`_ ``Source``.
+        parent (str):
+            Required. The parent resource of the issue
+            model.
+        create_new_model (bool):
+            Optional. If set to true, will create an
+            issue model from the imported file with randomly
+            generated IDs for the issue model and
+            corresponding issues. Otherwise, replaces an
+            existing model with the same ID as the file.
+    """
+
+    class GcsSource(proto.Message):
+        r"""Google Cloud Storage Object URI to get the issue model file
+        from.
+
+        Attributes:
+            object_uri (str):
+                Required. Format: ``gs://<bucket-name>/<object-name>``
+        """
+
+        object_uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    gcs_source: GcsSource = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="Source",
+        message=GcsSource,
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_new_model: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class ImportIssueModelResponse(proto.Message):
+    r"""Response from import issue model"""
+
+
+class ImportIssueModelMetadata(proto.Message):
+    r"""Metadata used for import issue model.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation was created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation finished running.
+        request (google.cloud.contact_center_insights_v1.types.ImportIssueModelRequest):
+            The original import request.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    request: "ImportIssueModelRequest" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ImportIssueModelRequest",
+    )
+
+
 class GetIssueRequest(proto.Message):
     r"""The request to get an issue.
 
@@ -1852,6 +2096,90 @@ class UpdateSettingsRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class GetEncryptionSpecRequest(proto.Message):
+    r"""The request to get location-level encryption specification.
+
+    Attributes:
+        name (str):
+            Required. The name of the encryption spec
+            resource to get.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class InitializeEncryptionSpecRequest(proto.Message):
+    r"""The request to initialize a location-level encryption
+    specification.
+
+    Attributes:
+        encryption_spec (google.cloud.contact_center_insights_v1.types.EncryptionSpec):
+            Required. The encryption spec used for CMEK encryption. It
+            is required that the kms key is in the same region as the
+            endpoint. The same key will be used for all provisioned
+            resources, if encryption is available. If the kms_key_name
+            is left empty, no encryption will be enforced.
+    """
+
+    encryption_spec: resources.EncryptionSpec = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.EncryptionSpec,
+    )
+
+
+class InitializeEncryptionSpecResponse(proto.Message):
+    r"""The response to initialize a location-level encryption
+    specification.
+
+    """
+
+
+class InitializeEncryptionSpecMetadata(proto.Message):
+    r"""Metadata for initializing a location-level encryption
+    specification.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        request (google.cloud.contact_center_insights_v1.types.InitializeEncryptionSpecRequest):
+            Output only. The original request for
+            initialization.
+        partial_errors (MutableSequence[google.rpc.status_pb2.Status]):
+            Partial errors during initialising operation
+            that might cause the operation output to be
+            incomplete.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    request: "InitializeEncryptionSpecRequest" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="InitializeEncryptionSpecRequest",
+    )
+    partial_errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
     )
 
 

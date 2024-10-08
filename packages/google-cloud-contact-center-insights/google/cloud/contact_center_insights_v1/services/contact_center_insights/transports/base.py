@@ -238,6 +238,16 @@ class ContactCenterInsightsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.export_issue_model: gapic_v1.method.wrap_method(
+                self.export_issue_model,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.import_issue_model: gapic_v1.method.wrap_method(
+                self.import_issue_model,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_issue: gapic_v1.method.wrap_method(
                 self.get_issue,
                 default_timeout=None,
@@ -300,6 +310,16 @@ class ContactCenterInsightsTransport(abc.ABC):
             ),
             self.update_settings: gapic_v1.method.wrap_method(
                 self.update_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_encryption_spec: gapic_v1.method.wrap_method(
+                self.get_encryption_spec,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.initialize_encryption_spec: gapic_v1.method.wrap_method(
+                self.initialize_encryption_spec,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -543,6 +563,24 @@ class ContactCenterInsightsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def export_issue_model(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ExportIssueModelRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_issue_model(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ImportIssueModelRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_issue(
         self,
     ) -> Callable[
@@ -668,6 +706,24 @@ class ContactCenterInsightsTransport(abc.ABC):
     ) -> Callable[
         [contact_center_insights.UpdateSettingsRequest],
         Union[resources.Settings, Awaitable[resources.Settings]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_encryption_spec(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetEncryptionSpecRequest],
+        Union[resources.EncryptionSpec, Awaitable[resources.EncryptionSpec]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def initialize_encryption_spec(
+        self,
+    ) -> Callable[
+        [contact_center_insights.InitializeEncryptionSpecRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
