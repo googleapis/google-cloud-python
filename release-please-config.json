@@ -1363,11 +1363,6 @@
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.documentai.v1beta2.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.documentai.v1beta3.json",
                     "type": "json"
                 }
@@ -2106,7 +2101,13 @@
             "component": "google-cloud-parallelstore",
             "extra-files": [
                 "google/cloud/parallelstore/gapic_version.py",
+                "google/cloud/parallelstore_v1/gapic_version.py",
                 "google/cloud/parallelstore_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.parallelstore.v1.json",
+                    "type": "json"
+                },
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.parallelstore.v1beta.json",

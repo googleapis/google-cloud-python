@@ -24,6 +24,23 @@ from .services.consumer_procurement_service import (
     ConsumerProcurementServiceAsyncClient,
     ConsumerProcurementServiceClient,
 )
+from .services.license_management_service import (
+    LicenseManagementServiceAsyncClient,
+    LicenseManagementServiceClient,
+)
+from .types.license_management_service import (
+    AssignmentProtocol,
+    AssignRequest,
+    AssignResponse,
+    EnumerateLicensedUsersRequest,
+    EnumerateLicensedUsersResponse,
+    GetLicensePoolRequest,
+    LicensedUser,
+    LicensePool,
+    UnassignRequest,
+    UnassignResponse,
+    UpdateLicensePoolRequest,
+)
 from .types.order import (
     LineItem,
     LineItemChange,
@@ -36,17 +53,35 @@ from .types.order import (
     Subscription,
 )
 from .types.procurement_service import (
+    AutoRenewalBehavior,
+    CancelOrderMetadata,
+    CancelOrderRequest,
     GetOrderRequest,
     ListOrdersRequest,
     ListOrdersResponse,
+    ModifyOrderMetadata,
+    ModifyOrderRequest,
     PlaceOrderMetadata,
     PlaceOrderRequest,
 )
 
 __all__ = (
     "ConsumerProcurementServiceAsyncClient",
+    "LicenseManagementServiceAsyncClient",
+    "AssignRequest",
+    "AssignResponse",
+    "AssignmentProtocol",
+    "AutoRenewalBehavior",
+    "CancelOrderMetadata",
+    "CancelOrderRequest",
     "ConsumerProcurementServiceClient",
+    "EnumerateLicensedUsersRequest",
+    "EnumerateLicensedUsersResponse",
+    "GetLicensePoolRequest",
     "GetOrderRequest",
+    "LicenseManagementServiceClient",
+    "LicensePool",
+    "LicensedUser",
     "LineItem",
     "LineItemChange",
     "LineItemChangeState",
@@ -55,9 +90,14 @@ __all__ = (
     "LineItemInfo",
     "ListOrdersRequest",
     "ListOrdersResponse",
+    "ModifyOrderMetadata",
+    "ModifyOrderRequest",
     "Order",
     "Parameter",
     "PlaceOrderMetadata",
     "PlaceOrderRequest",
     "Subscription",
+    "UnassignRequest",
+    "UnassignResponse",
+    "UpdateLicensePoolRequest",
 )

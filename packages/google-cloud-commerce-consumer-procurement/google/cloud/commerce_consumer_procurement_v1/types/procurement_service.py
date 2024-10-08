@@ -24,13 +24,37 @@ from google.cloud.commerce_consumer_procurement_v1.types import order
 __protobuf__ = proto.module(
     package="google.cloud.commerce.consumer.procurement.v1",
     manifest={
+        "AutoRenewalBehavior",
         "PlaceOrderRequest",
         "PlaceOrderMetadata",
         "GetOrderRequest",
         "ListOrdersRequest",
         "ListOrdersResponse",
+        "ModifyOrderRequest",
+        "ModifyOrderMetadata",
+        "CancelOrderRequest",
+        "CancelOrderMetadata",
     },
 )
+
+
+class AutoRenewalBehavior(proto.Enum):
+    r"""Indicates the auto renewal behavior customer specifies on
+    subscription.
+
+    Values:
+        AUTO_RENEWAL_BEHAVIOR_UNSPECIFIED (0):
+            If unspecified, the auto renewal behavior
+            will follow the default config.
+        AUTO_RENEWAL_BEHAVIOR_ENABLE (1):
+            Auto Renewal will be enabled on subscription.
+        AUTO_RENEWAL_BEHAVIOR_DISABLE (2):
+            Auto Renewal will be disabled on
+            subscription.
+    """
+    AUTO_RENEWAL_BEHAVIOR_UNSPECIFIED = 0
+    AUTO_RENEWAL_BEHAVIOR_ENABLE = 1
+    AUTO_RENEWAL_BEHAVIOR_DISABLE = 2
 
 
 class PlaceOrderRequest(proto.Message):
@@ -50,7 +74,7 @@ class PlaceOrderRequest(proto.Message):
         request_id (str):
             Optional. A unique identifier for this request. The server
             will ignore subsequent requests that provide a duplicate
-            request ID for at least 120 minutes after the first request.
+            request ID for at least 24 hours after the first request.
 
             The request ID must be a valid
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier#Format>`__.
@@ -174,6 +198,166 @@ class ListOrdersResponse(proto.Message):
         proto.STRING,
         number=2,
     )
+
+
+class ModifyOrderRequest(proto.Message):
+    r"""Request message for
+    [ConsumerProcurementService.ModifyOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.ModifyOrder].
+
+    Attributes:
+        name (str):
+            Required. Name of the order to update.
+        modifications (MutableSequence[google.cloud.commerce_consumer_procurement_v1.types.ModifyOrderRequest.Modification]):
+            Optional. Modifications for an existing Order
+            created by an Offer. Required when Offer based
+            Order is being modified, except for when going
+            from an offer to a public plan.
+        display_name (str):
+            Optional. Updated display name of the order,
+            leave as empty if you do not want to update
+            current display name.
+        etag (str):
+            Optional. The weak etag, which can be
+            optionally populated, of the order that this
+            modify request is based on. Validation checking
+            will only happen if the invoker supplies this
+            field.
+    """
+
+    class Modification(proto.Message):
+        r"""Modifications to make on the order.
+
+        Attributes:
+            line_item_id (str):
+                Required. ID of the existing line item to make change to.
+                Required when change type is
+                [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_UPDATE] or
+                [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_CANCEL].
+            change_type (google.cloud.commerce_consumer_procurement_v1.types.LineItemChangeType):
+                Required. Type of change to make.
+            new_line_item_info (google.cloud.commerce_consumer_procurement_v1.types.LineItemInfo):
+                Optional. The line item to update to. Required when
+                change_type is
+                [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_CREATE] or
+                [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_UPDATE].
+            auto_renewal_behavior (google.cloud.commerce_consumer_procurement_v1.types.AutoRenewalBehavior):
+                Optional. Auto renewal behavior of the subscription for the
+                update. Applied when change_type is
+                [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_UPDATE]. Follows
+                plan default config when this field is not specified.
+        """
+
+        line_item_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        change_type: order.LineItemChangeType = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum=order.LineItemChangeType,
+        )
+        new_line_item_info: order.LineItemInfo = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=order.LineItemInfo,
+        )
+        auto_renewal_behavior: "AutoRenewalBehavior" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="AutoRenewalBehavior",
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    modifications: MutableSequence[Modification] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=Modification,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ModifyOrderMetadata(proto.Message):
+    r"""Message stored in the metadata field of the Operation returned by
+    [ConsumerProcurementService.ModifyOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.ModifyOrder].
+
+    """
+
+
+class CancelOrderRequest(proto.Message):
+    r"""Request message for
+    [ConsumerProcurementService.CancelOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.CancelOrder].
+
+    Attributes:
+        name (str):
+            Required. The resource name of the order.
+        etag (str):
+            Optional. The weak etag, which can be
+            optionally populated, of the order that this
+            cancel request is based on. Validation checking
+            will only happen if the invoker supplies this
+            field.
+        cancellation_policy (google.cloud.commerce_consumer_procurement_v1.types.CancelOrderRequest.CancellationPolicy):
+            Optional. Cancellation policy of this
+            request.
+    """
+
+    class CancellationPolicy(proto.Enum):
+        r"""Indicates the cancellation policy the customer uses to cancel
+        the order.
+
+        Values:
+            CANCELLATION_POLICY_UNSPECIFIED (0):
+                If unspecified, cancellation will try to
+                cancel the order, if order cannot be immediately
+                cancelled, auto renewal will be turned off.
+                However, caller should avoid using the value as
+                it will yield a non-deterministic result. This
+                is still supported mainly to maintain existing
+                integrated usages and ensure backwards
+                compatibility.
+            CANCELLATION_POLICY_CANCEL_IMMEDIATELY (1):
+                Request will cancel the whole order
+                immediately, if order cannot be immediately
+                cancelled, the request will fail.
+            CANCELLATION_POLICY_CANCEL_AT_TERM_END (2):
+                Request will cancel the auto renewal, if
+                order is not subscription based, the request
+                will fail.
+        """
+        CANCELLATION_POLICY_UNSPECIFIED = 0
+        CANCELLATION_POLICY_CANCEL_IMMEDIATELY = 1
+        CANCELLATION_POLICY_CANCEL_AT_TERM_END = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    cancellation_policy: CancellationPolicy = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=CancellationPolicy,
+    )
+
+
+class CancelOrderMetadata(proto.Message):
+    r"""Message stored in the metadata field of the Operation returned by
+    [ConsumerProcurementService.CancelOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.CancelOrder].
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -13,6 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .license_management_service import (
+    AssignmentProtocol,
+    AssignRequest,
+    AssignResponse,
+    EnumerateLicensedUsersRequest,
+    EnumerateLicensedUsersResponse,
+    GetLicensePoolRequest,
+    LicensedUser,
+    LicensePool,
+    UnassignRequest,
+    UnassignResponse,
+    UpdateLicensePoolRequest,
+)
 from .order import (
     LineItem,
     LineItemChange,
@@ -25,14 +38,30 @@ from .order import (
     Subscription,
 )
 from .procurement_service import (
+    AutoRenewalBehavior,
+    CancelOrderMetadata,
+    CancelOrderRequest,
     GetOrderRequest,
     ListOrdersRequest,
     ListOrdersResponse,
+    ModifyOrderMetadata,
+    ModifyOrderRequest,
     PlaceOrderMetadata,
     PlaceOrderRequest,
 )
 
 __all__ = (
+    "AssignmentProtocol",
+    "AssignRequest",
+    "AssignResponse",
+    "EnumerateLicensedUsersRequest",
+    "EnumerateLicensedUsersResponse",
+    "GetLicensePoolRequest",
+    "LicensedUser",
+    "LicensePool",
+    "UnassignRequest",
+    "UnassignResponse",
+    "UpdateLicensePoolRequest",
     "LineItem",
     "LineItemChange",
     "LineItemInfo",
@@ -42,9 +71,14 @@ __all__ = (
     "LineItemChangeState",
     "LineItemChangeStateReasonType",
     "LineItemChangeType",
+    "CancelOrderMetadata",
+    "CancelOrderRequest",
     "GetOrderRequest",
     "ListOrdersRequest",
     "ListOrdersResponse",
+    "ModifyOrderMetadata",
+    "ModifyOrderRequest",
     "PlaceOrderMetadata",
     "PlaceOrderRequest",
+    "AutoRenewalBehavior",
 )

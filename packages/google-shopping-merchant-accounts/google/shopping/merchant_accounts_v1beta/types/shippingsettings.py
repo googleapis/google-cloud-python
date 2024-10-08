@@ -49,8 +49,8 @@ __protobuf__ = proto.module(
 
 
 class ShippingSettings(proto.Message):
-    r"""The merchant account's [shipping
-    setting]((https://support.google.com/merchants/answer/6069284).
+    r"""The merchant account's `shipping
+    setting <https://support.google.com/merchants/answer/6069284>`__.
 
     Attributes:
         name (str):
@@ -65,24 +65,24 @@ class ShippingSettings(proto.Message):
         etag (str):
             Required. This field is used for avoid async
             issue. Make sure shipping setting data
-             didn't change between get call and insert call.
-            The user should do  following steps：
+            didn't change between get call and insert call.
+            The user should do  following steps:
 
-            1. Set etag field as empty string for initial
+            1.  Set etag field as empty string for initial
                 shipping setting creation.
 
-            2. After initial creation, call get method to
+            2.  After initial creation, call get method to
                 obtain an etag and current shipping setting
                 data before call insert.
 
-            3. Modify to wanted shipping setting
+            3.  Modify to wanted shipping setting
                 information.
 
-            4. Call insert method with the wanted shipping
+            4.  Call insert method with the wanted shipping
                 setting information with the etag obtained
                 from step 2.
 
-            5. If shipping setting data changed between step
+            5.  If shipping setting data changed between step
                 2 and step 4. Insert request will fail
                 because the etag changes every time the
                 shipping setting data changes. User should
@@ -709,15 +709,18 @@ class DeliveryTime(proto.Message):
 
             This field is a member of `oneof`_ ``_cutoff_time``.
         min_handling_days (int):
-            Minimum number of business days spent before
-            an order is shipped. 0 means same day shipped, 1
-            means next day shipped.
+            Minimum number of business days spent before an order is
+            shipped. 0 means same day shipped, 1 means next day shipped.
+            'min_handling_days' and 'max_handling_days' should be either
+            set or not set at the same time.
 
             This field is a member of `oneof`_ ``_min_handling_days``.
         max_handling_days (int):
             Maximum number of business days spent before an order is
             shipped. 0 means same day shipped, 1 means next day shipped.
             Must be greater than or equal to ``min_handling_days``.
+            'min_handling_days' and 'max_handling_days' should be either
+            set or not set at the same time.
 
             This field is a member of `oneof`_ ``_max_handling_days``.
         transit_time_table (google.shopping.merchant_accounts_v1beta.types.TransitTable):

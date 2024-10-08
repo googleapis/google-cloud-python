@@ -18,7 +18,6 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.shopping.type.types import types
-from google.type import datetime_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -179,7 +178,7 @@ class ListAccountIssuesRequest(proto.Message):
             `BCP-47 <https://tools.ietf.org/html/bcp47>`__, such as
             ``en-US`` or ``sr-Latn``. If not value is provided,
             ``en-US`` will be used.
-        time_zone (google.type.datetime_pb2.TimeZone):
+        time_zone (str):
             Optional. The `IANA <https://www.iana.org/time-zones>`__
             timezone used to localize times in human-readable fields.
             For example 'America/Los_Angeles'. If not set,
@@ -202,10 +201,9 @@ class ListAccountIssuesRequest(proto.Message):
         proto.STRING,
         number=4,
     )
-    time_zone: datetime_pb2.TimeZone = proto.Field(
-        proto.MESSAGE,
+    time_zone: str = proto.Field(
+        proto.STRING,
         number=5,
-        message=datetime_pb2.TimeZone,
     )
 
 

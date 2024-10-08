@@ -1082,6 +1082,226 @@ class ConsumerProcurementServiceClient(metaclass=ConsumerProcurementServiceClien
         # Done; return the response.
         return response
 
+    def modify_order(
+        self,
+        request: Optional[Union[procurement_service.ModifyOrderRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Modifies an existing
+        [Order][google.cloud.commerce.consumer.procurement.v1.Order]
+        resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import commerce_consumer_procurement_v1
+
+            def sample_modify_order():
+                # Create a client
+                client = commerce_consumer_procurement_v1.ConsumerProcurementServiceClient()
+
+                # Initialize request argument(s)
+                request = commerce_consumer_procurement_v1.ModifyOrderRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.modify_order(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.commerce_consumer_procurement_v1.types.ModifyOrderRequest, dict]):
+                The request object. Request message for
+                [ConsumerProcurementService.ModifyOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.ModifyOrder].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.commerce_consumer_procurement_v1.types.Order` Represents a purchase made by a customer on Cloud Marketplace.
+                   Creating an order makes sure that both the Google
+                   backend systems as well as external service
+                   provider's systems (if needed) allow use of purchased
+                   products and ensures the appropriate billing events
+                   occur.
+
+                   An Order can be made against one Product with
+                   multiple add-ons (optional) or one Quote which might
+                   reference multiple products.
+
+                   Customers typically choose a price plan for each
+                   Product purchased when they create an order and can
+                   change their plan later, if the product allows.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, procurement_service.ModifyOrderRequest):
+            request = procurement_service.ModifyOrderRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.modify_order]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            order.Order,
+            metadata_type=procurement_service.ModifyOrderMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def cancel_order(
+        self,
+        request: Optional[Union[procurement_service.CancelOrderRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Cancels an existing
+        [Order][google.cloud.commerce.consumer.procurement.v1.Order].
+        Every product procured in the Order will be cancelled.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import commerce_consumer_procurement_v1
+
+            def sample_cancel_order():
+                # Create a client
+                client = commerce_consumer_procurement_v1.ConsumerProcurementServiceClient()
+
+                # Initialize request argument(s)
+                request = commerce_consumer_procurement_v1.CancelOrderRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.cancel_order(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.commerce_consumer_procurement_v1.types.CancelOrderRequest, dict]):
+                The request object. Request message for
+                [ConsumerProcurementService.CancelOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.CancelOrder].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.commerce_consumer_procurement_v1.types.Order` Represents a purchase made by a customer on Cloud Marketplace.
+                   Creating an order makes sure that both the Google
+                   backend systems as well as external service
+                   provider's systems (if needed) allow use of purchased
+                   products and ensures the appropriate billing events
+                   occur.
+
+                   An Order can be made against one Product with
+                   multiple add-ons (optional) or one Quote which might
+                   reference multiple products.
+
+                   Customers typically choose a price plan for each
+                   Product purchased when they create an order and can
+                   change their plan later, if the product allows.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, procurement_service.CancelOrderRequest):
+            request = procurement_service.CancelOrderRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.cancel_order]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            order.Order,
+            metadata_type=procurement_service.CancelOrderMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "ConsumerProcurementServiceClient":
         return self
 
