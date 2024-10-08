@@ -39,30 +39,6 @@ def llm_remote_text_df(session, llm_remote_text_pandas_df):
 
 
 @pytest.mark.flaky(retries=2)
-def test_llm_palm_configure_fit(llm_fine_tune_df_default_index, llm_remote_text_df):
-    model = llm.PaLM2TextGenerator(model_name="text-bison", max_iterations=1)
-
-    X_train = llm_fine_tune_df_default_index[["prompt"]]
-    y_train = llm_fine_tune_df_default_index[["label"]]
-    model.fit(X_train, y_train)
-
-    assert model is not None
-
-    df = model.predict(llm_remote_text_df["prompt"]).to_pandas()
-    utils.check_pandas_df_schema_and_index(
-        df,
-        columns=[
-            "ml_generate_text_llm_result",
-            "ml_generate_text_rai_result",
-            "ml_generate_text_status",
-            "prompt",
-        ],
-        index=3,
-    )
-    # TODO(ashleyxu b/335492787): After bqml rolled out version control: save, load, check parameters to ensure configuration was kept
-
-
-@pytest.mark.flaky(retries=2)
 def test_llm_gemini_configure_fit(llm_fine_tune_df_default_index, llm_remote_text_df):
     model = llm.GeminiTextGenerator(model_name="gemini-pro", max_iterations=1)
 
