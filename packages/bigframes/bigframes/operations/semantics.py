@@ -609,6 +609,120 @@ class Semantics:
 
         return typing.cast(bigframes.dataframe.DataFrame, search_result)
 
+    def sim_join(
+        self,
+        other,
+        left_on: str,
+        right_on: str,
+        model,
+        top_k: int = 3,
+        score_column: Optional[str] = None,
+        max_rows: int = 1000,
+    ):
+        """
+        Joins two dataframes based on the similarity of the specified columns.
+
+        This method uses BigQuery's VECTOR_SEARCH function to match rows on the left side with the rows that have
+        nearest embedding vectors on the right. In the worst case scenario, the complexity is around O(M * N * log K).
+        Therefore, this is a potentially expensive operation.
+
+        ** Examples: **
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> import bigframes
+            >>> bigframes.options.experiments.semantic_operators = True
+
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-004")
+
+            >>> df1 = bpd.DataFrame({'animal': ['monkey', 'spider']})
+            >>> df2 = bpd.DataFrame({'animal': ['scorpion', 'baboon']})
+
+            >>> df1.semantics.sim_join(df2, left_on='animal', right_on='animal', model=model, top_k=1)
+            animal  animal_1
+            0  monkey    baboon
+            1  spider  scorpion
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        Args:
+            other (DataFrame):
+                The other data frame to join with.
+            left_on (str):
+                The name of the column on left side for the join.
+            right_on (str):
+                The name of the column on the right side for the join.
+            top_k (int, default 3):
+                The number of nearest neighbors to return.
+            model (TextEmbeddingGenerator):
+                A TextEmbeddingGenerator provided by Bigframes ML package.
+            score_column (Optional[str], default None):
+                The name of the the additional column containning the similarity scores. If None,
+                this column won't be attached to the result.
+            max_rows:
+                The maximum number of rows allowed to be processed per call. If the result is too large, the method
+                call will end early with an error.
+
+        Returns:
+            DataFrame: the data frame with the join result.
+
+        Raises:
+            ValueError: when the amount of data to be processed exceeds the specified max_rows.
+        """
+
+        if left_on not in self._df.columns:
+            raise ValueError(f"Left column {left_on} not found")
+        if right_on not in self._df.columns:
+            raise ValueError(f"Right column {right_on} not found")
+
+        import bigframes.ml.llm as llm
+
+        if not isinstance(model, llm.TextEmbeddingGenerator):
+            raise TypeError(f"Expect a text embedding model, but got: {type(model)}")
+
+        joined_table_rows = len(self._df) * len(other)
+        if joined_table_rows > max_rows:
+            raise ValueError(
+                f"Number of rows that need processing is {joined_table_rows}, which exceeds row limit {max_rows}."
+            )
+
+        base_table_embedding_column = bigframes.core.guid.generate_guid()
+        base_table = self._attach_embedding(
+            other, right_on, base_table_embedding_column, model
+        ).to_gbq()
+        query_table = self._attach_embedding(self._df, left_on, "embedding", model)
+
+        import bigframes.bigquery as bbq
+
+        join_result = bbq.vector_search(
+            base_table=base_table,
+            column_to_search=base_table_embedding_column,
+            query=query_table,
+            top_k=top_k,
+        )
+
+        join_result = join_result.drop(
+            ["embedding", base_table_embedding_column], axis=1
+        )
+
+        if score_column is not None:
+            join_result = join_result.rename(columns={"distance": score_column})
+        else:
+            del join_result["distance"]
+
+        return join_result
+
+    @staticmethod
+    def _attach_embedding(dataframe, source_column: str, embedding_column: str, model):
+        result_df = dataframe.copy()
+        embeddings = model.predict(dataframe[source_column])[
+            "ml_generate_embedding_result"
+        ]
+        result_df[embedding_column] = embeddings
+        return result_df
+
     def _make_prompt(
         self, columns: List[str], user_instruction: str, output_instruction: str
     ):

@@ -526,3 +526,110 @@ def test_search_invalid_model_raises_error(session):
 
     with pytest.raises(TypeError):
         df.semantics.search("creatures", "monkey", top_k=2, model=None)
+
+
+@pytest.mark.parametrize(
+    "score_column",
+    [
+        pytest.param(None, id="no_score_column"),
+        pytest.param("distance", id="has_score_column"),
+    ],
+)
+def test_sim_join(session, text_embedding_generator, score_column):
+    bigframes.options.experiments.semantic_operators = True
+    df1 = dataframe.DataFrame(
+        data={"creatures": ["salmon", "cat"]},
+        session=session,
+    )
+    df2 = dataframe.DataFrame(
+        data={"creatures": ["dog", "tuna"]},
+        session=session,
+    )
+
+    actual_result = df1.semantics.sim_join(
+        df2,
+        left_on="creatures",
+        right_on="creatures",
+        model=text_embedding_generator,
+        top_k=1,
+        score_column=score_column,
+    ).to_pandas()
+
+    expected_result = pd.DataFrame(
+        {"creatures": ["salmon", "cat"], "creatures_1": ["tuna", "dog"]}
+    )
+    pandas.testing.assert_frame_equal(
+        actual_result[["creatures", "creatures_1"]],
+        expected_result,
+        check_dtype=False,
+        check_index_type=False,
+    )
+
+    if score_column is None:
+        assert len(actual_result.columns) == 2
+    else:
+        assert score_column in actual_result.columns
+
+
+@pytest.mark.parametrize(
+    ("left_on", "right_on"),
+    [
+        pytest.param("whatever", "creatures", id="incorrect_left_column"),
+        pytest.param("creatures", "whatever", id="incorrect_right_column"),
+    ],
+)
+def test_sim_join_invalid_column_raises_error(
+    session, text_embedding_generator, left_on, right_on
+):
+    bigframes.options.experiments.semantic_operators = True
+    df1 = dataframe.DataFrame(
+        data={"creatures": ["salmon", "cat"]},
+        session=session,
+    )
+    df2 = dataframe.DataFrame(
+        data={"creatures": ["dog", "tuna"]},
+        session=session,
+    )
+
+    with pytest.raises(ValueError):
+        df1.semantics.sim_join(
+            df2, left_on=left_on, right_on=right_on, model=text_embedding_generator
+        )
+
+
+def test_sim_join_invalid_model_raises_error(session):
+    bigframes.options.experiments.semantic_operators = True
+    df1 = dataframe.DataFrame(
+        data={"creatures": ["salmon", "cat"]},
+        session=session,
+    )
+    df2 = dataframe.DataFrame(
+        data={"creatures": ["dog", "tuna"]},
+        session=session,
+    )
+
+    with pytest.raises(TypeError):
+        df1.semantics.sim_join(
+            df2, left_on="creatures", right_on="creatures", model=None
+        )
+
+
+def test_sim_join_data_too_large_raises_error(session, text_embedding_generator):
+    bigframes.options.experiments.semantic_operators = True
+    df1 = dataframe.DataFrame(
+        data={"creatures": ["salmon", "cat"]},
+        session=session,
+    )
+    df2 = dataframe.DataFrame(
+        data={"creatures": ["dog", "tuna"]},
+        session=session,
+    )
+
+    with pytest.raises(ValueError):
+        df1.semantics.sim_join(
+            df2,
+            left_on="creatures",
+            right_on="creatures",
+            model=text_embedding_generator,
+            max_rows=1,
+        )
