@@ -744,9 +744,9 @@ class BranchServiceClient(metaclass=BranchServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> branch_service.ListBranchesResponse:
-        r"""Lists all [Branch][google.cloud.retail.v2alpha.Branch]s under
-        the specified parent
-        [Catalog][google.cloud.retail.v2alpha.Catalog].
+        r"""Lists all instances of
+        [Branch][google.cloud.retail.v2alpha.Branch] under the specified
+        parent [Catalog][google.cloud.retail.v2alpha.Catalog].
 
         .. code-block:: python
 
@@ -903,8 +903,8 @@ class BranchServiceClient(metaclass=BranchServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2alpha.types.Branch:
-                A data branch that stores
-                [Product][google.cloud.retail.v2alpha.Product]s.
+                A data branch that stores all instances of
+                   [Product][google.cloud.retail.v2alpha.Product]s.
 
         """
         # Create or coerce a protobuf request object.

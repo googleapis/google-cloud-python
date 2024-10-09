@@ -28,6 +28,10 @@ from .services.completion_service import (
     CompletionServiceClient,
 )
 from .services.control_service import ControlServiceAsyncClient, ControlServiceClient
+from .services.generative_question_service import (
+    GenerativeQuestionServiceAsyncClient,
+    GenerativeQuestionServiceClient,
+)
 from .services.model_service import ModelServiceAsyncClient, ModelServiceClient
 from .services.prediction_service import (
     PredictionServiceAsyncClient,
@@ -103,6 +107,19 @@ from .types.export_config import (
     OutputConfig,
     OutputResult,
 )
+from .types.generative_question import (
+    GenerativeQuestionConfig,
+    GenerativeQuestionsFeatureConfig,
+)
+from .types.generative_question_service import (
+    BatchUpdateGenerativeQuestionConfigsRequest,
+    BatchUpdateGenerativeQuestionConfigsResponse,
+    GetGenerativeQuestionsFeatureConfigRequest,
+    ListGenerativeQuestionConfigsRequest,
+    ListGenerativeQuestionConfigsResponse,
+    UpdateGenerativeQuestionConfigRequest,
+    UpdateGenerativeQuestionsFeatureConfigRequest,
+)
 from .types.import_config import (
     BigQuerySource,
     CompletionDataInputConfig,
@@ -170,7 +187,14 @@ from .types.purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
-from .types.search_service import ExperimentInfo, SearchRequest, SearchResponse
+from .types.search_service import (
+    ExperimentInfo,
+    ProductAttributeInterval,
+    ProductAttributeValue,
+    SearchRequest,
+    SearchResponse,
+    Tile,
+)
 from .types.serving_config import ServingConfig
 from .types.serving_config_service import (
     AddControlRequest,
@@ -201,6 +225,7 @@ __all__ = (
     "CatalogServiceAsyncClient",
     "CompletionServiceAsyncClient",
     "ControlServiceAsyncClient",
+    "GenerativeQuestionServiceAsyncClient",
     "ModelServiceAsyncClient",
     "PredictionServiceAsyncClient",
     "ProductServiceAsyncClient",
@@ -219,6 +244,8 @@ __all__ = (
     "AttributeConfigLevel",
     "AttributesConfig",
     "Audience",
+    "BatchUpdateGenerativeQuestionConfigsRequest",
+    "BatchUpdateGenerativeQuestionConfigsResponse",
     "BigQueryOutputResult",
     "BigQuerySource",
     "Catalog",
@@ -253,11 +280,15 @@ __all__ = (
     "FulfillmentInfo",
     "GcsOutputResult",
     "GcsSource",
+    "GenerativeQuestionConfig",
+    "GenerativeQuestionServiceClient",
+    "GenerativeQuestionsFeatureConfig",
     "GetAttributesConfigRequest",
     "GetCompletionConfigRequest",
     "GetControlRequest",
     "GetDefaultBranchRequest",
     "GetDefaultBranchResponse",
+    "GetGenerativeQuestionsFeatureConfigRequest",
     "GetModelRequest",
     "GetProductRequest",
     "GetServingConfigRequest",
@@ -275,6 +306,8 @@ __all__ = (
     "ListCatalogsResponse",
     "ListControlsRequest",
     "ListControlsResponse",
+    "ListGenerativeQuestionConfigsRequest",
+    "ListGenerativeQuestionConfigsResponse",
     "ListModelsRequest",
     "ListModelsResponse",
     "ListProductsRequest",
@@ -292,6 +325,8 @@ __all__ = (
     "PredictionServiceClient",
     "PriceInfo",
     "Product",
+    "ProductAttributeInterval",
+    "ProductAttributeValue",
     "ProductDetail",
     "ProductInlineSource",
     "ProductInputConfig",
@@ -332,6 +367,7 @@ __all__ = (
     "SetInventoryRequest",
     "SetInventoryResponse",
     "SolutionType",
+    "Tile",
     "TuneModelMetadata",
     "TuneModelRequest",
     "TuneModelResponse",
@@ -339,6 +375,8 @@ __all__ = (
     "UpdateCatalogRequest",
     "UpdateCompletionConfigRequest",
     "UpdateControlRequest",
+    "UpdateGenerativeQuestionConfigRequest",
+    "UpdateGenerativeQuestionsFeatureConfigRequest",
     "UpdateModelRequest",
     "UpdateProductRequest",
     "UpdateServingConfigRequest",

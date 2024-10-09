@@ -210,7 +210,10 @@ class AlertConfig(proto.Message):
         Attributes:
             alert_group (str):
                 The feature that provides alerting capability. Supported
-                value is only ``search-data-quality`` for now.
+                value:
+
+                -  ``search-data-quality`` for retail search customers.
+                -  ``conv-data-quality`` for retail conversation customers.
             enroll_status (google.cloud.retail_v2alpha.types.AlertConfig.AlertPolicy.EnrollStatus):
                 The enrollment status of a customer.
             recipients (MutableSequence[google.cloud.retail_v2alpha.types.AlertConfig.AlertPolicy.Recipient]):

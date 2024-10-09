@@ -430,6 +430,100 @@
         }
       }
     },
+    "GenerativeQuestionService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "GenerativeQuestionServiceClient",
+          "rpcs": {
+            "BatchUpdateGenerativeQuestionConfigs": {
+              "methods": [
+                "batch_update_generative_question_configs"
+              ]
+            },
+            "GetGenerativeQuestionsFeatureConfig": {
+              "methods": [
+                "get_generative_questions_feature_config"
+              ]
+            },
+            "ListGenerativeQuestionConfigs": {
+              "methods": [
+                "list_generative_question_configs"
+              ]
+            },
+            "UpdateGenerativeQuestionConfig": {
+              "methods": [
+                "update_generative_question_config"
+              ]
+            },
+            "UpdateGenerativeQuestionsFeatureConfig": {
+              "methods": [
+                "update_generative_questions_feature_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "GenerativeQuestionServiceAsyncClient",
+          "rpcs": {
+            "BatchUpdateGenerativeQuestionConfigs": {
+              "methods": [
+                "batch_update_generative_question_configs"
+              ]
+            },
+            "GetGenerativeQuestionsFeatureConfig": {
+              "methods": [
+                "get_generative_questions_feature_config"
+              ]
+            },
+            "ListGenerativeQuestionConfigs": {
+              "methods": [
+                "list_generative_question_configs"
+              ]
+            },
+            "UpdateGenerativeQuestionConfig": {
+              "methods": [
+                "update_generative_question_config"
+              ]
+            },
+            "UpdateGenerativeQuestionsFeatureConfig": {
+              "methods": [
+                "update_generative_questions_feature_config"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "GenerativeQuestionServiceClient",
+          "rpcs": {
+            "BatchUpdateGenerativeQuestionConfigs": {
+              "methods": [
+                "batch_update_generative_question_configs"
+              ]
+            },
+            "GetGenerativeQuestionsFeatureConfig": {
+              "methods": [
+                "get_generative_questions_feature_config"
+              ]
+            },
+            "ListGenerativeQuestionConfigs": {
+              "methods": [
+                "list_generative_question_configs"
+              ]
+            },
+            "UpdateGenerativeQuestionConfig": {
+              "methods": [
+                "update_generative_question_config"
+              ]
+            },
+            "UpdateGenerativeQuestionsFeatureConfig": {
+              "methods": [
+                "update_generative_questions_feature_config"
+              ]
+            }
+          }
+        }
+      }
+    },
     "MerchantCenterAccountLinkService": {
       "clients": {
         "grpc": {
@@ -692,6 +786,11 @@
                 "delete_product"
               ]
             },
+            "ExportProducts": {
+              "methods": [
+                "export_products"
+              ]
+            },
             "GetProduct": {
               "methods": [
                 "get_product"
@@ -757,6 +856,11 @@
                 "delete_product"
               ]
             },
+            "ExportProducts": {
+              "methods": [
+                "export_products"
+              ]
+            },
             "GetProduct": {
               "methods": [
                 "get_product"
@@ -820,6 +924,11 @@
             "DeleteProduct": {
               "methods": [
                 "delete_product"
+              ]
+            },
+            "ExportProducts": {
+              "methods": [
+                "export_products"
               ]
             },
             "GetProduct": {
@@ -1173,6 +1282,11 @@
                 "collect_user_event"
               ]
             },
+            "ExportUserEvents": {
+              "methods": [
+                "export_user_events"
+              ]
+            },
             "ImportUserEvents": {
               "methods": [
                 "import_user_events"
@@ -1203,6 +1317,11 @@
                 "collect_user_event"
               ]
             },
+            "ExportUserEvents": {
+              "methods": [
+                "export_user_events"
+              ]
+            },
             "ImportUserEvents": {
               "methods": [
                 "import_user_events"
@@ -1231,6 +1350,11 @@
             "CollectUserEvent": {
               "methods": [
                 "collect_user_event"
+              ]
+            },
+            "ExportUserEvents": {
+              "methods": [
+                "export_user_events"
               ]
             },
             "ImportUserEvents": {

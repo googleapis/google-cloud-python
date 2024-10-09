@@ -47,6 +47,7 @@ from google.api import httpbody_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.retail_v2beta.types import (
+    export_config,
     import_config,
     purge_config,
     user_event,
@@ -83,6 +84,14 @@ class UserEventServiceRestInterceptor:
                 return request, metadata
 
             def post_collect_user_event(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_export_user_events(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_export_user_events(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -140,6 +149,29 @@ class UserEventServiceRestInterceptor:
         self, response: httpbody_pb2.HttpBody
     ) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for collect_user_event
+
+        Override in a subclass to manipulate the response
+        after it is returned by the UserEventService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_export_user_events(
+        self,
+        request: export_config.ExportUserEventsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[export_config.ExportUserEventsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for export_user_events
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the UserEventService server.
+        """
+        return request, metadata
+
+    def post_export_user_events(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for export_user_events
 
         Override in a subclass to manipulate the response
         after it is returned by the UserEventService server but before
@@ -583,6 +615,101 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
             resp = self._interceptor.post_collect_user_event(resp)
             return resp
 
+    class _ExportUserEvents(UserEventServiceRestStub):
+        def __hash__(self):
+            return hash("ExportUserEvents")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: export_config.ExportUserEventsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the export user events method over HTTP.
+
+            Args:
+                request (~.export_config.ExportUserEventsRequest):
+                    The request object. Request message for the ``ExportUserEvents`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2beta/{parent=projects/*/locations/*/catalogs/*}/userEvents:export",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_export_user_events(
+                request, metadata
+            )
+            pb_request = export_config.ExportUserEventsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_export_user_events(resp)
+            return resp
+
     class _ImportUserEvents(UserEventServiceRestStub):
         def __hash__(self):
             return hash("ImportUserEvents")
@@ -977,6 +1104,14 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CollectUserEvent(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def export_user_events(
+        self,
+    ) -> Callable[[export_config.ExportUserEventsRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExportUserEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def import_user_events(

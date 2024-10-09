@@ -29,6 +29,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.retail_v2beta import gapic_version as package_version
 from google.cloud.retail_v2beta.types import (
+    export_config,
     import_config,
     purge_config,
     user_event,
@@ -176,6 +177,11 @@ class UserEventServiceTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.export_user_events: gapic_v1.method.wrap_method(
+                self.export_user_events,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.rejoin_user_events: gapic_v1.method.wrap_method(
                 self.rejoin_user_events,
                 default_timeout=None,
@@ -229,6 +235,15 @@ class UserEventServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [import_config.ImportUserEventsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_user_events(
+        self,
+    ) -> Callable[
+        [export_config.ExportUserEventsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

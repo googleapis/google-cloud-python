@@ -250,9 +250,9 @@ class BranchServiceGrpcTransport(BranchServiceTransport):
     ]:
         r"""Return a callable for the list branches method over gRPC.
 
-        Lists all [Branch][google.cloud.retail.v2alpha.Branch]s under
-        the specified parent
-        [Catalog][google.cloud.retail.v2alpha.Catalog].
+        Lists all instances of
+        [Branch][google.cloud.retail.v2alpha.Branch] under the specified
+        parent [Catalog][google.cloud.retail.v2alpha.Catalog].
 
         Returns:
             Callable[[~.ListBranchesRequest],

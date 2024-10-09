@@ -38,6 +38,12 @@ from google.cloud.retail_v2.services.control_service.async_client import (
     ControlServiceAsyncClient,
 )
 from google.cloud.retail_v2.services.control_service.client import ControlServiceClient
+from google.cloud.retail_v2.services.generative_question_service.async_client import (
+    GenerativeQuestionServiceAsyncClient,
+)
+from google.cloud.retail_v2.services.generative_question_service.client import (
+    GenerativeQuestionServiceClient,
+)
 from google.cloud.retail_v2.services.model_service.async_client import (
     ModelServiceAsyncClient,
 )
@@ -131,6 +137,19 @@ from google.cloud.retail_v2.types.export_config import (
     OutputConfig,
     OutputResult,
 )
+from google.cloud.retail_v2.types.generative_question import (
+    GenerativeQuestionConfig,
+    GenerativeQuestionsFeatureConfig,
+)
+from google.cloud.retail_v2.types.generative_question_service import (
+    BatchUpdateGenerativeQuestionConfigsRequest,
+    BatchUpdateGenerativeQuestionConfigsResponse,
+    GetGenerativeQuestionsFeatureConfigRequest,
+    ListGenerativeQuestionConfigsRequest,
+    ListGenerativeQuestionConfigsResponse,
+    UpdateGenerativeQuestionConfigRequest,
+    UpdateGenerativeQuestionsFeatureConfigRequest,
+)
 from google.cloud.retail_v2.types.import_config import (
     BigQuerySource,
     CompletionDataInputConfig,
@@ -203,8 +222,11 @@ from google.cloud.retail_v2.types.purge_config import (
 )
 from google.cloud.retail_v2.types.search_service import (
     ExperimentInfo,
+    ProductAttributeInterval,
+    ProductAttributeValue,
     SearchRequest,
     SearchResponse,
+    Tile,
 )
 from google.cloud.retail_v2.types.serving_config import ServingConfig
 from google.cloud.retail_v2.types.serving_config_service import (
@@ -240,6 +262,8 @@ __all__ = (
     "CompletionServiceAsyncClient",
     "ControlServiceClient",
     "ControlServiceAsyncClient",
+    "GenerativeQuestionServiceClient",
+    "GenerativeQuestionServiceAsyncClient",
     "ModelServiceClient",
     "ModelServiceAsyncClient",
     "PredictionServiceClient",
@@ -303,6 +327,15 @@ __all__ = (
     "GcsOutputResult",
     "OutputConfig",
     "OutputResult",
+    "GenerativeQuestionConfig",
+    "GenerativeQuestionsFeatureConfig",
+    "BatchUpdateGenerativeQuestionConfigsRequest",
+    "BatchUpdateGenerativeQuestionConfigsResponse",
+    "GetGenerativeQuestionsFeatureConfigRequest",
+    "ListGenerativeQuestionConfigsRequest",
+    "ListGenerativeQuestionConfigsResponse",
+    "UpdateGenerativeQuestionConfigRequest",
+    "UpdateGenerativeQuestionsFeatureConfigRequest",
     "BigQuerySource",
     "CompletionDataInputConfig",
     "GcsSource",
@@ -364,8 +397,11 @@ __all__ = (
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
     "ExperimentInfo",
+    "ProductAttributeInterval",
+    "ProductAttributeValue",
     "SearchRequest",
     "SearchResponse",
+    "Tile",
     "ServingConfig",
     "AddControlRequest",
     "CreateServingConfigRequest",

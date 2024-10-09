@@ -73,6 +73,19 @@ from .export_config import (
     OutputConfig,
     OutputResult,
 )
+from .generative_question import (
+    GenerativeQuestionConfig,
+    GenerativeQuestionsFeatureConfig,
+)
+from .generative_question_service import (
+    BatchUpdateGenerativeQuestionConfigsRequest,
+    BatchUpdateGenerativeQuestionConfigsResponse,
+    GetGenerativeQuestionsFeatureConfigRequest,
+    ListGenerativeQuestionConfigsRequest,
+    ListGenerativeQuestionConfigsResponse,
+    UpdateGenerativeQuestionConfigRequest,
+    UpdateGenerativeQuestionsFeatureConfigRequest,
+)
 from .import_config import (
     BigQuerySource,
     CompletionDataInputConfig,
@@ -140,7 +153,14 @@ from .purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
-from .search_service import ExperimentInfo, SearchRequest, SearchResponse
+from .search_service import (
+    ExperimentInfo,
+    ProductAttributeInterval,
+    ProductAttributeValue,
+    SearchRequest,
+    SearchResponse,
+    Tile,
+)
 from .serving_config import ServingConfig
 from .serving_config_service import (
     AddControlRequest,
@@ -213,6 +233,15 @@ __all__ = (
     "GcsOutputResult",
     "OutputConfig",
     "OutputResult",
+    "GenerativeQuestionConfig",
+    "GenerativeQuestionsFeatureConfig",
+    "BatchUpdateGenerativeQuestionConfigsRequest",
+    "BatchUpdateGenerativeQuestionConfigsResponse",
+    "GetGenerativeQuestionsFeatureConfigRequest",
+    "ListGenerativeQuestionConfigsRequest",
+    "ListGenerativeQuestionConfigsResponse",
+    "UpdateGenerativeQuestionConfigRequest",
+    "UpdateGenerativeQuestionsFeatureConfigRequest",
     "BigQuerySource",
     "CompletionDataInputConfig",
     "GcsSource",
@@ -274,8 +303,11 @@ __all__ = (
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
     "ExperimentInfo",
+    "ProductAttributeInterval",
+    "ProductAttributeValue",
     "SearchRequest",
     "SearchResponse",
+    "Tile",
     "ServingConfig",
     "AddControlRequest",
     "CreateServingConfigRequest",

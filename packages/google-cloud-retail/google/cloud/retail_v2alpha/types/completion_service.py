@@ -108,9 +108,9 @@ class CompleteQueryRequest(proto.Message):
             higher, it will be capped by 20.
         enable_attribute_suggestions (bool):
             If true, attribute suggestions are enabled
-            and provided in response.
-            This field is only available for "cloud-retail"
-            dataset.
+            and provided in the response.
+            This field is only available for the
+            "cloud-retail" dataset.
         entity (str):
             The entity for customers who run multiple entities, domains,
             sites, or regions, for example, ``Google US``,
@@ -277,10 +277,11 @@ class CompleteQueryResponse(proto.Message):
 
     class AttributeResult(proto.Message):
         r"""Resource that represents attribute results.
+        The list of suggestions for the attribute.
 
         Attributes:
             suggestions (MutableSequence[str]):
-                The list of suggestions for the attribute.
+
         """
 
         suggestions: MutableSequence[str] = proto.RepeatedField(

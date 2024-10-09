@@ -366,6 +366,100 @@
         }
       }
     },
+    "GenerativeQuestionService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "GenerativeQuestionServiceClient",
+          "rpcs": {
+            "BatchUpdateGenerativeQuestionConfigs": {
+              "methods": [
+                "batch_update_generative_question_configs"
+              ]
+            },
+            "GetGenerativeQuestionsFeatureConfig": {
+              "methods": [
+                "get_generative_questions_feature_config"
+              ]
+            },
+            "ListGenerativeQuestionConfigs": {
+              "methods": [
+                "list_generative_question_configs"
+              ]
+            },
+            "UpdateGenerativeQuestionConfig": {
+              "methods": [
+                "update_generative_question_config"
+              ]
+            },
+            "UpdateGenerativeQuestionsFeatureConfig": {
+              "methods": [
+                "update_generative_questions_feature_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "GenerativeQuestionServiceAsyncClient",
+          "rpcs": {
+            "BatchUpdateGenerativeQuestionConfigs": {
+              "methods": [
+                "batch_update_generative_question_configs"
+              ]
+            },
+            "GetGenerativeQuestionsFeatureConfig": {
+              "methods": [
+                "get_generative_questions_feature_config"
+              ]
+            },
+            "ListGenerativeQuestionConfigs": {
+              "methods": [
+                "list_generative_question_configs"
+              ]
+            },
+            "UpdateGenerativeQuestionConfig": {
+              "methods": [
+                "update_generative_question_config"
+              ]
+            },
+            "UpdateGenerativeQuestionsFeatureConfig": {
+              "methods": [
+                "update_generative_questions_feature_config"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "GenerativeQuestionServiceClient",
+          "rpcs": {
+            "BatchUpdateGenerativeQuestionConfigs": {
+              "methods": [
+                "batch_update_generative_question_configs"
+              ]
+            },
+            "GetGenerativeQuestionsFeatureConfig": {
+              "methods": [
+                "get_generative_questions_feature_config"
+              ]
+            },
+            "ListGenerativeQuestionConfigs": {
+              "methods": [
+                "list_generative_question_configs"
+              ]
+            },
+            "UpdateGenerativeQuestionConfig": {
+              "methods": [
+                "update_generative_question_config"
+              ]
+            },
+            "UpdateGenerativeQuestionsFeatureConfig": {
+              "methods": [
+                "update_generative_questions_feature_config"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ModelService": {
       "clients": {
         "grpc": {

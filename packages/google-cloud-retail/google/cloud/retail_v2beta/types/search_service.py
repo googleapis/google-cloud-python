@@ -27,11 +27,101 @@ from google.cloud.retail_v2beta.types import product as gcr_product
 __protobuf__ = proto.module(
     package="google.cloud.retail.v2beta",
     manifest={
+        "ProductAttributeValue",
+        "ProductAttributeInterval",
+        "Tile",
         "SearchRequest",
         "SearchResponse",
         "ExperimentInfo",
     },
 )
+
+
+class ProductAttributeValue(proto.Message):
+    r"""Product attribute which structured by an attribute name and value.
+    This structure is used in conversational search filters and answers.
+    For example, if we have ``name=color`` and ``value=red``, this means
+    that the color is ``red``.
+
+    Attributes:
+        name (str):
+            The attribute name.
+        value (str):
+            The attribute value.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ProductAttributeInterval(proto.Message):
+    r"""Product attribute name and numeric interval.
+
+    Attributes:
+        name (str):
+            The attribute name (e.g. "length")
+        interval (google.cloud.retail_v2beta.types.Interval):
+            The numeric interval (e.g. [10, 20))
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    interval: common.Interval = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.Interval,
+    )
+
+
+class Tile(proto.Message):
+    r"""This field specifies the tile information including an
+    attribute key, attribute value. More fields will be added in the
+    future, eg: product id or product counts, etc.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        product_attribute_value (google.cloud.retail_v2beta.types.ProductAttributeValue):
+            The product attribute key-value.
+
+            This field is a member of `oneof`_ ``product_attribute``.
+        product_attribute_interval (google.cloud.retail_v2beta.types.ProductAttributeInterval):
+            The product attribute key-numeric interval.
+
+            This field is a member of `oneof`_ ``product_attribute``.
+        representative_product_id (str):
+            The representative product id for this tile.
+    """
+
+    product_attribute_value: "ProductAttributeValue" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="product_attribute",
+        message="ProductAttributeValue",
+    )
+    product_attribute_interval: "ProductAttributeInterval" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="product_attribute",
+        message="ProductAttributeInterval",
+    )
+    representative_product_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SearchRequest(proto.Message):
@@ -325,6 +415,13 @@ class SearchRequest(proto.Message):
             matched with
             [UserEvent.entity][google.cloud.retail.v2beta.UserEvent.entity]
             to get search results boosted by entity.
+        conversational_search_spec (google.cloud.retail_v2beta.types.SearchRequest.ConversationalSearchSpec):
+            Optional. This field specifies all
+            conversational related parameters addition to
+            traditional retail search.
+        tile_navigation_spec (google.cloud.retail_v2beta.types.SearchRequest.TileNavigationSpec):
+            Optional. This field specifies tile
+            navigation related parameters.
     """
 
     class SearchMode(proto.Enum):
@@ -907,6 +1004,135 @@ class SearchRequest(proto.Message):
             enum="SearchRequest.SpellCorrectionSpec.Mode",
         )
 
+    class ConversationalSearchSpec(proto.Message):
+        r"""This field specifies all conversational related parameters
+        addition to traditional retail search.
+
+        Attributes:
+            followup_conversation_requested (bool):
+                This field specifies whether the customer
+                would like to do conversational search. If this
+                field is set to true, conversational related
+                extra information will be returned from server
+                side, including follow-up question, answer
+                options, etc.
+            conversation_id (str):
+                This field specifies the conversation id, which maintains
+                the state of the conversation between client side and server
+                side. Use the value from the previous
+                [ConversationalSearchResult.conversation_id][]. For the
+                initial request, this should be empty.
+            user_answer (google.cloud.retail_v2beta.types.SearchRequest.ConversationalSearchSpec.UserAnswer):
+                This field specifies the current user answer
+                during the conversational search. This can be
+                either user selected from suggested answers or
+                user input plain text.
+        """
+
+        class UserAnswer(proto.Message):
+            r"""This field specifies the current user answer during the
+            conversational search. This can be either user selected from
+            suggested answers or user input plain text.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                text_answer (str):
+                    This field specifies the incremental input
+                    text from the user during the conversational
+                    search.
+
+                    This field is a member of `oneof`_ ``type``.
+                selected_answer (google.cloud.retail_v2beta.types.SearchRequest.ConversationalSearchSpec.UserAnswer.SelectedAnswer):
+                    This field specifies the selected attributes during the
+                    conversational search. This should be a subset of
+                    [ConversationalSearchResult.suggested_answers][].
+
+                    This field is a member of `oneof`_ ``type``.
+            """
+
+            class SelectedAnswer(proto.Message):
+                r"""This field specifies the selected answers during the
+                conversational search.
+
+                Attributes:
+                    product_attribute_values (MutableSequence[google.cloud.retail_v2beta.types.ProductAttributeValue]):
+                        This field is deprecated and should not be
+                        set.
+                    product_attribute_value (google.cloud.retail_v2beta.types.ProductAttributeValue):
+                        This field specifies the selected answer
+                        which is a attribute key-value.
+                """
+
+                product_attribute_values: MutableSequence[
+                    "ProductAttributeValue"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="ProductAttributeValue",
+                )
+                product_attribute_value: "ProductAttributeValue" = proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="ProductAttributeValue",
+                )
+
+            text_answer: str = proto.Field(
+                proto.STRING,
+                number=1,
+                oneof="type",
+            )
+            selected_answer: "SearchRequest.ConversationalSearchSpec.UserAnswer.SelectedAnswer" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="type",
+                message="SearchRequest.ConversationalSearchSpec.UserAnswer.SelectedAnswer",
+            )
+
+        followup_conversation_requested: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        conversation_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        user_answer: "SearchRequest.ConversationalSearchSpec.UserAnswer" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="SearchRequest.ConversationalSearchSpec.UserAnswer",
+        )
+
+    class TileNavigationSpec(proto.Message):
+        r"""This field specifies tile navigation related parameters.
+
+        Attributes:
+            tile_navigation_requested (bool):
+                This field specifies whether the customer
+                would like to request tile navigation.
+            applied_tiles (MutableSequence[google.cloud.retail_v2beta.types.Tile]):
+                This field specifies the tiles which are already clicked in
+                client side. NOTE: This field is not being used for
+                filtering search products. Client side should also put all
+                the applied tiles in
+                [SearchRequest.filter][google.cloud.retail.v2beta.SearchRequest.filter].
+        """
+
+        tile_navigation_requested: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        applied_tiles: MutableSequence["Tile"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Tile",
+        )
+
     placement: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1005,6 +1231,16 @@ class SearchRequest(proto.Message):
         proto.STRING,
         number=38,
     )
+    conversational_search_spec: ConversationalSearchSpec = proto.Field(
+        proto.MESSAGE,
+        number=40,
+        message=ConversationalSearchSpec,
+    )
+    tile_navigation_spec: TileNavigationSpec = proto.Field(
+        proto.MESSAGE,
+        number=41,
+        message=TileNavigationSpec,
+    )
 
 
 class SearchResponse(proto.Message):
@@ -1061,6 +1297,14 @@ class SearchResponse(proto.Message):
             Metadata related to A/B testing [Experiment][] associated
             with this response. Only exists when an experiment is
             triggered.
+        conversational_search_result (google.cloud.retail_v2beta.types.SearchResponse.ConversationalSearchResult):
+            This field specifies all related information
+            that is needed on client side for UI rendering
+            of conversational retail search.
+        tile_navigation_result (google.cloud.retail_v2beta.types.SearchResponse.TileNavigationResult):
+            This field specifies all related information
+            for tile navigation that will be used in client
+            side.
     """
 
     class SearchResult(proto.Message):
@@ -1309,6 +1553,126 @@ class SearchResponse(proto.Message):
             number=2,
         )
 
+    class ConversationalSearchResult(proto.Message):
+        r"""This field specifies all related information that is needed
+        on client side for UI rendering of conversational retail search.
+
+        Attributes:
+            conversation_id (str):
+                Conversation UUID. This field will be stored in client side
+                storage to maintain the conversation session with server and
+                will be used for next search request's
+                [SearchRequest.ConversationalSearchSpec.conversation_id][google.cloud.retail.v2beta.SearchRequest.ConversationalSearchSpec.conversation_id]
+                to restore conversation state in server.
+            refined_query (str):
+                The current refined query for the conversational search.
+                This field will be used in customer UI that the query in the
+                search bar should be replaced with the refined query. For
+                example, if
+                [SearchRequest.query][google.cloud.retail.v2beta.SearchRequest.query]
+                is ``dress`` and next
+                [SearchRequest.ConversationalSearchSpec.UserAnswer.text_answer][google.cloud.retail.v2beta.SearchRequest.ConversationalSearchSpec.UserAnswer.text_answer]
+                is ``red color``, which does not match any product attribute
+                value filters, the refined query will be
+                ``dress, red color``.
+            additional_filters (MutableSequence[google.cloud.retail_v2beta.types.SearchResponse.ConversationalSearchResult.AdditionalFilter]):
+                This field is deprecated but will be kept for backward
+                compatibility. There is expected to have only one additional
+                filter and the value will be the same to the same as field
+                ``additional_filter``.
+            followup_question (str):
+                The follow-up question. e.g., ``What is the color?``
+            suggested_answers (MutableSequence[google.cloud.retail_v2beta.types.SearchResponse.ConversationalSearchResult.SuggestedAnswer]):
+                The answer options provided to client for the
+                follow-up question.
+            additional_filter (google.cloud.retail_v2beta.types.SearchResponse.ConversationalSearchResult.AdditionalFilter):
+                This is the incremental additional filters implied from the
+                current user answer. User should add the suggested addition
+                filters to the previous
+                [SearchRequest.filter][google.cloud.retail.v2beta.SearchRequest.filter],
+                and use the merged filter in the follow up search request.
+        """
+
+        class SuggestedAnswer(proto.Message):
+            r"""Suggested answers to the follow-up question.
+
+            Attributes:
+                product_attribute_value (google.cloud.retail_v2beta.types.ProductAttributeValue):
+                    Product attribute value, including an
+                    attribute key and an attribute value. Other
+                    types can be added here in the future.
+            """
+
+            product_attribute_value: "ProductAttributeValue" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="ProductAttributeValue",
+            )
+
+        class AdditionalFilter(proto.Message):
+            r"""Additional filter that client side need to apply.
+
+            Attributes:
+                product_attribute_value (google.cloud.retail_v2beta.types.ProductAttributeValue):
+                    Product attribute value, including an
+                    attribute key and an attribute value. Other
+                    types can be added here in the future.
+            """
+
+            product_attribute_value: "ProductAttributeValue" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="ProductAttributeValue",
+            )
+
+        conversation_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        refined_query: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        additional_filters: MutableSequence[
+            "SearchResponse.ConversationalSearchResult.AdditionalFilter"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="SearchResponse.ConversationalSearchResult.AdditionalFilter",
+        )
+        followup_question: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        suggested_answers: MutableSequence[
+            "SearchResponse.ConversationalSearchResult.SuggestedAnswer"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="SearchResponse.ConversationalSearchResult.SuggestedAnswer",
+        )
+        additional_filter: "SearchResponse.ConversationalSearchResult.AdditionalFilter" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message="SearchResponse.ConversationalSearchResult.AdditionalFilter",
+        )
+
+    class TileNavigationResult(proto.Message):
+        r"""This field specifies all related information for tile
+        navigation that will be used in client side.
+
+        Attributes:
+            tiles (MutableSequence[google.cloud.retail_v2beta.types.Tile]):
+                The current tiles that are used for tile
+                navigation, sorted by engagement.
+        """
+
+        tiles: MutableSequence["Tile"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Tile",
+        )
+
     @property
     def raw_page(self):
         return self
@@ -1363,6 +1727,16 @@ class SearchResponse(proto.Message):
         proto.MESSAGE,
         number=17,
         message="ExperimentInfo",
+    )
+    conversational_search_result: ConversationalSearchResult = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=ConversationalSearchResult,
+    )
+    tile_navigation_result: TileNavigationResult = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=TileNavigationResult,
     )
 
 

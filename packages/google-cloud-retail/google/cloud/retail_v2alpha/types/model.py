@@ -565,13 +565,40 @@ class Model(proto.Message):
                 frequently-bought-together models.
 
                 This field is a member of `oneof`_ ``type_dedicated_config``.
+            llm_embedding_config (google.cloud.retail_v2alpha.types.Model.ModelFeaturesConfig.LlmEmbeddingConfig):
+                Optional. LLM embedding config to use for
+                this model.
         """
+
+        class LlmEmbeddingConfig(proto.Message):
+            r"""Config that turns on usage of llm embeddings as features to
+            the model. Embeddings leverage unstructured text fields like
+            description and title.
+
+            Attributes:
+                llm_embedding_version (str):
+                    Optional. The LLM embedding version to use. Currently only
+                    ``v0`` is supported. If not specified, feature will not be
+                    turned on.
+            """
+
+            llm_embedding_version: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
 
         frequently_bought_together_config: "Model.FrequentlyBoughtTogetherFeaturesConfig" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="type_dedicated_config",
             message="Model.FrequentlyBoughtTogetherFeaturesConfig",
+        )
+        llm_embedding_config: "Model.ModelFeaturesConfig.LlmEmbeddingConfig" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="Model.ModelFeaturesConfig.LlmEmbeddingConfig",
+            )
         )
 
     page_optimization_config: PageOptimizationConfig = proto.Field(
