@@ -3722,7 +3722,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         stop: typing.Optional[int] = None,
         step: typing.Optional[int] = None,
     ) -> DataFrame:
-        block = self._block.slice(start=start, stop=stop, step=step)
+        block = self._block.slice(
+            start=start, stop=stop, step=step if (step is not None) else 1
+        )
         return DataFrame(block)
 
     def __array_ufunc__(

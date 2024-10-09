@@ -16,13 +16,15 @@ from __future__ import annotations
 import dataclasses
 import functools
 import itertools
-from typing import Mapping, Optional, Sequence, Tuple
+from typing import cast, Mapping, Optional, Sequence, Tuple
 
 import bigframes.core.expression as scalar_exprs
+import bigframes.core.guid as guids
 import bigframes.core.identifiers as ids
 import bigframes.core.join_def as join_defs
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as order
+import bigframes.core.tree_properties as traversals
 import bigframes.operations as ops
 
 Selection = Tuple[Tuple[scalar_exprs.Expression, ids.ColumnId], ...]
@@ -381,3 +383,172 @@ def common_selection_root(
     if r_node in l_nodes:
         return r_node
     return None
+
+
+def replace_slice_ops(root: nodes.BigFrameNode) -> nodes.BigFrameNode:
+    # TODO: we want to pull up some slices into limit op if near root.
+    if isinstance(root, nodes.SliceNode):
+        root = root.transform_children(replace_slice_ops)
+        return convert_slice_to_filter(cast(nodes.SliceNode, root))
+    else:
+        return root.transform_children(replace_slice_ops)
+
+
+def get_simplified_slice(node: nodes.SliceNode):
+    """Attempts to simplify the slice."""
+    row_count = traversals.row_count(node)
+    start, stop, step = node.start, node.stop, node.step
+
+    if start is None:
+        start = 0 if step > 0 else -1
+    if row_count and step > 0:
+        if start and start < 0:
+            start = row_count + start
+        if stop and stop < 0:
+            stop = row_count + stop
+    return start, stop, step
+
+
+def convert_slice_to_filter(node: nodes.SliceNode):
+    start, stop, step = get_simplified_slice(node)
+
+    # no-op (eg. df[::1])
+    if (
+        ((start == 0) or (start is None))
+        and ((stop is None) or (stop == -1))
+        and (step == 1)
+    ):
+        return node.child
+    # No filtering, just reverse (eg. df[::-1])
+    if ((start is None) or (start == -1)) and (not stop) and (step == -1):
+        return nodes.ReversedNode(node.child)
+    # if start/stop/step are all non-negative, and do a simple predicate on forward offsets
+    if ((start is None) or (start >= 0)) and ((stop is None) or (stop >= 0)):
+        node_w_offset = add_offsets(node.child)
+        predicate = convert_simple_slice(
+            scalar_exprs.DerefOp(node_w_offset.col_id), start or 0, stop, step
+        )
+        filtered = nodes.FilterNode(node_w_offset, predicate)
+        return drop_cols(filtered, (node_w_offset.col_id,))
+
+    # fallback cases, generate both forward and backward offsets
+    if step < 0:
+        forward_offsets = add_offsets(node.child)
+        reversed_offsets = add_offsets(nodes.ReversedNode(forward_offsets))
+        dual_indexed = reversed_offsets
+    else:
+        reversed_offsets = add_offsets(nodes.ReversedNode(node.child))
+        forward_offsets = add_offsets(nodes.ReversedNode(reversed_offsets))
+        dual_indexed = forward_offsets
+    predicate = convert_complex_slice(
+        scalar_exprs.DerefOp(forward_offsets.col_id),
+        scalar_exprs.DerefOp(reversed_offsets.col_id),
+        start,
+        stop,
+        step,
+    )
+    filtered = nodes.FilterNode(dual_indexed, predicate)
+    return drop_cols(filtered, (forward_offsets.col_id, reversed_offsets.col_id))
+
+
+def add_offsets(node: nodes.BigFrameNode) -> nodes.PromoteOffsetsNode:
+    # Allow providing custom id generator?
+    offsets_id = ids.ColumnId(guids.generate_guid())
+    return nodes.PromoteOffsetsNode(node, offsets_id)
+
+
+def drop_cols(
+    node: nodes.BigFrameNode, drop_cols: Tuple[ids.ColumnId, ...]
+) -> nodes.SelectionNode:
+    # adding a whole node that redefines the schema is a lot of overhead, should do something more efficient
+    selections = tuple(
+        (scalar_exprs.DerefOp(id), id) for id in node.ids if id not in drop_cols
+    )
+    return nodes.SelectionNode(node, selections)
+
+
+def convert_simple_slice(
+    offsets: scalar_exprs.Expression,
+    start: int = 0,
+    stop: Optional[int] = None,
+    step: int = 1,
+) -> scalar_exprs.Expression:
+    """Performs slice but only for positive step size."""
+    assert start >= 0
+    assert (stop is None) or (stop >= 0)
+
+    conditions = []
+    if start > 0:
+        conditions.append(ops.ge_op.as_expr(offsets, scalar_exprs.const(start)))
+    if (stop is not None) and (stop >= 0):
+        conditions.append(ops.lt_op.as_expr(offsets, scalar_exprs.const(stop)))
+    if step > 1:
+        start_diff = ops.sub_op.as_expr(offsets, scalar_exprs.const(start))
+        step_cond = ops.eq_op.as_expr(
+            ops.mod_op.as_expr(start_diff, scalar_exprs.const(step)),
+            scalar_exprs.const(0),
+        )
+        conditions.append(step_cond)
+
+    return merge_predicates(conditions) or scalar_exprs.const(True)
+
+
+def convert_complex_slice(
+    forward_offsets: scalar_exprs.Expression,
+    reverse_offsets: scalar_exprs.Expression,
+    start: int,
+    stop: Optional[int],
+    step: int = 1,
+) -> scalar_exprs.Expression:
+    conditions = []
+    assert step != 0
+    if start or ((start is not None) and step < 0):
+        if start > 0 and step > 0:
+            start_cond = ops.ge_op.as_expr(forward_offsets, scalar_exprs.const(start))
+        elif start > 0 and step < 0:
+            start_cond = ops.le_op.as_expr(forward_offsets, scalar_exprs.const(start))
+        elif start < 0 and step > 0:
+            start_cond = ops.le_op.as_expr(
+                reverse_offsets, scalar_exprs.const(-start - 1)
+            )
+        else:
+            assert start < 0 and step < 0
+            start_cond = ops.ge_op.as_expr(
+                reverse_offsets, scalar_exprs.const(-start - 1)
+            )
+        conditions.append(start_cond)
+    if stop is not None:
+        if stop >= 0 and step > 0:
+            stop_cond = ops.lt_op.as_expr(forward_offsets, scalar_exprs.const(stop))
+        elif stop >= 0 and step < 0:
+            stop_cond = ops.gt_op.as_expr(forward_offsets, scalar_exprs.const(stop))
+        elif stop < 0 and step > 0:
+            stop_cond = ops.gt_op.as_expr(
+                reverse_offsets, scalar_exprs.const(-stop - 1)
+            )
+        else:
+            assert (stop < 0) and (step < 0)
+            stop_cond = ops.lt_op.as_expr(
+                reverse_offsets, scalar_exprs.const(-stop - 1)
+            )
+        conditions.append(stop_cond)
+    if step != 1:
+        if step > 1 and start >= 0:
+            start_diff = ops.sub_op.as_expr(forward_offsets, scalar_exprs.const(start))
+        elif step > 1 and start < 0:
+            start_diff = ops.sub_op.as_expr(
+                reverse_offsets, scalar_exprs.const(-start + 1)
+            )
+        elif step < 0 and start >= 0:
+            start_diff = ops.add_op.as_expr(forward_offsets, scalar_exprs.const(start))
+        else:
+            assert step < 0 and start < 0
+            start_diff = ops.add_op.as_expr(
+                reverse_offsets, scalar_exprs.const(-start + 1)
+            )
+        step_cond = ops.eq_op.as_expr(
+            ops.mod_op.as_expr(start_diff, scalar_exprs.const(step)),
+            scalar_exprs.const(0),
+        )
+        conditions.append(step_cond)
+    return merge_predicates(conditions) or scalar_exprs.const(True)

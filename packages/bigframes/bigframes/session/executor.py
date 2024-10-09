@@ -45,6 +45,7 @@ import bigframes.core.guid
 import bigframes.core.identifiers
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as order
+import bigframes.core.rewrite as rewrites
 import bigframes.core.schema
 import bigframes.core.tree_properties as tree_properties
 import bigframes.features
@@ -186,7 +187,7 @@ class BigQueryCachingExecutor:
         # Runs strict validations to ensure internal type predictions and ibis are completely in sync
         # Do not execute these validations outside of testing suite.
         if "PYTEST_CURRENT_TEST" in os.environ and len(col_id_overrides) == 0:
-            validate_result_schema(array_value, iterator.schema)
+            self._validate_result_schema(array_value, iterator.schema)
 
         return ExecuteResult(
             arrow_batches=iterator_supplier,
@@ -436,6 +437,7 @@ class BigQueryCachingExecutor:
         if ENABLE_PRUNING:
             used_fields = frozenset(field.id for field in optimized_plan.fields)
             optimized_plan = optimized_plan.prune(used_fields)
+        optimized_plan = rewrites.replace_slice_ops(optimized_plan)
         return optimized_plan
 
     def _is_trivially_executable(self, array_value: bigframes.core.ArrayValue):
@@ -558,6 +560,27 @@ class BigQueryCachingExecutor:
         query_job.result()
         return query_job.destination
 
+    def _validate_result_schema(
+        self,
+        array_value: bigframes.core.ArrayValue,
+        bq_schema: list[bigquery.schema.SchemaField],
+    ):
+        actual_schema = tuple(bq_schema)
+        ibis_schema = bigframes.core.compile.test_only_ibis_inferred_schema(
+            self._get_optimized_plan(array_value.node)
+        )
+        internal_schema = array_value.schema
+        if not bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable:
+            return
+        if internal_schema.to_bigquery() != actual_schema:
+            raise ValueError(
+                f"This error should only occur while testing. BigFrames internal schema: {internal_schema.to_bigquery()} does not match actual schema: {actual_schema}"
+            )
+        if ibis_schema.to_bigquery() != actual_schema:
+            raise ValueError(
+                f"This error should only occur while testing. Ibis schema: {ibis_schema.to_bigquery()} does not match actual schema: {actual_schema}"
+            )
+
 
 def generate_head_plan(node: nodes.BigFrameNode, n: int):
     offsets_id = bigframes.core.guid.generate_guid("offsets_")
@@ -578,21 +601,3 @@ def generate_head_plan(node: nodes.BigFrameNode, n: int):
 
 def generate_row_count_plan(node: nodes.BigFrameNode):
     return nodes.RowCountNode(node)
-
-
-def validate_result_schema(
-    array_value: bigframes.core.ArrayValue, bq_schema: list[bigquery.schema.SchemaField]
-):
-    actual_schema = tuple(bq_schema)
-    ibis_schema = array_value._compiled_schema
-    internal_schema = array_value.schema
-    if not bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable:
-        return
-    if internal_schema.to_bigquery() != actual_schema:
-        raise ValueError(
-            f"This error should only occur while testing. BigFrames internal schema: {internal_schema.to_bigquery()} does not match actual schema: {actual_schema}"
-        )
-    if ibis_schema.to_bigquery() != actual_schema:
-        raise ValueError(
-            f"This error should only occur while testing. Ibis schema: {ibis_schema.to_bigquery()} does not match actual schema: {actual_schema}"
-        )

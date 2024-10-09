@@ -158,10 +158,6 @@ class ArrayValue:
     def schema(self) -> schemata.ArraySchema:
         return self.node.schema
 
-    @functools.cached_property
-    def _compiled_schema(self) -> schemata.ArraySchema:
-        return bigframes.core.compile.test_only_ibis_inferred_schema(self.node)
-
     @property
     def explicitly_ordered(self) -> bool:
         # see BigFrameNode.explicitly_ordered
@@ -228,6 +224,23 @@ class ArrayValue:
 
     def reversed(self) -> ArrayValue:
         return ArrayValue(nodes.ReversedNode(child=self.node))
+
+    def slice(
+        self, start: Optional[int], stop: Optional[int], step: Optional[int]
+    ) -> ArrayValue:
+        if self.node.order_ambiguous and not (self.session._strictly_ordered):
+            warnings.warn(
+                "Window ordering may be ambiguous, this can cause unstable results.",
+                bigframes.exceptions.AmbiguousWindowWarning,
+            )
+        return ArrayValue(
+            nodes.SliceNode(
+                self.node,
+                start=start,
+                stop=stop,
+                step=step if (step is not None) else 1,
+            )
+        )
 
     def promote_offsets(self) -> Tuple[ArrayValue, str]:
         """

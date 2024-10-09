@@ -1923,9 +1923,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         step: typing.Optional[int] = None,
     ) -> bigframes.series.Series:
         return bigframes.series.Series(
-            self._block.slice(start=start, stop=stop, step=step).select_column(
-                self._value_column
-            ),
+            self._block.slice(
+                start=start, stop=stop, step=step if (step is not None) else 1
+            ).select_column(self._value_column),
         )
 
     def cache(self):

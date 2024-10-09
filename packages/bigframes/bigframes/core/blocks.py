@@ -1465,83 +1465,16 @@ class Block:
         self,
         start: typing.Optional[int] = None,
         stop: typing.Optional[int] = None,
-        step: typing.Optional[int] = None,
-    ) -> bigframes.core.blocks.Block:
-        if step is None:
-            step = 1
+        step: int = 1,
+    ) -> Block:
         if step == 0:
-            raise ValueError("slice step cannot be zero")
-        if step < 0:
-            reverse_start = (-start - 1) if start else 0
-            reverse_stop = (-stop - 1) if stop else None
-            reverse_step = -step
-            return self.reversed()._forward_slice(
-                reverse_start, reverse_stop, reverse_step
-            )
-        return self._forward_slice(start or 0, stop, step)
-
-    def _forward_slice(self, start: int = 0, stop=None, step: int = 1):
-        """Performs slice but only for positive step size."""
-        if step <= 0:
-            raise ValueError("forward_slice only supports positive step size")
-
-        use_postive_offsets = (
-            (start > 0)
-            or ((stop is not None) and (stop >= 0))
-            or ((step > 1) and (start >= 0))
+            raise ValueError("Slice step size must be non-zero")
+        return Block(
+            self.expr.slice(start, stop, step),
+            index_columns=self.index_columns,
+            column_labels=self.column_labels,
+            index_labels=self._index_labels,
         )
-        use_negative_offsets = (
-            (start < 0) or (stop and (stop < 0)) or ((step > 1) and (start < 0))
-        )
-
-        block = self
-
-        # only generate offsets that are used
-        positive_offsets = None
-        negative_offsets = None
-
-        if use_postive_offsets:
-            block, positive_offsets = self.promote_offsets()
-        if use_negative_offsets:
-            block, negative_offsets = block.reversed().promote_offsets()
-            block = block.reversed()
-
-        conditions = []
-        if start != 0:
-            if start > 0:
-                assert positive_offsets
-                conditions.append(ops.ge_op.as_expr(positive_offsets, ex.const(start)))
-            else:
-                assert negative_offsets
-                conditions.append(
-                    ops.le_op.as_expr(negative_offsets, ex.const(-start - 1))
-                )
-        if stop is not None:
-            if stop >= 0:
-                assert positive_offsets
-                conditions.append(ops.lt_op.as_expr(positive_offsets, ex.const(stop)))
-            else:
-                assert negative_offsets
-                conditions.append(
-                    ops.gt_op.as_expr(negative_offsets, ex.const(-stop - 1))
-                )
-        if step > 1:
-            if start >= 0:
-                assert positive_offsets
-                start_diff = ops.sub_op.as_expr(positive_offsets, ex.const(start))
-            else:
-                assert negative_offsets
-                start_diff = ops.sub_op.as_expr(negative_offsets, ex.const(-start + 1))
-            step_cond = ops.eq_op.as_expr(
-                ops.mod_op.as_expr(start_diff, ex.const(step)), ex.const(0)
-            )
-            conditions.append(step_cond)
-
-        for cond in conditions:
-            block, cond_id = block.project_expr(cond)
-            block = block.filter_by_id(cond_id)
-
-        return block.select_columns(self.value_columns)
 
     # Using cache to optimize for Jupyter Notebook's behavior where both '__repr__'
     # and '__repr_html__' are called in a single display action, reducing redundant
