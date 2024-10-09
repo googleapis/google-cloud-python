@@ -1670,7 +1670,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return hash("AsyncCloudRedisRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
+        async def _get_response(
             host,
             metadata,
             query_params,
@@ -1683,7 +1683,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
+            response = await getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
@@ -1747,7 +1747,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return hash("AsyncCloudRedisRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
+        async def _get_response(
             host,
             metadata,
             query_params,
@@ -1760,7 +1760,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
+            response = await getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
@@ -1824,7 +1824,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return hash("AsyncCloudRedisRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
+        async def _get_response(
             host,
             metadata,
             query_params,
@@ -1837,7 +1837,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
+            response = await getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
@@ -1894,7 +1894,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return hash("AsyncCloudRedisRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
+        async def _get_response(
             host,
             metadata,
             query_params,
@@ -1907,7 +1907,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
+            response = await getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
@@ -1964,7 +1964,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return hash("AsyncCloudRedisRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
+        async def _get_response(
             host,
             metadata,
             query_params,
@@ -1977,7 +1977,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
+            response = await getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
@@ -2041,7 +2041,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return hash("AsyncCloudRedisRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
+        async def _get_response(
             host,
             metadata,
             query_params,
@@ -2054,7 +2054,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
+            response = await getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,

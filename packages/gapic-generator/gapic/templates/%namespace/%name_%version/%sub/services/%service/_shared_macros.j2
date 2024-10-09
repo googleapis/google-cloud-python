@@ -152,7 +152,7 @@ def _get_http_options():
     return http_options
 {% endmacro %}
 
-{% macro response_method(body_spec, is_async=False) %}
+{% macro response_method(body_spec, is_async=False, is_streaming_method=False) %}
 {% set async_prefix = "async " if is_async else "" %}
 {% set await_prefix = "await " if is_async else "" %}
 @staticmethod
@@ -176,6 +176,14 @@ def _get_http_options():
         params=rest_helpers.flatten_query_params(query_params, strict=True),
         {% if body_spec %}
         data=body,
+        {% endif %}
+        {% if not is_async and is_streaming_method %}
+        {# NOTE: The underlying `requests` library used for making a sync request
+         # requires us to set `stream=True` to avoid loading the entire response
+         # into memory at once. For an async request, given its nature where it
+         # reads data chunk by chunk, this is not required.
+        #}
+        stream=True,
         {% endif %}
         )
     return response
@@ -400,7 +408,7 @@ class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_m
         return hash("{{ async_method_name_prefix }}{{ service.name }}RestTransport.{{ name }}")
 
     {% set body_spec = api.mixin_http_options["{}".format(name)][0].body %}
-    {{ response_method(body_spec) | indent(4) }}
+    {{ response_method(body_spec, is_async=is_async, is_streaming_method=None) | indent(4) }}
     
     {{ async_prefix }}def __call__(self,
         request: {{ sig.request_type }}, *,

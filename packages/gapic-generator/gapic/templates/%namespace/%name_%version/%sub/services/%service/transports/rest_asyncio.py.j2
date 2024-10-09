@@ -155,7 +155,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Implement client streaming method. #}
         {% if method.http_options and not method.client_streaming %}
         {% set body_spec = method.http_options[0].body %}
-        {{ shared_macros.response_method(body_spec, is_async=True)|indent(8) }}
+        {{ shared_macros.response_method(body_spec, is_async=True, is_streaming_method=None)|indent(8) }}
 
         {% endif %}{#  method.http_options and not method.client_streaming and not method.paged_result_field #}
         async def __call__(self,

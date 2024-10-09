@@ -196,7 +196,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         {% if method.http_options and not method.client_streaming %}
 
         {% set body_spec = method.http_options[0].body %}
-        {{ shared_macros.response_method(body_spec)|indent(8) }}
+        {{ shared_macros.response_method(body_spec, is_async=False, is_streaming_method=method.server_streaming)|indent(8) }}
         {% endif %}{# method.http_options and not method.client_streaming #}
 
         def __call__(self,
