@@ -339,7 +339,12 @@ class GbqDataLoader:
         )
 
         enable_snapshot = enable_snapshot and bf_read_gbq_table.validate_table(
-            self._bqclient, table_ref, all_columns, time_travel_timestamp, filter_str
+            self._bqclient,
+            table_ref,
+            all_columns,
+            time_travel_timestamp,
+            table.table_type,
+            filter_str,
         )
 
         # ----------------------------

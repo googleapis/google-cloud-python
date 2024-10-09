@@ -390,9 +390,16 @@ def test_read_gbq_twice_with_same_timestamp(session, penguins_table_id):
     assert df3 is not None
 
 
-def test_read_gbq_on_linked_dataset_warns(session):
+@pytest.mark.parametrize(
+    "source_table",
+    [
+        "bigframes-dev.thelook_ecommerce.orders",
+        "bigframes-dev.bigframes_tests_sys.base_table_mat_view",
+    ],
+)
+def test_read_gbq_on_linked_dataset_warns(session, source_table):
     with warnings.catch_warnings(record=True) as warned:
-        session.read_gbq("bigframes-dev.thelook_ecommerce.orders")
+        session.read_gbq(source_table)
         assert len(warned) == 1
         assert warned[0].category == bigframes.exceptions.TimeTravelDisabledWarning
 

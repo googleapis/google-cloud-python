@@ -547,7 +547,7 @@ class GbqTable:
     table_id: str = field()
     physical_schema: Tuple[bq.SchemaField, ...] = field()
     n_rows: int = field()
-    is_physical_table: bool = field()
+    is_physically_stored: bool = field()
     cluster_cols: typing.Optional[Tuple[str, ...]]
 
     @staticmethod
@@ -563,7 +563,7 @@ class GbqTable:
             table_id=table.table_id,
             physical_schema=schema,
             n_rows=table.num_rows,
-            is_physical_table=(table.table_type == "TABLE"),
+            is_physically_stored=(table.table_type in ["TABLE", "MATERIALIZED_VIEW"]),
             cluster_cols=None
             if table.clustering_fields is None
             else tuple(table.clustering_fields),
@@ -641,7 +641,7 @@ class ReadTableNode(LeafNode):
 
     @property
     def row_count(self) -> typing.Optional[int]:
-        if self.source.sql_predicate is None and self.source.table.is_physical_table:
+        if self.source.sql_predicate is None and self.source.table.is_physically_stored:
             return self.source.table.n_rows
         return None
 

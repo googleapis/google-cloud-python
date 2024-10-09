@@ -1526,6 +1526,10 @@ def test_shape(scalars_dfs):
     [
         (
             "bigframes-dev.bigframes_tests_sys.base_table",
+            "bigframes-dev.bigframes_tests_sys.base_table_mat_view",
+        ),
+        (
+            "bigframes-dev.bigframes_tests_sys.base_table",
             "bigframes-dev.bigframes_tests_sys.base_table_view",
         ),
         (

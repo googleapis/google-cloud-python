@@ -102,6 +102,7 @@ def validate_table(
     table_ref: bigquery.table.TableReference,
     columns: Optional[Sequence[str]],
     snapshot_time: datetime.datetime,
+    table_type: str,
     filter_str: Optional[str] = None,
 ) -> bool:
     """Validates that the table can be read, returns True iff snapshot is supported."""
@@ -122,6 +123,17 @@ def validate_table(
 
     # Anonymous dataset, does not support snapshot ever
     if table_ref.dataset_id.startswith("_"):
+        return False
+
+    # Materialized views，does not support snapshot
+    if table_type == "MATERIALIZED_VIEW":
+        warnings.warn(
+            "Materialized views do not support FOR SYSTEM_TIME AS OF queries. "
+            "Attempting query without time travel. Be aware that as materialized views "
+            "are updated periodically, modifications to the underlying data in the view may "
+            "result in errors or unexpected behavior.",
+            category=bigframes.exceptions.TimeTravelDisabledWarning,
+        )
         return False
 
     # Second, try with snapshot to verify table supports this feature
