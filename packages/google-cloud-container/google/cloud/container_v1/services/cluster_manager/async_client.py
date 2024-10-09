@@ -65,6 +65,12 @@ class ClusterManagerAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ClusterManagerClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ClusterManagerClient._DEFAULT_UNIVERSE
 
+    ca_pool_path = staticmethod(ClusterManagerClient.ca_pool_path)
+    parse_ca_pool_path = staticmethod(ClusterManagerClient.parse_ca_pool_path)
+    crypto_key_version_path = staticmethod(ClusterManagerClient.crypto_key_version_path)
+    parse_crypto_key_version_path = staticmethod(
+        ClusterManagerClient.parse_crypto_key_version_path
+    )
     topic_path = staticmethod(ClusterManagerClient.topic_path)
     parse_topic_path = staticmethod(ClusterManagerClient.parse_topic_path)
     common_billing_account_path = staticmethod(
