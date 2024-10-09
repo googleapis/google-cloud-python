@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.21.0](https://github.com/googleapis/python-api-core/compare/v2.20.0...v2.21.0) (2024-10-07)
+
+
+### Features
+
+* Add support for asynchronous long running operations ([#724](https://github.com/googleapis/python-api-core/issues/724)) ([aaed69b](https://github.com/googleapis/python-api-core/commit/aaed69b6f1d694cd7e561e2aa03fdd8d6cfb369a))
+
+
+### Bug Fixes
+
+* Set chunk size for async stream content ([#702](https://github.com/googleapis/python-api-core/issues/702)) ([45b8a6d](https://github.com/googleapis/python-api-core/commit/45b8a6db5a5c75acdd8be896d0152f11608c7e51))
+
 ## [2.20.0](https://github.com/googleapis/python-api-core/compare/v2.19.2...v2.20.0) (2024-09-18)
 
 
