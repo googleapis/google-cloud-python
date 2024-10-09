@@ -139,7 +139,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
         {% if service.has_lro %}
-        self._operations_client: Optional[operations_v1.OperationsClient] = None
+        self._operations_client: Optional[operations_v1.AsyncOperationsRestClient] = None
         {% endif %}
 
 
@@ -251,7 +251,11 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             rest_transport = operations_v1.AsyncOperationsRestTransport(  # type: ignore
                     host=self._host,
                     # use the credentials which are saved
-                    credentials=self._credentials,
+                    {# Note: Type for creds is ignored because of incorrect type hint for creds in the client layer.
+                     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2177): Remove `# type: ignore` once
+                     # we update the type hints for credentials to include asynchronous credentials in the client layer.
+                    #}
+                    credentials=self._credentials,  # type: ignore
                     http_options=http_options,
                     path_prefix="{{ service.client_package_version }}"
             )

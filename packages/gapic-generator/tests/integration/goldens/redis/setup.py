@@ -48,7 +48,7 @@ dependencies = [
 ]
 extras = {
     "async_rest": [
-        "google-api-core[grpc] >= 2.21.0rc0, < 3.0.0dev",
+        "google-api-core[grpc] >= 2.21.0, < 3.0.0dev",
         "google-auth[aiohttp] >= 2.35.0, <3.0.0dev"
     ],
 }

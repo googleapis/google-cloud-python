@@ -310,8 +310,9 @@ def showcase_library(
                     # NOTE: We re-install `google-api-core` and `google-auth` to override the respective
                     # versions for each specified in constraints-3.7.txt. This is needed because async REST
                     # is not supported with the minimum version of `google-api-core` and `google-auth`.
-                    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2208): Update the minimum supported version of api-core to `2.21.0` when released.
-                    session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc, async_rest]==2.21.0rc0")
+                    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2211): Remove hardcoded dependencies
+                    # from here and add a new constraints file for testing the minimum supported versions for async REST feature.
+                    session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc, async_rest]==2.21.0")
                     # session.install('--no-cache-dir', '--force-reinstall', "google-api-core==2.20.0")
                     session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]==2.35.0")
             else:
