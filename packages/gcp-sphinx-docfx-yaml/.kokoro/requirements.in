@@ -1,7 +1,7 @@
 # Library specific extra installations.
 # Extra installations are required to ensure all documentation can be
 # generated and not missed out with the generate-docs script.
-django==3.2.25
+django==4.2.16
 google-cloud-aiplatform[prediction]
 googleapis-common-protos==1.58.0 # pinned for conflict in range specifier.
 grpcio-status==1.48.2 # must be pinned due to protobuf compatibility.
