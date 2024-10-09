@@ -130,6 +130,68 @@ def test_agg_invalid_cluster_column_raise_error(gemini_flash_model, cluster_colu
     df.semantics.agg(instruction, gemini_flash_model, cluster_column=cluster_column)
 
 
+@pytest.mark.parametrize(
+    ("n_clusters"),
+    [
+        pytest.param(1, id="one", marks=pytest.mark.xfail(raises=ValueError)),
+        pytest.param(2, id="two"),
+        pytest.param(4, id="four"),
+    ],
+)
+def test_cluster_by(session, text_embedding_generator, n_clusters):
+    bigframes.options.experiments.semantic_operators = True
+    df = dataframe.DataFrame(
+        ({"Product": ["Smartphone", "Laptop", "Coffee Maker", "T-shirt", "Jeans"]}),
+        session=session,
+    )
+    output_column = "cluster id"
+    result = df.semantics.cluster_by(
+        "Product",
+        output_column,
+        text_embedding_generator,
+        n_clusters=n_clusters,
+    )
+
+    assert output_column in result
+    assert len(result[output_column].unique()) == n_clusters
+
+
+def test_cluster_by_invalid_column(session, text_embedding_generator):
+    bigframes.options.experiments.semantic_operators = True
+
+    df = dataframe.DataFrame(
+        ({"Product": ["Smartphone", "Laptop", "Coffee Maker", "T-shirt", "Jeans"]}),
+        session=session,
+    )
+
+    output_column = "cluster id"
+    with pytest.raises(ValueError):
+        df.semantics.cluster_by(
+            "unknown_column",
+            output_column,
+            text_embedding_generator,
+            n_clusters=3,
+        )
+
+
+def test_cluster_by_invalid_model(session, gemini_flash_model):
+    bigframes.options.experiments.semantic_operators = True
+
+    df = dataframe.DataFrame(
+        ({"Product": ["Smartphone", "Laptop", "Coffee Maker", "T-shirt", "Jeans"]}),
+        session=session,
+    )
+
+    output_column = "cluster id"
+    with pytest.raises(TypeError):
+        df.semantics.cluster_by(
+            "Product",
+            output_column,
+            gemini_flash_model,
+            n_clusters=3,
+        )
+
+
 def test_filter(session, gemini_flash_model):
     bigframes.options.experiments.semantic_operators = True
     df = dataframe.DataFrame(

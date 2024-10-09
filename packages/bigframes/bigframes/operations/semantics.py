@@ -194,6 +194,88 @@ class Semantics:
 
         return df[column]
 
+    def cluster_by(
+        self,
+        column: str,
+        output_column: str,
+        model,
+        n_clusters: int = 5,
+    ):
+        """
+        Clusters data based on the semantic similarity of text within a specified column.
+
+        This method leverages a language model to generate text embeddings for each value in
+        the given column. These embeddings capture the semantic meaning of the text.
+        The data is then grouped into `n` clusters using the k-means clustering algorithm,
+        which groups data points based on the similarity of their embeddings.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> bpd.options.experiments.semantic_operators = True
+
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.TextEmbeddingGenerator()
+
+            >>> df = bpd.DataFrame({
+            ...     "Product": ["Smartphone", "Laptop", "T-shirt", "Jeans"],
+            ... })
+            >>> df.semantics.cluster_by("Product", "Cluster ID", model, n_clusters=2)
+                    Product  Cluster ID
+            0    Smartphone           2
+            1        Laptop           2
+            2       T-shirt           1
+            3         Jeans           1
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+        Args:
+            column (str):
+                An column name to perform the similarity clustering.
+
+            output_column (str):
+                An output column to store the clustering ID.
+
+            model (bigframes.ml.llm.TextEmbeddingGenerator):
+                A TextEmbeddingGenerator provided by Bigframes ML package.
+
+            n_clusters (int, default 5):
+                Default 5. Number of clusters to be detected.
+
+        Returns:
+            bigframes.dataframe.DataFrame: A new DataFrame with the clustering output column.
+
+        Raises:
+            NotImplementedError: when the semantic operator experiment is off.
+            ValueError: when the column refers to a non-existing column.
+        """
+
+        import bigframes.dataframe
+        import bigframes.ml.cluster as cluster
+        import bigframes.ml.llm as llm
+
+        if not isinstance(model, llm.TextEmbeddingGenerator):
+            raise TypeError(f"Expect a text embedding model, but got: {type(model)}")
+
+        if column not in self._df.columns:
+            raise ValueError(f"Column {column} not found.")
+
+        if n_clusters <= 1:
+            raise ValueError(
+                f"Invalid value for `n_clusters`: {n_clusters}."
+                "It must be greater than 1."
+            )
+
+        df: bigframes.dataframe.DataFrame = self._df.copy()
+        embeddings_df = model.predict(df[column])
+
+        cluster_model = cluster.KMeans(n_clusters=n_clusters)
+        cluster_model.fit(embeddings_df[["ml_generate_embedding_result"]])
+        clustered_result = cluster_model.predict(embeddings_df)
+        df[output_column] = clustered_result["CENTROID_ID"]
+        return df
+
     def filter(self, instruction: str, model):
         """
         Filters the DataFrame with the semantics of the user instruction.
