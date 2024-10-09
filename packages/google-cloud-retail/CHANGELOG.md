@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.21.2...google-cloud-retail-v1.22.0) (2024-10-09)
+
+
+### Features
+
+* add conversational search ([b704404](https://github.com/googleapis/google-cloud-python/commit/b7044041774ad03f0488a830cdb871be3d106f73))
+* add tile navigation ([b704404](https://github.com/googleapis/google-cloud-python/commit/b7044041774ad03f0488a830cdb871be3d106f73))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([b704404](https://github.com/googleapis/google-cloud-python/commit/b7044041774ad03f0488a830cdb871be3d106f73))
+
 ## [1.21.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.21.1...google-cloud-retail-v1.21.2) (2024-07-30)
 
 
