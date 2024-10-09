@@ -10852,16 +10852,17 @@ def test_initialize_client_w_grpc():
 def test_get_trigger_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.get_trigger),
             '__call__') as call:
         call.return_value = trigger.Trigger()
         client.get_trigger(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetTriggerRequest()
@@ -10874,16 +10875,17 @@ def test_get_trigger_empty_call_grpc():
 def test_list_triggers_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.list_triggers),
             '__call__') as call:
         call.return_value = eventarc.ListTriggersResponse()
         client.list_triggers(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListTriggersRequest()
@@ -10896,16 +10898,17 @@ def test_list_triggers_empty_call_grpc():
 def test_create_trigger_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.create_trigger),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.create_trigger(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateTriggerRequest()
@@ -10918,16 +10921,17 @@ def test_create_trigger_empty_call_grpc():
 def test_update_trigger_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.update_trigger),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.update_trigger(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateTriggerRequest()
@@ -10940,16 +10944,17 @@ def test_update_trigger_empty_call_grpc():
 def test_delete_trigger_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.delete_trigger),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.delete_trigger(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteTriggerRequest()
@@ -10962,16 +10967,17 @@ def test_delete_trigger_empty_call_grpc():
 def test_get_channel_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.get_channel),
             '__call__') as call:
         call.return_value = channel.Channel()
         client.get_channel(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetChannelRequest()
@@ -10984,16 +10990,17 @@ def test_get_channel_empty_call_grpc():
 def test_list_channels_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.list_channels),
             '__call__') as call:
         call.return_value = eventarc.ListChannelsResponse()
         client.list_channels(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListChannelsRequest()
@@ -11006,16 +11013,17 @@ def test_list_channels_empty_call_grpc():
 def test_create_channel_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.create_channel_),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.create_channel(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateChannelRequest()
@@ -11028,16 +11036,17 @@ def test_create_channel_empty_call_grpc():
 def test_update_channel_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.update_channel),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.update_channel(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateChannelRequest()
@@ -11050,16 +11059,17 @@ def test_update_channel_empty_call_grpc():
 def test_delete_channel_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.delete_channel),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.delete_channel(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteChannelRequest()
@@ -11072,16 +11082,17 @@ def test_delete_channel_empty_call_grpc():
 def test_get_provider_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.get_provider),
             '__call__') as call:
         call.return_value = discovery.Provider()
         client.get_provider(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetProviderRequest()
@@ -11094,16 +11105,17 @@ def test_get_provider_empty_call_grpc():
 def test_list_providers_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.list_providers),
             '__call__') as call:
         call.return_value = eventarc.ListProvidersResponse()
         client.list_providers(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListProvidersRequest()
@@ -11116,16 +11128,17 @@ def test_list_providers_empty_call_grpc():
 def test_get_channel_connection_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.get_channel_connection),
             '__call__') as call:
         call.return_value = channel_connection.ChannelConnection()
         client.get_channel_connection(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetChannelConnectionRequest()
@@ -11138,16 +11151,17 @@ def test_get_channel_connection_empty_call_grpc():
 def test_list_channel_connections_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.list_channel_connections),
             '__call__') as call:
         call.return_value = eventarc.ListChannelConnectionsResponse()
         client.list_channel_connections(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListChannelConnectionsRequest()
@@ -11160,16 +11174,17 @@ def test_list_channel_connections_empty_call_grpc():
 def test_create_channel_connection_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.create_channel_connection),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.create_channel_connection(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateChannelConnectionRequest()
@@ -11182,16 +11197,17 @@ def test_create_channel_connection_empty_call_grpc():
 def test_delete_channel_connection_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.delete_channel_connection),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.delete_channel_connection(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteChannelConnectionRequest()
@@ -11204,16 +11220,17 @@ def test_delete_channel_connection_empty_call_grpc():
 def test_get_google_channel_config_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.get_google_channel_config),
             '__call__') as call:
         call.return_value = google_channel_config.GoogleChannelConfig()
         client.get_google_channel_config(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetGoogleChannelConfigRequest()
@@ -11226,16 +11243,17 @@ def test_get_google_channel_config_empty_call_grpc():
 def test_update_google_channel_config_empty_call_grpc():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.update_google_channel_config),
             '__call__') as call:
         call.return_value = gce_google_channel_config.GoogleChannelConfig()
         client.update_google_channel_config(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateGoogleChannelConfigRequest()
@@ -11264,9 +11282,10 @@ def test_initialize_client_w_grpc_asyncio():
 async def test_get_trigger_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.get_trigger),
             '__call__') as call:
@@ -11280,7 +11299,7 @@ async def test_get_trigger_empty_call_grpc_asyncio():
         ))
         await client.get_trigger(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetTriggerRequest()
@@ -11294,9 +11313,10 @@ async def test_get_trigger_empty_call_grpc_asyncio():
 async def test_list_triggers_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.list_triggers),
             '__call__') as call:
@@ -11307,7 +11327,7 @@ async def test_list_triggers_empty_call_grpc_asyncio():
         ))
         await client.list_triggers(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListTriggersRequest()
@@ -11321,9 +11341,10 @@ async def test_list_triggers_empty_call_grpc_asyncio():
 async def test_create_trigger_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.create_trigger),
             '__call__') as call:
@@ -11333,7 +11354,7 @@ async def test_create_trigger_empty_call_grpc_asyncio():
         )
         await client.create_trigger(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateTriggerRequest()
@@ -11347,9 +11368,10 @@ async def test_create_trigger_empty_call_grpc_asyncio():
 async def test_update_trigger_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.update_trigger),
             '__call__') as call:
@@ -11359,7 +11381,7 @@ async def test_update_trigger_empty_call_grpc_asyncio():
         )
         await client.update_trigger(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateTriggerRequest()
@@ -11373,9 +11395,10 @@ async def test_update_trigger_empty_call_grpc_asyncio():
 async def test_delete_trigger_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.delete_trigger),
             '__call__') as call:
@@ -11385,7 +11408,7 @@ async def test_delete_trigger_empty_call_grpc_asyncio():
         )
         await client.delete_trigger(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteTriggerRequest()
@@ -11399,9 +11422,10 @@ async def test_delete_trigger_empty_call_grpc_asyncio():
 async def test_get_channel_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.get_channel),
             '__call__') as call:
@@ -11416,7 +11440,7 @@ async def test_get_channel_empty_call_grpc_asyncio():
         ))
         await client.get_channel(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetChannelRequest()
@@ -11430,9 +11454,10 @@ async def test_get_channel_empty_call_grpc_asyncio():
 async def test_list_channels_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.list_channels),
             '__call__') as call:
@@ -11443,7 +11468,7 @@ async def test_list_channels_empty_call_grpc_asyncio():
         ))
         await client.list_channels(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListChannelsRequest()
@@ -11457,9 +11482,10 @@ async def test_list_channels_empty_call_grpc_asyncio():
 async def test_create_channel_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.create_channel_),
             '__call__') as call:
@@ -11469,7 +11495,7 @@ async def test_create_channel_empty_call_grpc_asyncio():
         )
         await client.create_channel(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateChannelRequest()
@@ -11483,9 +11509,10 @@ async def test_create_channel_empty_call_grpc_asyncio():
 async def test_update_channel_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.update_channel),
             '__call__') as call:
@@ -11495,7 +11522,7 @@ async def test_update_channel_empty_call_grpc_asyncio():
         )
         await client.update_channel(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateChannelRequest()
@@ -11509,9 +11536,10 @@ async def test_update_channel_empty_call_grpc_asyncio():
 async def test_delete_channel_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.delete_channel),
             '__call__') as call:
@@ -11521,7 +11549,7 @@ async def test_delete_channel_empty_call_grpc_asyncio():
         )
         await client.delete_channel(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteChannelRequest()
@@ -11535,9 +11563,10 @@ async def test_delete_channel_empty_call_grpc_asyncio():
 async def test_get_provider_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.get_provider),
             '__call__') as call:
@@ -11548,7 +11577,7 @@ async def test_get_provider_empty_call_grpc_asyncio():
         ))
         await client.get_provider(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetProviderRequest()
@@ -11562,9 +11591,10 @@ async def test_get_provider_empty_call_grpc_asyncio():
 async def test_list_providers_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.list_providers),
             '__call__') as call:
@@ -11575,7 +11605,7 @@ async def test_list_providers_empty_call_grpc_asyncio():
         ))
         await client.list_providers(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListProvidersRequest()
@@ -11589,9 +11619,10 @@ async def test_list_providers_empty_call_grpc_asyncio():
 async def test_get_channel_connection_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.get_channel_connection),
             '__call__') as call:
@@ -11604,7 +11635,7 @@ async def test_get_channel_connection_empty_call_grpc_asyncio():
         ))
         await client.get_channel_connection(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetChannelConnectionRequest()
@@ -11618,9 +11649,10 @@ async def test_get_channel_connection_empty_call_grpc_asyncio():
 async def test_list_channel_connections_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.list_channel_connections),
             '__call__') as call:
@@ -11631,7 +11663,7 @@ async def test_list_channel_connections_empty_call_grpc_asyncio():
         ))
         await client.list_channel_connections(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.ListChannelConnectionsRequest()
@@ -11645,9 +11677,10 @@ async def test_list_channel_connections_empty_call_grpc_asyncio():
 async def test_create_channel_connection_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.create_channel_connection),
             '__call__') as call:
@@ -11657,7 +11690,7 @@ async def test_create_channel_connection_empty_call_grpc_asyncio():
         )
         await client.create_channel_connection(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.CreateChannelConnectionRequest()
@@ -11671,9 +11704,10 @@ async def test_create_channel_connection_empty_call_grpc_asyncio():
 async def test_delete_channel_connection_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.delete_channel_connection),
             '__call__') as call:
@@ -11683,7 +11717,7 @@ async def test_delete_channel_connection_empty_call_grpc_asyncio():
         )
         await client.delete_channel_connection(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.DeleteChannelConnectionRequest()
@@ -11697,9 +11731,10 @@ async def test_delete_channel_connection_empty_call_grpc_asyncio():
 async def test_get_google_channel_config_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.get_google_channel_config),
             '__call__') as call:
@@ -11710,7 +11745,7 @@ async def test_get_google_channel_config_empty_call_grpc_asyncio():
         ))
         await client.get_google_channel_config(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.GetGoogleChannelConfigRequest()
@@ -11724,9 +11759,10 @@ async def test_get_google_channel_config_empty_call_grpc_asyncio():
 async def test_update_google_channel_config_empty_call_grpc_asyncio():
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.update_google_channel_config),
             '__call__') as call:
@@ -11737,7 +11773,7 @@ async def test_update_google_channel_config_empty_call_grpc_asyncio():
         ))
         await client.update_google_channel_config(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = eventarc.UpdateGoogleChannelConfigRequest()
@@ -14381,6 +14417,402 @@ def test_initialize_client_w_rest():
         transport="rest"
     )
     assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_trigger_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_trigger),
+            '__call__') as call:
+        client.get_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.GetTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_triggers_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_triggers),
+            '__call__') as call:
+        client.list_triggers(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.ListTriggersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_trigger_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_trigger),
+            '__call__') as call:
+        client.create_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.CreateTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_trigger_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_trigger),
+            '__call__') as call:
+        client.update_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.UpdateTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_trigger_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_trigger),
+            '__call__') as call:
+        client.delete_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.DeleteTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_channel_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_channel),
+            '__call__') as call:
+        client.get_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.GetChannelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_channels_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_channels),
+            '__call__') as call:
+        client.list_channels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.ListChannelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_channel_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_channel_),
+            '__call__') as call:
+        client.create_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.CreateChannelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_channel_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_channel),
+            '__call__') as call:
+        client.update_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.UpdateChannelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_channel_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_channel),
+            '__call__') as call:
+        client.delete_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.DeleteChannelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_provider_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_provider),
+            '__call__') as call:
+        client.get_provider(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.GetProviderRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_providers_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_providers),
+            '__call__') as call:
+        client.list_providers(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.ListProvidersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_channel_connection_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_channel_connection),
+            '__call__') as call:
+        client.get_channel_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.GetChannelConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_channel_connections_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_channel_connections),
+            '__call__') as call:
+        client.list_channel_connections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.ListChannelConnectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_channel_connection_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_channel_connection),
+            '__call__') as call:
+        client.create_channel_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.CreateChannelConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_channel_connection_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_channel_connection),
+            '__call__') as call:
+        client.delete_channel_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.DeleteChannelConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_google_channel_config_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_google_channel_config),
+            '__call__') as call:
+        client.get_google_channel_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.GetGoogleChannelConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_google_channel_config_empty_call_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_google_channel_config),
+            '__call__') as call:
+        client.update_google_channel_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = eventarc.UpdateGoogleChannelConfigRequest()
+
+        assert args[0] == request_msg
 
 
 def test_eventarc_rest_lro_client():

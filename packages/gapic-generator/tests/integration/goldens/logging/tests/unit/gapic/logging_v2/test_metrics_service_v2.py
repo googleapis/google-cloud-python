@@ -2700,16 +2700,17 @@ def test_initialize_client_w_grpc():
 def test_list_log_metrics_empty_call_grpc():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.list_log_metrics),
             '__call__') as call:
         call.return_value = logging_metrics.ListLogMetricsResponse()
         client.list_log_metrics(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.ListLogMetricsRequest()
@@ -2722,16 +2723,17 @@ def test_list_log_metrics_empty_call_grpc():
 def test_get_log_metric_empty_call_grpc():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.get_log_metric),
             '__call__') as call:
         call.return_value = logging_metrics.LogMetric()
         client.get_log_metric(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.GetLogMetricRequest()
@@ -2744,16 +2746,17 @@ def test_get_log_metric_empty_call_grpc():
 def test_create_log_metric_empty_call_grpc():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.create_log_metric),
             '__call__') as call:
         call.return_value = logging_metrics.LogMetric()
         client.create_log_metric(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.CreateLogMetricRequest()
@@ -2766,16 +2769,17 @@ def test_create_log_metric_empty_call_grpc():
 def test_update_log_metric_empty_call_grpc():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.update_log_metric),
             '__call__') as call:
         call.return_value = logging_metrics.LogMetric()
         client.update_log_metric(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.UpdateLogMetricRequest()
@@ -2788,16 +2792,17 @@ def test_update_log_metric_empty_call_grpc():
 def test_delete_log_metric_empty_call_grpc():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.delete_log_metric),
             '__call__') as call:
         call.return_value = None
         client.delete_log_metric(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.DeleteLogMetricRequest()
@@ -2826,9 +2831,10 @@ def test_initialize_client_w_grpc_asyncio():
 async def test_list_log_metrics_empty_call_grpc_asyncio():
     client = MetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.list_log_metrics),
             '__call__') as call:
@@ -2838,7 +2844,7 @@ async def test_list_log_metrics_empty_call_grpc_asyncio():
         ))
         await client.list_log_metrics(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.ListLogMetricsRequest()
@@ -2852,9 +2858,10 @@ async def test_list_log_metrics_empty_call_grpc_asyncio():
 async def test_get_log_metric_empty_call_grpc_asyncio():
     client = MetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.get_log_metric),
             '__call__') as call:
@@ -2870,7 +2877,7 @@ async def test_get_log_metric_empty_call_grpc_asyncio():
         ))
         await client.get_log_metric(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.GetLogMetricRequest()
@@ -2884,9 +2891,10 @@ async def test_get_log_metric_empty_call_grpc_asyncio():
 async def test_create_log_metric_empty_call_grpc_asyncio():
     client = MetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.create_log_metric),
             '__call__') as call:
@@ -2902,7 +2910,7 @@ async def test_create_log_metric_empty_call_grpc_asyncio():
         ))
         await client.create_log_metric(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.CreateLogMetricRequest()
@@ -2916,9 +2924,10 @@ async def test_create_log_metric_empty_call_grpc_asyncio():
 async def test_update_log_metric_empty_call_grpc_asyncio():
     client = MetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.update_log_metric),
             '__call__') as call:
@@ -2934,7 +2943,7 @@ async def test_update_log_metric_empty_call_grpc_asyncio():
         ))
         await client.update_log_metric(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.UpdateLogMetricRequest()
@@ -2948,9 +2957,10 @@ async def test_update_log_metric_empty_call_grpc_asyncio():
 async def test_delete_log_metric_empty_call_grpc_asyncio():
     client = MetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.delete_log_metric),
             '__call__') as call:
@@ -2958,7 +2968,7 @@ async def test_delete_log_metric_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_log_metric(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.DeleteLogMetricRequest()

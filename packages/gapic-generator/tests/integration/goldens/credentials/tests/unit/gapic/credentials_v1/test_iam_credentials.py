@@ -2925,16 +2925,17 @@ def test_initialize_client_w_grpc():
 def test_generate_access_token_empty_call_grpc():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.generate_access_token),
             '__call__') as call:
         call.return_value = common.GenerateAccessTokenResponse()
         client.generate_access_token(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateAccessTokenRequest()
@@ -2947,16 +2948,17 @@ def test_generate_access_token_empty_call_grpc():
 def test_generate_id_token_empty_call_grpc():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.generate_id_token),
             '__call__') as call:
         call.return_value = common.GenerateIdTokenResponse()
         client.generate_id_token(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateIdTokenRequest()
@@ -2969,16 +2971,17 @@ def test_generate_id_token_empty_call_grpc():
 def test_sign_blob_empty_call_grpc():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.sign_blob),
             '__call__') as call:
         call.return_value = common.SignBlobResponse()
         client.sign_blob(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignBlobRequest()
@@ -2991,16 +2994,17 @@ def test_sign_blob_empty_call_grpc():
 def test_sign_jwt_empty_call_grpc():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.sign_jwt),
             '__call__') as call:
         call.return_value = common.SignJwtResponse()
         client.sign_jwt(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignJwtRequest()
@@ -3029,9 +3033,10 @@ def test_initialize_client_w_grpc_asyncio():
 async def test_generate_access_token_empty_call_grpc_asyncio():
     client = IAMCredentialsAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.generate_access_token),
             '__call__') as call:
@@ -3041,7 +3046,7 @@ async def test_generate_access_token_empty_call_grpc_asyncio():
         ))
         await client.generate_access_token(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateAccessTokenRequest()
@@ -3055,9 +3060,10 @@ async def test_generate_access_token_empty_call_grpc_asyncio():
 async def test_generate_id_token_empty_call_grpc_asyncio():
     client = IAMCredentialsAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.generate_id_token),
             '__call__') as call:
@@ -3067,7 +3073,7 @@ async def test_generate_id_token_empty_call_grpc_asyncio():
         ))
         await client.generate_id_token(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateIdTokenRequest()
@@ -3081,9 +3087,10 @@ async def test_generate_id_token_empty_call_grpc_asyncio():
 async def test_sign_blob_empty_call_grpc_asyncio():
     client = IAMCredentialsAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.sign_blob),
             '__call__') as call:
@@ -3094,7 +3101,7 @@ async def test_sign_blob_empty_call_grpc_asyncio():
         ))
         await client.sign_blob(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignBlobRequest()
@@ -3108,9 +3115,10 @@ async def test_sign_blob_empty_call_grpc_asyncio():
 async def test_sign_jwt_empty_call_grpc_asyncio():
     client = IAMCredentialsAsyncClient(
         credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.sign_jwt),
             '__call__') as call:
@@ -3121,7 +3129,7 @@ async def test_sign_jwt_empty_call_grpc_asyncio():
         ))
         await client.sign_jwt(request=None)
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignJwtRequest()
@@ -3541,6 +3549,94 @@ def test_initialize_client_w_rest():
         transport="rest"
     )
     assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_access_token_empty_call_rest():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_access_token),
+            '__call__') as call:
+        client.generate_access_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.GenerateAccessTokenRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_id_token_empty_call_rest():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_id_token),
+            '__call__') as call:
+        client.generate_id_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.GenerateIdTokenRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_sign_blob_empty_call_rest():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_blob),
+            '__call__') as call:
+        client.sign_blob(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.SignBlobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_sign_jwt_empty_call_rest():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_jwt),
+            '__call__') as call:
+        client.sign_jwt(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.SignJwtRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():

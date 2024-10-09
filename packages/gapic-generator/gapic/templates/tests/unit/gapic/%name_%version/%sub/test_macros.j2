@@ -1466,14 +1466,20 @@ def test_{{ method_name }}_rest_no_http_options():
 @pytest.mark.asyncio
 {% endif %}{# is_async #}
 {{ async_method_prefix }}def test_{{ method_name }}_{{ test_name }}_{{transport_name}}():
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
     client = {{ get_client(service=service, is_async=is_async) }}(
         credentials={{ get_credentials(is_async=is_async) }},
+        transport="{{ transport_name }}",
     )
 
-    # Mock the actual call within the gRPC stub, and fake the request.
+    # Mock the actual call, and fake the request.
     with mock.patch.object(
             type(client.transport.{{ method.transport_safe_name|snake_case }}),
             '__call__') as call:
+    {% if 'rest' not in transport %}
         {% if is_async %}
         # Designate an appropriate return value for the call.
         {% if method.void %}
@@ -1498,7 +1504,6 @@ def test_{{ method_name }}_rest_no_http_options():
             {% endfor %}
         ))
         {% endif %}{# method.void #}
-        await client.{{ method_name }}(request={{ request_dict }})
         {% else %}{# if not is_async #}
         {% if method.void %}
         call.return_value = None
@@ -1509,10 +1514,15 @@ def test_{{ method_name }}_rest_no_http_options():
         {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
+        {% endif %}{# is_async #}
+    {% endif %}{# if 'rest' not in transport #}
+        {% if is_async %}
+        await client.{{ method_name }}(request={{ request_dict }})
+        {% else %}{# is_async #}
         client.{{ method_name }}(request={{ request_dict }})
         {% endif %}{# is_async #}
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, {% if routing_param %}kw{% else %}_{% endif %} = call.mock_calls[0]
         {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
@@ -2142,11 +2152,6 @@ def test_initialize_client_w_{{transport_name}}():
 {% endmacro %}{# call_success_mixins_test #}
 
 {% macro empty_call_test(service, api, transport, is_async) %}
-{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2159): 
-  Currently this macro only supports gRPC. It should be updated to support REST
-  transport as well.
-#}
-{% if 'rest' not in transport %}
 {% for method in service.methods.values() %}{# method #}
 {% if not method.client_streaming %}
 # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2154,7 +2159,6 @@ def test_initialize_client_w_{{transport_name}}():
 {{ method_call_test_generic("empty_call", method, service, api, transport, request_dict=None, is_async=is_async) }}
 {% endif %}{# not method.client_streaming #}
 {% endfor %}{# method in service.methods.values() #}
-{% endif %}{# 'rest' not in transport #}
 {% endmacro %}{# empty_call_test #}
 
 {% macro get_uuid4_re() -%}
@@ -2162,11 +2166,6 @@ def test_initialize_client_w_{{transport_name}}():
 {%- endmacro %}{# uuid_re #}
 
 {% macro routing_parameter_test(service, api, transport, is_async) %}
-{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2159):
-  Currently this macro only supports gRPC. It should be updated to support REST
-  transport as well.
-#}
-{% if 'rest' not in transport %}
 {% for method in service.methods.values() %}{# method #}
 {% if method.explicit_routing %}
 {# Any value that is part of the HTTP/1.1 URI should be sent as #}
@@ -2176,7 +2175,6 @@ def test_initialize_client_w_{{transport_name}}():
 {% endfor %}{# routing_param in method.routing_rule.routing_parameters #}
 {% endif %}{# method.explicit_routing #}
 {% endfor %}{# method in service.methods.values() #}
-{% endif %}
 {% endmacro %}{# routing_parameter_test #}
 
 {# inteceptor_class_test generates tests for rest interceptors. #}
@@ -2269,4 +2267,4 @@ def test_initialize_client_w_{{transport_name}}():
         post.assert_called_once()
         {% endif %}
 {% endif %}{# end 'grpc' in transport #}
-{% endmacro%}
+{% endmacro%}{# inteceptor_class_test #}
