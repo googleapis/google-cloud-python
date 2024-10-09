@@ -108,9 +108,9 @@ class CompleteQueryRequest(proto.Message):
             higher, it will be capped by 20.
         enable_attribute_suggestions (bool):
             If true, attribute suggestions are enabled
-            and provided in response.
-            This field is only available for "cloud-retail"
-            dataset.
+            and provided in the response.
+            This field is only available for the
+            "cloud-retail" dataset.
         entity (str):
             The entity for customers who run multiple entities, domains,
             sites, or regions, for example, ``Google US``,
@@ -195,6 +195,15 @@ class CompleteQueryResponse(proto.Message):
 
             Recent searches are deduplicated. More recent searches will
             be reserved when duplication happens.
+        attribute_results (MutableMapping[str, google.cloud.retail_v2.types.CompleteQueryResponse.AttributeResult]):
+            A map of matched attribute suggestions. This field is only
+            available for "cloud-retail" dataset.
+
+            Current supported keys:
+
+            -  ``brands``
+
+            -  ``categories``
     """
 
     class CompletionResult(proto.Message):
@@ -239,6 +248,20 @@ class CompleteQueryResponse(proto.Message):
             number=1,
         )
 
+    class AttributeResult(proto.Message):
+        r"""Resource that represents attribute results.
+        The list of suggestions for the attribute.
+
+        Attributes:
+            suggestions (MutableSequence[str]):
+
+        """
+
+        suggestions: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
     completion_results: MutableSequence[CompletionResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
@@ -252,6 +275,12 @@ class CompleteQueryResponse(proto.Message):
         proto.MESSAGE,
         number=3,
         message=RecentSearchResult,
+    )
+    attribute_results: MutableMapping[str, AttributeResult] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=4,
+        message=AttributeResult,
     )
 
 
