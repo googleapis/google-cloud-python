@@ -43,7 +43,7 @@ class pubsubCallTransformer(cst.CSTTransformer):
         'commit_schema': ('name', 'schema', ),
         'create_schema': ('parent', 'schema', 'schema_id', ),
         'create_snapshot': ('name', 'subscription', 'labels', ),
-        'create_subscription': ('name', 'topic', 'push_config', 'bigquery_config', 'cloud_storage_config', 'ack_deadline_seconds', 'retain_acked_messages', 'message_retention_duration', 'labels', 'enable_message_ordering', 'expiration_policy', 'filter', 'dead_letter_policy', 'retry_policy', 'detached', 'enable_exactly_once_delivery', 'topic_message_retention_duration', 'state', ),
+        'create_subscription': ('name', 'topic', 'push_config', 'bigquery_config', 'cloud_storage_config', 'ack_deadline_seconds', 'retain_acked_messages', 'message_retention_duration', 'labels', 'enable_message_ordering', 'expiration_policy', 'filter', 'dead_letter_policy', 'retry_policy', 'detached', 'enable_exactly_once_delivery', 'topic_message_retention_duration', 'state', 'analytics_hub_subscription_info', ),
         'create_topic': ('name', 'labels', 'message_storage_policy', 'kms_key_name', 'schema_settings', 'satisfies_pzs', 'message_retention_duration', 'state', 'ingestion_data_source_settings', ),
         'delete_schema': ('name', ),
         'delete_schema_revision': ('name', 'revision_id', ),

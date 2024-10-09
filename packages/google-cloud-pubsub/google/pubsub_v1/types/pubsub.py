@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "MessageStoragePolicy",
         "SchemaSettings",
         "IngestionDataSourceSettings",
+        "PlatformLogsSettings",
         "Topic",
         "PubsubMessage",
         "GetTopicRequest",
@@ -160,6 +161,11 @@ class SchemaSettings(proto.Message):
 class IngestionDataSourceSettings(proto.Message):
     r"""Settings for an ingestion data source on a topic.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -167,6 +173,13 @@ class IngestionDataSourceSettings(proto.Message):
             Optional. Amazon Kinesis Data Streams.
 
             This field is a member of `oneof`_ ``source``.
+        cloud_storage (google.pubsub_v1.types.IngestionDataSourceSettings.CloudStorage):
+            Optional. Cloud Storage.
+
+            This field is a member of `oneof`_ ``source``.
+        platform_logs_settings (google.pubsub_v1.types.PlatformLogsSettings):
+            Optional. Platform Logs settings. If unset,
+            no Platform Logs will be generated.
     """
 
     class AwsKinesis(proto.Message):
@@ -259,11 +272,226 @@ class IngestionDataSourceSettings(proto.Message):
             number=5,
         )
 
+    class CloudStorage(proto.Message):
+        r"""Ingestion settings for Cloud Storage.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            state (google.pubsub_v1.types.IngestionDataSourceSettings.CloudStorage.State):
+                Output only. An output-only field that
+                indicates the state of the Cloud Storage
+                ingestion source.
+            bucket (str):
+                Optional. Cloud Storage bucket. The bucket name must be
+                without any prefix like "gs://". See the [bucket naming
+                requirements]
+                (https://cloud.google.com/storage/docs/buckets#naming).
+            text_format (google.pubsub_v1.types.IngestionDataSourceSettings.CloudStorage.TextFormat):
+                Optional. Data from Cloud Storage will be
+                interpreted as text.
+
+                This field is a member of `oneof`_ ``input_format``.
+            avro_format (google.pubsub_v1.types.IngestionDataSourceSettings.CloudStorage.AvroFormat):
+                Optional. Data from Cloud Storage will be
+                interpreted in Avro format.
+
+                This field is a member of `oneof`_ ``input_format``.
+            pubsub_avro_format (google.pubsub_v1.types.IngestionDataSourceSettings.CloudStorage.PubSubAvroFormat):
+                Optional. It will be assumed data from Cloud Storage was
+                written via `Cloud Storage
+                subscriptions <https://cloud.google.com/pubsub/docs/cloudstorage>`__.
+
+                This field is a member of `oneof`_ ``input_format``.
+            minimum_object_create_time (google.protobuf.timestamp_pb2.Timestamp):
+                Optional. Only objects with a larger or equal
+                creation timestamp will be ingested.
+            match_glob (str):
+                Optional. Glob pattern used to match objects that will be
+                ingested. If unset, all objects will be ingested. See the
+                `supported
+                patterns <https://cloud.google.com/storage/docs/json_api/v1/objects/list#list-objects-and-prefixes-using-glob>`__.
+        """
+
+        class State(proto.Enum):
+            r"""Possible states for ingestion from Cloud Storage.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Default value. This value is unused.
+                ACTIVE (1):
+                    Ingestion is active.
+                CLOUD_STORAGE_PERMISSION_DENIED (2):
+                    Permission denied encountered while calling the Cloud
+                    Storage API. This can happen if the Pub/Sub SA has not been
+                    granted the `appropriate
+                    permissions <https://cloud.google.com/storage/docs/access-control/iam-permissions>`__:
+
+                    -  storage.objects.list: to list the objects in a bucket.
+                    -  storage.objects.get: to read the objects in a bucket.
+                    -  storage.buckets.get: to verify the bucket exists.
+                PUBLISH_PERMISSION_DENIED (3):
+                    Permission denied encountered while publishing to the topic.
+                    This can happen if the Pub/Sub SA has not been granted the
+                    `appropriate publish
+                    permissions <https://cloud.google.com/pubsub/docs/access-control#pubsub.publisher>`__
+                BUCKET_NOT_FOUND (4):
+                    The provided Cloud Storage bucket doesn't
+                    exist.
+                TOO_MANY_OBJECTS (5):
+                    The Cloud Storage bucket has too many
+                    objects, ingestion will be paused.
+            """
+            STATE_UNSPECIFIED = 0
+            ACTIVE = 1
+            CLOUD_STORAGE_PERMISSION_DENIED = 2
+            PUBLISH_PERMISSION_DENIED = 3
+            BUCKET_NOT_FOUND = 4
+            TOO_MANY_OBJECTS = 5
+
+        class TextFormat(proto.Message):
+            r"""Configuration for reading Cloud Storage data in text format. Each
+            line of text as specified by the delimiter will be set to the
+            ``data`` field of a Pub/Sub message.
+
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                delimiter (str):
+                    Optional. When unset, '\n' is used.
+
+                    This field is a member of `oneof`_ ``_delimiter``.
+            """
+
+            delimiter: str = proto.Field(
+                proto.STRING,
+                number=1,
+                optional=True,
+            )
+
+        class AvroFormat(proto.Message):
+            r"""Configuration for reading Cloud Storage data in Avro binary format.
+            The bytes of each object will be set to the ``data`` field of a
+            Pub/Sub message.
+
+            """
+
+        class PubSubAvroFormat(proto.Message):
+            r"""Configuration for reading Cloud Storage data written via `Cloud
+            Storage
+            subscriptions <https://cloud.google.com/pubsub/docs/cloudstorage>`__.
+            The data and attributes fields of the originally exported Pub/Sub
+            message will be restored when publishing.
+
+            """
+
+        state: "IngestionDataSourceSettings.CloudStorage.State" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="IngestionDataSourceSettings.CloudStorage.State",
+        )
+        bucket: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        text_format: "IngestionDataSourceSettings.CloudStorage.TextFormat" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="input_format",
+                message="IngestionDataSourceSettings.CloudStorage.TextFormat",
+            )
+        )
+        avro_format: "IngestionDataSourceSettings.CloudStorage.AvroFormat" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=4,
+                oneof="input_format",
+                message="IngestionDataSourceSettings.CloudStorage.AvroFormat",
+            )
+        )
+        pubsub_avro_format: "IngestionDataSourceSettings.CloudStorage.PubSubAvroFormat" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="input_format",
+            message="IngestionDataSourceSettings.CloudStorage.PubSubAvroFormat",
+        )
+        minimum_object_create_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=timestamp_pb2.Timestamp,
+        )
+        match_glob: str = proto.Field(
+            proto.STRING,
+            number=9,
+        )
+
     aws_kinesis: AwsKinesis = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message=AwsKinesis,
+    )
+    cloud_storage: CloudStorage = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message=CloudStorage,
+    )
+    platform_logs_settings: "PlatformLogsSettings" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="PlatformLogsSettings",
+    )
+
+
+class PlatformLogsSettings(proto.Message):
+    r"""Settings for Platform Logs produced by Pub/Sub.
+
+    Attributes:
+        severity (google.pubsub_v1.types.PlatformLogsSettings.Severity):
+            Optional. The minimum severity level of
+            Platform Logs that will be written.
+    """
+
+    class Severity(proto.Enum):
+        r"""Severity levels of Platform Logs.
+
+        Values:
+            SEVERITY_UNSPECIFIED (0):
+                Default value. Logs level is unspecified.
+                Logs will be disabled.
+            DISABLED (1):
+                Logs will be disabled.
+            DEBUG (2):
+                Debug logs and higher-severity logs will be
+                written.
+            INFO (3):
+                Info logs and higher-severity logs will be
+                written.
+            WARNING (4):
+                Warning logs and higher-severity logs will be
+                written.
+            ERROR (5):
+                Only error logs will be written.
+        """
+        SEVERITY_UNSPECIFIED = 0
+        DISABLED = 1
+        DEBUG = 2
+        INFO = 3
+        WARNING = 4
+        ERROR = 5
+
+    severity: Severity = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Severity,
     )
 
 
@@ -821,7 +1049,7 @@ class Subscription(proto.Message):
             published. If ``retain_acked_messages`` is true, then this
             also configures the retention of acknowledged messages, and
             thus configures how far back in time a ``Seek`` can be done.
-            Defaults to 7 days. Cannot be more than 7 days or less than
+            Defaults to 7 days. Cannot be more than 31 days or less than
             10 minutes.
         labels (MutableMapping[str, str]):
             Optional. See `Creating and managing
@@ -906,6 +1134,10 @@ class Subscription(proto.Message):
             Output only. An output-only field indicating
             whether or not the subscription can receive
             messages.
+        analytics_hub_subscription_info (google.pubsub_v1.types.Subscription.AnalyticsHubSubscriptionInfo):
+            Output only. Information about the associated
+            Analytics Hub subscription. Only set if the
+            subscritpion is created by Analytics Hub.
     """
 
     class State(proto.Enum):
@@ -926,6 +1158,31 @@ class Subscription(proto.Message):
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         RESOURCE_ERROR = 2
+
+    class AnalyticsHubSubscriptionInfo(proto.Message):
+        r"""Information about an associated Analytics Hub subscription
+        (https://cloud.google.com/bigquery/docs/analytics-hub-manage-subscriptions).
+
+        Attributes:
+            listing (str):
+                Optional. The name of the associated Analytics Hub listing
+                resource. Pattern:
+                "projects/{project}/locations/{location}/dataExchanges/{data_exchange}/listings/{listing}".
+            subscription (str):
+                Optional. The name of the associated
+                Analytics Hub subscription resource. Pattern:
+
+                "projects/{project}/locations/{location}/subscriptions/{subscription}".
+        """
+
+        listing: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        subscription: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -1008,6 +1265,11 @@ class Subscription(proto.Message):
         proto.ENUM,
         number=19,
         enum=State,
+    )
+    analytics_hub_subscription_info: AnalyticsHubSubscriptionInfo = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        message=AnalyticsHubSubscriptionInfo,
     )
 
 

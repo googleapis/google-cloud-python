@@ -53,6 +53,7 @@ from .types.pubsub import ListTopicSubscriptionsResponse
 from .types.pubsub import MessageStoragePolicy
 from .types.pubsub import ModifyAckDeadlineRequest
 from .types.pubsub import ModifyPushConfigRequest
+from .types.pubsub import PlatformLogsSettings
 from .types.pubsub import PublishRequest
 from .types.pubsub import PublishResponse
 from .types.pubsub import PubsubMessage
@@ -132,6 +133,7 @@ __all__ = (
     "MessageStoragePolicy",
     "ModifyAckDeadlineRequest",
     "ModifyPushConfigRequest",
+    "PlatformLogsSettings",
     "PublishRequest",
     "PublishResponse",
     "PublisherClient",

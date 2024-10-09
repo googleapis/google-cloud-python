@@ -55,6 +55,7 @@ from google.pubsub_v1.types.pubsub import ListTopicSubscriptionsResponse
 from google.pubsub_v1.types.pubsub import MessageStoragePolicy
 from google.pubsub_v1.types.pubsub import ModifyAckDeadlineRequest
 from google.pubsub_v1.types.pubsub import ModifyPushConfigRequest
+from google.pubsub_v1.types.pubsub import PlatformLogsSettings
 from google.pubsub_v1.types.pubsub import PublishRequest
 from google.pubsub_v1.types.pubsub import PublishResponse
 from google.pubsub_v1.types.pubsub import PubsubMessage
@@ -127,6 +128,7 @@ __all__ = (
     "MessageStoragePolicy",
     "ModifyAckDeadlineRequest",
     "ModifyPushConfigRequest",
+    "PlatformLogsSettings",
     "PublishRequest",
     "PublishResponse",
     "PubsubMessage",
