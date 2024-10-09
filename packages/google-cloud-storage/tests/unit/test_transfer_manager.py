@@ -606,6 +606,7 @@ def test_download_chunks_concurrently():
 
     expected_download_kwargs = EXPECTED_DOWNLOAD_KWARGS.copy()
     expected_download_kwargs["command"] = "tm.download_sharded"
+    expected_download_kwargs["checksum"] = None
 
     with mock.patch("google.cloud.storage.transfer_manager.open", mock.mock_open()):
         result = transfer_manager.download_chunks_concurrently(
@@ -636,9 +637,6 @@ def test_download_chunks_concurrently_with_crc32c():
     blob_mock.size = len(BLOB_CONTENTS)
     blob_mock.crc32c = "eOVVVw=="
 
-    expected_download_kwargs = EXPECTED_DOWNLOAD_KWARGS.copy()
-    expected_download_kwargs["command"] = "tm.download_sharded"
-
     def write_to_file(f, *args, **kwargs):
         f.write(BLOB_CHUNK)
 
@@ -663,9 +661,6 @@ def test_download_chunks_concurrently_with_crc32c_failure():
     BLOB_CONTENTS = BLOB_CHUNK * MULTIPLE
     blob_mock.size = len(BLOB_CONTENTS)
     blob_mock.crc32c = "invalid"
-
-    expected_download_kwargs = EXPECTED_DOWNLOAD_KWARGS.copy()
-    expected_download_kwargs["command"] = "tm.download_sharded"
 
     def write_to_file(f, *args, **kwargs):
         f.write(BLOB_CHUNK)
