@@ -16,8 +16,7 @@
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api import httpbody_pb2  # type: ignore
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -25,22 +24,15 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
-from google.cloud.retail_v2beta.types import (
-    export_config,
-    import_config,
-    purge_config,
-    user_event,
-    user_event_service,
-)
+from google.cloud.retail_v2beta.types import project, project_service
 
-from .base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
+from .base import DEFAULT_CLIENT_INFO, ProjectServiceTransport
 
 
-class UserEventServiceGrpcTransport(UserEventServiceTransport):
-    """gRPC backend transport for UserEventService.
+class ProjectServiceGrpcTransport(ProjectServiceTransport):
+    """gRPC backend transport for ProjectService.
 
-    Service for ingesting end user actions on the customer
-    website.
+    Service for settings at Project level.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -123,7 +115,6 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
-        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -246,30 +237,17 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Quick check: Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
-
-        # Return the client from cache.
-        return self._operations_client
-
-    @property
-    def write_user_event(
+    def get_alert_config(
         self,
-    ) -> Callable[[user_event_service.WriteUserEventRequest], user_event.UserEvent]:
-        r"""Return a callable for the write user event method over gRPC.
+    ) -> Callable[[project_service.GetAlertConfigRequest], project.AlertConfig]:
+        r"""Return a callable for the get alert config method over gRPC.
 
-        Writes a single user event.
+        Get the [AlertConfig][google.cloud.retail.v2beta.AlertConfig] of
+        the requested project.
 
         Returns:
-            Callable[[~.WriteUserEventRequest],
-                    ~.UserEvent]:
+            Callable[[~.GetAlertConfigRequest],
+                    ~.AlertConfig]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -277,31 +255,25 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "write_user_event" not in self._stubs:
-            self._stubs["write_user_event"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2beta.UserEventService/WriteUserEvent",
-                request_serializer=user_event_service.WriteUserEventRequest.serialize,
-                response_deserializer=user_event.UserEvent.deserialize,
+        if "get_alert_config" not in self._stubs:
+            self._stubs["get_alert_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2beta.ProjectService/GetAlertConfig",
+                request_serializer=project_service.GetAlertConfigRequest.serialize,
+                response_deserializer=project.AlertConfig.deserialize,
             )
-        return self._stubs["write_user_event"]
+        return self._stubs["get_alert_config"]
 
     @property
-    def collect_user_event(
+    def update_alert_config(
         self,
-    ) -> Callable[[user_event_service.CollectUserEventRequest], httpbody_pb2.HttpBody]:
-        r"""Return a callable for the collect user event method over gRPC.
+    ) -> Callable[[project_service.UpdateAlertConfigRequest], project.AlertConfig]:
+        r"""Return a callable for the update alert config method over gRPC.
 
-        Writes a single user event from the browser. This
-        uses a GET request to due to browser restriction of
-        POST-ing to a 3rd party domain.
-
-        This method is used only by the Retail API JavaScript
-        pixel and Google Tag Manager. Users should not call this
-        method directly.
+        Update the alert config of the requested project.
 
         Returns:
-            Callable[[~.CollectUserEventRequest],
-                    ~.HttpBody]:
+            Callable[[~.UpdateAlertConfigRequest],
+                    ~.AlertConfig]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -309,142 +281,13 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "collect_user_event" not in self._stubs:
-            self._stubs["collect_user_event"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2beta.UserEventService/CollectUserEvent",
-                request_serializer=user_event_service.CollectUserEventRequest.serialize,
-                response_deserializer=httpbody_pb2.HttpBody.FromString,
+        if "update_alert_config" not in self._stubs:
+            self._stubs["update_alert_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2beta.ProjectService/UpdateAlertConfig",
+                request_serializer=project_service.UpdateAlertConfigRequest.serialize,
+                response_deserializer=project.AlertConfig.deserialize,
             )
-        return self._stubs["collect_user_event"]
-
-    @property
-    def purge_user_events(
-        self,
-    ) -> Callable[[purge_config.PurgeUserEventsRequest], operations_pb2.Operation]:
-        r"""Return a callable for the purge user events method over gRPC.
-
-        Deletes permanently all user events specified by the
-        filter provided. Depending on the number of events
-        specified by the filter, this operation could take hours
-        or days to complete. To test a filter, use the list
-        command first.
-
-        Returns:
-            Callable[[~.PurgeUserEventsRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "purge_user_events" not in self._stubs:
-            self._stubs["purge_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2beta.UserEventService/PurgeUserEvents",
-                request_serializer=purge_config.PurgeUserEventsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["purge_user_events"]
-
-    @property
-    def import_user_events(
-        self,
-    ) -> Callable[[import_config.ImportUserEventsRequest], operations_pb2.Operation]:
-        r"""Return a callable for the import user events method over gRPC.
-
-        Bulk import of User events. Request processing might be
-        synchronous. Events that already exist are skipped. Use this
-        method for backfilling historical user events.
-
-        ``Operation.response`` is of type ``ImportResponse``. Note that
-        it is possible for a subset of the items to be successfully
-        inserted. ``Operation.metadata`` is of type ``ImportMetadata``.
-
-        Returns:
-            Callable[[~.ImportUserEventsRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "import_user_events" not in self._stubs:
-            self._stubs["import_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2beta.UserEventService/ImportUserEvents",
-                request_serializer=import_config.ImportUserEventsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["import_user_events"]
-
-    @property
-    def export_user_events(
-        self,
-    ) -> Callable[[export_config.ExportUserEventsRequest], operations_pb2.Operation]:
-        r"""Return a callable for the export user events method over gRPC.
-
-        Exports user events.
-
-        ``Operation.response`` is of type ``ExportResponse``.
-        ``Operation.metadata`` is of type ``ExportMetadata``.
-
-        Returns:
-            Callable[[~.ExportUserEventsRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "export_user_events" not in self._stubs:
-            self._stubs["export_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2beta.UserEventService/ExportUserEvents",
-                request_serializer=export_config.ExportUserEventsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["export_user_events"]
-
-    @property
-    def rejoin_user_events(
-        self,
-    ) -> Callable[
-        [user_event_service.RejoinUserEventsRequest], operations_pb2.Operation
-    ]:
-        r"""Return a callable for the rejoin user events method over gRPC.
-
-        Starts a user-event rejoin operation with latest
-        product catalog. Events are not annotated with detailed
-        product information for products that are missing from
-        the catalog when the user event is ingested. These
-        events are stored as unjoined events with limited usage
-        on training and serving. You can use this method to
-        start a join operation on specified events with the
-        latest version of product catalog. You can also use this
-        method to correct events joined with the wrong product
-        catalog. A rejoin operation can take hours or days to
-        complete.
-
-        Returns:
-            Callable[[~.RejoinUserEventsRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "rejoin_user_events" not in self._stubs:
-            self._stubs["rejoin_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2beta.UserEventService/RejoinUserEvents",
-                request_serializer=user_event_service.RejoinUserEventsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["rejoin_user_events"]
+        return self._stubs["update_alert_config"]
 
     def close(self):
         self.grpc_channel.close()
@@ -490,4 +333,4 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
         return "grpc"
 
 
-__all__ = ("UserEventServiceGrpcTransport",)
+__all__ = ("ProjectServiceGrpcTransport",)

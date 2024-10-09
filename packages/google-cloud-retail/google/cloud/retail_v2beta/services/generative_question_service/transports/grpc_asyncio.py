@@ -13,34 +13,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api import httpbody_pb2  # type: ignore
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
-import google.auth  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
 from google.cloud.retail_v2beta.types import (
-    export_config,
-    import_config,
-    purge_config,
-    user_event,
-    user_event_service,
+    generative_question,
+    generative_question_service,
 )
 
-from .base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
+from .base import DEFAULT_CLIENT_INFO, GenerativeQuestionServiceTransport
+from .grpc import GenerativeQuestionServiceGrpcTransport
 
 
-class UserEventServiceGrpcTransport(UserEventServiceTransport):
-    """gRPC backend transport for UserEventService.
+class GenerativeQuestionServiceGrpcAsyncIOTransport(GenerativeQuestionServiceTransport):
+    """gRPC AsyncIO backend transport for GenerativeQuestionService.
 
-    Service for ingesting end user actions on the customer
-    website.
+    Service for managing LLM generated questions in search
+    serving.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -50,7 +49,50 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "retail.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
+        )
 
     def __init__(
         self,
@@ -59,7 +101,7 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -83,9 +125,10 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if a ``channel`` instance is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if a ``channel`` instance is provided.
-            channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]]):
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
                 A ``Channel`` instance through which to make calls, or a Callable
                 that constructs and returns one. If set to None, ``self.create_channel``
                 is used to create the channel. If a Callable is given, it will be called
@@ -115,7 +158,7 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
                 be used for service account credentials.
 
         Raises:
-          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -123,21 +166,19 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
-        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if isinstance(channel, grpc.Channel):
+        if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
             credentials = None
             self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -193,244 +234,32 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "retail.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-
-        Raises:
-            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
-              and ``credentials_file`` are passed.
-        """
-
-        return grpc_helpers.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
-            scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs,
-        )
-
     @property
-    def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service."""
+    def grpc_channel(self) -> aio.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
+        """
+        # Return the channel from cache.
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Quick check: Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
-
-        # Return the client from cache.
-        return self._operations_client
-
-    @property
-    def write_user_event(
-        self,
-    ) -> Callable[[user_event_service.WriteUserEventRequest], user_event.UserEvent]:
-        r"""Return a callable for the write user event method over gRPC.
-
-        Writes a single user event.
-
-        Returns:
-            Callable[[~.WriteUserEventRequest],
-                    ~.UserEvent]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "write_user_event" not in self._stubs:
-            self._stubs["write_user_event"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2beta.UserEventService/WriteUserEvent",
-                request_serializer=user_event_service.WriteUserEventRequest.serialize,
-                response_deserializer=user_event.UserEvent.deserialize,
-            )
-        return self._stubs["write_user_event"]
-
-    @property
-    def collect_user_event(
-        self,
-    ) -> Callable[[user_event_service.CollectUserEventRequest], httpbody_pb2.HttpBody]:
-        r"""Return a callable for the collect user event method over gRPC.
-
-        Writes a single user event from the browser. This
-        uses a GET request to due to browser restriction of
-        POST-ing to a 3rd party domain.
-
-        This method is used only by the Retail API JavaScript
-        pixel and Google Tag Manager. Users should not call this
-        method directly.
-
-        Returns:
-            Callable[[~.CollectUserEventRequest],
-                    ~.HttpBody]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "collect_user_event" not in self._stubs:
-            self._stubs["collect_user_event"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2beta.UserEventService/CollectUserEvent",
-                request_serializer=user_event_service.CollectUserEventRequest.serialize,
-                response_deserializer=httpbody_pb2.HttpBody.FromString,
-            )
-        return self._stubs["collect_user_event"]
-
-    @property
-    def purge_user_events(
-        self,
-    ) -> Callable[[purge_config.PurgeUserEventsRequest], operations_pb2.Operation]:
-        r"""Return a callable for the purge user events method over gRPC.
-
-        Deletes permanently all user events specified by the
-        filter provided. Depending on the number of events
-        specified by the filter, this operation could take hours
-        or days to complete. To test a filter, use the list
-        command first.
-
-        Returns:
-            Callable[[~.PurgeUserEventsRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "purge_user_events" not in self._stubs:
-            self._stubs["purge_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2beta.UserEventService/PurgeUserEvents",
-                request_serializer=purge_config.PurgeUserEventsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["purge_user_events"]
-
-    @property
-    def import_user_events(
-        self,
-    ) -> Callable[[import_config.ImportUserEventsRequest], operations_pb2.Operation]:
-        r"""Return a callable for the import user events method over gRPC.
-
-        Bulk import of User events. Request processing might be
-        synchronous. Events that already exist are skipped. Use this
-        method for backfilling historical user events.
-
-        ``Operation.response`` is of type ``ImportResponse``. Note that
-        it is possible for a subset of the items to be successfully
-        inserted. ``Operation.metadata`` is of type ``ImportMetadata``.
-
-        Returns:
-            Callable[[~.ImportUserEventsRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "import_user_events" not in self._stubs:
-            self._stubs["import_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2beta.UserEventService/ImportUserEvents",
-                request_serializer=import_config.ImportUserEventsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["import_user_events"]
-
-    @property
-    def export_user_events(
-        self,
-    ) -> Callable[[export_config.ExportUserEventsRequest], operations_pb2.Operation]:
-        r"""Return a callable for the export user events method over gRPC.
-
-        Exports user events.
-
-        ``Operation.response`` is of type ``ExportResponse``.
-        ``Operation.metadata`` is of type ``ExportMetadata``.
-
-        Returns:
-            Callable[[~.ExportUserEventsRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "export_user_events" not in self._stubs:
-            self._stubs["export_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2beta.UserEventService/ExportUserEvents",
-                request_serializer=export_config.ExportUserEventsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["export_user_events"]
-
-    @property
-    def rejoin_user_events(
+    def update_generative_questions_feature_config(
         self,
     ) -> Callable[
-        [user_event_service.RejoinUserEventsRequest], operations_pb2.Operation
+        [generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest],
+        Awaitable[generative_question.GenerativeQuestionsFeatureConfig],
     ]:
-        r"""Return a callable for the rejoin user events method over gRPC.
+        r"""Return a callable for the update generative questions
+        feature config method over gRPC.
 
-        Starts a user-event rejoin operation with latest
-        product catalog. Events are not annotated with detailed
-        product information for products that are missing from
-        the catalog when the user event is ingested. These
-        events are stored as unjoined events with limited usage
-        on training and serving. You can use this method to
-        start a join operation on specified events with the
-        latest version of product catalog. You can also use this
-        method to correct events joined with the wrong product
-        catalog. A rejoin operation can take hours or days to
-        complete.
+        Manages overal generative question feature state --
+        enables toggling feature on and off.
 
         Returns:
-            Callable[[~.RejoinUserEventsRequest],
-                    ~.Operation]:
+            Callable[[~.UpdateGenerativeQuestionsFeatureConfigRequest],
+                    Awaitable[~.GenerativeQuestionsFeatureConfig]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -438,16 +267,179 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "rejoin_user_events" not in self._stubs:
-            self._stubs["rejoin_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2beta.UserEventService/RejoinUserEvents",
-                request_serializer=user_event_service.RejoinUserEventsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "update_generative_questions_feature_config" not in self._stubs:
+            self._stubs[
+                "update_generative_questions_feature_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2beta.GenerativeQuestionService/UpdateGenerativeQuestionsFeatureConfig",
+                request_serializer=generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest.serialize,
+                response_deserializer=generative_question.GenerativeQuestionsFeatureConfig.deserialize,
             )
-        return self._stubs["rejoin_user_events"]
+        return self._stubs["update_generative_questions_feature_config"]
+
+    @property
+    def get_generative_questions_feature_config(
+        self,
+    ) -> Callable[
+        [generative_question_service.GetGenerativeQuestionsFeatureConfigRequest],
+        Awaitable[generative_question.GenerativeQuestionsFeatureConfig],
+    ]:
+        r"""Return a callable for the get generative questions
+        feature config method over gRPC.
+
+        Manages overal generative question feature state --
+        enables toggling feature on and off.
+
+        Returns:
+            Callable[[~.GetGenerativeQuestionsFeatureConfigRequest],
+                    Awaitable[~.GenerativeQuestionsFeatureConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_generative_questions_feature_config" not in self._stubs:
+            self._stubs[
+                "get_generative_questions_feature_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2beta.GenerativeQuestionService/GetGenerativeQuestionsFeatureConfig",
+                request_serializer=generative_question_service.GetGenerativeQuestionsFeatureConfigRequest.serialize,
+                response_deserializer=generative_question.GenerativeQuestionsFeatureConfig.deserialize,
+            )
+        return self._stubs["get_generative_questions_feature_config"]
+
+    @property
+    def list_generative_question_configs(
+        self,
+    ) -> Callable[
+        [generative_question_service.ListGenerativeQuestionConfigsRequest],
+        Awaitable[generative_question_service.ListGenerativeQuestionConfigsResponse],
+    ]:
+        r"""Return a callable for the list generative question
+        configs method over gRPC.
+
+        Returns all questions for a given catalog.
+
+        Returns:
+            Callable[[~.ListGenerativeQuestionConfigsRequest],
+                    Awaitable[~.ListGenerativeQuestionConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_generative_question_configs" not in self._stubs:
+            self._stubs[
+                "list_generative_question_configs"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2beta.GenerativeQuestionService/ListGenerativeQuestionConfigs",
+                request_serializer=generative_question_service.ListGenerativeQuestionConfigsRequest.serialize,
+                response_deserializer=generative_question_service.ListGenerativeQuestionConfigsResponse.deserialize,
+            )
+        return self._stubs["list_generative_question_configs"]
+
+    @property
+    def update_generative_question_config(
+        self,
+    ) -> Callable[
+        [generative_question_service.UpdateGenerativeQuestionConfigRequest],
+        Awaitable[generative_question.GenerativeQuestionConfig],
+    ]:
+        r"""Return a callable for the update generative question
+        config method over gRPC.
+
+        Allows management of individual questions.
+
+        Returns:
+            Callable[[~.UpdateGenerativeQuestionConfigRequest],
+                    Awaitable[~.GenerativeQuestionConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_generative_question_config" not in self._stubs:
+            self._stubs[
+                "update_generative_question_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2beta.GenerativeQuestionService/UpdateGenerativeQuestionConfig",
+                request_serializer=generative_question_service.UpdateGenerativeQuestionConfigRequest.serialize,
+                response_deserializer=generative_question.GenerativeQuestionConfig.deserialize,
+            )
+        return self._stubs["update_generative_question_config"]
+
+    @property
+    def batch_update_generative_question_configs(
+        self,
+    ) -> Callable[
+        [generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest],
+        Awaitable[
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse
+        ],
+    ]:
+        r"""Return a callable for the batch update generative
+        question configs method over gRPC.
+
+        Allows management of multiple questions.
+
+        Returns:
+            Callable[[~.BatchUpdateGenerativeQuestionConfigsRequest],
+                    Awaitable[~.BatchUpdateGenerativeQuestionConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_update_generative_question_configs" not in self._stubs:
+            self._stubs[
+                "batch_update_generative_question_configs"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2beta.GenerativeQuestionService/BatchUpdateGenerativeQuestionConfigs",
+                request_serializer=generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest.serialize,
+                response_deserializer=generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.deserialize,
+            )
+        return self._stubs["batch_update_generative_question_configs"]
+
+    def _prep_wrapped_messages(self, client_info):
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.update_generative_questions_feature_config: gapic_v1.method_async.wrap_method(
+                self.update_generative_questions_feature_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_generative_questions_feature_config: gapic_v1.method_async.wrap_method(
+                self.get_generative_questions_feature_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_generative_question_configs: gapic_v1.method_async.wrap_method(
+                self.list_generative_question_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_generative_question_config: gapic_v1.method_async.wrap_method(
+                self.update_generative_question_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_generative_question_configs: gapic_v1.method_async.wrap_method(
+                self.batch_update_generative_question_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+        }
 
     def close(self):
-        self.grpc_channel.close()
+        return self.grpc_channel.close()
 
     @property
     def get_operation(
@@ -485,9 +477,5 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
             )
         return self._stubs["list_operations"]
 
-    @property
-    def kind(self) -> str:
-        return "grpc"
 
-
-__all__ = ("UserEventServiceGrpcTransport",)
+__all__ = ("GenerativeQuestionServiceGrpcAsyncIOTransport",)

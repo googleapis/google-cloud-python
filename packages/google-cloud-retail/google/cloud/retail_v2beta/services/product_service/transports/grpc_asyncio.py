@@ -27,7 +27,7 @@ from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.retail_v2beta.types import import_config
+from google.cloud.retail_v2beta.types import export_config, import_config
 from google.cloud.retail_v2beta.types import product
 from google.cloud.retail_v2beta.types import product as gcr_product
 from google.cloud.retail_v2beta.types import product_service, purge_config
@@ -483,6 +483,34 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["import_products"]
 
     @property
+    def export_products(
+        self,
+    ) -> Callable[
+        [export_config.ExportProductsRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the export products method over gRPC.
+
+        Exports multiple [Product][google.cloud.retail.v2beta.Product]s.
+
+        Returns:
+            Callable[[~.ExportProductsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_products" not in self._stubs:
+            self._stubs["export_products"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2beta.ProductService/ExportProducts",
+                request_serializer=export_config.ExportProductsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_products"]
+
+    @property
     def set_inventory(
         self,
     ) -> Callable[
@@ -845,6 +873,11 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
                     deadline=300.0,
                 ),
                 default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.export_products: gapic_v1.method_async.wrap_method(
+                self.export_products,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.set_inventory: gapic_v1.method_async.wrap_method(

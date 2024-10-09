@@ -20,13 +20,7 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -43,19 +37,15 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
-from google.api import httpbody_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.retail_v2beta.types import (
-    export_config,
-    import_config,
-    purge_config,
-    user_event,
-    user_event_service,
+    generative_question,
+    generative_question_service,
 )
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import UserEventServiceTransport
+from .base import GenerativeQuestionServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -64,8 +54,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class UserEventServiceRestInterceptor:
-    """Interceptor for UserEventService.
+class GenerativeQuestionServiceRestInterceptor:
+    """Interceptor for GenerativeQuestionService.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -75,198 +65,184 @@ class UserEventServiceRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the UserEventServiceRestTransport.
+    instance of a custom subclass when constructing the GenerativeQuestionServiceRestTransport.
 
     .. code-block:: python
-        class MyCustomUserEventServiceInterceptor(UserEventServiceRestInterceptor):
-            def pre_collect_user_event(self, request, metadata):
+        class MyCustomGenerativeQuestionServiceInterceptor(GenerativeQuestionServiceRestInterceptor):
+            def pre_batch_update_generative_question_configs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_collect_user_event(self, response):
+            def post_batch_update_generative_question_configs(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_export_user_events(self, request, metadata):
+            def pre_get_generative_questions_feature_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_export_user_events(self, response):
+            def post_get_generative_questions_feature_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_import_user_events(self, request, metadata):
+            def pre_list_generative_question_configs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_import_user_events(self, response):
+            def post_list_generative_question_configs(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_purge_user_events(self, request, metadata):
+            def pre_update_generative_question_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_purge_user_events(self, response):
+            def post_update_generative_question_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_rejoin_user_events(self, request, metadata):
+            def pre_update_generative_questions_feature_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_rejoin_user_events(self, response):
+            def post_update_generative_questions_feature_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_write_user_event(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_write_user_event(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-        transport = UserEventServiceRestTransport(interceptor=MyCustomUserEventServiceInterceptor())
-        client = UserEventServiceClient(transport=transport)
+        transport = GenerativeQuestionServiceRestTransport(interceptor=MyCustomGenerativeQuestionServiceInterceptor())
+        client = GenerativeQuestionServiceClient(transport=transport)
 
 
     """
 
-    def pre_collect_user_event(
+    def pre_batch_update_generative_question_configs(
         self,
-        request: user_event_service.CollectUserEventRequest,
+        request: generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[user_event_service.CollectUserEventRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for collect_user_event
+    ) -> Tuple[
+        generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for batch_update_generative_question_configs
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the UserEventService server.
+        before they are sent to the GenerativeQuestionService server.
         """
         return request, metadata
 
-    def post_collect_user_event(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
-        """Post-rpc interceptor for collect_user_event
+    def post_batch_update_generative_question_configs(
+        self,
+        response: generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse,
+    ) -> generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse:
+        """Post-rpc interceptor for batch_update_generative_question_configs
 
         Override in a subclass to manipulate the response
-        after it is returned by the UserEventService server but before
+        after it is returned by the GenerativeQuestionService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_export_user_events(
+    def pre_get_generative_questions_feature_config(
         self,
-        request: export_config.ExportUserEventsRequest,
+        request: generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[export_config.ExportUserEventsRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for export_user_events
+    ) -> Tuple[
+        generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for get_generative_questions_feature_config
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the UserEventService server.
+        before they are sent to the GenerativeQuestionService server.
         """
         return request, metadata
 
-    def post_export_user_events(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for export_user_events
+    def post_get_generative_questions_feature_config(
+        self, response: generative_question.GenerativeQuestionsFeatureConfig
+    ) -> generative_question.GenerativeQuestionsFeatureConfig:
+        """Post-rpc interceptor for get_generative_questions_feature_config
 
         Override in a subclass to manipulate the response
-        after it is returned by the UserEventService server but before
+        after it is returned by the GenerativeQuestionService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_import_user_events(
+    def pre_list_generative_question_configs(
         self,
-        request: import_config.ImportUserEventsRequest,
+        request: generative_question_service.ListGenerativeQuestionConfigsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[import_config.ImportUserEventsRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for import_user_events
+    ) -> Tuple[
+        generative_question_service.ListGenerativeQuestionConfigsRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_generative_question_configs
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the UserEventService server.
+        before they are sent to the GenerativeQuestionService server.
         """
         return request, metadata
 
-    def post_import_user_events(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for import_user_events
+    def post_list_generative_question_configs(
+        self,
+        response: generative_question_service.ListGenerativeQuestionConfigsResponse,
+    ) -> generative_question_service.ListGenerativeQuestionConfigsResponse:
+        """Post-rpc interceptor for list_generative_question_configs
 
         Override in a subclass to manipulate the response
-        after it is returned by the UserEventService server but before
+        after it is returned by the GenerativeQuestionService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_purge_user_events(
+    def pre_update_generative_question_config(
         self,
-        request: purge_config.PurgeUserEventsRequest,
+        request: generative_question_service.UpdateGenerativeQuestionConfigRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[purge_config.PurgeUserEventsRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for purge_user_events
+    ) -> Tuple[
+        generative_question_service.UpdateGenerativeQuestionConfigRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for update_generative_question_config
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the UserEventService server.
+        before they are sent to the GenerativeQuestionService server.
         """
         return request, metadata
 
-    def post_purge_user_events(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for purge_user_events
+    def post_update_generative_question_config(
+        self, response: generative_question.GenerativeQuestionConfig
+    ) -> generative_question.GenerativeQuestionConfig:
+        """Post-rpc interceptor for update_generative_question_config
 
         Override in a subclass to manipulate the response
-        after it is returned by the UserEventService server but before
+        after it is returned by the GenerativeQuestionService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_rejoin_user_events(
+    def pre_update_generative_questions_feature_config(
         self,
-        request: user_event_service.RejoinUserEventsRequest,
+        request: generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[user_event_service.RejoinUserEventsRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for rejoin_user_events
+    ) -> Tuple[
+        generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for update_generative_questions_feature_config
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the UserEventService server.
+        before they are sent to the GenerativeQuestionService server.
         """
         return request, metadata
 
-    def post_rejoin_user_events(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for rejoin_user_events
+    def post_update_generative_questions_feature_config(
+        self, response: generative_question.GenerativeQuestionsFeatureConfig
+    ) -> generative_question.GenerativeQuestionsFeatureConfig:
+        """Post-rpc interceptor for update_generative_questions_feature_config
 
         Override in a subclass to manipulate the response
-        after it is returned by the UserEventService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_write_user_event(
-        self,
-        request: user_event_service.WriteUserEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[user_event_service.WriteUserEventRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for write_user_event
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the UserEventService server.
-        """
-        return request, metadata
-
-    def post_write_user_event(
-        self, response: user_event.UserEvent
-    ) -> user_event.UserEvent:
-        """Post-rpc interceptor for write_user_event
-
-        Override in a subclass to manipulate the response
-        after it is returned by the UserEventService server but before
+        after it is returned by the GenerativeQuestionService server but before
         it is returned to user code.
         """
         return response
@@ -279,7 +255,7 @@ class UserEventServiceRestInterceptor:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the UserEventService server.
+        before they are sent to the GenerativeQuestionService server.
         """
         return request, metadata
 
@@ -289,7 +265,7 @@ class UserEventServiceRestInterceptor:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the UserEventService server but before
+        after it is returned by the GenerativeQuestionService server but before
         it is returned to user code.
         """
         return response
@@ -302,7 +278,7 @@ class UserEventServiceRestInterceptor:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the UserEventService server.
+        before they are sent to the GenerativeQuestionService server.
         """
         return request, metadata
 
@@ -312,24 +288,24 @@ class UserEventServiceRestInterceptor:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
-        after it is returned by the UserEventService server but before
+        after it is returned by the GenerativeQuestionService server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class UserEventServiceRestStub:
+class GenerativeQuestionServiceRestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: UserEventServiceRestInterceptor
+    _interceptor: GenerativeQuestionServiceRestInterceptor
 
 
-class UserEventServiceRestTransport(UserEventServiceTransport):
-    """REST backend transport for UserEventService.
+class GenerativeQuestionServiceRestTransport(GenerativeQuestionServiceTransport):
+    """REST backend transport for GenerativeQuestionService.
 
-    Service for ingesting end user actions on the customer
-    website.
+    Service for managing LLM generated questions in search
+    serving.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -351,7 +327,7 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[UserEventServiceRestInterceptor] = None,
+        interceptor: Optional[GenerativeQuestionServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -410,79 +386,16 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
         )
-        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or UserEventServiceRestInterceptor()
+        self._interceptor = interceptor or GenerativeQuestionServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    @property
-    def operations_client(self) -> operations_v1.AbstractOperationsClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            http_options: Dict[str, List[Dict[str, str]]] = {
-                "google.longrunning.Operations.GetOperation": [
-                    {
-                        "method": "get",
-                        "uri": "/v2beta/{name=projects/*/locations/*/catalogs/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v2beta/{name=projects/*/locations/*/catalogs/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v2beta/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v2beta/{name=projects/*/operations/*}",
-                    },
-                ],
-                "google.longrunning.Operations.ListOperations": [
-                    {
-                        "method": "get",
-                        "uri": "/v2beta/{name=projects/*/locations/*/catalogs/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v2beta/{name=projects/*/locations/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v2beta/{name=projects/*}/operations",
-                    },
-                ],
-            }
-
-            rest_transport = operations_v1.OperationsRestTransport(
-                host=self._host,
-                # use the credentials which are saved
-                credentials=self._credentials,
-                scopes=self._scopes,
-                http_options=http_options,
-                path_prefix="v2beta",
-            )
-
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
-
-        # Return the client from cache.
-        return self._operations_client
-
-    class _CollectUserEvent(UserEventServiceRestStub):
+    class _BatchUpdateGenerativeQuestionConfigs(GenerativeQuestionServiceRestStub):
         def __hash__(self):
-            return hash("CollectUserEvent")
+            return hash("BatchUpdateGenerativeQuestionConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "userEvent": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -494,88 +407,156 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
 
         def __call__(
             self,
-            request: user_event_service.CollectUserEventRequest,
+            request: generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> httpbody_pb2.HttpBody:
-            r"""Call the collect user event method over HTTP.
+        ) -> generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse:
+            r"""Call the batch update generative
+            question configs method over HTTP.
 
-            Args:
-                request (~.user_event_service.CollectUserEventRequest):
-                    The request object. Request message for CollectUserEvent
-                method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                Args:
+                    request (~.generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest):
+                        The request object. Request for
+                    BatchUpdateGenerativeQuestionConfig
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary HTTP body. It
-                should only be used for payload formats that can't be
-                represented as JSON, such as raw binary or an HTML page.
+                Returns:
+                    ~.generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse:
+                        Aggregated response for
+                    UpdateGenerativeQuestionConfig method.
 
-                This message can be used both in streaming and
-                non-streaming API methods in the request as well as the
-                response.
+            """
 
-                It can be used as a top-level request field, which is
-                convenient if one wants to extract parameters from
-                either the URL or HTTP template into the request fields
-                and also want access to the raw HTTP body.
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2beta/{parent=projects/*/locations/*/catalogs/*}/generativeQuestion:batchUpdate",
+                    "body": "*",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_batch_update_generative_question_configs(
+                request, metadata
+            )
+            pb_request = generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-                Example:
+            # Jsonify the request body
 
-                ::
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-                    message GetResourceRequest {
-                      // A unique request id.
-                      string request_id = 1;
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
 
-                      // The raw HTTP body is bound to this field.
-                      google.api.HttpBody http_body = 2;
+            query_params["$alt"] = "json;enum-encoding=int"
 
-                    }
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
 
-                    service ResourceService {
-                      rpc GetResource(GetResourceRequest)
-                        returns (google.api.HttpBody);
-                      rpc UpdateResource(google.api.HttpBody)
-                        returns (google.protobuf.Empty);
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
-                    }
+            # Return the response
+            resp = (
+                generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
+            )
+            pb_resp = generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.pb(
+                resp
+            )
 
-                Example with streaming methods:
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_batch_update_generative_question_configs(resp)
+            return resp
 
-                ::
+    class _GetGenerativeQuestionsFeatureConfig(GenerativeQuestionServiceRestStub):
+        def __hash__(self):
+            return hash("GetGenerativeQuestionsFeatureConfig")
 
-                    service CaldavService {
-                      rpc GetCalendar(stream google.api.HttpBody)
-                        returns (stream google.api.HttpBody);
-                      rpc UpdateCalendar(stream google.api.HttpBody)
-                        returns (stream google.api.HttpBody);
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
-                    }
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-                Use of this type only changes how the request and
-                response bodies are handled, all other features will
-                continue to work unchanged.
+        def __call__(
+            self,
+            request: generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> generative_question.GenerativeQuestionsFeatureConfig:
+            r"""Call the get generative questions
+            feature config method over HTTP.
+
+                Args:
+                    request (~.generative_question_service.GetGenerativeQuestionsFeatureConfigRequest):
+                        The request object. Request for
+                    GetGenerativeQuestionsFeatureConfig
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.generative_question.GenerativeQuestionsFeatureConfig:
+                        Configuration for overall generative
+                    question feature state.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v2beta/{parent=projects/*/locations/*/catalogs/*}/userEvents:collect",
+                    "uri": "/v2beta/{catalog=projects/*/locations/*/catalogs/*}/generativeQuestionFeature",
                 },
             ]
-            request, metadata = self._interceptor.pre_collect_user_event(
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_get_generative_questions_feature_config(
                 request, metadata
             )
-            pb_request = user_event_service.CollectUserEventRequest.pb(request)
+            pb_request = generative_question_service.GetGenerativeQuestionsFeatureConfigRequest.pb(
+                request
+            )
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -608,16 +589,16 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = httpbody_pb2.HttpBody()
-            pb_resp = resp
+            resp = generative_question.GenerativeQuestionsFeatureConfig()
+            pb_resp = generative_question.GenerativeQuestionsFeatureConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_collect_user_event(resp)
+            resp = self._interceptor.post_get_generative_questions_feature_config(resp)
             return resp
 
-    class _ExportUserEvents(UserEventServiceRestStub):
+    class _ListGenerativeQuestionConfigs(GenerativeQuestionServiceRestStub):
         def __hash__(self):
-            return hash("ExportUserEvents")
+            return hash("ListGenerativeQuestionConfigs")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -631,49 +612,45 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
 
         def __call__(
             self,
-            request: export_config.ExportUserEventsRequest,
+            request: generative_question_service.ListGenerativeQuestionConfigsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the export user events method over HTTP.
+        ) -> generative_question_service.ListGenerativeQuestionConfigsResponse:
+            r"""Call the list generative question
+            configs method over HTTP.
 
-            Args:
-                request (~.export_config.ExportUserEventsRequest):
-                    The request object. Request message for the ``ExportUserEvents`` method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                Args:
+                    request (~.generative_question_service.ListGenerativeQuestionConfigsRequest):
+                        The request object. Request for ListQuestions method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
+                Returns:
+                    ~.generative_question_service.ListGenerativeQuestionConfigsResponse:
+                        Response for ListQuestions method.
             """
 
             http_options: List[Dict[str, str]] = [
                 {
-                    "method": "post",
-                    "uri": "/v2beta/{parent=projects/*/locations/*/catalogs/*}/userEvents:export",
-                    "body": "*",
+                    "method": "get",
+                    "uri": "/v2beta/{parent=projects/*/locations/*/catalogs/*}/generativeQuestions",
                 },
             ]
-            request, metadata = self._interceptor.pre_export_user_events(
+            request, metadata = self._interceptor.pre_list_generative_question_configs(
                 request, metadata
             )
-            pb_request = export_config.ExportUserEventsRequest.pb(request)
+            pb_request = (
+                generative_question_service.ListGenerativeQuestionConfigsRequest.pb(
+                    request
+                )
+            )
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
@@ -696,7 +673,6 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -705,453 +681,285 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_export_user_events(resp)
-            return resp
-
-    class _ImportUserEvents(UserEventServiceRestStub):
-        def __hash__(self):
-            return hash("ImportUserEvents")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: import_config.ImportUserEventsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the import user events method over HTTP.
-
-            Args:
-                request (~.import_config.ImportUserEventsRequest):
-                    The request object. Request message for the
-                ImportUserEvents request.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta/{parent=projects/*/locations/*/catalogs/*}/userEvents:import",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_import_user_events(
-                request, metadata
-            )
-            pb_request = import_config.ImportUserEventsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            resp = generative_question_service.ListGenerativeQuestionConfigsResponse()
+            pb_resp = (
+                generative_question_service.ListGenerativeQuestionConfigsResponse.pb(
+                    resp
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_import_user_events(resp)
-            return resp
-
-    class _PurgeUserEvents(UserEventServiceRestStub):
-        def __hash__(self):
-            return hash("PurgeUserEvents")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: purge_config.PurgeUserEventsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the purge user events method over HTTP.
-
-            Args:
-                request (~.purge_config.PurgeUserEventsRequest):
-                    The request object. Request message for PurgeUserEvents
-                method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta/{parent=projects/*/locations/*/catalogs/*}/userEvents:purge",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_purge_user_events(
-                request, metadata
-            )
-            pb_request = purge_config.PurgeUserEventsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_purge_user_events(resp)
-            return resp
-
-    class _RejoinUserEvents(UserEventServiceRestStub):
-        def __hash__(self):
-            return hash("RejoinUserEvents")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: user_event_service.RejoinUserEventsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the rejoin user events method over HTTP.
-
-            Args:
-                request (~.user_event_service.RejoinUserEventsRequest):
-                    The request object. Request message for RejoinUserEvents
-                method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta/{parent=projects/*/locations/*/catalogs/*}/userEvents:rejoin",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_rejoin_user_events(
-                request, metadata
-            )
-            pb_request = user_event_service.RejoinUserEventsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_rejoin_user_events(resp)
-            return resp
-
-    class _WriteUserEvent(UserEventServiceRestStub):
-        def __hash__(self):
-            return hash("WriteUserEvent")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: user_event_service.WriteUserEventRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> user_event.UserEvent:
-            r"""Call the write user event method over HTTP.
-
-            Args:
-                request (~.user_event_service.WriteUserEventRequest):
-                    The request object. Request message for WriteUserEvent
-                method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.user_event.UserEvent:
-                    UserEvent captures all metadata
-                information Retail API needs to know
-                about how end users interact with
-                customers' website.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta/{parent=projects/*/locations/*/catalogs/*}/userEvents:write",
-                    "body": "user_event",
-                },
-            ]
-            request, metadata = self._interceptor.pre_write_user_event(
-                request, metadata
-            )
-            pb_request = user_event_service.WriteUserEventRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = user_event.UserEvent()
-            pb_resp = user_event.UserEvent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_write_user_event(resp)
+            resp = self._interceptor.post_list_generative_question_configs(resp)
+            return resp
+
+    class _UpdateGenerativeQuestionConfig(GenerativeQuestionServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateGenerativeQuestionConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: generative_question_service.UpdateGenerativeQuestionConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> generative_question.GenerativeQuestionConfig:
+            r"""Call the update generative
+            question config method over HTTP.
+
+                Args:
+                    request (~.generative_question_service.UpdateGenerativeQuestionConfigRequest):
+                        The request object. Request for
+                    UpdateGenerativeQuestionConfig method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.generative_question.GenerativeQuestionConfig:
+                        Configuration for a single generated
+                    question.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v2beta/{generative_question_config.catalog=projects/*/locations/*/catalogs/*}/generativeQuestion",
+                    "body": "generative_question_config",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_generative_question_config(
+                request, metadata
+            )
+            pb_request = (
+                generative_question_service.UpdateGenerativeQuestionConfigRequest.pb(
+                    request
+                )
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = generative_question.GenerativeQuestionConfig()
+            pb_resp = generative_question.GenerativeQuestionConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_generative_question_config(resp)
+            return resp
+
+    class _UpdateGenerativeQuestionsFeatureConfig(GenerativeQuestionServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateGenerativeQuestionsFeatureConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> generative_question.GenerativeQuestionsFeatureConfig:
+            r"""Call the update generative
+            questions feature config method over HTTP.
+
+                Args:
+                    request (~.generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest):
+                        The request object. Request for
+                    UpdateGenerativeQuestionsFeatureConfig
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.generative_question.GenerativeQuestionsFeatureConfig:
+                        Configuration for overall generative
+                    question feature state.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v2beta/{generative_questions_feature_config.catalog=projects/*/locations/*/catalogs/*}/generativeQuestionFeature",
+                    "body": "generative_questions_feature_config",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_update_generative_questions_feature_config(
+                request, metadata
+            )
+            pb_request = generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = generative_question.GenerativeQuestionsFeatureConfig()
+            pb_resp = generative_question.GenerativeQuestionsFeatureConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_generative_questions_feature_config(
+                resp
+            )
             return resp
 
     @property
-    def collect_user_event(
-        self,
-    ) -> Callable[[user_event_service.CollectUserEventRequest], httpbody_pb2.HttpBody]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._CollectUserEvent(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def export_user_events(
-        self,
-    ) -> Callable[[export_config.ExportUserEventsRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ExportUserEvents(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def import_user_events(
-        self,
-    ) -> Callable[[import_config.ImportUserEventsRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ImportUserEvents(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def purge_user_events(
-        self,
-    ) -> Callable[[purge_config.PurgeUserEventsRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._PurgeUserEvents(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def rejoin_user_events(
+    def batch_update_generative_question_configs(
         self,
     ) -> Callable[
-        [user_event_service.RejoinUserEventsRequest], operations_pb2.Operation
+        [generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest],
+        generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RejoinUserEvents(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchUpdateGenerativeQuestionConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def write_user_event(
+    def get_generative_questions_feature_config(
         self,
-    ) -> Callable[[user_event_service.WriteUserEventRequest], user_event.UserEvent]:
+    ) -> Callable[
+        [generative_question_service.GetGenerativeQuestionsFeatureConfigRequest],
+        generative_question.GenerativeQuestionsFeatureConfig,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._WriteUserEvent(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetGenerativeQuestionsFeatureConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_generative_question_configs(
+        self,
+    ) -> Callable[
+        [generative_question_service.ListGenerativeQuestionConfigsRequest],
+        generative_question_service.ListGenerativeQuestionConfigsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListGenerativeQuestionConfigs(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_generative_question_config(
+        self,
+    ) -> Callable[
+        [generative_question_service.UpdateGenerativeQuestionConfigRequest],
+        generative_question.GenerativeQuestionConfig,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateGenerativeQuestionConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_generative_questions_feature_config(
+        self,
+    ) -> Callable[
+        [generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest],
+        generative_question.GenerativeQuestionsFeatureConfig,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateGenerativeQuestionsFeatureConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(UserEventServiceRestStub):
+    class _GetOperation(GenerativeQuestionServiceRestStub):
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -1229,7 +1037,7 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(UserEventServiceRestStub):
+    class _ListOperations(GenerativeQuestionServiceRestStub):
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -1307,4 +1115,4 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
         self._session.close()
 
 
-__all__ = ("UserEventServiceRestTransport",)
+__all__ = ("GenerativeQuestionServiceRestTransport",)

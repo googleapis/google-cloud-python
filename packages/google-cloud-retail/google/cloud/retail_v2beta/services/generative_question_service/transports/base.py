@@ -16,10 +16,9 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-from google.api import httpbody_pb2  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, operations_v1
+from google.api_core import gapic_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -29,11 +28,8 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.retail_v2beta import gapic_version as package_version
 from google.cloud.retail_v2beta.types import (
-    export_config,
-    import_config,
-    purge_config,
-    user_event,
-    user_event_service,
+    generative_question,
+    generative_question_service,
 )
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -41,8 +37,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class UserEventServiceTransport(abc.ABC):
-    """Abstract transport class for UserEventService."""
+class GenerativeQuestionServiceTransport(abc.ABC):
+    """Abstract transport class for GenerativeQuestionService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -137,53 +133,28 @@ class UserEventServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.write_user_event: gapic_v1.method.wrap_method(
-                self.write_user_event,
+            self.update_generative_questions_feature_config: gapic_v1.method.wrap_method(
+                self.update_generative_questions_feature_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.collect_user_event: gapic_v1.method.wrap_method(
-                self.collect_user_event,
+            self.get_generative_questions_feature_config: gapic_v1.method.wrap_method(
+                self.get_generative_questions_feature_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.purge_user_events: gapic_v1.method.wrap_method(
-                self.purge_user_events,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=30.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=30.0,
-                ),
-                default_timeout=30.0,
-                client_info=client_info,
-            ),
-            self.import_user_events: gapic_v1.method.wrap_method(
-                self.import_user_events,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=300.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=600.0,
-                ),
-                default_timeout=600.0,
-                client_info=client_info,
-            ),
-            self.export_user_events: gapic_v1.method.wrap_method(
-                self.export_user_events,
+            self.list_generative_question_configs: gapic_v1.method.wrap_method(
+                self.list_generative_question_configs,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.rejoin_user_events: gapic_v1.method.wrap_method(
-                self.rejoin_user_events,
+            self.update_generative_question_config: gapic_v1.method.wrap_method(
+                self.update_generative_question_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_generative_question_configs: gapic_v1.method.wrap_method(
+                self.batch_update_generative_question_configs,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -199,61 +170,66 @@ class UserEventServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def operations_client(self):
-        """Return the client designed to process long-running operations."""
-        raise NotImplementedError()
-
-    @property
-    def write_user_event(
+    def update_generative_questions_feature_config(
         self,
     ) -> Callable[
-        [user_event_service.WriteUserEventRequest],
-        Union[user_event.UserEvent, Awaitable[user_event.UserEvent]],
+        [generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest],
+        Union[
+            generative_question.GenerativeQuestionsFeatureConfig,
+            Awaitable[generative_question.GenerativeQuestionsFeatureConfig],
+        ],
     ]:
         raise NotImplementedError()
 
     @property
-    def collect_user_event(
+    def get_generative_questions_feature_config(
         self,
     ) -> Callable[
-        [user_event_service.CollectUserEventRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
+        [generative_question_service.GetGenerativeQuestionsFeatureConfigRequest],
+        Union[
+            generative_question.GenerativeQuestionsFeatureConfig,
+            Awaitable[generative_question.GenerativeQuestionsFeatureConfig],
+        ],
     ]:
         raise NotImplementedError()
 
     @property
-    def purge_user_events(
+    def list_generative_question_configs(
         self,
     ) -> Callable[
-        [purge_config.PurgeUserEventsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [generative_question_service.ListGenerativeQuestionConfigsRequest],
+        Union[
+            generative_question_service.ListGenerativeQuestionConfigsResponse,
+            Awaitable[
+                generative_question_service.ListGenerativeQuestionConfigsResponse
+            ],
+        ],
     ]:
         raise NotImplementedError()
 
     @property
-    def import_user_events(
+    def update_generative_question_config(
         self,
     ) -> Callable[
-        [import_config.ImportUserEventsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [generative_question_service.UpdateGenerativeQuestionConfigRequest],
+        Union[
+            generative_question.GenerativeQuestionConfig,
+            Awaitable[generative_question.GenerativeQuestionConfig],
+        ],
     ]:
         raise NotImplementedError()
 
     @property
-    def export_user_events(
+    def batch_update_generative_question_configs(
         self,
     ) -> Callable[
-        [export_config.ExportUserEventsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def rejoin_user_events(
-        self,
-    ) -> Callable[
-        [user_event_service.RejoinUserEventsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest],
+        Union[
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse,
+            Awaitable[
+                generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse
+            ],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -283,4 +259,4 @@ class UserEventServiceTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("UserEventServiceTransport",)
+__all__ = ("GenerativeQuestionServiceTransport",)

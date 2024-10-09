@@ -48,31 +48,20 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-from google.api import httpbody_pb2  # type: ignore
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
-from google.cloud.retail_v2beta.types import (
-    common,
-    export_config,
-    import_config,
-    purge_config,
-    user_event,
-    user_event_service,
-)
+from google.cloud.retail_v2beta.types import project, project_service
 
-from .transports.base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
-from .transports.grpc import UserEventServiceGrpcTransport
-from .transports.grpc_asyncio import UserEventServiceGrpcAsyncIOTransport
-from .transports.rest import UserEventServiceRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, ProjectServiceTransport
+from .transports.grpc import ProjectServiceGrpcTransport
+from .transports.grpc_asyncio import ProjectServiceGrpcAsyncIOTransport
+from .transports.rest import ProjectServiceRestTransport
 
 
-class UserEventServiceClientMeta(type):
-    """Metaclass for the UserEventService client.
+class ProjectServiceClientMeta(type):
+    """Metaclass for the ProjectService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
@@ -81,15 +70,15 @@ class UserEventServiceClientMeta(type):
 
     _transport_registry = (
         OrderedDict()
-    )  # type: Dict[str, Type[UserEventServiceTransport]]
-    _transport_registry["grpc"] = UserEventServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = UserEventServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = UserEventServiceRestTransport
+    )  # type: Dict[str, Type[ProjectServiceTransport]]
+    _transport_registry["grpc"] = ProjectServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = ProjectServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = ProjectServiceRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[UserEventServiceTransport]:
+    ) -> Type[ProjectServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -108,10 +97,8 @@ class UserEventServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
-    """Service for ingesting end user actions on the customer
-    website.
-    """
+class ProjectServiceClient(metaclass=ProjectServiceClientMeta):
+    """Service for settings at Project level."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -163,7 +150,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            UserEventServiceClient: The constructed client.
+            ProjectServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -181,7 +168,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            UserEventServiceClient: The constructed client.
+            ProjectServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -190,61 +177,28 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> UserEventServiceTransport:
+    def transport(self) -> ProjectServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            UserEventServiceTransport: The transport used by the client
+            ProjectServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
 
     @staticmethod
-    def catalog_path(
+    def alert_config_path(
         project: str,
-        location: str,
-        catalog: str,
     ) -> str:
-        """Returns a fully-qualified catalog string."""
-        return "projects/{project}/locations/{location}/catalogs/{catalog}".format(
+        """Returns a fully-qualified alert_config string."""
+        return "projects/{project}/alertConfig".format(
             project=project,
-            location=location,
-            catalog=catalog,
         )
 
     @staticmethod
-    def parse_catalog_path(path: str) -> Dict[str, str]:
-        """Parses a catalog path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/catalogs/(?P<catalog>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def product_path(
-        project: str,
-        location: str,
-        catalog: str,
-        branch: str,
-        product: str,
-    ) -> str:
-        """Returns a fully-qualified product string."""
-        return "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}".format(
-            project=project,
-            location=location,
-            catalog=catalog,
-            branch=branch,
-            product=product,
-        )
-
-    @staticmethod
-    def parse_product_path(path: str) -> Dict[str, str]:
-        """Parses a product path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/catalogs/(?P<catalog>.+?)/branches/(?P<branch>.+?)/products/(?P<product>.+?)$",
-            path,
-        )
+    def parse_alert_config_path(path: str) -> Dict[str, str]:
+        """Parses a alert_config path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/alertConfig$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -466,14 +420,14 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = UserEventServiceClient._DEFAULT_UNIVERSE
+            _default_universe = ProjectServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = UserEventServiceClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = ProjectServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = UserEventServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            api_endpoint = ProjectServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
                 UNIVERSE_DOMAIN=universe_domain
             )
         return api_endpoint
@@ -494,7 +448,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = UserEventServiceClient._DEFAULT_UNIVERSE
+        universe_domain = ProjectServiceClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -520,7 +474,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             ValueError: when client_universe does not match the universe in credentials.
         """
 
-        default_universe = UserEventServiceClient._DEFAULT_UNIVERSE
+        default_universe = ProjectServiceClient._DEFAULT_UNIVERSE
         credentials_universe = getattr(credentials, "universe_domain", default_universe)
 
         if client_universe != credentials_universe:
@@ -544,7 +498,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         """
         self._is_universe_domain_valid = (
             self._is_universe_domain_valid
-            or UserEventServiceClient._compare_universes(
+            or ProjectServiceClient._compare_universes(
                 self.universe_domain, self.transport._credentials
             )
         )
@@ -573,14 +527,12 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str, UserEventServiceTransport, Callable[..., UserEventServiceTransport]
-            ]
+            Union[str, ProjectServiceTransport, Callable[..., ProjectServiceTransport]]
         ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the user event service client.
+        """Instantiates the project service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -588,10 +540,10 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,UserEventServiceTransport,Callable[..., UserEventServiceTransport]]]):
+            transport (Optional[Union[str,ProjectServiceTransport,Callable[..., ProjectServiceTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the UserEventServiceTransport constructor.
+                arguments as used in the ProjectServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -644,11 +596,11 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = UserEventServiceClient._read_environment_variables()
-        self._client_cert_source = UserEventServiceClient._get_client_cert_source(
+        ) = ProjectServiceClient._read_environment_variables()
+        self._client_cert_source = ProjectServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = UserEventServiceClient._get_universe_domain(
+        self._universe_domain = ProjectServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -665,9 +617,9 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, UserEventServiceTransport)
+        transport_provided = isinstance(transport, ProjectServiceTransport)
         if transport_provided:
-            # transport is a UserEventServiceTransport instance.
+            # transport is a ProjectServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -678,12 +630,12 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(UserEventServiceTransport, transport)
+            self._transport = cast(ProjectServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
         self._api_endpoint = (
             self._api_endpoint
-            or UserEventServiceClient._get_api_endpoint(
+            or ProjectServiceClient._get_api_endpoint(
                 self._client_options.api_endpoint,
                 self._client_cert_source,
                 self._universe_domain,
@@ -702,12 +654,11 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 )
 
             transport_init: Union[
-                Type[UserEventServiceTransport],
-                Callable[..., UserEventServiceTransport],
+                Type[ProjectServiceTransport], Callable[..., ProjectServiceTransport]
             ] = (
-                UserEventServiceClient.get_transport_class(transport)
+                ProjectServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(Callable[..., UserEventServiceTransport], transport)
+                else cast(Callable[..., ProjectServiceTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -722,15 +673,17 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 api_audience=self._client_options.api_audience,
             )
 
-    def write_user_event(
+    def get_alert_config(
         self,
-        request: Optional[Union[user_event_service.WriteUserEventRequest, dict]] = None,
+        request: Optional[Union[project_service.GetAlertConfigRequest, dict]] = None,
         *,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> user_event.UserEvent:
-        r"""Writes a single user event.
+    ) -> project.AlertConfig:
+        r"""Get the [AlertConfig][google.cloud.retail.v2beta.AlertConfig] of
+        the requested project.
 
         .. code-block:: python
 
@@ -743,30 +696,33 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
-            def sample_write_user_event():
+            def sample_get_alert_config():
                 # Create a client
-                client = retail_v2beta.UserEventServiceClient()
+                client = retail_v2beta.ProjectServiceClient()
 
                 # Initialize request argument(s)
-                user_event = retail_v2beta.UserEvent()
-                user_event.event_type = "event_type_value"
-                user_event.visitor_id = "visitor_id_value"
-
-                request = retail_v2beta.WriteUserEventRequest(
-                    parent="parent_value",
-                    user_event=user_event,
+                request = retail_v2beta.GetAlertConfigRequest(
+                    name="name_value",
                 )
 
                 # Make the request
-                response = client.write_user_event(request=request)
+                response = client.get_alert_config(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2beta.types.WriteUserEventRequest, dict]):
-                The request object. Request message for WriteUserEvent
+            request (Union[google.cloud.retail_v2beta.types.GetAlertConfigRequest, dict]):
+                The request object. Request for
+                [ProjectService.GetAlertConfig][google.cloud.retail.v2beta.ProjectService.GetAlertConfig]
                 method.
+            name (str):
+                Required. Full AlertConfig resource name. Format:
+                projects/{project_number}/alertConfig
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -774,27 +730,36 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.retail_v2beta.types.UserEvent:
-                UserEvent captures all metadata
-                information Retail API needs to know
-                about how end users interact with
-                customers' website.
-
+            google.cloud.retail_v2beta.types.AlertConfig:
+                Project level alert config.
         """
         # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, user_event_service.WriteUserEventRequest):
-            request = user_event_service.WriteUserEventRequest(request)
+        if not isinstance(request, project_service.GetAlertConfigRequest):
+            request = project_service.GetAlertConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.write_user_event]
+        rpc = self._transport._wrapped_methods[self._transport.get_alert_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -811,23 +776,17 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         # Done; return the response.
         return response
 
-    def collect_user_event(
+    def update_alert_config(
         self,
-        request: Optional[
-            Union[user_event_service.CollectUserEventRequest, dict]
-        ] = None,
+        request: Optional[Union[project_service.UpdateAlertConfigRequest, dict]] = None,
         *,
+        alert_config: Optional[project.AlertConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> httpbody_pb2.HttpBody:
-        r"""Writes a single user event from the browser. This
-        uses a GET request to due to browser restriction of
-        POST-ing to a 3rd party domain.
-
-        This method is used only by the Retail API JavaScript
-        pixel and Google Tag Manager. Users should not call this
-        method directly.
+    ) -> project.AlertConfig:
+        r"""Update the alert config of the requested project.
 
         .. code-block:: python
 
@@ -840,27 +799,53 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
-            def sample_collect_user_event():
+            def sample_update_alert_config():
                 # Create a client
-                client = retail_v2beta.UserEventServiceClient()
+                client = retail_v2beta.ProjectServiceClient()
 
                 # Initialize request argument(s)
-                request = retail_v2beta.CollectUserEventRequest(
-                    prebuilt_rule="prebuilt_rule_value",
-                    parent="parent_value",
-                    user_event="user_event_value",
+                alert_config = retail_v2beta.AlertConfig()
+                alert_config.name = "name_value"
+
+                request = retail_v2beta.UpdateAlertConfigRequest(
+                    alert_config=alert_config,
                 )
 
                 # Make the request
-                response = client.collect_user_event(request=request)
+                response = client.update_alert_config(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2beta.types.CollectUserEventRequest, dict]):
-                The request object. Request message for CollectUserEvent
+            request (Union[google.cloud.retail_v2beta.types.UpdateAlertConfigRequest, dict]):
+                The request object. Request for
+                [ProjectService.UpdateAlertConfig][google.cloud.retail.v2beta.ProjectService.UpdateAlertConfig]
                 method.
+            alert_config (google.cloud.retail_v2beta.types.AlertConfig):
+                Required. The
+                [AlertConfig][google.cloud.retail.v2beta.AlertConfig] to
+                update.
+
+                If the caller does not have permission to update the
+                [AlertConfig][google.cloud.retail.v2beta.AlertConfig],
+                then a PERMISSION_DENIED error is returned.
+
+                If the
+                [AlertConfig][google.cloud.retail.v2beta.AlertConfig] to
+                update does not exist, a NOT_FOUND error is returned.
+
+                This corresponds to the ``alert_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Indicates which fields in the provided
+                [AlertConfig][google.cloud.retail.v2beta.AlertConfig] to
+                update. If not set, all supported fields are updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -868,69 +853,40 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api.httpbody_pb2.HttpBody:
-                Message that represents an arbitrary HTTP body. It should only be used for
-                   payload formats that can't be represented as JSON,
-                   such as raw binary or an HTML page.
-
-                   This message can be used both in streaming and
-                   non-streaming API methods in the request as well as
-                   the response.
-
-                   It can be used as a top-level request field, which is
-                   convenient if one wants to extract parameters from
-                   either the URL or HTTP template into the request
-                   fields and also want access to the raw HTTP body.
-
-                   Example:
-
-                      message GetResourceRequest {
-                         // A unique request id. string request_id = 1;
-
-                         // The raw HTTP body is bound to this field.
-                         google.api.HttpBody http_body = 2;
-
-                      }
-
-                      service ResourceService {
-                         rpc GetResource(GetResourceRequest)
-                            returns (google.api.HttpBody);
-
-                         rpc UpdateResource(google.api.HttpBody)
-                            returns (google.protobuf.Empty);
-
-                      }
-
-                   Example with streaming methods:
-
-                      service CaldavService {
-                         rpc GetCalendar(stream google.api.HttpBody)
-                            returns (stream google.api.HttpBody);
-
-                         rpc UpdateCalendar(stream google.api.HttpBody)
-                            returns (stream google.api.HttpBody);
-
-                      }
-
-                   Use of this type only changes how the request and
-                   response bodies are handled, all other features will
-                   continue to work unchanged.
-
+            google.cloud.retail_v2beta.types.AlertConfig:
+                Project level alert config.
         """
         # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([alert_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, user_event_service.CollectUserEventRequest):
-            request = user_event_service.CollectUserEventRequest(request)
+        if not isinstance(request, project_service.UpdateAlertConfigRequest):
+            request = project_service.UpdateAlertConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if alert_config is not None:
+                request.alert_config = alert_config
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.collect_user_event]
+        rpc = self._transport._wrapped_methods[self._transport.update_alert_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("alert_config.name", request.alert_config.name),)
+            ),
         )
 
         # Validate the universe domain.
@@ -947,433 +903,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         # Done; return the response.
         return response
 
-    def purge_user_events(
-        self,
-        request: Optional[Union[purge_config.PurgeUserEventsRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Deletes permanently all user events specified by the
-        filter provided. Depending on the number of events
-        specified by the filter, this operation could take hours
-        or days to complete. To test a filter, use the list
-        command first.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import retail_v2beta
-
-            def sample_purge_user_events():
-                # Create a client
-                client = retail_v2beta.UserEventServiceClient()
-
-                # Initialize request argument(s)
-                request = retail_v2beta.PurgeUserEventsRequest(
-                    parent="parent_value",
-                    filter="filter_value",
-                )
-
-                # Make the request
-                operation = client.purge_user_events(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.retail_v2beta.types.PurgeUserEventsRequest, dict]):
-                The request object. Request message for PurgeUserEvents
-                method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.retail_v2beta.types.PurgeUserEventsResponse` Response of the PurgeUserEventsRequest. If the long running operation is
-                   successfully done, then this message is returned by
-                   the google.longrunning.Operations.response field.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, purge_config.PurgeUserEventsRequest):
-            request = purge_config.PurgeUserEventsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.purge_user_events]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            purge_config.PurgeUserEventsResponse,
-            metadata_type=purge_config.PurgeMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def import_user_events(
-        self,
-        request: Optional[Union[import_config.ImportUserEventsRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Bulk import of User events. Request processing might be
-        synchronous. Events that already exist are skipped. Use this
-        method for backfilling historical user events.
-
-        ``Operation.response`` is of type ``ImportResponse``. Note that
-        it is possible for a subset of the items to be successfully
-        inserted. ``Operation.metadata`` is of type ``ImportMetadata``.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import retail_v2beta
-
-            def sample_import_user_events():
-                # Create a client
-                client = retail_v2beta.UserEventServiceClient()
-
-                # Initialize request argument(s)
-                input_config = retail_v2beta.UserEventInputConfig()
-                input_config.user_event_inline_source.user_events.event_type = "event_type_value"
-                input_config.user_event_inline_source.user_events.visitor_id = "visitor_id_value"
-
-                request = retail_v2beta.ImportUserEventsRequest(
-                    parent="parent_value",
-                    input_config=input_config,
-                )
-
-                # Make the request
-                operation = client.import_user_events(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.retail_v2beta.types.ImportUserEventsRequest, dict]):
-                The request object. Request message for the
-                ImportUserEvents request.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.retail_v2beta.types.ImportUserEventsResponse` Response of the ImportUserEventsRequest. If the long running
-                   operation was successful, then this message is
-                   returned by the
-                   google.longrunning.Operations.response field if the
-                   operation was successful.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, import_config.ImportUserEventsRequest):
-            request = import_config.ImportUserEventsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.import_user_events]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            import_config.ImportUserEventsResponse,
-            metadata_type=import_config.ImportMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def export_user_events(
-        self,
-        request: Optional[Union[export_config.ExportUserEventsRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Exports user events.
-
-        ``Operation.response`` is of type ``ExportResponse``.
-        ``Operation.metadata`` is of type ``ExportMetadata``.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import retail_v2beta
-
-            def sample_export_user_events():
-                # Create a client
-                client = retail_v2beta.UserEventServiceClient()
-
-                # Initialize request argument(s)
-                output_config = retail_v2beta.OutputConfig()
-                output_config.gcs_destination.output_uri_prefix = "output_uri_prefix_value"
-
-                request = retail_v2beta.ExportUserEventsRequest(
-                    parent="parent_value",
-                    output_config=output_config,
-                )
-
-                # Make the request
-                operation = client.export_user_events(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.retail_v2beta.types.ExportUserEventsRequest, dict]):
-                The request object. Request message for the ``ExportUserEvents`` method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.retail_v2beta.types.ExportUserEventsResponse` Response of the ExportUserEventsRequest. If the long running
-                   operation was successful, then this message is
-                   returned by the
-                   google.longrunning.Operations.response field if the
-                   operation was successful.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, export_config.ExportUserEventsRequest):
-            request = export_config.ExportUserEventsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.export_user_events]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            export_config.ExportUserEventsResponse,
-            metadata_type=export_config.ExportMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def rejoin_user_events(
-        self,
-        request: Optional[
-            Union[user_event_service.RejoinUserEventsRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Starts a user-event rejoin operation with latest
-        product catalog. Events are not annotated with detailed
-        product information for products that are missing from
-        the catalog when the user event is ingested. These
-        events are stored as unjoined events with limited usage
-        on training and serving. You can use this method to
-        start a join operation on specified events with the
-        latest version of product catalog. You can also use this
-        method to correct events joined with the wrong product
-        catalog. A rejoin operation can take hours or days to
-        complete.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import retail_v2beta
-
-            def sample_rejoin_user_events():
-                # Create a client
-                client = retail_v2beta.UserEventServiceClient()
-
-                # Initialize request argument(s)
-                request = retail_v2beta.RejoinUserEventsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                operation = client.rejoin_user_events(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.retail_v2beta.types.RejoinUserEventsRequest, dict]):
-                The request object. Request message for RejoinUserEvents
-                method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.retail_v2beta.types.RejoinUserEventsResponse`
-                Response message for RejoinUserEvents method.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, user_event_service.RejoinUserEventsRequest):
-            request = user_event_service.RejoinUserEventsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.rejoin_user_events]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            user_event_service.RejoinUserEventsResponse,
-            metadata_type=user_event_service.RejoinUserEventsMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def __enter__(self) -> "UserEventServiceClient":
+    def __enter__(self) -> "ProjectServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -1506,4 +1036,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("UserEventServiceClient",)
+__all__ = ("ProjectServiceClient",)

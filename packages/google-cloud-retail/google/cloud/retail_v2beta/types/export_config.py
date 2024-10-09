@@ -26,6 +26,8 @@ __protobuf__ = proto.module(
     manifest={
         "OutputConfig",
         "ExportErrorsConfig",
+        "ExportProductsRequest",
+        "ExportUserEventsRequest",
         "ExportAnalyticsMetricsRequest",
         "ExportMetadata",
         "ExportProductsResponse",
@@ -144,6 +146,145 @@ class ExportErrorsConfig(proto.Message):
         proto.STRING,
         number=1,
         oneof="destination",
+    )
+
+
+class ExportProductsRequest(proto.Message):
+    r"""Request message for ExportProducts method.
+
+    Attributes:
+        parent (str):
+            Required. Resource name of a
+            [Branch][google.cloud.retail.v2beta.Branch], and
+            ``default_branch`` for branch_id component is supported. For
+            example
+            ``projects/1234/locations/global/catalogs/default_catalog/branches/default_branch``
+        output_config (google.cloud.retail_v2beta.types.OutputConfig):
+            Required. The output location of the data.
+        filter (str):
+            A filtering expression to specify restrictions on returned
+            events. The expression is a sequence of terms. Each term
+            applies a restriction to the returned products. Use this
+            expression to restrict results to a specific time range,
+            tag, or stock state or to filter products by product type.
+            For example,
+            ``lastModifiedTime > "2012-04-23T18:25:43.511Z" lastModifiedTime<"2012-04-23T18:25:43.511Z" productType=primary``
+
+            We expect only four types of fields:
+
+            ::
+
+               * `lastModifiedTime`: This can be specified twice, once with a
+                 less than operator and once with a greater than operator. The
+                 `lastModifiedTime` restriction should result in one, contiguous,
+                 valid, last-modified, time range.
+
+               * `productType`: Supported values are `primary` and `variant`. The
+               Boolean operators `OR` and `NOT` are supported if the expression is
+               enclosed in parentheses and must be separated from the
+                 `productType` values by a space.
+
+               * `availability`: Supported values are `IN_STOCK`, `OUT_OF_STOCK`,
+               `PREORDER`, and `BACKORDER`. Boolean operators `OR` and `NOT` are
+               supported if the expression is enclosed in parentheses and must be
+               separated from the `availability` values by a space.
+
+               * `Tag expressions`: Restricts output to products that match all of the
+                 specified tags. Boolean operators `OR` and `NOT` are supported if the
+                 expression is enclosed in parentheses and the operators are separated
+                 from the tag values by a space. Also supported is '`-"tagA"`', which
+                 is equivalent to '`NOT "tagA"`'. Tag values must be double-quoted,
+                 UTF-8 encoded strings and have a size limit of 1,000 characters.
+
+            Some examples of valid filters expressions:
+
+            -  Example 1:
+               ``lastModifiedTime > "2012-04-23T18:25:43.511Z" lastModifiedTime < "2012-04-23T18:30:43.511Z"``
+            -  Example 2:
+               ``lastModifiedTime > "2012-04-23T18:25:43.511Z" productType = "variant"``
+            -  Example 3:
+               ``tag=("Red" OR "Blue") tag="New-Arrival" tag=(NOT "promotional") productType = "primary" lastModifiedTime < "2018-04-23T18:30:43.511Z"``
+            -  Example 4:
+               ``lastModifiedTime > "2012-04-23T18:25:43.511Z"``
+            -  Example 5: ``availability = (IN_STOCK OR BACKORDER)``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    output_config: "OutputConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="OutputConfig",
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ExportUserEventsRequest(proto.Message):
+    r"""Request message for the ``ExportUserEvents`` method.
+
+    Attributes:
+        parent (str):
+            Required. Resource name of a
+            [Catalog][google.cloud.retail.v2beta.Catalog]. For example
+            ``projects/1234/locations/global/catalogs/default_catalog``
+        output_config (google.cloud.retail_v2beta.types.OutputConfig):
+            Required. The output location of the data.
+        filter (str):
+            A filtering expression to specify restrictions on returned
+            events. The expression is a sequence of terms. Each term
+            applies a restriction to the returned user events. Use this
+            expression to restrict results to a specific time range or
+            to filter events by eventType. For example,
+            ``eventTime > "2012-04-23T18:25:43.511Z" eventsMissingCatalogItems eventTime<"2012-04-23T18:25:43.511Z" eventType=search``
+
+            We expect only three types of fields:
+
+            ::
+
+               * `eventTime`: This can be specified twice, once with a
+                 less than operator and once with a greater than operator. The
+                 `eventTime` restriction should result in one, contiguous, valid,
+                 `eventTime` range.
+
+               * `eventType`: Boolean operators `OR` and `NOT` are supported if the
+                 expression is enclosed in parentheses and the operators are separated
+                 from the tag values by a space.
+
+               * `eventsMissingCatalogItems`: This restricts results
+                 to events for which catalog items were not found in the catalog. The
+                 default behavior is to return only those events for which catalog
+                 items were found.
+
+            Some examples of valid filters expressions:
+
+            -  Example 1:
+               ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z"``
+            -  Example 2:
+               ``eventTime > "2012-04-23T18:25:43.511Z" eventType = detail-page-view``
+            -  Example 3:
+               ``eventsMissingCatalogItems eventType = (NOT search) eventTime < "2018-04-23T18:30:43.511Z"``
+            -  Example 4: ``eventTime > "2012-04-23T18:25:43.511Z"``
+            -  Example 5: ``eventType = (detail-page-view OR search)``
+            -  Example 6: ``eventsMissingCatalogItems``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    output_config: "OutputConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="OutputConfig",
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
