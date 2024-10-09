@@ -1,6 +1,23 @@
 # Changelog
 
 
+## [1.19.0](https://github.com/googleapis/gapic-generator-python/compare/v1.18.5...v1.19.0) (2024-10-09)
+
+
+### Features
+
+* Add async rest transport support in gapics ([#2164](https://github.com/googleapis/gapic-generator-python/issues/2164)) ([2949465](https://github.com/googleapis/gapic-generator-python/commit/29494651fb39719af920ee1c114c82bd903e544b))
+* Add support for reading ClientLibrarySettings from service configuration YAML ([#2098](https://github.com/googleapis/gapic-generator-python/issues/2098)) ([11e3967](https://github.com/googleapis/gapic-generator-python/commit/11e3967b6a3b1e86f5ec0f5387bd340e3a8ae9d0))
+* Implement async rest transport constructor ([#2123](https://github.com/googleapis/gapic-generator-python/issues/2123)) ([2809753](https://github.com/googleapis/gapic-generator-python/commit/28097536e1a47063a5d3211e9c1c498a1f06c724))
+* Leverage async anonymous credentials in tests ([#2105](https://github.com/googleapis/gapic-generator-python/issues/2105)) ([4afac87](https://github.com/googleapis/gapic-generator-python/commit/4afac87efc8fcdd7090d003b6247be64071b611d))
+
+
+### Bug Fixes
+
+* Add support for field with name 'self' ([#2205](https://github.com/googleapis/gapic-generator-python/issues/2205)) ([ed88fe2](https://github.com/googleapis/gapic-generator-python/commit/ed88fe298647cdad310a5341f931a0de42f1b81e))
+* Resolve issue where explicit routing metadata was not sent in async clients ([#2133](https://github.com/googleapis/gapic-generator-python/issues/2133)) ([c222b12](https://github.com/googleapis/gapic-generator-python/commit/c222b125d741426259d82e726c0c07397d099a8a))
+* Streaming for sync REST API calls ([#2204](https://github.com/googleapis/gapic-generator-python/issues/2204)) ([ce3b84c](https://github.com/googleapis/gapic-generator-python/commit/ce3b84c67a31785f45eb46f154ef08af6edc9a36))
+
 ## [1.18.5](https://github.com/googleapis/gapic-generator-python/compare/v1.18.4...v1.18.5) (2024-08-06)
 
 
