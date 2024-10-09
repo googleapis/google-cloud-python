@@ -138,7 +138,7 @@
     "packages/google-cloud-redis-cluster": "0.1.8",
     "packages/google-cloud-resource-manager": "1.12.5",
     "packages/google-cloud-resource-settings": "1.9.6",
-    "packages/google-cloud-retail": "1.21.2",
+    "packages/google-cloud-retail": "1.22.0",
     "packages/google-cloud-run": "0.10.9",
     "packages/google-cloud-scheduler": "2.13.5",
     "packages/google-cloud-secret-manager": "2.20.2",
