@@ -33,7 +33,7 @@ class AlertConfig(proto.Message):
     Attributes:
         name (str):
             Required. Immutable. The name of the AlertConfig singleton
-            resource. Format: projects/*/alertConfig
+            resource. Format: `projects/*/alertConfig`
         alert_policies (MutableSequence[google.cloud.retail_v2beta.types.AlertConfig.AlertPolicy]):
             Alert policies for a customer. They must be unique by
             [AlertPolicy.alert_group]
