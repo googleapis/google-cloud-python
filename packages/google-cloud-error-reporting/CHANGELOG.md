@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.11.1](https://github.com/googleapis/python-error-reporting/compare/v1.11.0...v1.11.1) (2024-09-17)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#507](https://github.com/googleapis/python-error-reporting/issues/507)) ([8d33168](https://github.com/googleapis/python-error-reporting/commit/8d3316866c0825911b26f17fd4f703cabbc3c396))
+* Retry and timeout values do not propagate in requests during pagination ([#518](https://github.com/googleapis/python-error-reporting/issues/518)) ([cbe41fd](https://github.com/googleapis/python-error-reporting/commit/cbe41fd1fa4edbb1c574cd2c07dc99d4415c3078))
+
+
+### Documentation
+
+* Add summary_overview template ([#496](https://github.com/googleapis/python-error-reporting/issues/496)) ([988def5](https://github.com/googleapis/python-error-reporting/commit/988def551df3f95577519450470a7cbf5f3b6b7d))
+* Removes references as a "global-only" service ([1fef616](https://github.com/googleapis/python-error-reporting/commit/1fef61635e3f9d7297f9fe28d18568cf6c2a0fc1))
+* Updates documentation with regional resource names for multiple requests ([1fef616](https://github.com/googleapis/python-error-reporting/commit/1fef61635e3f9d7297f9fe28d18568cf6c2a0fc1))
+
 ## [1.11.0](https://github.com/googleapis/python-error-reporting/compare/v1.10.0...v1.11.0) (2024-03-26)
 
 
