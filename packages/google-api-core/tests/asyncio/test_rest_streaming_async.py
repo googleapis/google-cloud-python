@@ -15,14 +15,19 @@
 # TODO: set random.seed explicitly in each test function.
 # See related issue: https://github.com/googleapis/python-api-core/issues/689.
 
-import pytest  # noqa: I202
-import mock
-
 import datetime
 import logging
 import random
 import time
 from typing import List, AsyncIterator
+
+try:
+    from unittest import mock
+    from unittest.mock import AsyncMock  # pragma: NO COVER  # noqa: F401
+except ImportError:  # pragma: NO COVER
+    import mock  # type: ignore
+
+import pytest  # noqa: I202
 
 import proto
 

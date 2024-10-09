@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import datetime
+from unittest import mock
 
-import mock
 import pytest
 
 try:

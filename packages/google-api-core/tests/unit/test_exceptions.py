@@ -14,8 +14,8 @@
 
 import http.client
 import json
+from unittest import mock
 
-import mock
 import pytest
 import requests
 

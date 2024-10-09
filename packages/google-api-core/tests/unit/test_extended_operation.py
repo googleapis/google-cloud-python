@@ -15,8 +15,8 @@
 import dataclasses
 import enum
 import typing
+from unittest import mock
 
-import mock
 import pytest
 
 from google.api_core import exceptions

@@ -13,10 +13,14 @@
 # limitations under the License.
 
 import datetime
+import pytest
 import re
 
-import mock
-import pytest
+try:
+    from unittest import mock
+    from unittest.mock import AsyncMock  # pragma: NO COVER  # noqa: F401
+except ImportError:  # pragma: NO COVER
+    import mock  # type: ignore
 
 from google.api_core import exceptions
 from google.api_core import retry

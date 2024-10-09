@@ -17,7 +17,12 @@ import logging
 import queue
 import threading
 
-import mock
+try:
+    from unittest import mock
+    from unittest.mock import AsyncMock  # pragma: NO COVER  # noqa: F401
+except ImportError:  # pragma: NO COVER
+    import mock  # type: ignore
+
 import pytest
 
 try:
