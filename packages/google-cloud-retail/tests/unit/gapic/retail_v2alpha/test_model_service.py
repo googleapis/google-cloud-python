@@ -4535,7 +4535,10 @@ def test_create_model_rest(request_type):
             }
         ],
         "model_features_config": {
-            "frequently_bought_together_config": {"context_products_type": 1}
+            "frequently_bought_together_config": {"context_products_type": 1},
+            "llm_embedding_config": {
+                "llm_embedding_version": "llm_embedding_version_value"
+            },
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -6620,7 +6623,10 @@ def test_update_model_rest(request_type):
             }
         ],
         "model_features_config": {
-            "frequently_bought_together_config": {"context_products_type": 1}
+            "frequently_bought_together_config": {"context_products_type": 1},
+            "llm_embedding_config": {
+                "llm_embedding_version": "llm_embedding_version_value"
+            },
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

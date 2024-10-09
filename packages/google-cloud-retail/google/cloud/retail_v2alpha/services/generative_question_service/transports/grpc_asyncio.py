@@ -26,22 +26,20 @@ from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.retail_v2alpha.types import branch, branch_service
+from google.cloud.retail_v2alpha.types import (
+    generative_question,
+    generative_question_service,
+)
 
-from .base import DEFAULT_CLIENT_INFO, BranchServiceTransport
-from .grpc import BranchServiceGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, GenerativeQuestionServiceTransport
+from .grpc import GenerativeQuestionServiceGrpcTransport
 
 
-class BranchServiceGrpcAsyncIOTransport(BranchServiceTransport):
-    """gRPC AsyncIO backend transport for BranchService.
+class GenerativeQuestionServiceGrpcAsyncIOTransport(GenerativeQuestionServiceTransport):
+    """gRPC AsyncIO backend transport for GenerativeQuestionService.
 
-    Service for [Branch][google.cloud.retail.v2alpha.Branch] Management
-
-    [Branch][google.cloud.retail.v2alpha.Branch]es are automatically
-    created when a [Catalog][google.cloud.retail.v2alpha.Catalog] is
-    created. There are fixed three branches in each catalog, and may use
-    [ListBranches][google.cloud.retail.v2alpha.BranchService.ListBranches]
-    method to get the details of all branches.
+    Service for managing LLM generated questions in search
+    serving.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -247,21 +245,21 @@ class BranchServiceGrpcAsyncIOTransport(BranchServiceTransport):
         return self._grpc_channel
 
     @property
-    def list_branches(
+    def update_generative_questions_feature_config(
         self,
     ) -> Callable[
-        [branch_service.ListBranchesRequest],
-        Awaitable[branch_service.ListBranchesResponse],
+        [generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest],
+        Awaitable[generative_question.GenerativeQuestionsFeatureConfig],
     ]:
-        r"""Return a callable for the list branches method over gRPC.
+        r"""Return a callable for the update generative questions
+        feature config method over gRPC.
 
-        Lists all instances of
-        [Branch][google.cloud.retail.v2alpha.Branch] under the specified
-        parent [Catalog][google.cloud.retail.v2alpha.Catalog].
+        Manages overal generative question feature state --
+        enables toggling feature on and off.
 
         Returns:
-            Callable[[~.ListBranchesRequest],
-                    Awaitable[~.ListBranchesResponse]]:
+            Callable[[~.UpdateGenerativeQuestionsFeatureConfigRequest],
+                    Awaitable[~.GenerativeQuestionsFeatureConfig]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -269,25 +267,32 @@ class BranchServiceGrpcAsyncIOTransport(BranchServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_branches" not in self._stubs:
-            self._stubs["list_branches"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2alpha.BranchService/ListBranches",
-                request_serializer=branch_service.ListBranchesRequest.serialize,
-                response_deserializer=branch_service.ListBranchesResponse.deserialize,
+        if "update_generative_questions_feature_config" not in self._stubs:
+            self._stubs[
+                "update_generative_questions_feature_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2alpha.GenerativeQuestionService/UpdateGenerativeQuestionsFeatureConfig",
+                request_serializer=generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest.serialize,
+                response_deserializer=generative_question.GenerativeQuestionsFeatureConfig.deserialize,
             )
-        return self._stubs["list_branches"]
+        return self._stubs["update_generative_questions_feature_config"]
 
     @property
-    def get_branch(
+    def get_generative_questions_feature_config(
         self,
-    ) -> Callable[[branch_service.GetBranchRequest], Awaitable[branch.Branch]]:
-        r"""Return a callable for the get branch method over gRPC.
+    ) -> Callable[
+        [generative_question_service.GetGenerativeQuestionsFeatureConfigRequest],
+        Awaitable[generative_question.GenerativeQuestionsFeatureConfig],
+    ]:
+        r"""Return a callable for the get generative questions
+        feature config method over gRPC.
 
-        Retrieves a [Branch][google.cloud.retail.v2alpha.Branch].
+        Manages overal generative question feature state --
+        enables toggling feature on and off.
 
         Returns:
-            Callable[[~.GetBranchRequest],
-                    Awaitable[~.Branch]]:
+            Callable[[~.GetGenerativeQuestionsFeatureConfigRequest],
+                    Awaitable[~.GenerativeQuestionsFeatureConfig]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -295,24 +300,139 @@ class BranchServiceGrpcAsyncIOTransport(BranchServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_branch" not in self._stubs:
-            self._stubs["get_branch"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2alpha.BranchService/GetBranch",
-                request_serializer=branch_service.GetBranchRequest.serialize,
-                response_deserializer=branch.Branch.deserialize,
+        if "get_generative_questions_feature_config" not in self._stubs:
+            self._stubs[
+                "get_generative_questions_feature_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2alpha.GenerativeQuestionService/GetGenerativeQuestionsFeatureConfig",
+                request_serializer=generative_question_service.GetGenerativeQuestionsFeatureConfigRequest.serialize,
+                response_deserializer=generative_question.GenerativeQuestionsFeatureConfig.deserialize,
             )
-        return self._stubs["get_branch"]
+        return self._stubs["get_generative_questions_feature_config"]
+
+    @property
+    def list_generative_question_configs(
+        self,
+    ) -> Callable[
+        [generative_question_service.ListGenerativeQuestionConfigsRequest],
+        Awaitable[generative_question_service.ListGenerativeQuestionConfigsResponse],
+    ]:
+        r"""Return a callable for the list generative question
+        configs method over gRPC.
+
+        Returns all questions for a given catalog.
+
+        Returns:
+            Callable[[~.ListGenerativeQuestionConfigsRequest],
+                    Awaitable[~.ListGenerativeQuestionConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_generative_question_configs" not in self._stubs:
+            self._stubs[
+                "list_generative_question_configs"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2alpha.GenerativeQuestionService/ListGenerativeQuestionConfigs",
+                request_serializer=generative_question_service.ListGenerativeQuestionConfigsRequest.serialize,
+                response_deserializer=generative_question_service.ListGenerativeQuestionConfigsResponse.deserialize,
+            )
+        return self._stubs["list_generative_question_configs"]
+
+    @property
+    def update_generative_question_config(
+        self,
+    ) -> Callable[
+        [generative_question_service.UpdateGenerativeQuestionConfigRequest],
+        Awaitable[generative_question.GenerativeQuestionConfig],
+    ]:
+        r"""Return a callable for the update generative question
+        config method over gRPC.
+
+        Allows management of individual questions.
+
+        Returns:
+            Callable[[~.UpdateGenerativeQuestionConfigRequest],
+                    Awaitable[~.GenerativeQuestionConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_generative_question_config" not in self._stubs:
+            self._stubs[
+                "update_generative_question_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2alpha.GenerativeQuestionService/UpdateGenerativeQuestionConfig",
+                request_serializer=generative_question_service.UpdateGenerativeQuestionConfigRequest.serialize,
+                response_deserializer=generative_question.GenerativeQuestionConfig.deserialize,
+            )
+        return self._stubs["update_generative_question_config"]
+
+    @property
+    def batch_update_generative_question_configs(
+        self,
+    ) -> Callable[
+        [generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest],
+        Awaitable[
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse
+        ],
+    ]:
+        r"""Return a callable for the batch update generative
+        question configs method over gRPC.
+
+        Allows management of multiple questions.
+
+        Returns:
+            Callable[[~.BatchUpdateGenerativeQuestionConfigsRequest],
+                    Awaitable[~.BatchUpdateGenerativeQuestionConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_update_generative_question_configs" not in self._stubs:
+            self._stubs[
+                "batch_update_generative_question_configs"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2alpha.GenerativeQuestionService/BatchUpdateGenerativeQuestionConfigs",
+                request_serializer=generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest.serialize,
+                response_deserializer=generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.deserialize,
+            )
+        return self._stubs["batch_update_generative_question_configs"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_branches: gapic_v1.method_async.wrap_method(
-                self.list_branches,
+            self.update_generative_questions_feature_config: gapic_v1.method_async.wrap_method(
+                self.update_generative_questions_feature_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_branch: gapic_v1.method_async.wrap_method(
-                self.get_branch,
+            self.get_generative_questions_feature_config: gapic_v1.method_async.wrap_method(
+                self.get_generative_questions_feature_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_generative_question_configs: gapic_v1.method_async.wrap_method(
+                self.list_generative_question_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_generative_question_config: gapic_v1.method_async.wrap_method(
+                self.update_generative_question_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_generative_question_configs: gapic_v1.method_async.wrap_method(
+                self.batch_update_generative_question_configs,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -358,4 +478,4 @@ class BranchServiceGrpcAsyncIOTransport(BranchServiceTransport):
         return self._stubs["list_operations"]
 
 
-__all__ = ("BranchServiceGrpcAsyncIOTransport",)
+__all__ = ("GenerativeQuestionServiceGrpcAsyncIOTransport",)

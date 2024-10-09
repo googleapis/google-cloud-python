@@ -42,69 +42,69 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api import httpbody_pb2  # type: ignore
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.retail_v2alpha.types import (
-    common,
-    export_config,
-    import_config,
-    purge_config,
-    user_event,
-    user_event_service,
+    generative_question,
+    generative_question_service,
 )
 
-from .client import UserEventServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
-from .transports.grpc_asyncio import UserEventServiceGrpcAsyncIOTransport
+from .client import GenerativeQuestionServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, GenerativeQuestionServiceTransport
+from .transports.grpc_asyncio import GenerativeQuestionServiceGrpcAsyncIOTransport
 
 
-class UserEventServiceAsyncClient:
-    """Service for ingesting end user actions on the customer
-    website.
+class GenerativeQuestionServiceAsyncClient:
+    """Service for managing LLM generated questions in search
+    serving.
     """
 
-    _client: UserEventServiceClient
+    _client: GenerativeQuestionServiceClient
 
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = UserEventServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = UserEventServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = UserEventServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = UserEventServiceClient._DEFAULT_UNIVERSE
+    DEFAULT_ENDPOINT = GenerativeQuestionServiceClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = GenerativeQuestionServiceClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = (
+        GenerativeQuestionServiceClient._DEFAULT_ENDPOINT_TEMPLATE
+    )
+    _DEFAULT_UNIVERSE = GenerativeQuestionServiceClient._DEFAULT_UNIVERSE
 
-    catalog_path = staticmethod(UserEventServiceClient.catalog_path)
-    parse_catalog_path = staticmethod(UserEventServiceClient.parse_catalog_path)
-    product_path = staticmethod(UserEventServiceClient.product_path)
-    parse_product_path = staticmethod(UserEventServiceClient.parse_product_path)
+    catalog_path = staticmethod(GenerativeQuestionServiceClient.catalog_path)
+    parse_catalog_path = staticmethod(
+        GenerativeQuestionServiceClient.parse_catalog_path
+    )
     common_billing_account_path = staticmethod(
-        UserEventServiceClient.common_billing_account_path
+        GenerativeQuestionServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        UserEventServiceClient.parse_common_billing_account_path
+        GenerativeQuestionServiceClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(UserEventServiceClient.common_folder_path)
+    common_folder_path = staticmethod(
+        GenerativeQuestionServiceClient.common_folder_path
+    )
     parse_common_folder_path = staticmethod(
-        UserEventServiceClient.parse_common_folder_path
+        GenerativeQuestionServiceClient.parse_common_folder_path
     )
     common_organization_path = staticmethod(
-        UserEventServiceClient.common_organization_path
+        GenerativeQuestionServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
-        UserEventServiceClient.parse_common_organization_path
+        GenerativeQuestionServiceClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(UserEventServiceClient.common_project_path)
+    common_project_path = staticmethod(
+        GenerativeQuestionServiceClient.common_project_path
+    )
     parse_common_project_path = staticmethod(
-        UserEventServiceClient.parse_common_project_path
+        GenerativeQuestionServiceClient.parse_common_project_path
     )
-    common_location_path = staticmethod(UserEventServiceClient.common_location_path)
+    common_location_path = staticmethod(
+        GenerativeQuestionServiceClient.common_location_path
+    )
     parse_common_location_path = staticmethod(
-        UserEventServiceClient.parse_common_location_path
+        GenerativeQuestionServiceClient.parse_common_location_path
     )
 
     @classmethod
@@ -118,9 +118,9 @@ class UserEventServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            UserEventServiceAsyncClient: The constructed client.
+            GenerativeQuestionServiceAsyncClient: The constructed client.
         """
-        return UserEventServiceClient.from_service_account_info.__func__(UserEventServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        return GenerativeQuestionServiceClient.from_service_account_info.__func__(GenerativeQuestionServiceAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -134,9 +134,9 @@ class UserEventServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            UserEventServiceAsyncClient: The constructed client.
+            GenerativeQuestionServiceAsyncClient: The constructed client.
         """
-        return UserEventServiceClient.from_service_account_file.__func__(UserEventServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return GenerativeQuestionServiceClient.from_service_account_file.__func__(GenerativeQuestionServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -174,14 +174,14 @@ class UserEventServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return UserEventServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return GenerativeQuestionServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
-    def transport(self) -> UserEventServiceTransport:
+    def transport(self) -> GenerativeQuestionServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            UserEventServiceTransport: The transport used by the client instance.
+            GenerativeQuestionServiceTransport: The transport used by the client instance.
         """
         return self._client.transport
 
@@ -204,7 +204,7 @@ class UserEventServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = UserEventServiceClient.get_transport_class
+    get_transport_class = GenerativeQuestionServiceClient.get_transport_class
 
     def __init__(
         self,
@@ -212,13 +212,15 @@ class UserEventServiceAsyncClient:
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
             Union[
-                str, UserEventServiceTransport, Callable[..., UserEventServiceTransport]
+                str,
+                GenerativeQuestionServiceTransport,
+                Callable[..., GenerativeQuestionServiceTransport],
             ]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the user event service async client.
+        """Instantiates the generative question service async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -226,10 +228,10 @@ class UserEventServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,UserEventServiceTransport,Callable[..., UserEventServiceTransport]]]):
+            transport (Optional[Union[str,GenerativeQuestionServiceTransport,Callable[..., GenerativeQuestionServiceTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the UserEventServiceTransport constructor.
+                arguments as used in the GenerativeQuestionServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -267,121 +269,32 @@ class UserEventServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = UserEventServiceClient(
+        self._client = GenerativeQuestionServiceClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
             client_info=client_info,
         )
 
-    async def write_user_event(
-        self,
-        request: Optional[Union[user_event_service.WriteUserEventRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> user_event.UserEvent:
-        r"""Writes a single user event.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import retail_v2alpha
-
-            async def sample_write_user_event():
-                # Create a client
-                client = retail_v2alpha.UserEventServiceAsyncClient()
-
-                # Initialize request argument(s)
-                user_event = retail_v2alpha.UserEvent()
-                user_event.event_type = "event_type_value"
-                user_event.visitor_id = "visitor_id_value"
-
-                request = retail_v2alpha.WriteUserEventRequest(
-                    parent="parent_value",
-                    user_event=user_event,
-                )
-
-                # Make the request
-                response = await client.write_user_event(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.retail_v2alpha.types.WriteUserEventRequest, dict]]):
-                The request object. Request message for WriteUserEvent
-                method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.retail_v2alpha.types.UserEvent:
-                UserEvent captures all metadata
-                information Retail API needs to know
-                about how end users interact with
-                customers' website.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, user_event_service.WriteUserEventRequest):
-            request = user_event_service.WriteUserEventRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.write_user_event
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def collect_user_event(
+    async def update_generative_questions_feature_config(
         self,
         request: Optional[
-            Union[user_event_service.CollectUserEventRequest, dict]
+            Union[
+                generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
+                dict,
+            ]
         ] = None,
         *,
+        generative_questions_feature_config: Optional[
+            generative_question.GenerativeQuestionsFeatureConfig
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> httpbody_pb2.HttpBody:
-        r"""Writes a single user event from the browser. This
-        uses a GET request to due to browser restriction of
-        POST-ing to a 3rd party domain.
-
-        This method is used only by the Retail API JavaScript
-        pixel and Google Tag Manager. Users should not call this
-        method directly.
+    ) -> generative_question.GenerativeQuestionsFeatureConfig:
+        r"""Manages overal generative question feature state --
+        enables toggling feature on and off.
 
         .. code-block:: python
 
@@ -394,27 +307,45 @@ class UserEventServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2alpha
 
-            async def sample_collect_user_event():
+            async def sample_update_generative_questions_feature_config():
                 # Create a client
-                client = retail_v2alpha.UserEventServiceAsyncClient()
+                client = retail_v2alpha.GenerativeQuestionServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = retail_v2alpha.CollectUserEventRequest(
-                    prebuilt_rule="prebuilt_rule_value",
-                    parent="parent_value",
-                    user_event="user_event_value",
+                generative_questions_feature_config = retail_v2alpha.GenerativeQuestionsFeatureConfig()
+                generative_questions_feature_config.catalog = "catalog_value"
+
+                request = retail_v2alpha.UpdateGenerativeQuestionsFeatureConfigRequest(
+                    generative_questions_feature_config=generative_questions_feature_config,
                 )
 
                 # Make the request
-                response = await client.collect_user_event(request=request)
+                response = await client.update_generative_questions_feature_config(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.retail_v2alpha.types.CollectUserEventRequest, dict]]):
-                The request object. Request message for CollectUserEvent
+            request (Optional[Union[google.cloud.retail_v2alpha.types.UpdateGenerativeQuestionsFeatureConfigRequest, dict]]):
+                The request object. Request for
+                UpdateGenerativeQuestionsFeatureConfig
                 method.
+            generative_questions_feature_config (:class:`google.cloud.retail_v2alpha.types.GenerativeQuestionsFeatureConfig`):
+                Required. The configuration managing
+                the feature state.
+
+                This corresponds to the ``generative_questions_feature_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. Indicates which fields in the provided
+                [GenerativeQuestionsFeatureConfig][google.cloud.retail.v2alpha.GenerativeQuestionsFeatureConfig]
+                to update. If not set or empty, all supported fields are
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -422,167 +353,57 @@ class UserEventServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.api.httpbody_pb2.HttpBody:
-                Message that represents an arbitrary HTTP body. It should only be used for
-                   payload formats that can't be represented as JSON,
-                   such as raw binary or an HTML page.
-
-                   This message can be used both in streaming and
-                   non-streaming API methods in the request as well as
-                   the response.
-
-                   It can be used as a top-level request field, which is
-                   convenient if one wants to extract parameters from
-                   either the URL or HTTP template into the request
-                   fields and also want access to the raw HTTP body.
-
-                   Example:
-
-                      message GetResourceRequest {
-                         // A unique request id. string request_id = 1;
-
-                         // The raw HTTP body is bound to this field.
-                         google.api.HttpBody http_body = 2;
-
-                      }
-
-                      service ResourceService {
-                         rpc GetResource(GetResourceRequest)
-                            returns (google.api.HttpBody);
-
-                         rpc UpdateResource(google.api.HttpBody)
-                            returns (google.protobuf.Empty);
-
-                      }
-
-                   Example with streaming methods:
-
-                      service CaldavService {
-                         rpc GetCalendar(stream google.api.HttpBody)
-                            returns (stream google.api.HttpBody);
-
-                         rpc UpdateCalendar(stream google.api.HttpBody)
-                            returns (stream google.api.HttpBody);
-
-                      }
-
-                   Use of this type only changes how the request and
-                   response bodies are handled, all other features will
-                   continue to work unchanged.
+            google.cloud.retail_v2alpha.types.GenerativeQuestionsFeatureConfig:
+                Configuration for overall generative
+                question feature state.
 
         """
         # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([generative_questions_feature_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, user_event_service.CollectUserEventRequest):
-            request = user_event_service.CollectUserEventRequest(request)
+        if not isinstance(
+            request,
+            generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
+        ):
+            request = generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if generative_questions_feature_config is not None:
+            request.generative_questions_feature_config = (
+                generative_questions_feature_config
+            )
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.collect_user_event
+            self._client._transport.update_generative_questions_feature_config
         ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def purge_user_events(
-        self,
-        request: Optional[Union[purge_config.PurgeUserEventsRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Deletes permanently all user events specified by the
-        filter provided. Depending on the number of events
-        specified by the filter, this operation could take hours
-        or days to complete. To test a filter, use the list
-        command first.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import retail_v2alpha
-
-            async def sample_purge_user_events():
-                # Create a client
-                client = retail_v2alpha.UserEventServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = retail_v2alpha.PurgeUserEventsRequest(
-                    parent="parent_value",
-                    filter="filter_value",
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "generative_questions_feature_config.catalog",
+                        request.generative_questions_feature_config.catalog,
+                    ),
                 )
-
-                # Make the request
-                operation = client.purge_user_events(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.retail_v2alpha.types.PurgeUserEventsRequest, dict]]):
-                The request object. Request message for PurgeUserEvents
-                method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.retail_v2alpha.types.PurgeUserEventsResponse` Response of the PurgeUserEventsRequest. If the long running operation is
-                   successfully done, then this message is returned by
-                   the google.longrunning.Operations.response field.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, purge_config.PurgeUserEventsRequest):
-            request = purge_config.PurgeUserEventsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.purge_user_events
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            ),
         )
 
         # Validate the universe domain.
@@ -596,257 +417,25 @@ class UserEventServiceAsyncClient:
             metadata=metadata,
         )
 
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            purge_config.PurgeUserEventsResponse,
-            metadata_type=purge_config.PurgeMetadata,
-        )
-
         # Done; return the response.
         return response
 
-    async def import_user_events(
-        self,
-        request: Optional[Union[import_config.ImportUserEventsRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Bulk import of User events. Request processing might be
-        synchronous. Events that already exist are skipped. Use this
-        method for backfilling historical user events.
-
-        ``Operation.response`` is of type ``ImportResponse``. Note that
-        it is possible for a subset of the items to be successfully
-        inserted. ``Operation.metadata`` is of type ``ImportMetadata``.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import retail_v2alpha
-
-            async def sample_import_user_events():
-                # Create a client
-                client = retail_v2alpha.UserEventServiceAsyncClient()
-
-                # Initialize request argument(s)
-                input_config = retail_v2alpha.UserEventInputConfig()
-                input_config.user_event_inline_source.user_events.event_type = "event_type_value"
-                input_config.user_event_inline_source.user_events.visitor_id = "visitor_id_value"
-
-                request = retail_v2alpha.ImportUserEventsRequest(
-                    parent="parent_value",
-                    input_config=input_config,
-                )
-
-                # Make the request
-                operation = client.import_user_events(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.retail_v2alpha.types.ImportUserEventsRequest, dict]]):
-                The request object. Request message for the
-                ImportUserEvents request.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.retail_v2alpha.types.ImportUserEventsResponse` Response of the ImportUserEventsRequest. If the long running
-                   operation was successful, then this message is
-                   returned by the
-                   google.longrunning.Operations.response field if the
-                   operation was successful.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, import_config.ImportUserEventsRequest):
-            request = import_config.ImportUserEventsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.import_user_events
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            import_config.ImportUserEventsResponse,
-            metadata_type=import_config.ImportMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def export_user_events(
-        self,
-        request: Optional[Union[export_config.ExportUserEventsRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Exports user events.
-
-        ``Operation.response`` is of type ``ExportResponse``.
-        ``Operation.metadata`` is of type ``ExportMetadata``.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import retail_v2alpha
-
-            async def sample_export_user_events():
-                # Create a client
-                client = retail_v2alpha.UserEventServiceAsyncClient()
-
-                # Initialize request argument(s)
-                output_config = retail_v2alpha.OutputConfig()
-                output_config.gcs_destination.output_uri_prefix = "output_uri_prefix_value"
-
-                request = retail_v2alpha.ExportUserEventsRequest(
-                    parent="parent_value",
-                    output_config=output_config,
-                )
-
-                # Make the request
-                operation = client.export_user_events(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.retail_v2alpha.types.ExportUserEventsRequest, dict]]):
-                The request object. Request message for the ``ExportUserEvents`` method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.retail_v2alpha.types.ExportUserEventsResponse` Response of the ExportUserEventsRequest. If the long running
-                   operation was successful, then this message is
-                   returned by the
-                   google.longrunning.Operations.response field if the
-                   operation was successful.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, export_config.ExportUserEventsRequest):
-            request = export_config.ExportUserEventsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.export_user_events
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            export_config.ExportUserEventsResponse,
-            metadata_type=export_config.ExportMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def rejoin_user_events(
+    async def get_generative_questions_feature_config(
         self,
         request: Optional[
-            Union[user_event_service.RejoinUserEventsRequest, dict]
+            Union[
+                generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
+                dict,
+            ]
         ] = None,
         *,
+        catalog: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Starts a user-event rejoin operation with latest
-        product catalog. Events are not annotated with detailed
-        product information for products that are missing from
-        the catalog when the user event is ingested. These
-        events are stored as unjoined events with limited usage
-        on training and serving. You can use this method to
-        start a join operation on specified events with the
-        latest version of product catalog. You can also use this
-        method to correct events joined with the wrong product
-        catalog. A rejoin operation can take hours or days to
-        complete.
+    ) -> generative_question.GenerativeQuestionsFeatureConfig:
+        r"""Manages overal generative question feature state --
+        enables toggling feature on and off.
 
         .. code-block:: python
 
@@ -859,29 +448,34 @@ class UserEventServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2alpha
 
-            async def sample_rejoin_user_events():
+            async def sample_get_generative_questions_feature_config():
                 # Create a client
-                client = retail_v2alpha.UserEventServiceAsyncClient()
+                client = retail_v2alpha.GenerativeQuestionServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = retail_v2alpha.RejoinUserEventsRequest(
-                    parent="parent_value",
+                request = retail_v2alpha.GetGenerativeQuestionsFeatureConfigRequest(
+                    catalog="catalog_value",
                 )
 
                 # Make the request
-                operation = client.rejoin_user_events(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
+                response = await client.get_generative_questions_feature_config(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.retail_v2alpha.types.RejoinUserEventsRequest, dict]]):
-                The request object. Request message for RejoinUserEvents
+            request (Optional[Union[google.cloud.retail_v2alpha.types.GetGenerativeQuestionsFeatureConfigRequest, dict]]):
+                The request object. Request for
+                GetGenerativeQuestionsFeatureConfig
                 method.
+            catalog (:class:`str`):
+                Required. Resource name of the parent
+                catalog. Format:
+                projects/{project}/locations/{location}/catalogs/{catalog}
+
+                This corresponds to the ``catalog`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -889,24 +483,154 @@ class UserEventServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.retail_v2alpha.types.RejoinUserEventsResponse`
-                Response message for RejoinUserEvents method.
+            google.cloud.retail_v2alpha.types.GenerativeQuestionsFeatureConfig:
+                Configuration for overall generative
+                question feature state.
 
         """
         # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([catalog])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, user_event_service.RejoinUserEventsRequest):
-            request = user_event_service.RejoinUserEventsRequest(request)
+        if not isinstance(
+            request,
+            generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
+        ):
+            request = (
+                generative_question_service.GetGenerativeQuestionsFeatureConfigRequest(
+                    request
+                )
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if catalog is not None:
+            request.catalog = catalog
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.rejoin_user_events
+            self._client._transport.get_generative_questions_feature_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("catalog", request.catalog),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_generative_question_configs(
+        self,
+        request: Optional[
+            Union[
+                generative_question_service.ListGenerativeQuestionConfigsRequest, dict
+            ]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> generative_question_service.ListGenerativeQuestionConfigsResponse:
+        r"""Returns all questions for a given catalog.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import retail_v2alpha
+
+            async def sample_list_generative_question_configs():
+                # Create a client
+                client = retail_v2alpha.GenerativeQuestionServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = retail_v2alpha.ListGenerativeQuestionConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.list_generative_question_configs(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.retail_v2alpha.types.ListGenerativeQuestionConfigsRequest, dict]]):
+                The request object. Request for ListQuestions method.
+            parent (:class:`str`):
+                Required. Resource name of the parent
+                catalog. Format:
+                projects/{project}/locations/{location}/catalogs/{catalog}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2alpha.types.ListGenerativeQuestionConfigsResponse:
+                Response for ListQuestions method.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, generative_question_service.ListGenerativeQuestionConfigsRequest
+        ):
+            request = generative_question_service.ListGenerativeQuestionConfigsRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_generative_question_configs
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -926,12 +650,282 @@ class UserEventServiceAsyncClient:
             metadata=metadata,
         )
 
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            user_event_service.RejoinUserEventsResponse,
-            metadata_type=user_event_service.RejoinUserEventsMetadata,
+        # Done; return the response.
+        return response
+
+    async def update_generative_question_config(
+        self,
+        request: Optional[
+            Union[
+                generative_question_service.UpdateGenerativeQuestionConfigRequest, dict
+            ]
+        ] = None,
+        *,
+        generative_question_config: Optional[
+            generative_question.GenerativeQuestionConfig
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> generative_question.GenerativeQuestionConfig:
+        r"""Allows management of individual questions.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import retail_v2alpha
+
+            async def sample_update_generative_question_config():
+                # Create a client
+                client = retail_v2alpha.GenerativeQuestionServiceAsyncClient()
+
+                # Initialize request argument(s)
+                generative_question_config = retail_v2alpha.GenerativeQuestionConfig()
+                generative_question_config.catalog = "catalog_value"
+                generative_question_config.facet = "facet_value"
+
+                request = retail_v2alpha.UpdateGenerativeQuestionConfigRequest(
+                    generative_question_config=generative_question_config,
+                )
+
+                # Make the request
+                response = await client.update_generative_question_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.retail_v2alpha.types.UpdateGenerativeQuestionConfigRequest, dict]]):
+                The request object. Request for
+                UpdateGenerativeQuestionConfig method.
+            generative_question_config (:class:`google.cloud.retail_v2alpha.types.GenerativeQuestionConfig`):
+                Required. The question to update.
+                This corresponds to the ``generative_question_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. Indicates which fields in the provided
+                [GenerativeQuestionConfig][google.cloud.retail.v2alpha.GenerativeQuestionConfig]
+                to update. The following are NOT supported:
+
+                -  [GenerativeQuestionConfig.frequency][google.cloud.retail.v2alpha.GenerativeQuestionConfig.frequency]
+
+                If not set or empty, all supported fields are updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2alpha.types.GenerativeQuestionConfig:
+                Configuration for a single generated
+                question.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([generative_question_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, generative_question_service.UpdateGenerativeQuestionConfigRequest
+        ):
+            request = generative_question_service.UpdateGenerativeQuestionConfigRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if generative_question_config is not None:
+            request.generative_question_config = generative_question_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_generative_question_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "generative_question_config.catalog",
+                        request.generative_question_config.catalog,
+                    ),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def batch_update_generative_question_configs(
+        self,
+        request: Optional[
+            Union[
+                generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        requests: Optional[
+            MutableSequence[
+                generative_question_service.UpdateGenerativeQuestionConfigRequest
+            ]
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse:
+        r"""Allows management of multiple questions.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import retail_v2alpha
+
+            async def sample_batch_update_generative_question_configs():
+                # Create a client
+                client = retail_v2alpha.GenerativeQuestionServiceAsyncClient()
+
+                # Initialize request argument(s)
+                requests = retail_v2alpha.UpdateGenerativeQuestionConfigRequest()
+                requests.generative_question_config.catalog = "catalog_value"
+                requests.generative_question_config.facet = "facet_value"
+
+                request = retail_v2alpha.BatchUpdateGenerativeQuestionConfigsRequest(
+                    requests=requests,
+                )
+
+                # Make the request
+                response = await client.batch_update_generative_question_configs(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.retail_v2alpha.types.BatchUpdateGenerativeQuestionConfigsRequest, dict]]):
+                The request object. Request for
+                BatchUpdateGenerativeQuestionConfig
+                method.
+            parent (:class:`str`):
+                Optional. Resource name of the parent
+                catalog. Format:
+                projects/{project}/locations/{location}/catalogs/{catalog}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            requests (:class:`MutableSequence[google.cloud.retail_v2alpha.types.UpdateGenerativeQuestionConfigRequest]`):
+                Required. The updates question
+                configs.
+
+                This corresponds to the ``requests`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2alpha.types.BatchUpdateGenerativeQuestionConfigsResponse:
+                Aggregated response for
+                UpdateGenerativeQuestionConfig method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, requests])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
+        ):
+            request = (
+                generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest(
+                    request
+                )
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if requests:
+            request.requests.extend(requests)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_update_generative_question_configs
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1051,7 +1045,7 @@ class UserEventServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self) -> "UserEventServiceAsyncClient":
+    async def __aenter__(self) -> "GenerativeQuestionServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -1063,4 +1057,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("UserEventServiceAsyncClient",)
+__all__ = ("GenerativeQuestionServiceAsyncClient",)

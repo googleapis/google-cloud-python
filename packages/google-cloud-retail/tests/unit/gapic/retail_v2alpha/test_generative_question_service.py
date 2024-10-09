@@ -26,19 +26,9 @@ from collections.abc import Iterable
 import json
 import math
 
-from google.api import httpbody_pb2  # type: ignore
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    operation,
-    operations_v1,
-    path_template,
-)
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
@@ -46,13 +36,8 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -61,20 +46,14 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.cloud.retail_v2alpha.services.user_event_service import (
-    UserEventServiceAsyncClient,
-    UserEventServiceClient,
+from google.cloud.retail_v2alpha.services.generative_question_service import (
+    GenerativeQuestionServiceAsyncClient,
+    GenerativeQuestionServiceClient,
     transports,
 )
 from google.cloud.retail_v2alpha.types import (
-    common,
-    export_config,
-    import_config,
-    product,
-    promotion,
-    purge_config,
-    user_event,
-    user_event_service,
+    generative_question,
+    generative_question_service,
 )
 
 
@@ -111,41 +90,47 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert UserEventServiceClient._get_default_mtls_endpoint(None) is None
+    assert GenerativeQuestionServiceClient._get_default_mtls_endpoint(None) is None
     assert (
-        UserEventServiceClient._get_default_mtls_endpoint(api_endpoint)
+        GenerativeQuestionServiceClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        UserEventServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        GenerativeQuestionServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        UserEventServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        GenerativeQuestionServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        UserEventServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        GenerativeQuestionServiceClient._get_default_mtls_endpoint(
+            sandbox_mtls_endpoint
+        )
         == sandbox_mtls_endpoint
     )
     assert (
-        UserEventServiceClient._get_default_mtls_endpoint(non_googleapi)
+        GenerativeQuestionServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
     )
 
 
 def test__read_environment_variables():
-    assert UserEventServiceClient._read_environment_variables() == (False, "auto", None)
+    assert GenerativeQuestionServiceClient._read_environment_variables() == (
+        False,
+        "auto",
+        None,
+    )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert UserEventServiceClient._read_environment_variables() == (
+        assert GenerativeQuestionServiceClient._read_environment_variables() == (
             True,
             "auto",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert UserEventServiceClient._read_environment_variables() == (
+        assert GenerativeQuestionServiceClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -155,28 +140,28 @@ def test__read_environment_variables():
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError) as excinfo:
-            UserEventServiceClient._read_environment_variables()
+            GenerativeQuestionServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert UserEventServiceClient._read_environment_variables() == (
+        assert GenerativeQuestionServiceClient._read_environment_variables() == (
             False,
             "never",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert UserEventServiceClient._read_environment_variables() == (
+        assert GenerativeQuestionServiceClient._read_environment_variables() == (
             False,
             "always",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert UserEventServiceClient._read_environment_variables() == (
+        assert GenerativeQuestionServiceClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -184,14 +169,14 @@ def test__read_environment_variables():
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
-            UserEventServiceClient._read_environment_variables()
+            GenerativeQuestionServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert UserEventServiceClient._read_environment_variables() == (
+        assert GenerativeQuestionServiceClient._read_environment_variables() == (
             False,
             "auto",
             "foo.com",
@@ -202,13 +187,17 @@ def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
 
-    assert UserEventServiceClient._get_client_cert_source(None, False) is None
+    assert GenerativeQuestionServiceClient._get_client_cert_source(None, False) is None
     assert (
-        UserEventServiceClient._get_client_cert_source(mock_provided_cert_source, False)
+        GenerativeQuestionServiceClient._get_client_cert_source(
+            mock_provided_cert_source, False
+        )
         is None
     )
     assert (
-        UserEventServiceClient._get_client_cert_source(mock_provided_cert_source, True)
+        GenerativeQuestionServiceClient._get_client_cert_source(
+            mock_provided_cert_source, True
+        )
         == mock_provided_cert_source
     )
 
@@ -220,11 +209,11 @@ def test__get_client_cert_source():
             return_value=mock_default_cert_source,
         ):
             assert (
-                UserEventServiceClient._get_client_cert_source(None, True)
+                GenerativeQuestionServiceClient._get_client_cert_source(None, True)
                 is mock_default_cert_source
             )
             assert (
-                UserEventServiceClient._get_client_cert_source(
+                GenerativeQuestionServiceClient._get_client_cert_source(
                     mock_provided_cert_source, "true"
                 )
                 is mock_provided_cert_source
@@ -232,64 +221,74 @@ def test__get_client_cert_source():
 
 
 @mock.patch.object(
-    UserEventServiceClient,
+    GenerativeQuestionServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(UserEventServiceClient),
+    modify_default_endpoint_template(GenerativeQuestionServiceClient),
 )
 @mock.patch.object(
-    UserEventServiceAsyncClient,
+    GenerativeQuestionServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(UserEventServiceAsyncClient),
+    modify_default_endpoint_template(GenerativeQuestionServiceAsyncClient),
 )
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
-    default_universe = UserEventServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = UserEventServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
+    default_universe = GenerativeQuestionServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = (
+        GenerativeQuestionServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            UNIVERSE_DOMAIN=default_universe
+        )
     )
     mock_universe = "bar.com"
-    mock_endpoint = UserEventServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = GenerativeQuestionServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
     assert (
-        UserEventServiceClient._get_api_endpoint(
+        GenerativeQuestionServiceClient._get_api_endpoint(
             api_override, mock_client_cert_source, default_universe, "always"
         )
         == api_override
     )
     assert (
-        UserEventServiceClient._get_api_endpoint(
+        GenerativeQuestionServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "auto"
         )
-        == UserEventServiceClient.DEFAULT_MTLS_ENDPOINT
+        == GenerativeQuestionServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        UserEventServiceClient._get_api_endpoint(None, None, default_universe, "auto")
+        GenerativeQuestionServiceClient._get_api_endpoint(
+            None, None, default_universe, "auto"
+        )
         == default_endpoint
     )
     assert (
-        UserEventServiceClient._get_api_endpoint(None, None, default_universe, "always")
-        == UserEventServiceClient.DEFAULT_MTLS_ENDPOINT
+        GenerativeQuestionServiceClient._get_api_endpoint(
+            None, None, default_universe, "always"
+        )
+        == GenerativeQuestionServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        UserEventServiceClient._get_api_endpoint(
+        GenerativeQuestionServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "always"
         )
-        == UserEventServiceClient.DEFAULT_MTLS_ENDPOINT
+        == GenerativeQuestionServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        UserEventServiceClient._get_api_endpoint(None, None, mock_universe, "never")
+        GenerativeQuestionServiceClient._get_api_endpoint(
+            None, None, mock_universe, "never"
+        )
         == mock_endpoint
     )
     assert (
-        UserEventServiceClient._get_api_endpoint(None, None, default_universe, "never")
+        GenerativeQuestionServiceClient._get_api_endpoint(
+            None, None, default_universe, "never"
+        )
         == default_endpoint
     )
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        UserEventServiceClient._get_api_endpoint(
+        GenerativeQuestionServiceClient._get_api_endpoint(
             None, mock_client_cert_source, mock_universe, "auto"
         )
     assert (
@@ -303,30 +302,38 @@ def test__get_universe_domain():
     universe_domain_env = "bar.com"
 
     assert (
-        UserEventServiceClient._get_universe_domain(
+        GenerativeQuestionServiceClient._get_universe_domain(
             client_universe_domain, universe_domain_env
         )
         == client_universe_domain
     )
     assert (
-        UserEventServiceClient._get_universe_domain(None, universe_domain_env)
+        GenerativeQuestionServiceClient._get_universe_domain(None, universe_domain_env)
         == universe_domain_env
     )
     assert (
-        UserEventServiceClient._get_universe_domain(None, None)
-        == UserEventServiceClient._DEFAULT_UNIVERSE
+        GenerativeQuestionServiceClient._get_universe_domain(None, None)
+        == GenerativeQuestionServiceClient._DEFAULT_UNIVERSE
     )
 
     with pytest.raises(ValueError) as excinfo:
-        UserEventServiceClient._get_universe_domain("", None)
+        GenerativeQuestionServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (UserEventServiceClient, transports.UserEventServiceGrpcTransport, "grpc"),
-        (UserEventServiceClient, transports.UserEventServiceRestTransport, "rest"),
+        (
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
@@ -405,12 +412,12 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (UserEventServiceClient, "grpc"),
-        (UserEventServiceAsyncClient, "grpc_asyncio"),
-        (UserEventServiceClient, "rest"),
+        (GenerativeQuestionServiceClient, "grpc"),
+        (GenerativeQuestionServiceAsyncClient, "grpc_asyncio"),
+        (GenerativeQuestionServiceClient, "rest"),
     ],
 )
-def test_user_event_service_client_from_service_account_info(
+def test_generative_question_service_client_from_service_account_info(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -433,12 +440,12 @@ def test_user_event_service_client_from_service_account_info(
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.UserEventServiceGrpcTransport, "grpc"),
-        (transports.UserEventServiceGrpcAsyncIOTransport, "grpc_asyncio"),
-        (transports.UserEventServiceRestTransport, "rest"),
+        (transports.GenerativeQuestionServiceGrpcTransport, "grpc"),
+        (transports.GenerativeQuestionServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.GenerativeQuestionServiceRestTransport, "rest"),
     ],
 )
-def test_user_event_service_client_service_account_always_use_jwt(
+def test_generative_question_service_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -459,12 +466,12 @@ def test_user_event_service_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (UserEventServiceClient, "grpc"),
-        (UserEventServiceAsyncClient, "grpc_asyncio"),
-        (UserEventServiceClient, "rest"),
+        (GenerativeQuestionServiceClient, "grpc"),
+        (GenerativeQuestionServiceAsyncClient, "grpc_asyncio"),
+        (GenerativeQuestionServiceClient, "rest"),
     ],
 )
-def test_user_event_service_client_from_service_account_file(
+def test_generative_question_service_client_from_service_account_file(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -491,51 +498,63 @@ def test_user_event_service_client_from_service_account_file(
         )
 
 
-def test_user_event_service_client_get_transport_class():
-    transport = UserEventServiceClient.get_transport_class()
+def test_generative_question_service_client_get_transport_class():
+    transport = GenerativeQuestionServiceClient.get_transport_class()
     available_transports = [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceRestTransport,
+        transports.GenerativeQuestionServiceGrpcTransport,
+        transports.GenerativeQuestionServiceRestTransport,
     ]
     assert transport in available_transports
 
-    transport = UserEventServiceClient.get_transport_class("grpc")
-    assert transport == transports.UserEventServiceGrpcTransport
+    transport = GenerativeQuestionServiceClient.get_transport_class("grpc")
+    assert transport == transports.GenerativeQuestionServiceGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (UserEventServiceClient, transports.UserEventServiceGrpcTransport, "grpc"),
         (
-            UserEventServiceAsyncClient,
-            transports.UserEventServiceGrpcAsyncIOTransport,
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            GenerativeQuestionServiceAsyncClient,
+            transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (UserEventServiceClient, transports.UserEventServiceRestTransport, "rest"),
+        (
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 @mock.patch.object(
-    UserEventServiceClient,
+    GenerativeQuestionServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(UserEventServiceClient),
+    modify_default_endpoint_template(GenerativeQuestionServiceClient),
 )
 @mock.patch.object(
-    UserEventServiceAsyncClient,
+    GenerativeQuestionServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(UserEventServiceAsyncClient),
+    modify_default_endpoint_template(GenerativeQuestionServiceAsyncClient),
 )
-def test_user_event_service_client_client_options(
+def test_generative_question_service_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(UserEventServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(
+        GenerativeQuestionServiceClient, "get_transport_class"
+    ) as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(UserEventServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(
+        GenerativeQuestionServiceClient, "get_transport_class"
+    ) as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -659,55 +678,55 @@ def test_user_event_service_client_client_options(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (
-            UserEventServiceClient,
-            transports.UserEventServiceGrpcTransport,
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceGrpcTransport,
             "grpc",
             "true",
         ),
         (
-            UserEventServiceAsyncClient,
-            transports.UserEventServiceGrpcAsyncIOTransport,
+            GenerativeQuestionServiceAsyncClient,
+            transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
         (
-            UserEventServiceClient,
-            transports.UserEventServiceGrpcTransport,
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceGrpcTransport,
             "grpc",
             "false",
         ),
         (
-            UserEventServiceAsyncClient,
-            transports.UserEventServiceGrpcAsyncIOTransport,
+            GenerativeQuestionServiceAsyncClient,
+            transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
         (
-            UserEventServiceClient,
-            transports.UserEventServiceRestTransport,
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceRestTransport,
             "rest",
             "true",
         ),
         (
-            UserEventServiceClient,
-            transports.UserEventServiceRestTransport,
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceRestTransport,
             "rest",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    UserEventServiceClient,
+    GenerativeQuestionServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(UserEventServiceClient),
+    modify_default_endpoint_template(GenerativeQuestionServiceClient),
 )
 @mock.patch.object(
-    UserEventServiceAsyncClient,
+    GenerativeQuestionServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(UserEventServiceAsyncClient),
+    modify_default_endpoint_template(GenerativeQuestionServiceAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_user_event_service_client_mtls_env_auto(
+def test_generative_question_service_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -810,19 +829,22 @@ def test_user_event_service_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize(
-    "client_class", [UserEventServiceClient, UserEventServiceAsyncClient]
+    "client_class",
+    [GenerativeQuestionServiceClient, GenerativeQuestionServiceAsyncClient],
 )
 @mock.patch.object(
-    UserEventServiceClient,
+    GenerativeQuestionServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(UserEventServiceClient),
+    modify_default_endpoint(GenerativeQuestionServiceClient),
 )
 @mock.patch.object(
-    UserEventServiceAsyncClient,
+    GenerativeQuestionServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(UserEventServiceAsyncClient),
+    modify_default_endpoint(GenerativeQuestionServiceAsyncClient),
 )
-def test_user_event_service_client_get_mtls_endpoint_and_cert_source(client_class):
+def test_generative_question_service_client_get_mtls_endpoint_and_cert_source(
+    client_class,
+):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -914,27 +936,30 @@ def test_user_event_service_client_get_mtls_endpoint_and_cert_source(client_clas
 
 
 @pytest.mark.parametrize(
-    "client_class", [UserEventServiceClient, UserEventServiceAsyncClient]
+    "client_class",
+    [GenerativeQuestionServiceClient, GenerativeQuestionServiceAsyncClient],
 )
 @mock.patch.object(
-    UserEventServiceClient,
+    GenerativeQuestionServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(UserEventServiceClient),
+    modify_default_endpoint_template(GenerativeQuestionServiceClient),
 )
 @mock.patch.object(
-    UserEventServiceAsyncClient,
+    GenerativeQuestionServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(UserEventServiceAsyncClient),
+    modify_default_endpoint_template(GenerativeQuestionServiceAsyncClient),
 )
-def test_user_event_service_client_client_api_endpoint(client_class):
+def test_generative_question_service_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
-    default_universe = UserEventServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = UserEventServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
+    default_universe = GenerativeQuestionServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = (
+        GenerativeQuestionServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            UNIVERSE_DOMAIN=default_universe
+        )
     )
     mock_universe = "bar.com"
-    mock_endpoint = UserEventServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = GenerativeQuestionServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
@@ -1002,16 +1027,24 @@ def test_user_event_service_client_client_api_endpoint(client_class):
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (UserEventServiceClient, transports.UserEventServiceGrpcTransport, "grpc"),
         (
-            UserEventServiceAsyncClient,
-            transports.UserEventServiceGrpcAsyncIOTransport,
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            GenerativeQuestionServiceAsyncClient,
+            transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (UserEventServiceClient, transports.UserEventServiceRestTransport, "rest"),
+        (
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceRestTransport,
+            "rest",
+        ),
     ],
 )
-def test_user_event_service_client_client_options_scopes(
+def test_generative_question_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -1040,26 +1073,26 @@ def test_user_event_service_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            UserEventServiceClient,
-            transports.UserEventServiceGrpcTransport,
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            UserEventServiceAsyncClient,
-            transports.UserEventServiceGrpcAsyncIOTransport,
+            GenerativeQuestionServiceAsyncClient,
+            transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
         (
-            UserEventServiceClient,
-            transports.UserEventServiceRestTransport,
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceRestTransport,
             "rest",
             None,
         ),
     ],
 )
-def test_user_event_service_client_client_options_credentials_file(
+def test_generative_question_service_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1083,12 +1116,12 @@ def test_user_event_service_client_client_options_credentials_file(
         )
 
 
-def test_user_event_service_client_client_options_from_dict():
+def test_generative_question_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.retail_v2alpha.services.user_event_service.transports.UserEventServiceGrpcTransport.__init__"
+        "google.cloud.retail_v2alpha.services.generative_question_service.transports.GenerativeQuestionServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
@@ -1108,20 +1141,20 @@ def test_user_event_service_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            UserEventServiceClient,
-            transports.UserEventServiceGrpcTransport,
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            UserEventServiceAsyncClient,
-            transports.UserEventServiceGrpcAsyncIOTransport,
+            GenerativeQuestionServiceAsyncClient,
+            transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_user_event_service_client_create_channel_credentials_file(
+def test_generative_question_service_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1176,12 +1209,14 @@ def test_user_event_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_event_service.WriteUserEventRequest,
+        generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
         dict,
     ],
 )
-def test_write_user_event(request_type, transport: str = "grpc"):
-    client = UserEventServiceClient(
+def test_update_generative_questions_feature_config(
+    request_type, transport: str = "grpc"
+):
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1191,75 +1226,60 @@ def test_write_user_event(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_generative_questions_feature_config), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = user_event.UserEvent(
-            event_type="event_type_value",
-            visitor_id="visitor_id_value",
-            session_id="session_id_value",
-            experiment_ids=["experiment_ids_value"],
-            attribution_token="attribution_token_value",
-            cart_id="cart_id_value",
-            search_query="search_query_value",
-            filter="filter_value",
-            order_by="order_by_value",
-            offset=647,
-            page_categories=["page_categories_value"],
-            uri="uri_value",
-            referrer_uri="referrer_uri_value",
-            page_view_id="page_view_id_value",
-            entity="entity_value",
+        call.return_value = generative_question.GenerativeQuestionsFeatureConfig(
+            catalog="catalog_value",
+            feature_enabled=True,
+            minimum_products=1743,
         )
-        response = client.write_user_event(request)
+        response = client.update_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = user_event_service.WriteUserEventRequest()
+        request = (
+            generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
+        )
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, user_event.UserEvent)
-    assert response.event_type == "event_type_value"
-    assert response.visitor_id == "visitor_id_value"
-    assert response.session_id == "session_id_value"
-    assert response.experiment_ids == ["experiment_ids_value"]
-    assert response.attribution_token == "attribution_token_value"
-    assert response.cart_id == "cart_id_value"
-    assert response.search_query == "search_query_value"
-    assert response.filter == "filter_value"
-    assert response.order_by == "order_by_value"
-    assert response.offset == 647
-    assert response.page_categories == ["page_categories_value"]
-    assert response.uri == "uri_value"
-    assert response.referrer_uri == "referrer_uri_value"
-    assert response.page_view_id == "page_view_id_value"
-    assert response.entity == "entity_value"
+    assert isinstance(response, generative_question.GenerativeQuestionsFeatureConfig)
+    assert response.catalog == "catalog_value"
+    assert response.feature_enabled is True
+    assert response.minimum_products == 1743
 
 
-def test_write_user_event_empty_call():
+def test_update_generative_questions_feature_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_generative_questions_feature_config), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.write_user_event()
+        client.update_generative_questions_feature_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.WriteUserEventRequest()
+        assert (
+            args[0]
+            == generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
+        )
 
 
-def test_write_user_event_non_empty_request_with_auto_populated_field():
+def test_update_generative_questions_feature_config_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1267,28 +1287,31 @@ def test_write_user_event_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = user_event_service.WriteUserEventRequest(
-        parent="parent_value",
+    request = (
+        generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_generative_questions_feature_config), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.write_user_event(request=request)
+        client.update_generative_questions_feature_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.WriteUserEventRequest(
-            parent="parent_value",
+        assert (
+            args[0]
+            == generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
         )
 
 
-def test_write_user_event_use_cached_wrapped_rpc():
+def test_update_generative_questions_feature_config_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1298,7 +1321,10 @@ def test_write_user_event_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.write_user_event in client._transport._wrapped_methods
+        assert (
+            client._transport.update_generative_questions_feature_config
+            in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
@@ -1306,15 +1332,15 @@ def test_write_user_event_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.write_user_event
+            client._transport.update_generative_questions_feature_config
         ] = mock_rpc
         request = {}
-        client.write_user_event(request)
+        client.update_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.write_user_event(request)
+        client.update_generative_questions_feature_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1322,50 +1348,43 @@ def test_write_user_event_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_write_user_event_empty_call_async():
+async def test_update_generative_questions_feature_config_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_generative_questions_feature_config), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            user_event.UserEvent(
-                event_type="event_type_value",
-                visitor_id="visitor_id_value",
-                session_id="session_id_value",
-                experiment_ids=["experiment_ids_value"],
-                attribution_token="attribution_token_value",
-                cart_id="cart_id_value",
-                search_query="search_query_value",
-                filter="filter_value",
-                order_by="order_by_value",
-                offset=647,
-                page_categories=["page_categories_value"],
-                uri="uri_value",
-                referrer_uri="referrer_uri_value",
-                page_view_id="page_view_id_value",
-                entity="entity_value",
+            generative_question.GenerativeQuestionsFeatureConfig(
+                catalog="catalog_value",
+                feature_enabled=True,
+                minimum_products=1743,
             )
         )
-        response = await client.write_user_event()
+        response = await client.update_generative_questions_feature_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.WriteUserEventRequest()
+        assert (
+            args[0]
+            == generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
+        )
 
 
 @pytest.mark.asyncio
-async def test_write_user_event_async_use_cached_wrapped_rpc(
+async def test_update_generative_questions_feature_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = UserEventServiceAsyncClient(
+        client = GenerativeQuestionServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -1376,7 +1395,7 @@ async def test_write_user_event_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.write_user_event
+            client._client._transport.update_generative_questions_feature_config
             in client._client._transport._wrapped_methods
         )
 
@@ -1384,16 +1403,16 @@ async def test_write_user_event_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.write_user_event
+            client._client._transport.update_generative_questions_feature_config
         ] = mock_rpc
 
         request = {}
-        await client.write_user_event(request)
+        await client.update_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        await client.write_user_event(request)
+        await client.update_generative_questions_feature_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1401,11 +1420,11 @@ async def test_write_user_event_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_write_user_event_async(
+async def test_update_generative_questions_feature_config_async(
     transport: str = "grpc_asyncio",
-    request_type=user_event_service.WriteUserEventRequest,
+    request_type=generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
 ):
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1415,74 +1434,58 @@ async def test_write_user_event_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_generative_questions_feature_config), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            user_event.UserEvent(
-                event_type="event_type_value",
-                visitor_id="visitor_id_value",
-                session_id="session_id_value",
-                experiment_ids=["experiment_ids_value"],
-                attribution_token="attribution_token_value",
-                cart_id="cart_id_value",
-                search_query="search_query_value",
-                filter="filter_value",
-                order_by="order_by_value",
-                offset=647,
-                page_categories=["page_categories_value"],
-                uri="uri_value",
-                referrer_uri="referrer_uri_value",
-                page_view_id="page_view_id_value",
-                entity="entity_value",
+            generative_question.GenerativeQuestionsFeatureConfig(
+                catalog="catalog_value",
+                feature_enabled=True,
+                minimum_products=1743,
             )
         )
-        response = await client.write_user_event(request)
+        response = await client.update_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = user_event_service.WriteUserEventRequest()
+        request = (
+            generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
+        )
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, user_event.UserEvent)
-    assert response.event_type == "event_type_value"
-    assert response.visitor_id == "visitor_id_value"
-    assert response.session_id == "session_id_value"
-    assert response.experiment_ids == ["experiment_ids_value"]
-    assert response.attribution_token == "attribution_token_value"
-    assert response.cart_id == "cart_id_value"
-    assert response.search_query == "search_query_value"
-    assert response.filter == "filter_value"
-    assert response.order_by == "order_by_value"
-    assert response.offset == 647
-    assert response.page_categories == ["page_categories_value"]
-    assert response.uri == "uri_value"
-    assert response.referrer_uri == "referrer_uri_value"
-    assert response.page_view_id == "page_view_id_value"
-    assert response.entity == "entity_value"
+    assert isinstance(response, generative_question.GenerativeQuestionsFeatureConfig)
+    assert response.catalog == "catalog_value"
+    assert response.feature_enabled is True
+    assert response.minimum_products == 1743
 
 
 @pytest.mark.asyncio
-async def test_write_user_event_async_from_dict():
-    await test_write_user_event_async(request_type=dict)
+async def test_update_generative_questions_feature_config_async_from_dict():
+    await test_update_generative_questions_feature_config_async(request_type=dict)
 
 
-def test_write_user_event_field_headers():
-    client = UserEventServiceClient(
+def test_update_generative_questions_feature_config_field_headers():
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = user_event_service.WriteUserEventRequest()
+    request = (
+        generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
+    )
 
-    request.parent = "parent_value"
+    request.generative_questions_feature_config.catalog = "catalog_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
-        call.return_value = user_event.UserEvent()
-        client.write_user_event(request)
+    with mock.patch.object(
+        type(client.transport.update_generative_questions_feature_config), "__call__"
+    ) as call:
+        call.return_value = generative_question.GenerativeQuestionsFeatureConfig()
+        client.update_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -1493,28 +1496,32 @@ def test_write_user_event_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent_value",
+        "generative_questions_feature_config.catalog=catalog_value",
     ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_write_user_event_field_headers_async():
-    client = UserEventServiceAsyncClient(
+async def test_update_generative_questions_feature_config_field_headers_async():
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = user_event_service.WriteUserEventRequest()
+    request = (
+        generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
+    )
 
-    request.parent = "parent_value"
+    request.generative_questions_feature_config.catalog = "catalog_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_generative_questions_feature_config), "__call__"
+    ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            user_event.UserEvent()
+            generative_question.GenerativeQuestionsFeatureConfig()
         )
-        await client.write_user_event(request)
+        await client.update_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -1525,19 +1532,127 @@ async def test_write_user_event_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent_value",
+        "generative_questions_feature_config.catalog=catalog_value",
     ) in kw["metadata"]
+
+
+def test_update_generative_questions_feature_config_flattened():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_generative_questions_feature_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = generative_question.GenerativeQuestionsFeatureConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_generative_questions_feature_config(
+            generative_questions_feature_config=generative_question.GenerativeQuestionsFeatureConfig(
+                catalog="catalog_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].generative_questions_feature_config
+        mock_val = generative_question.GenerativeQuestionsFeatureConfig(
+            catalog="catalog_value"
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_generative_questions_feature_config_flattened_error():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_generative_questions_feature_config(
+            generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest(),
+            generative_questions_feature_config=generative_question.GenerativeQuestionsFeatureConfig(
+                catalog="catalog_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_generative_questions_feature_config_flattened_async():
+    client = GenerativeQuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_generative_questions_feature_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = generative_question.GenerativeQuestionsFeatureConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            generative_question.GenerativeQuestionsFeatureConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_generative_questions_feature_config(
+            generative_questions_feature_config=generative_question.GenerativeQuestionsFeatureConfig(
+                catalog="catalog_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].generative_questions_feature_config
+        mock_val = generative_question.GenerativeQuestionsFeatureConfig(
+            catalog="catalog_value"
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_generative_questions_feature_config_flattened_error_async():
+    client = GenerativeQuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_generative_questions_feature_config(
+            generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest(),
+            generative_questions_feature_config=generative_question.GenerativeQuestionsFeatureConfig(
+                catalog="catalog_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_event_service.CollectUserEventRequest,
+        generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
         dict,
     ],
 )
-def test_collect_user_event(request_type, transport: str = "grpc"):
-    client = UserEventServiceClient(
+def test_get_generative_questions_feature_config(request_type, transport: str = "grpc"):
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1548,52 +1663,59 @@ def test_collect_user_event(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.collect_user_event), "__call__"
+        type(client.transport.get_generative_questions_feature_config), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = httpbody_pb2.HttpBody(
-            content_type="content_type_value",
-            data=b"data_blob",
+        call.return_value = generative_question.GenerativeQuestionsFeatureConfig(
+            catalog="catalog_value",
+            feature_enabled=True,
+            minimum_products=1743,
         )
-        response = client.collect_user_event(request)
+        response = client.get_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = user_event_service.CollectUserEventRequest()
+        request = (
+            generative_question_service.GetGenerativeQuestionsFeatureConfigRequest()
+        )
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
+    assert isinstance(response, generative_question.GenerativeQuestionsFeatureConfig)
+    assert response.catalog == "catalog_value"
+    assert response.feature_enabled is True
+    assert response.minimum_products == 1743
 
 
-def test_collect_user_event_empty_call():
+def test_get_generative_questions_feature_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.collect_user_event), "__call__"
+        type(client.transport.get_generative_questions_feature_config), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.collect_user_event()
+        client.get_generative_questions_feature_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.CollectUserEventRequest()
+        assert (
+            args[0]
+            == generative_question_service.GetGenerativeQuestionsFeatureConfigRequest()
+        )
 
 
-def test_collect_user_event_non_empty_request_with_auto_populated_field():
+def test_get_generative_questions_feature_config_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1601,38 +1723,32 @@ def test_collect_user_event_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = user_event_service.CollectUserEventRequest(
-        prebuilt_rule="prebuilt_rule_value",
-        parent="parent_value",
-        user_event="user_event_value",
-        uri="uri_value",
-        raw_json="raw_json_value",
+    request = generative_question_service.GetGenerativeQuestionsFeatureConfigRequest(
+        catalog="catalog_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.collect_user_event), "__call__"
+        type(client.transport.get_generative_questions_feature_config), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.collect_user_event(request=request)
+        client.get_generative_questions_feature_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.CollectUserEventRequest(
-            prebuilt_rule="prebuilt_rule_value",
-            parent="parent_value",
-            user_event="user_event_value",
-            uri="uri_value",
-            raw_json="raw_json_value",
+        assert args[
+            0
+        ] == generative_question_service.GetGenerativeQuestionsFeatureConfigRequest(
+            catalog="catalog_value",
         )
 
 
-def test_collect_user_event_use_cached_wrapped_rpc():
+def test_get_generative_questions_feature_config_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1643,7 +1759,8 @@ def test_collect_user_event_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.collect_user_event in client._transport._wrapped_methods
+            client._transport.get_generative_questions_feature_config
+            in client._transport._wrapped_methods
         )
 
         # Replace cached wrapped function with mock
@@ -1652,15 +1769,15 @@ def test_collect_user_event_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.collect_user_event
+            client._transport.get_generative_questions_feature_config
         ] = mock_rpc
         request = {}
-        client.collect_user_event(request)
+        client.get_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.collect_user_event(request)
+        client.get_generative_questions_feature_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1668,39 +1785,43 @@ def test_collect_user_event_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_collect_user_event_empty_call_async():
+async def test_get_generative_questions_feature_config_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.collect_user_event), "__call__"
+        type(client.transport.get_generative_questions_feature_config), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(
-                content_type="content_type_value",
-                data=b"data_blob",
+            generative_question.GenerativeQuestionsFeatureConfig(
+                catalog="catalog_value",
+                feature_enabled=True,
+                minimum_products=1743,
             )
         )
-        response = await client.collect_user_event()
+        response = await client.get_generative_questions_feature_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.CollectUserEventRequest()
+        assert (
+            args[0]
+            == generative_question_service.GetGenerativeQuestionsFeatureConfigRequest()
+        )
 
 
 @pytest.mark.asyncio
-async def test_collect_user_event_async_use_cached_wrapped_rpc(
+async def test_get_generative_questions_feature_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = UserEventServiceAsyncClient(
+        client = GenerativeQuestionServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -1711,7 +1832,7 @@ async def test_collect_user_event_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.collect_user_event
+            client._client._transport.get_generative_questions_feature_config
             in client._client._transport._wrapped_methods
         )
 
@@ -1719,16 +1840,16 @@ async def test_collect_user_event_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.collect_user_event
+            client._client._transport.get_generative_questions_feature_config
         ] = mock_rpc
 
         request = {}
-        await client.collect_user_event(request)
+        await client.get_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        await client.collect_user_event(request)
+        await client.get_generative_questions_feature_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1736,11 +1857,11 @@ async def test_collect_user_event_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_collect_user_event_async(
+async def test_get_generative_questions_feature_config_async(
     transport: str = "grpc_asyncio",
-    request_type=user_event_service.CollectUserEventRequest,
+    request_type=generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
 ):
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1751,51 +1872,55 @@ async def test_collect_user_event_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.collect_user_event), "__call__"
+        type(client.transport.get_generative_questions_feature_config), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(
-                content_type="content_type_value",
-                data=b"data_blob",
+            generative_question.GenerativeQuestionsFeatureConfig(
+                catalog="catalog_value",
+                feature_enabled=True,
+                minimum_products=1743,
             )
         )
-        response = await client.collect_user_event(request)
+        response = await client.get_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = user_event_service.CollectUserEventRequest()
+        request = (
+            generative_question_service.GetGenerativeQuestionsFeatureConfigRequest()
+        )
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
+    assert isinstance(response, generative_question.GenerativeQuestionsFeatureConfig)
+    assert response.catalog == "catalog_value"
+    assert response.feature_enabled is True
+    assert response.minimum_products == 1743
 
 
 @pytest.mark.asyncio
-async def test_collect_user_event_async_from_dict():
-    await test_collect_user_event_async(request_type=dict)
+async def test_get_generative_questions_feature_config_async_from_dict():
+    await test_get_generative_questions_feature_config_async(request_type=dict)
 
 
-def test_collect_user_event_field_headers():
-    client = UserEventServiceClient(
+def test_get_generative_questions_feature_config_field_headers():
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = user_event_service.CollectUserEventRequest()
+    request = generative_question_service.GetGenerativeQuestionsFeatureConfigRequest()
 
-    request.parent = "parent_value"
+    request.catalog = "catalog_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.collect_user_event), "__call__"
+        type(client.transport.get_generative_questions_feature_config), "__call__"
     ) as call:
-        call.return_value = httpbody_pb2.HttpBody()
-        client.collect_user_event(request)
+        call.return_value = generative_question.GenerativeQuestionsFeatureConfig()
+        client.get_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -1806,30 +1931,30 @@ def test_collect_user_event_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent_value",
+        "catalog=catalog_value",
     ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_collect_user_event_field_headers_async():
-    client = UserEventServiceAsyncClient(
+async def test_get_generative_questions_feature_config_field_headers_async():
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = user_event_service.CollectUserEventRequest()
+    request = generative_question_service.GetGenerativeQuestionsFeatureConfigRequest()
 
-    request.parent = "parent_value"
+    request.catalog = "catalog_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.collect_user_event), "__call__"
+        type(client.transport.get_generative_questions_feature_config), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
+            generative_question.GenerativeQuestionsFeatureConfig()
         )
-        await client.collect_user_event(request)
+        await client.get_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -1840,19 +1965,105 @@ async def test_collect_user_event_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent_value",
+        "catalog=catalog_value",
     ) in kw["metadata"]
+
+
+def test_get_generative_questions_feature_config_flattened():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_generative_questions_feature_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = generative_question.GenerativeQuestionsFeatureConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_generative_questions_feature_config(
+            catalog="catalog_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].catalog
+        mock_val = "catalog_value"
+        assert arg == mock_val
+
+
+def test_get_generative_questions_feature_config_flattened_error():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_generative_questions_feature_config(
+            generative_question_service.GetGenerativeQuestionsFeatureConfigRequest(),
+            catalog="catalog_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_generative_questions_feature_config_flattened_async():
+    client = GenerativeQuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_generative_questions_feature_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = generative_question.GenerativeQuestionsFeatureConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            generative_question.GenerativeQuestionsFeatureConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_generative_questions_feature_config(
+            catalog="catalog_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].catalog
+        mock_val = "catalog_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_generative_questions_feature_config_flattened_error_async():
+    client = GenerativeQuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_generative_questions_feature_config(
+            generative_question_service.GetGenerativeQuestionsFeatureConfigRequest(),
+            catalog="catalog_value",
+        )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        purge_config.PurgeUserEventsRequest,
+        generative_question_service.ListGenerativeQuestionConfigsRequest,
         dict,
     ],
 )
-def test_purge_user_events(request_type, transport: str = "grpc"):
-    client = UserEventServiceClient(
+def test_list_generative_question_configs(request_type, transport: str = "grpc"):
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1863,350 +2074,54 @@ def test_purge_user_events(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.purge_user_events), "__call__"
+        type(client.transport.list_generative_question_configs), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.purge_user_events(request)
+        call.return_value = (
+            generative_question_service.ListGenerativeQuestionConfigsResponse()
+        )
+        response = client.list_generative_question_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = purge_config.PurgeUserEventsRequest()
+        request = generative_question_service.ListGenerativeQuestionConfigsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
+    assert isinstance(
+        response, generative_question_service.ListGenerativeQuestionConfigsResponse
+    )
 
 
-def test_purge_user_events_empty_call():
+def test_list_generative_question_configs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.purge_user_events), "__call__"
+        type(client.transport.list_generative_question_configs), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.purge_user_events()
+        client.list_generative_question_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == purge_config.PurgeUserEventsRequest()
-
-
-def test_purge_user_events_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = purge_config.PurgeUserEventsRequest(
-        parent="parent_value",
-        filter="filter_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.purge_user_events), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.purge_user_events(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == purge_config.PurgeUserEventsRequest(
-            parent="parent_value",
-            filter="filter_value",
-        )
-
-
-def test_purge_user_events_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserEventServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.purge_user_events in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.purge_user_events
-        ] = mock_rpc
-        request = {}
-        client.purge_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods call wrapper_fn to build a cached
-        # client._transport.operations_client instance on first rpc call.
-        # Subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.purge_user_events(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_purge_user_events_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.purge_user_events), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.purge_user_events()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == purge_config.PurgeUserEventsRequest()
-
-
-@pytest.mark.asyncio
-async def test_purge_user_events_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = UserEventServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
         assert (
-            client._client._transport.purge_user_events
-            in client._client._transport._wrapped_methods
+            args[0]
+            == generative_question_service.ListGenerativeQuestionConfigsRequest()
         )
 
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.purge_user_events
-        ] = mock_rpc
 
-        request = {}
-        await client.purge_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods call wrapper_fn to build a cached
-        # client._transport.operations_client instance on first rpc call.
-        # Subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        await client.purge_user_events(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_purge_user_events_async(
-    transport: str = "grpc_asyncio", request_type=purge_config.PurgeUserEventsRequest
-):
-    client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.purge_user_events), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.purge_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = purge_config.PurgeUserEventsRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_purge_user_events_async_from_dict():
-    await test_purge_user_events_async(request_type=dict)
-
-
-def test_purge_user_events_field_headers():
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = purge_config.PurgeUserEventsRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.purge_user_events), "__call__"
-    ) as call:
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        client.purge_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_purge_user_events_field_headers_async():
-    client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = purge_config.PurgeUserEventsRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.purge_user_events), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.purge_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        import_config.ImportUserEventsRequest,
-        dict,
-    ],
-)
-def test_import_user_events(request_type, transport: str = "grpc"):
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.import_user_events), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.import_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = import_config.ImportUserEventsRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-def test_import_user_events_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.import_user_events), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.import_user_events()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == import_config.ImportUserEventsRequest()
-
-
-def test_import_user_events_non_empty_request_with_auto_populated_field():
+def test_list_generative_question_configs_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -2214,30 +2129,32 @@ def test_import_user_events_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = import_config.ImportUserEventsRequest(
+    request = generative_question_service.ListGenerativeQuestionConfigsRequest(
         parent="parent_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.import_user_events), "__call__"
+        type(client.transport.list_generative_question_configs), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.import_user_events(request=request)
+        client.list_generative_question_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == import_config.ImportUserEventsRequest(
+        assert args[
+            0
+        ] == generative_question_service.ListGenerativeQuestionConfigsRequest(
             parent="parent_value",
         )
 
 
-def test_import_user_events_use_cached_wrapped_rpc():
+def test_list_generative_question_configs_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -2248,7 +2165,8 @@ def test_import_user_events_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.import_user_events in client._transport._wrapped_methods
+            client._transport.list_generative_question_configs
+            in client._transport._wrapped_methods
         )
 
         # Replace cached wrapped function with mock
@@ -2257,20 +2175,15 @@ def test_import_user_events_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.import_user_events
+            client._transport.list_generative_question_configs
         ] = mock_rpc
         request = {}
-        client.import_user_events(request)
+        client.list_generative_question_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods call wrapper_fn to build a cached
-        # client._transport.operations_client instance on first rpc call.
-        # Subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.import_user_events(request)
+        client.list_generative_question_configs(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2278,36 +2191,39 @@ def test_import_user_events_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_import_user_events_empty_call_async():
+async def test_list_generative_question_configs_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.import_user_events), "__call__"
+        type(client.transport.list_generative_question_configs), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
+            generative_question_service.ListGenerativeQuestionConfigsResponse()
         )
-        response = await client.import_user_events()
+        response = await client.list_generative_question_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == import_config.ImportUserEventsRequest()
+        assert (
+            args[0]
+            == generative_question_service.ListGenerativeQuestionConfigsRequest()
+        )
 
 
 @pytest.mark.asyncio
-async def test_import_user_events_async_use_cached_wrapped_rpc(
+async def test_list_generative_question_configs_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = UserEventServiceAsyncClient(
+        client = GenerativeQuestionServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -2318,7 +2234,7 @@ async def test_import_user_events_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.import_user_events
+            client._client._transport.list_generative_question_configs
             in client._client._transport._wrapped_methods
         )
 
@@ -2326,21 +2242,16 @@ async def test_import_user_events_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.import_user_events
+            client._client._transport.list_generative_question_configs
         ] = mock_rpc
 
         request = {}
-        await client.import_user_events(request)
+        await client.list_generative_question_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods call wrapper_fn to build a cached
-        # client._transport.operations_client instance on first rpc call.
-        # Subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        await client.import_user_events(request)
+        await client.list_generative_question_configs(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2348,10 +2259,11 @@ async def test_import_user_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_import_user_events_async(
-    transport: str = "grpc_asyncio", request_type=import_config.ImportUserEventsRequest
+async def test_list_generative_question_configs_async(
+    transport: str = "grpc_asyncio",
+    request_type=generative_question_service.ListGenerativeQuestionConfigsRequest,
 ):
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2362,46 +2274,50 @@ async def test_import_user_events_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.import_user_events), "__call__"
+        type(client.transport.list_generative_question_configs), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
+            generative_question_service.ListGenerativeQuestionConfigsResponse()
         )
-        response = await client.import_user_events(request)
+        response = await client.list_generative_question_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = import_config.ImportUserEventsRequest()
+        request = generative_question_service.ListGenerativeQuestionConfigsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
+    assert isinstance(
+        response, generative_question_service.ListGenerativeQuestionConfigsResponse
+    )
 
 
 @pytest.mark.asyncio
-async def test_import_user_events_async_from_dict():
-    await test_import_user_events_async(request_type=dict)
+async def test_list_generative_question_configs_async_from_dict():
+    await test_list_generative_question_configs_async(request_type=dict)
 
 
-def test_import_user_events_field_headers():
-    client = UserEventServiceClient(
+def test_list_generative_question_configs_field_headers():
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = import_config.ImportUserEventsRequest()
+    request = generative_question_service.ListGenerativeQuestionConfigsRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.import_user_events), "__call__"
+        type(client.transport.list_generative_question_configs), "__call__"
     ) as call:
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        client.import_user_events(request)
+        call.return_value = (
+            generative_question_service.ListGenerativeQuestionConfigsResponse()
+        )
+        client.list_generative_question_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -2417,25 +2333,25 @@ def test_import_user_events_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_import_user_events_field_headers_async():
-    client = UserEventServiceAsyncClient(
+async def test_list_generative_question_configs_field_headers_async():
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = import_config.ImportUserEventsRequest()
+    request = generative_question_service.ListGenerativeQuestionConfigsRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.import_user_events), "__call__"
+        type(client.transport.list_generative_question_configs), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
+            generative_question_service.ListGenerativeQuestionConfigsResponse()
         )
-        await client.import_user_events(request)
+        await client.list_generative_question_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -2448,17 +2364,107 @@ async def test_import_user_events_field_headers_async():
         "x-goog-request-params",
         "parent=parent_value",
     ) in kw["metadata"]
+
+
+def test_list_generative_question_configs_flattened():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_generative_question_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            generative_question_service.ListGenerativeQuestionConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_generative_question_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_generative_question_configs_flattened_error():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_generative_question_configs(
+            generative_question_service.ListGenerativeQuestionConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_generative_question_configs_flattened_async():
+    client = GenerativeQuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_generative_question_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            generative_question_service.ListGenerativeQuestionConfigsResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            generative_question_service.ListGenerativeQuestionConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_generative_question_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_generative_question_configs_flattened_error_async():
+    client = GenerativeQuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_generative_question_configs(
+            generative_question_service.ListGenerativeQuestionConfigsRequest(),
+            parent="parent_value",
+        )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        export_config.ExportUserEventsRequest,
+        generative_question_service.UpdateGenerativeQuestionConfigRequest,
         dict,
     ],
 )
-def test_export_user_events(request_type, transport: str = "grpc"):
-    client = UserEventServiceClient(
+def test_update_generative_question_config(request_type, transport: str = "grpc"):
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2469,47 +2475,65 @@ def test_export_user_events(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.export_user_events), "__call__"
+        type(client.transport.update_generative_question_config), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.export_user_events(request)
+        call.return_value = generative_question.GenerativeQuestionConfig(
+            catalog="catalog_value",
+            facet="facet_value",
+            generated_question="generated_question_value",
+            final_question="final_question_value",
+            example_values=["example_values_value"],
+            frequency=0.978,
+            allowed_in_conversation=True,
+        )
+        response = client.update_generative_question_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = export_config.ExportUserEventsRequest()
+        request = generative_question_service.UpdateGenerativeQuestionConfigRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
+    assert isinstance(response, generative_question.GenerativeQuestionConfig)
+    assert response.catalog == "catalog_value"
+    assert response.facet == "facet_value"
+    assert response.generated_question == "generated_question_value"
+    assert response.final_question == "final_question_value"
+    assert response.example_values == ["example_values_value"]
+    assert math.isclose(response.frequency, 0.978, rel_tol=1e-6)
+    assert response.allowed_in_conversation is True
 
 
-def test_export_user_events_empty_call():
+def test_update_generative_question_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.export_user_events), "__call__"
+        type(client.transport.update_generative_question_config), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.export_user_events()
+        client.update_generative_question_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == export_config.ExportUserEventsRequest()
+        assert (
+            args[0]
+            == generative_question_service.UpdateGenerativeQuestionConfigRequest()
+        )
 
 
-def test_export_user_events_non_empty_request_with_auto_populated_field():
+def test_update_generative_question_config_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -2517,32 +2541,29 @@ def test_export_user_events_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = export_config.ExportUserEventsRequest(
-        parent="parent_value",
-        filter="filter_value",
-    )
+    request = generative_question_service.UpdateGenerativeQuestionConfigRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.export_user_events), "__call__"
+        type(client.transport.update_generative_question_config), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.export_user_events(request=request)
+        client.update_generative_question_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == export_config.ExportUserEventsRequest(
-            parent="parent_value",
-            filter="filter_value",
+        assert (
+            args[0]
+            == generative_question_service.UpdateGenerativeQuestionConfigRequest()
         )
 
 
-def test_export_user_events_use_cached_wrapped_rpc():
+def test_update_generative_question_config_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -2553,7 +2574,8 @@ def test_export_user_events_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.export_user_events in client._transport._wrapped_methods
+            client._transport.update_generative_question_config
+            in client._transport._wrapped_methods
         )
 
         # Replace cached wrapped function with mock
@@ -2562,20 +2584,15 @@ def test_export_user_events_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.export_user_events
+            client._transport.update_generative_question_config
         ] = mock_rpc
         request = {}
-        client.export_user_events(request)
+        client.update_generative_question_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods call wrapper_fn to build a cached
-        # client._transport.operations_client instance on first rpc call.
-        # Subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.export_user_events(request)
+        client.update_generative_question_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2583,36 +2600,47 @@ def test_export_user_events_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_export_user_events_empty_call_async():
+async def test_update_generative_question_config_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.export_user_events), "__call__"
+        type(client.transport.update_generative_question_config), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
+            generative_question.GenerativeQuestionConfig(
+                catalog="catalog_value",
+                facet="facet_value",
+                generated_question="generated_question_value",
+                final_question="final_question_value",
+                example_values=["example_values_value"],
+                frequency=0.978,
+                allowed_in_conversation=True,
+            )
         )
-        response = await client.export_user_events()
+        response = await client.update_generative_question_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == export_config.ExportUserEventsRequest()
+        assert (
+            args[0]
+            == generative_question_service.UpdateGenerativeQuestionConfigRequest()
+        )
 
 
 @pytest.mark.asyncio
-async def test_export_user_events_async_use_cached_wrapped_rpc(
+async def test_update_generative_question_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = UserEventServiceAsyncClient(
+        client = GenerativeQuestionServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -2623,7 +2651,7 @@ async def test_export_user_events_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.export_user_events
+            client._client._transport.update_generative_question_config
             in client._client._transport._wrapped_methods
         )
 
@@ -2631,21 +2659,16 @@ async def test_export_user_events_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.export_user_events
+            client._client._transport.update_generative_question_config
         ] = mock_rpc
 
         request = {}
-        await client.export_user_events(request)
+        await client.update_generative_question_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods call wrapper_fn to build a cached
-        # client._transport.operations_client instance on first rpc call.
-        # Subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        await client.export_user_events(request)
+        await client.update_generative_question_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2653,10 +2676,11 @@ async def test_export_user_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_user_events_async(
-    transport: str = "grpc_asyncio", request_type=export_config.ExportUserEventsRequest
+async def test_update_generative_question_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=generative_question_service.UpdateGenerativeQuestionConfigRequest,
 ):
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2667,46 +2691,61 @@ async def test_export_user_events_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.export_user_events), "__call__"
+        type(client.transport.update_generative_question_config), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
+            generative_question.GenerativeQuestionConfig(
+                catalog="catalog_value",
+                facet="facet_value",
+                generated_question="generated_question_value",
+                final_question="final_question_value",
+                example_values=["example_values_value"],
+                frequency=0.978,
+                allowed_in_conversation=True,
+            )
         )
-        response = await client.export_user_events(request)
+        response = await client.update_generative_question_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = export_config.ExportUserEventsRequest()
+        request = generative_question_service.UpdateGenerativeQuestionConfigRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
+    assert isinstance(response, generative_question.GenerativeQuestionConfig)
+    assert response.catalog == "catalog_value"
+    assert response.facet == "facet_value"
+    assert response.generated_question == "generated_question_value"
+    assert response.final_question == "final_question_value"
+    assert response.example_values == ["example_values_value"]
+    assert math.isclose(response.frequency, 0.978, rel_tol=1e-6)
+    assert response.allowed_in_conversation is True
 
 
 @pytest.mark.asyncio
-async def test_export_user_events_async_from_dict():
-    await test_export_user_events_async(request_type=dict)
+async def test_update_generative_question_config_async_from_dict():
+    await test_update_generative_question_config_async(request_type=dict)
 
 
-def test_export_user_events_field_headers():
-    client = UserEventServiceClient(
+def test_update_generative_question_config_field_headers():
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = export_config.ExportUserEventsRequest()
+    request = generative_question_service.UpdateGenerativeQuestionConfigRequest()
 
-    request.parent = "parent_value"
+    request.generative_question_config.catalog = "catalog_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.export_user_events), "__call__"
+        type(client.transport.update_generative_question_config), "__call__"
     ) as call:
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        client.export_user_events(request)
+        call.return_value = generative_question.GenerativeQuestionConfig()
+        client.update_generative_question_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -2717,30 +2756,30 @@ def test_export_user_events_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent_value",
+        "generative_question_config.catalog=catalog_value",
     ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_export_user_events_field_headers_async():
-    client = UserEventServiceAsyncClient(
+async def test_update_generative_question_config_field_headers_async():
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = export_config.ExportUserEventsRequest()
+    request = generative_question_service.UpdateGenerativeQuestionConfigRequest()
 
-    request.parent = "parent_value"
+    request.generative_question_config.catalog = "catalog_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.export_user_events), "__call__"
+        type(client.transport.update_generative_question_config), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
+            generative_question.GenerativeQuestionConfig()
         )
-        await client.export_user_events(request)
+        await client.update_generative_question_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -2751,19 +2790,125 @@ async def test_export_user_events_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent_value",
+        "generative_question_config.catalog=catalog_value",
     ) in kw["metadata"]
+
+
+def test_update_generative_question_config_flattened():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_generative_question_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = generative_question.GenerativeQuestionConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_generative_question_config(
+            generative_question_config=generative_question.GenerativeQuestionConfig(
+                catalog="catalog_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].generative_question_config
+        mock_val = generative_question.GenerativeQuestionConfig(catalog="catalog_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_generative_question_config_flattened_error():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_generative_question_config(
+            generative_question_service.UpdateGenerativeQuestionConfigRequest(),
+            generative_question_config=generative_question.GenerativeQuestionConfig(
+                catalog="catalog_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_generative_question_config_flattened_async():
+    client = GenerativeQuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_generative_question_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = generative_question.GenerativeQuestionConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            generative_question.GenerativeQuestionConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_generative_question_config(
+            generative_question_config=generative_question.GenerativeQuestionConfig(
+                catalog="catalog_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].generative_question_config
+        mock_val = generative_question.GenerativeQuestionConfig(catalog="catalog_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_generative_question_config_flattened_error_async():
+    client = GenerativeQuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_generative_question_config(
+            generative_question_service.UpdateGenerativeQuestionConfigRequest(),
+            generative_question_config=generative_question.GenerativeQuestionConfig(
+                catalog="catalog_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_event_service.RejoinUserEventsRequest,
+        generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
         dict,
     ],
 )
-def test_rejoin_user_events(request_type, transport: str = "grpc"):
-    client = UserEventServiceClient(
+def test_batch_update_generative_question_configs(
+    request_type, transport: str = "grpc"
+):
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2774,47 +2919,57 @@ def test_rejoin_user_events(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.rejoin_user_events), "__call__"
+        type(client.transport.batch_update_generative_question_configs), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.rejoin_user_events(request)
+        call.return_value = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
+        )
+        response = client.batch_update_generative_question_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = user_event_service.RejoinUserEventsRequest()
+        request = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest()
+        )
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
+    assert isinstance(
+        response,
+        generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse,
+    )
 
 
-def test_rejoin_user_events_empty_call():
+def test_batch_update_generative_question_configs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.rejoin_user_events), "__call__"
+        type(client.transport.batch_update_generative_question_configs), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.rejoin_user_events()
+        client.batch_update_generative_question_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.RejoinUserEventsRequest()
+        assert (
+            args[0]
+            == generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest()
+        )
 
 
-def test_rejoin_user_events_non_empty_request_with_auto_populated_field():
+def test_batch_update_generative_question_configs_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -2822,30 +2977,32 @@ def test_rejoin_user_events_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = user_event_service.RejoinUserEventsRequest(
+    request = generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest(
         parent="parent_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.rejoin_user_events), "__call__"
+        type(client.transport.batch_update_generative_question_configs), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.rejoin_user_events(request=request)
+        client.batch_update_generative_question_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.RejoinUserEventsRequest(
+        assert args[
+            0
+        ] == generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest(
             parent="parent_value",
         )
 
 
-def test_rejoin_user_events_use_cached_wrapped_rpc():
+def test_batch_update_generative_question_configs_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -2856,7 +3013,8 @@ def test_rejoin_user_events_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.rejoin_user_events in client._transport._wrapped_methods
+            client._transport.batch_update_generative_question_configs
+            in client._transport._wrapped_methods
         )
 
         # Replace cached wrapped function with mock
@@ -2865,20 +3023,15 @@ def test_rejoin_user_events_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.rejoin_user_events
+            client._transport.batch_update_generative_question_configs
         ] = mock_rpc
         request = {}
-        client.rejoin_user_events(request)
+        client.batch_update_generative_question_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods call wrapper_fn to build a cached
-        # client._transport.operations_client instance on first rpc call.
-        # Subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.rejoin_user_events(request)
+        client.batch_update_generative_question_configs(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2886,36 +3039,39 @@ def test_rejoin_user_events_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_rejoin_user_events_empty_call_async():
+async def test_batch_update_generative_question_configs_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.rejoin_user_events), "__call__"
+        type(client.transport.batch_update_generative_question_configs), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
         )
-        response = await client.rejoin_user_events()
+        response = await client.batch_update_generative_question_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.RejoinUserEventsRequest()
+        assert (
+            args[0]
+            == generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest()
+        )
 
 
 @pytest.mark.asyncio
-async def test_rejoin_user_events_async_use_cached_wrapped_rpc(
+async def test_batch_update_generative_question_configs_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = UserEventServiceAsyncClient(
+        client = GenerativeQuestionServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -2926,7 +3082,7 @@ async def test_rejoin_user_events_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.rejoin_user_events
+            client._client._transport.batch_update_generative_question_configs
             in client._client._transport._wrapped_methods
         )
 
@@ -2934,21 +3090,16 @@ async def test_rejoin_user_events_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.rejoin_user_events
+            client._client._transport.batch_update_generative_question_configs
         ] = mock_rpc
 
         request = {}
-        await client.rejoin_user_events(request)
+        await client.batch_update_generative_question_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods call wrapper_fn to build a cached
-        # client._transport.operations_client instance on first rpc call.
-        # Subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        await client.rejoin_user_events(request)
+        await client.batch_update_generative_question_configs(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2956,11 +3107,11 @@ async def test_rejoin_user_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_rejoin_user_events_async(
+async def test_batch_update_generative_question_configs_async(
     transport: str = "grpc_asyncio",
-    request_type=user_event_service.RejoinUserEventsRequest,
+    request_type=generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
 ):
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2971,46 +3122,53 @@ async def test_rejoin_user_events_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.rejoin_user_events), "__call__"
+        type(client.transport.batch_update_generative_question_configs), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
         )
-        response = await client.rejoin_user_events(request)
+        response = await client.batch_update_generative_question_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = user_event_service.RejoinUserEventsRequest()
+        request = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest()
+        )
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
+    assert isinstance(
+        response,
+        generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse,
+    )
 
 
 @pytest.mark.asyncio
-async def test_rejoin_user_events_async_from_dict():
-    await test_rejoin_user_events_async(request_type=dict)
+async def test_batch_update_generative_question_configs_async_from_dict():
+    await test_batch_update_generative_question_configs_async(request_type=dict)
 
 
-def test_rejoin_user_events_field_headers():
-    client = UserEventServiceClient(
+def test_batch_update_generative_question_configs_field_headers():
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = user_event_service.RejoinUserEventsRequest()
+    request = generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.rejoin_user_events), "__call__"
+        type(client.transport.batch_update_generative_question_configs), "__call__"
     ) as call:
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        client.rejoin_user_events(request)
+        call.return_value = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
+        )
+        client.batch_update_generative_question_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -3026,25 +3184,25 @@ def test_rejoin_user_events_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_rejoin_user_events_field_headers_async():
-    client = UserEventServiceAsyncClient(
+async def test_batch_update_generative_question_configs_field_headers_async():
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = user_event_service.RejoinUserEventsRequest()
+    request = generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.rejoin_user_events), "__call__"
+        type(client.transport.batch_update_generative_question_configs), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
         )
-        await client.rejoin_user_events(request)
+        await client.batch_update_generative_question_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -3059,152 +3217,174 @@ async def test_rejoin_user_events_field_headers_async():
     ) in kw["metadata"]
 
 
+def test_batch_update_generative_question_configs_flattened():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_generative_question_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.batch_update_generative_question_configs(
+            parent="parent_value",
+            requests=[
+                generative_question_service.UpdateGenerativeQuestionConfigRequest(
+                    generative_question_config=generative_question.GenerativeQuestionConfig(
+                        catalog="catalog_value"
+                    )
+                )
+            ],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].requests
+        mock_val = [
+            generative_question_service.UpdateGenerativeQuestionConfigRequest(
+                generative_question_config=generative_question.GenerativeQuestionConfig(
+                    catalog="catalog_value"
+                )
+            )
+        ]
+        assert arg == mock_val
+
+
+def test_batch_update_generative_question_configs_flattened_error():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_update_generative_question_configs(
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest(),
+            parent="parent_value",
+            requests=[
+                generative_question_service.UpdateGenerativeQuestionConfigRequest(
+                    generative_question_config=generative_question.GenerativeQuestionConfig(
+                        catalog="catalog_value"
+                    )
+                )
+            ],
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_update_generative_question_configs_flattened_async():
+    client = GenerativeQuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_generative_question_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.batch_update_generative_question_configs(
+            parent="parent_value",
+            requests=[
+                generative_question_service.UpdateGenerativeQuestionConfigRequest(
+                    generative_question_config=generative_question.GenerativeQuestionConfig(
+                        catalog="catalog_value"
+                    )
+                )
+            ],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].requests
+        mock_val = [
+            generative_question_service.UpdateGenerativeQuestionConfigRequest(
+                generative_question_config=generative_question.GenerativeQuestionConfig(
+                    catalog="catalog_value"
+                )
+            )
+        ]
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_batch_update_generative_question_configs_flattened_error_async():
+    client = GenerativeQuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.batch_update_generative_question_configs(
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest(),
+            parent="parent_value",
+            requests=[
+                generative_question_service.UpdateGenerativeQuestionConfigRequest(
+                    generative_question_config=generative_question.GenerativeQuestionConfig(
+                        catalog="catalog_value"
+                    )
+                )
+            ],
+        )
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_event_service.WriteUserEventRequest,
+        generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
         dict,
     ],
 )
-def test_write_user_event_rest(request_type):
-    client = UserEventServiceClient(
+def test_update_generative_questions_feature_config_rest(request_type):
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request_init["user_event"] = {
-        "event_type": "event_type_value",
-        "visitor_id": "visitor_id_value",
-        "session_id": "session_id_value",
-        "event_time": {"seconds": 751, "nanos": 543},
-        "experiment_ids": ["experiment_ids_value1", "experiment_ids_value2"],
-        "attribution_token": "attribution_token_value",
-        "product_details": [
-            {
-                "product": {
-                    "expire_time": {},
-                    "ttl": {"seconds": 751, "nanos": 543},
-                    "name": "name_value",
-                    "id": "id_value",
-                    "type_": 1,
-                    "primary_product_id": "primary_product_id_value",
-                    "collection_member_ids": [
-                        "collection_member_ids_value1",
-                        "collection_member_ids_value2",
-                    ],
-                    "gtin": "gtin_value",
-                    "categories": ["categories_value1", "categories_value2"],
-                    "title": "title_value",
-                    "brands": ["brands_value1", "brands_value2"],
-                    "description": "description_value",
-                    "language_code": "language_code_value",
-                    "attributes": {},
-                    "tags": ["tags_value1", "tags_value2"],
-                    "price_info": {
-                        "currency_code": "currency_code_value",
-                        "price": 0.531,
-                        "original_price": 0.1479,
-                        "cost": 0.441,
-                        "price_effective_time": {},
-                        "price_expire_time": {},
-                        "price_range": {
-                            "price": {
-                                "minimum": 0.764,
-                                "exclusive_minimum": 0.18430000000000002,
-                                "maximum": 0.766,
-                                "exclusive_maximum": 0.1845,
-                            },
-                            "original_price": {},
-                        },
-                    },
-                    "rating": {
-                        "rating_count": 1293,
-                        "average_rating": 0.1471,
-                        "rating_histogram": [1715, 1716],
-                    },
-                    "available_time": {},
-                    "availability": 1,
-                    "available_quantity": {"value": 541},
-                    "fulfillment_info": [
-                        {
-                            "type_": "type__value",
-                            "place_ids": ["place_ids_value1", "place_ids_value2"],
-                        }
-                    ],
-                    "uri": "uri_value",
-                    "images": [{"uri": "uri_value", "height": 633, "width": 544}],
-                    "audience": {
-                        "genders": ["genders_value1", "genders_value2"],
-                        "age_groups": ["age_groups_value1", "age_groups_value2"],
-                    },
-                    "color_info": {
-                        "color_families": [
-                            "color_families_value1",
-                            "color_families_value2",
-                        ],
-                        "colors": ["colors_value1", "colors_value2"],
-                    },
-                    "sizes": ["sizes_value1", "sizes_value2"],
-                    "materials": ["materials_value1", "materials_value2"],
-                    "patterns": ["patterns_value1", "patterns_value2"],
-                    "conditions": ["conditions_value1", "conditions_value2"],
-                    "promotions": [{"promotion_id": "promotion_id_value"}],
-                    "publish_time": {},
-                    "retrievable_fields": {"paths": ["paths_value1", "paths_value2"]},
-                    "variants": {},
-                    "local_inventories": [
-                        {
-                            "place_id": "place_id_value",
-                            "price_info": {},
-                            "attributes": {},
-                            "fulfillment_types": [
-                                "fulfillment_types_value1",
-                                "fulfillment_types_value2",
-                            ],
-                        }
-                    ],
-                },
-                "quantity": {},
-            }
-        ],
-        "completion_detail": {
-            "completion_attribution_token": "completion_attribution_token_value",
-            "selected_suggestion": "selected_suggestion_value",
-            "selected_position": 1821,
-        },
-        "attributes": {},
-        "cart_id": "cart_id_value",
-        "purchase_transaction": {
-            "id": "id_value",
-            "revenue": 0.762,
-            "tax": 0.333,
-            "cost": 0.441,
-            "currency_code": "currency_code_value",
-        },
-        "search_query": "search_query_value",
-        "filter": "filter_value",
-        "order_by": "order_by_value",
-        "offset": 647,
-        "page_categories": ["page_categories_value1", "page_categories_value2"],
-        "user_info": {
-            "user_id": "user_id_value",
-            "ip_address": "ip_address_value",
-            "user_agent": "user_agent_value",
-            "direct_user_request": True,
-        },
-        "uri": "uri_value",
-        "referrer_uri": "referrer_uri_value",
-        "page_view_id": "page_view_id_value",
-        "entity": "entity_value",
+    request_init = {
+        "generative_questions_feature_config": {
+            "catalog": "projects/sample1/locations/sample2/catalogs/sample3"
+        }
+    }
+    request_init["generative_questions_feature_config"] = {
+        "catalog": "projects/sample1/locations/sample2/catalogs/sample3",
+        "feature_enabled": True,
+        "minimum_products": 1743,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = user_event_service.WriteUserEventRequest.meta.fields["user_event"]
+    test_field = generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest.meta.fields[
+        "generative_questions_feature_config"
+    ]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -3232,7 +3412,9 @@ def test_write_user_event_rest(request_type):
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["user_event"].items():  # pragma: NO COVER
+    for field, value in request_init[
+        "generative_questions_feature_config"
+    ].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -3262,68 +3444,50 @@ def test_write_user_event_rest(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(0, len(request_init["user_event"][field])):
-                    del request_init["user_event"][field][i][subfield]
+                for i in range(
+                    0, len(request_init["generative_questions_feature_config"][field])
+                ):
+                    del request_init["generative_questions_feature_config"][field][i][
+                        subfield
+                    ]
             else:
-                del request_init["user_event"][field][subfield]
+                del request_init["generative_questions_feature_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = user_event.UserEvent(
-            event_type="event_type_value",
-            visitor_id="visitor_id_value",
-            session_id="session_id_value",
-            experiment_ids=["experiment_ids_value"],
-            attribution_token="attribution_token_value",
-            cart_id="cart_id_value",
-            search_query="search_query_value",
-            filter="filter_value",
-            order_by="order_by_value",
-            offset=647,
-            page_categories=["page_categories_value"],
-            uri="uri_value",
-            referrer_uri="referrer_uri_value",
-            page_view_id="page_view_id_value",
-            entity="entity_value",
+        return_value = generative_question.GenerativeQuestionsFeatureConfig(
+            catalog="catalog_value",
+            feature_enabled=True,
+            minimum_products=1743,
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = user_event.UserEvent.pb(return_value)
+        return_value = generative_question.GenerativeQuestionsFeatureConfig.pb(
+            return_value
+        )
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.write_user_event(request)
+        response = client.update_generative_questions_feature_config(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, user_event.UserEvent)
-    assert response.event_type == "event_type_value"
-    assert response.visitor_id == "visitor_id_value"
-    assert response.session_id == "session_id_value"
-    assert response.experiment_ids == ["experiment_ids_value"]
-    assert response.attribution_token == "attribution_token_value"
-    assert response.cart_id == "cart_id_value"
-    assert response.search_query == "search_query_value"
-    assert response.filter == "filter_value"
-    assert response.order_by == "order_by_value"
-    assert response.offset == 647
-    assert response.page_categories == ["page_categories_value"]
-    assert response.uri == "uri_value"
-    assert response.referrer_uri == "referrer_uri_value"
-    assert response.page_view_id == "page_view_id_value"
-    assert response.entity == "entity_value"
+    assert isinstance(response, generative_question.GenerativeQuestionsFeatureConfig)
+    assert response.catalog == "catalog_value"
+    assert response.feature_enabled is True
+    assert response.minimum_products == 1743
 
 
-def test_write_user_event_rest_use_cached_wrapped_rpc():
+def test_update_generative_questions_feature_config_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -3333,7 +3497,10 @@ def test_write_user_event_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.write_user_event in client._transport._wrapped_methods
+        assert (
+            client._transport.update_generative_questions_feature_config
+            in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
@@ -3341,26 +3508,711 @@ def test_write_user_event_rest_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.write_user_event
+            client._transport.update_generative_questions_feature_config
         ] = mock_rpc
 
         request = {}
-        client.write_user_event(request)
+        client.update_generative_questions_feature_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.write_user_event(request)
+        client.update_generative_questions_feature_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_write_user_event_rest_required_fields(
-    request_type=user_event_service.WriteUserEventRequest,
+def test_update_generative_questions_feature_config_rest_required_fields(
+    request_type=generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
 ):
-    transport_class = transports.UserEventServiceRestTransport
+    transport_class = transports.GenerativeQuestionServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_generative_questions_feature_config._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_generative_questions_feature_config._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = generative_question.GenerativeQuestionsFeatureConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = generative_question.GenerativeQuestionsFeatureConfig.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_generative_questions_feature_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_generative_questions_feature_config_rest_unset_required_fields():
+    transport = transports.GenerativeQuestionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.update_generative_questions_feature_config._get_unset_required_fields(
+            {}
+        )
+    )
+    assert set(unset_fields) == (
+        set(("updateMask",)) & set(("generativeQuestionsFeatureConfig",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_generative_questions_feature_config_rest_interceptors(null_interceptor):
+    transport = transports.GenerativeQuestionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GenerativeQuestionServiceRestInterceptor(),
+    )
+    client = GenerativeQuestionServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
+        "post_update_generative_questions_feature_config",
+    ) as post, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
+        "pre_update_generative_questions_feature_config",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest.pb(
+            generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            generative_question.GenerativeQuestionsFeatureConfig.to_json(
+                generative_question.GenerativeQuestionsFeatureConfig()
+            )
+        )
+
+        request = (
+            generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = generative_question.GenerativeQuestionsFeatureConfig()
+
+        client.update_generative_questions_feature_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_generative_questions_feature_config_rest_bad_request(
+    transport: str = "rest",
+    request_type=generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
+):
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "generative_questions_feature_config": {
+            "catalog": "projects/sample1/locations/sample2/catalogs/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_generative_questions_feature_config(request)
+
+
+def test_update_generative_questions_feature_config_rest_flattened():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = generative_question.GenerativeQuestionsFeatureConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "generative_questions_feature_config": {
+                "catalog": "projects/sample1/locations/sample2/catalogs/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            generative_questions_feature_config=generative_question.GenerativeQuestionsFeatureConfig(
+                catalog="catalog_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = generative_question.GenerativeQuestionsFeatureConfig.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_generative_questions_feature_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2alpha/{generative_questions_feature_config.catalog=projects/*/locations/*/catalogs/*}/generativeQuestionFeature"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_generative_questions_feature_config_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_generative_questions_feature_config(
+            generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest(),
+            generative_questions_feature_config=generative_question.GenerativeQuestionsFeatureConfig(
+                catalog="catalog_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_generative_questions_feature_config_rest_error():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
+        dict,
+    ],
+)
+def test_get_generative_questions_feature_config_rest(request_type):
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"catalog": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = generative_question.GenerativeQuestionsFeatureConfig(
+            catalog="catalog_value",
+            feature_enabled=True,
+            minimum_products=1743,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = generative_question.GenerativeQuestionsFeatureConfig.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_generative_questions_feature_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, generative_question.GenerativeQuestionsFeatureConfig)
+    assert response.catalog == "catalog_value"
+    assert response.feature_enabled is True
+    assert response.minimum_products == 1743
+
+
+def test_get_generative_questions_feature_config_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = GenerativeQuestionServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_generative_questions_feature_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_generative_questions_feature_config
+        ] = mock_rpc
+
+        request = {}
+        client.get_generative_questions_feature_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_generative_questions_feature_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_generative_questions_feature_config_rest_required_fields(
+    request_type=generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
+):
+    transport_class = transports.GenerativeQuestionServiceRestTransport
+
+    request_init = {}
+    request_init["catalog"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_generative_questions_feature_config._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["catalog"] = "catalog_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_generative_questions_feature_config._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "catalog" in jsonified_request
+    assert jsonified_request["catalog"] == "catalog_value"
+
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = generative_question.GenerativeQuestionsFeatureConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = generative_question.GenerativeQuestionsFeatureConfig.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_generative_questions_feature_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_generative_questions_feature_config_rest_unset_required_fields():
+    transport = transports.GenerativeQuestionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.get_generative_questions_feature_config._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(()) & set(("catalog",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_generative_questions_feature_config_rest_interceptors(null_interceptor):
+    transport = transports.GenerativeQuestionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GenerativeQuestionServiceRestInterceptor(),
+    )
+    client = GenerativeQuestionServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
+        "post_get_generative_questions_feature_config",
+    ) as post, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
+        "pre_get_generative_questions_feature_config",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            generative_question_service.GetGenerativeQuestionsFeatureConfigRequest.pb(
+                generative_question_service.GetGenerativeQuestionsFeatureConfigRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            generative_question.GenerativeQuestionsFeatureConfig.to_json(
+                generative_question.GenerativeQuestionsFeatureConfig()
+            )
+        )
+
+        request = (
+            generative_question_service.GetGenerativeQuestionsFeatureConfigRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = generative_question.GenerativeQuestionsFeatureConfig()
+
+        client.get_generative_questions_feature_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_generative_questions_feature_config_rest_bad_request(
+    transport: str = "rest",
+    request_type=generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
+):
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"catalog": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_generative_questions_feature_config(request)
+
+
+def test_get_generative_questions_feature_config_rest_flattened():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = generative_question.GenerativeQuestionsFeatureConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "catalog": "projects/sample1/locations/sample2/catalogs/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            catalog="catalog_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = generative_question.GenerativeQuestionsFeatureConfig.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_generative_questions_feature_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2alpha/{catalog=projects/*/locations/*/catalogs/*}/generativeQuestionFeature"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_generative_questions_feature_config_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_generative_questions_feature_config(
+            generative_question_service.GetGenerativeQuestionsFeatureConfigRequest(),
+            catalog="catalog_value",
+        )
+
+
+def test_get_generative_questions_feature_config_rest_error():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_question_service.ListGenerativeQuestionConfigsRequest,
+        dict,
+    ],
+)
+def test_list_generative_question_configs_rest(request_type):
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            generative_question_service.ListGenerativeQuestionConfigsResponse()
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            generative_question_service.ListGenerativeQuestionConfigsResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_generative_question_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, generative_question_service.ListGenerativeQuestionConfigsResponse
+    )
+
+
+def test_list_generative_question_configs_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = GenerativeQuestionServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_generative_question_configs
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_generative_question_configs
+        ] = mock_rpc
+
+        request = {}
+        client.list_generative_question_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_generative_question_configs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_generative_question_configs_rest_required_fields(
+    request_type=generative_question_service.ListGenerativeQuestionConfigsRequest,
+):
+    transport_class = transports.GenerativeQuestionServiceRestTransport
 
     request_init = {}
     request_init["parent"] = ""
@@ -3374,7 +4226,7 @@ def test_write_user_event_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).write_user_event._get_unset_required_fields(jsonified_request)
+    ).list_generative_question_configs._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3383,23 +4235,792 @@ def test_write_user_event_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).write_user_event._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("write_async",))
+    ).list_generative_question_configs._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
     assert jsonified_request["parent"] == "parent_value"
 
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = user_event.UserEvent()
+    return_value = generative_question_service.ListGenerativeQuestionConfigsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                generative_question_service.ListGenerativeQuestionConfigsResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_generative_question_configs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_generative_question_configs_rest_unset_required_fields():
+    transport = transports.GenerativeQuestionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_generative_question_configs._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_generative_question_configs_rest_interceptors(null_interceptor):
+    transport = transports.GenerativeQuestionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GenerativeQuestionServiceRestInterceptor(),
+    )
+    client = GenerativeQuestionServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
+        "post_list_generative_question_configs",
+    ) as post, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
+        "pre_list_generative_question_configs",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            generative_question_service.ListGenerativeQuestionConfigsRequest.pb(
+                generative_question_service.ListGenerativeQuestionConfigsRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            generative_question_service.ListGenerativeQuestionConfigsResponse.to_json(
+                generative_question_service.ListGenerativeQuestionConfigsResponse()
+            )
+        )
+
+        request = generative_question_service.ListGenerativeQuestionConfigsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            generative_question_service.ListGenerativeQuestionConfigsResponse()
+        )
+
+        client.list_generative_question_configs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_generative_question_configs_rest_bad_request(
+    transport: str = "rest",
+    request_type=generative_question_service.ListGenerativeQuestionConfigsRequest,
+):
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_generative_question_configs(request)
+
+
+def test_list_generative_question_configs_rest_flattened():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            generative_question_service.ListGenerativeQuestionConfigsResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/catalogs/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            generative_question_service.ListGenerativeQuestionConfigsResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_generative_question_configs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2alpha/{parent=projects/*/locations/*/catalogs/*}/generativeQuestions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_generative_question_configs_rest_flattened_error(transport: str = "rest"):
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_generative_question_configs(
+            generative_question_service.ListGenerativeQuestionConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_generative_question_configs_rest_error():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_question_service.UpdateGenerativeQuestionConfigRequest,
+        dict,
+    ],
+)
+def test_update_generative_question_config_rest(request_type):
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "generative_question_config": {
+            "catalog": "projects/sample1/locations/sample2/catalogs/sample3"
+        }
+    }
+    request_init["generative_question_config"] = {
+        "catalog": "projects/sample1/locations/sample2/catalogs/sample3",
+        "facet": "facet_value",
+        "generated_question": "generated_question_value",
+        "final_question": "final_question_value",
+        "example_values": ["example_values_value1", "example_values_value2"],
+        "frequency": 0.978,
+        "allowed_in_conversation": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = (
+        generative_question_service.UpdateGenerativeQuestionConfigRequest.meta.fields[
+            "generative_question_config"
+        ]
+    )
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "generative_question_config"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["generative_question_config"][field])
+                ):
+                    del request_init["generative_question_config"][field][i][subfield]
+            else:
+                del request_init["generative_question_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = generative_question.GenerativeQuestionConfig(
+            catalog="catalog_value",
+            facet="facet_value",
+            generated_question="generated_question_value",
+            final_question="final_question_value",
+            example_values=["example_values_value"],
+            frequency=0.978,
+            allowed_in_conversation=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = generative_question.GenerativeQuestionConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_generative_question_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, generative_question.GenerativeQuestionConfig)
+    assert response.catalog == "catalog_value"
+    assert response.facet == "facet_value"
+    assert response.generated_question == "generated_question_value"
+    assert response.final_question == "final_question_value"
+    assert response.example_values == ["example_values_value"]
+    assert math.isclose(response.frequency, 0.978, rel_tol=1e-6)
+    assert response.allowed_in_conversation is True
+
+
+def test_update_generative_question_config_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = GenerativeQuestionServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_generative_question_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_generative_question_config
+        ] = mock_rpc
+
+        request = {}
+        client.update_generative_question_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_generative_question_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_generative_question_config_rest_required_fields(
+    request_type=generative_question_service.UpdateGenerativeQuestionConfigRequest,
+):
+    transport_class = transports.GenerativeQuestionServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_generative_question_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_generative_question_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = generative_question.GenerativeQuestionConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = generative_question.GenerativeQuestionConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_generative_question_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_generative_question_config_rest_unset_required_fields():
+    transport = transports.GenerativeQuestionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.update_generative_question_config._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(("updateMask",)) & set(("generativeQuestionConfig",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_generative_question_config_rest_interceptors(null_interceptor):
+    transport = transports.GenerativeQuestionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GenerativeQuestionServiceRestInterceptor(),
+    )
+    client = GenerativeQuestionServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
+        "post_update_generative_question_config",
+    ) as post, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
+        "pre_update_generative_question_config",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            generative_question_service.UpdateGenerativeQuestionConfigRequest.pb(
+                generative_question_service.UpdateGenerativeQuestionConfigRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            generative_question.GenerativeQuestionConfig.to_json(
+                generative_question.GenerativeQuestionConfig()
+            )
+        )
+
+        request = generative_question_service.UpdateGenerativeQuestionConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = generative_question.GenerativeQuestionConfig()
+
+        client.update_generative_question_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_generative_question_config_rest_bad_request(
+    transport: str = "rest",
+    request_type=generative_question_service.UpdateGenerativeQuestionConfigRequest,
+):
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "generative_question_config": {
+            "catalog": "projects/sample1/locations/sample2/catalogs/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_generative_question_config(request)
+
+
+def test_update_generative_question_config_rest_flattened():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = generative_question.GenerativeQuestionConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "generative_question_config": {
+                "catalog": "projects/sample1/locations/sample2/catalogs/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            generative_question_config=generative_question.GenerativeQuestionConfig(
+                catalog="catalog_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = generative_question.GenerativeQuestionConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_generative_question_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2alpha/{generative_question_config.catalog=projects/*/locations/*/catalogs/*}/generativeQuestion"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_generative_question_config_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_generative_question_config(
+            generative_question_service.UpdateGenerativeQuestionConfigRequest(),
+            generative_question_config=generative_question.GenerativeQuestionConfig(
+                catalog="catalog_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_generative_question_config_rest_error():
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
+        dict,
+    ],
+)
+def test_batch_update_generative_question_configs_rest(request_type):
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_update_generative_question_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse,
+    )
+
+
+def test_batch_update_generative_question_configs_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = GenerativeQuestionServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.batch_update_generative_question_configs
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.batch_update_generative_question_configs
+        ] = mock_rpc
+
+        request = {}
+        client.batch_update_generative_question_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.batch_update_generative_question_configs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_batch_update_generative_question_configs_rest_required_fields(
+    request_type=generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
+):
+    transport_class = transports.GenerativeQuestionServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_update_generative_question_configs._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_update_generative_question_configs._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = GenerativeQuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
+    )
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3421,58 +5042,58 @@ def test_write_user_event_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = user_event.UserEvent.pb(return_value)
+            return_value = generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.pb(
+                return_value
+            )
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.write_user_event(request)
+            response = client.batch_update_generative_question_configs(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_write_user_event_rest_unset_required_fields():
-    transport = transports.UserEventServiceRestTransport(
+def test_batch_update_generative_question_configs_rest_unset_required_fields():
+    transport = transports.GenerativeQuestionServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.write_user_event._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("writeAsync",))
-        & set(
-            (
-                "parent",
-                "userEvent",
-            )
+    unset_fields = (
+        transport.batch_update_generative_question_configs._get_unset_required_fields(
+            {}
         )
     )
+    assert set(unset_fields) == (set(()) & set(("requests",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_write_user_event_rest_interceptors(null_interceptor):
-    transport = transports.UserEventServiceRestTransport(
+def test_batch_update_generative_question_configs_rest_interceptors(null_interceptor):
+    transport = transports.GenerativeQuestionServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.UserEventServiceRestInterceptor(),
+        else transports.GenerativeQuestionServiceRestInterceptor(),
     )
-    client = UserEventServiceClient(transport=transport)
+    client = GenerativeQuestionServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.UserEventServiceRestInterceptor, "post_write_user_event"
+        transports.GenerativeQuestionServiceRestInterceptor,
+        "post_batch_update_generative_question_configs",
     ) as post, mock.patch.object(
-        transports.UserEventServiceRestInterceptor, "pre_write_user_event"
+        transports.GenerativeQuestionServiceRestInterceptor,
+        "pre_batch_update_generative_question_configs",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = user_event_service.WriteUserEventRequest.pb(
-            user_event_service.WriteUserEventRequest()
+        pb_message = generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest.pb(
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -3484,17 +5105,23 @@ def test_write_user_event_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = user_event.UserEvent.to_json(user_event.UserEvent())
+        req.return_value._content = generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.to_json(
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
+        )
 
-        request = user_event_service.WriteUserEventRequest()
+        request = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest()
+        )
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = user_event.UserEvent()
+        post.return_value = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
+        )
 
-        client.write_user_event(
+        client.batch_update_generative_question_configs(
             request,
             metadata=[
                 ("key", "val"),
@@ -3506,10 +5133,11 @@ def test_write_user_event_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_write_user_event_rest_bad_request(
-    transport: str = "rest", request_type=user_event_service.WriteUserEventRequest
+def test_batch_update_generative_question_configs_rest_bad_request(
+    transport: str = "rest",
+    request_type=generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
 ):
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3527,1351 +5155,125 @@ def test_write_user_event_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.write_user_event(request)
+        client.batch_update_generative_question_configs(request)
 
 
-def test_write_user_event_rest_error():
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        user_event_service.CollectUserEventRequest,
-        dict,
-    ],
-)
-def test_collect_user_event_rest(request_type):
-    client = UserEventServiceClient(
+def test_batch_update_generative_question_configs_rest_flattened():
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = httpbody_pb2.HttpBody(
-            content_type="content_type_value",
-            data=b"data_blob",
+        return_value = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
         )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/catalogs/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            requests=[
+                generative_question_service.UpdateGenerativeQuestionConfigRequest(
+                    generative_question_config=generative_question.GenerativeQuestionConfig(
+                        catalog="catalog_value"
+                    )
+                )
+            ],
+        )
+        mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.pb(
+                return_value
+            )
+        )
         json_return_value = json_format.MessageToJson(return_value)
-
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.collect_user_event(request)
 
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
+        client.batch_update_generative_question_configs(**mock_args)
 
-
-def test_collect_user_event_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserEventServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2alpha/{parent=projects/*/locations/*/catalogs/*}/generativeQuestion:batchUpdate"
+            % client.transport._host,
+            args[1],
         )
 
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
 
-        # Ensure method has been cached
-        assert (
-            client._transport.collect_user_event in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.collect_user_event
-        ] = mock_rpc
-
-        request = {}
-        client.collect_user_event(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.collect_user_event(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_collect_user_event_rest_required_fields(
-    request_type=user_event_service.CollectUserEventRequest,
+def test_batch_update_generative_question_configs_rest_flattened_error(
+    transport: str = "rest",
 ):
-    transport_class = transports.UserEventServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request_init["user_event"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-    assert "userEvent" not in jsonified_request
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).collect_user_event._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-    assert "userEvent" in jsonified_request
-    assert jsonified_request["userEvent"] == request_init["user_event"]
-
-    jsonified_request["parent"] = "parent_value"
-    jsonified_request["userEvent"] = "user_event_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).collect_user_event._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "ets",
-            "prebuilt_rule",
-            "raw_json",
-            "uri",
-            "user_event",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-    assert "userEvent" in jsonified_request
-    assert jsonified_request["userEvent"] == "user_event_value"
-
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = httpbody_pb2.HttpBody()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.collect_user_event(request)
-
-            expected_params = [
-                (
-                    "userEvent",
-                    "",
-                ),
-                ("$alt", "json;enum-encoding=int"),
-            ]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_collect_user_event_rest_unset_required_fields():
-    transport = transports.UserEventServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.collect_user_event._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "ets",
-                "prebuiltRule",
-                "rawJson",
-                "uri",
-                "userEvent",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "userEvent",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_collect_user_event_rest_interceptors(null_interceptor):
-    transport = transports.UserEventServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.UserEventServiceRestInterceptor(),
-    )
-    client = UserEventServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.UserEventServiceRestInterceptor, "post_collect_user_event"
-    ) as post, mock.patch.object(
-        transports.UserEventServiceRestInterceptor, "pre_collect_user_event"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = user_event_service.CollectUserEventRequest.pb(
-            user_event_service.CollectUserEventRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(httpbody_pb2.HttpBody())
-
-        request = user_event_service.CollectUserEventRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = httpbody_pb2.HttpBody()
-
-        client.collect_user_event(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_collect_user_event_rest_bad_request(
-    transport: str = "rest", request_type=user_event_service.CollectUserEventRequest
-):
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.collect_user_event(request)
-
-
-def test_collect_user_event_rest_error():
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        purge_config.PurgeUserEventsRequest,
-        dict,
-    ],
-)
-def test_purge_user_events_rest(request_type):
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.purge_user_events(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_purge_user_events_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserEventServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.purge_user_events in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.purge_user_events
-        ] = mock_rpc
-
-        request = {}
-        client.purge_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.purge_user_events(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_purge_user_events_rest_required_fields(
-    request_type=purge_config.PurgeUserEventsRequest,
-):
-    transport_class = transports.UserEventServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request_init["filter"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).purge_user_events._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-    jsonified_request["filter"] = "filter_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).purge_user_events._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-    assert "filter" in jsonified_request
-    assert jsonified_request["filter"] == "filter_value"
-
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.purge_user_events(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_purge_user_events_rest_unset_required_fields():
-    transport = transports.UserEventServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.purge_user_events._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "filter",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_purge_user_events_rest_interceptors(null_interceptor):
-    transport = transports.UserEventServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.UserEventServiceRestInterceptor(),
-    )
-    client = UserEventServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.UserEventServiceRestInterceptor, "post_purge_user_events"
-    ) as post, mock.patch.object(
-        transports.UserEventServiceRestInterceptor, "pre_purge_user_events"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = purge_config.PurgeUserEventsRequest.pb(
-            purge_config.PurgeUserEventsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = purge_config.PurgeUserEventsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.purge_user_events(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_update_generative_question_configs(
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest(),
+            parent="parent_value",
+            requests=[
+                generative_question_service.UpdateGenerativeQuestionConfigRequest(
+                    generative_question_config=generative_question.GenerativeQuestionConfig(
+                        catalog="catalog_value"
+                    )
+                )
             ],
         )
 
-        pre.assert_called_once()
-        post.assert_called_once()
 
-
-def test_purge_user_events_rest_bad_request(
-    transport: str = "rest", request_type=purge_config.PurgeUserEventsRequest
-):
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.purge_user_events(request)
-
-
-def test_purge_user_events_rest_error():
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        import_config.ImportUserEventsRequest,
-        dict,
-    ],
-)
-def test_import_user_events_rest(request_type):
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.import_user_events(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_import_user_events_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserEventServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.import_user_events in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.import_user_events
-        ] = mock_rpc
-
-        request = {}
-        client.import_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.import_user_events(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_import_user_events_rest_required_fields(
-    request_type=import_config.ImportUserEventsRequest,
-):
-    transport_class = transports.UserEventServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).import_user_events._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).import_user_events._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.import_user_events(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_import_user_events_rest_unset_required_fields():
-    transport = transports.UserEventServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.import_user_events._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "inputConfig",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_import_user_events_rest_interceptors(null_interceptor):
-    transport = transports.UserEventServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.UserEventServiceRestInterceptor(),
-    )
-    client = UserEventServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.UserEventServiceRestInterceptor, "post_import_user_events"
-    ) as post, mock.patch.object(
-        transports.UserEventServiceRestInterceptor, "pre_import_user_events"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = import_config.ImportUserEventsRequest.pb(
-            import_config.ImportUserEventsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = import_config.ImportUserEventsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.import_user_events(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_import_user_events_rest_bad_request(
-    transport: str = "rest", request_type=import_config.ImportUserEventsRequest
-):
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.import_user_events(request)
-
-
-def test_import_user_events_rest_error():
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        export_config.ExportUserEventsRequest,
-        dict,
-    ],
-)
-def test_export_user_events_rest(request_type):
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.export_user_events(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_export_user_events_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserEventServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.export_user_events in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.export_user_events
-        ] = mock_rpc
-
-        request = {}
-        client.export_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.export_user_events(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_export_user_events_rest_required_fields(
-    request_type=export_config.ExportUserEventsRequest,
-):
-    transport_class = transports.UserEventServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_user_events._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_user_events._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.export_user_events(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_export_user_events_rest_unset_required_fields():
-    transport = transports.UserEventServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.export_user_events._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "outputConfig",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_export_user_events_rest_interceptors(null_interceptor):
-    transport = transports.UserEventServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.UserEventServiceRestInterceptor(),
-    )
-    client = UserEventServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.UserEventServiceRestInterceptor, "post_export_user_events"
-    ) as post, mock.patch.object(
-        transports.UserEventServiceRestInterceptor, "pre_export_user_events"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = export_config.ExportUserEventsRequest.pb(
-            export_config.ExportUserEventsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = export_config.ExportUserEventsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.export_user_events(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_export_user_events_rest_bad_request(
-    transport: str = "rest", request_type=export_config.ExportUserEventsRequest
-):
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.export_user_events(request)
-
-
-def test_export_user_events_rest_error():
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        user_event_service.RejoinUserEventsRequest,
-        dict,
-    ],
-)
-def test_rejoin_user_events_rest(request_type):
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.rejoin_user_events(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_rejoin_user_events_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = UserEventServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.rejoin_user_events in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.rejoin_user_events
-        ] = mock_rpc
-
-        request = {}
-        client.rejoin_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.rejoin_user_events(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_rejoin_user_events_rest_required_fields(
-    request_type=user_event_service.RejoinUserEventsRequest,
-):
-    transport_class = transports.UserEventServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).rejoin_user_events._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).rejoin_user_events._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.rejoin_user_events(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_rejoin_user_events_rest_unset_required_fields():
-    transport = transports.UserEventServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.rejoin_user_events._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_rejoin_user_events_rest_interceptors(null_interceptor):
-    transport = transports.UserEventServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.UserEventServiceRestInterceptor(),
-    )
-    client = UserEventServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.UserEventServiceRestInterceptor, "post_rejoin_user_events"
-    ) as post, mock.patch.object(
-        transports.UserEventServiceRestInterceptor, "pre_rejoin_user_events"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = user_event_service.RejoinUserEventsRequest.pb(
-            user_event_service.RejoinUserEventsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = user_event_service.RejoinUserEventsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.rejoin_user_events(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_rejoin_user_events_rest_bad_request(
-    transport: str = "rest", request_type=user_event_service.RejoinUserEventsRequest
-):
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.rejoin_user_events(request)
-
-
-def test_rejoin_user_events_rest_error():
-    client = UserEventServiceClient(
+def test_batch_update_generative_question_configs_rest_error():
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.GenerativeQuestionServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.GenerativeQuestionServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.GenerativeQuestionServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             client_options=options,
             transport=transport,
         )
@@ -4880,16 +5282,16 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.GenerativeQuestionServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -4897,22 +5299,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.GenerativeQuestionServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = UserEventServiceClient(transport=transport)
+    client = GenerativeQuestionServiceClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.GenerativeQuestionServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.UserEventServiceGrpcAsyncIOTransport(
+    transport = transports.GenerativeQuestionServiceGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -4922,9 +5324,9 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceGrpcAsyncIOTransport,
-        transports.UserEventServiceRestTransport,
+        transports.GenerativeQuestionServiceGrpcTransport,
+        transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
+        transports.GenerativeQuestionServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -4943,7 +5345,7 @@ def test_transport_adc(transport_class):
     ],
 )
 def test_transport_kind(transport_name):
-    transport = UserEventServiceClient.get_transport_class(transport_name)(
+    transport = GenerativeQuestionServiceClient.get_transport_class(transport_name)(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
@@ -4951,43 +5353,42 @@ def test_transport_kind(transport_name):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.UserEventServiceGrpcTransport,
+        transports.GenerativeQuestionServiceGrpcTransport,
     )
 
 
-def test_user_event_service_base_transport_error():
+def test_generative_question_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.UserEventServiceTransport(
+        transport = transports.GenerativeQuestionServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_user_event_service_base_transport():
+def test_generative_question_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.retail_v2alpha.services.user_event_service.transports.UserEventServiceTransport.__init__"
+        "google.cloud.retail_v2alpha.services.generative_question_service.transports.GenerativeQuestionServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.UserEventServiceTransport(
+        transport = transports.GenerativeQuestionServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "write_user_event",
-        "collect_user_event",
-        "purge_user_events",
-        "import_user_events",
-        "export_user_events",
-        "rejoin_user_events",
+        "update_generative_questions_feature_config",
+        "get_generative_questions_feature_config",
+        "list_generative_question_configs",
+        "update_generative_question_config",
+        "batch_update_generative_question_configs",
         "get_operation",
         "list_operations",
     )
@@ -4998,11 +5399,6 @@ def test_user_event_service_base_transport():
     with pytest.raises(NotImplementedError):
         transport.close()
 
-    # Additionally, the LRO client (a property) should
-    # also raise NotImplementedError
-    with pytest.raises(NotImplementedError):
-        transport.operations_client
-
     # Catch all for all remaining methods and properties
     remainder = [
         "kind",
@@ -5012,16 +5408,16 @@ def test_user_event_service_base_transport():
             getattr(transport, r)()
 
 
-def test_user_event_service_base_transport_with_credentials_file():
+def test_generative_question_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.retail_v2alpha.services.user_event_service.transports.UserEventServiceTransport._prep_wrapped_messages"
+        "google.cloud.retail_v2alpha.services.generative_question_service.transports.GenerativeQuestionServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.UserEventServiceTransport(
+        transport = transports.GenerativeQuestionServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -5033,22 +5429,22 @@ def test_user_event_service_base_transport_with_credentials_file():
         )
 
 
-def test_user_event_service_base_transport_with_adc():
+def test_generative_question_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.retail_v2alpha.services.user_event_service.transports.UserEventServiceTransport._prep_wrapped_messages"
+        "google.cloud.retail_v2alpha.services.generative_question_service.transports.GenerativeQuestionServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.UserEventServiceTransport()
+        transport = transports.GenerativeQuestionServiceTransport()
         adc.assert_called_once()
 
 
-def test_user_event_service_auth_adc():
+def test_generative_question_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        UserEventServiceClient()
+        GenerativeQuestionServiceClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -5059,11 +5455,11 @@ def test_user_event_service_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceGrpcAsyncIOTransport,
+        transports.GenerativeQuestionServiceGrpcTransport,
+        transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
     ],
 )
-def test_user_event_service_transport_auth_adc(transport_class):
+def test_generative_question_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -5079,12 +5475,12 @@ def test_user_event_service_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceGrpcAsyncIOTransport,
-        transports.UserEventServiceRestTransport,
+        transports.GenerativeQuestionServiceGrpcTransport,
+        transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
+        transports.GenerativeQuestionServiceRestTransport,
     ],
 )
-def test_user_event_service_transport_auth_gdch_credentials(transport_class):
+def test_generative_question_service_transport_auth_gdch_credentials(transport_class):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -5102,11 +5498,13 @@ def test_user_event_service_transport_auth_gdch_credentials(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.UserEventServiceGrpcTransport, grpc_helpers),
-        (transports.UserEventServiceGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.GenerativeQuestionServiceGrpcTransport, grpc_helpers),
+        (transports.GenerativeQuestionServiceGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_user_event_service_transport_create_channel(transport_class, grpc_helpers):
+def test_generative_question_service_transport_create_channel(
+    transport_class, grpc_helpers
+):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -5137,11 +5535,13 @@ def test_user_event_service_transport_create_channel(transport_class, grpc_helpe
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceGrpcAsyncIOTransport,
+        transports.GenerativeQuestionServiceGrpcTransport,
+        transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
     ],
 )
-def test_user_event_service_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_generative_question_service_grpc_transport_client_cert_source_for_mtls(
+    transport_class,
+):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -5179,32 +5579,15 @@ def test_user_event_service_grpc_transport_client_cert_source_for_mtls(transport
             )
 
 
-def test_user_event_service_http_transport_client_cert_source_for_mtls():
+def test_generative_question_service_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
-        transports.UserEventServiceRestTransport(
+        transports.GenerativeQuestionServiceRestTransport(
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_user_event_service_rest_lro_client():
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -5215,8 +5598,8 @@ def test_user_event_service_rest_lro_client():
         "rest",
     ],
 )
-def test_user_event_service_host_no_port(transport_name):
-    client = UserEventServiceClient(
+def test_generative_question_service_host_no_port(transport_name):
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="retail.googleapis.com"
@@ -5238,8 +5621,8 @@ def test_user_event_service_host_no_port(transport_name):
         "rest",
     ],
 )
-def test_user_event_service_host_with_port(transport_name):
-    client = UserEventServiceClient(
+def test_generative_question_service_host_with_port(transport_name):
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="retail.googleapis.com:8000"
@@ -5259,42 +5642,39 @@ def test_user_event_service_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_user_event_service_client_transport_session_collision(transport_name):
+def test_generative_question_service_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
-    client1 = UserEventServiceClient(
+    client1 = GenerativeQuestionServiceClient(
         credentials=creds1,
         transport=transport_name,
     )
-    client2 = UserEventServiceClient(
+    client2 = GenerativeQuestionServiceClient(
         credentials=creds2,
         transport=transport_name,
     )
-    session1 = client1.transport.write_user_event._session
-    session2 = client2.transport.write_user_event._session
+    session1 = client1.transport.update_generative_questions_feature_config._session
+    session2 = client2.transport.update_generative_questions_feature_config._session
     assert session1 != session2
-    session1 = client1.transport.collect_user_event._session
-    session2 = client2.transport.collect_user_event._session
+    session1 = client1.transport.get_generative_questions_feature_config._session
+    session2 = client2.transport.get_generative_questions_feature_config._session
     assert session1 != session2
-    session1 = client1.transport.purge_user_events._session
-    session2 = client2.transport.purge_user_events._session
+    session1 = client1.transport.list_generative_question_configs._session
+    session2 = client2.transport.list_generative_question_configs._session
     assert session1 != session2
-    session1 = client1.transport.import_user_events._session
-    session2 = client2.transport.import_user_events._session
+    session1 = client1.transport.update_generative_question_config._session
+    session2 = client2.transport.update_generative_question_config._session
     assert session1 != session2
-    session1 = client1.transport.export_user_events._session
-    session2 = client2.transport.export_user_events._session
-    assert session1 != session2
-    session1 = client1.transport.rejoin_user_events._session
-    session2 = client2.transport.rejoin_user_events._session
+    session1 = client1.transport.batch_update_generative_question_configs._session
+    session2 = client2.transport.batch_update_generative_question_configs._session
     assert session1 != session2
 
 
-def test_user_event_service_grpc_transport_channel():
+def test_generative_question_service_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.GenerativeQuestionServiceGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -5303,11 +5683,11 @@ def test_user_event_service_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_user_event_service_grpc_asyncio_transport_channel():
+def test_generative_question_service_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.UserEventServiceGrpcAsyncIOTransport(
+    transport = transports.GenerativeQuestionServiceGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -5321,11 +5701,11 @@ def test_user_event_service_grpc_asyncio_transport_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceGrpcAsyncIOTransport,
+        transports.GenerativeQuestionServiceGrpcTransport,
+        transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
     ],
 )
-def test_user_event_service_transport_channel_mtls_with_client_cert_source(
+def test_generative_question_service_transport_channel_mtls_with_client_cert_source(
     transport_class,
 ):
     with mock.patch(
@@ -5375,11 +5755,11 @@ def test_user_event_service_transport_channel_mtls_with_client_cert_source(
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceGrpcAsyncIOTransport,
+        transports.GenerativeQuestionServiceGrpcTransport,
+        transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
     ],
 )
-def test_user_event_service_transport_channel_mtls_with_adc(transport_class):
+def test_generative_question_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -5416,40 +5796,6 @@ def test_user_event_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_user_event_service_grpc_lro_client():
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.OperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
-
-
-def test_user_event_service_grpc_lro_async_client():
-    client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.OperationsAsyncClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
-
-
 def test_catalog_path():
     project = "squid"
     location = "clam"
@@ -5459,7 +5805,7 @@ def test_catalog_path():
         location=location,
         catalog=catalog,
     )
-    actual = UserEventServiceClient.catalog_path(project, location, catalog)
+    actual = GenerativeQuestionServiceClient.catalog_path(project, location, catalog)
     assert expected == actual
 
 
@@ -5469,147 +5815,115 @@ def test_parse_catalog_path():
         "location": "oyster",
         "catalog": "nudibranch",
     }
-    path = UserEventServiceClient.catalog_path(**expected)
+    path = GenerativeQuestionServiceClient.catalog_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_catalog_path(path)
-    assert expected == actual
-
-
-def test_product_path():
-    project = "cuttlefish"
-    location = "mussel"
-    catalog = "winkle"
-    branch = "nautilus"
-    product = "scallop"
-    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}".format(
-        project=project,
-        location=location,
-        catalog=catalog,
-        branch=branch,
-        product=product,
-    )
-    actual = UserEventServiceClient.product_path(
-        project, location, catalog, branch, product
-    )
-    assert expected == actual
-
-
-def test_parse_product_path():
-    expected = {
-        "project": "abalone",
-        "location": "squid",
-        "catalog": "clam",
-        "branch": "whelk",
-        "product": "octopus",
-    }
-    path = UserEventServiceClient.product_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_product_path(path)
+    actual = GenerativeQuestionServiceClient.parse_catalog_path(path)
     assert expected == actual
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = UserEventServiceClient.common_billing_account_path(billing_account)
+    actual = GenerativeQuestionServiceClient.common_billing_account_path(
+        billing_account
+    )
     assert expected == actual
 
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "mussel",
     }
-    path = UserEventServiceClient.common_billing_account_path(**expected)
+    path = GenerativeQuestionServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_common_billing_account_path(path)
+    actual = GenerativeQuestionServiceClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = UserEventServiceClient.common_folder_path(folder)
+    actual = GenerativeQuestionServiceClient.common_folder_path(folder)
     assert expected == actual
 
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "nautilus",
     }
-    path = UserEventServiceClient.common_folder_path(**expected)
+    path = GenerativeQuestionServiceClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_common_folder_path(path)
+    actual = GenerativeQuestionServiceClient.parse_common_folder_path(path)
     assert expected == actual
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = UserEventServiceClient.common_organization_path(organization)
+    actual = GenerativeQuestionServiceClient.common_organization_path(organization)
     assert expected == actual
 
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "abalone",
     }
-    path = UserEventServiceClient.common_organization_path(**expected)
+    path = GenerativeQuestionServiceClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_common_organization_path(path)
+    actual = GenerativeQuestionServiceClient.parse_common_organization_path(path)
     assert expected == actual
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = UserEventServiceClient.common_project_path(project)
+    actual = GenerativeQuestionServiceClient.common_project_path(project)
     assert expected == actual
 
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "clam",
     }
-    path = UserEventServiceClient.common_project_path(**expected)
+    path = GenerativeQuestionServiceClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_common_project_path(path)
+    actual = GenerativeQuestionServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
     )
-    actual = UserEventServiceClient.common_location_path(project, location)
+    actual = GenerativeQuestionServiceClient.common_location_path(project, location)
     assert expected == actual
 
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "oyster",
+        "location": "nudibranch",
     }
-    path = UserEventServiceClient.common_location_path(**expected)
+    path = GenerativeQuestionServiceClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_common_location_path(path)
+    actual = GenerativeQuestionServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -5617,18 +5931,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.UserEventServiceTransport, "_prep_wrapped_messages"
+        transports.GenerativeQuestionServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.UserEventServiceTransport, "_prep_wrapped_messages"
+        transports.GenerativeQuestionServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = UserEventServiceClient.get_transport_class()
+        transport_class = GenerativeQuestionServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -5638,7 +5952,7 @@ def test_client_with_default_client_info():
 
 @pytest.mark.asyncio
 async def test_transport_close_async():
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -5653,7 +5967,7 @@ async def test_transport_close_async():
 def test_get_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.GetOperationRequest
 ):
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5686,7 +6000,7 @@ def test_get_operation_rest_bad_request(
     ],
 )
 def test_get_operation_rest(request_type):
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -5716,7 +6030,7 @@ def test_get_operation_rest(request_type):
 def test_list_operations_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
 ):
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5746,7 +6060,7 @@ def test_list_operations_rest_bad_request(
     ],
 )
 def test_list_operations_rest(request_type):
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -5772,7 +6086,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_get_operation(transport: str = "grpc"):
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5797,7 +6111,7 @@ def test_get_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5823,7 +6137,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_operation_field_headers():
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5852,7 +6166,7 @@ def test_get_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5881,7 +6195,7 @@ async def test_get_operation_field_headers_async():
 
 
 def test_get_operation_from_dict():
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5899,7 +6213,7 @@ def test_get_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5917,7 +6231,7 @@ async def test_get_operation_from_dict_async():
 
 
 def test_list_operations(transport: str = "grpc"):
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5942,7 +6256,7 @@ def test_list_operations(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5968,7 +6282,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
 
 
 def test_list_operations_field_headers():
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5997,7 +6311,7 @@ def test_list_operations_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -6026,7 +6340,7 @@ async def test_list_operations_field_headers_async():
 
 
 def test_list_operations_from_dict():
-    client = UserEventServiceClient(
+    client = GenerativeQuestionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6044,7 +6358,7 @@ def test_list_operations_from_dict():
 
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
-    client = UserEventServiceAsyncClient(
+    client = GenerativeQuestionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6068,7 +6382,7 @@ def test_transport_close():
     }
 
     for transport, close_name in transports.items():
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
@@ -6085,7 +6399,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = UserEventServiceClient(
+        client = GenerativeQuestionServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -6099,8 +6413,14 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (UserEventServiceClient, transports.UserEventServiceGrpcTransport),
-        (UserEventServiceAsyncClient, transports.UserEventServiceGrpcAsyncIOTransport),
+        (
+            GenerativeQuestionServiceClient,
+            transports.GenerativeQuestionServiceGrpcTransport,
+        ),
+        (
+            GenerativeQuestionServiceAsyncClient,
+            transports.GenerativeQuestionServiceGrpcAsyncIOTransport,
+        ),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):

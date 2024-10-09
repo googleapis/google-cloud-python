@@ -544,7 +544,7 @@ class Rule(proto.Message):
             facet_position_adjustments (MutableSequence[google.cloud.retail_v2alpha.types.Rule.ForceReturnFacetAction.FacetPositionAdjustment]):
                 Each instance corresponds to a force return
                 attribute for the given condition. There can't
-                be more 3 instances here.
+                be more 15 instances here.
         """
 
         class FacetPositionAdjustment(proto.Message):

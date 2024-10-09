@@ -54,7 +54,7 @@ class BranchView(proto.Enum):
 
 
 class Branch(proto.Message):
-    r"""A data branch that stores
+    r"""A data branch that stores all instances of
     [Product][google.cloud.retail.v2alpha.Product]s.
 
     Attributes:

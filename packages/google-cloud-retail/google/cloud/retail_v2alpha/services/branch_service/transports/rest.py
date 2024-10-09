@@ -318,7 +318,7 @@ class BranchServiceRestTransport(BranchServiceTransport):
 
             Returns:
                 ~.branch.Branch:
-                    A data branch that stores
+                    A data branch that stores all instances of
                 [Product][google.cloud.retail.v2alpha.Product]s.
 
             """

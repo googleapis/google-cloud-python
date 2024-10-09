@@ -28,6 +28,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.retail_v2alpha.types import (
+    export_config,
     import_config,
     purge_config,
     user_event,
@@ -393,6 +394,37 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         return self._stubs["import_user_events"]
 
     @property
+    def export_user_events(
+        self,
+    ) -> Callable[
+        [export_config.ExportUserEventsRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the export user events method over gRPC.
+
+        Exports user events.
+
+        ``Operation.response`` is of type ``ExportResponse``.
+        ``Operation.metadata`` is of type ``ExportMetadata``.
+
+        Returns:
+            Callable[[~.ExportUserEventsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_user_events" not in self._stubs:
+            self._stubs["export_user_events"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2alpha.UserEventService/ExportUserEvents",
+                request_serializer=export_config.ExportUserEventsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_user_events"]
+
+    @property
     def rejoin_user_events(
         self,
     ) -> Callable[
@@ -472,6 +504,11 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
                     deadline=600.0,
                 ),
                 default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.export_user_events: gapic_v1.method_async.wrap_method(
+                self.export_user_events,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.rejoin_user_events: gapic_v1.method_async.wrap_method(
