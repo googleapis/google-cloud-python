@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.26.0](https://github.com/googleapis/python-pubsub/compare/v2.25.2...v2.26.0) (2024-10-09)
+
+
+### Features
+
+* Add ingestion Cloud Storage fields and Platform Logging fields to Topic ([#1248](https://github.com/googleapis/python-pubsub/issues/1248)) ([a7a4caa](https://github.com/googleapis/python-pubsub/commit/a7a4caaa5a73e9b15369471dc892688e24bf52e0))
+
 ## [2.25.2](https://github.com/googleapis/python-pubsub/compare/v2.25.1...v2.25.2) (2024-09-30)
 
 
