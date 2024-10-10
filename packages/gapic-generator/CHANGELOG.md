@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [1.19.1](https://github.com/googleapis/gapic-generator-python/compare/v1.19.0...v1.19.1) (2024-10-10)
+
+
+### Bug Fixes
+
+* Add default library settings for incorrect lib version ([#2212](https://github.com/googleapis/gapic-generator-python/issues/2212)) ([de46272](https://github.com/googleapis/gapic-generator-python/commit/de46272ae65e9117be7f362355cefd28d0780917))
+* Resolve issue with wait operation mixin ([#2218](https://github.com/googleapis/gapic-generator-python/issues/2218)) ([095d060](https://github.com/googleapis/gapic-generator-python/commit/095d0600803dace8d665fee9ccbc460720b5fe17))
+* Use disambiguated name for rpcs to avoid collisions ([#2217](https://github.com/googleapis/gapic-generator-python/issues/2217)) ([296cd3e](https://github.com/googleapis/gapic-generator-python/commit/296cd3e814ba58954c16ca6256db0359bcab0f09))
+
 ## [1.19.0](https://github.com/googleapis/gapic-generator-python/compare/v1.18.5...v1.19.0) (2024-10-09)
 
 
