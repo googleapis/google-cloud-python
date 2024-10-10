@@ -14,8 +14,11 @@
 # limitations under the License.
 #
 from .cloud_tts import (
+    AdvancedVoiceOptions,
     AudioConfig,
     AudioEncoding,
+    CustomPronunciationParams,
+    CustomPronunciations,
     CustomVoiceParams,
     ListVoicesRequest,
     ListVoicesResponse,
@@ -37,7 +40,10 @@ from .cloud_tts_lrs import (
 )
 
 __all__ = (
+    "AdvancedVoiceOptions",
     "AudioConfig",
+    "CustomPronunciationParams",
+    "CustomPronunciations",
     "CustomVoiceParams",
     "ListVoicesRequest",
     "ListVoicesResponse",
