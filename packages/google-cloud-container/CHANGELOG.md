@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.52.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.51.0...google-cloud-container-v2.52.0) (2024-10-10)
+
+
+### Features
+
+* Add an effective_cgroup_mode field in node config ([da74af6](https://github.com/googleapis/google-cloud-python/commit/da74af6f7f60cdeb9a09b54371a8608170ed8c0f))
+* add API to enable/disable secret manager csi component on GKE clusters ([da74af6](https://github.com/googleapis/google-cloud-python/commit/da74af6f7f60cdeb9a09b54371a8608170ed8c0f))
+* Add CompliancePosture field for configuration of GKE Compliance Posture product ([da74af6](https://github.com/googleapis/google-cloud-python/commit/da74af6f7f60cdeb9a09b54371a8608170ed8c0f))
+* Add CompliancePosture field for configuration of GKE Compliance Posture product ([da74af6](https://github.com/googleapis/google-cloud-python/commit/da74af6f7f60cdeb9a09b54371a8608170ed8c0f))
+* Add ControlPlaneEndpointsConfig message to consolidate control plane isolation options ([da74af6](https://github.com/googleapis/google-cloud-python/commit/da74af6f7f60cdeb9a09b54371a8608170ed8c0f))
+* Add DNSEndpointConfig for new DNS-based control plane access ([da74af6](https://github.com/googleapis/google-cloud-python/commit/da74af6f7f60cdeb9a09b54371a8608170ed8c0f))
+* Add KCP_SSHD and KCP_CONNECTION to the supported values for the --logging flag for the create and update cluster commands ([da74af6](https://github.com/googleapis/google-cloud-python/commit/da74af6f7f60cdeb9a09b54371a8608170ed8c0f))
+* Add RBACBindingConfig to API ([da74af6](https://github.com/googleapis/google-cloud-python/commit/da74af6f7f60cdeb9a09b54371a8608170ed8c0f))
+* add storage pools field to NodePool API ([da74af6](https://github.com/googleapis/google-cloud-python/commit/da74af6f7f60cdeb9a09b54371a8608170ed8c0f))
+* Added support for Parallelstore CSI Driver ([da74af6](https://github.com/googleapis/google-cloud-python/commit/da74af6f7f60cdeb9a09b54371a8608170ed8c0f))
+* Surface upgrade_target_version in GetServerConfig for all supported release channels ([da74af6](https://github.com/googleapis/google-cloud-python/commit/da74af6f7f60cdeb9a09b54371a8608170ed8c0f))
+
+
+### Documentation
+
+* Minor documentation updates ([da74af6](https://github.com/googleapis/google-cloud-python/commit/da74af6f7f60cdeb9a09b54371a8608170ed8c0f))
+
 ## [2.51.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.50.0...google-cloud-container-v2.51.0) (2024-09-03)
 
 

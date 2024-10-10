@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.12.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.12.2...google-cloud-discoveryengine-v0.12.3) (2024-10-10)
+
+
+### Features
+
+* Add BillingEstimation in data store ([c5e93d8](https://github.com/googleapis/google-cloud-python/commit/c5e93d8d8a7d51b753a870b29e70d0e63815b6e1))
+* Add GroundedGenerationService API ([c5e93d8](https://github.com/googleapis/google-cloud-python/commit/c5e93d8d8a7d51b753a870b29e70d0e63815b6e1))
+* Add one_box_page_size on search ([c5e93d8](https://github.com/googleapis/google-cloud-python/commit/c5e93d8d8a7d51b753a870b29e70d0e63815b6e1))
+* Add site_credential for site search config ([c5e93d8](https://github.com/googleapis/google-cloud-python/commit/c5e93d8d8a7d51b753a870b29e70d0e63815b6e1))
+* Support advanced boost search ([c5e93d8](https://github.com/googleapis/google-cloud-python/commit/c5e93d8d8a7d51b753a870b29e70d0e63815b6e1))
+* Support Google Workspace search ([c5e93d8](https://github.com/googleapis/google-cloud-python/commit/c5e93d8d8a7d51b753a870b29e70d0e63815b6e1))
+
+
+### Documentation
+
+* Update documentation ([c5e93d8](https://github.com/googleapis/google-cloud-python/commit/c5e93d8d8a7d51b753a870b29e70d0e63815b6e1))
+
 ## [0.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.12.1...google-cloud-discoveryengine-v0.12.2) (2024-09-04)
 
 
