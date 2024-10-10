@@ -550,6 +550,11 @@ class RecrawlUrisRequest(proto.Message):
             Each URI should match at least one
             [TargetSite][google.cloud.discoveryengine.v1.TargetSite] in
             ``site_search_engine``.
+        site_credential (str):
+            Optional. Full resource name of the [SiteCredential][], such
+            as
+            ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/siteCredentials/*``.
+            Only set to crawl private URIs.
     """
 
     site_search_engine: str = proto.Field(
@@ -559,6 +564,10 @@ class RecrawlUrisRequest(proto.Message):
     uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
+    )
+    site_credential: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 

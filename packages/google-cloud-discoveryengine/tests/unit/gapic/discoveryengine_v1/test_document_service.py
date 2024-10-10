@@ -7709,6 +7709,43 @@ def test_parse_document_path():
     assert expected == actual
 
 
+def test_fhir_resource_path():
+    project = "cuttlefish"
+    location = "mussel"
+    dataset = "winkle"
+    fhir_store = "nautilus"
+    resource_type = "scallop"
+    fhir_resource_id = "abalone"
+    expected = "projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}/fhir/{resource_type}/{fhir_resource_id}".format(
+        project=project,
+        location=location,
+        dataset=dataset,
+        fhir_store=fhir_store,
+        resource_type=resource_type,
+        fhir_resource_id=fhir_resource_id,
+    )
+    actual = DocumentServiceClient.fhir_resource_path(
+        project, location, dataset, fhir_store, resource_type, fhir_resource_id
+    )
+    assert expected == actual
+
+
+def test_parse_fhir_resource_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "dataset": "whelk",
+        "fhir_store": "octopus",
+        "resource_type": "oyster",
+        "fhir_resource_id": "nudibranch",
+    }
+    path = DocumentServiceClient.fhir_resource_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DocumentServiceClient.parse_fhir_resource_path(path)
+    assert expected == actual
+
+
 def test_fhir_store_path():
     project = "cuttlefish"
     location = "mussel"

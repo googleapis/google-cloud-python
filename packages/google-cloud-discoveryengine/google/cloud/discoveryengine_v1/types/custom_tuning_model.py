@@ -36,8 +36,9 @@ class CustomTuningModel(proto.Message):
             Required. The fully qualified resource name of the model.
 
             Format:
-            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/customTuningModels/{custom_tuning_model}``
-            model must be an alpha-numerical string with limit of 40
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/customTuningModels/{custom_tuning_model}``.
+
+            Model must be an alpha-numerical string with limit of 40
             characters.
         display_name (str):
             The display name of the model.
@@ -47,12 +48,15 @@ class CustomTuningModel(proto.Message):
             The state that the model is in (e.g.``TRAINING`` or
             ``TRAINING_FAILED``).
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Deprecated: timestamp the Model was created
+            Deprecated: Timestamp the Model was created
             at.
         training_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp the model training was initiated.
         metrics (MutableMapping[str, float]):
             The metrics of the trained model.
+        error_message (str):
+            Currently this is only populated if the model state is
+            ``INPUT_VALIDATION_FAILED``.
     """
 
     class ModelState(proto.Enum):
@@ -119,6 +123,10 @@ class CustomTuningModel(proto.Message):
         proto.STRING,
         proto.DOUBLE,
         number=7,
+    )
+    error_message: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 

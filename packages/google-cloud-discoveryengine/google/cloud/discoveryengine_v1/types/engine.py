@@ -71,7 +71,7 @@ class Engine(proto.Message):
             limit of 1024 characters.
 
             Format:
-            ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}``
+            ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}``
             engine should be 1-63 characters, and valid characters are
             /[a-z0-9][a-z0-9-_]*/. Otherwise, an INVALID_ARGUMENT error
             is returned.
@@ -120,6 +120,9 @@ class Engine(proto.Message):
         common_config (google.cloud.discoveryengine_v1.types.Engine.CommonConfig):
             Common config spec that specifies the
             metadata of the engine.
+        disable_analytics (bool):
+            Optional. Whether to disable analytics for
+            searches performed on this engine.
     """
 
     class SearchEngineConfig(proto.Message):
@@ -334,6 +337,10 @@ class Engine(proto.Message):
         proto.MESSAGE,
         number=15,
         message=CommonConfig,
+    )
+    disable_analytics: bool = proto.Field(
+        proto.BOOL,
+        number=26,
     )
 
 
