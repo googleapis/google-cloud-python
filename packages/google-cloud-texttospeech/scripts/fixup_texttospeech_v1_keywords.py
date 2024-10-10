@@ -42,7 +42,7 @@ class texttospeechCallTransformer(cst.CSTTransformer):
         'list_voices': ('language_code', ),
         'streaming_synthesize': ('streaming_config', 'input', ),
         'synthesize_long_audio': ('input', 'audio_config', 'output_gcs_uri', 'voice', 'parent', ),
-        'synthesize_speech': ('input', 'voice', 'audio_config', ),
+        'synthesize_speech': ('input', 'voice', 'audio_config', 'advanced_voice_options', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

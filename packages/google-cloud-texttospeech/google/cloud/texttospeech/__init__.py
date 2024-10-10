@@ -31,8 +31,11 @@ from google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize.
     TextToSpeechLongAudioSynthesizeClient,
 )
 from google.cloud.texttospeech_v1.types.cloud_tts import (
+    AdvancedVoiceOptions,
     AudioConfig,
     AudioEncoding,
+    CustomPronunciationParams,
+    CustomPronunciations,
     CustomVoiceParams,
     ListVoicesRequest,
     ListVoicesResponse,
@@ -58,7 +61,10 @@ __all__ = (
     "TextToSpeechAsyncClient",
     "TextToSpeechLongAudioSynthesizeClient",
     "TextToSpeechLongAudioSynthesizeAsyncClient",
+    "AdvancedVoiceOptions",
     "AudioConfig",
+    "CustomPronunciationParams",
+    "CustomPronunciations",
     "CustomVoiceParams",
     "ListVoicesRequest",
     "ListVoicesResponse",

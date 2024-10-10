@@ -24,8 +24,11 @@ from .services.text_to_speech_long_audio_synthesize import (
     TextToSpeechLongAudioSynthesizeClient,
 )
 from .types.cloud_tts import (
+    AdvancedVoiceOptions,
     AudioConfig,
     AudioEncoding,
+    CustomPronunciationParams,
+    CustomPronunciations,
     CustomVoiceParams,
     ListVoicesRequest,
     ListVoicesResponse,
@@ -49,8 +52,11 @@ from .types.cloud_tts_lrs import (
 __all__ = (
     "TextToSpeechAsyncClient",
     "TextToSpeechLongAudioSynthesizeAsyncClient",
+    "AdvancedVoiceOptions",
     "AudioConfig",
     "AudioEncoding",
+    "CustomPronunciationParams",
+    "CustomPronunciations",
     "CustomVoiceParams",
     "ListVoicesRequest",
     "ListVoicesResponse",
