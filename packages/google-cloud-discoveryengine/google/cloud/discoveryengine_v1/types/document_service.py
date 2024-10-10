@@ -299,17 +299,41 @@ class BatchGetDocumentsMetadataRequest(proto.Message):
             number=1,
         )
 
+    class FhirMatcher(proto.Message):
+        r"""Matcher for the
+        [Document][google.cloud.discoveryengine.v1.Document]s by FHIR
+        resource names.
+
+        Attributes:
+            fhir_resources (MutableSequence[str]):
+                Required. The FHIR resources to match by. Format:
+                projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}/fhir/{resource_type}/{fhir_resource_id}
+        """
+
+        fhir_resources: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
     class Matcher(proto.Message):
         r"""Matcher for the
         [Document][google.cloud.discoveryengine.v1.Document]s. Currently
         supports matching by exact URIs.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             uris_matcher (google.cloud.discoveryengine_v1.types.BatchGetDocumentsMetadataRequest.UrisMatcher):
                 Matcher by exact URIs.
+
+                This field is a member of `oneof`_ ``matcher``.
+            fhir_matcher (google.cloud.discoveryengine_v1.types.BatchGetDocumentsMetadataRequest.FhirMatcher):
+                Matcher by FHIR resource names.
 
                 This field is a member of `oneof`_ ``matcher``.
         """
@@ -319,6 +343,12 @@ class BatchGetDocumentsMetadataRequest(proto.Message):
             number=1,
             oneof="matcher",
             message="BatchGetDocumentsMetadataRequest.UrisMatcher",
+        )
+        fhir_matcher: "BatchGetDocumentsMetadataRequest.FhirMatcher" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="matcher",
+            message="BatchGetDocumentsMetadataRequest.FhirMatcher",
         )
 
     parent: str = proto.Field(
@@ -396,6 +426,10 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
             r"""The value of the matcher that was used to match the
             [Document][google.cloud.discoveryengine.v1.Document].
 
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
 
             .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -405,11 +439,21 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
                     [Document][google.cloud.discoveryengine.v1.Document].
 
                     This field is a member of `oneof`_ ``matcher_value``.
+                fhir_resource (str):
+                    Required. Format:
+                    projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}/fhir/{resource_type}/{fhir_resource_id}
+
+                    This field is a member of `oneof`_ ``matcher_value``.
             """
 
             uri: str = proto.Field(
                 proto.STRING,
                 number=1,
+                oneof="matcher_value",
+            )
+            fhir_resource: str = proto.Field(
+                proto.STRING,
+                number=2,
                 oneof="matcher_value",
             )
 

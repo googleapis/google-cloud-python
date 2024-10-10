@@ -107,7 +107,7 @@ from .types.conversational_search_service import (
     UpdateSessionRequest,
 )
 from .types.custom_tuning_model import CustomTuningModel
-from .types.data_store import DataStore
+from .types.data_store import DataStore, WorkspaceConfig
 from .types.data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -145,6 +145,9 @@ from .types.grounded_generation_service import (
     CheckGroundingRequest,
     CheckGroundingResponse,
     CheckGroundingSpec,
+    GenerateGroundedContentRequest,
+    GenerateGroundedContentResponse,
+    GroundedGenerationContent,
 )
 from .types.grounding import FactChunk, GroundingFact
 from .types.import_config import (
@@ -350,6 +353,8 @@ __all__ = (
     "FhirStoreSource",
     "FirestoreSource",
     "GcsSource",
+    "GenerateGroundedContentRequest",
+    "GenerateGroundedContentResponse",
     "GetAnswerRequest",
     "GetControlRequest",
     "GetConversationRequest",
@@ -360,6 +365,7 @@ __all__ = (
     "GetSessionRequest",
     "GetSiteSearchEngineRequest",
     "GetTargetSiteRequest",
+    "GroundedGenerationContent",
     "GroundedGenerationServiceClient",
     "GroundingFact",
     "ImportCompletionSuggestionsMetadata",
@@ -463,5 +469,6 @@ __all__ = (
     "UserEvent",
     "UserEventServiceClient",
     "UserInfo",
+    "WorkspaceConfig",
     "WriteUserEventRequest",
 )

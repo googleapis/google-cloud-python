@@ -743,6 +743,16 @@
               "methods": [
                 "check_grounding"
               ]
+            },
+            "GenerateGroundedContent": {
+              "methods": [
+                "generate_grounded_content"
+              ]
+            },
+            "StreamGenerateGroundedContent": {
+              "methods": [
+                "stream_generate_grounded_content"
+              ]
             }
           }
         },
@@ -753,6 +763,16 @@
               "methods": [
                 "check_grounding"
               ]
+            },
+            "GenerateGroundedContent": {
+              "methods": [
+                "generate_grounded_content"
+              ]
+            },
+            "StreamGenerateGroundedContent": {
+              "methods": [
+                "stream_generate_grounded_content"
+              ]
             }
           }
         },
@@ -762,6 +782,16 @@
             "CheckGrounding": {
               "methods": [
                 "check_grounding"
+              ]
+            },
+            "GenerateGroundedContent": {
+              "methods": [
+                "generate_grounded_content"
+              ]
+            },
+            "StreamGenerateGroundedContent": {
+              "methods": [
+                "stream_generate_grounded_content"
               ]
             }
           }

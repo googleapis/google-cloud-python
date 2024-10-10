@@ -771,9 +771,9 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             parent (str):
                 Required. Full resource name of parent data store.
                 Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}``
+                ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``
                 or
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``.
+                ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -899,7 +899,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             name (str):
                 Required. The resource name of the Control to delete.
                 Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
+                ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1126,7 +1126,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             name (str):
                 Required. The resource name of the Control to get.
                 Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
+                ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1233,9 +1233,9 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 The request object. Request for ListControls method.
             parent (str):
                 Required. The data store resource name. Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}``
+                ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``
                 or
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``.
+                ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

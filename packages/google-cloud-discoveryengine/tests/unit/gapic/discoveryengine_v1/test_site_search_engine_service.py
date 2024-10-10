@@ -4745,6 +4745,7 @@ def test_recrawl_uris_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = site_search_engine_service.RecrawlUrisRequest(
         site_search_engine="site_search_engine_value",
+        site_credential="site_credential_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4757,6 +4758,7 @@ def test_recrawl_uris_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == site_search_engine_service.RecrawlUrisRequest(
             site_search_engine="site_search_engine_value",
+            site_credential="site_credential_value",
         )
 
 

@@ -3363,6 +3363,20 @@ def test_create_data_store_rest(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "billing_estimation": {
+            "structured_data_size": 2152,
+            "unstructured_data_size": 2379,
+            "website_data_size": 1798,
+            "structured_data_update_time": {},
+            "unstructured_data_update_time": {},
+            "website_data_update_time": {},
+        },
+        "workspace_config": {
+            "type_": 1,
+            "dasher_customer_id": "dasher_customer_id_value",
+            "super_admin_service_account": "super_admin_service_account_value",
+            "super_admin_email_address": "super_admin_email_address_value",
+        },
         "document_processing_config": {
             "name": "name_value",
             "chunking_config": {
@@ -4800,6 +4814,20 @@ def test_update_data_store_rest(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "billing_estimation": {
+            "structured_data_size": 2152,
+            "unstructured_data_size": 2379,
+            "website_data_size": 1798,
+            "structured_data_update_time": {},
+            "unstructured_data_update_time": {},
+            "website_data_update_time": {},
+        },
+        "workspace_config": {
+            "type_": 1,
+            "dasher_customer_id": "dasher_customer_id_value",
+            "super_admin_service_account": "super_admin_service_account_value",
+            "super_admin_email_address": "super_admin_email_address_value",
+        },
         "document_processing_config": {
             "name": "name_value",
             "chunking_config": {

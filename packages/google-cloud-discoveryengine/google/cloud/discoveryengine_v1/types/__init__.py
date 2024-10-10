@@ -63,7 +63,7 @@ from .conversational_search_service import (
     UpdateSessionRequest,
 )
 from .custom_tuning_model import CustomTuningModel
-from .data_store import DataStore
+from .data_store import DataStore, WorkspaceConfig
 from .data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -101,6 +101,9 @@ from .grounded_generation_service import (
     CheckGroundingRequest,
     CheckGroundingResponse,
     CheckGroundingSpec,
+    GenerateGroundedContentRequest,
+    GenerateGroundedContentResponse,
+    GroundedGenerationContent,
 )
 from .grounding import FactChunk, GroundingFact
 from .import_config import (
@@ -256,6 +259,7 @@ __all__ = (
     "UpdateSessionRequest",
     "CustomTuningModel",
     "DataStore",
+    "WorkspaceConfig",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
     "DeleteDataStoreMetadata",
@@ -286,6 +290,9 @@ __all__ = (
     "CheckGroundingRequest",
     "CheckGroundingResponse",
     "CheckGroundingSpec",
+    "GenerateGroundedContentRequest",
+    "GenerateGroundedContentResponse",
+    "GroundedGenerationContent",
     "FactChunk",
     "GroundingFact",
     "AlloyDbSource",

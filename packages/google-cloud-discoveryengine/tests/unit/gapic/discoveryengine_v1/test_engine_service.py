@@ -1948,6 +1948,7 @@ def test_update_engine(request_type, transport: str = "grpc"):
             data_store_ids=["data_store_ids_value"],
             solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
             industry_vertical=common.IndustryVertical.GENERIC,
+            disable_analytics=True,
         )
         response = client.update_engine(request)
 
@@ -1964,6 +1965,7 @@ def test_update_engine(request_type, transport: str = "grpc"):
     assert response.data_store_ids == ["data_store_ids_value"]
     assert response.solution_type == common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     assert response.industry_vertical == common.IndustryVertical.GENERIC
+    assert response.disable_analytics is True
 
 
 def test_update_engine_empty_call():
@@ -2063,6 +2065,7 @@ async def test_update_engine_empty_call_async():
                 data_store_ids=["data_store_ids_value"],
                 solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
                 industry_vertical=common.IndustryVertical.GENERIC,
+                disable_analytics=True,
             )
         )
         response = await client.update_engine()
@@ -2136,6 +2139,7 @@ async def test_update_engine_async(
                 data_store_ids=["data_store_ids_value"],
                 solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
                 industry_vertical=common.IndustryVertical.GENERIC,
+                disable_analytics=True,
             )
         )
         response = await client.update_engine(request)
@@ -2153,6 +2157,7 @@ async def test_update_engine_async(
     assert response.data_store_ids == ["data_store_ids_value"]
     assert response.solution_type == common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     assert response.industry_vertical == common.IndustryVertical.GENERIC
+    assert response.disable_analytics is True
 
 
 @pytest.mark.asyncio
@@ -2371,6 +2376,7 @@ def test_get_engine(request_type, transport: str = "grpc"):
             data_store_ids=["data_store_ids_value"],
             solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
             industry_vertical=common.IndustryVertical.GENERIC,
+            disable_analytics=True,
         )
         response = client.get_engine(request)
 
@@ -2387,6 +2393,7 @@ def test_get_engine(request_type, transport: str = "grpc"):
     assert response.data_store_ids == ["data_store_ids_value"]
     assert response.solution_type == common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     assert response.industry_vertical == common.IndustryVertical.GENERIC
+    assert response.disable_analytics is True
 
 
 def test_get_engine_empty_call():
@@ -2490,6 +2497,7 @@ async def test_get_engine_empty_call_async():
                 data_store_ids=["data_store_ids_value"],
                 solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
                 industry_vertical=common.IndustryVertical.GENERIC,
+                disable_analytics=True,
             )
         )
         response = await client.get_engine()
@@ -2561,6 +2569,7 @@ async def test_get_engine_async(
                 data_store_ids=["data_store_ids_value"],
                 solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
                 industry_vertical=common.IndustryVertical.GENERIC,
+                disable_analytics=True,
             )
         )
         response = await client.get_engine(request)
@@ -2578,6 +2587,7 @@ async def test_get_engine_async(
     assert response.data_store_ids == ["data_store_ids_value"]
     assert response.solution_type == common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     assert response.industry_vertical == common.IndustryVertical.GENERIC
+    assert response.disable_analytics is True
 
 
 @pytest.mark.asyncio
@@ -3322,6 +3332,7 @@ def test_create_engine_rest(request_type):
         "solution_type": 1,
         "industry_vertical": 1,
         "common_config": {"company_name": "company_name_value"},
+        "disable_analytics": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4061,6 +4072,7 @@ def test_update_engine_rest(request_type):
         "solution_type": 1,
         "industry_vertical": 1,
         "common_config": {"company_name": "company_name_value"},
+        "disable_analytics": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4140,6 +4152,7 @@ def test_update_engine_rest(request_type):
             data_store_ids=["data_store_ids_value"],
             solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
             industry_vertical=common.IndustryVertical.GENERIC,
+            disable_analytics=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -4160,6 +4173,7 @@ def test_update_engine_rest(request_type):
     assert response.data_store_ids == ["data_store_ids_value"]
     assert response.solution_type == common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     assert response.industry_vertical == common.IndustryVertical.GENERIC
+    assert response.disable_analytics is True
 
 
 def test_update_engine_rest_use_cached_wrapped_rpc():
@@ -4471,6 +4485,7 @@ def test_get_engine_rest(request_type):
             data_store_ids=["data_store_ids_value"],
             solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
             industry_vertical=common.IndustryVertical.GENERIC,
+            disable_analytics=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -4491,6 +4506,7 @@ def test_get_engine_rest(request_type):
     assert response.data_store_ids == ["data_store_ids_value"]
     assert response.solution_type == common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     assert response.industry_vertical == common.IndustryVertical.GENERIC
+    assert response.disable_analytics is True
 
 
 def test_get_engine_rest_use_cached_wrapped_rpc():

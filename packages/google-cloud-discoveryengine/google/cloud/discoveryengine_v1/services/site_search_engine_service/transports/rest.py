@@ -729,7 +729,7 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
                     },
                     {
                         "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                        "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*/operations/*}",
                     },
                     {
                         "method": "get",
@@ -795,7 +795,7 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
                     },
                     {
                         "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
+                        "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*}/operations",
                     },
                     {
                         "method": "get",
@@ -2309,7 +2309,7 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*/operations/*}",
                 },
                 {
                     "method": "get",
@@ -2435,7 +2435,7 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
+                    "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*}/operations",
                 },
                 {
                     "method": "get",

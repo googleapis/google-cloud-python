@@ -88,7 +88,10 @@ class Answer(proto.Message):
             ADVERSARIAL_QUERY_IGNORED (1):
                 The adversarial query ignored case.
             NON_ANSWER_SEEKING_QUERY_IGNORED (2):
-                The non-answer seeking query ignored case.
+                The non-answer seeking query ignored case
+
+                Google skips the answer if the query is chit
+                chat.
             OUT_OF_DOMAIN_QUERY_IGNORED (3):
                 The out-of-domain query ignored case.
 
@@ -117,6 +120,11 @@ class Answer(proto.Message):
                 Google skips the summary if there is a customer
                 policy violation detected. The policy is defined
                 by the customer.
+            NON_ANSWER_SEEKING_QUERY_IGNORED_V2 (8):
+                The non-answer seeking query ignored case.
+
+                Google skips the answer if the query doesn't
+                have clear intent.
         """
         ANSWER_SKIPPED_REASON_UNSPECIFIED = 0
         ADVERSARIAL_QUERY_IGNORED = 1
@@ -126,6 +134,7 @@ class Answer(proto.Message):
         NO_RELEVANT_CONTENT = 5
         JAIL_BREAKING_QUERY_IGNORED = 6
         CUSTOMER_POLICY_VIOLATION = 7
+        NON_ANSWER_SEEKING_QUERY_IGNORED_V2 = 8
 
     class Citation(proto.Message):
         r"""Citation info for a segment.
@@ -643,14 +652,19 @@ class Answer(proto.Message):
                     ADVERSARIAL_QUERY (1):
                         Adversarial query classification type.
                     NON_ANSWER_SEEKING_QUERY (2):
-                        Non-answer-seeking query classification type.
+                        Non-answer-seeking query classification type,
+                        for chit chat.
                     JAIL_BREAKING_QUERY (3):
                         Jail-breaking query classification type.
+                    NON_ANSWER_SEEKING_QUERY_V2 (4):
+                        Non-answer-seeking query classification type,
+                        for no clear intent.
                 """
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2
                 JAIL_BREAKING_QUERY = 3
+                NON_ANSWER_SEEKING_QUERY_V2 = 4
 
             type_: "Answer.QueryUnderstandingInfo.QueryClassificationInfo.Type" = (
                 proto.Field(

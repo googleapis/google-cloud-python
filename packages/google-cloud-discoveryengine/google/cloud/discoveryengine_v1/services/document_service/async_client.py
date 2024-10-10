@@ -83,6 +83,10 @@ class DocumentServiceAsyncClient:
     parse_branch_path = staticmethod(DocumentServiceClient.parse_branch_path)
     document_path = staticmethod(DocumentServiceClient.document_path)
     parse_document_path = staticmethod(DocumentServiceClient.parse_document_path)
+    fhir_resource_path = staticmethod(DocumentServiceClient.fhir_resource_path)
+    parse_fhir_resource_path = staticmethod(
+        DocumentServiceClient.parse_fhir_resource_path
+    )
     fhir_store_path = staticmethod(DocumentServiceClient.fhir_store_path)
     parse_fhir_store_path = staticmethod(DocumentServiceClient.parse_fhir_store_path)
     common_billing_account_path = staticmethod(

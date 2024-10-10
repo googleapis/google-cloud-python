@@ -35,9 +35,9 @@ class Project(proto.Message):
     Attributes:
         name (str):
             Output only. Full resource name of the project, for example
-            ``projects/{project_number}``. Note that when making
-            requests, project number and project id are both acceptable,
-            but the server will always respond in project number.
+            ``projects/{project}``. Note that when making requests,
+            project number and project id are both acceptable, but the
+            server will always respond in project number.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when this project
             is created.
