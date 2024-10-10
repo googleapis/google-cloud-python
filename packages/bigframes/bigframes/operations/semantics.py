@@ -17,17 +17,21 @@ import re
 import typing
 from typing import List, Optional
 
-import bigframes
-import bigframes.core.guid
+import numpy as np
+
+import bigframes.core.guid as guid
 import bigframes.dtypes as dtypes
 
 
 class Semantics:
     def __init__(self, df) -> None:
+        import bigframes
+        import bigframes.dataframe
+
         if not bigframes.options.experiments.semantic_operators:
             raise NotImplementedError()
 
-        self._df = df
+        self._df: bigframes.dataframe.DataFrame = df
 
     def agg(
         self,
@@ -130,15 +134,15 @@ class Semantics:
                     f"{type(df[cluster_column])}"
                 )
 
-            num_cluster = len(df[cluster_column].unique())
+            num_cluster = df[cluster_column].unique().shape[0]
             df = df.sort_values(cluster_column)
         else:
-            cluster_column = bigframes.core.guid.generate_guid("pid")
+            cluster_column = guid.generate_guid("pid")
             df[cluster_column] = 0
 
-        aggregation_group_id = bigframes.core.guid.generate_guid("agg")
-        group_row_index = bigframes.core.guid.generate_guid("gid")
-        llm_prompt = bigframes.core.guid.generate_guid("prompt")
+        aggregation_group_id = guid.generate_guid("agg")
+        group_row_index = guid.generate_guid("gid")
+        llm_prompt = guid.generate_guid("prompt")
         df = (
             df.reset_index(drop=True)
             .reset_index()
@@ -609,6 +613,169 @@ class Semantics:
 
         return typing.cast(bigframes.dataframe.DataFrame, search_result)
 
+    def top_k(self, instruction: str, model, k=10):
+        """
+        Ranks each tuple and returns the k best according to the instruction.
+
+        This method employs a quick select algorithm to efficiently compare the pivot
+        with all other items. By leveraging an LLM (Large Language Model), it then
+        identifies the top 'k' best answers from these comparisons.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> bpd.options.experiments.semantic_operators = True
+
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
+
+            >>> df = bpd.DataFrame({"Animals": ["Dog", "Bird", "Cat", "Horse"]})
+            >>> df.semantics.top_k("{Animals} are more popular as pets", model=model, k=2)
+              Animals
+            0     Dog
+            2     Cat
+            <BLANKLINE>
+            [2 rows x 1 columns]
+
+        Args:
+            instruction (str):
+                An instruction on how to map the data. This value must contain
+                column references by name enclosed in braces.
+                For example, to reference a column named "Animals", use "{Animals}" in the
+                instruction, like: "{Animals} are more popular as pets"
+
+            model (bigframes.ml.llm.GeminiTextGenerator):
+                A GeminiTextGenerator provided by the Bigframes ML package.
+
+            k (int, default 10):
+                The number of rows to return.
+
+        Returns:
+            bigframes.dataframe.DataFrame: A new DataFrame with the top k rows.
+
+        Raises:
+            NotImplementedError: when the semantic operator experiment is off.
+            ValueError: when the instruction refers to a non-existing column, or when no
+                columns are referred to.
+        """
+        self._validate_model(model)
+        columns = self._parse_columns(instruction)
+        for column in columns:
+            if column not in self._df.columns:
+                raise ValueError(f"Column {column} not found.")
+        if len(columns) > 1:
+            raise NotImplementedError(
+                "Semantic aggregations are limited to a single column."
+            )
+        column = columns[0]
+        if self._df[column].dtype != dtypes.STRING_DTYPE:
+            raise TypeError(
+                "Referred column must be a string type, not "
+                f"{type(self._df[column])}"
+            )
+        # `index` is reserved for the `reset_index` below.
+        if column == "index":
+            raise ValueError(
+                "Column name 'index' is reserved. Please choose a different name."
+            )
+
+        if k < 1:
+            raise ValueError("k must be an integer greater than or equal to 1.")
+
+        user_instruction = self._format_instruction(instruction, columns)
+
+        import bigframes.dataframe
+        import bigframes.series
+
+        df: bigframes.dataframe.DataFrame = self._df[columns].copy()
+        n = df.shape[0]
+
+        if k >= n:
+            return df
+
+        # Create a unique index and duplicate it as the "index" column. This workaround
+        # is needed for the select search algorithm due to unimplemented bigFrame methods.
+        df = df.reset_index().rename(columns={"index": "old_index"}).reset_index()
+
+        # Initialize a status column to track the selection status of each item.
+        #  - None: Unknown/not yet processed
+        #  - 1.0: Selected as part of the top-k items
+        #  - -1.0: Excluded from the top-k items
+        status_column = guid.generate_guid("status")
+        df[status_column] = bigframes.series.Series(None, dtype=dtypes.FLOAT_DTYPE)
+
+        num_selected = 0
+        while num_selected < k:
+            df, num_new_selected = self._topk_partition(
+                df,
+                column,
+                status_column,
+                user_instruction,
+                model,
+                k - num_selected,
+            )
+            num_selected += num_new_selected
+
+        df = (
+            df[df[status_column] > 0]
+            .drop(["index", status_column], axis=1)
+            .rename(columns={"old_index": "index"})
+            .set_index("index")
+        )
+        df.index.name = None
+        return df
+
+    @staticmethod
+    def _topk_partition(
+        df, column: str, status_column: str, user_instruction: str, model, k
+    ):
+        output_instruction = (
+            "Given a question and two documents, choose the document that best answers "
+            "the question. Respond with 'Document 1' or 'Document 2'.  You must choose "
+            "one, even if neither is ideal. "
+        )
+
+        # Random pivot selection for improved average quickselect performance.
+        pending_df = df[df[status_column].isna()]
+        pivot_iloc = np.random.randint(0, pending_df.shape[0] - 1)
+        pivot_index = pending_df.iloc[pivot_iloc]["index"]
+        pivot_df = pending_df[pending_df["index"] == pivot_index]
+
+        # Build a prompt to compare the pivot item's relevance to other pending items.
+        prompt_s = pending_df[pending_df["index"] != pivot_index][column]
+        prompt_s = (
+            f"{output_instruction}\n\nQuestion: {user_instruction}\n"
+            + "\nDocument 1: "
+            + pivot_df.iloc[0][column]
+            + "\nDocument 2: "
+            + prompt_s  # type:ignore
+        )
+
+        import bigframes.dataframe
+
+        predict_df = typing.cast(bigframes.dataframe.DataFrame, model.predict(prompt_s))
+
+        marks = predict_df["ml_generate_text_llm_result"].str.contains("2")
+        more_relavant: bigframes.dataframe.DataFrame = df[marks]
+        less_relavent: bigframes.dataframe.DataFrame = df[~marks]
+
+        num_more_relavant = more_relavant.shape[0]
+        if k < num_more_relavant:
+            less_relavent[status_column] = -1.0
+            pivot_df[status_column] = -1.0
+            df = df.combine_first(less_relavent).combine_first(pivot_df)
+            return df, 0
+        else:  # k >= num_more_relavant
+            more_relavant[status_column] = 1.0
+            df = df.combine_first(more_relavant)
+            if k >= num_more_relavant + 1:
+                pivot_df[status_column] = 1.0
+                df = df.combine_first(pivot_df)
+                return df, num_more_relavant + 1
+            else:
+                return df, num_more_relavant
+
     def sim_join(
         self,
         other,
@@ -688,7 +855,7 @@ class Semantics:
                 f"Number of rows that need processing is {joined_table_rows}, which exceeds row limit {max_rows}."
             )
 
-        base_table_embedding_column = bigframes.core.guid.generate_guid()
+        base_table_embedding_column = guid.generate_guid()
         base_table = self._attach_embedding(
             other, right_on, base_table_embedding_column, model
         ).to_gbq()
