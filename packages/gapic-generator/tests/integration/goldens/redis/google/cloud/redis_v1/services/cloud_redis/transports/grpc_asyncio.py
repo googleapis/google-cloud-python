@@ -699,6 +699,11 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.wait_operation: self._wrap_method(
+                self.wait_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def _wrap_method(self, func, *args, **kwargs):
@@ -748,6 +753,24 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
                 response_deserializer=None,
             )
         return self._stubs["cancel_operation"]
+
+    @property
+    def wait_operation(
+        self,
+    ) -> Callable[[operations_pb2.WaitOperationRequest], None]:
+        r"""Return a callable for the wait_operation method over gRPC.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "wait_operation" not in self._stubs:
+            self._stubs["wait_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/WaitOperation",
+                request_serializer=operations_pb2.WaitOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["wait_operation"]
 
     @property
     def get_operation(

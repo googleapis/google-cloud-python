@@ -484,6 +484,27 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
+    async def pre_wait_operation(
+        self, request: operations_pb2.WaitOperationRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[operations_pb2.WaitOperationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for wait_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    async def post_wait_operation(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for wait_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
+
 
 @dataclasses.dataclass
 class AsyncCloudRedisRestStub:
@@ -653,6 +674,11 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             ),
             self.list_operations: self._wrap_method(
                 self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.wait_operation: self._wrap_method(
+                self.wait_operation,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1580,6 +1606,13 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                         'uri': '/v1/{name=projects/*/locations/*}/operations',
                     },
                 ],
+                'google.longrunning.Operations.WaitOperation': [
+                    {
+                        'method': 'post',
+                        'uri': '/v2/{name=projects/*/locations/*/operations/*}:wait',
+                        'body': '*',
+                    },
+                ],
             }
 
             rest_transport = operations_v1.AsyncOperationsRestTransport(  # type: ignore
@@ -2107,6 +2140,86 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_list_operations(resp)
+            return resp
+
+    @property
+    def wait_operation(self):
+        return self._WaitOperation(self._session, self._host, self._interceptor) # type: ignore
+
+    class _WaitOperation(_BaseCloudRedisRestTransport._BaseWaitOperation, AsyncCloudRedisRestStub):
+        def __hash__(self):
+            return hash("AsyncCloudRedisRestTransport.WaitOperation")
+
+        @staticmethod
+        async def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = await getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
+
+        async def __call__(self,
+            request: operations_pb2.WaitOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, str]]=(),
+            ) -> operations_pb2.Operation:
+
+            r"""Call the wait operation method over HTTP.
+
+            Args:
+                request (operations_pb2.WaitOperationRequest):
+                    The request object for WaitOperation method.
+                retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                operations_pb2.Operation: Response from WaitOperation method.
+            """
+
+            http_options = _BaseCloudRedisRestTransport._BaseWaitOperation._get_http_options()
+            request, metadata = await self._interceptor.pre_wait_operation(request, metadata)
+            transcoded_request = _BaseCloudRedisRestTransport._BaseWaitOperation._get_transcoded_request(http_options, request)
+
+            body = _BaseCloudRedisRestTransport._BaseWaitOperation._get_request_body_json(transcoded_request)
+
+            # Jsonify the query params
+            query_params = _BaseCloudRedisRestTransport._BaseWaitOperation._get_query_params_json(transcoded_request)
+
+            # Send the request
+            response = await AsyncCloudRedisRestTransport._WaitOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                content = await response.read()
+                payload = json.loads(content.decode('utf-8'))
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+
+            content = await response.read()
+            resp = operations_pb2.Operation()
+            resp = json_format.Parse(content, resp)
+            resp = await self._interceptor.post_wait_operation(resp)
             return resp
 
     @property

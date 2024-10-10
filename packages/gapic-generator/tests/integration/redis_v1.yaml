@@ -49,6 +49,9 @@ http:
     get: '/v1/{name=projects/*/locations/*/operations/*}'
   - selector: google.longrunning.Operations.ListOperations
     get: '/v1/{name=projects/*/locations/*}/operations'
+  - selector: google.longrunning.Operations.WaitOperation
+    post: '/v2/{name=projects/*/locations/*/operations/*}:wait'
+    body: '*'
 
 authentication:
   rules:

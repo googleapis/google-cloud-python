@@ -703,6 +703,36 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
+    class _BaseWaitOperation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v2/{name=projects/*/locations/*/operations/*}:wait',
+                'body': '*',
+            },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
+            return transcoded_request
+
+        @staticmethod
+        def _get_request_body_json(transcoded_request):
+            body = json.dumps(transcoded_request['body'])
+            return body
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            return query_params
+
 
 __all__=(
     '_BaseCloudRedisRestTransport',
