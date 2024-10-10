@@ -30,6 +30,13 @@ service MyService {
         };
   };
 
+  rpc Import(CreateImportRequest) returns (CreateImportResponse) {
+        option (google.api.http) = {
+          body: "*"
+          post: "/import/v1"
+        };
+  };
+
   rpc GrpcChannel(GrpcChannelRequest) returns (GrpcChannelResponse) {
         option (google.api.http) = {
           body: "*"
@@ -56,6 +63,14 @@ message CreateChannelRequest {
 }
 
 message CreateChannelResponse {
+  string info = 1;
+}
+
+message CreateImportRequest {
+  string info = 1;
+}
+
+message CreateImportResponse {
   string info = 1;
 }
 

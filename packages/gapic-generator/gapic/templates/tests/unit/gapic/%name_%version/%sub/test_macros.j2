@@ -238,7 +238,7 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
 
         {% if method.client_streaming %}
         request = [{}]
-        await client.{{ method.name|snake_case }}(request)
+        await client.{{ method.safe_name|snake_case }}(request)
         {% else %}
         request = {}
         await client.{{ method_name }}(request)
@@ -255,7 +255,7 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
         {% endif %}
 
         {% if method.client_streaming %}
-        await client.{{ method.name|snake_case }}(request)
+        await client.{{ method.safe_name|snake_case }}(request)
         {% else %}
         await client.{{ method_name }}(request)
         {% endif %}
@@ -321,9 +321,9 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
         ))
         {% endif %}
         {% if method.client_streaming and method.server_streaming %}
-        response = await client.{{ method.name|snake_case }}(iter(requests))
+        response = await client.{{ method.safe_name|snake_case }}(iter(requests))
         {% elif method.client_streaming and not method.server_streaming %}
-        response = await (await client.{{ method.name|snake_case }}(iter(requests)))
+        response = await (await client.{{ method.safe_name|snake_case }}(iter(requests)))
         {% else %}
         response = await client.{{ method_name }}(request)
         {% endif %}
@@ -1001,7 +1001,7 @@ def test_{{ method_name }}_raw_page_lro():
 {% endmacro %}
 
 {% macro rest_required_tests(method, service, numeric_enums=False, full_extended_lro=False) %}
-{% with method_name = method.safe_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}{% if method.http_options %}
+{% with method_name = method.safe_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.safe_name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}{% if method.http_options %}
 {# TODO(kbandes): remove this if condition when lro and client streaming are supported. #}
 {% if not method.client_streaming %}
 def test_{{ method_name }}_rest_use_cached_wrapped_rpc():
@@ -1460,7 +1460,7 @@ def test_{{ method_name }}_rest_no_http_options():
 #}
 {% macro method_call_test_generic(test_name, method, service, api, transport, request_dict, is_async=False, routing_param=None) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
-{% with method_name = (method.name + ("_unary" if method.operation_service else "")) | snake_case %}
+{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
 {% set async_method_prefix = "async " if is_async else "" %}
 {% if is_async %}
 @pytest.mark.asyncio
@@ -1713,7 +1713,7 @@ def test_unsupported_parameter_rest_asyncio():
 {% set async_prefix = get_async_prefix(is_async) %}
 {% set async_decorator = get_async_decorator(is_async) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
-{% set method_name = method.name|snake_case %}
+{% set method_name = method.safe_name|snake_case %}
 {{async_decorator}}
 {{async_prefix}}def test_{{ method_name }}_{{transport_name}}_error():
     {% if transport_name == 'rest_asyncio' %}
@@ -1763,7 +1763,7 @@ def test_initialize_client_w_{{transport_name}}():
 {% set async_prefix = get_async_prefix(is_async) %}
 {% set async_decorator = get_async_decorator(is_async) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
-{% set method_name = method.name|snake_case %}
+{% set method_name = method.safe_name|snake_case %}
 {% set mocked_session = "AsyncAuthorizedSession" if is_async else "Session" %}
 {{ async_decorator }}
 {{ async_prefix }}def test_{{ method_name }}_{{transport_name}}_bad_request(request_type={{ method.input.ident }}):
@@ -1862,7 +1862,7 @@ def test_initialize_client_w_{{transport_name}}():
 {% set async_prefix = get_async_prefix(is_async) %}
 {% set async_decorator = get_async_decorator(is_async) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
-{% set method_name = method.name|snake_case %}
+{% set method_name = method.safe_name|snake_case %}
 {# NOTE: set method_output to method.extended_lro.operation_type for the following method types:
  # (method.extended_lro and not full_extended_lro)
 #}
@@ -2183,7 +2183,7 @@ def test_initialize_client_w_{{transport_name}}():
 {% set async_prefix = get_async_prefix(is_async) %}
 {% set async_decorator = get_async_decorator(is_async) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
-{% set method_name = method.name|snake_case %}
+{% set method_name = method.safe_name|snake_case %}
 {% set async_method_prefix = "Async" if is_async else "" %}
 {{async_decorator}}
 @pytest.mark.parametrize("null_interceptor", [True, False])
