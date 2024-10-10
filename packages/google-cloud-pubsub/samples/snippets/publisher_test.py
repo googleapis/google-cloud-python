@@ -162,6 +162,40 @@ def test_create_topic_with_kinesis_ingestion(
     publisher_client.delete_topic(request={"topic": topic_path})
 
 
+def test_create_topic_with_cloud_storage_ingestion(
+    publisher_client: pubsub_v1.PublisherClient, capsys: CaptureFixture[str]
+) -> None:
+    # The scope of `topic_path` is limited to this function.
+    topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC_ID)
+
+    bucket = "pubsub-cloud-storage-bucket"
+    input_format = "text"
+    text_delimiter = ","
+    match_glob = "**.txt"
+    minimum_object_create_time = "1970-01-01T00:00:01Z"
+
+    try:
+        publisher_client.delete_topic(request={"topic": topic_path})
+    except NotFound:
+        pass
+
+    publisher.create_topic_with_cloud_storage_ingestion(
+        PROJECT_ID,
+        TOPIC_ID,
+        bucket,
+        input_format,
+        text_delimiter,
+        match_glob,
+        minimum_object_create_time,
+    )
+
+    out, _ = capsys.readouterr()
+    assert f"Created topic: {topic_path} with Cloud Storage Ingestion Settings" in out
+
+    # Clean up resource created for the test.
+    publisher_client.delete_topic(request={"topic": topic_path})
+
+
 def test_update_topic_type(
     publisher_client: pubsub_v1.PublisherClient, capsys: CaptureFixture[str]
 ) -> None:

@@ -103,6 +103,88 @@ def create_topic_with_kinesis_ingestion(
     # [END pubsub_create_topic_with_kinesis_ingestion]
 
 
+def create_topic_with_cloud_storage_ingestion(
+    project_id: str,
+    topic_id: str,
+    bucket: str,
+    input_format: str,
+    text_delimiter: str,
+    match_glob: str,
+    minimum_object_create_time: str,
+) -> None:
+    """Create a new Pub/Sub topic with Cloud Storage Ingestion Settings."""
+    # [START pubsub_create_topic_with_cloud_storage_ingestion]
+    from google.cloud import pubsub_v1
+    from google.protobuf import timestamp_pb2
+    from google.pubsub_v1.types import Topic
+    from google.pubsub_v1.types import IngestionDataSourceSettings
+
+    # TODO(developer)
+    # project_id = "your-project-id"
+    # topic_id = "your-topic-id"
+    # bucket = "your-bucket"
+    # input_format = "text"  (can be one of "text", "avro", "pubsub_avro")
+    # text_delimiter = "\n"
+    # match_glob = "**.txt"
+    # minimum_object_create_time = "YYYY-MM-DDThh:mm:ssZ"
+
+    publisher = pubsub_v1.PublisherClient()
+    topic_path = publisher.topic_path(project_id, topic_id)
+
+    cloud_storage_settings = IngestionDataSourceSettings.CloudStorage(
+        bucket=bucket,
+    )
+    if input_format == "text":
+        cloud_storage_settings.text_format = (
+            IngestionDataSourceSettings.CloudStorage.TextFormat(
+                delimiter=text_delimiter
+            )
+        )
+    elif input_format == "avro":
+        cloud_storage_settings.avro_format = (
+            IngestionDataSourceSettings.CloudStorage.AvroFormat()
+        )
+    elif input_format == "pubsub_avro":
+        cloud_storage_settings.pubsub_avro_format = (
+            IngestionDataSourceSettings.CloudStorage.PubSubAvroFormat()
+        )
+    else:
+        print(
+            "Invalid input_format: "
+            + input_format
+            + "; must be in ('text', 'avro', 'pubsub_avro')"
+        )
+        return
+
+    if match_glob:
+        cloud_storage_settings.match_glob = match_glob
+
+    if minimum_object_create_time:
+        try:
+            minimum_object_create_time_timestamp = timestamp_pb2.Timestamp()
+            minimum_object_create_time_timestamp.FromJsonString(
+                minimum_object_create_time
+            )
+            cloud_storage_settings.minimum_object_create_time = (
+                minimum_object_create_time_timestamp
+            )
+        except ValueError:
+            print("Invalid minimum_object_create_time: " + minimum_object_create_time)
+            return
+
+    request = Topic(
+        name=topic_path,
+        ingestion_data_source_settings=IngestionDataSourceSettings(
+            cloud_storage=cloud_storage_settings,
+        ),
+    )
+
+    topic = publisher.create_topic(request=request)
+
+    print(f"Created topic: {topic.name} with Cloud Storage Ingestion Settings")
+    # [END pubsub_create_topic_with_cloud_storage_ingestion]
+
+
 def update_topic_type(
     project_id: str,
     topic_id: str,
@@ -615,6 +697,19 @@ if __name__ == "__main__":
     create_topic_with_kinesis_ingestion_parser.add_argument("aws_role_arn")
     create_topic_with_kinesis_ingestion_parser.add_argument("gcp_service_account")
 
+    create_topic_with_cloud_storage_ingestion_parser = subparsers.add_parser(
+        "create_cloud_storage_ingestion",
+        help=create_topic_with_cloud_storage_ingestion.__doc__,
+    )
+    create_topic_with_cloud_storage_ingestion_parser.add_argument("topic_id")
+    create_topic_with_cloud_storage_ingestion_parser.add_argument("bucket")
+    create_topic_with_cloud_storage_ingestion_parser.add_argument("input_format")
+    create_topic_with_cloud_storage_ingestion_parser.add_argument("text_delimiter")
+    create_topic_with_cloud_storage_ingestion_parser.add_argument("match_glob")
+    create_topic_with_cloud_storage_ingestion_parser.add_argument(
+        "minimum_object_create_time"
+    )
+
     update_topic_type_parser = subparsers.add_parser(
         "update_kinesis_ingestion", help=update_topic_type.__doc__
     )
@@ -692,6 +787,16 @@ if __name__ == "__main__":
             args.consumer_arn,
             args.aws_role_arn,
             args.gcp_service_account,
+        )
+    elif args.command == "create_cloud_storage_ingestion":
+        create_topic_with_cloud_storage_ingestion(
+            args.project_id,
+            args.topic_id,
+            args.bucket,
+            args.input_format,
+            args.text_delimiter,
+            args.match_glob,
+            args.minimum_object_create_time,
         )
     elif args.command == "update_kinesis_ingestion":
         update_topic_type(
