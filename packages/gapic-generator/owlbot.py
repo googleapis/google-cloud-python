@@ -21,13 +21,6 @@ s.move(
     excludes=["samples/**/*", "test-samples*", "publish-docs.sh", "*/prerelease-deps.cfg"],
 )
 
-# remove docfx build
-assert 1 == s.replace(
-    ".kokoro/docs/docs-presubmit.cfg",
-    'value: "docs docfx"',
-    'value: "docs"',
-)
-
 # needed for docs build
 s.move(templated_files / ".trampolinerc")
 
