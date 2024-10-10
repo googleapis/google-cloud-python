@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.17.2...google-cloud-texttospeech-v2.18.0) (2024-10-10)
+
+
+### Features
+
+* Add CustomPronunciationParams for upcoming feature work ([6ba80ea](https://github.com/googleapis/google-cloud-python/commit/6ba80eaf688f974ebf93e9aa2b7af9dc86253356))
+* Add low latency journey option to proto ([6ba80ea](https://github.com/googleapis/google-cloud-python/commit/6ba80eaf688f974ebf93e9aa2b7af9dc86253356))
+
 ## [2.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.17.1...google-cloud-texttospeech-v2.17.2) (2024-08-26)
 
 
