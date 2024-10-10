@@ -2741,6 +2741,35 @@ def test_read_empty_python_settings_from_service_yaml():
         == client_pb2.PythonSettings.ExperimentalFeatures()
     assert api_schema.all_library_settings["google.example.v1beta1"].python_settings.experimental_features.rest_async_io_enabled \
         == False
+    assert api_schema.all_library_settings[api_schema.naming.proto_package].python_settings \
+        == client_pb2.PythonSettings()
+
+
+def test_incorrect_library_settings_version():
+    # NOTE: This test case ensures that the generator is able to read
+    # from the default library settings if the version specified against the
+    # library settings in the service yaml of an API differs from the version
+    # of the API.
+    service_yaml_config = {
+        "apis": [
+            {"name": "google.example.v1beta1.ServiceOne.Example1"},
+        ],
+        "publishing": {
+            "library_settings": [
+                {
+                    "version": "google.example.v1",
+                    "python_settings": {
+                        "experimental_features": {"rest_async_io_enabled": True},
+                    },
+                }
+            ]
+        },
+    }
+    cli_options = Options(service_yaml_config=service_yaml_config)
+    fd = get_file_descriptor_proto_for_tests(fields=[])
+    api_schema = api.API.build(fd, "google.example.v1beta1", opts=cli_options)
+    assert api_schema.all_library_settings[api_schema.naming.proto_package].python_settings \
+        == client_pb2.PythonSettings()
 
 
 def test_python_settings_duplicate_version_raises_error():
