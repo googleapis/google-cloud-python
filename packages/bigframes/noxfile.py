@@ -697,8 +697,8 @@ def system_prerelease(session: nox.sessions.Session):
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def notebook(session: nox.Session):
-    GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
-    if not GOOGLE_CLOUD_PROJECT:
+    google_cloud_project = os.getenv("GOOGLE_CLOUD_PROJECT")
+    if not google_cloud_project:
         session.error(
             "Set GOOGLE_CLOUD_PROJECT environment variable to run notebook session."
         )
@@ -937,3 +937,31 @@ def release_dry_run(session):
     ):
         env["PROJECT_ROOT"] = "."
     session.run(".kokoro/release-nightly.sh", "--dry-run", env=env)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def cleanup(session):
+    """Clean up stale and/or temporary resources in the test project."""
+    google_cloud_project = os.getenv("GOOGLE_CLOUD_PROJECT")
+    if not google_cloud_project:
+        session.error(
+            "Set GOOGLE_CLOUD_PROJECT environment variable to run notebook session."
+        )
+
+    # Cleanup a few stale (more than 12 hours old) temporary cloud run
+    # functions created by bigframems. This will help keeping the test GCP
+    # project within the "Number of functions" quota
+    # https://cloud.google.com/functions/quotas#resource_limits
+    recency_cutoff_hours = 12
+    cleanup_count_per_location = 10
+
+    session.install("-e", ".")
+
+    session.run(
+        "python",
+        "scripts/manage_cloud_functions.py",
+        f"--project-id={google_cloud_project}",
+        f"--recency-cutoff={recency_cutoff_hours}",
+        "cleanup",
+        f"--number={cleanup_count_per_location}",
+    )

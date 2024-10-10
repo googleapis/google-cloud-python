@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import argparse
-from datetime import datetime
+import datetime as dt
 import sys
 import time
 
@@ -94,8 +94,10 @@ def summarize_gcfs(args):
         # Count how many GCFs are newer than a day
         recent = 0
         for f in functions:
-            age = datetime.now() - datetime.fromtimestamp(f.update_time.timestamp())
-            if age.days <= 0:
+            age = dt.datetime.now() - dt.datetime.fromtimestamp(
+                f.update_time.timestamp()
+            )
+            if age.total_seconds() < args.recency_cutoff:
                 recent += 1
 
         region_counts[region] = (functions_count, recent)
@@ -106,7 +108,7 @@ def summarize_gcfs(args):
         region = item[0]
         count, recent = item[1]
         print(
-            "{}: Total={}, Recent={}, OlderThanADay={}".format(
+            "{}: Total={}, Recent={}, Older={}".format(
                 region, count, recent, count - recent
             )
         )
@@ -120,8 +122,10 @@ def cleanup_gcfs(args):
         functions = get_bigframes_functions(args.project_id, region)
         count = 0
         for f in functions:
-            age = datetime.now() - datetime.fromtimestamp(f.update_time.timestamp())
-            if age.days > 0:
+            age = dt.datetime.now() - dt.datetime.fromtimestamp(
+                f.update_time.timestamp()
+            )
+            if age.total_seconds() >= args.recency_cutoff:
                 try:
                     count += 1
                     GCF_CLIENT.delete_function(name=f.name)
@@ -134,12 +138,15 @@ def cleanup_gcfs(args):
                     # that for this clean-up, i.e. 6 mutations per minute. So wait for
                     # 60/6 = 10 seconds
                     time.sleep(10)
+                except google.api_core.exceptions.NotFound:
+                    # Most likely the function was deleted otherwise
+                    pass
                 except google.api_core.exceptions.ResourceExhausted:
                     # Stop deleting in this region for now
                     print(
-                        f"Cannot delete any more functions in region {region} due to quota exhaustion. Please try again later."
+                        f"Failed to delete function in region {region} due to quota exhaustion. Pausing for 2 minutes."
                     )
-                    break
+                    time.sleep(120)
 
 
 def list_str(values):
@@ -166,6 +173,19 @@ if __name__ == "__main__":
         default=GCF_REGIONS_ALL,
         action="store",
         help="Cloud functions region(s). If multiple regions, Specify comma separated (e.g. region1,region2)",
+    )
+
+    def hours_to_timedelta(hrs):
+        return dt.timedelta(hours=int(hrs)).total_seconds()
+
+    parser.add_argument(
+        "-c",
+        "--recency-cutoff",
+        type=hours_to_timedelta,
+        required=False,
+        default=hours_to_timedelta("24"),
+        action="store",
+        help="Number of hours, cloud functions older than which should be considered stale (worthy of cleanup).",
     )
 
     subparsers = parser.add_subparsers(title="subcommands", required=True)

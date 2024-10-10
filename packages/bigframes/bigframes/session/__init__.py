@@ -274,6 +274,10 @@ class Session(
             metrics=self._metrics,
         )
 
+    def __del__(self):
+        """Automatic cleanup of internal resources"""
+        self.close()
+
     @property
     def bqclient(self):
         return self._clients_provider.bqclient
