@@ -11,3 +11,4 @@ proto-plus
 pytest-asyncio
 libcst
 inflection
+aiohttp
