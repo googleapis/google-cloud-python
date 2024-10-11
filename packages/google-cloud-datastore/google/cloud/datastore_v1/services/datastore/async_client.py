@@ -360,13 +360,18 @@ class DatastoreAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.lookup]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -446,13 +451,18 @@ class DatastoreAsyncClient:
             self._client._transport.run_query
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -532,13 +542,18 @@ class DatastoreAsyncClient:
             self._client._transport.run_aggregation_query
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -640,13 +655,18 @@ class DatastoreAsyncClient:
             self._client._transport.begin_transaction
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -792,13 +812,18 @@ class DatastoreAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.commit]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -911,13 +936,18 @@ class DatastoreAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.rollback]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1032,13 +1062,18 @@ class DatastoreAsyncClient:
             self._client._transport.allocate_ids
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1152,13 +1187,18 @@ class DatastoreAsyncClient:
             self._client._transport.reserve_ids
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
-        )
+        header_params = {}
+
+        if request.project_id:
+            header_params["project_id"] = request.project_id
+
+        if request.database_id:
+            header_params["database_id"] = request.database_id
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1205,11 +1245,7 @@ class DatastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1262,11 +1298,7 @@ class DatastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1323,11 +1355,7 @@ class DatastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.delete_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1380,11 +1408,7 @@ class DatastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

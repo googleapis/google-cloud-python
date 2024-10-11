@@ -46,6 +46,7 @@ __protobuf__ = proto.module(
         "ReserveIdsRequest",
         "ReserveIdsResponse",
         "Mutation",
+        "PropertyTransform",
         "MutationResult",
         "PropertyMask",
         "ReadOptions",
@@ -796,6 +797,10 @@ class Mutation(proto.Message):
             mutation conflicts.
 
             This field is a member of `oneof`_ ``conflict_detection_strategy``.
+        conflict_resolution_strategy (google.cloud.datastore_v1.types.Mutation.ConflictResolutionStrategy):
+            The strategy to use when a conflict is detected. Defaults to
+            ``SERVER_VALUE``. If this is set, then
+            ``conflict_detection_strategy`` must also be set.
         property_mask (google.cloud.datastore_v1.types.PropertyMask):
             The properties to write in this mutation. None of the
             properties in the mask may have a reserved name, except for
@@ -804,7 +809,30 @@ class Mutation(proto.Message):
             If the entity already exists, only properties referenced in
             the mask are updated, others are left untouched. Properties
             referenced in the mask but not in the entity are deleted.
+        property_transforms (MutableSequence[google.cloud.datastore_v1.types.PropertyTransform]):
+            Optional. The transforms to perform on the entity.
+
+            This field can be set only when the operation is ``insert``,
+            ``update``, or ``upsert``. If present, the transforms are be
+            applied to the entity regardless of the property mask, in
+            order, after the operation.
     """
+
+    class ConflictResolutionStrategy(proto.Enum):
+        r"""The possible ways to resolve a conflict detected in a
+        mutation.
+
+        Values:
+            STRATEGY_UNSPECIFIED (0):
+                Unspecified. Defaults to ``SERVER_VALUE``.
+            SERVER_VALUE (1):
+                The server entity is kept.
+            FAIL (3):
+                The whole commit request fails.
+        """
+        STRATEGY_UNSPECIFIED = 0
+        SERVER_VALUE = 1
+        FAIL = 3
 
     insert: entity.Entity = proto.Field(
         proto.MESSAGE,
@@ -841,10 +869,198 @@ class Mutation(proto.Message):
         oneof="conflict_detection_strategy",
         message=timestamp_pb2.Timestamp,
     )
+    conflict_resolution_strategy: ConflictResolutionStrategy = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=ConflictResolutionStrategy,
+    )
     property_mask: "PropertyMask" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="PropertyMask",
+    )
+    property_transforms: MutableSequence["PropertyTransform"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message="PropertyTransform",
+    )
+
+
+class PropertyTransform(proto.Message):
+    r"""A transformation of an entity property.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        property (str):
+            Optional. The name of the property.
+
+            Property paths (a list of property names separated by dots
+            (``.``)) may be used to refer to properties inside entity
+            values. For example ``foo.bar`` means the property ``bar``
+            inside the entity property ``foo``.
+
+            If a property name contains a dot ``.`` or a backlslash
+            ``\``, then that name must be escaped.
+        set_to_server_value (google.cloud.datastore_v1.types.PropertyTransform.ServerValue):
+            Sets the property to the given server value.
+
+            This field is a member of `oneof`_ ``transform_type``.
+        increment (google.cloud.datastore_v1.types.Value):
+            Adds the given value to the property's
+            current value.
+            This must be an integer or a double value.
+            If the property is not an integer or double, or
+            if the property does not yet exist, the
+            transformation will set the property to the
+            given value. If either of the given value or the
+            current property value are doubles, both values
+            will be interpreted as doubles. Double
+            arithmetic and representation of double values
+            follows IEEE 754 semantics. If there is
+            positive/negative integer overflow, the property
+            is resolved to the largest magnitude
+            positive/negative integer.
+
+            This field is a member of `oneof`_ ``transform_type``.
+        maximum (google.cloud.datastore_v1.types.Value):
+            Sets the property to the maximum of its
+            current value and the given value.
+
+            This must be an integer or a double value.
+            If the property is not an integer or double, or
+            if the property does not yet exist, the
+            transformation will set the property to the
+            given value. If a maximum operation is applied
+            where the property and the input value are of
+            mixed types (that is - one is an integer and one
+            is a double) the property takes on the type of
+            the larger operand. If the operands are
+            equivalent (e.g. 3 and 3.0), the property does
+            not change. 0, 0.0, and -0.0 are all zero. The
+            maximum of a zero stored value and zero input
+            value is always the stored value.
+            The maximum of any numeric value x and NaN is
+            NaN.
+
+            This field is a member of `oneof`_ ``transform_type``.
+        minimum (google.cloud.datastore_v1.types.Value):
+            Sets the property to the minimum of its
+            current value and the given value.
+
+            This must be an integer or a double value.
+            If the property is not an integer or double, or
+            if the property does not yet exist, the
+            transformation will set the property to the
+            input value. If a minimum operation is applied
+            where the property and the input value are of
+            mixed types (that is - one is an integer and one
+            is a double) the property takes on the type of
+            the smaller operand. If the operands are
+            equivalent (e.g. 3 and 3.0), the property does
+            not change. 0, 0.0, and -0.0 are all zero. The
+            minimum of a zero stored value and zero input
+            value is always the stored value. The minimum of
+            any numeric value x and NaN is NaN.
+
+            This field is a member of `oneof`_ ``transform_type``.
+        append_missing_elements (google.cloud.datastore_v1.types.ArrayValue):
+            Appends the given elements in order if they
+            are not already present in the current property
+            value. If the property is not an array, or if
+            the property does not yet exist, it is first set
+            to the empty array.
+
+            Equivalent numbers of different types (e.g. 3L
+            and 3.0) are considered equal when checking if a
+            value is missing. NaN is equal to NaN, and the
+            null value is equal to the null value. If the
+            input contains multiple equivalent values, only
+            the first will be considered.
+
+            The corresponding transform result will be the
+            null value.
+
+            This field is a member of `oneof`_ ``transform_type``.
+        remove_all_from_array (google.cloud.datastore_v1.types.ArrayValue):
+            Removes all of the given elements from the
+            array in the property. If the property is not an
+            array, or if the property does not yet exist, it
+            is set to the empty array.
+
+            Equivalent numbers of different types (e.g. 3L
+            and 3.0) are considered equal when deciding
+            whether an element should be removed. NaN is
+            equal to NaN, and the null value is equal to the
+            null value. This will remove all equivalent
+            values if there are duplicates.
+
+            The corresponding transform result will be the
+            null value.
+
+            This field is a member of `oneof`_ ``transform_type``.
+    """
+
+    class ServerValue(proto.Enum):
+        r"""A value that is calculated by the server.
+
+        Values:
+            SERVER_VALUE_UNSPECIFIED (0):
+                Unspecified. This value must not be used.
+            REQUEST_TIME (1):
+                The time at which the server processed the
+                request, with millisecond precision. If used on
+                multiple properties (same or different entities)
+                in a transaction, all the properties will get
+                the same server timestamp.
+        """
+        SERVER_VALUE_UNSPECIFIED = 0
+        REQUEST_TIME = 1
+
+    property: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    set_to_server_value: ServerValue = proto.Field(
+        proto.ENUM,
+        number=2,
+        oneof="transform_type",
+        enum=ServerValue,
+    )
+    increment: entity.Value = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="transform_type",
+        message=entity.Value,
+    )
+    maximum: entity.Value = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="transform_type",
+        message=entity.Value,
+    )
+    minimum: entity.Value = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="transform_type",
+        message=entity.Value,
+    )
+    append_missing_elements: entity.ArrayValue = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="transform_type",
+        message=entity.ArrayValue,
+    )
+    remove_all_from_array: entity.ArrayValue = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="transform_type",
+        message=entity.ArrayValue,
     )
 
 
@@ -878,6 +1094,10 @@ class MutationResult(proto.Message):
             Whether a conflict was detected for this
             mutation. Always false when a conflict detection
             strategy field is not set in the mutation.
+        transform_results (MutableSequence[google.cloud.datastore_v1.types.Value]):
+            The results of applying each
+            [PropertyTransform][google.datastore.v1.PropertyTransform],
+            in the same order of the request.
     """
 
     key: entity.Key = proto.Field(
@@ -902,6 +1122,11 @@ class MutationResult(proto.Message):
     conflict_detected: bool = proto.Field(
         proto.BOOL,
         number=5,
+    )
+    transform_results: MutableSequence[entity.Value] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=entity.Value,
     )
 
 

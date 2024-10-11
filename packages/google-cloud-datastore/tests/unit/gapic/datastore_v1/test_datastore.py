@@ -24,7 +24,7 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
-from collections.abc import Iterable
+from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
 import json
 import math
@@ -36,6 +36,13 @@ from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
 from google.protobuf import json_format
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -63,8 +70,22 @@ from google.type import latlng_pb2  # type: ignore
 import google.auth
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1122,25 +1143,6 @@ def test_lookup(request_type, transport: str = "grpc"):
     assert response.transaction == b"transaction_blob"
 
 
-def test_lookup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.lookup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.LookupRequest()
-
-
 def test_lookup_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1207,35 +1209,12 @@ def test_lookup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_lookup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            datastore.LookupResponse(
-                transaction=b"transaction_blob",
-            )
-        )
-        response = await client.lookup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.LookupRequest()
-
-
-@pytest.mark.asyncio
 async def test_lookup_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1274,7 +1253,7 @@ async def test_lookup_async(
     transport: str = "grpc_asyncio", request_type=datastore.LookupRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1306,47 +1285,6 @@ async def test_lookup_async(
 @pytest.mark.asyncio
 async def test_lookup_async_from_dict():
     await test_lookup_async(request_type=dict)
-
-
-def test_lookup_routing_parameters():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.LookupRequest(**{"project_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
-        call.return_value = datastore.LookupResponse()
-        client.lookup(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.LookupRequest(**{"database_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
-        call.return_value = datastore.LookupResponse()
-        client.lookup(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_lookup_flattened():
@@ -1416,7 +1354,7 @@ def test_lookup_flattened_error():
 @pytest.mark.asyncio
 async def test_lookup_flattened_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1463,7 +1401,7 @@ async def test_lookup_flattened_async():
 @pytest.mark.asyncio
 async def test_lookup_flattened_error_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1517,25 +1455,6 @@ def test_run_query(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.RunQueryResponse)
     assert response.transaction == b"transaction_blob"
-
-
-def test_run_query_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.run_query()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.RunQueryRequest()
 
 
 def test_run_query_non_empty_request_with_auto_populated_field():
@@ -1604,35 +1523,12 @@ def test_run_query_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_run_query_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            datastore.RunQueryResponse(
-                transaction=b"transaction_blob",
-            )
-        )
-        response = await client.run_query()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.RunQueryRequest()
-
-
-@pytest.mark.asyncio
 async def test_run_query_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1671,7 +1567,7 @@ async def test_run_query_async(
     transport: str = "grpc_asyncio", request_type=datastore.RunQueryRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1703,47 +1599,6 @@ async def test_run_query_async(
 @pytest.mark.asyncio
 async def test_run_query_async_from_dict():
     await test_run_query_async(request_type=dict)
-
-
-def test_run_query_routing_parameters():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.RunQueryRequest(**{"project_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
-        call.return_value = datastore.RunQueryResponse()
-        client.run_query(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.RunQueryRequest(**{"database_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
-        call.return_value = datastore.RunQueryResponse()
-        client.run_query(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 @pytest.mark.parametrize(
@@ -1782,27 +1637,6 @@ def test_run_aggregation_query(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.RunAggregationQueryResponse)
     assert response.transaction == b"transaction_blob"
-
-
-def test_run_aggregation_query_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.run_aggregation_query), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.run_aggregation_query()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.RunAggregationQueryRequest()
 
 
 def test_run_aggregation_query_non_empty_request_with_auto_populated_field():
@@ -1878,31 +1712,6 @@ def test_run_aggregation_query_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_run_aggregation_query_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.run_aggregation_query), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            datastore.RunAggregationQueryResponse(
-                transaction=b"transaction_blob",
-            )
-        )
-        response = await client.run_aggregation_query()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.RunAggregationQueryRequest()
-
-
-@pytest.mark.asyncio
 async def test_run_aggregation_query_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1910,7 +1719,7 @@ async def test_run_aggregation_query_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1949,7 +1758,7 @@ async def test_run_aggregation_query_async(
     transport: str = "grpc_asyncio", request_type=datastore.RunAggregationQueryRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1983,51 +1792,6 @@ async def test_run_aggregation_query_async(
 @pytest.mark.asyncio
 async def test_run_aggregation_query_async_from_dict():
     await test_run_aggregation_query_async(request_type=dict)
-
-
-def test_run_aggregation_query_routing_parameters():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.RunAggregationQueryRequest(**{"project_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.run_aggregation_query), "__call__"
-    ) as call:
-        call.return_value = datastore.RunAggregationQueryResponse()
-        client.run_aggregation_query(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.RunAggregationQueryRequest(**{"database_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.run_aggregation_query), "__call__"
-    ) as call:
-        call.return_value = datastore.RunAggregationQueryResponse()
-        client.run_aggregation_query(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 @pytest.mark.parametrize(
@@ -2066,27 +1830,6 @@ def test_begin_transaction(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.BeginTransactionResponse)
     assert response.transaction == b"transaction_blob"
-
-
-def test_begin_transaction_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.begin_transaction), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.begin_transaction()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.BeginTransactionRequest()
 
 
 def test_begin_transaction_non_empty_request_with_auto_populated_field():
@@ -2159,31 +1902,6 @@ def test_begin_transaction_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_begin_transaction_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.begin_transaction), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            datastore.BeginTransactionResponse(
-                transaction=b"transaction_blob",
-            )
-        )
-        response = await client.begin_transaction()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.BeginTransactionRequest()
-
-
-@pytest.mark.asyncio
 async def test_begin_transaction_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2191,7 +1909,7 @@ async def test_begin_transaction_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2230,7 +1948,7 @@ async def test_begin_transaction_async(
     transport: str = "grpc_asyncio", request_type=datastore.BeginTransactionRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2264,51 +1982,6 @@ async def test_begin_transaction_async(
 @pytest.mark.asyncio
 async def test_begin_transaction_async_from_dict():
     await test_begin_transaction_async(request_type=dict)
-
-
-def test_begin_transaction_routing_parameters():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.BeginTransactionRequest(**{"project_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.begin_transaction), "__call__"
-    ) as call:
-        call.return_value = datastore.BeginTransactionResponse()
-        client.begin_transaction(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.BeginTransactionRequest(**{"database_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.begin_transaction), "__call__"
-    ) as call:
-        call.return_value = datastore.BeginTransactionResponse()
-        client.begin_transaction(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_begin_transaction_flattened():
@@ -2354,7 +2027,7 @@ def test_begin_transaction_flattened_error():
 @pytest.mark.asyncio
 async def test_begin_transaction_flattened_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2385,7 +2058,7 @@ async def test_begin_transaction_flattened_async():
 @pytest.mark.asyncio
 async def test_begin_transaction_flattened_error_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2431,25 +2104,6 @@ def test_commit(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.CommitResponse)
     assert response.index_updates == 1389
-
-
-def test_commit_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.commit), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.commit()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.CommitRequest()
 
 
 def test_commit_non_empty_request_with_auto_populated_field():
@@ -2518,35 +2172,12 @@ def test_commit_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_commit_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.commit), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            datastore.CommitResponse(
-                index_updates=1389,
-            )
-        )
-        response = await client.commit()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.CommitRequest()
-
-
-@pytest.mark.asyncio
 async def test_commit_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2585,7 +2216,7 @@ async def test_commit_async(
     transport: str = "grpc_asyncio", request_type=datastore.CommitRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2617,47 +2248,6 @@ async def test_commit_async(
 @pytest.mark.asyncio
 async def test_commit_async_from_dict():
     await test_commit_async(request_type=dict)
-
-
-def test_commit_routing_parameters():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.CommitRequest(**{"project_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.commit), "__call__") as call:
-        call.return_value = datastore.CommitResponse()
-        client.commit(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.CommitRequest(**{"database_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.commit), "__call__") as call:
-        call.return_value = datastore.CommitResponse()
-        client.commit(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_commit_flattened():
@@ -2742,7 +2332,7 @@ def test_commit_flattened_error():
 @pytest.mark.asyncio
 async def test_commit_flattened_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2799,7 +2389,7 @@ async def test_commit_flattened_async():
 @pytest.mark.asyncio
 async def test_commit_flattened_error_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2855,25 +2445,6 @@ def test_rollback(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.RollbackResponse)
-
-
-def test_rollback_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.rollback()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.RollbackRequest()
 
 
 def test_rollback_non_empty_request_with_auto_populated_field():
@@ -2942,33 +2513,12 @@ def test_rollback_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_rollback_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            datastore.RollbackResponse()
-        )
-        response = await client.rollback()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.RollbackRequest()
-
-
-@pytest.mark.asyncio
 async def test_rollback_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3007,7 +2557,7 @@ async def test_rollback_async(
     transport: str = "grpc_asyncio", request_type=datastore.RollbackRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3036,47 +2586,6 @@ async def test_rollback_async(
 @pytest.mark.asyncio
 async def test_rollback_async_from_dict():
     await test_rollback_async(request_type=dict)
-
-
-def test_rollback_routing_parameters():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.RollbackRequest(**{"project_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
-        call.return_value = datastore.RollbackResponse()
-        client.rollback(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.RollbackRequest(**{"database_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
-        call.return_value = datastore.RollbackResponse()
-        client.rollback(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_rollback_flattened():
@@ -3125,7 +2634,7 @@ def test_rollback_flattened_error():
 @pytest.mark.asyncio
 async def test_rollback_flattened_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3158,7 +2667,7 @@ async def test_rollback_flattened_async():
 @pytest.mark.asyncio
 async def test_rollback_flattened_error_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3202,25 +2711,6 @@ def test_allocate_ids(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.AllocateIdsResponse)
-
-
-def test_allocate_ids_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.allocate_ids()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.AllocateIdsRequest()
 
 
 def test_allocate_ids_non_empty_request_with_auto_populated_field():
@@ -3289,27 +2779,6 @@ def test_allocate_ids_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_allocate_ids_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            datastore.AllocateIdsResponse()
-        )
-        response = await client.allocate_ids()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.AllocateIdsRequest()
-
-
-@pytest.mark.asyncio
 async def test_allocate_ids_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3317,7 +2786,7 @@ async def test_allocate_ids_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3356,7 +2825,7 @@ async def test_allocate_ids_async(
     transport: str = "grpc_asyncio", request_type=datastore.AllocateIdsRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3385,47 +2854,6 @@ async def test_allocate_ids_async(
 @pytest.mark.asyncio
 async def test_allocate_ids_async_from_dict():
     await test_allocate_ids_async(request_type=dict)
-
-
-def test_allocate_ids_routing_parameters():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.AllocateIdsRequest(**{"project_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
-        call.return_value = datastore.AllocateIdsResponse()
-        client.allocate_ids(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.AllocateIdsRequest(**{"database_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
-        call.return_value = datastore.AllocateIdsResponse()
-        client.allocate_ids(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_allocate_ids_flattened():
@@ -3484,7 +2912,7 @@ def test_allocate_ids_flattened_error():
 @pytest.mark.asyncio
 async def test_allocate_ids_flattened_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3523,7 +2951,7 @@ async def test_allocate_ids_flattened_async():
 @pytest.mark.asyncio
 async def test_allocate_ids_flattened_error_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3571,25 +2999,6 @@ def test_reserve_ids(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.ReserveIdsResponse)
-
-
-def test_reserve_ids_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.reserve_ids()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.ReserveIdsRequest()
 
 
 def test_reserve_ids_non_empty_request_with_auto_populated_field():
@@ -3658,27 +3067,6 @@ def test_reserve_ids_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_reserve_ids_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            datastore.ReserveIdsResponse()
-        )
-        response = await client.reserve_ids()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore.ReserveIdsRequest()
-
-
-@pytest.mark.asyncio
 async def test_reserve_ids_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3686,7 +3074,7 @@ async def test_reserve_ids_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3725,7 +3113,7 @@ async def test_reserve_ids_async(
     transport: str = "grpc_asyncio", request_type=datastore.ReserveIdsRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3754,47 +3142,6 @@ async def test_reserve_ids_async(
 @pytest.mark.asyncio
 async def test_reserve_ids_async_from_dict():
     await test_reserve_ids_async(request_type=dict)
-
-
-def test_reserve_ids_routing_parameters():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.ReserveIdsRequest(**{"project_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
-        call.return_value = datastore.ReserveIdsResponse()
-        client.reserve_ids(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = datastore.ReserveIdsRequest(**{"database_id": "sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
-        call.return_value = datastore.ReserveIdsResponse()
-        client.reserve_ids(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_reserve_ids_flattened():
@@ -3853,7 +3200,7 @@ def test_reserve_ids_flattened_error():
 @pytest.mark.asyncio
 async def test_reserve_ids_flattened_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3892,7 +3239,7 @@ async def test_reserve_ids_flattened_async():
 @pytest.mark.asyncio
 async def test_reserve_ids_flattened_error_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3907,46 +3254,6 @@ async def test_reserve_ids_flattened_error_async():
                 )
             ],
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        datastore.LookupRequest,
-        dict,
-    ],
-)
-def test_lookup_rest(request_type):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = datastore.LookupResponse(
-            transaction=b"transaction_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = datastore.LookupResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.lookup(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, datastore.LookupResponse)
-    assert response.transaction == b"transaction_blob"
 
 
 def test_lookup_rest_use_cached_wrapped_rpc():
@@ -4075,83 +3382,6 @@ def test_lookup_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_lookup_rest_interceptors(null_interceptor):
-    transport = transports.DatastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
-    )
-    client = DatastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastoreRestInterceptor, "post_lookup"
-    ) as post, mock.patch.object(
-        transports.DatastoreRestInterceptor, "pre_lookup"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = datastore.LookupRequest.pb(datastore.LookupRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = datastore.LookupResponse.to_json(
-            datastore.LookupResponse()
-        )
-
-        request = datastore.LookupRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = datastore.LookupResponse()
-
-        client.lookup(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_lookup_rest_bad_request(
-    transport: str = "rest", request_type=datastore.LookupRequest
-):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.lookup(request)
-
-
 def test_lookup_rest_flattened():
     client = DatastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4221,52 +3451,6 @@ def test_lookup_rest_flattened_error(transport: str = "rest"):
                 )
             ],
         )
-
-
-def test_lookup_rest_error():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        datastore.RunQueryRequest,
-        dict,
-    ],
-)
-def test_run_query_rest(request_type):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = datastore.RunQueryResponse(
-            transaction=b"transaction_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = datastore.RunQueryResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.run_query(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, datastore.RunQueryResponse)
-    assert response.transaction == b"transaction_blob"
 
 
 def test_run_query_rest_use_cached_wrapped_rpc():
@@ -4385,129 +3569,6 @@ def test_run_query_rest_unset_required_fields():
 
     unset_fields = transport.run_query._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("projectId",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_run_query_rest_interceptors(null_interceptor):
-    transport = transports.DatastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
-    )
-    client = DatastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastoreRestInterceptor, "post_run_query"
-    ) as post, mock.patch.object(
-        transports.DatastoreRestInterceptor, "pre_run_query"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = datastore.RunQueryRequest.pb(datastore.RunQueryRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = datastore.RunQueryResponse.to_json(
-            datastore.RunQueryResponse()
-        )
-
-        request = datastore.RunQueryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = datastore.RunQueryResponse()
-
-        client.run_query(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_run_query_rest_bad_request(
-    transport: str = "rest", request_type=datastore.RunQueryRequest
-):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.run_query(request)
-
-
-def test_run_query_rest_error():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        datastore.RunAggregationQueryRequest,
-        dict,
-    ],
-)
-def test_run_aggregation_query_rest(request_type):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = datastore.RunAggregationQueryResponse(
-            transaction=b"transaction_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = datastore.RunAggregationQueryResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.run_aggregation_query(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, datastore.RunAggregationQueryResponse)
-    assert response.transaction == b"transaction_blob"
 
 
 def test_run_aggregation_query_rest_use_cached_wrapped_rpc():
@@ -4635,131 +3696,6 @@ def test_run_aggregation_query_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("projectId",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_run_aggregation_query_rest_interceptors(null_interceptor):
-    transport = transports.DatastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
-    )
-    client = DatastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastoreRestInterceptor, "post_run_aggregation_query"
-    ) as post, mock.patch.object(
-        transports.DatastoreRestInterceptor, "pre_run_aggregation_query"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = datastore.RunAggregationQueryRequest.pb(
-            datastore.RunAggregationQueryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = datastore.RunAggregationQueryResponse.to_json(
-            datastore.RunAggregationQueryResponse()
-        )
-
-        request = datastore.RunAggregationQueryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = datastore.RunAggregationQueryResponse()
-
-        client.run_aggregation_query(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_run_aggregation_query_rest_bad_request(
-    transport: str = "rest", request_type=datastore.RunAggregationQueryRequest
-):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.run_aggregation_query(request)
-
-
-def test_run_aggregation_query_rest_error():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        datastore.BeginTransactionRequest,
-        dict,
-    ],
-)
-def test_begin_transaction_rest(request_type):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = datastore.BeginTransactionResponse(
-            transaction=b"transaction_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = datastore.BeginTransactionResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.begin_transaction(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, datastore.BeginTransactionResponse)
-    assert response.transaction == b"transaction_blob"
-
-
 def test_begin_transaction_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -4882,85 +3818,6 @@ def test_begin_transaction_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("projectId",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_begin_transaction_rest_interceptors(null_interceptor):
-    transport = transports.DatastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
-    )
-    client = DatastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastoreRestInterceptor, "post_begin_transaction"
-    ) as post, mock.patch.object(
-        transports.DatastoreRestInterceptor, "pre_begin_transaction"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = datastore.BeginTransactionRequest.pb(
-            datastore.BeginTransactionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = datastore.BeginTransactionResponse.to_json(
-            datastore.BeginTransactionResponse()
-        )
-
-        request = datastore.BeginTransactionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = datastore.BeginTransactionResponse()
-
-        client.begin_transaction(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_begin_transaction_rest_bad_request(
-    transport: str = "rest", request_type=datastore.BeginTransactionRequest
-):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.begin_transaction(request)
-
-
 def test_begin_transaction_rest_flattened():
     client = DatastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5015,52 +3872,6 @@ def test_begin_transaction_rest_flattened_error(transport: str = "rest"):
             datastore.BeginTransactionRequest(),
             project_id="project_id_value",
         )
-
-
-def test_begin_transaction_rest_error():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        datastore.CommitRequest,
-        dict,
-    ],
-)
-def test_commit_rest(request_type):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = datastore.CommitResponse(
-            index_updates=1389,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = datastore.CommitResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.commit(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, datastore.CommitResponse)
-    assert response.index_updates == 1389
 
 
 def test_commit_rest_use_cached_wrapped_rpc():
@@ -5181,83 +3992,6 @@ def test_commit_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("projectId",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_commit_rest_interceptors(null_interceptor):
-    transport = transports.DatastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
-    )
-    client = DatastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastoreRestInterceptor, "post_commit"
-    ) as post, mock.patch.object(
-        transports.DatastoreRestInterceptor, "pre_commit"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = datastore.CommitRequest.pb(datastore.CommitRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = datastore.CommitResponse.to_json(
-            datastore.CommitResponse()
-        )
-
-        request = datastore.CommitRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = datastore.CommitResponse()
-
-        client.commit(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_commit_rest_bad_request(
-    transport: str = "rest", request_type=datastore.CommitRequest
-):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.commit(request)
-
-
 def test_commit_rest_flattened():
     client = DatastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5336,49 +4070,6 @@ def test_commit_rest_flattened_error(transport: str = "rest"):
                 )
             ],
         )
-
-
-def test_commit_rest_error():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        datastore.RollbackRequest,
-        dict,
-    ],
-)
-def test_rollback_rest(request_type):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = datastore.RollbackResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = datastore.RollbackResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.rollback(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, datastore.RollbackResponse)
 
 
 def test_rollback_rest_use_cached_wrapped_rpc():
@@ -5511,83 +4202,6 @@ def test_rollback_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_rollback_rest_interceptors(null_interceptor):
-    transport = transports.DatastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
-    )
-    client = DatastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastoreRestInterceptor, "post_rollback"
-    ) as post, mock.patch.object(
-        transports.DatastoreRestInterceptor, "pre_rollback"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = datastore.RollbackRequest.pb(datastore.RollbackRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = datastore.RollbackResponse.to_json(
-            datastore.RollbackResponse()
-        )
-
-        request = datastore.RollbackRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = datastore.RollbackResponse()
-
-        client.rollback(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_rollback_rest_bad_request(
-    transport: str = "rest", request_type=datastore.RollbackRequest
-):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.rollback(request)
-
-
 def test_rollback_rest_flattened():
     client = DatastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5643,49 +4257,6 @@ def test_rollback_rest_flattened_error(transport: str = "rest"):
             project_id="project_id_value",
             transaction=b"transaction_blob",
         )
-
-
-def test_rollback_rest_error():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        datastore.AllocateIdsRequest,
-        dict,
-    ],
-)
-def test_allocate_ids_rest(request_type):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = datastore.AllocateIdsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = datastore.AllocateIdsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.allocate_ids(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, datastore.AllocateIdsResponse)
 
 
 def test_allocate_ids_rest_use_cached_wrapped_rpc():
@@ -5814,83 +4385,6 @@ def test_allocate_ids_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_allocate_ids_rest_interceptors(null_interceptor):
-    transport = transports.DatastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
-    )
-    client = DatastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastoreRestInterceptor, "post_allocate_ids"
-    ) as post, mock.patch.object(
-        transports.DatastoreRestInterceptor, "pre_allocate_ids"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = datastore.AllocateIdsRequest.pb(datastore.AllocateIdsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = datastore.AllocateIdsResponse.to_json(
-            datastore.AllocateIdsResponse()
-        )
-
-        request = datastore.AllocateIdsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = datastore.AllocateIdsResponse()
-
-        client.allocate_ids(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_allocate_ids_rest_bad_request(
-    transport: str = "rest", request_type=datastore.AllocateIdsRequest
-):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.allocate_ids(request)
-
-
 def test_allocate_ids_rest_flattened():
     client = DatastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5954,49 +4448,6 @@ def test_allocate_ids_rest_flattened_error(transport: str = "rest"):
                 )
             ],
         )
-
-
-def test_allocate_ids_rest_error():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        datastore.ReserveIdsRequest,
-        dict,
-    ],
-)
-def test_reserve_ids_rest(request_type):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = datastore.ReserveIdsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = datastore.ReserveIdsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.reserve_ids(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, datastore.ReserveIdsResponse)
 
 
 def test_reserve_ids_rest_use_cached_wrapped_rpc():
@@ -6125,83 +4576,6 @@ def test_reserve_ids_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_reserve_ids_rest_interceptors(null_interceptor):
-    transport = transports.DatastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
-    )
-    client = DatastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatastoreRestInterceptor, "post_reserve_ids"
-    ) as post, mock.patch.object(
-        transports.DatastoreRestInterceptor, "pre_reserve_ids"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = datastore.ReserveIdsRequest.pb(datastore.ReserveIdsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = datastore.ReserveIdsResponse.to_json(
-            datastore.ReserveIdsResponse()
-        )
-
-        request = datastore.ReserveIdsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = datastore.ReserveIdsResponse()
-
-        client.reserve_ids(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_reserve_ids_rest_bad_request(
-    transport: str = "rest", request_type=datastore.ReserveIdsRequest
-):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.reserve_ids(request)
-
-
 def test_reserve_ids_rest_flattened():
     client = DatastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6265,12 +4639,6 @@ def test_reserve_ids_rest_flattened_error(transport: str = "rest"):
                 )
             ],
         )
-
-
-def test_reserve_ids_rest_error():
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -6365,18 +4733,2989 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = DatastoreClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_lookup_empty_call_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        call.return_value = datastore.LookupResponse()
+        client.lookup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.LookupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_run_query_empty_call_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
+        call.return_value = datastore.RunQueryResponse()
+        client.run_query(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.RunQueryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_run_aggregation_query_empty_call_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_aggregation_query), "__call__"
+    ) as call:
+        call.return_value = datastore.RunAggregationQueryResponse()
+        client.run_aggregation_query(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.RunAggregationQueryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_begin_transaction_empty_call_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        call.return_value = datastore.BeginTransactionResponse()
+        client.begin_transaction(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.BeginTransactionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_commit_empty_call_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        call.return_value = datastore.CommitResponse()
+        client.commit(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.CommitRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_rollback_empty_call_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        call.return_value = datastore.RollbackResponse()
+        client.rollback(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.RollbackRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_allocate_ids_empty_call_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
+        call.return_value = datastore.AllocateIdsResponse()
+        client.allocate_ids(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.AllocateIdsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_reserve_ids_empty_call_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
+        call.return_value = datastore.ReserveIdsResponse()
+        client.reserve_ids(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.ReserveIdsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_lookup_routing_parameters_request_1_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        call.return_value = datastore.LookupResponse()
+        client.lookup(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.LookupRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_lookup_routing_parameters_request_2_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        call.return_value = datastore.LookupResponse()
+        client.lookup(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.LookupRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_run_query_routing_parameters_request_1_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
+        call.return_value = datastore.RunQueryResponse()
+        client.run_query(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RunQueryRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_run_query_routing_parameters_request_2_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
+        call.return_value = datastore.RunQueryResponse()
+        client.run_query(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RunQueryRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_run_aggregation_query_routing_parameters_request_1_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_aggregation_query), "__call__"
+    ) as call:
+        call.return_value = datastore.RunAggregationQueryResponse()
+        client.run_aggregation_query(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RunAggregationQueryRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_run_aggregation_query_routing_parameters_request_2_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_aggregation_query), "__call__"
+    ) as call:
+        call.return_value = datastore.RunAggregationQueryResponse()
+        client.run_aggregation_query(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RunAggregationQueryRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_begin_transaction_routing_parameters_request_1_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        call.return_value = datastore.BeginTransactionResponse()
+        client.begin_transaction(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.BeginTransactionRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_begin_transaction_routing_parameters_request_2_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        call.return_value = datastore.BeginTransactionResponse()
+        client.begin_transaction(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.BeginTransactionRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_commit_routing_parameters_request_1_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        call.return_value = datastore.CommitResponse()
+        client.commit(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.CommitRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_commit_routing_parameters_request_2_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        call.return_value = datastore.CommitResponse()
+        client.commit(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.CommitRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_rollback_routing_parameters_request_1_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        call.return_value = datastore.RollbackResponse()
+        client.rollback(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RollbackRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_rollback_routing_parameters_request_2_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        call.return_value = datastore.RollbackResponse()
+        client.rollback(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RollbackRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_allocate_ids_routing_parameters_request_1_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
+        call.return_value = datastore.AllocateIdsResponse()
+        client.allocate_ids(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.AllocateIdsRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_allocate_ids_routing_parameters_request_2_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
+        call.return_value = datastore.AllocateIdsResponse()
+        client.allocate_ids(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.AllocateIdsRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_reserve_ids_routing_parameters_request_1_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
+        call.return_value = datastore.ReserveIdsResponse()
+        client.reserve_ids(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.ReserveIdsRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_reserve_ids_routing_parameters_request_2_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
+        call.return_value = datastore.ReserveIdsResponse()
+        client.reserve_ids(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.ReserveIdsRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = DatastoreAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_lookup_empty_call_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.LookupResponse(
+                transaction=b"transaction_blob",
+            )
+        )
+        await client.lookup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.LookupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_run_query_empty_call_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.RunQueryResponse(
+                transaction=b"transaction_blob",
+            )
+        )
+        await client.run_query(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.RunQueryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_run_aggregation_query_empty_call_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_aggregation_query), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.RunAggregationQueryResponse(
+                transaction=b"transaction_blob",
+            )
+        )
+        await client.run_aggregation_query(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.RunAggregationQueryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_begin_transaction_empty_call_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.BeginTransactionResponse(
+                transaction=b"transaction_blob",
+            )
+        )
+        await client.begin_transaction(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.BeginTransactionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_commit_empty_call_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.CommitResponse(
+                index_updates=1389,
+            )
+        )
+        await client.commit(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.CommitRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_rollback_empty_call_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.RollbackResponse()
+        )
+        await client.rollback(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.RollbackRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_allocate_ids_empty_call_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.AllocateIdsResponse()
+        )
+        await client.allocate_ids(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.AllocateIdsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_reserve_ids_empty_call_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.ReserveIdsResponse()
+        )
+        await client.reserve_ids(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.ReserveIdsRequest()
+
+        assert args[0] == request_msg
+
+
+@pytest.mark.asyncio
+async def test_lookup_routing_parameters_request_1_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.LookupResponse(
+                transaction=b"transaction_blob",
+            )
+        )
+        await client.lookup(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.LookupRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_routing_parameters_request_2_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.LookupResponse(
+                transaction=b"transaction_blob",
+            )
+        )
+        await client.lookup(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.LookupRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_query_routing_parameters_request_1_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.RunQueryResponse(
+                transaction=b"transaction_blob",
+            )
+        )
+        await client.run_query(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RunQueryRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_query_routing_parameters_request_2_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.RunQueryResponse(
+                transaction=b"transaction_blob",
+            )
+        )
+        await client.run_query(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RunQueryRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_aggregation_query_routing_parameters_request_1_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_aggregation_query), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.RunAggregationQueryResponse(
+                transaction=b"transaction_blob",
+            )
+        )
+        await client.run_aggregation_query(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RunAggregationQueryRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_aggregation_query_routing_parameters_request_2_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_aggregation_query), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.RunAggregationQueryResponse(
+                transaction=b"transaction_blob",
+            )
+        )
+        await client.run_aggregation_query(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RunAggregationQueryRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_begin_transaction_routing_parameters_request_1_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.BeginTransactionResponse(
+                transaction=b"transaction_blob",
+            )
+        )
+        await client.begin_transaction(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.BeginTransactionRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_begin_transaction_routing_parameters_request_2_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.BeginTransactionResponse(
+                transaction=b"transaction_blob",
+            )
+        )
+        await client.begin_transaction(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.BeginTransactionRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_commit_routing_parameters_request_1_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.CommitResponse(
+                index_updates=1389,
+            )
+        )
+        await client.commit(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.CommitRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_commit_routing_parameters_request_2_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.CommitResponse(
+                index_updates=1389,
+            )
+        )
+        await client.commit(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.CommitRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_rollback_routing_parameters_request_1_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.RollbackResponse()
+        )
+        await client.rollback(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RollbackRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_rollback_routing_parameters_request_2_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.RollbackResponse()
+        )
+        await client.rollback(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RollbackRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_allocate_ids_routing_parameters_request_1_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.AllocateIdsResponse()
+        )
+        await client.allocate_ids(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.AllocateIdsRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_allocate_ids_routing_parameters_request_2_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.AllocateIdsResponse()
+        )
+        await client.allocate_ids(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.AllocateIdsRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_reserve_ids_routing_parameters_request_1_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.ReserveIdsResponse()
+        )
+        await client.reserve_ids(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.ReserveIdsRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_reserve_ids_routing_parameters_request_2_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore.ReserveIdsResponse()
+        )
+        await client.reserve_ids(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.ReserveIdsRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_transport_kind_rest():
+    transport = DatastoreClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_lookup_rest_bad_request(request_type=datastore.LookupRequest):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.lookup(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        datastore.LookupRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = DatastoreClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_lookup_rest_call_success(request_type):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastore.LookupResponse(
+            transaction=b"transaction_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datastore.LookupResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.lookup(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastore.LookupResponse)
+    assert response.transaction == b"transaction_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_lookup_rest_interceptors(null_interceptor):
+    transport = transports.DatastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
+    )
+    client = DatastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastoreRestInterceptor, "post_lookup"
+    ) as post, mock.patch.object(
+        transports.DatastoreRestInterceptor, "pre_lookup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastore.LookupRequest.pb(datastore.LookupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = datastore.LookupResponse.to_json(datastore.LookupResponse())
+        req.return_value.content = return_value
+
+        request = datastore.LookupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastore.LookupResponse()
+
+        client.lookup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_run_query_rest_bad_request(request_type=datastore.RunQueryRequest):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.run_query(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore.RunQueryRequest,
+        dict,
+    ],
+)
+def test_run_query_rest_call_success(request_type):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastore.RunQueryResponse(
+            transaction=b"transaction_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datastore.RunQueryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.run_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastore.RunQueryResponse)
+    assert response.transaction == b"transaction_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_run_query_rest_interceptors(null_interceptor):
+    transport = transports.DatastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
+    )
+    client = DatastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastoreRestInterceptor, "post_run_query"
+    ) as post, mock.patch.object(
+        transports.DatastoreRestInterceptor, "pre_run_query"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastore.RunQueryRequest.pb(datastore.RunQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = datastore.RunQueryResponse.to_json(datastore.RunQueryResponse())
+        req.return_value.content = return_value
+
+        request = datastore.RunQueryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastore.RunQueryResponse()
+
+        client.run_query(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_run_aggregation_query_rest_bad_request(
+    request_type=datastore.RunAggregationQueryRequest,
+):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.run_aggregation_query(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore.RunAggregationQueryRequest,
+        dict,
+    ],
+)
+def test_run_aggregation_query_rest_call_success(request_type):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastore.RunAggregationQueryResponse(
+            transaction=b"transaction_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datastore.RunAggregationQueryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.run_aggregation_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastore.RunAggregationQueryResponse)
+    assert response.transaction == b"transaction_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_run_aggregation_query_rest_interceptors(null_interceptor):
+    transport = transports.DatastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
+    )
+    client = DatastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastoreRestInterceptor, "post_run_aggregation_query"
+    ) as post, mock.patch.object(
+        transports.DatastoreRestInterceptor, "pre_run_aggregation_query"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastore.RunAggregationQueryRequest.pb(
+            datastore.RunAggregationQueryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = datastore.RunAggregationQueryResponse.to_json(
+            datastore.RunAggregationQueryResponse()
+        )
+        req.return_value.content = return_value
+
+        request = datastore.RunAggregationQueryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastore.RunAggregationQueryResponse()
+
+        client.run_aggregation_query(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_begin_transaction_rest_bad_request(
+    request_type=datastore.BeginTransactionRequest,
+):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.begin_transaction(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore.BeginTransactionRequest,
+        dict,
+    ],
+)
+def test_begin_transaction_rest_call_success(request_type):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastore.BeginTransactionResponse(
+            transaction=b"transaction_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datastore.BeginTransactionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.begin_transaction(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastore.BeginTransactionResponse)
+    assert response.transaction == b"transaction_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_begin_transaction_rest_interceptors(null_interceptor):
+    transport = transports.DatastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
+    )
+    client = DatastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastoreRestInterceptor, "post_begin_transaction"
+    ) as post, mock.patch.object(
+        transports.DatastoreRestInterceptor, "pre_begin_transaction"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastore.BeginTransactionRequest.pb(
+            datastore.BeginTransactionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = datastore.BeginTransactionResponse.to_json(
+            datastore.BeginTransactionResponse()
+        )
+        req.return_value.content = return_value
+
+        request = datastore.BeginTransactionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastore.BeginTransactionResponse()
+
+        client.begin_transaction(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_commit_rest_bad_request(request_type=datastore.CommitRequest):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.commit(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore.CommitRequest,
+        dict,
+    ],
+)
+def test_commit_rest_call_success(request_type):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastore.CommitResponse(
+            index_updates=1389,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datastore.CommitResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.commit(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastore.CommitResponse)
+    assert response.index_updates == 1389
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_commit_rest_interceptors(null_interceptor):
+    transport = transports.DatastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
+    )
+    client = DatastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastoreRestInterceptor, "post_commit"
+    ) as post, mock.patch.object(
+        transports.DatastoreRestInterceptor, "pre_commit"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastore.CommitRequest.pb(datastore.CommitRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = datastore.CommitResponse.to_json(datastore.CommitResponse())
+        req.return_value.content = return_value
+
+        request = datastore.CommitRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastore.CommitResponse()
+
+        client.commit(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_rollback_rest_bad_request(request_type=datastore.RollbackRequest):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.rollback(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore.RollbackRequest,
+        dict,
+    ],
+)
+def test_rollback_rest_call_success(request_type):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastore.RollbackResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datastore.RollbackResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rollback(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastore.RollbackResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rollback_rest_interceptors(null_interceptor):
+    transport = transports.DatastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
+    )
+    client = DatastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastoreRestInterceptor, "post_rollback"
+    ) as post, mock.patch.object(
+        transports.DatastoreRestInterceptor, "pre_rollback"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastore.RollbackRequest.pb(datastore.RollbackRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = datastore.RollbackResponse.to_json(datastore.RollbackResponse())
+        req.return_value.content = return_value
+
+        request = datastore.RollbackRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastore.RollbackResponse()
+
+        client.rollback(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_allocate_ids_rest_bad_request(request_type=datastore.AllocateIdsRequest):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.allocate_ids(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore.AllocateIdsRequest,
+        dict,
+    ],
+)
+def test_allocate_ids_rest_call_success(request_type):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastore.AllocateIdsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datastore.AllocateIdsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.allocate_ids(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastore.AllocateIdsResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_allocate_ids_rest_interceptors(null_interceptor):
+    transport = transports.DatastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
+    )
+    client = DatastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastoreRestInterceptor, "post_allocate_ids"
+    ) as post, mock.patch.object(
+        transports.DatastoreRestInterceptor, "pre_allocate_ids"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastore.AllocateIdsRequest.pb(datastore.AllocateIdsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = datastore.AllocateIdsResponse.to_json(
+            datastore.AllocateIdsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = datastore.AllocateIdsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastore.AllocateIdsResponse()
+
+        client.allocate_ids(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_reserve_ids_rest_bad_request(request_type=datastore.ReserveIdsRequest):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.reserve_ids(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore.ReserveIdsRequest,
+        dict,
+    ],
+)
+def test_reserve_ids_rest_call_success(request_type):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datastore.ReserveIdsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datastore.ReserveIdsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.reserve_ids(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastore.ReserveIdsResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_reserve_ids_rest_interceptors(null_interceptor):
+    transport = transports.DatastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DatastoreRestInterceptor(),
+    )
+    client = DatastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatastoreRestInterceptor, "post_reserve_ids"
+    ) as post, mock.patch.object(
+        transports.DatastoreRestInterceptor, "pre_reserve_ids"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastore.ReserveIdsRequest.pb(datastore.ReserveIdsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = datastore.ReserveIdsResponse.to_json(
+            datastore.ReserveIdsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = datastore.ReserveIdsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datastore.ReserveIdsResponse()
+
+        client.reserve_ids(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    request_type=operations_pb2.DeleteOperationRequest,
+):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_lookup_empty_call_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        client.lookup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.LookupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_run_query_empty_call_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
+        client.run_query(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.RunQueryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_run_aggregation_query_empty_call_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_aggregation_query), "__call__"
+    ) as call:
+        client.run_aggregation_query(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.RunAggregationQueryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_begin_transaction_empty_call_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        client.begin_transaction(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.BeginTransactionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_commit_empty_call_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        client.commit(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.CommitRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_rollback_empty_call_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        client.rollback(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.RollbackRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_allocate_ids_empty_call_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
+        client.allocate_ids(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.AllocateIdsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_reserve_ids_empty_call_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
+        client.reserve_ids(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastore.ReserveIdsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_lookup_routing_parameters_request_1_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        client.lookup(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.LookupRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_lookup_routing_parameters_request_2_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        client.lookup(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.LookupRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_run_query_routing_parameters_request_1_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
+        client.run_query(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RunQueryRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_run_query_routing_parameters_request_2_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
+        client.run_query(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RunQueryRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_run_aggregation_query_routing_parameters_request_1_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_aggregation_query), "__call__"
+    ) as call:
+        client.run_aggregation_query(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RunAggregationQueryRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_run_aggregation_query_routing_parameters_request_2_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_aggregation_query), "__call__"
+    ) as call:
+        client.run_aggregation_query(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RunAggregationQueryRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_begin_transaction_routing_parameters_request_1_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        client.begin_transaction(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.BeginTransactionRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_begin_transaction_routing_parameters_request_2_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        client.begin_transaction(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.BeginTransactionRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_commit_routing_parameters_request_1_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        client.commit(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.CommitRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_commit_routing_parameters_request_2_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        client.commit(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.CommitRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_rollback_routing_parameters_request_1_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        client.rollback(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RollbackRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_rollback_routing_parameters_request_2_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        client.rollback(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.RollbackRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_allocate_ids_routing_parameters_request_1_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
+        client.allocate_ids(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.AllocateIdsRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_allocate_ids_routing_parameters_request_2_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
+        client.allocate_ids(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.AllocateIdsRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_reserve_ids_routing_parameters_request_1_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
+        client.reserve_ids(request={"project_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.ReserveIdsRequest(**{"project_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"project_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_reserve_ids_routing_parameters_request_2_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
+        client.reserve_ids(request={"database_id": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = datastore.ReserveIdsRequest(**{"database_id": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"database_id": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
 
 
 def test_transport_grpc_default():
@@ -6961,250 +8300,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/operations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
-):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.DeleteOperationRequest,
-        dict,
-    ],
-)
-def test_delete_operation_rest(request_type):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/operations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/operations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = DatastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
 def test_delete_operation(transport: str = "grpc"):
     client = DatastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7232,7 +8327,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7285,7 +8380,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7330,7 +8425,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -7371,7 +8466,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7424,7 +8519,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7469,7 +8564,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -7510,7 +8605,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7565,7 +8660,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7612,7 +8707,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -7655,7 +8750,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7710,7 +8805,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7757,7 +8852,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = DatastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -7773,22 +8868,41 @@ async def test_list_operations_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = DatastoreClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = DatastoreAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

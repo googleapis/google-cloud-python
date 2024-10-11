@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -234,6 +235,9 @@ class DatastoreGrpcAsyncIOTransport(DatastoreTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -470,7 +474,7 @@ class DatastoreGrpcAsyncIOTransport(DatastoreTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.lookup: gapic_v1.method_async.wrap_method(
+            self.lookup: self._wrap_method(
                 self.lookup,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -485,7 +489,7 @@ class DatastoreGrpcAsyncIOTransport(DatastoreTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.run_query: gapic_v1.method_async.wrap_method(
+            self.run_query: self._wrap_method(
                 self.run_query,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -500,7 +504,7 @@ class DatastoreGrpcAsyncIOTransport(DatastoreTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.run_aggregation_query: gapic_v1.method_async.wrap_method(
+            self.run_aggregation_query: self._wrap_method(
                 self.run_aggregation_query,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -515,27 +519,27 @@ class DatastoreGrpcAsyncIOTransport(DatastoreTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.begin_transaction: gapic_v1.method_async.wrap_method(
+            self.begin_transaction: self._wrap_method(
                 self.begin_transaction,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.commit: gapic_v1.method_async.wrap_method(
+            self.commit: self._wrap_method(
                 self.commit,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.rollback: gapic_v1.method_async.wrap_method(
+            self.rollback: self._wrap_method(
                 self.rollback,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.allocate_ids: gapic_v1.method_async.wrap_method(
+            self.allocate_ids: self._wrap_method(
                 self.allocate_ids,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.reserve_ids: gapic_v1.method_async.wrap_method(
+            self.reserve_ids: self._wrap_method(
                 self.reserve_ids,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -550,10 +554,39 @@ class DatastoreGrpcAsyncIOTransport(DatastoreTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

@@ -34,6 +34,7 @@ from .types.datastore import LookupResponse
 from .types.datastore import Mutation
 from .types.datastore import MutationResult
 from .types.datastore import PropertyMask
+from .types.datastore import PropertyTransform
 from .types.datastore import ReadOptions
 from .types.datastore import ReserveIdsRequest
 from .types.datastore import ReserveIdsResponse
@@ -53,6 +54,7 @@ from .types.query import AggregationQuery
 from .types.query import CompositeFilter
 from .types.query import EntityResult
 from .types.query import Filter
+from .types.query import FindNearest
 from .types.query import GqlQuery
 from .types.query import GqlQueryParameter
 from .types.query import KindExpression
@@ -87,6 +89,7 @@ __all__ = (
     "ExplainMetrics",
     "ExplainOptions",
     "Filter",
+    "FindNearest",
     "GqlQuery",
     "GqlQueryParameter",
     "Key",
@@ -102,6 +105,7 @@ __all__ = (
     "PropertyMask",
     "PropertyOrder",
     "PropertyReference",
+    "PropertyTransform",
     "Query",
     "QueryResultBatch",
     "ReadOptions",
