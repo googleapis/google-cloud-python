@@ -247,3 +247,13 @@ replacements:
     before: \|Message sent with user authentication\|
     after: "|Message sent with user authentication gRPC|"
     count: 2
+  - paths: [
+      packages/google-cloud-alloydb/google/cloud/alloydb_v1/types/resources.py,
+      packages/google-cloud-alloydb/google/cloud/alloydb_v1alpha/types/resources.py,
+      packages/google-cloud-alloydb/google/cloud/alloydb_v1beta/types/resources.py,
+    ]
+    before: |
+      \                1024. Any integer between 256 and 4500 is
+      \                    considered valid.
+    after: "                1024. Any integer between 256 and 4500 is\n                considered valid.\n"
+    count: 3
