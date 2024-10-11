@@ -227,7 +227,7 @@ replacements:
       packages/google-apps-chat/google/apps/chat_v1/services/chat_service/transports/grpc.py,
     ]
     before: \|Message sent with app authentication\|
-    after: "|Message sent with app authenticatio gRPC|"
+    after: "|Message sent with app authentication gRPC|"
     count: 2
   - paths: [
       packages/google-apps-chat/google/apps/chat_v1/services/chat_service/async_client.py,
@@ -245,5 +245,5 @@ replacements:
       packages/google-apps-chat/google/apps/chat_v1/services/chat_service/transports/grpc.py,
     ]
     before: \|Message sent with user authentication\|
-    after: "|Message sent with user authenticatio gRPC|"
+    after: "|Message sent with user authentication gRPC|"
     count: 2
