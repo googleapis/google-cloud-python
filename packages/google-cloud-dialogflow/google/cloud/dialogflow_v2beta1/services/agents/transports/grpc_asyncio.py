@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -233,6 +234,9 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -590,55 +594,89 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.get_agent: gapic_v1.method_async.wrap_method(
+            self.get_agent: self._wrap_method(
                 self.get_agent,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.set_agent: gapic_v1.method_async.wrap_method(
+            self.set_agent: self._wrap_method(
                 self.set_agent,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_agent: gapic_v1.method_async.wrap_method(
+            self.delete_agent: self._wrap_method(
                 self.delete_agent,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.search_agents: gapic_v1.method_async.wrap_method(
+            self.search_agents: self._wrap_method(
                 self.search_agents,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.train_agent: gapic_v1.method_async.wrap_method(
+            self.train_agent: self._wrap_method(
                 self.train_agent,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.export_agent: gapic_v1.method_async.wrap_method(
+            self.export_agent: self._wrap_method(
                 self.export_agent,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.import_agent: gapic_v1.method_async.wrap_method(
+            self.import_agent: self._wrap_method(
                 self.import_agent,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.restore_agent: gapic_v1.method_async.wrap_method(
+            self.restore_agent: self._wrap_method(
                 self.restore_agent,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_validation_result: gapic_v1.method_async.wrap_method(
+            self.get_validation_result: self._wrap_method(
                 self.get_validation_result,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def cancel_operation(

@@ -229,6 +229,41 @@ class ClusterControllerTransport(abc.ABC):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
+            self.get_iam_policy: gapic_v1.method.wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method.wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: gapic_v1.method.wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: gapic_v1.method.wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: gapic_v1.method.wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: gapic_v1.method.wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: gapic_v1.method.wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):

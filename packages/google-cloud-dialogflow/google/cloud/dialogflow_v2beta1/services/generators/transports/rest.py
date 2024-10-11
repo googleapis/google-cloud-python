@@ -16,35 +16,31 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.dialogflow_v2beta1.types import generator
+from google.cloud.dialogflow_v2beta1.types import generator as gcd_generator
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseGeneratorsRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.dialogflow_v2beta1.types import generator
-from google.cloud.dialogflow_v2beta1.types import generator as gcd_generator
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import GeneratorsTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -333,8 +329,8 @@ class GeneratorsRestStub:
     _interceptor: GeneratorsRestInterceptor
 
 
-class GeneratorsRestTransport(GeneratorsTransport):
-    """REST backend transport for Generators.
+class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
+    """REST backend synchronous transport for Generators.
 
     Generator Service for LLM powered Agent Assist. This service
     manages the configurations of user owned Generators, such as
@@ -347,7 +343,6 @@ class GeneratorsRestTransport(GeneratorsTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -401,21 +396,12 @@ class GeneratorsRestTransport(GeneratorsTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -426,19 +412,34 @@ class GeneratorsRestTransport(GeneratorsTransport):
         self._interceptor = interceptor or GeneratorsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateGenerator(GeneratorsRestStub):
+    class _CreateGenerator(
+        _BaseGeneratorsRestTransport._BaseCreateGenerator, GeneratorsRestStub
+    ):
         def __hash__(self):
-            return hash("CreateGenerator")
+            return hash("GeneratorsRestTransport.CreateGenerator")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -464,52 +465,34 @@ class GeneratorsRestTransport(GeneratorsTransport):
                     LLM generator.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*/locations/*}/generators",
-                    "body": "generator",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*}/generators",
-                    "body": "generator",
-                },
-            ]
+            http_options = (
+                _BaseGeneratorsRestTransport._BaseCreateGenerator._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_generator(
                 request, metadata
             )
-            pb_request = gcd_generator.CreateGeneratorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseGeneratorsRestTransport._BaseCreateGenerator._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseGeneratorsRestTransport._BaseCreateGenerator._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseGeneratorsRestTransport._BaseCreateGenerator._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = GeneratorsRestTransport._CreateGenerator._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -525,19 +508,33 @@ class GeneratorsRestTransport(GeneratorsTransport):
             resp = self._interceptor.post_create_generator(resp)
             return resp
 
-    class _DeleteGenerator(GeneratorsRestStub):
+    class _DeleteGenerator(
+        _BaseGeneratorsRestTransport._BaseDeleteGenerator, GeneratorsRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteGenerator")
+            return hash("GeneratorsRestTransport.DeleteGenerator")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -559,40 +556,29 @@ class GeneratorsRestTransport(GeneratorsTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2beta1/{name=projects/*/locations/*/generators/*}",
-                },
-            ]
+            http_options = (
+                _BaseGeneratorsRestTransport._BaseDeleteGenerator._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_generator(
                 request, metadata
             )
-            pb_request = generator.DeleteGeneratorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseGeneratorsRestTransport._BaseDeleteGenerator._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseGeneratorsRestTransport._BaseDeleteGenerator._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = GeneratorsRestTransport._DeleteGenerator._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -600,19 +586,33 @@ class GeneratorsRestTransport(GeneratorsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetGenerator(GeneratorsRestStub):
+    class _GetGenerator(
+        _BaseGeneratorsRestTransport._BaseGetGenerator, GeneratorsRestStub
+    ):
         def __hash__(self):
-            return hash("GetGenerator")
+            return hash("GeneratorsRestTransport.GetGenerator")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -638,38 +638,31 @@ class GeneratorsRestTransport(GeneratorsTransport):
                     LLM generator.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*/locations/*/generators/*}",
-                },
-            ]
+            http_options = (
+                _BaseGeneratorsRestTransport._BaseGetGenerator._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_generator(request, metadata)
-            pb_request = generator.GetGeneratorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseGeneratorsRestTransport._BaseGetGenerator._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseGeneratorsRestTransport._BaseGetGenerator._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = GeneratorsRestTransport._GetGenerator._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -685,19 +678,33 @@ class GeneratorsRestTransport(GeneratorsTransport):
             resp = self._interceptor.post_get_generator(resp)
             return resp
 
-    class _ListGenerators(GeneratorsRestStub):
+    class _ListGenerators(
+        _BaseGeneratorsRestTransport._BaseListGenerators, GeneratorsRestStub
+    ):
         def __hash__(self):
-            return hash("ListGenerators")
+            return hash("GeneratorsRestTransport.ListGenerators")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -723,42 +730,29 @@ class GeneratorsRestTransport(GeneratorsTransport):
                     Response of ListGenerators.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{parent=projects/*/locations/*}/generators",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{parent=projects/*}/generators",
-                },
-            ]
+            http_options = (
+                _BaseGeneratorsRestTransport._BaseListGenerators._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_generators(request, metadata)
-            pb_request = generator.ListGeneratorsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseGeneratorsRestTransport._BaseListGenerators._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseGeneratorsRestTransport._BaseListGenerators._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = GeneratorsRestTransport._ListGenerators._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -774,19 +768,34 @@ class GeneratorsRestTransport(GeneratorsTransport):
             resp = self._interceptor.post_list_generators(resp)
             return resp
 
-    class _UpdateGenerator(GeneratorsRestStub):
+    class _UpdateGenerator(
+        _BaseGeneratorsRestTransport._BaseUpdateGenerator, GeneratorsRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateGenerator")
+            return hash("GeneratorsRestTransport.UpdateGenerator")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -812,47 +821,34 @@ class GeneratorsRestTransport(GeneratorsTransport):
                     LLM generator.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2beta1/{generator.name=projects/*/locations/*/generators/*}",
-                    "body": "generator",
-                },
-            ]
+            http_options = (
+                _BaseGeneratorsRestTransport._BaseUpdateGenerator._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_generator(
                 request, metadata
             )
-            pb_request = gcd_generator.UpdateGeneratorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseGeneratorsRestTransport._BaseUpdateGenerator._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseGeneratorsRestTransport._BaseUpdateGenerator._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseGeneratorsRestTransport._BaseUpdateGenerator._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = GeneratorsRestTransport._UpdateGenerator._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -912,7 +908,34 @@ class GeneratorsRestTransport(GeneratorsTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(GeneratorsRestStub):
+    class _GetLocation(
+        _BaseGeneratorsRestTransport._BaseGetLocation, GeneratorsRestStub
+    ):
+        def __hash__(self):
+            return hash("GeneratorsRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -936,32 +959,31 @@ class GeneratorsRestTransport(GeneratorsTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseGeneratorsRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = (
+                _BaseGeneratorsRestTransport._BaseGetLocation._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseGeneratorsRestTransport._BaseGetLocation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = GeneratorsRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -969,8 +991,9 @@ class GeneratorsRestTransport(GeneratorsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -978,7 +1001,34 @@ class GeneratorsRestTransport(GeneratorsTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(GeneratorsRestStub):
+    class _ListLocations(
+        _BaseGeneratorsRestTransport._BaseListLocations, GeneratorsRestStub
+    ):
+        def __hash__(self):
+            return hash("GeneratorsRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -1002,32 +1052,31 @@ class GeneratorsRestTransport(GeneratorsTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseGeneratorsRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = (
+                _BaseGeneratorsRestTransport._BaseListLocations._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseGeneratorsRestTransport._BaseListLocations._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = GeneratorsRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1035,8 +1084,9 @@ class GeneratorsRestTransport(GeneratorsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -1044,7 +1094,34 @@ class GeneratorsRestTransport(GeneratorsTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(GeneratorsRestStub):
+    class _CancelOperation(
+        _BaseGeneratorsRestTransport._BaseCancelOperation, GeneratorsRestStub
+    ):
+        def __hash__(self):
+            return hash("GeneratorsRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -1065,38 +1142,29 @@ class GeneratorsRestTransport(GeneratorsTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{name=projects/*/operations/*}:cancel",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{name=projects/*/locations/*/operations/*}:cancel",
-                },
-            ]
-
+            http_options = (
+                _BaseGeneratorsRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseGeneratorsRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseGeneratorsRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = GeneratorsRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1110,7 +1178,34 @@ class GeneratorsRestTransport(GeneratorsTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(GeneratorsRestStub):
+    class _GetOperation(
+        _BaseGeneratorsRestTransport._BaseGetOperation, GeneratorsRestStub
+    ):
+        def __hash__(self):
+            return hash("GeneratorsRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -1134,36 +1229,31 @@ class GeneratorsRestTransport(GeneratorsTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseGeneratorsRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = (
+                _BaseGeneratorsRestTransport._BaseGetOperation._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseGeneratorsRestTransport._BaseGetOperation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = GeneratorsRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1171,8 +1261,9 @@ class GeneratorsRestTransport(GeneratorsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -1180,7 +1271,34 @@ class GeneratorsRestTransport(GeneratorsTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(GeneratorsRestStub):
+    class _ListOperations(
+        _BaseGeneratorsRestTransport._BaseListOperations, GeneratorsRestStub
+    ):
+        def __hash__(self):
+            return hash("GeneratorsRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -1204,36 +1322,29 @@ class GeneratorsRestTransport(GeneratorsTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*/locations/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseGeneratorsRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseGeneratorsRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseGeneratorsRestTransport._BaseListOperations._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = GeneratorsRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1241,8 +1352,9 @@ class GeneratorsRestTransport(GeneratorsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

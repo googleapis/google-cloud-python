@@ -16,41 +16,31 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.metastore_v1alpha.types import metastore
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseDataprocMetastoreRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-
-from google.cloud.metastore_v1alpha.types import metastore
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import DataprocMetastoreTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -868,8 +858,8 @@ class DataprocMetastoreRestStub:
     _interceptor: DataprocMetastoreRestInterceptor
 
 
-class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
-    """REST backend transport for DataprocMetastore.
+class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
+    """REST backend synchronous transport for DataprocMetastore.
 
     Configures and manages metastore services. Metastore services are
     fully managed, highly available, autoscaled, autohealing, OSS-native
@@ -899,7 +889,6 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -953,21 +942,12 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -1032,19 +1012,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _AlterMetadataResourceLocation(DataprocMetastoreRestStub):
+    class _AlterMetadataResourceLocation(
+        _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("AlterMetadataResourceLocation")
+            return hash("DataprocMetastoreRestTransport.AlterMetadataResourceLocation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1075,47 +1071,34 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{service=projects/*/locations/*/services/*}:alterLocation",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_alter_metadata_resource_location(
                 request, metadata
             )
-            pb_request = metastore.AlterMetadataResourceLocationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataprocMetastoreRestTransport._AlterMetadataResourceLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1129,21 +1112,34 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_alter_metadata_resource_location(resp)
             return resp
 
-    class _CreateBackup(DataprocMetastoreRestStub):
+    class _CreateBackup(
+        _BaseDataprocMetastoreRestTransport._BaseCreateBackup, DataprocMetastoreRestStub
+    ):
         def __hash__(self):
-            return hash("CreateBackup")
+            return hash("DataprocMetastoreRestTransport.CreateBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "backupId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1173,45 +1169,32 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/services/*}/backups",
-                    "body": "backup",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_backup(request, metadata)
-            pb_request = metastore.CreateBackupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_backup(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataprocMetastoreRestTransport._CreateBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1225,21 +1208,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_create_backup(resp)
             return resp
 
-    class _CreateMetadataImport(DataprocMetastoreRestStub):
+    class _CreateMetadataImport(
+        _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateMetadataImport")
+            return hash("DataprocMetastoreRestTransport.CreateMetadataImport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "metadataImportId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1269,47 +1266,36 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/services/*}/metadataImports",
-                    "body": "metadata_import",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_metadata_import(
                 request, metadata
             )
-            pb_request = metastore.CreateMetadataImportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                DataprocMetastoreRestTransport._CreateMetadataImport._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1323,21 +1309,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_create_metadata_import(resp)
             return resp
 
-    class _CreateService(DataprocMetastoreRestStub):
+    class _CreateService(
+        _BaseDataprocMetastoreRestTransport._BaseCreateService,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateService")
+            return hash("DataprocMetastoreRestTransport.CreateService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "serviceId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1367,45 +1367,32 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*}/services",
-                    "body": "service",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_service(request, metadata)
-            pb_request = metastore.CreateServiceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseCreateService._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_service(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataprocMetastoreRestTransport._CreateService._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1419,19 +1406,33 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_create_service(resp)
             return resp
 
-    class _DeleteBackup(DataprocMetastoreRestStub):
+    class _DeleteBackup(
+        _BaseDataprocMetastoreRestTransport._BaseDeleteBackup, DataprocMetastoreRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteBackup")
+            return hash("DataprocMetastoreRestTransport.DeleteBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1461,38 +1462,27 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/services/*/backups/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
-            pb_request = metastore.DeleteBackupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataprocMetastoreRestTransport._DeleteBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1506,19 +1496,34 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_delete_backup(resp)
             return resp
 
-    class _DeleteService(DataprocMetastoreRestStub):
+    class _DeleteService(
+        _BaseDataprocMetastoreRestTransport._BaseDeleteService,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteService")
+            return hash("DataprocMetastoreRestTransport.DeleteService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1548,38 +1553,27 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/services/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_service(request, metadata)
-            pb_request = metastore.DeleteServiceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataprocMetastoreRestTransport._DeleteService._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1593,19 +1587,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_delete_service(resp)
             return resp
 
-    class _ExportMetadata(DataprocMetastoreRestStub):
+    class _ExportMetadata(
+        _BaseDataprocMetastoreRestTransport._BaseExportMetadata,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("ExportMetadata")
+            return hash("DataprocMetastoreRestTransport.ExportMetadata")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1635,45 +1645,32 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{service=projects/*/locations/*/services/*}:exportMetadata",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_export_metadata(request, metadata)
-            pb_request = metastore.ExportMetadataRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_export_metadata(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataprocMetastoreRestTransport._ExportMetadata._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1687,19 +1684,33 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_export_metadata(resp)
             return resp
 
-    class _GetBackup(DataprocMetastoreRestStub):
+    class _GetBackup(
+        _BaseDataprocMetastoreRestTransport._BaseGetBackup, DataprocMetastoreRestStub
+    ):
         def __hash__(self):
-            return hash("GetBackup")
+            return hash("DataprocMetastoreRestTransport.GetBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1726,38 +1737,27 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                     The details of a backup resource.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/services/*/backups/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseGetBackup._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
-            pb_request = metastore.GetBackupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetBackup._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseGetBackup._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataprocMetastoreRestTransport._GetBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1773,19 +1773,34 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_get_backup(resp)
             return resp
 
-    class _GetMetadataImport(DataprocMetastoreRestStub):
+    class _GetMetadataImport(
+        _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("GetMetadataImport")
+            return hash("DataprocMetastoreRestTransport.GetMetadataImport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1814,40 +1829,29 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/services/*/metadataImports/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_metadata_import(
                 request, metadata
             )
-            pb_request = metastore.GetMetadataImportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataprocMetastoreRestTransport._GetMetadataImport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1863,19 +1867,33 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_get_metadata_import(resp)
             return resp
 
-    class _GetService(DataprocMetastoreRestStub):
+    class _GetService(
+        _BaseDataprocMetastoreRestTransport._BaseGetService, DataprocMetastoreRestStub
+    ):
         def __hash__(self):
-            return hash("GetService")
+            return hash("DataprocMetastoreRestTransport.GetService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1904,38 +1922,27 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/services/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseGetService._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_service(request, metadata)
-            pb_request = metastore.GetServiceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetService._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseGetService._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataprocMetastoreRestTransport._GetService._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1951,19 +1958,33 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_get_service(resp)
             return resp
 
-    class _ListBackups(DataprocMetastoreRestStub):
+    class _ListBackups(
+        _BaseDataprocMetastoreRestTransport._BaseListBackups, DataprocMetastoreRestStub
+    ):
         def __hash__(self):
-            return hash("ListBackups")
+            return hash("DataprocMetastoreRestTransport.ListBackups")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1992,38 +2013,27 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/services/*}/backups",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseListBackups._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
-            pb_request = metastore.ListBackupsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListBackups._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseListBackups._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataprocMetastoreRestTransport._ListBackups._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2039,19 +2049,34 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_list_backups(resp)
             return resp
 
-    class _ListMetadataImports(DataprocMetastoreRestStub):
+    class _ListMetadataImports(
+        _BaseDataprocMetastoreRestTransport._BaseListMetadataImports,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("ListMetadataImports")
+            return hash("DataprocMetastoreRestTransport.ListMetadataImports")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2080,40 +2105,31 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/services/*}/metadataImports",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_metadata_imports(
                 request, metadata
             )
-            pb_request = metastore.ListMetadataImportsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DataprocMetastoreRestTransport._ListMetadataImports._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2129,19 +2145,33 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_list_metadata_imports(resp)
             return resp
 
-    class _ListServices(DataprocMetastoreRestStub):
+    class _ListServices(
+        _BaseDataprocMetastoreRestTransport._BaseListServices, DataprocMetastoreRestStub
+    ):
         def __hash__(self):
-            return hash("ListServices")
+            return hash("DataprocMetastoreRestTransport.ListServices")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2170,38 +2200,27 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*}/services",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseListServices._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_services(request, metadata)
-            pb_request = metastore.ListServicesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListServices._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseListServices._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataprocMetastoreRestTransport._ListServices._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2217,19 +2236,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_list_services(resp)
             return resp
 
-    class _MoveTableToDatabase(DataprocMetastoreRestStub):
+    class _MoveTableToDatabase(
+        _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("MoveTableToDatabase")
+            return hash("DataprocMetastoreRestTransport.MoveTableToDatabase")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2259,47 +2294,36 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{service=projects/*/locations/*/services/*}:moveTableToDatabase",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_http_options()
+            )
             request, metadata = self._interceptor.pre_move_table_to_database(
                 request, metadata
             )
-            pb_request = metastore.MoveTableToDatabaseRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                DataprocMetastoreRestTransport._MoveTableToDatabase._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2313,19 +2337,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_move_table_to_database(resp)
             return resp
 
-    class _QueryMetadata(DataprocMetastoreRestStub):
+    class _QueryMetadata(
+        _BaseDataprocMetastoreRestTransport._BaseQueryMetadata,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("QueryMetadata")
+            return hash("DataprocMetastoreRestTransport.QueryMetadata")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2355,45 +2395,32 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{service=projects/*/locations/*/services/*}:queryMetadata",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_query_metadata(request, metadata)
-            pb_request = metastore.QueryMetadataRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_query_metadata(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataprocMetastoreRestTransport._QueryMetadata._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2407,19 +2434,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_query_metadata(resp)
             return resp
 
-    class _RemoveIamPolicy(DataprocMetastoreRestStub):
+    class _RemoveIamPolicy(
+        _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("RemoveIamPolicy")
+            return hash("DataprocMetastoreRestTransport.RemoveIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2448,47 +2491,34 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*/**}:removeIamPolicy",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_remove_iam_policy(
                 request, metadata
             )
-            pb_request = metastore.RemoveIamPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataprocMetastoreRestTransport._RemoveIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2504,19 +2534,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_remove_iam_policy(resp)
             return resp
 
-    class _RestoreService(DataprocMetastoreRestStub):
+    class _RestoreService(
+        _BaseDataprocMetastoreRestTransport._BaseRestoreService,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("RestoreService")
+            return hash("DataprocMetastoreRestTransport.RestoreService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2545,45 +2591,32 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{service=projects/*/locations/*/services/*}:restore",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_restore_service(request, metadata)
-            pb_request = metastore.RestoreServiceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_restore_service(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataprocMetastoreRestTransport._RestoreService._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2597,21 +2630,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_restore_service(resp)
             return resp
 
-    class _UpdateMetadataImport(DataprocMetastoreRestStub):
+    class _UpdateMetadataImport(
+        _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateMetadataImport")
+            return hash("DataprocMetastoreRestTransport.UpdateMetadataImport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2641,47 +2688,36 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{metadata_import.name=projects/*/locations/*/services/*/metadataImports/*}",
-                    "body": "metadata_import",
-                },
-            ]
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_metadata_import(
                 request, metadata
             )
-            pb_request = metastore.UpdateMetadataImportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                DataprocMetastoreRestTransport._UpdateMetadataImport._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2695,21 +2731,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             resp = self._interceptor.post_update_metadata_import(resp)
             return resp
 
-    class _UpdateService(DataprocMetastoreRestStub):
+    class _UpdateService(
+        _BaseDataprocMetastoreRestTransport._BaseUpdateService,
+        DataprocMetastoreRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateService")
+            return hash("DataprocMetastoreRestTransport.UpdateService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2739,45 +2789,32 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{service.name=projects/*/locations/*/services/*}",
-                    "body": "service",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_service(request, metadata)
-            pb_request = metastore.UpdateServiceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_service(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataprocMetastoreRestTransport._UpdateService._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2949,7 +2986,34 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(DataprocMetastoreRestStub):
+    class _GetLocation(
+        _BaseDataprocMetastoreRestTransport._BaseGetLocation, DataprocMetastoreRestStub
+    ):
+        def __hash__(self):
+            return hash("DataprocMetastoreRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -2973,32 +3037,27 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetLocation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataprocMetastoreRestTransport._BaseGetLocation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = DataprocMetastoreRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3006,8 +3065,9 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -3015,7 +3075,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(DataprocMetastoreRestStub):
+    class _ListLocations(
+        _BaseDataprocMetastoreRestTransport._BaseListLocations,
+        DataprocMetastoreRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataprocMetastoreRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -3039,32 +3127,27 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataprocMetastoreRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = DataprocMetastoreRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3072,8 +3155,9 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -3081,7 +3165,34 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(DataprocMetastoreRestStub):
+    class _GetIamPolicy(
+        _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy, DataprocMetastoreRestStub
+    ):
+        def __hash__(self):
+            return hash("DataprocMetastoreRestTransport.GetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.GetIamPolicyRequest,
@@ -3105,48 +3216,27 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*/backups/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*/databases/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*/databases/*/tables/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/federations/*}:getIamPolicy",
-                },
-            ]
-
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = DataprocMetastoreRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3154,8 +3244,9 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
@@ -3163,7 +3254,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(DataprocMetastoreRestStub):
+    class _SetIamPolicy(
+        _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy, DataprocMetastoreRestStub
+    ):
+        def __hash__(self):
+            return hash("DataprocMetastoreRestTransport.SetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.SetIamPolicyRequest,
@@ -3187,55 +3306,32 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*/backups/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*/databases/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*/databases/*/tables/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/federations/*}:setIamPolicy",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = DataprocMetastoreRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3243,8 +3339,9 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
@@ -3252,7 +3349,36 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(DataprocMetastoreRestStub):
+    class _TestIamPermissions(
+        _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions,
+        DataprocMetastoreRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataprocMetastoreRestTransport.TestIamPermissions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.TestIamPermissionsRequest,
@@ -3276,57 +3402,34 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*/backups/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*/databases/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/services/*/databases/*/tables/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{resource=projects/*/locations/*/federations/*}:testIamPermissions",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = DataprocMetastoreRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3334,8 +3437,9 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = iam_policy_pb2.TestIamPermissionsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
@@ -3343,7 +3447,36 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(DataprocMetastoreRestStub):
+    class _CancelOperation(
+        _BaseDataprocMetastoreRestTransport._BaseCancelOperation,
+        DataprocMetastoreRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataprocMetastoreRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -3364,37 +3497,34 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}:cancel",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = DataprocMetastoreRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3408,7 +3538,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(DataprocMetastoreRestStub):
+    class _DeleteOperation(
+        _BaseDataprocMetastoreRestTransport._BaseDeleteOperation,
+        DataprocMetastoreRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataprocMetastoreRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.DeleteOperationRequest,
@@ -3429,34 +3587,29 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = DataprocMetastoreRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3470,7 +3623,34 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(DataprocMetastoreRestStub):
+    class _GetOperation(
+        _BaseDataprocMetastoreRestTransport._BaseGetOperation, DataprocMetastoreRestStub
+    ):
+        def __hash__(self):
+            return hash("DataprocMetastoreRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -3494,32 +3674,27 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = DataprocMetastoreRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3527,8 +3702,9 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -3536,7 +3712,35 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(DataprocMetastoreRestStub):
+    class _ListOperations(
+        _BaseDataprocMetastoreRestTransport._BaseListOperations,
+        DataprocMetastoreRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataprocMetastoreRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -3560,32 +3764,27 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseDataprocMetastoreRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataprocMetastoreRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = DataprocMetastoreRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3593,8 +3792,9 @@ class DataprocMetastoreRestTransport(DataprocMetastoreTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

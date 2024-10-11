@@ -16,41 +16,31 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.dataproc_v1.types import workflow_templates
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseWorkflowTemplateServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.dataproc_v1.types import workflow_templates
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import WorkflowTemplateServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -458,8 +448,8 @@ class WorkflowTemplateServiceRestStub:
     _interceptor: WorkflowTemplateServiceRestInterceptor
 
 
-class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
-    """REST backend transport for WorkflowTemplateService.
+class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTransport):
+    """REST backend synchronous transport for WorkflowTemplateService.
 
     The API interface for managing Workflow Templates in the
     Dataproc API.
@@ -469,7 +459,6 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -523,21 +512,12 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -617,19 +597,35 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateWorkflowTemplate(WorkflowTemplateServiceRestStub):
+    class _CreateWorkflowTemplate(
+        _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate,
+        WorkflowTemplateServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateWorkflowTemplate")
+            return hash("WorkflowTemplateServiceRestTransport.CreateWorkflowTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -658,52 +654,34 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/workflowTemplates",
-                    "body": "template",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/regions/*}/workflowTemplates",
-                    "body": "template",
-                },
-            ]
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_workflow_template(
                 request, metadata
             )
-            pb_request = workflow_templates.CreateWorkflowTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WorkflowTemplateServiceRestTransport._CreateWorkflowTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -719,19 +697,34 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
             resp = self._interceptor.post_create_workflow_template(resp)
             return resp
 
-    class _DeleteWorkflowTemplate(WorkflowTemplateServiceRestStub):
+    class _DeleteWorkflowTemplate(
+        _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate,
+        WorkflowTemplateServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteWorkflowTemplate")
+            return hash("WorkflowTemplateServiceRestTransport.DeleteWorkflowTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -756,44 +749,29 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/workflowTemplates/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/regions/*/workflowTemplates/*}",
-                },
-            ]
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_workflow_template(
                 request, metadata
             )
-            pb_request = workflow_templates.DeleteWorkflowTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WorkflowTemplateServiceRestTransport._DeleteWorkflowTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -801,19 +779,34 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetWorkflowTemplate(WorkflowTemplateServiceRestStub):
+    class _GetWorkflowTemplate(
+        _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate,
+        WorkflowTemplateServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetWorkflowTemplate")
+            return hash("WorkflowTemplateServiceRestTransport.GetWorkflowTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -842,44 +835,31 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/workflowTemplates/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/regions/*/workflowTemplates/*}",
-                },
-            ]
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_workflow_template(
                 request, metadata
             )
-            pb_request = workflow_templates.GetWorkflowTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                WorkflowTemplateServiceRestTransport._GetWorkflowTemplate._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -895,19 +875,37 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
             resp = self._interceptor.post_get_workflow_template(resp)
             return resp
 
-    class _InstantiateInlineWorkflowTemplate(WorkflowTemplateServiceRestStub):
+    class _InstantiateInlineWorkflowTemplate(
+        _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate,
+        WorkflowTemplateServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("InstantiateInlineWorkflowTemplate")
+            return hash(
+                "WorkflowTemplateServiceRestTransport.InstantiateInlineWorkflowTemplate"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -938,57 +936,37 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/workflowTemplates:instantiateInline",
-                    "body": "template",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/regions/*}/workflowTemplates:instantiateInline",
-                    "body": "template",
-                },
-            ]
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_instantiate_inline_workflow_template(
                 request, metadata
             )
-            pb_request = workflow_templates.InstantiateInlineWorkflowTemplateRequest.pb(
-                request
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WorkflowTemplateServiceRestTransport._InstantiateInlineWorkflowTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1002,19 +980,37 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
             resp = self._interceptor.post_instantiate_inline_workflow_template(resp)
             return resp
 
-    class _InstantiateWorkflowTemplate(WorkflowTemplateServiceRestStub):
+    class _InstantiateWorkflowTemplate(
+        _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate,
+        WorkflowTemplateServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("InstantiateWorkflowTemplate")
+            return hash(
+                "WorkflowTemplateServiceRestTransport.InstantiateWorkflowTemplate"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1045,54 +1041,34 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/workflowTemplates/*}:instantiate",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/regions/*/workflowTemplates/*}:instantiate",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_instantiate_workflow_template(
                 request, metadata
             )
-            pb_request = workflow_templates.InstantiateWorkflowTemplateRequest.pb(
-                request
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WorkflowTemplateServiceRestTransport._InstantiateWorkflowTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1106,19 +1082,34 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
             resp = self._interceptor.post_instantiate_workflow_template(resp)
             return resp
 
-    class _ListWorkflowTemplates(WorkflowTemplateServiceRestStub):
+    class _ListWorkflowTemplates(
+        _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates,
+        WorkflowTemplateServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListWorkflowTemplates")
+            return hash("WorkflowTemplateServiceRestTransport.ListWorkflowTemplates")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1147,44 +1138,29 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/workflowTemplates",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/regions/*}/workflowTemplates",
-                },
-            ]
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_workflow_templates(
                 request, metadata
             )
-            pb_request = workflow_templates.ListWorkflowTemplatesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WorkflowTemplateServiceRestTransport._ListWorkflowTemplates._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1200,19 +1176,35 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
             resp = self._interceptor.post_list_workflow_templates(resp)
             return resp
 
-    class _UpdateWorkflowTemplate(WorkflowTemplateServiceRestStub):
+    class _UpdateWorkflowTemplate(
+        _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate,
+        WorkflowTemplateServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateWorkflowTemplate")
+            return hash("WorkflowTemplateServiceRestTransport.UpdateWorkflowTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1241,52 +1233,34 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "put",
-                    "uri": "/v1/{template.name=projects/*/locations/*/workflowTemplates/*}",
-                    "body": "template",
-                },
-                {
-                    "method": "put",
-                    "uri": "/v1/{template.name=projects/*/regions/*/workflowTemplates/*}",
-                    "body": "template",
-                },
-            ]
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_workflow_template(
                 request, metadata
             )
-            pb_request = workflow_templates.UpdateWorkflowTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WorkflowTemplateServiceRestTransport._UpdateWorkflowTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1380,7 +1354,36 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(WorkflowTemplateServiceRestStub):
+    class _GetIamPolicy(
+        _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy,
+        WorkflowTemplateServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("WorkflowTemplateServiceRestTransport.GetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.GetIamPolicyRequest,
@@ -1404,65 +1407,32 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/clusters/*}:getIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/jobs/*}:getIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/operations/*}:getIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/workflowTemplates/*}:getIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/workflowTemplates/*}:getIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/autoscalingPolicies/*}:getIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/autoscalingPolicies/*}:getIamPolicy",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = WorkflowTemplateServiceRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1470,8 +1440,9 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
@@ -1479,7 +1450,36 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(WorkflowTemplateServiceRestStub):
+    class _SetIamPolicy(
+        _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy,
+        WorkflowTemplateServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("WorkflowTemplateServiceRestTransport.SetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.SetIamPolicyRequest,
@@ -1503,65 +1503,32 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/clusters/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/jobs/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/operations/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/workflowTemplates/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/workflowTemplates/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/autoscalingPolicies/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/autoscalingPolicies/*}:setIamPolicy",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = WorkflowTemplateServiceRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1569,8 +1536,9 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
@@ -1578,7 +1546,36 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(WorkflowTemplateServiceRestStub):
+    class _TestIamPermissions(
+        _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions,
+        WorkflowTemplateServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("WorkflowTemplateServiceRestTransport.TestIamPermissions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.TestIamPermissionsRequest,
@@ -1602,67 +1599,36 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/clusters/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/jobs/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/operations/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/workflowTemplates/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/workflowTemplates/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/regions/*/autoscalingPolicies/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/autoscalingPolicies/*}:testIamPermissions",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = (
+                WorkflowTemplateServiceRestTransport._TestIamPermissions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1670,8 +1636,9 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = iam_policy_pb2.TestIamPermissionsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
@@ -1679,7 +1646,35 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(WorkflowTemplateServiceRestStub):
+    class _CancelOperation(
+        _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation,
+        WorkflowTemplateServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("WorkflowTemplateServiceRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -1700,38 +1695,31 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/regions/*/operations/*}:cancel",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
-                },
-            ]
-
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = (
+                WorkflowTemplateServiceRestTransport._CancelOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1745,7 +1733,35 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(WorkflowTemplateServiceRestStub):
+    class _DeleteOperation(
+        _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation,
+        WorkflowTemplateServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("WorkflowTemplateServiceRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.DeleteOperationRequest,
@@ -1766,38 +1782,31 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/regions/*/operations/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = (
+                WorkflowTemplateServiceRestTransport._DeleteOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1811,7 +1820,35 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(WorkflowTemplateServiceRestStub):
+    class _GetOperation(
+        _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation,
+        WorkflowTemplateServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("WorkflowTemplateServiceRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -1835,36 +1872,27 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/regions/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = WorkflowTemplateServiceRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1872,8 +1900,9 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -1881,7 +1910,35 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(WorkflowTemplateServiceRestStub):
+    class _ListOperations(
+        _BaseWorkflowTemplateServiceRestTransport._BaseListOperations,
+        WorkflowTemplateServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("WorkflowTemplateServiceRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -1905,36 +1962,29 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/regions/*/operations}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations}",
-                },
-            ]
-
+            http_options = (
+                _BaseWorkflowTemplateServiceRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = (
+                WorkflowTemplateServiceRestTransport._ListOperations._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1942,8 +1992,9 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

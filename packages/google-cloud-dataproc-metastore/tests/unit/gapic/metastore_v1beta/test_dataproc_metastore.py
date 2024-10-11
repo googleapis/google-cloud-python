@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,7 +52,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -50,17 +67,9 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.metastore_v1beta.services.dataproc_metastore import (
     DataprocMetastoreAsyncClient,
@@ -71,8 +80,22 @@ from google.cloud.metastore_v1beta.services.dataproc_metastore import (
 from google.cloud.metastore_v1beta.types import metastore
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1212,25 +1235,6 @@ def test_list_services(request_type, transport: str = "grpc"):
     assert response.unreachable == ["unreachable_value"]
 
 
-def test_list_services_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_services()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListServicesRequest()
-
-
 def test_list_services_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1301,30 +1305,6 @@ def test_list_services_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_services_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            metastore.ListServicesResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_services()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListServicesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_services_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1332,7 +1312,7 @@ async def test_list_services_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1371,7 +1351,7 @@ async def test_list_services_async(
     transport: str = "grpc_asyncio", request_type=metastore.ListServicesRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1439,7 +1419,7 @@ def test_list_services_field_headers():
 @pytest.mark.asyncio
 async def test_list_services_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1509,7 +1489,7 @@ def test_list_services_flattened_error():
 @pytest.mark.asyncio
 async def test_list_services_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1538,7 +1518,7 @@ async def test_list_services_flattened_async():
 @pytest.mark.asyncio
 async def test_list_services_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1648,7 +1628,7 @@ def test_list_services_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_services_async_pager():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1698,7 +1678,7 @@ async def test_list_services_async_pager():
 @pytest.mark.asyncio
 async def test_list_services_async_pages():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1800,25 +1780,6 @@ def test_get_service(request_type, transport: str = "grpc"):
     assert response.database_type == metastore.Service.DatabaseType.MYSQL
 
 
-def test_get_service_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_service()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetServiceRequest()
-
-
 def test_get_service_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1883,39 +1844,6 @@ def test_get_service_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_service_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            metastore.Service(
-                name="name_value",
-                network="network_value",
-                endpoint_uri="endpoint_uri_value",
-                port=453,
-                state=metastore.Service.State.CREATING,
-                state_message="state_message_value",
-                artifact_gcs_uri="artifact_gcs_uri_value",
-                tier=metastore.Service.Tier.DEVELOPER,
-                uid="uid_value",
-                release_channel=metastore.Service.ReleaseChannel.CANARY,
-                database_type=metastore.Service.DatabaseType.MYSQL,
-            )
-        )
-        response = await client.get_service()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetServiceRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_service_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1923,7 +1851,7 @@ async def test_get_service_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1962,7 +1890,7 @@ async def test_get_service_async(
     transport: str = "grpc_asyncio", request_type=metastore.GetServiceRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2048,7 +1976,7 @@ def test_get_service_field_headers():
 @pytest.mark.asyncio
 async def test_get_service_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2116,7 +2044,7 @@ def test_get_service_flattened_error():
 @pytest.mark.asyncio
 async def test_get_service_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2143,7 +2071,7 @@ async def test_get_service_flattened_async():
 @pytest.mark.asyncio
 async def test_get_service_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2186,25 +2114,6 @@ def test_create_service(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_service_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_service()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateServiceRequest()
 
 
 def test_create_service_non_empty_request_with_auto_populated_field():
@@ -2280,27 +2189,6 @@ def test_create_service_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_service_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_service()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateServiceRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_service_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2308,7 +2196,7 @@ async def test_create_service_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2352,7 +2240,7 @@ async def test_create_service_async(
     transport: str = "grpc_asyncio", request_type=metastore.CreateServiceRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2415,7 +2303,7 @@ def test_create_service_field_headers():
 @pytest.mark.asyncio
 async def test_create_service_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2505,7 +2393,7 @@ def test_create_service_flattened_error():
 @pytest.mark.asyncio
 async def test_create_service_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2548,7 +2436,7 @@ async def test_create_service_flattened_async():
 @pytest.mark.asyncio
 async def test_create_service_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2597,25 +2485,6 @@ def test_update_service(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_service_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_service()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.UpdateServiceRequest()
 
 
 def test_update_service_non_empty_request_with_auto_populated_field():
@@ -2687,27 +2556,6 @@ def test_update_service_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_service_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_service()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.UpdateServiceRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_service_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2715,7 +2563,7 @@ async def test_update_service_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2759,7 +2607,7 @@ async def test_update_service_async(
     transport: str = "grpc_asyncio", request_type=metastore.UpdateServiceRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2822,7 +2670,7 @@ def test_update_service_field_headers():
 @pytest.mark.asyncio
 async def test_update_service_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2907,7 +2755,7 @@ def test_update_service_flattened_error():
 @pytest.mark.asyncio
 async def test_update_service_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2946,7 +2794,7 @@ async def test_update_service_flattened_async():
 @pytest.mark.asyncio
 async def test_update_service_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2994,25 +2842,6 @@ def test_delete_service(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_service_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_service()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteServiceRequest()
 
 
 def test_delete_service_non_empty_request_with_auto_populated_field():
@@ -3086,27 +2915,6 @@ def test_delete_service_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_service_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_service()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteServiceRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_service_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3114,7 +2922,7 @@ async def test_delete_service_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3158,7 +2966,7 @@ async def test_delete_service_async(
     transport: str = "grpc_asyncio", request_type=metastore.DeleteServiceRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3221,7 +3029,7 @@ def test_delete_service_field_headers():
 @pytest.mark.asyncio
 async def test_delete_service_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3291,7 +3099,7 @@ def test_delete_service_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_service_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3320,7 +3128,7 @@ async def test_delete_service_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_service_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3370,27 +3178,6 @@ def test_list_metadata_imports(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListMetadataImportsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_metadata_imports_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_metadata_imports), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_metadata_imports()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListMetadataImportsRequest()
 
 
 def test_list_metadata_imports_non_empty_request_with_auto_populated_field():
@@ -3470,32 +3257,6 @@ def test_list_metadata_imports_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_metadata_imports_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_metadata_imports), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            metastore.ListMetadataImportsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_metadata_imports()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListMetadataImportsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_metadata_imports_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3503,7 +3264,7 @@ async def test_list_metadata_imports_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3542,7 +3303,7 @@ async def test_list_metadata_imports_async(
     transport: str = "grpc_asyncio", request_type=metastore.ListMetadataImportsRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3614,7 +3375,7 @@ def test_list_metadata_imports_field_headers():
 @pytest.mark.asyncio
 async def test_list_metadata_imports_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3688,7 +3449,7 @@ def test_list_metadata_imports_flattened_error():
 @pytest.mark.asyncio
 async def test_list_metadata_imports_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3719,7 +3480,7 @@ async def test_list_metadata_imports_flattened_async():
 @pytest.mark.asyncio
 async def test_list_metadata_imports_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3833,7 +3594,7 @@ def test_list_metadata_imports_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_metadata_imports_async_pager():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3885,7 +3646,7 @@ async def test_list_metadata_imports_async_pager():
 @pytest.mark.asyncio
 async def test_list_metadata_imports_async_pages():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3975,27 +3736,6 @@ def test_get_metadata_import(request_type, transport: str = "grpc"):
     assert response.state == metastore.MetadataImport.State.RUNNING
 
 
-def test_get_metadata_import_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_metadata_import), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_metadata_import()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetMetadataImportRequest()
-
-
 def test_get_metadata_import_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -4066,33 +3806,6 @@ def test_get_metadata_import_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_metadata_import_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_metadata_import), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            metastore.MetadataImport(
-                name="name_value",
-                description="description_value",
-                state=metastore.MetadataImport.State.RUNNING,
-            )
-        )
-        response = await client.get_metadata_import()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetMetadataImportRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_metadata_import_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4100,7 +3813,7 @@ async def test_get_metadata_import_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4139,7 +3852,7 @@ async def test_get_metadata_import_async(
     transport: str = "grpc_asyncio", request_type=metastore.GetMetadataImportRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4213,7 +3926,7 @@ def test_get_metadata_import_field_headers():
 @pytest.mark.asyncio
 async def test_get_metadata_import_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4287,7 +4000,7 @@ def test_get_metadata_import_flattened_error():
 @pytest.mark.asyncio
 async def test_get_metadata_import_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4318,7 +4031,7 @@ async def test_get_metadata_import_flattened_async():
 @pytest.mark.asyncio
 async def test_get_metadata_import_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4363,27 +4076,6 @@ def test_create_metadata_import(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_metadata_import_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_metadata_import), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_metadata_import()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateMetadataImportRequest()
 
 
 def test_create_metadata_import_non_empty_request_with_auto_populated_field():
@@ -4466,29 +4158,6 @@ def test_create_metadata_import_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_metadata_import_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_metadata_import), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_metadata_import()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateMetadataImportRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_metadata_import_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4496,7 +4165,7 @@ async def test_create_metadata_import_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4540,7 +4209,7 @@ async def test_create_metadata_import_async(
     transport: str = "grpc_asyncio", request_type=metastore.CreateMetadataImportRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4607,7 +4276,7 @@ def test_create_metadata_import_field_headers():
 @pytest.mark.asyncio
 async def test_create_metadata_import_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4703,7 +4372,7 @@ def test_create_metadata_import_flattened_error():
 @pytest.mark.asyncio
 async def test_create_metadata_import_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4750,7 +4419,7 @@ async def test_create_metadata_import_flattened_async():
 @pytest.mark.asyncio
 async def test_create_metadata_import_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4801,27 +4470,6 @@ def test_update_metadata_import(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_metadata_import_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_metadata_import), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_metadata_import()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.UpdateMetadataImportRequest()
 
 
 def test_update_metadata_import_non_empty_request_with_auto_populated_field():
@@ -4900,29 +4548,6 @@ def test_update_metadata_import_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_metadata_import_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_metadata_import), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_metadata_import()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.UpdateMetadataImportRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_metadata_import_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4930,7 +4555,7 @@ async def test_update_metadata_import_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4974,7 +4599,7 @@ async def test_update_metadata_import_async(
     transport: str = "grpc_asyncio", request_type=metastore.UpdateMetadataImportRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5041,7 +4666,7 @@ def test_update_metadata_import_field_headers():
 @pytest.mark.asyncio
 async def test_update_metadata_import_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5132,7 +4757,7 @@ def test_update_metadata_import_flattened_error():
 @pytest.mark.asyncio
 async def test_update_metadata_import_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5175,7 +4800,7 @@ async def test_update_metadata_import_flattened_async():
 @pytest.mark.asyncio
 async def test_update_metadata_import_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5223,25 +4848,6 @@ def test_export_metadata(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_export_metadata_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.export_metadata), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.export_metadata()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ExportMetadataRequest()
 
 
 def test_export_metadata_non_empty_request_with_auto_populated_field():
@@ -5317,27 +4923,6 @@ def test_export_metadata_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_export_metadata_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.export_metadata), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.export_metadata()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ExportMetadataRequest()
-
-
-@pytest.mark.asyncio
 async def test_export_metadata_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5345,7 +4930,7 @@ async def test_export_metadata_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5389,7 +4974,7 @@ async def test_export_metadata_async(
     transport: str = "grpc_asyncio", request_type=metastore.ExportMetadataRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5452,7 +5037,7 @@ def test_export_metadata_field_headers():
 @pytest.mark.asyncio
 async def test_export_metadata_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5512,25 +5097,6 @@ def test_restore_service(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_restore_service_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.restore_service), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.restore_service()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.RestoreServiceRequest()
 
 
 def test_restore_service_non_empty_request_with_auto_populated_field():
@@ -5606,27 +5172,6 @@ def test_restore_service_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_restore_service_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.restore_service), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.restore_service()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.RestoreServiceRequest()
-
-
-@pytest.mark.asyncio
 async def test_restore_service_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5634,7 +5179,7 @@ async def test_restore_service_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5678,7 +5223,7 @@ async def test_restore_service_async(
     transport: str = "grpc_asyncio", request_type=metastore.RestoreServiceRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5741,7 +5286,7 @@ def test_restore_service_field_headers():
 @pytest.mark.asyncio
 async def test_restore_service_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5816,7 +5361,7 @@ def test_restore_service_flattened_error():
 @pytest.mark.asyncio
 async def test_restore_service_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5849,7 +5394,7 @@ async def test_restore_service_flattened_async():
 @pytest.mark.asyncio
 async def test_restore_service_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5898,25 +5443,6 @@ def test_list_backups(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListBackupsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_backups_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_backups()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListBackupsRequest()
 
 
 def test_list_backups_non_empty_request_with_auto_populated_field():
@@ -5989,30 +5515,6 @@ def test_list_backups_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_backups_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            metastore.ListBackupsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_backups()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListBackupsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_backups_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6020,7 +5522,7 @@ async def test_list_backups_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6059,7 +5561,7 @@ async def test_list_backups_async(
     transport: str = "grpc_asyncio", request_type=metastore.ListBackupsRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6127,7 +5629,7 @@ def test_list_backups_field_headers():
 @pytest.mark.asyncio
 async def test_list_backups_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6197,7 +5699,7 @@ def test_list_backups_flattened_error():
 @pytest.mark.asyncio
 async def test_list_backups_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6226,7 +5728,7 @@ async def test_list_backups_flattened_async():
 @pytest.mark.asyncio
 async def test_list_backups_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6336,7 +5838,7 @@ def test_list_backups_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_backups_async_pager():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6386,7 +5888,7 @@ async def test_list_backups_async_pager():
 @pytest.mark.asyncio
 async def test_list_backups_async_pages():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6474,25 +5976,6 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert response.restoring_services == ["restoring_services_value"]
 
 
-def test_get_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetBackupRequest()
-
-
 def test_get_backup_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -6557,38 +6040,12 @@ def test_get_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            metastore.Backup(
-                name="name_value",
-                state=metastore.Backup.State.CREATING,
-                description="description_value",
-                restoring_services=["restoring_services_value"],
-            )
-        )
-        response = await client.get_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6627,7 +6084,7 @@ async def test_get_backup_async(
     transport: str = "grpc_asyncio", request_type=metastore.GetBackupRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6699,7 +6156,7 @@ def test_get_backup_field_headers():
 @pytest.mark.asyncio
 async def test_get_backup_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6767,7 +6224,7 @@ def test_get_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_get_backup_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6794,7 +6251,7 @@ async def test_get_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_get_backup_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6837,25 +6294,6 @@ def test_create_backup(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateBackupRequest()
 
 
 def test_create_backup_non_empty_request_with_auto_populated_field():
@@ -6931,27 +6369,6 @@ def test_create_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_backup_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6959,7 +6376,7 @@ async def test_create_backup_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7003,7 +6420,7 @@ async def test_create_backup_async(
     transport: str = "grpc_asyncio", request_type=metastore.CreateBackupRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7066,7 +6483,7 @@ def test_create_backup_field_headers():
 @pytest.mark.asyncio
 async def test_create_backup_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7146,7 +6563,7 @@ def test_create_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_create_backup_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7183,7 +6600,7 @@ async def test_create_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_create_backup_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7228,25 +6645,6 @@ def test_delete_backup(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteBackupRequest()
 
 
 def test_delete_backup_non_empty_request_with_auto_populated_field():
@@ -7320,27 +6718,6 @@ def test_delete_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_backup_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7348,7 +6725,7 @@ async def test_delete_backup_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7392,7 +6769,7 @@ async def test_delete_backup_async(
     transport: str = "grpc_asyncio", request_type=metastore.DeleteBackupRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7455,7 +6832,7 @@ def test_delete_backup_field_headers():
 @pytest.mark.asyncio
 async def test_delete_backup_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7525,7 +6902,7 @@ def test_delete_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_backup_flattened_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7554,7 +6931,7 @@ async def test_delete_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_backup_flattened_error_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7602,27 +6979,6 @@ def test_remove_iam_policy(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.RemoveIamPolicyResponse)
     assert response.success is True
-
-
-def test_remove_iam_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.remove_iam_policy), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.remove_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.RemoveIamPolicyRequest()
 
 
 def test_remove_iam_policy_non_empty_request_with_auto_populated_field():
@@ -7693,31 +7049,6 @@ def test_remove_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_remove_iam_policy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.remove_iam_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            metastore.RemoveIamPolicyResponse(
-                success=True,
-            )
-        )
-        response = await client.remove_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.RemoveIamPolicyRequest()
-
-
-@pytest.mark.asyncio
 async def test_remove_iam_policy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7725,7 +7056,7 @@ async def test_remove_iam_policy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7764,7 +7095,7 @@ async def test_remove_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=metastore.RemoveIamPolicyRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7834,7 +7165,7 @@ def test_remove_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_remove_iam_policy_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7896,25 +7227,6 @@ def test_query_metadata(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_query_metadata_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.query_metadata), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.query_metadata()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.QueryMetadataRequest()
 
 
 def test_query_metadata_non_empty_request_with_auto_populated_field():
@@ -7988,27 +7300,6 @@ def test_query_metadata_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_query_metadata_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.query_metadata), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.query_metadata()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.QueryMetadataRequest()
-
-
-@pytest.mark.asyncio
 async def test_query_metadata_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8016,7 +7307,7 @@ async def test_query_metadata_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8060,7 +7351,7 @@ async def test_query_metadata_async(
     transport: str = "grpc_asyncio", request_type=metastore.QueryMetadataRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8123,7 +7414,7 @@ def test_query_metadata_field_headers():
 @pytest.mark.asyncio
 async def test_query_metadata_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8185,27 +7476,6 @@ def test_move_table_to_database(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_move_table_to_database_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.move_table_to_database), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.move_table_to_database()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.MoveTableToDatabaseRequest()
 
 
 def test_move_table_to_database_non_empty_request_with_auto_populated_field():
@@ -8290,29 +7560,6 @@ def test_move_table_to_database_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_move_table_to_database_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.move_table_to_database), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.move_table_to_database()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.MoveTableToDatabaseRequest()
-
-
-@pytest.mark.asyncio
 async def test_move_table_to_database_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8320,7 +7567,7 @@ async def test_move_table_to_database_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8364,7 +7611,7 @@ async def test_move_table_to_database_async(
     transport: str = "grpc_asyncio", request_type=metastore.MoveTableToDatabaseRequest
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8431,7 +7678,7 @@ def test_move_table_to_database_field_headers():
 @pytest.mark.asyncio
 async def test_move_table_to_database_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8495,27 +7742,6 @@ def test_alter_metadata_resource_location(request_type, transport: str = "grpc")
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_alter_metadata_resource_location_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.alter_metadata_resource_location), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.alter_metadata_resource_location()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.AlterMetadataResourceLocationRequest()
 
 
 def test_alter_metadata_resource_location_non_empty_request_with_auto_populated_field():
@@ -8598,29 +7824,6 @@ def test_alter_metadata_resource_location_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_alter_metadata_resource_location_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.alter_metadata_resource_location), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.alter_metadata_resource_location()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.AlterMetadataResourceLocationRequest()
-
-
-@pytest.mark.asyncio
 async def test_alter_metadata_resource_location_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8628,7 +7831,7 @@ async def test_alter_metadata_resource_location_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataprocMetastoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8673,7 +7876,7 @@ async def test_alter_metadata_resource_location_async(
     request_type=metastore.AlterMetadataResourceLocationRequest,
 ):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8740,7 +7943,7 @@ def test_alter_metadata_resource_location_field_headers():
 @pytest.mark.asyncio
 async def test_alter_metadata_resource_location_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8769,48 +7972,6 @@ async def test_alter_metadata_resource_location_field_headers_async():
         "x-goog-request-params",
         "service=service_value",
     ) in kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.ListServicesRequest,
-        dict,
-    ],
-)
-def test_list_services_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = metastore.ListServicesResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = metastore.ListServicesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_services(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListServicesPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_services_rest_use_cached_wrapped_rpc():
@@ -8949,85 +8110,6 @@ def test_list_services_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_services_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_list_services"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_list_services"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.ListServicesRequest.pb(metastore.ListServicesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = metastore.ListServicesResponse.to_json(
-            metastore.ListServicesResponse()
-        )
-
-        request = metastore.ListServicesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = metastore.ListServicesResponse()
-
-        client.list_services(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_services_rest_bad_request(
-    transport: str = "rest", request_type=metastore.ListServicesRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_services(request)
-
-
 def test_list_services_rest_flattened():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9144,66 +8226,6 @@ def test_list_services_rest_pager(transport: str = "rest"):
         pages = list(client.list_services(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.GetServiceRequest,
-        dict,
-    ],
-)
-def test_get_service_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = metastore.Service(
-            name="name_value",
-            network="network_value",
-            endpoint_uri="endpoint_uri_value",
-            port=453,
-            state=metastore.Service.State.CREATING,
-            state_message="state_message_value",
-            artifact_gcs_uri="artifact_gcs_uri_value",
-            tier=metastore.Service.Tier.DEVELOPER,
-            uid="uid_value",
-            release_channel=metastore.Service.ReleaseChannel.CANARY,
-            database_type=metastore.Service.DatabaseType.MYSQL,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = metastore.Service.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_service(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, metastore.Service)
-    assert response.name == "name_value"
-    assert response.network == "network_value"
-    assert response.endpoint_uri == "endpoint_uri_value"
-    assert response.port == 453
-    assert response.state == metastore.Service.State.CREATING
-    assert response.state_message == "state_message_value"
-    assert response.artifact_gcs_uri == "artifact_gcs_uri_value"
-    assert response.tier == metastore.Service.Tier.DEVELOPER
-    assert response.uid == "uid_value"
-    assert response.release_channel == metastore.Service.ReleaseChannel.CANARY
-    assert response.database_type == metastore.Service.DatabaseType.MYSQL
 
 
 def test_get_service_rest_use_cached_wrapped_rpc():
@@ -9323,83 +8345,6 @@ def test_get_service_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_service_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_get_service"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_get_service"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.GetServiceRequest.pb(metastore.GetServiceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = metastore.Service.to_json(metastore.Service())
-
-        request = metastore.GetServiceRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = metastore.Service()
-
-        client.get_service(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_service_rest_bad_request(
-    transport: str = "rest", request_type=metastore.GetServiceRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_service(request)
-
-
 def test_get_service_rest_flattened():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9455,180 +8400,6 @@ def test_get_service_rest_flattened_error(transport: str = "rest"):
             metastore.GetServiceRequest(),
             name="name_value",
         )
-
-
-def test_get_service_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.CreateServiceRequest,
-        dict,
-    ],
-)
-def test_create_service_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["service"] = {
-        "hive_metastore_config": {
-            "version": "version_value",
-            "config_overrides": {},
-            "kerberos_config": {
-                "keytab": {"cloud_secret": "cloud_secret_value"},
-                "principal": "principal_value",
-                "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
-            },
-            "endpoint_protocol": 1,
-            "auxiliary_versions": {},
-        },
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "network": "network_value",
-        "endpoint_uri": "endpoint_uri_value",
-        "port": 453,
-        "state": 1,
-        "state_message": "state_message_value",
-        "artifact_gcs_uri": "artifact_gcs_uri_value",
-        "tier": 1,
-        "metadata_integration": {
-            "data_catalog_config": {"enabled": True},
-            "dataplex_config": {"lake_resources": {}},
-        },
-        "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
-        "uid": "uid_value",
-        "metadata_management_activity": {
-            "metadata_exports": [
-                {
-                    "destination_gcs_uri": "destination_gcs_uri_value",
-                    "start_time": {},
-                    "end_time": {},
-                    "state": 1,
-                    "database_dump_type": 1,
-                }
-            ],
-            "restores": [
-                {
-                    "start_time": {},
-                    "end_time": {},
-                    "state": 1,
-                    "backup": "backup_value",
-                    "type_": 1,
-                    "details": "details_value",
-                }
-            ],
-        },
-        "release_channel": 1,
-        "encryption_config": {"kms_key": "kms_key_value"},
-        "network_config": {
-            "consumers": [
-                {
-                    "subnetwork": "subnetwork_value",
-                    "endpoint_uri": "endpoint_uri_value",
-                    "endpoint_location": "endpoint_location_value",
-                }
-            ],
-            "custom_routes_enabled": True,
-        },
-        "database_type": 1,
-        "telemetry_config": {"log_format": 1},
-        "scaling_config": {"instance_size": 1, "scaling_factor": 0.1471},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = metastore.CreateServiceRequest.meta.fields["service"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["service"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["service"][field])):
-                    del request_init["service"][field][i][subfield]
-            else:
-                del request_init["service"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_service(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_service_rest_use_cached_wrapped_rpc():
@@ -9786,87 +8557,6 @@ def test_create_service_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_service_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_create_service"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_create_service"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.CreateServiceRequest.pb(metastore.CreateServiceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = metastore.CreateServiceRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_service(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_service_rest_bad_request(
-    transport: str = "rest", request_type=metastore.CreateServiceRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_service(request)
-
-
 def test_create_service_rest_flattened():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9932,182 +8622,6 @@ def test_create_service_rest_flattened_error(transport: str = "rest"):
             ),
             service_id="service_id_value",
         )
-
-
-def test_create_service_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.UpdateServiceRequest,
-        dict,
-    ],
-)
-def test_update_service_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "service": {"name": "projects/sample1/locations/sample2/services/sample3"}
-    }
-    request_init["service"] = {
-        "hive_metastore_config": {
-            "version": "version_value",
-            "config_overrides": {},
-            "kerberos_config": {
-                "keytab": {"cloud_secret": "cloud_secret_value"},
-                "principal": "principal_value",
-                "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
-            },
-            "endpoint_protocol": 1,
-            "auxiliary_versions": {},
-        },
-        "name": "projects/sample1/locations/sample2/services/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "network": "network_value",
-        "endpoint_uri": "endpoint_uri_value",
-        "port": 453,
-        "state": 1,
-        "state_message": "state_message_value",
-        "artifact_gcs_uri": "artifact_gcs_uri_value",
-        "tier": 1,
-        "metadata_integration": {
-            "data_catalog_config": {"enabled": True},
-            "dataplex_config": {"lake_resources": {}},
-        },
-        "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
-        "uid": "uid_value",
-        "metadata_management_activity": {
-            "metadata_exports": [
-                {
-                    "destination_gcs_uri": "destination_gcs_uri_value",
-                    "start_time": {},
-                    "end_time": {},
-                    "state": 1,
-                    "database_dump_type": 1,
-                }
-            ],
-            "restores": [
-                {
-                    "start_time": {},
-                    "end_time": {},
-                    "state": 1,
-                    "backup": "backup_value",
-                    "type_": 1,
-                    "details": "details_value",
-                }
-            ],
-        },
-        "release_channel": 1,
-        "encryption_config": {"kms_key": "kms_key_value"},
-        "network_config": {
-            "consumers": [
-                {
-                    "subnetwork": "subnetwork_value",
-                    "endpoint_uri": "endpoint_uri_value",
-                    "endpoint_location": "endpoint_location_value",
-                }
-            ],
-            "custom_routes_enabled": True,
-        },
-        "database_type": 1,
-        "telemetry_config": {"log_format": 1},
-        "scaling_config": {"instance_size": 1, "scaling_factor": 0.1471},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = metastore.UpdateServiceRequest.meta.fields["service"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["service"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["service"][field])):
-                    del request_init["service"][field][i][subfield]
-            else:
-                del request_init["service"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_service(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_service_rest_use_cached_wrapped_rpc():
@@ -10246,89 +8760,6 @@ def test_update_service_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_service_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_update_service"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_update_service"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.UpdateServiceRequest.pb(metastore.UpdateServiceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = metastore.UpdateServiceRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_service(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_service_rest_bad_request(
-    transport: str = "rest", request_type=metastore.UpdateServiceRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "service": {"name": "projects/sample1/locations/sample2/services/sample3"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_service(request)
-
-
 def test_update_service_rest_flattened():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10394,47 +8825,6 @@ def test_update_service_rest_flattened_error(transport: str = "rest"):
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_service_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.DeleteServiceRequest,
-        dict,
-    ],
-)
-def test_delete_service_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_service(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_service_rest_use_cached_wrapped_rpc():
@@ -10559,87 +8949,6 @@ def test_delete_service_rest_unset_required_fields():
     assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_service_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_delete_service"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_delete_service"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.DeleteServiceRequest.pb(metastore.DeleteServiceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = metastore.DeleteServiceRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_service(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_service_rest_bad_request(
-    transport: str = "rest", request_type=metastore.DeleteServiceRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_service(request)
-
-
 def test_delete_service_rest_flattened():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10693,54 +9002,6 @@ def test_delete_service_rest_flattened_error(transport: str = "rest"):
             metastore.DeleteServiceRequest(),
             name="name_value",
         )
-
-
-def test_delete_service_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.ListMetadataImportsRequest,
-        dict,
-    ],
-)
-def test_list_metadata_imports_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = metastore.ListMetadataImportsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = metastore.ListMetadataImportsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_metadata_imports(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListMetadataImportsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_metadata_imports_rest_use_cached_wrapped_rpc():
@@ -10886,87 +9147,6 @@ def test_list_metadata_imports_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_metadata_imports_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_list_metadata_imports"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_list_metadata_imports"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.ListMetadataImportsRequest.pb(
-            metastore.ListMetadataImportsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = metastore.ListMetadataImportsResponse.to_json(
-            metastore.ListMetadataImportsResponse()
-        )
-
-        request = metastore.ListMetadataImportsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = metastore.ListMetadataImportsResponse()
-
-        client.list_metadata_imports(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_metadata_imports_rest_bad_request(
-    transport: str = "rest", request_type=metastore.ListMetadataImportsRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_metadata_imports(request)
-
-
 def test_list_metadata_imports_rest_flattened():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11089,52 +9269,6 @@ def test_list_metadata_imports_rest_pager(transport: str = "rest"):
         pages = list(client.list_metadata_imports(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.GetMetadataImportRequest,
-        dict,
-    ],
-)
-def test_get_metadata_import_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = metastore.MetadataImport(
-            name="name_value",
-            description="description_value",
-            state=metastore.MetadataImport.State.RUNNING,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = metastore.MetadataImport.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_metadata_import(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, metastore.MetadataImport)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
-    assert response.state == metastore.MetadataImport.State.RUNNING
 
 
 def test_get_metadata_import_rest_use_cached_wrapped_rpc():
@@ -11260,89 +9394,6 @@ def test_get_metadata_import_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_metadata_import_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_get_metadata_import"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_get_metadata_import"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.GetMetadataImportRequest.pb(
-            metastore.GetMetadataImportRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = metastore.MetadataImport.to_json(
-            metastore.MetadataImport()
-        )
-
-        request = metastore.GetMetadataImportRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = metastore.MetadataImport()
-
-        client.get_metadata_import(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_metadata_import_rest_bad_request(
-    transport: str = "rest", request_type=metastore.GetMetadataImportRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_metadata_import(request)
-
-
 def test_get_metadata_import_rest_flattened():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11400,128 +9451,6 @@ def test_get_metadata_import_rest_flattened_error(transport: str = "rest"):
             metastore.GetMetadataImportRequest(),
             name="name_value",
         )
-
-
-def test_get_metadata_import_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.CreateMetadataImportRequest,
-        dict,
-    ],
-)
-def test_create_metadata_import_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
-    request_init["metadata_import"] = {
-        "database_dump": {
-            "database_type": 1,
-            "gcs_uri": "gcs_uri_value",
-            "source_database": "source_database_value",
-            "type_": 1,
-        },
-        "name": "name_value",
-        "description": "description_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "end_time": {},
-        "state": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = metastore.CreateMetadataImportRequest.meta.fields["metadata_import"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["metadata_import"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["metadata_import"][field])):
-                    del request_init["metadata_import"][field][i][subfield]
-            else:
-                del request_init["metadata_import"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_metadata_import(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_metadata_import_rest_use_cached_wrapped_rpc():
@@ -11684,89 +9613,6 @@ def test_create_metadata_import_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_metadata_import_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_create_metadata_import"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_create_metadata_import"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.CreateMetadataImportRequest.pb(
-            metastore.CreateMetadataImportRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = metastore.CreateMetadataImportRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_metadata_import(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_metadata_import_rest_bad_request(
-    transport: str = "rest", request_type=metastore.CreateMetadataImportRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_metadata_import(request)
-
-
 def test_create_metadata_import_rest_flattened():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11834,132 +9680,6 @@ def test_create_metadata_import_rest_flattened_error(transport: str = "rest"):
             ),
             metadata_import_id="metadata_import_id_value",
         )
-
-
-def test_create_metadata_import_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.UpdateMetadataImportRequest,
-        dict,
-    ],
-)
-def test_update_metadata_import_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "metadata_import": {
-            "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
-        }
-    }
-    request_init["metadata_import"] = {
-        "database_dump": {
-            "database_type": 1,
-            "gcs_uri": "gcs_uri_value",
-            "source_database": "source_database_value",
-            "type_": 1,
-        },
-        "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4",
-        "description": "description_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "end_time": {},
-        "state": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = metastore.UpdateMetadataImportRequest.meta.fields["metadata_import"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["metadata_import"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["metadata_import"][field])):
-                    del request_init["metadata_import"][field][i][subfield]
-            else:
-                del request_init["metadata_import"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_metadata_import(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_metadata_import_rest_use_cached_wrapped_rpc():
@@ -12103,93 +9823,6 @@ def test_update_metadata_import_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_metadata_import_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_update_metadata_import"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_update_metadata_import"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.UpdateMetadataImportRequest.pb(
-            metastore.UpdateMetadataImportRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = metastore.UpdateMetadataImportRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_metadata_import(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_metadata_import_rest_bad_request(
-    transport: str = "rest", request_type=metastore.UpdateMetadataImportRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "metadata_import": {
-            "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_metadata_import(request)
-
-
 def test_update_metadata_import_rest_flattened():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12257,47 +9890,6 @@ def test_update_metadata_import_rest_flattened_error(transport: str = "rest"):
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_metadata_import_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.ExportMetadataRequest,
-        dict,
-    ],
-)
-def test_export_metadata_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.export_metadata(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_export_metadata_rest_use_cached_wrapped_rpc():
@@ -12419,130 +10011,6 @@ def test_export_metadata_rest_unset_required_fields():
 
     unset_fields = transport.export_metadata._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("service",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_export_metadata_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_export_metadata"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_export_metadata"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.ExportMetadataRequest.pb(
-            metastore.ExportMetadataRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = metastore.ExportMetadataRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.export_metadata(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_export_metadata_rest_bad_request(
-    transport: str = "rest", request_type=metastore.ExportMetadataRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.export_metadata(request)
-
-
-def test_export_metadata_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.RestoreServiceRequest,
-        dict,
-    ],
-)
-def test_restore_service_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.restore_service(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_restore_service_rest_use_cached_wrapped_rpc():
@@ -12678,89 +10146,6 @@ def test_restore_service_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_restore_service_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_restore_service"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_restore_service"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.RestoreServiceRequest.pb(
-            metastore.RestoreServiceRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = metastore.RestoreServiceRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.restore_service(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_restore_service_rest_bad_request(
-    transport: str = "rest", request_type=metastore.RestoreServiceRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.restore_service(request)
-
-
 def test_restore_service_rest_flattened():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12818,54 +10203,6 @@ def test_restore_service_rest_flattened_error(transport: str = "rest"):
             service="service_value",
             backup="backup_value",
         )
-
-
-def test_restore_service_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.ListBackupsRequest,
-        dict,
-    ],
-)
-def test_list_backups_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = metastore.ListBackupsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = metastore.ListBackupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_backups(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListBackupsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_backups_rest_use_cached_wrapped_rpc():
@@ -13004,85 +10341,6 @@ def test_list_backups_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_backups_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_list_backups"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_list_backups"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.ListBackupsRequest.pb(metastore.ListBackupsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = metastore.ListBackupsResponse.to_json(
-            metastore.ListBackupsResponse()
-        )
-
-        request = metastore.ListBackupsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = metastore.ListBackupsResponse()
-
-        client.list_backups(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_backups_rest_bad_request(
-    transport: str = "rest", request_type=metastore.ListBackupsRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_backups(request)
-
-
 def test_list_backups_rest_flattened():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13205,54 +10463,6 @@ def test_list_backups_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        metastore.GetBackupRequest,
-        dict,
-    ],
-)
-def test_get_backup_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = metastore.Backup(
-            name="name_value",
-            state=metastore.Backup.State.CREATING,
-            description="description_value",
-            restoring_services=["restoring_services_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = metastore.Backup.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_backup(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, metastore.Backup)
-    assert response.name == "name_value"
-    assert response.state == metastore.Backup.State.CREATING
-    assert response.description == "description_value"
-    assert response.restoring_services == ["restoring_services_value"]
-
-
 def test_get_backup_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -13370,85 +10580,6 @@ def test_get_backup_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_backup_rest_interceptors(null_interceptor):
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DataprocMetastoreRestInterceptor(),
-    )
-    client = DataprocMetastoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "post_get_backup"
-    ) as post, mock.patch.object(
-        transports.DataprocMetastoreRestInterceptor, "pre_get_backup"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = metastore.GetBackupRequest.pb(metastore.GetBackupRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = metastore.Backup.to_json(metastore.Backup())
-
-        request = metastore.GetBackupRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = metastore.Backup()
-
-        client.get_backup(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_backup_rest_bad_request(
-    transport: str = "rest", request_type=metastore.GetBackupRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_backup(request)
-
-
 def test_get_backup_rest_flattened():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13508,10 +10639,4003 @@ def test_get_backup_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_backup_rest_error():
+def test_create_backup_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataprocMetastoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_backup in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_backup] = mock_rpc
+
+        request = {}
+        client.create_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_backup(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_backup_rest_required_fields(request_type=metastore.CreateBackupRequest):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["backup_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "backupId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "backupId" in jsonified_request
+    assert jsonified_request["backupId"] == request_init["backup_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["backupId"] = "backup_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_backup._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "backup_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "backupId" in jsonified_request
+    assert jsonified_request["backupId"] == "backup_id_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_backup(request)
+
+            expected_params = [
+                (
+                    "backupId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_backup_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "backupId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "backupId",
+                "backup",
+            )
+        )
+    )
+
+
+def test_create_backup_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/services/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            backup=metastore.Backup(name="name_value"),
+            backup_id="backup_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_backup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*/services/*}/backups"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_backup_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_backup(
+            metastore.CreateBackupRequest(),
+            parent="parent_value",
+            backup=metastore.Backup(name="name_value"),
+            backup_id="backup_id_value",
+        )
+
+
+def test_delete_backup_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataprocMetastoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_backup in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete_backup] = mock_rpc
+
+        request = {}
+        client.delete_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_backup(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_backup_rest_required_fields(request_type=metastore.DeleteBackupRequest):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_backup._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_backup(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_backup_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+def test_delete_backup_rest_flattened():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_backup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/services/*/backups/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_backup_rest_flattened_error(transport: str = "rest"):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_backup(
+            metastore.DeleteBackupRequest(),
+            name="name_value",
+        )
+
+
+def test_remove_iam_policy_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataprocMetastoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.remove_iam_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.remove_iam_policy
+        ] = mock_rpc
+
+        request = {}
+        client.remove_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.remove_iam_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_remove_iam_policy_rest_required_fields(
+    request_type=metastore.RemoveIamPolicyRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = metastore.RemoveIamPolicyResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = metastore.RemoveIamPolicyResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.remove_iam_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_remove_iam_policy_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.remove_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("resource",)))
+
+
+def test_query_metadata_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataprocMetastoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.query_metadata in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.query_metadata] = mock_rpc
+
+        request = {}
+        client.query_metadata(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.query_metadata(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_query_metadata_rest_required_fields(
+    request_type=metastore.QueryMetadataRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["service"] = ""
+    request_init["query"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).query_metadata._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["service"] = "service_value"
+    jsonified_request["query"] = "query_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).query_metadata._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "service" in jsonified_request
+    assert jsonified_request["service"] == "service_value"
+    assert "query" in jsonified_request
+    assert jsonified_request["query"] == "query_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.query_metadata(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_query_metadata_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.query_metadata._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "service",
+                "query",
+            )
+        )
+    )
+
+
+def test_move_table_to_database_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataprocMetastoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.move_table_to_database
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.move_table_to_database
+        ] = mock_rpc
+
+        request = {}
+        client.move_table_to_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.move_table_to_database(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_move_table_to_database_rest_required_fields(
+    request_type=metastore.MoveTableToDatabaseRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["service"] = ""
+    request_init["table_name"] = ""
+    request_init["db_name"] = ""
+    request_init["destination_db_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).move_table_to_database._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["service"] = "service_value"
+    jsonified_request["tableName"] = "table_name_value"
+    jsonified_request["dbName"] = "db_name_value"
+    jsonified_request["destinationDbName"] = "destination_db_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).move_table_to_database._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "service" in jsonified_request
+    assert jsonified_request["service"] == "service_value"
+    assert "tableName" in jsonified_request
+    assert jsonified_request["tableName"] == "table_name_value"
+    assert "dbName" in jsonified_request
+    assert jsonified_request["dbName"] == "db_name_value"
+    assert "destinationDbName" in jsonified_request
+    assert jsonified_request["destinationDbName"] == "destination_db_name_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.move_table_to_database(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_move_table_to_database_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.move_table_to_database._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "service",
+                "tableName",
+                "dbName",
+                "destinationDbName",
+            )
+        )
+    )
+
+
+def test_alter_metadata_resource_location_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataprocMetastoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.alter_metadata_resource_location
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.alter_metadata_resource_location
+        ] = mock_rpc
+
+        request = {}
+        client.alter_metadata_resource_location(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.alter_metadata_resource_location(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_alter_metadata_resource_location_rest_required_fields(
+    request_type=metastore.AlterMetadataResourceLocationRequest,
+):
+    transport_class = transports.DataprocMetastoreRestTransport
+
+    request_init = {}
+    request_init["service"] = ""
+    request_init["resource_name"] = ""
+    request_init["location_uri"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).alter_metadata_resource_location._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["service"] = "service_value"
+    jsonified_request["resourceName"] = "resource_name_value"
+    jsonified_request["locationUri"] = "location_uri_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).alter_metadata_resource_location._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "service" in jsonified_request
+    assert jsonified_request["service"] == "service_value"
+    assert "resourceName" in jsonified_request
+    assert jsonified_request["resourceName"] == "resource_name_value"
+    assert "locationUri" in jsonified_request
+    assert jsonified_request["locationUri"] == "location_uri_value"
+
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.alter_metadata_resource_location(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_alter_metadata_resource_location_rest_unset_required_fields():
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.alter_metadata_resource_location._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "service",
+                "resourceName",
+                "locationUri",
+            )
+        )
+    )
+
+
+def test_credentials_transport_error():
+    # It is an error to provide credentials and a transport instance.
+    transport = transports.DataprocMetastoreGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = DataprocMetastoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+    # It is an error to provide a credentials file and a transport instance.
+    transport = transports.DataprocMetastoreGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = DataprocMetastoreClient(
+            client_options={"credentials_file": "credentials.json"},
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.DataprocMetastoreGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = DataprocMetastoreClient(
+            client_options=options,
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = DataprocMetastoreClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+
+    # It is an error to provide scopes and a transport instance.
+    transport = transports.DataprocMetastoreGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = DataprocMetastoreClient(
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
+        )
+
+
+def test_transport_instance():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.DataprocMetastoreGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+    assert client.transport is transport
+
+
+def test_transport_get_channel():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.DataprocMetastoreGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+    transport = transports.DataprocMetastoreGrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.DataprocMetastoreGrpcTransport,
+        transports.DataprocMetastoreGrpcAsyncIOTransport,
+        transports.DataprocMetastoreRestTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
+def test_transport_kind_grpc():
+    transport = DataprocMetastoreClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_services_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+        call.return_value = metastore.ListServicesResponse()
+        client.list_services(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.ListServicesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_service_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+        call.return_value = metastore.Service()
+        client.get_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.GetServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_service_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.CreateServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_service_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.UpdateServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_service_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.DeleteServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_metadata_imports_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_metadata_imports), "__call__"
+    ) as call:
+        call.return_value = metastore.ListMetadataImportsResponse()
+        client.list_metadata_imports(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.ListMetadataImportsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_metadata_import_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_metadata_import), "__call__"
+    ) as call:
+        call.return_value = metastore.MetadataImport()
+        client.get_metadata_import(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.GetMetadataImportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_metadata_import_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_metadata_import), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_metadata_import(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.CreateMetadataImportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_metadata_import_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_metadata_import), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_metadata_import(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.UpdateMetadataImportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_metadata_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_metadata), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_metadata(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.ExportMetadataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_restore_service_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.restore_service), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.restore_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.RestoreServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backups_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        call.return_value = metastore.ListBackupsResponse()
+        client.list_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.ListBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_backup_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        call.return_value = metastore.Backup()
+        client.get_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.GetBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_backup_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.CreateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_backup_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.DeleteBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_remove_iam_policy_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_iam_policy), "__call__"
+    ) as call:
+        call.return_value = metastore.RemoveIamPolicyResponse()
+        client.remove_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.RemoveIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_query_metadata_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.query_metadata), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.query_metadata(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.QueryMetadataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_move_table_to_database_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.move_table_to_database), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.move_table_to_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.MoveTableToDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_alter_metadata_resource_location_empty_call_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.alter_metadata_resource_location), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.alter_metadata_resource_location(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.AlterMetadataResourceLocationRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = DataprocMetastoreAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_services_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.ListServicesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_services(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.ListServicesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_service_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Service(
+                name="name_value",
+                network="network_value",
+                endpoint_uri="endpoint_uri_value",
+                port=453,
+                state=metastore.Service.State.CREATING,
+                state_message="state_message_value",
+                artifact_gcs_uri="artifact_gcs_uri_value",
+                tier=metastore.Service.Tier.DEVELOPER,
+                uid="uid_value",
+                release_channel=metastore.Service.ReleaseChannel.CANARY,
+                database_type=metastore.Service.DatabaseType.MYSQL,
+            )
+        )
+        await client.get_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.GetServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_service_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.CreateServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_service_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.UpdateServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_service_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.DeleteServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_metadata_imports_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_metadata_imports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.ListMetadataImportsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_metadata_imports(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.ListMetadataImportsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_metadata_import_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_metadata_import), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.MetadataImport(
+                name="name_value",
+                description="description_value",
+                state=metastore.MetadataImport.State.RUNNING,
+            )
+        )
+        await client.get_metadata_import(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.GetMetadataImportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_metadata_import_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_metadata_import), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_metadata_import(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.CreateMetadataImportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_metadata_import_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_metadata_import), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_metadata_import(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.UpdateMetadataImportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_export_metadata_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_metadata), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.export_metadata(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.ExportMetadataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_restore_service_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.restore_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.restore_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.RestoreServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_backups_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.ListBackupsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.ListBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_backup_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Backup(
+                name="name_value",
+                state=metastore.Backup.State.CREATING,
+                description="description_value",
+                restoring_services=["restoring_services_value"],
+            )
+        )
+        await client.get_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.GetBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_backup_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.CreateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_backup_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.DeleteBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_remove_iam_policy_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_iam_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.RemoveIamPolicyResponse(
+                success=True,
+            )
+        )
+        await client.remove_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.RemoveIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_query_metadata_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.query_metadata), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.query_metadata(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.QueryMetadataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_move_table_to_database_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.move_table_to_database), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.move_table_to_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.MoveTableToDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_alter_metadata_resource_location_empty_call_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.alter_metadata_resource_location), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.alter_metadata_resource_location(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.AlterMetadataResourceLocationRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = DataprocMetastoreClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_services_rest_bad_request(request_type=metastore.ListServicesRequest):
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_services(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.ListServicesRequest,
+        dict,
+    ],
+)
+def test_list_services_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.ListServicesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = metastore.ListServicesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_services(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListServicesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_services_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_list_services"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_list_services"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.ListServicesRequest.pb(metastore.ListServicesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = metastore.ListServicesResponse.to_json(
+            metastore.ListServicesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = metastore.ListServicesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.ListServicesResponse()
+
+        client.list_services(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_service_rest_bad_request(request_type=metastore.GetServiceRequest):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_service(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.GetServiceRequest,
+        dict,
+    ],
+)
+def test_get_service_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.Service(
+            name="name_value",
+            network="network_value",
+            endpoint_uri="endpoint_uri_value",
+            port=453,
+            state=metastore.Service.State.CREATING,
+            state_message="state_message_value",
+            artifact_gcs_uri="artifact_gcs_uri_value",
+            tier=metastore.Service.Tier.DEVELOPER,
+            uid="uid_value",
+            release_channel=metastore.Service.ReleaseChannel.CANARY,
+            database_type=metastore.Service.DatabaseType.MYSQL,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = metastore.Service.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_service(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metastore.Service)
+    assert response.name == "name_value"
+    assert response.network == "network_value"
+    assert response.endpoint_uri == "endpoint_uri_value"
+    assert response.port == 453
+    assert response.state == metastore.Service.State.CREATING
+    assert response.state_message == "state_message_value"
+    assert response.artifact_gcs_uri == "artifact_gcs_uri_value"
+    assert response.tier == metastore.Service.Tier.DEVELOPER
+    assert response.uid == "uid_value"
+    assert response.release_channel == metastore.Service.ReleaseChannel.CANARY
+    assert response.database_type == metastore.Service.DatabaseType.MYSQL
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_service_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_get_service"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_get_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.GetServiceRequest.pb(metastore.GetServiceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = metastore.Service.to_json(metastore.Service())
+        req.return_value.content = return_value
+
+        request = metastore.GetServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.Service()
+
+        client.get_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_service_rest_bad_request(request_type=metastore.CreateServiceRequest):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_service(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.CreateServiceRequest,
+        dict,
+    ],
+)
+def test_create_service_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["service"] = {
+        "hive_metastore_config": {
+            "version": "version_value",
+            "config_overrides": {},
+            "kerberos_config": {
+                "keytab": {"cloud_secret": "cloud_secret_value"},
+                "principal": "principal_value",
+                "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
+            },
+            "endpoint_protocol": 1,
+            "auxiliary_versions": {},
+        },
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "network": "network_value",
+        "endpoint_uri": "endpoint_uri_value",
+        "port": 453,
+        "state": 1,
+        "state_message": "state_message_value",
+        "artifact_gcs_uri": "artifact_gcs_uri_value",
+        "tier": 1,
+        "metadata_integration": {
+            "data_catalog_config": {"enabled": True},
+            "dataplex_config": {"lake_resources": {}},
+        },
+        "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
+        "uid": "uid_value",
+        "metadata_management_activity": {
+            "metadata_exports": [
+                {
+                    "destination_gcs_uri": "destination_gcs_uri_value",
+                    "start_time": {},
+                    "end_time": {},
+                    "state": 1,
+                    "database_dump_type": 1,
+                }
+            ],
+            "restores": [
+                {
+                    "start_time": {},
+                    "end_time": {},
+                    "state": 1,
+                    "backup": "backup_value",
+                    "type_": 1,
+                    "details": "details_value",
+                }
+            ],
+        },
+        "release_channel": 1,
+        "encryption_config": {"kms_key": "kms_key_value"},
+        "network_config": {
+            "consumers": [
+                {
+                    "subnetwork": "subnetwork_value",
+                    "endpoint_uri": "endpoint_uri_value",
+                    "endpoint_location": "endpoint_location_value",
+                }
+            ],
+            "custom_routes_enabled": True,
+        },
+        "database_type": 1,
+        "telemetry_config": {"log_format": 1},
+        "scaling_config": {"instance_size": 1, "scaling_factor": 0.1471},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = metastore.CreateServiceRequest.meta.fields["service"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["service"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["service"][field])):
+                    del request_init["service"][field][i][subfield]
+            else:
+                del request_init["service"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_service(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_service_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_create_service"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_create_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.CreateServiceRequest.pb(metastore.CreateServiceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = metastore.CreateServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_service_rest_bad_request(request_type=metastore.UpdateServiceRequest):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "service": {"name": "projects/sample1/locations/sample2/services/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_service(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.UpdateServiceRequest,
+        dict,
+    ],
+)
+def test_update_service_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "service": {"name": "projects/sample1/locations/sample2/services/sample3"}
+    }
+    request_init["service"] = {
+        "hive_metastore_config": {
+            "version": "version_value",
+            "config_overrides": {},
+            "kerberos_config": {
+                "keytab": {"cloud_secret": "cloud_secret_value"},
+                "principal": "principal_value",
+                "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
+            },
+            "endpoint_protocol": 1,
+            "auxiliary_versions": {},
+        },
+        "name": "projects/sample1/locations/sample2/services/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "network": "network_value",
+        "endpoint_uri": "endpoint_uri_value",
+        "port": 453,
+        "state": 1,
+        "state_message": "state_message_value",
+        "artifact_gcs_uri": "artifact_gcs_uri_value",
+        "tier": 1,
+        "metadata_integration": {
+            "data_catalog_config": {"enabled": True},
+            "dataplex_config": {"lake_resources": {}},
+        },
+        "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
+        "uid": "uid_value",
+        "metadata_management_activity": {
+            "metadata_exports": [
+                {
+                    "destination_gcs_uri": "destination_gcs_uri_value",
+                    "start_time": {},
+                    "end_time": {},
+                    "state": 1,
+                    "database_dump_type": 1,
+                }
+            ],
+            "restores": [
+                {
+                    "start_time": {},
+                    "end_time": {},
+                    "state": 1,
+                    "backup": "backup_value",
+                    "type_": 1,
+                    "details": "details_value",
+                }
+            ],
+        },
+        "release_channel": 1,
+        "encryption_config": {"kms_key": "kms_key_value"},
+        "network_config": {
+            "consumers": [
+                {
+                    "subnetwork": "subnetwork_value",
+                    "endpoint_uri": "endpoint_uri_value",
+                    "endpoint_location": "endpoint_location_value",
+                }
+            ],
+            "custom_routes_enabled": True,
+        },
+        "database_type": 1,
+        "telemetry_config": {"log_format": 1},
+        "scaling_config": {"instance_size": 1, "scaling_factor": 0.1471},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = metastore.UpdateServiceRequest.meta.fields["service"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["service"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["service"][field])):
+                    del request_init["service"][field][i][subfield]
+            else:
+                del request_init["service"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_service(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_service_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_update_service"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_update_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.UpdateServiceRequest.pb(metastore.UpdateServiceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = metastore.UpdateServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_service_rest_bad_request(request_type=metastore.DeleteServiceRequest):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_service(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.DeleteServiceRequest,
+        dict,
+    ],
+)
+def test_delete_service_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_service(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_service_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_delete_service"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_delete_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.DeleteServiceRequest.pb(metastore.DeleteServiceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = metastore.DeleteServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_metadata_imports_rest_bad_request(
+    request_type=metastore.ListMetadataImportsRequest,
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_metadata_imports(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.ListMetadataImportsRequest,
+        dict,
+    ],
+)
+def test_list_metadata_imports_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.ListMetadataImportsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = metastore.ListMetadataImportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_metadata_imports(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListMetadataImportsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_metadata_imports_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_list_metadata_imports"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_list_metadata_imports"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.ListMetadataImportsRequest.pb(
+            metastore.ListMetadataImportsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = metastore.ListMetadataImportsResponse.to_json(
+            metastore.ListMetadataImportsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = metastore.ListMetadataImportsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.ListMetadataImportsResponse()
+
+        client.list_metadata_imports(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_metadata_import_rest_bad_request(
+    request_type=metastore.GetMetadataImportRequest,
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_metadata_import(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.GetMetadataImportRequest,
+        dict,
+    ],
+)
+def test_get_metadata_import_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.MetadataImport(
+            name="name_value",
+            description="description_value",
+            state=metastore.MetadataImport.State.RUNNING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = metastore.MetadataImport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_metadata_import(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metastore.MetadataImport)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == metastore.MetadataImport.State.RUNNING
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_metadata_import_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_get_metadata_import"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_get_metadata_import"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.GetMetadataImportRequest.pb(
+            metastore.GetMetadataImportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = metastore.MetadataImport.to_json(metastore.MetadataImport())
+        req.return_value.content = return_value
+
+        request = metastore.GetMetadataImportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.MetadataImport()
+
+        client.get_metadata_import(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_metadata_import_rest_bad_request(
+    request_type=metastore.CreateMetadataImportRequest,
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_metadata_import(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.CreateMetadataImportRequest,
+        dict,
+    ],
+)
+def test_create_metadata_import_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request_init["metadata_import"] = {
+        "database_dump": {
+            "database_type": 1,
+            "gcs_uri": "gcs_uri_value",
+            "source_database": "source_database_value",
+            "type_": 1,
+        },
+        "name": "name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "end_time": {},
+        "state": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = metastore.CreateMetadataImportRequest.meta.fields["metadata_import"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["metadata_import"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["metadata_import"][field])):
+                    del request_init["metadata_import"][field][i][subfield]
+            else:
+                del request_init["metadata_import"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_metadata_import(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_metadata_import_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_create_metadata_import"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_create_metadata_import"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.CreateMetadataImportRequest.pb(
+            metastore.CreateMetadataImportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = metastore.CreateMetadataImportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_metadata_import(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_metadata_import_rest_bad_request(
+    request_type=metastore.UpdateMetadataImportRequest,
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "metadata_import": {
+            "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_metadata_import(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.UpdateMetadataImportRequest,
+        dict,
+    ],
+)
+def test_update_metadata_import_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "metadata_import": {
+            "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
+        }
+    }
+    request_init["metadata_import"] = {
+        "database_dump": {
+            "database_type": 1,
+            "gcs_uri": "gcs_uri_value",
+            "source_database": "source_database_value",
+            "type_": 1,
+        },
+        "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "end_time": {},
+        "state": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = metastore.UpdateMetadataImportRequest.meta.fields["metadata_import"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["metadata_import"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["metadata_import"][field])):
+                    del request_init["metadata_import"][field][i][subfield]
+            else:
+                del request_init["metadata_import"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_metadata_import(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_metadata_import_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_update_metadata_import"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_update_metadata_import"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.UpdateMetadataImportRequest.pb(
+            metastore.UpdateMetadataImportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = metastore.UpdateMetadataImportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_metadata_import(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_export_metadata_rest_bad_request(request_type=metastore.ExportMetadataRequest):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.export_metadata(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.ExportMetadataRequest,
+        dict,
+    ],
+)
+def test_export_metadata_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.export_metadata(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_metadata_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_export_metadata"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_export_metadata"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.ExportMetadataRequest.pb(
+            metastore.ExportMetadataRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = metastore.ExportMetadataRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_metadata(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_restore_service_rest_bad_request(request_type=metastore.RestoreServiceRequest):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.restore_service(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.RestoreServiceRequest,
+        dict,
+    ],
+)
+def test_restore_service_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.restore_service(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_restore_service_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_restore_service"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_restore_service"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.RestoreServiceRequest.pb(
+            metastore.RestoreServiceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = metastore.RestoreServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.restore_service(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_backups_rest_bad_request(request_type=metastore.ListBackupsRequest):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_backups(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.ListBackupsRequest,
+        dict,
+    ],
+)
+def test_list_backups_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.ListBackupsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = metastore.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_backups(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_backups_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_list_backups"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_list_backups"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.ListBackupsRequest.pb(metastore.ListBackupsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = metastore.ListBackupsResponse.to_json(
+            metastore.ListBackupsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = metastore.ListBackupsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.ListBackupsResponse()
+
+        client.list_backups(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_backup_rest_bad_request(request_type=metastore.GetBackupRequest):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.GetBackupRequest,
+        dict,
+    ],
+)
+def test_get_backup_rest_call_success(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metastore.Backup(
+            name="name_value",
+            state=metastore.Backup.State.CREATING,
+            description="description_value",
+            restoring_services=["restoring_services_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = metastore.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metastore.Backup)
+    assert response.name == "name_value"
+    assert response.state == metastore.Backup.State.CREATING
+    assert response.description == "description_value"
+    assert response.restoring_services == ["restoring_services_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_backup_rest_interceptors(null_interceptor):
+    transport = transports.DataprocMetastoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataprocMetastoreRestInterceptor(),
+    )
+    client = DataprocMetastoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_get_backup"
+    ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "pre_get_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metastore.GetBackupRequest.pb(metastore.GetBackupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = metastore.Backup.to_json(metastore.Backup())
+        req.return_value.content = return_value
+
+        request = metastore.GetBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metastore.Backup()
+
+        client.get_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_backup_rest_bad_request(request_type=metastore.CreateBackupRequest):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_backup(request)
 
 
 @pytest.mark.parametrize(
@@ -13521,10 +14645,9 @@ def test_get_backup_rest_error():
         dict,
     ],
 )
-def test_create_backup_rest(request_type):
+def test_create_backup_rest_call_success(request_type):
     client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -13681,169 +14804,15 @@ def test_create_backup_rest(request_type):
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.create_backup(request)
 
     # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_create_backup_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = DataprocMetastoreClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.create_backup in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.create_backup] = mock_rpc
-
-        request = {}
-        client.create_backup(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.create_backup(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_create_backup_rest_required_fields(request_type=metastore.CreateBackupRequest):
-    transport_class = transports.DataprocMetastoreRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request_init["backup_id"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-    assert "backupId" not in jsonified_request
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_backup._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-    assert "backupId" in jsonified_request
-    assert jsonified_request["backupId"] == request_init["backup_id"]
-
-    jsonified_request["parent"] = "parent_value"
-    jsonified_request["backupId"] = "backup_id_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_backup._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "backup_id",
-            "request_id",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-    assert "backupId" in jsonified_request
-    assert jsonified_request["backupId"] == "backup_id_value"
-
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.create_backup(request)
-
-            expected_params = [
-                (
-                    "backupId",
-                    "",
-                ),
-                ("$alt", "json;enum-encoding=int"),
-            ]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_create_backup_rest_unset_required_fields():
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_backup._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "backupId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "backupId",
-                "backup",
-            )
-        )
-    )
+    json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -13855,6 +14824,7 @@ def test_create_backup_rest_interceptors(null_interceptor):
         else transports.DataprocMetastoreRestInterceptor(),
     )
     client = DataprocMetastoreClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -13876,12 +14846,10 @@ def test_create_backup_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
 
         request = metastore.CreateBackupRequest()
         metadata = [
@@ -13903,16 +14871,14 @@ def test_create_backup_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_create_backup_rest_bad_request(
-    transport: str = "rest", request_type=metastore.CreateBackupRequest
-):
+def test_delete_backup_rest_bad_request(request_type=metastore.DeleteBackupRequest):
     client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -13920,78 +14886,13 @@ def test_create_backup_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.create_backup(request)
-
-
-def test_create_backup_rest_flattened():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/services/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-            backup=metastore.Backup(name="name_value"),
-            backup_id="backup_id_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.create_backup(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1beta/{parent=projects/*/locations/*/services/*}/backups"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_create_backup_rest_flattened_error(transport: str = "rest"):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_backup(
-            metastore.CreateBackupRequest(),
-            parent="parent_value",
-            backup=metastore.Backup(name="name_value"),
-            backup_id="backup_id_value",
-        )
-
-
-def test_create_backup_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.delete_backup(request)
 
 
 @pytest.mark.parametrize(
@@ -14001,10 +14902,9 @@ def test_create_backup_rest_error():
         dict,
     ],
 )
-def test_delete_backup_rest(request_type):
+def test_delete_backup_rest_call_success(request_type):
     client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -14019,136 +14919,15 @@ def test_delete_backup_rest(request_type):
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete_backup(request)
 
     # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_delete_backup_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = DataprocMetastoreClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.delete_backup in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.delete_backup] = mock_rpc
-
-        request = {}
-        client.delete_backup(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.delete_backup(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_delete_backup_rest_required_fields(request_type=metastore.DeleteBackupRequest):
-    transport_class = transports.DataprocMetastoreRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_backup._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_backup._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "delete",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.delete_backup(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_delete_backup_rest_unset_required_fields():
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_backup._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+    json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -14160,6 +14939,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
         else transports.DataprocMetastoreRestInterceptor(),
     )
     client = DataprocMetastoreClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -14181,12 +14961,10 @@ def test_delete_backup_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
 
         request = metastore.DeleteBackupRequest()
         metadata = [
@@ -14208,17 +14986,15 @@ def test_delete_backup_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_delete_backup_rest_bad_request(
-    transport: str = "rest", request_type=metastore.DeleteBackupRequest
+def test_remove_iam_policy_rest_bad_request(
+    request_type=metastore.RemoveIamPolicyRequest,
 ):
     client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {
-        "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
+        "resource": "projects/sample1/locations/sample2/services/sample3/sample4"
     }
     request = request_type(**request_init)
 
@@ -14227,74 +15003,13 @@ def test_delete_backup_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.delete_backup(request)
-
-
-def test_delete_backup_rest_flattened():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/services/sample3/backups/sample4"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.delete_backup(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1beta/{name=projects/*/locations/*/services/*/backups/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_delete_backup_rest_flattened_error(transport: str = "rest"):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_backup(
-            metastore.DeleteBackupRequest(),
-            name="name_value",
-        )
-
-
-def test_delete_backup_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.remove_iam_policy(request)
 
 
 @pytest.mark.parametrize(
@@ -14304,10 +15019,9 @@ def test_delete_backup_rest_error():
         dict,
     ],
 )
-def test_remove_iam_policy_rest(request_type):
+def test_remove_iam_policy_rest_call_success(request_type):
     client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -14324,141 +15038,19 @@ def test_remove_iam_policy_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = metastore.RemoveIamPolicyResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.remove_iam_policy(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.RemoveIamPolicyResponse)
     assert response.success is True
-
-
-def test_remove_iam_policy_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = DataprocMetastoreClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.remove_iam_policy in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.remove_iam_policy
-        ] = mock_rpc
-
-        request = {}
-        client.remove_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.remove_iam_policy(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_remove_iam_policy_rest_required_fields(
-    request_type=metastore.RemoveIamPolicyRequest,
-):
-    transport_class = transports.DataprocMetastoreRestTransport
-
-    request_init = {}
-    request_init["resource"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_iam_policy._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["resource"] = "resource_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_iam_policy._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "resource" in jsonified_request
-    assert jsonified_request["resource"] == "resource_value"
-
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = metastore.RemoveIamPolicyResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = metastore.RemoveIamPolicyResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.remove_iam_policy(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_remove_iam_policy_rest_unset_required_fields():
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.remove_iam_policy._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("resource",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -14470,6 +15062,7 @@ def test_remove_iam_policy_rest_interceptors(null_interceptor):
         else transports.DataprocMetastoreRestInterceptor(),
     )
     client = DataprocMetastoreClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -14491,12 +15084,12 @@ def test_remove_iam_policy_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = metastore.RemoveIamPolicyResponse.to_json(
+        return_value = metastore.RemoveIamPolicyResponse.to_json(
             metastore.RemoveIamPolicyResponse()
         )
+        req.return_value.content = return_value
 
         request = metastore.RemoveIamPolicyRequest()
         metadata = [
@@ -14518,18 +15111,12 @@ def test_remove_iam_policy_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_remove_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=metastore.RemoveIamPolicyRequest
-):
+def test_query_metadata_rest_bad_request(request_type=metastore.QueryMetadataRequest):
     client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/services/sample3/sample4"
-    }
+    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -14537,17 +15124,13 @@ def test_remove_iam_policy_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.remove_iam_policy(request)
-
-
-def test_remove_iam_policy_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.query_metadata(request)
 
 
 @pytest.mark.parametrize(
@@ -14557,10 +15140,9 @@ def test_remove_iam_policy_rest_error():
         dict,
     ],
 )
-def test_query_metadata_rest(request_type):
+def test_query_metadata_rest_call_success(request_type):
     client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -14573,149 +15155,15 @@ def test_query_metadata_rest(request_type):
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.query_metadata(request)
 
     # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_query_metadata_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = DataprocMetastoreClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.query_metadata in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.query_metadata] = mock_rpc
-
-        request = {}
-        client.query_metadata(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.query_metadata(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_query_metadata_rest_required_fields(
-    request_type=metastore.QueryMetadataRequest,
-):
-    transport_class = transports.DataprocMetastoreRestTransport
-
-    request_init = {}
-    request_init["service"] = ""
-    request_init["query"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_metadata._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["service"] = "service_value"
-    jsonified_request["query"] = "query_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_metadata._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "service" in jsonified_request
-    assert jsonified_request["service"] == "service_value"
-    assert "query" in jsonified_request
-    assert jsonified_request["query"] == "query_value"
-
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.query_metadata(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_query_metadata_rest_unset_required_fields():
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.query_metadata._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "service",
-                "query",
-            )
-        )
-    )
+    json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -14727,6 +15175,7 @@ def test_query_metadata_rest_interceptors(null_interceptor):
         else transports.DataprocMetastoreRestInterceptor(),
     )
     client = DataprocMetastoreClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -14748,12 +15197,10 @@ def test_query_metadata_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
 
         request = metastore.QueryMetadataRequest()
         metadata = [
@@ -14775,14 +15222,12 @@ def test_query_metadata_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_query_metadata_rest_bad_request(
-    transport: str = "rest", request_type=metastore.QueryMetadataRequest
+def test_move_table_to_database_rest_bad_request(
+    request_type=metastore.MoveTableToDatabaseRequest,
 ):
     client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
     request = request_type(**request_init)
@@ -14792,17 +15237,13 @@ def test_query_metadata_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.query_metadata(request)
-
-
-def test_query_metadata_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.move_table_to_database(request)
 
 
 @pytest.mark.parametrize(
@@ -14812,10 +15253,9 @@ def test_query_metadata_rest_error():
         dict,
     ],
 )
-def test_move_table_to_database_rest(request_type):
+def test_move_table_to_database_rest_call_success(request_type):
     client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -14828,164 +15268,15 @@ def test_move_table_to_database_rest(request_type):
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.move_table_to_database(request)
 
     # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_move_table_to_database_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = DataprocMetastoreClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.move_table_to_database
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.move_table_to_database
-        ] = mock_rpc
-
-        request = {}
-        client.move_table_to_database(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.move_table_to_database(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_move_table_to_database_rest_required_fields(
-    request_type=metastore.MoveTableToDatabaseRequest,
-):
-    transport_class = transports.DataprocMetastoreRestTransport
-
-    request_init = {}
-    request_init["service"] = ""
-    request_init["table_name"] = ""
-    request_init["db_name"] = ""
-    request_init["destination_db_name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move_table_to_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["service"] = "service_value"
-    jsonified_request["tableName"] = "table_name_value"
-    jsonified_request["dbName"] = "db_name_value"
-    jsonified_request["destinationDbName"] = "destination_db_name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move_table_to_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "service" in jsonified_request
-    assert jsonified_request["service"] == "service_value"
-    assert "tableName" in jsonified_request
-    assert jsonified_request["tableName"] == "table_name_value"
-    assert "dbName" in jsonified_request
-    assert jsonified_request["dbName"] == "db_name_value"
-    assert "destinationDbName" in jsonified_request
-    assert jsonified_request["destinationDbName"] == "destination_db_name_value"
-
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.move_table_to_database(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_move_table_to_database_rest_unset_required_fields():
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.move_table_to_database._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "service",
-                "tableName",
-                "dbName",
-                "destinationDbName",
-            )
-        )
-    )
+    json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -14997,6 +15288,7 @@ def test_move_table_to_database_rest_interceptors(null_interceptor):
         else transports.DataprocMetastoreRestInterceptor(),
     )
     client = DataprocMetastoreClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -15020,12 +15312,10 @@ def test_move_table_to_database_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
 
         request = metastore.MoveTableToDatabaseRequest()
         metadata = [
@@ -15047,14 +15337,12 @@ def test_move_table_to_database_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_move_table_to_database_rest_bad_request(
-    transport: str = "rest", request_type=metastore.MoveTableToDatabaseRequest
+def test_alter_metadata_resource_location_rest_bad_request(
+    request_type=metastore.AlterMetadataResourceLocationRequest,
 ):
     client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
     request = request_type(**request_init)
@@ -15064,17 +15352,13 @@ def test_move_table_to_database_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.move_table_to_database(request)
-
-
-def test_move_table_to_database_rest_error():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.alter_metadata_resource_location(request)
 
 
 @pytest.mark.parametrize(
@@ -15084,10 +15368,9 @@ def test_move_table_to_database_rest_error():
         dict,
     ],
 )
-def test_alter_metadata_resource_location_rest(request_type):
+def test_alter_metadata_resource_location_rest_call_success(request_type):
     client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -15100,161 +15383,15 @@ def test_alter_metadata_resource_location_rest(request_type):
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.alter_metadata_resource_location(request)
 
     # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_alter_metadata_resource_location_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = DataprocMetastoreClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.alter_metadata_resource_location
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.alter_metadata_resource_location
-        ] = mock_rpc
-
-        request = {}
-        client.alter_metadata_resource_location(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.alter_metadata_resource_location(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_alter_metadata_resource_location_rest_required_fields(
-    request_type=metastore.AlterMetadataResourceLocationRequest,
-):
-    transport_class = transports.DataprocMetastoreRestTransport
-
-    request_init = {}
-    request_init["service"] = ""
-    request_init["resource_name"] = ""
-    request_init["location_uri"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).alter_metadata_resource_location._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["service"] = "service_value"
-    jsonified_request["resourceName"] = "resource_name_value"
-    jsonified_request["locationUri"] = "location_uri_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).alter_metadata_resource_location._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "service" in jsonified_request
-    assert jsonified_request["service"] == "service_value"
-    assert "resourceName" in jsonified_request
-    assert jsonified_request["resourceName"] == "resource_name_value"
-    assert "locationUri" in jsonified_request
-    assert jsonified_request["locationUri"] == "location_uri_value"
-
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.alter_metadata_resource_location(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_alter_metadata_resource_location_rest_unset_required_fields():
-    transport = transports.DataprocMetastoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.alter_metadata_resource_location._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "service",
-                "resourceName",
-                "locationUri",
-            )
-        )
-    )
+    json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -15266,6 +15403,7 @@ def test_alter_metadata_resource_location_rest_interceptors(null_interceptor):
         else transports.DataprocMetastoreRestInterceptor(),
     )
     client = DataprocMetastoreClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -15291,12 +15429,10 @@ def test_alter_metadata_resource_location_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
 
         request = metastore.AlterMetadataResourceLocationRequest()
         metadata = [
@@ -15318,17 +15454,15 @@ def test_alter_metadata_resource_location_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_alter_metadata_resource_location_rest_bad_request(
-    transport: str = "rest", request_type=metastore.AlterMetadataResourceLocationRequest
-):
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        transport="rest",
     )
-
-    # send a request that will satisfy transcoding
-    request_init = {"service": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -15336,122 +15470,942 @@ def test_alter_metadata_resource_location_rest_bad_request(
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.alter_metadata_resource_location(request)
+        client.get_location(request)
 
 
-def test_alter_metadata_resource_location_rest_error():
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_get_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.GetIamPolicyRequest,
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/services/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"resource": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_set_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.SetIamPolicyRequest,
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/services/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"resource": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_test_iam_permissions_rest_bad_request(
+    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/services/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"resource": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    request_type=operations_pb2.DeleteOperationRequest,
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
+    assert client is not None
 
 
-def test_credentials_transport_error():
-    # It is an error to provide credentials and a transport instance.
-    transport = transports.DataprocMetastoreGrpcTransport(
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_services_empty_call_rest():
+    client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = DataprocMetastoreClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
 
-    # It is an error to provide a credentials file and a transport instance.
-    transport = transports.DataprocMetastoreGrpcTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+        client.list_services(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.ListServicesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_service_empty_call_rest():
+    client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = DataprocMetastoreClient(
-            client_options={"credentials_file": "credentials.json"},
-            transport=transport,
-        )
 
-    # It is an error to provide an api_key and a transport instance.
-    transport = transports.DataprocMetastoreGrpcTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+        client.get_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.GetServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_service_empty_call_rest():
+    client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = DataprocMetastoreClient(
-            client_options=options,
-            transport=transport,
-        )
 
-    # It is an error to provide an api_key and a credential.
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = DataprocMetastoreClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+        client.create_service(request=None)
 
-    # It is an error to provide scopes and a transport instance.
-    transport = transports.DataprocMetastoreGrpcTransport(
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.CreateServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_service_empty_call_rest():
+    client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = DataprocMetastoreClient(
-            client_options={"scopes": ["1", "2"]},
-            transport=transport,
-        )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+        client.update_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.UpdateServiceRequest()
+
+        assert args[0] == request_msg
 
 
-def test_transport_instance():
-    # A client may be instantiated with a custom transport instance.
-    transport = transports.DataprocMetastoreGrpcTransport(
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_service_empty_call_rest():
+    client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    client = DataprocMetastoreClient(transport=transport)
-    assert client.transport is transport
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+        client.delete_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.DeleteServiceRequest()
+
+        assert args[0] == request_msg
 
 
-def test_transport_get_channel():
-    # A client may be instantiated with a custom transport instance.
-    transport = transports.DataprocMetastoreGrpcTransport(
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_metadata_imports_empty_call_rest():
+    client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    channel = transport.grpc_channel
-    assert channel
 
-    transport = transports.DataprocMetastoreGrpcAsyncIOTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_metadata_imports), "__call__"
+    ) as call:
+        client.list_metadata_imports(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.ListMetadataImportsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_metadata_import_empty_call_rest():
+    client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    channel = transport.grpc_channel
-    assert channel
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_metadata_import), "__call__"
+    ) as call:
+        client.get_metadata_import(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.GetMetadataImportRequest()
+
+        assert args[0] == request_msg
 
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.DataprocMetastoreGrpcTransport,
-        transports.DataprocMetastoreGrpcAsyncIOTransport,
-        transports.DataprocMetastoreRestTransport,
-    ],
-)
-def test_transport_adc(transport_class):
-    # Test default credentials are used if not provided.
-    with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport_class()
-        adc.assert_called_once()
-
-
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-        "rest",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = DataprocMetastoreClient.get_transport_class(transport_name)(
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_metadata_import_empty_call_rest():
+    client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    assert transport.kind == transport_name
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_metadata_import), "__call__"
+    ) as call:
+        client.create_metadata_import(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.CreateMetadataImportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_metadata_import_empty_call_rest():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_metadata_import), "__call__"
+    ) as call:
+        client.update_metadata_import(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.UpdateMetadataImportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_metadata_empty_call_rest():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_metadata), "__call__") as call:
+        client.export_metadata(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.ExportMetadataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_restore_service_empty_call_rest():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.restore_service), "__call__") as call:
+        client.restore_service(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.RestoreServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backups_empty_call_rest():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        client.list_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.ListBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_backup_empty_call_rest():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        client.get_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.GetBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_backup_empty_call_rest():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        client.create_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.CreateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_backup_empty_call_rest():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        client.delete_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.DeleteBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_remove_iam_policy_empty_call_rest():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_iam_policy), "__call__"
+    ) as call:
+        client.remove_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.RemoveIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_query_metadata_empty_call_rest():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.query_metadata), "__call__") as call:
+        client.query_metadata(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.QueryMetadataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_move_table_to_database_empty_call_rest():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.move_table_to_database), "__call__"
+    ) as call:
+        client.move_table_to_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.MoveTableToDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_alter_metadata_resource_location_empty_call_rest():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.alter_metadata_resource_location), "__call__"
+    ) as call:
+        client.alter_metadata_resource_location(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = metastore.AlterMetadataResourceLocationRequest()
+
+        assert args[0] == request_msg
+
+
+def test_dataproc_metastore_rest_lro_client():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -15713,23 +16667,6 @@ def test_dataproc_metastore_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_dataproc_metastore_rest_lro_client():
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -16301,540 +17238,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_location_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
-def test_get_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"resource": "projects/sample1/locations/sample2/services/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_iam_policy(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_get_iam_policy_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"resource": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-
-
-def test_set_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"resource": "projects/sample1/locations/sample2/services/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.set_iam_policy(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_set_iam_policy_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"resource": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.set_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-
-
-def test_test_iam_permissions_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"resource": "projects/sample1/locations/sample2/services/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.test_iam_permissions(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
-    ],
-)
-def test_test_iam_permissions_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"resource": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = iam_policy_pb2.TestIamPermissionsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.test_iam_permissions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.DeleteOperationRequest,
-        dict,
-    ],
-)
-def test_delete_operation_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = DataprocMetastoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
 def test_delete_operation(transport: str = "grpc"):
     client = DataprocMetastoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16862,7 +17265,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -16915,7 +17318,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16960,7 +17363,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -17001,7 +17404,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17054,7 +17457,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17099,7 +17502,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -17140,7 +17543,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17195,7 +17598,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17242,7 +17645,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -17285,7 +17688,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17340,7 +17743,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17387,7 +17790,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -17430,7 +17833,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17485,7 +17888,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17532,7 +17935,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -17575,7 +17978,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17627,9 +18030,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    client = DataprocMetastoreAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -17675,7 +18076,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -17726,7 +18127,7 @@ def test_set_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17791,7 +18192,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17839,7 +18240,7 @@ def test_set_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -17892,7 +18293,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17958,7 +18359,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -18006,7 +18407,7 @@ def test_get_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -18058,7 +18459,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -18125,7 +18526,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -18179,7 +18580,7 @@ def test_test_iam_permissions_from_dict():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
     client = DataprocMetastoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18199,22 +18600,41 @@ async def test_test_iam_permissions_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = DataprocMetastoreClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = DataprocMetastoreAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = DataprocMetastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

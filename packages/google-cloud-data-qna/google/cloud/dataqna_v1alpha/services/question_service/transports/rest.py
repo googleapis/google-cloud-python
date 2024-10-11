@@ -16,25 +16,16 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
 
 from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
 from google.cloud.dataqna_v1alpha.types import question
@@ -43,7 +34,13 @@ from google.cloud.dataqna_v1alpha.types import question_service
 from google.cloud.dataqna_v1alpha.types import user_feedback
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import QuestionServiceTransport
+from .rest_base import _BaseQuestionServiceRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -232,8 +229,8 @@ class QuestionServiceRestStub:
     _interceptor: QuestionServiceRestInterceptor
 
 
-class QuestionServiceRestTransport(QuestionServiceTransport):
-    """REST backend transport for QuestionService.
+class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
+    """REST backend synchronous transport for QuestionService.
 
     Service to interpret natural language queries. The service allows to
     create ``Question`` resources that are interpreted and are filled
@@ -258,10 +255,6 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
-    NOTE: This REST transport functionality is currently in a beta
-    state (preview). We welcome your feedback via an issue in this
-    library's source repository. Thank you!
     """
 
     def __init__(
@@ -319,21 +312,12 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -344,19 +328,34 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
         self._interceptor = interceptor or QuestionServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateQuestion(QuestionServiceRestStub):
+    class _CreateQuestion(
+        _BaseQuestionServiceRestTransport._BaseCreateQuestion, QuestionServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateQuestion")
+            return hash("QuestionServiceRestTransport.CreateQuestion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -388,43 +387,32 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*}/questions",
-                    "body": "question",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_question(request, metadata)
-            pb_request = question_service.CreateQuestionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            http_options = (
+                _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_question(request, metadata)
+            transcoded_request = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = QuestionServiceRestTransport._CreateQuestion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -440,19 +428,34 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
             resp = self._interceptor.post_create_question(resp)
             return resp
 
-    class _ExecuteQuestion(QuestionServiceRestStub):
+    class _ExecuteQuestion(
+        _BaseQuestionServiceRestTransport._BaseExecuteQuestion, QuestionServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ExecuteQuestion")
+            return hash("QuestionServiceRestTransport.ExecuteQuestion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -483,45 +486,34 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/questions/*}:execute",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_execute_question(
                 request, metadata
             )
-            pb_request = question_service.ExecuteQuestionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            transcoded_request = _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = QuestionServiceRestTransport._ExecuteQuestion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -537,19 +529,33 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
             resp = self._interceptor.post_execute_question(resp)
             return resp
 
-    class _GetQuestion(QuestionServiceRestStub):
+    class _GetQuestion(
+        _BaseQuestionServiceRestTransport._BaseGetQuestion, QuestionServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetQuestion")
+            return hash("QuestionServiceRestTransport.GetQuestion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -581,36 +587,27 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/questions/*}",
-                },
-            ]
+            http_options = (
+                _BaseQuestionServiceRestTransport._BaseGetQuestion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_question(request, metadata)
-            pb_request = question_service.GetQuestionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseQuestionServiceRestTransport._BaseGetQuestion._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseQuestionServiceRestTransport._BaseGetQuestion._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = QuestionServiceRestTransport._GetQuestion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -626,19 +623,33 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
             resp = self._interceptor.post_get_question(resp)
             return resp
 
-    class _GetUserFeedback(QuestionServiceRestStub):
+    class _GetUserFeedback(
+        _BaseQuestionServiceRestTransport._BaseGetUserFeedback, QuestionServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetUserFeedback")
+            return hash("QuestionServiceRestTransport.GetUserFeedback")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -664,38 +675,29 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
                     Feedback provided by a user.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/questions/*/userFeedback}",
-                },
-            ]
+            http_options = (
+                _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_user_feedback(
                 request, metadata
             )
-            pb_request = question_service.GetUserFeedbackRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = QuestionServiceRestTransport._GetUserFeedback._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -711,19 +713,35 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
             resp = self._interceptor.post_get_user_feedback(resp)
             return resp
 
-    class _UpdateUserFeedback(QuestionServiceRestStub):
+    class _UpdateUserFeedback(
+        _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback,
+        QuestionServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateUserFeedback")
+            return hash("QuestionServiceRestTransport.UpdateUserFeedback")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -749,45 +767,34 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
                     Feedback provided by a user.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{user_feedback.name=projects/*/locations/*/questions/*/userFeedback}",
-                    "body": "user_feedback",
-                },
-            ]
+            http_options = (
+                _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_user_feedback(
                 request, metadata
             )
-            pb_request = question_service.UpdateUserFeedbackRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            transcoded_request = _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = QuestionServiceRestTransport._UpdateUserFeedback._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

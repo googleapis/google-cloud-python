@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -231,6 +232,9 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1686,265 +1690,299 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_repositories: gapic_v1.method_async.wrap_method(
+            self.list_repositories: self._wrap_method(
                 self.list_repositories,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_repository: gapic_v1.method_async.wrap_method(
+            self.get_repository: self._wrap_method(
                 self.get_repository,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_repository: gapic_v1.method_async.wrap_method(
+            self.create_repository: self._wrap_method(
                 self.create_repository,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_repository: gapic_v1.method_async.wrap_method(
+            self.update_repository: self._wrap_method(
                 self.update_repository,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_repository: gapic_v1.method_async.wrap_method(
+            self.delete_repository: self._wrap_method(
                 self.delete_repository,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.commit_repository_changes: gapic_v1.method_async.wrap_method(
+            self.commit_repository_changes: self._wrap_method(
                 self.commit_repository_changes,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.read_repository_file: gapic_v1.method_async.wrap_method(
+            self.read_repository_file: self._wrap_method(
                 self.read_repository_file,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.query_repository_directory_contents: gapic_v1.method_async.wrap_method(
+            self.query_repository_directory_contents: self._wrap_method(
                 self.query_repository_directory_contents,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.fetch_repository_history: gapic_v1.method_async.wrap_method(
+            self.fetch_repository_history: self._wrap_method(
                 self.fetch_repository_history,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.compute_repository_access_token_status: gapic_v1.method_async.wrap_method(
+            self.compute_repository_access_token_status: self._wrap_method(
                 self.compute_repository_access_token_status,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.fetch_remote_branches: gapic_v1.method_async.wrap_method(
+            self.fetch_remote_branches: self._wrap_method(
                 self.fetch_remote_branches,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_workspaces: gapic_v1.method_async.wrap_method(
+            self.list_workspaces: self._wrap_method(
                 self.list_workspaces,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_workspace: gapic_v1.method_async.wrap_method(
+            self.get_workspace: self._wrap_method(
                 self.get_workspace,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_workspace: gapic_v1.method_async.wrap_method(
+            self.create_workspace: self._wrap_method(
                 self.create_workspace,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_workspace: gapic_v1.method_async.wrap_method(
+            self.delete_workspace: self._wrap_method(
                 self.delete_workspace,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.install_npm_packages: gapic_v1.method_async.wrap_method(
+            self.install_npm_packages: self._wrap_method(
                 self.install_npm_packages,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.pull_git_commits: gapic_v1.method_async.wrap_method(
+            self.pull_git_commits: self._wrap_method(
                 self.pull_git_commits,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.push_git_commits: gapic_v1.method_async.wrap_method(
+            self.push_git_commits: self._wrap_method(
                 self.push_git_commits,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.fetch_file_git_statuses: gapic_v1.method_async.wrap_method(
+            self.fetch_file_git_statuses: self._wrap_method(
                 self.fetch_file_git_statuses,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.fetch_git_ahead_behind: gapic_v1.method_async.wrap_method(
+            self.fetch_git_ahead_behind: self._wrap_method(
                 self.fetch_git_ahead_behind,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.commit_workspace_changes: gapic_v1.method_async.wrap_method(
+            self.commit_workspace_changes: self._wrap_method(
                 self.commit_workspace_changes,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.reset_workspace_changes: gapic_v1.method_async.wrap_method(
+            self.reset_workspace_changes: self._wrap_method(
                 self.reset_workspace_changes,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.fetch_file_diff: gapic_v1.method_async.wrap_method(
+            self.fetch_file_diff: self._wrap_method(
                 self.fetch_file_diff,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.query_directory_contents: gapic_v1.method_async.wrap_method(
+            self.query_directory_contents: self._wrap_method(
                 self.query_directory_contents,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.make_directory: gapic_v1.method_async.wrap_method(
+            self.make_directory: self._wrap_method(
                 self.make_directory,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.remove_directory: gapic_v1.method_async.wrap_method(
+            self.remove_directory: self._wrap_method(
                 self.remove_directory,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.move_directory: gapic_v1.method_async.wrap_method(
+            self.move_directory: self._wrap_method(
                 self.move_directory,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.read_file: gapic_v1.method_async.wrap_method(
+            self.read_file: self._wrap_method(
                 self.read_file,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.remove_file: gapic_v1.method_async.wrap_method(
+            self.remove_file: self._wrap_method(
                 self.remove_file,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.move_file: gapic_v1.method_async.wrap_method(
+            self.move_file: self._wrap_method(
                 self.move_file,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.write_file: gapic_v1.method_async.wrap_method(
+            self.write_file: self._wrap_method(
                 self.write_file,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_release_configs: gapic_v1.method_async.wrap_method(
+            self.list_release_configs: self._wrap_method(
                 self.list_release_configs,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_release_config: gapic_v1.method_async.wrap_method(
+            self.get_release_config: self._wrap_method(
                 self.get_release_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_release_config: gapic_v1.method_async.wrap_method(
+            self.create_release_config: self._wrap_method(
                 self.create_release_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_release_config: gapic_v1.method_async.wrap_method(
+            self.update_release_config: self._wrap_method(
                 self.update_release_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_release_config: gapic_v1.method_async.wrap_method(
+            self.delete_release_config: self._wrap_method(
                 self.delete_release_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_compilation_results: gapic_v1.method_async.wrap_method(
+            self.list_compilation_results: self._wrap_method(
                 self.list_compilation_results,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_compilation_result: gapic_v1.method_async.wrap_method(
+            self.get_compilation_result: self._wrap_method(
                 self.get_compilation_result,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_compilation_result: gapic_v1.method_async.wrap_method(
+            self.create_compilation_result: self._wrap_method(
                 self.create_compilation_result,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.query_compilation_result_actions: gapic_v1.method_async.wrap_method(
+            self.query_compilation_result_actions: self._wrap_method(
                 self.query_compilation_result_actions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_workflow_configs: gapic_v1.method_async.wrap_method(
+            self.list_workflow_configs: self._wrap_method(
                 self.list_workflow_configs,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_workflow_config: gapic_v1.method_async.wrap_method(
+            self.get_workflow_config: self._wrap_method(
                 self.get_workflow_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_workflow_config: gapic_v1.method_async.wrap_method(
+            self.create_workflow_config: self._wrap_method(
                 self.create_workflow_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_workflow_config: gapic_v1.method_async.wrap_method(
+            self.update_workflow_config: self._wrap_method(
                 self.update_workflow_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_workflow_config: gapic_v1.method_async.wrap_method(
+            self.delete_workflow_config: self._wrap_method(
                 self.delete_workflow_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_workflow_invocations: gapic_v1.method_async.wrap_method(
+            self.list_workflow_invocations: self._wrap_method(
                 self.list_workflow_invocations,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_workflow_invocation: gapic_v1.method_async.wrap_method(
+            self.get_workflow_invocation: self._wrap_method(
                 self.get_workflow_invocation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_workflow_invocation: gapic_v1.method_async.wrap_method(
+            self.create_workflow_invocation: self._wrap_method(
                 self.create_workflow_invocation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_workflow_invocation: gapic_v1.method_async.wrap_method(
+            self.delete_workflow_invocation: self._wrap_method(
                 self.delete_workflow_invocation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.cancel_workflow_invocation: gapic_v1.method_async.wrap_method(
+            self.cancel_workflow_invocation: self._wrap_method(
                 self.cancel_workflow_invocation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.query_workflow_invocation_actions: gapic_v1.method_async.wrap_method(
+            self.query_workflow_invocation_actions: self._wrap_method(
                 self.query_workflow_invocation_actions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def list_locations(

@@ -16,35 +16,31 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.dataform_v1beta1.types import dataform
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseDataformRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.dataform_v1beta1.types import dataform
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import DataformTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -1571,8 +1567,8 @@ class DataformRestStub:
     _interceptor: DataformRestInterceptor
 
 
-class DataformRestTransport(DataformTransport):
-    """REST backend transport for Dataform.
+class DataformRestTransport(_BaseDataformRestTransport):
+    """REST backend synchronous transport for Dataform.
 
     Dataform is a service to develop, create, document, test, and
     update curated tables in BigQuery.
@@ -1582,7 +1578,6 @@ class DataformRestTransport(DataformTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -1636,21 +1631,12 @@ class DataformRestTransport(DataformTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -1661,19 +1647,34 @@ class DataformRestTransport(DataformTransport):
         self._interceptor = interceptor or DataformRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CancelWorkflowInvocation(DataformRestStub):
+    class _CancelWorkflowInvocation(
+        _BaseDataformRestTransport._BaseCancelWorkflowInvocation, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("CancelWorkflowInvocation")
+            return hash("DataformRestTransport.CancelWorkflowInvocation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1696,47 +1697,34 @@ class DataformRestTransport(DataformTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workflowInvocations/*}:cancel",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_workflow_invocation(
                 request, metadata
             )
-            pb_request = dataform.CancelWorkflowInvocationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._CancelWorkflowInvocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1744,19 +1732,34 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CommitRepositoryChanges(DataformRestStub):
+    class _CommitRepositoryChanges(
+        _BaseDataformRestTransport._BaseCommitRepositoryChanges, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("CommitRepositoryChanges")
+            return hash("DataformRestTransport.CommitRepositoryChanges")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1778,47 +1781,34 @@ class DataformRestTransport(DataformTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}:commit",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_http_options()
+            )
             request, metadata = self._interceptor.pre_commit_repository_changes(
                 request, metadata
             )
-            pb_request = dataform.CommitRepositoryChangesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._CommitRepositoryChanges._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1826,19 +1816,34 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CommitWorkspaceChanges(DataformRestStub):
+    class _CommitWorkspaceChanges(
+        _BaseDataformRestTransport._BaseCommitWorkspaceChanges, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("CommitWorkspaceChanges")
+            return hash("DataformRestTransport.CommitWorkspaceChanges")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1860,47 +1865,34 @@ class DataformRestTransport(DataformTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workspaces/*}:commit",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_http_options()
+            )
             request, metadata = self._interceptor.pre_commit_workspace_changes(
                 request, metadata
             )
-            pb_request = dataform.CommitWorkspaceChangesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._CommitWorkspaceChanges._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1908,19 +1900,34 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ComputeRepositoryAccessTokenStatus(DataformRestStub):
+    class _ComputeRepositoryAccessTokenStatus(
+        _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus,
+        DataformRestStub,
+    ):
         def __hash__(self):
-            return hash("ComputeRepositoryAccessTokenStatus")
+            return hash("DataformRestTransport.ComputeRepositoryAccessTokenStatus")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1947,43 +1954,34 @@ class DataformRestTransport(DataformTransport):
                         ``ComputeRepositoryAccessTokenStatus`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}:computeAccessTokenStatus",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_compute_repository_access_token_status(
                 request, metadata
             )
-            pb_request = dataform.ComputeRepositoryAccessTokenStatusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DataformRestTransport._ComputeRepositoryAccessTokenStatus._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1999,19 +1997,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_compute_repository_access_token_status(resp)
             return resp
 
-    class _CreateCompilationResult(DataformRestStub):
+    class _CreateCompilationResult(
+        _BaseDataformRestTransport._BaseCreateCompilationResult, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("CreateCompilationResult")
+            return hash("DataformRestTransport.CreateCompilationResult")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2039,47 +2052,34 @@ class DataformRestTransport(DataformTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/compilationResults",
-                    "body": "compilation_result",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseCreateCompilationResult._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_compilation_result(
                 request, metadata
             )
-            pb_request = dataform.CreateCompilationResultRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseCreateCompilationResult._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataformRestTransport._BaseCreateCompilationResult._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseCreateCompilationResult._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._CreateCompilationResult._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2095,21 +2095,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_create_compilation_result(resp)
             return resp
 
-    class _CreateReleaseConfig(DataformRestStub):
+    class _CreateReleaseConfig(
+        _BaseDataformRestTransport._BaseCreateReleaseConfig, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("CreateReleaseConfig")
+            return hash("DataformRestTransport.CreateReleaseConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "releaseConfigId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2137,47 +2150,34 @@ class DataformRestTransport(DataformTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/releaseConfigs",
-                    "body": "release_config",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseCreateReleaseConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_release_config(
                 request, metadata
             )
-            pb_request = dataform.CreateReleaseConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._CreateReleaseConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2193,21 +2193,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_create_release_config(resp)
             return resp
 
-    class _CreateRepository(DataformRestStub):
+    class _CreateRepository(
+        _BaseDataformRestTransport._BaseCreateRepository, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("CreateRepository")
+            return hash("DataformRestTransport.CreateRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "repositoryId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2233,47 +2246,38 @@ class DataformRestTransport(DataformTransport):
                     Represents a Dataform Git repository.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*}/repositories",
-                    "body": "repository",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseCreateRepository._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_repository(
                 request, metadata
             )
-            pb_request = dataform.CreateRepositoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseCreateRepository._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            body = (
+                _BaseDataformRestTransport._BaseCreateRepository._get_request_body_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseCreateRepository._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._CreateRepository._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2289,21 +2293,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_create_repository(resp)
             return resp
 
-    class _CreateWorkflowConfig(DataformRestStub):
+    class _CreateWorkflowConfig(
+        _BaseDataformRestTransport._BaseCreateWorkflowConfig, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("CreateWorkflowConfig")
+            return hash("DataformRestTransport.CreateWorkflowConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "workflowConfigId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2331,47 +2348,34 @@ class DataformRestTransport(DataformTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/workflowConfigs",
-                    "body": "workflow_config",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_workflow_config(
                 request, metadata
             )
-            pb_request = dataform.CreateWorkflowConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._CreateWorkflowConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2387,19 +2391,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_create_workflow_config(resp)
             return resp
 
-    class _CreateWorkflowInvocation(DataformRestStub):
+    class _CreateWorkflowInvocation(
+        _BaseDataformRestTransport._BaseCreateWorkflowInvocation, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("CreateWorkflowInvocation")
+            return hash("DataformRestTransport.CreateWorkflowInvocation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2428,47 +2447,34 @@ class DataformRestTransport(DataformTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/workflowInvocations",
-                    "body": "workflow_invocation",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_workflow_invocation(
                 request, metadata
             )
-            pb_request = dataform.CreateWorkflowInvocationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._CreateWorkflowInvocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2484,21 +2490,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_create_workflow_invocation(resp)
             return resp
 
-    class _CreateWorkspace(DataformRestStub):
+    class _CreateWorkspace(
+        _BaseDataformRestTransport._BaseCreateWorkspace, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("CreateWorkspace")
+            return hash("DataformRestTransport.CreateWorkspace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "workspaceId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2524,47 +2543,40 @@ class DataformRestTransport(DataformTransport):
                     Represents a Dataform Git workspace.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/workspaces",
-                    "body": "workspace",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseCreateWorkspace._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_workspace(
                 request, metadata
             )
-            pb_request = dataform.CreateWorkspaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseCreateWorkspace._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseDataformRestTransport._BaseCreateWorkspace._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseCreateWorkspace._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._CreateWorkspace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2580,19 +2592,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_create_workspace(resp)
             return resp
 
-    class _DeleteReleaseConfig(DataformRestStub):
+    class _DeleteReleaseConfig(
+        _BaseDataformRestTransport._BaseDeleteReleaseConfig, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteReleaseConfig")
+            return hash("DataformRestTransport.DeleteReleaseConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2614,40 +2640,29 @@ class DataformRestTransport(DataformTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/releaseConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteReleaseConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_release_config(
                 request, metadata
             )
-            pb_request = dataform.DeleteReleaseConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteReleaseConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseDeleteReleaseConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._DeleteReleaseConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2655,19 +2670,33 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteRepository(DataformRestStub):
+    class _DeleteRepository(
+        _BaseDataformRestTransport._BaseDeleteRepository, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteRepository")
+            return hash("DataformRestTransport.DeleteRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2689,40 +2718,31 @@ class DataformRestTransport(DataformTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteRepository._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_repository(
                 request, metadata
             )
-            pb_request = dataform.DeleteRepositoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteRepository._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseDataformRestTransport._BaseDeleteRepository._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._DeleteRepository._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2730,19 +2750,33 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteWorkflowConfig(DataformRestStub):
+    class _DeleteWorkflowConfig(
+        _BaseDataformRestTransport._BaseDeleteWorkflowConfig, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteWorkflowConfig")
+            return hash("DataformRestTransport.DeleteWorkflowConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2764,40 +2798,29 @@ class DataformRestTransport(DataformTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workflowConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteWorkflowConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_workflow_config(
                 request, metadata
             )
-            pb_request = dataform.DeleteWorkflowConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteWorkflowConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseDeleteWorkflowConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._DeleteWorkflowConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2805,19 +2828,33 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteWorkflowInvocation(DataformRestStub):
+    class _DeleteWorkflowInvocation(
+        _BaseDataformRestTransport._BaseDeleteWorkflowInvocation, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteWorkflowInvocation")
+            return hash("DataformRestTransport.DeleteWorkflowInvocation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2840,40 +2877,29 @@ class DataformRestTransport(DataformTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workflowInvocations/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_workflow_invocation(
                 request, metadata
             )
-            pb_request = dataform.DeleteWorkflowInvocationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._DeleteWorkflowInvocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2881,19 +2907,33 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteWorkspace(DataformRestStub):
+    class _DeleteWorkspace(
+        _BaseDataformRestTransport._BaseDeleteWorkspace, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteWorkspace")
+            return hash("DataformRestTransport.DeleteWorkspace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2915,40 +2955,33 @@ class DataformRestTransport(DataformTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workspaces/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteWorkspace._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_workspace(
                 request, metadata
             )
-            pb_request = dataform.DeleteWorkspaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseDeleteWorkspace._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseDeleteWorkspace._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._DeleteWorkspace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2956,21 +2989,33 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _FetchFileDiff(DataformRestStub):
+    class _FetchFileDiff(
+        _BaseDataformRestTransport._BaseFetchFileDiff, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("FetchFileDiff")
+            return hash("DataformRestTransport.FetchFileDiff")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "path": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2996,38 +3041,31 @@ class DataformRestTransport(DataformTransport):
                     ``FetchFileDiff`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{workspace=projects/*/locations/*/repositories/*/workspaces/*}:fetchFileDiff",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseFetchFileDiff._get_http_options()
+            )
             request, metadata = self._interceptor.pre_fetch_file_diff(request, metadata)
-            pb_request = dataform.FetchFileDiffRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseFetchFileDiff._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseFetchFileDiff._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._FetchFileDiff._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3043,19 +3081,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_fetch_file_diff(resp)
             return resp
 
-    class _FetchFileGitStatuses(DataformRestStub):
+    class _FetchFileGitStatuses(
+        _BaseDataformRestTransport._BaseFetchFileGitStatuses, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("FetchFileGitStatuses")
+            return hash("DataformRestTransport.FetchFileGitStatuses")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3081,40 +3133,29 @@ class DataformRestTransport(DataformTransport):
                     ``FetchFileGitStatuses`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workspaces/*}:fetchFileGitStatuses",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseFetchFileGitStatuses._get_http_options()
+            )
             request, metadata = self._interceptor.pre_fetch_file_git_statuses(
                 request, metadata
             )
-            pb_request = dataform.FetchFileGitStatusesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseFetchFileGitStatuses._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseFetchFileGitStatuses._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._FetchFileGitStatuses._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3130,19 +3171,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_fetch_file_git_statuses(resp)
             return resp
 
-    class _FetchGitAheadBehind(DataformRestStub):
+    class _FetchGitAheadBehind(
+        _BaseDataformRestTransport._BaseFetchGitAheadBehind, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("FetchGitAheadBehind")
+            return hash("DataformRestTransport.FetchGitAheadBehind")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3168,40 +3223,29 @@ class DataformRestTransport(DataformTransport):
                     ``FetchGitAheadBehind`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workspaces/*}:fetchGitAheadBehind",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseFetchGitAheadBehind._get_http_options()
+            )
             request, metadata = self._interceptor.pre_fetch_git_ahead_behind(
                 request, metadata
             )
-            pb_request = dataform.FetchGitAheadBehindRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseFetchGitAheadBehind._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseFetchGitAheadBehind._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._FetchGitAheadBehind._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3217,19 +3261,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_fetch_git_ahead_behind(resp)
             return resp
 
-    class _FetchRemoteBranches(DataformRestStub):
+    class _FetchRemoteBranches(
+        _BaseDataformRestTransport._BaseFetchRemoteBranches, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("FetchRemoteBranches")
+            return hash("DataformRestTransport.FetchRemoteBranches")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3255,40 +3313,29 @@ class DataformRestTransport(DataformTransport):
                     ``FetchRemoteBranches`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}:fetchRemoteBranches",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseFetchRemoteBranches._get_http_options()
+            )
             request, metadata = self._interceptor.pre_fetch_remote_branches(
                 request, metadata
             )
-            pb_request = dataform.FetchRemoteBranchesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseFetchRemoteBranches._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseFetchRemoteBranches._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._FetchRemoteBranches._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3304,19 +3351,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_fetch_remote_branches(resp)
             return resp
 
-    class _FetchRepositoryHistory(DataformRestStub):
+    class _FetchRepositoryHistory(
+        _BaseDataformRestTransport._BaseFetchRepositoryHistory, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("FetchRepositoryHistory")
+            return hash("DataformRestTransport.FetchRepositoryHistory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3342,40 +3403,29 @@ class DataformRestTransport(DataformTransport):
                     ``FetchRepositoryHistory`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}:fetchHistory",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_http_options()
+            )
             request, metadata = self._interceptor.pre_fetch_repository_history(
                 request, metadata
             )
-            pb_request = dataform.FetchRepositoryHistoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._FetchRepositoryHistory._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3391,19 +3441,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_fetch_repository_history(resp)
             return resp
 
-    class _GetCompilationResult(DataformRestStub):
+    class _GetCompilationResult(
+        _BaseDataformRestTransport._BaseGetCompilationResult, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("GetCompilationResult")
+            return hash("DataformRestTransport.GetCompilationResult")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3431,40 +3495,29 @@ class DataformRestTransport(DataformTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/compilationResults/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseGetCompilationResult._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_compilation_result(
                 request, metadata
             )
-            pb_request = dataform.GetCompilationResultRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseGetCompilationResult._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseGetCompilationResult._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._GetCompilationResult._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3480,19 +3533,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_get_compilation_result(resp)
             return resp
 
-    class _GetReleaseConfig(DataformRestStub):
+    class _GetReleaseConfig(
+        _BaseDataformRestTransport._BaseGetReleaseConfig, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("GetReleaseConfig")
+            return hash("DataformRestTransport.GetReleaseConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3520,40 +3587,31 @@ class DataformRestTransport(DataformTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/releaseConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseGetReleaseConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_release_config(
                 request, metadata
             )
-            pb_request = dataform.GetReleaseConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseGetReleaseConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseDataformRestTransport._BaseGetReleaseConfig._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._GetReleaseConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3569,19 +3627,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_get_release_config(resp)
             return resp
 
-    class _GetRepository(DataformRestStub):
+    class _GetRepository(
+        _BaseDataformRestTransport._BaseGetRepository, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("GetRepository")
+            return hash("DataformRestTransport.GetRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3607,38 +3679,31 @@ class DataformRestTransport(DataformTransport):
                     Represents a Dataform Git repository.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseGetRepository._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_repository(request, metadata)
-            pb_request = dataform.GetRepositoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseGetRepository._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseGetRepository._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._GetRepository._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3654,19 +3719,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_get_repository(resp)
             return resp
 
-    class _GetWorkflowConfig(DataformRestStub):
+    class _GetWorkflowConfig(
+        _BaseDataformRestTransport._BaseGetWorkflowConfig, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("GetWorkflowConfig")
+            return hash("DataformRestTransport.GetWorkflowConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3694,40 +3773,29 @@ class DataformRestTransport(DataformTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workflowConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseGetWorkflowConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_workflow_config(
                 request, metadata
             )
-            pb_request = dataform.GetWorkflowConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseGetWorkflowConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseGetWorkflowConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._GetWorkflowConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3743,19 +3811,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_get_workflow_config(resp)
             return resp
 
-    class _GetWorkflowInvocation(DataformRestStub):
+    class _GetWorkflowInvocation(
+        _BaseDataformRestTransport._BaseGetWorkflowInvocation, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("GetWorkflowInvocation")
+            return hash("DataformRestTransport.GetWorkflowInvocation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3783,40 +3865,29 @@ class DataformRestTransport(DataformTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workflowInvocations/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_workflow_invocation(
                 request, metadata
             )
-            pb_request = dataform.GetWorkflowInvocationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._GetWorkflowInvocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3832,19 +3903,31 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_get_workflow_invocation(resp)
             return resp
 
-    class _GetWorkspace(DataformRestStub):
+    class _GetWorkspace(_BaseDataformRestTransport._BaseGetWorkspace, DataformRestStub):
         def __hash__(self):
-            return hash("GetWorkspace")
+            return hash("DataformRestTransport.GetWorkspace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3870,38 +3953,31 @@ class DataformRestTransport(DataformTransport):
                     Represents a Dataform Git workspace.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workspaces/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseGetWorkspace._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_workspace(request, metadata)
-            pb_request = dataform.GetWorkspaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseGetWorkspace._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseGetWorkspace._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._GetWorkspace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3917,19 +3993,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_get_workspace(resp)
             return resp
 
-    class _InstallNpmPackages(DataformRestStub):
+    class _InstallNpmPackages(
+        _BaseDataformRestTransport._BaseInstallNpmPackages, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("InstallNpmPackages")
+            return hash("DataformRestTransport.InstallNpmPackages")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3955,47 +4046,34 @@ class DataformRestTransport(DataformTransport):
                     ``InstallNpmPackages`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{workspace=projects/*/locations/*/repositories/*/workspaces/*}:installNpmPackages",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseInstallNpmPackages._get_http_options()
+            )
             request, metadata = self._interceptor.pre_install_npm_packages(
                 request, metadata
             )
-            pb_request = dataform.InstallNpmPackagesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseInstallNpmPackages._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataformRestTransport._BaseInstallNpmPackages._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseInstallNpmPackages._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._InstallNpmPackages._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4011,19 +4089,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_install_npm_packages(resp)
             return resp
 
-    class _ListCompilationResults(DataformRestStub):
+    class _ListCompilationResults(
+        _BaseDataformRestTransport._BaseListCompilationResults, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("ListCompilationResults")
+            return hash("DataformRestTransport.ListCompilationResults")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4049,40 +4141,29 @@ class DataformRestTransport(DataformTransport):
                     ``ListCompilationResults`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/compilationResults",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseListCompilationResults._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_compilation_results(
                 request, metadata
             )
-            pb_request = dataform.ListCompilationResultsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseListCompilationResults._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseListCompilationResults._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._ListCompilationResults._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4098,19 +4179,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_list_compilation_results(resp)
             return resp
 
-    class _ListReleaseConfigs(DataformRestStub):
+    class _ListReleaseConfigs(
+        _BaseDataformRestTransport._BaseListReleaseConfigs, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("ListReleaseConfigs")
+            return hash("DataformRestTransport.ListReleaseConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4136,40 +4231,29 @@ class DataformRestTransport(DataformTransport):
                     ``ListReleaseConfigs`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/releaseConfigs",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseListReleaseConfigs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_release_configs(
                 request, metadata
             )
-            pb_request = dataform.ListReleaseConfigsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseListReleaseConfigs._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseListReleaseConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._ListReleaseConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4185,19 +4269,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_list_release_configs(resp)
             return resp
 
-    class _ListRepositories(DataformRestStub):
+    class _ListRepositories(
+        _BaseDataformRestTransport._BaseListRepositories, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("ListRepositories")
+            return hash("DataformRestTransport.ListRepositories")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4223,40 +4321,31 @@ class DataformRestTransport(DataformTransport):
                     ``ListRepositories`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*}/repositories",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseListRepositories._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_repositories(
                 request, metadata
             )
-            pb_request = dataform.ListRepositoriesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseListRepositories._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseDataformRestTransport._BaseListRepositories._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._ListRepositories._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4272,19 +4361,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_list_repositories(resp)
             return resp
 
-    class _ListWorkflowConfigs(DataformRestStub):
+    class _ListWorkflowConfigs(
+        _BaseDataformRestTransport._BaseListWorkflowConfigs, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("ListWorkflowConfigs")
+            return hash("DataformRestTransport.ListWorkflowConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4310,40 +4413,29 @@ class DataformRestTransport(DataformTransport):
                     ``ListWorkflowConfigs`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/workflowConfigs",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseListWorkflowConfigs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_workflow_configs(
                 request, metadata
             )
-            pb_request = dataform.ListWorkflowConfigsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseListWorkflowConfigs._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseListWorkflowConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._ListWorkflowConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4359,19 +4451,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_list_workflow_configs(resp)
             return resp
 
-    class _ListWorkflowInvocations(DataformRestStub):
+    class _ListWorkflowInvocations(
+        _BaseDataformRestTransport._BaseListWorkflowInvocations, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("ListWorkflowInvocations")
+            return hash("DataformRestTransport.ListWorkflowInvocations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4397,40 +4503,29 @@ class DataformRestTransport(DataformTransport):
                     ``ListWorkflowInvocations`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/workflowInvocations",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseListWorkflowInvocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_workflow_invocations(
                 request, metadata
             )
-            pb_request = dataform.ListWorkflowInvocationsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseListWorkflowInvocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseListWorkflowInvocations._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._ListWorkflowInvocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4446,19 +4541,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_list_workflow_invocations(resp)
             return resp
 
-    class _ListWorkspaces(DataformRestStub):
+    class _ListWorkspaces(
+        _BaseDataformRestTransport._BaseListWorkspaces, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("ListWorkspaces")
+            return hash("DataformRestTransport.ListWorkspaces")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4484,38 +4593,31 @@ class DataformRestTransport(DataformTransport):
                     ``ListWorkspaces`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/workspaces",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseListWorkspaces._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_workspaces(request, metadata)
-            pb_request = dataform.ListWorkspacesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseListWorkspaces._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseListWorkspaces._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._ListWorkspaces._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4531,19 +4633,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_list_workspaces(resp)
             return resp
 
-    class _MakeDirectory(DataformRestStub):
+    class _MakeDirectory(
+        _BaseDataformRestTransport._BaseMakeDirectory, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("MakeDirectory")
+            return hash("DataformRestTransport.MakeDirectory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4569,45 +4686,36 @@ class DataformRestTransport(DataformTransport):
                     ``MakeDirectory`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{workspace=projects/*/locations/*/repositories/*/workspaces/*}:makeDirectory",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_make_directory(request, metadata)
-            pb_request = dataform.MakeDirectoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDataformRestTransport._BaseMakeDirectory._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_make_directory(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseMakeDirectory._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseDataformRestTransport._BaseMakeDirectory._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseMakeDirectory._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._MakeDirectory._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4623,19 +4731,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_make_directory(resp)
             return resp
 
-    class _MoveDirectory(DataformRestStub):
+    class _MoveDirectory(
+        _BaseDataformRestTransport._BaseMoveDirectory, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("MoveDirectory")
+            return hash("DataformRestTransport.MoveDirectory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4661,45 +4784,36 @@ class DataformRestTransport(DataformTransport):
                     ``MoveDirectory`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{workspace=projects/*/locations/*/repositories/*/workspaces/*}:moveDirectory",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_move_directory(request, metadata)
-            pb_request = dataform.MoveDirectoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDataformRestTransport._BaseMoveDirectory._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_move_directory(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseMoveDirectory._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseDataformRestTransport._BaseMoveDirectory._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseMoveDirectory._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._MoveDirectory._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4715,19 +4829,32 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_move_directory(resp)
             return resp
 
-    class _MoveFile(DataformRestStub):
+    class _MoveFile(_BaseDataformRestTransport._BaseMoveFile, DataformRestStub):
         def __hash__(self):
-            return hash("MoveFile")
+            return hash("DataformRestTransport.MoveFile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4753,45 +4880,34 @@ class DataformRestTransport(DataformTransport):
                     ``MoveFile`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{workspace=projects/*/locations/*/repositories/*/workspaces/*}:moveFile",
-                    "body": "*",
-                },
-            ]
+            http_options = _BaseDataformRestTransport._BaseMoveFile._get_http_options()
             request, metadata = self._interceptor.pre_move_file(request, metadata)
-            pb_request = dataform.MoveFileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseMoveFile._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseDataformRestTransport._BaseMoveFile._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseMoveFile._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._MoveFile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4807,19 +4923,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_move_file(resp)
             return resp
 
-    class _PullGitCommits(DataformRestStub):
+    class _PullGitCommits(
+        _BaseDataformRestTransport._BasePullGitCommits, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("PullGitCommits")
+            return hash("DataformRestTransport.PullGitCommits")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4841,47 +4972,40 @@ class DataformRestTransport(DataformTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workspaces/*}:pull",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BasePullGitCommits._get_http_options()
+            )
             request, metadata = self._interceptor.pre_pull_git_commits(
                 request, metadata
             )
-            pb_request = dataform.PullGitCommitsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDataformRestTransport._BasePullGitCommits._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseDataformRestTransport._BasePullGitCommits._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BasePullGitCommits._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._PullGitCommits._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4889,19 +5013,34 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _PushGitCommits(DataformRestStub):
+    class _PushGitCommits(
+        _BaseDataformRestTransport._BasePushGitCommits, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("PushGitCommits")
+            return hash("DataformRestTransport.PushGitCommits")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4923,47 +5062,40 @@ class DataformRestTransport(DataformTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workspaces/*}:push",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BasePushGitCommits._get_http_options()
+            )
             request, metadata = self._interceptor.pre_push_git_commits(
                 request, metadata
             )
-            pb_request = dataform.PushGitCommitsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDataformRestTransport._BasePushGitCommits._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseDataformRestTransport._BasePushGitCommits._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BasePushGitCommits._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._PushGitCommits._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4971,19 +5103,33 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _QueryCompilationResultActions(DataformRestStub):
+    class _QueryCompilationResultActions(
+        _BaseDataformRestTransport._BaseQueryCompilationResultActions, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("QueryCompilationResultActions")
+            return hash("DataformRestTransport.QueryCompilationResultActions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5010,40 +5156,31 @@ class DataformRestTransport(DataformTransport):
                         ``QueryCompilationResultActions`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/compilationResults/*}:query",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_query_compilation_result_actions(
                 request, metadata
             )
-            pb_request = dataform.QueryCompilationResultActionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DataformRestTransport._QueryCompilationResultActions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5059,19 +5196,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_query_compilation_result_actions(resp)
             return resp
 
-    class _QueryDirectoryContents(DataformRestStub):
+    class _QueryDirectoryContents(
+        _BaseDataformRestTransport._BaseQueryDirectoryContents, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("QueryDirectoryContents")
+            return hash("DataformRestTransport.QueryDirectoryContents")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5097,40 +5248,29 @@ class DataformRestTransport(DataformTransport):
                     ``QueryDirectoryContents`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{workspace=projects/*/locations/*/repositories/*/workspaces/*}:queryDirectoryContents",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseQueryDirectoryContents._get_http_options()
+            )
             request, metadata = self._interceptor.pre_query_directory_contents(
                 request, metadata
             )
-            pb_request = dataform.QueryDirectoryContentsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseQueryDirectoryContents._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseQueryDirectoryContents._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._QueryDirectoryContents._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5146,19 +5286,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_query_directory_contents(resp)
             return resp
 
-    class _QueryRepositoryDirectoryContents(DataformRestStub):
+    class _QueryRepositoryDirectoryContents(
+        _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents,
+        DataformRestStub,
+    ):
         def __hash__(self):
-            return hash("QueryRepositoryDirectoryContents")
+            return hash("DataformRestTransport.QueryRepositoryDirectoryContents")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5185,43 +5340,34 @@ class DataformRestTransport(DataformTransport):
                         ``QueryRepositoryDirectoryContents`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}:queryDirectoryContents",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_query_repository_directory_contents(
                 request, metadata
             )
-            pb_request = dataform.QueryRepositoryDirectoryContentsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DataformRestTransport._QueryRepositoryDirectoryContents._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5237,19 +5383,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_query_repository_directory_contents(resp)
             return resp
 
-    class _QueryWorkflowInvocationActions(DataformRestStub):
+    class _QueryWorkflowInvocationActions(
+        _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("QueryWorkflowInvocationActions")
+            return hash("DataformRestTransport.QueryWorkflowInvocationActions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5276,40 +5436,31 @@ class DataformRestTransport(DataformTransport):
                         ``QueryWorkflowInvocationActions`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workflowInvocations/*}:query",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_query_workflow_invocation_actions(
                 request, metadata
             )
-            pb_request = dataform.QueryWorkflowInvocationActionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DataformRestTransport._QueryWorkflowInvocationActions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5325,21 +5476,31 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_query_workflow_invocation_actions(resp)
             return resp
 
-    class _ReadFile(DataformRestStub):
+    class _ReadFile(_BaseDataformRestTransport._BaseReadFile, DataformRestStub):
         def __hash__(self):
-            return hash("ReadFile")
+            return hash("DataformRestTransport.ReadFile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "path": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5365,38 +5526,29 @@ class DataformRestTransport(DataformTransport):
                     ``ReadFile`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{workspace=projects/*/locations/*/repositories/*/workspaces/*}:readFile",
-                },
-            ]
+            http_options = _BaseDataformRestTransport._BaseReadFile._get_http_options()
             request, metadata = self._interceptor.pre_read_file(request, metadata)
-            pb_request = dataform.ReadFileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseReadFile._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseReadFile._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._ReadFile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5412,21 +5564,33 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_read_file(resp)
             return resp
 
-    class _ReadRepositoryFile(DataformRestStub):
+    class _ReadRepositoryFile(
+        _BaseDataformRestTransport._BaseReadRepositoryFile, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("ReadRepositoryFile")
+            return hash("DataformRestTransport.ReadRepositoryFile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "path": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5452,40 +5616,29 @@ class DataformRestTransport(DataformTransport):
                     ``ReadRepositoryFile`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}:readFile",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseReadRepositoryFile._get_http_options()
+            )
             request, metadata = self._interceptor.pre_read_repository_file(
                 request, metadata
             )
-            pb_request = dataform.ReadRepositoryFileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataformRestTransport._BaseReadRepositoryFile._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseReadRepositoryFile._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataformRestTransport._ReadRepositoryFile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5501,19 +5654,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_read_repository_file(resp)
             return resp
 
-    class _RemoveDirectory(DataformRestStub):
+    class _RemoveDirectory(
+        _BaseDataformRestTransport._BaseRemoveDirectory, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("RemoveDirectory")
+            return hash("DataformRestTransport.RemoveDirectory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5535,47 +5703,40 @@ class DataformRestTransport(DataformTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{workspace=projects/*/locations/*/repositories/*/workspaces/*}:removeDirectory",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseRemoveDirectory._get_http_options()
+            )
             request, metadata = self._interceptor.pre_remove_directory(
                 request, metadata
             )
-            pb_request = dataform.RemoveDirectoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseRemoveDirectory._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseDataformRestTransport._BaseRemoveDirectory._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseRemoveDirectory._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._RemoveDirectory._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5583,19 +5744,32 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _RemoveFile(DataformRestStub):
+    class _RemoveFile(_BaseDataformRestTransport._BaseRemoveFile, DataformRestStub):
         def __hash__(self):
-            return hash("RemoveFile")
+            return hash("DataformRestTransport.RemoveFile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5617,45 +5791,36 @@ class DataformRestTransport(DataformTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{workspace=projects/*/locations/*/repositories/*/workspaces/*}:removeFile",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_remove_file(request, metadata)
-            pb_request = dataform.RemoveFileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDataformRestTransport._BaseRemoveFile._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_remove_file(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseRemoveFile._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseDataformRestTransport._BaseRemoveFile._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseRemoveFile._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._RemoveFile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5663,19 +5828,34 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ResetWorkspaceChanges(DataformRestStub):
+    class _ResetWorkspaceChanges(
+        _BaseDataformRestTransport._BaseResetWorkspaceChanges, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("ResetWorkspaceChanges")
+            return hash("DataformRestTransport.ResetWorkspaceChanges")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5697,47 +5877,34 @@ class DataformRestTransport(DataformTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workspaces/*}:reset",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_http_options()
+            )
             request, metadata = self._interceptor.pre_reset_workspace_changes(
                 request, metadata
             )
-            pb_request = dataform.ResetWorkspaceChangesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._ResetWorkspaceChanges._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5745,19 +5912,34 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _UpdateReleaseConfig(DataformRestStub):
+    class _UpdateReleaseConfig(
+        _BaseDataformRestTransport._BaseUpdateReleaseConfig, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateReleaseConfig")
+            return hash("DataformRestTransport.UpdateReleaseConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5785,47 +5967,34 @@ class DataformRestTransport(DataformTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta1/{release_config.name=projects/*/locations/*/repositories/*/releaseConfigs/*}",
-                    "body": "release_config",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_release_config(
                 request, metadata
             )
-            pb_request = dataform.UpdateReleaseConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._UpdateReleaseConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5841,19 +6010,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_update_release_config(resp)
             return resp
 
-    class _UpdateRepository(DataformRestStub):
+    class _UpdateRepository(
+        _BaseDataformRestTransport._BaseUpdateRepository, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateRepository")
+            return hash("DataformRestTransport.UpdateRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5879,47 +6063,38 @@ class DataformRestTransport(DataformTransport):
                     Represents a Dataform Git repository.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta1/{repository.name=projects/*/locations/*/repositories/*}",
-                    "body": "repository",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseUpdateRepository._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_repository(
                 request, metadata
             )
-            pb_request = dataform.UpdateRepositoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseUpdateRepository._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            body = (
+                _BaseDataformRestTransport._BaseUpdateRepository._get_request_body_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseUpdateRepository._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._UpdateRepository._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5935,19 +6110,34 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_update_repository(resp)
             return resp
 
-    class _UpdateWorkflowConfig(DataformRestStub):
+    class _UpdateWorkflowConfig(
+        _BaseDataformRestTransport._BaseUpdateWorkflowConfig, DataformRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateWorkflowConfig")
+            return hash("DataformRestTransport.UpdateWorkflowConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5975,47 +6165,34 @@ class DataformRestTransport(DataformTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta1/{workflow_config.name=projects/*/locations/*/repositories/*/workflowConfigs/*}",
-                    "body": "workflow_config",
-                },
-            ]
+            http_options = (
+                _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_workflow_config(
                 request, metadata
             )
-            pb_request = dataform.UpdateWorkflowConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._UpdateWorkflowConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6031,19 +6208,32 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_update_workflow_config(resp)
             return resp
 
-    class _WriteFile(DataformRestStub):
+    class _WriteFile(_BaseDataformRestTransport._BaseWriteFile, DataformRestStub):
         def __hash__(self):
-            return hash("WriteFile")
+            return hash("DataformRestTransport.WriteFile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6069,45 +6259,34 @@ class DataformRestTransport(DataformTransport):
                     ``WriteFile`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{workspace=projects/*/locations/*/repositories/*/workspaces/*}:writeFile",
-                    "body": "*",
-                },
-            ]
+            http_options = _BaseDataformRestTransport._BaseWriteFile._get_http_options()
             request, metadata = self._interceptor.pre_write_file(request, metadata)
-            pb_request = dataform.WriteFileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseWriteFile._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseDataformRestTransport._BaseWriteFile._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseWriteFile._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataformRestTransport._WriteFile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6577,7 +6756,32 @@ class DataformRestTransport(DataformTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(DataformRestStub):
+    class _GetLocation(_BaseDataformRestTransport._BaseGetLocation, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -6601,32 +6805,31 @@ class DataformRestTransport(DataformTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseDataformRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseGetLocation._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseDataformRestTransport._BaseGetLocation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = DataformRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6634,8 +6837,9 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -6643,7 +6847,34 @@ class DataformRestTransport(DataformTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(DataformRestStub):
+    class _ListLocations(
+        _BaseDataformRestTransport._BaseListLocations, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -6667,32 +6898,31 @@ class DataformRestTransport(DataformTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseDataformRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseListLocations._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseDataformRestTransport._BaseListLocations._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = DataformRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6700,8 +6930,9 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -6709,7 +6940,32 @@ class DataformRestTransport(DataformTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(DataformRestStub):
+    class _GetIamPolicy(_BaseDataformRestTransport._BaseGetIamPolicy, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.GetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.GetIamPolicyRequest,
@@ -6733,40 +6989,31 @@ class DataformRestTransport(DataformTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/repositories/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/collections/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/repositories/*/workspaces/*}:getIamPolicy",
-                },
-            ]
-
+            http_options = (
+                _BaseDataformRestTransport._BaseGetIamPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseDataformRestTransport._BaseGetIamPolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = DataformRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6774,8 +7021,9 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
@@ -6783,7 +7031,33 @@ class DataformRestTransport(DataformTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(DataformRestStub):
+    class _SetIamPolicy(_BaseDataformRestTransport._BaseSetIamPolicy, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.SetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.SetIamPolicyRequest,
@@ -6807,45 +7081,36 @@ class DataformRestTransport(DataformTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/repositories/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/repositories/*/workspaces/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/collections/*}:setIamPolicy",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseDataformRestTransport._BaseSetIamPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseDataformRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseDataformRestTransport._BaseSetIamPolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = DataformRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6853,8 +7118,9 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
@@ -6862,7 +7128,35 @@ class DataformRestTransport(DataformTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(DataformRestStub):
+    class _TestIamPermissions(
+        _BaseDataformRestTransport._BaseTestIamPermissions, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.TestIamPermissions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.TestIamPermissionsRequest,
@@ -6886,47 +7180,34 @@ class DataformRestTransport(DataformTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/repositories/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/collections/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/repositories/*/workspaces/*}:testIamPermissions",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseDataformRestTransport._BaseTestIamPermissions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseDataformRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseDataformRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataformRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = DataformRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6934,8 +7215,9 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = iam_policy_pb2.TestIamPermissionsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
