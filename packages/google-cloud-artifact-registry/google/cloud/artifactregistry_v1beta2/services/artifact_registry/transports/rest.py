@@ -16,37 +16,21 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.cloud.artifactregistry_v1beta2.types import apt_artifact, file, package
 from google.cloud.artifactregistry_v1beta2.types import repository as gda_repository
@@ -56,8 +40,14 @@ from google.cloud.artifactregistry_v1beta2.types import tag
 from google.cloud.artifactregistry_v1beta2.types import tag as gda_tag
 from google.cloud.artifactregistry_v1beta2.types import version, yum_artifact
 
-from .base import ArtifactRegistryTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseArtifactRegistryRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -857,8 +847,8 @@ class ArtifactRegistryRestStub:
     _interceptor: ArtifactRegistryRestInterceptor
 
 
-class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
-    """REST backend transport for ArtifactRegistry.
+class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
+    """REST backend synchronous transport for ArtifactRegistry.
 
     The Artifact Registry API service.
 
@@ -879,7 +869,6 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -933,21 +922,12 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -993,19 +973,35 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateRepository(ArtifactRegistryRestStub):
+    class _CreateRepository(
+        _BaseArtifactRegistryRestTransport._BaseCreateRepository,
+        ArtifactRegistryRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateRepository")
+            return hash("ArtifactRegistryRestTransport.CreateRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1035,47 +1031,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta2/{parent=projects/*/locations/*}/repositories",
-                    "body": "repository",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseCreateRepository._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_repository(
                 request, metadata
             )
-            pb_request = gda_repository.CreateRepositoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseCreateRepository._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseArtifactRegistryRestTransport._BaseCreateRepository._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseCreateRepository._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ArtifactRegistryRestTransport._CreateRepository._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1089,9 +1072,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_create_repository(resp)
             return resp
 
-    class _CreateTag(ArtifactRegistryRestStub):
+    class _CreateTag(
+        _BaseArtifactRegistryRestTransport._BaseCreateTag, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("CreateTag")
+            return hash("ArtifactRegistryRestTransport.CreateTag")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1120,44 +1128,32 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta2/{parent=projects/*/locations/*/repositories/*/packages/*}/tags",
-                    "body": "tag",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_tag(request, metadata)
-            pb_request = gda_tag.CreateTagRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseCreateTag._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_tag(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseCreateTag._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseArtifactRegistryRestTransport._BaseCreateTag._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseCreateTag._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ArtifactRegistryRestTransport._CreateTag._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1173,9 +1169,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_create_tag(resp)
             return resp
 
-    class _DeletePackage(ArtifactRegistryRestStub):
+    class _DeletePackage(
+        _BaseArtifactRegistryRestTransport._BaseDeletePackage, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("DeletePackage")
+            return hash("ArtifactRegistryRestTransport.DeletePackage")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1204,37 +1224,27 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta2/{name=projects/*/locations/*/repositories/*/packages/*}",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseDeletePackage._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_package(request, metadata)
-            pb_request = package.DeletePackageRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseDeletePackage._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseDeletePackage._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._DeletePackage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1248,19 +1258,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_delete_package(resp)
             return resp
 
-    class _DeleteRepository(ArtifactRegistryRestStub):
+    class _DeleteRepository(
+        _BaseArtifactRegistryRestTransport._BaseDeleteRepository,
+        ArtifactRegistryRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteRepository")
+            return hash("ArtifactRegistryRestTransport.DeleteRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1289,40 +1314,29 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta2/{name=projects/*/locations/*/repositories/*}",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseDeleteRepository._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_repository(
                 request, metadata
             )
-            pb_request = repository.DeleteRepositoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseDeleteRepository._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseDeleteRepository._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._DeleteRepository._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1336,9 +1350,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_delete_repository(resp)
             return resp
 
-    class _DeleteTag(ArtifactRegistryRestStub):
+    class _DeleteTag(
+        _BaseArtifactRegistryRestTransport._BaseDeleteTag, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteTag")
+            return hash("ArtifactRegistryRestTransport.DeleteTag")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1360,37 +1398,27 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta2/{name=projects/*/locations/*/repositories/*/packages/*/tags/*}",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseDeleteTag._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_tag(request, metadata)
-            pb_request = tag.DeleteTagRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseDeleteTag._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseDeleteTag._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._DeleteTag._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1398,9 +1426,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteVersion(ArtifactRegistryRestStub):
+    class _DeleteVersion(
+        _BaseArtifactRegistryRestTransport._BaseDeleteVersion, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteVersion")
+            return hash("ArtifactRegistryRestTransport.DeleteVersion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1429,37 +1481,27 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta2/{name=projects/*/locations/*/repositories/*/packages/*/versions/*}",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseDeleteVersion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_version(request, metadata)
-            pb_request = version.DeleteVersionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseDeleteVersion._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseDeleteVersion._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._DeleteVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1473,9 +1515,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_delete_version(resp)
             return resp
 
-    class _GetFile(ArtifactRegistryRestStub):
+    class _GetFile(
+        _BaseArtifactRegistryRestTransport._BaseGetFile, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("GetFile")
+            return hash("ArtifactRegistryRestTransport.GetFile")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1504,37 +1570,31 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{name=projects/*/locations/*/repositories/*/files/**}",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseGetFile._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_file(request, metadata)
-            pb_request = file.GetFileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseArtifactRegistryRestTransport._BaseGetFile._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseArtifactRegistryRestTransport._BaseGetFile._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._GetFile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1550,19 +1610,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_get_file(resp)
             return resp
 
-    class _GetIamPolicy(ArtifactRegistryRestStub):
+    class _GetIamPolicy(
+        _BaseArtifactRegistryRestTransport._BaseGetIamPolicy, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("GetIamPolicy")
+            return hash("ArtifactRegistryRestTransport.GetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1663,38 +1737,27 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{resource=projects/*/locations/*/repositories/*}:getIamPolicy",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseGetIamPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseGetIamPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1710,9 +1773,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
-    class _GetPackage(ArtifactRegistryRestStub):
+    class _GetPackage(
+        _BaseArtifactRegistryRestTransport._BaseGetPackage, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("GetPackage")
+            return hash("ArtifactRegistryRestTransport.GetPackage")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1740,37 +1827,27 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{name=projects/*/locations/*/repositories/*/packages/*}",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseGetPackage._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_package(request, metadata)
-            pb_request = package.GetPackageRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseGetPackage._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseGetPackage._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._GetPackage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1786,19 +1863,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_get_package(resp)
             return resp
 
-    class _GetProjectSettings(ArtifactRegistryRestStub):
+    class _GetProjectSettings(
+        _BaseArtifactRegistryRestTransport._BaseGetProjectSettings,
+        ArtifactRegistryRestStub,
+    ):
         def __hash__(self):
-            return hash("GetProjectSettings")
+            return hash("ArtifactRegistryRestTransport.GetProjectSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1827,40 +1919,29 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{name=projects/*/projectSettings}",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseGetProjectSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_project_settings(
                 request, metadata
             )
-            pb_request = settings.GetProjectSettingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseGetProjectSettings._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseGetProjectSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._GetProjectSettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1876,19 +1957,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_get_project_settings(resp)
             return resp
 
-    class _GetRepository(ArtifactRegistryRestStub):
+    class _GetRepository(
+        _BaseArtifactRegistryRestTransport._BaseGetRepository, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("GetRepository")
+            return hash("ArtifactRegistryRestTransport.GetRepository")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1916,38 +2011,27 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{name=projects/*/locations/*/repositories/*}",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseGetRepository._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_repository(request, metadata)
-            pb_request = repository.GetRepositoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseGetRepository._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseGetRepository._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._GetRepository._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1963,9 +2047,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_get_repository(resp)
             return resp
 
-    class _GetTag(ArtifactRegistryRestStub):
+    class _GetTag(
+        _BaseArtifactRegistryRestTransport._BaseGetTag, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("GetTag")
+            return hash("ArtifactRegistryRestTransport.GetTag")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1994,37 +2102,31 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{name=projects/*/locations/*/repositories/*/packages/*/tags/*}",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseGetTag._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_tag(request, metadata)
-            pb_request = tag.GetTagRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseArtifactRegistryRestTransport._BaseGetTag._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseArtifactRegistryRestTransport._BaseGetTag._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._GetTag._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2040,9 +2142,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_get_tag(resp)
             return resp
 
-    class _GetVersion(ArtifactRegistryRestStub):
+    class _GetVersion(
+        _BaseArtifactRegistryRestTransport._BaseGetVersion, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("GetVersion")
+            return hash("ArtifactRegistryRestTransport.GetVersion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2073,37 +2199,27 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{name=projects/*/locations/*/repositories/*/packages/*/versions/*}",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseGetVersion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_version(request, metadata)
-            pb_request = version.GetVersionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseGetVersion._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseGetVersion._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._GetVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2119,9 +2235,35 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_get_version(resp)
             return resp
 
-    class _ImportAptArtifacts(ArtifactRegistryRestStub):
+    class _ImportAptArtifacts(
+        _BaseArtifactRegistryRestTransport._BaseImportAptArtifacts,
+        ArtifactRegistryRestStub,
+    ):
         def __hash__(self):
-            return hash("ImportAptArtifacts")
+            return hash("ArtifactRegistryRestTransport.ImportAptArtifacts")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2151,46 +2293,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta2/{parent=projects/*/locations/*/repositories/*}/aptArtifacts:import",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseImportAptArtifacts._get_http_options()
+            )
             request, metadata = self._interceptor.pre_import_apt_artifacts(
                 request, metadata
             )
-            pb_request = apt_artifact.ImportAptArtifactsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseImportAptArtifacts._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseArtifactRegistryRestTransport._BaseImportAptArtifacts._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseImportAptArtifacts._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ArtifactRegistryRestTransport._ImportAptArtifacts._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2204,9 +2334,35 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_import_apt_artifacts(resp)
             return resp
 
-    class _ImportYumArtifacts(ArtifactRegistryRestStub):
+    class _ImportYumArtifacts(
+        _BaseArtifactRegistryRestTransport._BaseImportYumArtifacts,
+        ArtifactRegistryRestStub,
+    ):
         def __hash__(self):
-            return hash("ImportYumArtifacts")
+            return hash("ArtifactRegistryRestTransport.ImportYumArtifacts")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2236,46 +2392,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta2/{parent=projects/*/locations/*/repositories/*}/yumArtifacts:import",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseImportYumArtifacts._get_http_options()
+            )
             request, metadata = self._interceptor.pre_import_yum_artifacts(
                 request, metadata
             )
-            pb_request = yum_artifact.ImportYumArtifactsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseImportYumArtifacts._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseArtifactRegistryRestTransport._BaseImportYumArtifacts._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseImportYumArtifacts._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ArtifactRegistryRestTransport._ImportYumArtifacts._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2289,9 +2433,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_import_yum_artifacts(resp)
             return resp
 
-    class _ListFiles(ArtifactRegistryRestStub):
+    class _ListFiles(
+        _BaseArtifactRegistryRestTransport._BaseListFiles, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("ListFiles")
+            return hash("ArtifactRegistryRestTransport.ListFiles")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2317,37 +2485,27 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                     The response from listing files.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{parent=projects/*/locations/*/repositories/*}/files",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseListFiles._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_files(request, metadata)
-            pb_request = file.ListFilesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseListFiles._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseListFiles._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._ListFiles._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2363,9 +2521,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_list_files(resp)
             return resp
 
-    class _ListPackages(ArtifactRegistryRestStub):
+    class _ListPackages(
+        _BaseArtifactRegistryRestTransport._BaseListPackages, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("ListPackages")
+            return hash("ArtifactRegistryRestTransport.ListPackages")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2391,37 +2573,27 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                     The response from listing packages.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{parent=projects/*/locations/*/repositories/*}/packages",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseListPackages._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_packages(request, metadata)
-            pb_request = package.ListPackagesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseListPackages._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseListPackages._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._ListPackages._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2437,19 +2609,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_list_packages(resp)
             return resp
 
-    class _ListRepositories(ArtifactRegistryRestStub):
+    class _ListRepositories(
+        _BaseArtifactRegistryRestTransport._BaseListRepositories,
+        ArtifactRegistryRestStub,
+    ):
         def __hash__(self):
-            return hash("ListRepositories")
+            return hash("ArtifactRegistryRestTransport.ListRepositories")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2477,40 +2664,29 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{parent=projects/*/locations/*}/repositories",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseListRepositories._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_repositories(
                 request, metadata
             )
-            pb_request = repository.ListRepositoriesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseListRepositories._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseListRepositories._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._ListRepositories._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2526,9 +2702,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_list_repositories(resp)
             return resp
 
-    class _ListTags(ArtifactRegistryRestStub):
+    class _ListTags(
+        _BaseArtifactRegistryRestTransport._BaseListTags, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("ListTags")
+            return hash("ArtifactRegistryRestTransport.ListTags")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2554,37 +2754,29 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                     The response from listing tags.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{parent=projects/*/locations/*/repositories/*/packages/*}/tags",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseListTags._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_tags(request, metadata)
-            pb_request = tag.ListTagsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseListTags._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseArtifactRegistryRestTransport._BaseListTags._get_query_params_json(
+                    transcoded_request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._ListTags._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2600,9 +2792,33 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_list_tags(resp)
             return resp
 
-    class _ListVersions(ArtifactRegistryRestStub):
+    class _ListVersions(
+        _BaseArtifactRegistryRestTransport._BaseListVersions, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("ListVersions")
+            return hash("ArtifactRegistryRestTransport.ListVersions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2628,37 +2844,27 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                     The response from listing versions.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{parent=projects/*/locations/*/repositories/*/packages/*}/versions",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseListVersions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_versions(request, metadata)
-            pb_request = version.ListVersionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseListVersions._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseListVersions._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ArtifactRegistryRestTransport._ListVersions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2674,19 +2880,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_list_versions(resp)
             return resp
 
-    class _SetIamPolicy(ArtifactRegistryRestStub):
+    class _SetIamPolicy(
+        _BaseArtifactRegistryRestTransport._BaseSetIamPolicy, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("SetIamPolicy")
+            return hash("ArtifactRegistryRestTransport.SetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2787,45 +3008,32 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta2/{resource=projects/*/locations/*/repositories/*}:setIamPolicy",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseSetIamPolicy._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseArtifactRegistryRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseSetIamPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ArtifactRegistryRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2841,19 +3049,35 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
-    class _TestIamPermissions(ArtifactRegistryRestStub):
+    class _TestIamPermissions(
+        _BaseArtifactRegistryRestTransport._BaseTestIamPermissions,
+        ArtifactRegistryRestStub,
+    ):
         def __hash__(self):
-            return hash("TestIamPermissions")
+            return hash("ArtifactRegistryRestTransport.TestIamPermissions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2879,47 +3103,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta2/{resource=projects/*/locations/*/repositories/*}:testIamPermissions",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseTestIamPermissions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseArtifactRegistryRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ArtifactRegistryRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2935,9 +3146,35 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
-    class _UpdateProjectSettings(ArtifactRegistryRestStub):
+    class _UpdateProjectSettings(
+        _BaseArtifactRegistryRestTransport._BaseUpdateProjectSettings,
+        ArtifactRegistryRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateProjectSettings")
+            return hash("ArtifactRegistryRestTransport.UpdateProjectSettings")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2965,46 +3202,36 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta2/{project_settings.name=projects/*/projectSettings}",
-                    "body": "project_settings",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseUpdateProjectSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_project_settings(
                 request, metadata
             )
-            pb_request = settings.UpdateProjectSettingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseUpdateProjectSettings._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseArtifactRegistryRestTransport._BaseUpdateProjectSettings._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseUpdateProjectSettings._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ArtifactRegistryRestTransport._UpdateProjectSettings._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3020,9 +3247,35 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_update_project_settings(resp)
             return resp
 
-    class _UpdateRepository(ArtifactRegistryRestStub):
+    class _UpdateRepository(
+        _BaseArtifactRegistryRestTransport._BaseUpdateRepository,
+        ArtifactRegistryRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateRepository")
+            return hash("ArtifactRegistryRestTransport.UpdateRepository")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3050,46 +3303,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta2/{repository.name=projects/*/locations/*/repositories/*}",
-                    "body": "repository",
-                },
-            ]
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseUpdateRepository._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_repository(
                 request, metadata
             )
-            pb_request = gda_repository.UpdateRepositoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseUpdateRepository._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseArtifactRegistryRestTransport._BaseUpdateRepository._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseUpdateRepository._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ArtifactRegistryRestTransport._UpdateRepository._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3105,9 +3346,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             resp = self._interceptor.post_update_repository(resp)
             return resp
 
-    class _UpdateTag(ArtifactRegistryRestStub):
+    class _UpdateTag(
+        _BaseArtifactRegistryRestTransport._BaseUpdateTag, ArtifactRegistryRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateTag")
+            return hash("ArtifactRegistryRestTransport.UpdateTag")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3137,44 +3403,32 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta2/{tag.name=projects/*/locations/*/repositories/*/packages/*/tags/*}",
-                    "body": "tag",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_tag(request, metadata)
-            pb_request = gda_tag.UpdateTagRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseUpdateTag._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_tag(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseUpdateTag._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseArtifactRegistryRestTransport._BaseUpdateTag._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseArtifactRegistryRestTransport._BaseUpdateTag._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ArtifactRegistryRestTransport._UpdateTag._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3381,7 +3635,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(ArtifactRegistryRestStub):
+    class _GetLocation(
+        _BaseArtifactRegistryRestTransport._BaseGetLocation, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -3405,32 +3686,27 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseGetLocation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseArtifactRegistryRestTransport._BaseGetLocation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = ArtifactRegistryRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3438,8 +3714,9 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -3447,7 +3724,34 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(ArtifactRegistryRestStub):
+    class _ListLocations(
+        _BaseArtifactRegistryRestTransport._BaseListLocations, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -3471,32 +3775,27 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta2/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseArtifactRegistryRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = ArtifactRegistryRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3504,8 +3803,9 @@ class ArtifactRegistryRestTransport(ArtifactRegistryTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 

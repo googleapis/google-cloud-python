@@ -16,32 +16,28 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.accessapproval_v1.types import accessapproval
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseAccessApprovalRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.accessapproval_v1.types import accessapproval
-
-from .base import AccessApprovalTransport
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -353,8 +349,8 @@ class AccessApprovalRestStub:
     _interceptor: AccessApprovalRestInterceptor
 
 
-class AccessApprovalRestTransport(AccessApprovalTransport):
-    """REST backend transport for AccessApproval.
+class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
+    """REST backend synchronous transport for AccessApproval.
 
     This API allows a customer to manage accesses to cloud resources by
     Google personnel. It defines the following resource model:
@@ -397,7 +393,6 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -451,21 +446,12 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -476,9 +462,35 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
         self._interceptor = interceptor or AccessApprovalRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ApproveApprovalRequest(AccessApprovalRestStub):
+    class _ApproveApprovalRequest(
+        _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest,
+        AccessApprovalRestStub,
+    ):
         def __hash__(self):
-            return hash("ApproveApprovalRequest")
+            return hash("AccessApprovalRestTransport.ApproveApprovalRequest")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -507,56 +519,36 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/approvalRequests/*}:approve",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=folders/*/approvalRequests/*}:approve",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=organizations/*/approvalRequests/*}:approve",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_http_options()
+            )
             request, metadata = self._interceptor.pre_approve_approval_request(
                 request, metadata
             )
-            pb_request = accessapproval.ApproveApprovalRequestMessage.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AccessApprovalRestTransport._ApproveApprovalRequest._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -572,9 +564,34 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
             resp = self._interceptor.post_approve_approval_request(resp)
             return resp
 
-    class _DeleteAccessApprovalSettings(AccessApprovalRestStub):
+    class _DeleteAccessApprovalSettings(
+        _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings,
+        AccessApprovalRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteAccessApprovalSettings")
+            return hash("AccessApprovalRestTransport.DeleteAccessApprovalSettings")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -598,47 +615,31 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/accessApprovalSettings}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=folders/*/accessApprovalSettings}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=organizations/*/accessApprovalSettings}",
-                },
-            ]
+            http_options = (
+                _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_access_approval_settings(
                 request, metadata
             )
-            pb_request = accessapproval.DeleteAccessApprovalSettingsMessage.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AccessApprovalRestTransport._DeleteAccessApprovalSettings._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -646,9 +647,35 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DismissApprovalRequest(AccessApprovalRestStub):
+    class _DismissApprovalRequest(
+        _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest,
+        AccessApprovalRestStub,
+    ):
         def __hash__(self):
-            return hash("DismissApprovalRequest")
+            return hash("AccessApprovalRestTransport.DismissApprovalRequest")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -677,56 +704,36 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/approvalRequests/*}:dismiss",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=folders/*/approvalRequests/*}:dismiss",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=organizations/*/approvalRequests/*}:dismiss",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_http_options()
+            )
             request, metadata = self._interceptor.pre_dismiss_approval_request(
                 request, metadata
             )
-            pb_request = accessapproval.DismissApprovalRequestMessage.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AccessApprovalRestTransport._DismissApprovalRequest._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -742,9 +749,34 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
             resp = self._interceptor.post_dismiss_approval_request(resp)
             return resp
 
-    class _GetAccessApprovalServiceAccount(AccessApprovalRestStub):
+    class _GetAccessApprovalServiceAccount(
+        _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount,
+        AccessApprovalRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAccessApprovalServiceAccount")
+            return hash("AccessApprovalRestTransport.GetAccessApprovalServiceAccount")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -775,52 +807,32 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/serviceAccount}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/serviceAccount}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/serviceAccount}",
-                },
-            ]
+            http_options = (
+                _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_get_access_approval_service_account(
                 request, metadata
             )
-            pb_request = accessapproval.GetAccessApprovalServiceAccountMessage.pb(
-                request
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AccessApprovalRestTransport._GetAccessApprovalServiceAccount._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -836,9 +848,34 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
             resp = self._interceptor.post_get_access_approval_service_account(resp)
             return resp
 
-    class _GetAccessApprovalSettings(AccessApprovalRestStub):
+    class _GetAccessApprovalSettings(
+        _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings,
+        AccessApprovalRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAccessApprovalSettings")
+            return hash("AccessApprovalRestTransport.GetAccessApprovalSettings")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -869,47 +906,31 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/accessApprovalSettings}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/accessApprovalSettings}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/accessApprovalSettings}",
-                },
-            ]
+            http_options = (
+                _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_access_approval_settings(
                 request, metadata
             )
-            pb_request = accessapproval.GetAccessApprovalSettingsMessage.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AccessApprovalRestTransport._GetAccessApprovalSettings._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -925,9 +946,33 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
             resp = self._interceptor.post_get_access_approval_settings(resp)
             return resp
 
-    class _GetApprovalRequest(AccessApprovalRestStub):
+    class _GetApprovalRequest(
+        _BaseAccessApprovalRestTransport._BaseGetApprovalRequest, AccessApprovalRestStub
+    ):
         def __hash__(self):
-            return hash("GetApprovalRequest")
+            return hash("AccessApprovalRestTransport.GetApprovalRequest")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -955,47 +1000,29 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/approvalRequests/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/approvalRequests/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/approvalRequests/*}",
-                },
-            ]
+            http_options = (
+                _BaseAccessApprovalRestTransport._BaseGetApprovalRequest._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_approval_request(
                 request, metadata
             )
-            pb_request = accessapproval.GetApprovalRequestMessage.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseGetApprovalRequest._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseAccessApprovalRestTransport._BaseGetApprovalRequest._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AccessApprovalRestTransport._GetApprovalRequest._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1011,9 +1038,35 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
             resp = self._interceptor.post_get_approval_request(resp)
             return resp
 
-    class _InvalidateApprovalRequest(AccessApprovalRestStub):
+    class _InvalidateApprovalRequest(
+        _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest,
+        AccessApprovalRestStub,
+    ):
         def __hash__(self):
-            return hash("InvalidateApprovalRequest")
+            return hash("AccessApprovalRestTransport.InvalidateApprovalRequest")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1043,56 +1096,36 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/approvalRequests/*}:invalidate",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=folders/*/approvalRequests/*}:invalidate",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=organizations/*/approvalRequests/*}:invalidate",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_http_options()
+            )
             request, metadata = self._interceptor.pre_invalidate_approval_request(
                 request, metadata
             )
-            pb_request = accessapproval.InvalidateApprovalRequestMessage.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AccessApprovalRestTransport._InvalidateApprovalRequest._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1108,9 +1141,34 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
             resp = self._interceptor.post_invalidate_approval_request(resp)
             return resp
 
-    class _ListApprovalRequests(AccessApprovalRestStub):
+    class _ListApprovalRequests(
+        _BaseAccessApprovalRestTransport._BaseListApprovalRequests,
+        AccessApprovalRestStub,
+    ):
         def __hash__(self):
-            return hash("ListApprovalRequests")
+            return hash("AccessApprovalRestTransport.ListApprovalRequests")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1138,47 +1196,29 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*}/approvalRequests",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*}/approvalRequests",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*}/approvalRequests",
-                },
-            ]
+            http_options = (
+                _BaseAccessApprovalRestTransport._BaseListApprovalRequests._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_approval_requests(
                 request, metadata
             )
-            pb_request = accessapproval.ListApprovalRequestsMessage.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseListApprovalRequests._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseAccessApprovalRestTransport._BaseListApprovalRequests._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AccessApprovalRestTransport._ListApprovalRequests._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1194,9 +1234,35 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
             resp = self._interceptor.post_list_approval_requests(resp)
             return resp
 
-    class _UpdateAccessApprovalSettings(AccessApprovalRestStub):
+    class _UpdateAccessApprovalSettings(
+        _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings,
+        AccessApprovalRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateAccessApprovalSettings")
+            return hash("AccessApprovalRestTransport.UpdateAccessApprovalSettings")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1227,56 +1293,36 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{settings.name=projects/*/accessApprovalSettings}",
-                    "body": "settings",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{settings.name=folders/*/accessApprovalSettings}",
-                    "body": "settings",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{settings.name=organizations/*/accessApprovalSettings}",
-                    "body": "settings",
-                },
-            ]
+            http_options = (
+                _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_access_approval_settings(
                 request, metadata
             )
-            pb_request = accessapproval.UpdateAccessApprovalSettingsMessage.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AccessApprovalRestTransport._UpdateAccessApprovalSettings._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

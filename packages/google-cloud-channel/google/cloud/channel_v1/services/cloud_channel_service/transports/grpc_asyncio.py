@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -258,6 +259,9 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -2721,255 +2725,284 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_customers: gapic_v1.method_async.wrap_method(
+            self.list_customers: self._wrap_method(
                 self.list_customers,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_customer: gapic_v1.method_async.wrap_method(
+            self.get_customer: self._wrap_method(
                 self.get_customer,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.check_cloud_identity_accounts_exist: gapic_v1.method_async.wrap_method(
+            self.check_cloud_identity_accounts_exist: self._wrap_method(
                 self.check_cloud_identity_accounts_exist,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_customer: gapic_v1.method_async.wrap_method(
+            self.create_customer: self._wrap_method(
                 self.create_customer,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_customer: gapic_v1.method_async.wrap_method(
+            self.update_customer: self._wrap_method(
                 self.update_customer,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_customer: gapic_v1.method_async.wrap_method(
+            self.delete_customer: self._wrap_method(
                 self.delete_customer,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.import_customer: gapic_v1.method_async.wrap_method(
+            self.import_customer: self._wrap_method(
                 self.import_customer,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.provision_cloud_identity: gapic_v1.method_async.wrap_method(
+            self.provision_cloud_identity: self._wrap_method(
                 self.provision_cloud_identity,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_entitlements: gapic_v1.method_async.wrap_method(
+            self.list_entitlements: self._wrap_method(
                 self.list_entitlements,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_transferable_skus: gapic_v1.method_async.wrap_method(
+            self.list_transferable_skus: self._wrap_method(
                 self.list_transferable_skus,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_transferable_offers: gapic_v1.method_async.wrap_method(
+            self.list_transferable_offers: self._wrap_method(
                 self.list_transferable_offers,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_entitlement: gapic_v1.method_async.wrap_method(
+            self.get_entitlement: self._wrap_method(
                 self.get_entitlement,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_entitlement: gapic_v1.method_async.wrap_method(
+            self.create_entitlement: self._wrap_method(
                 self.create_entitlement,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.change_parameters: gapic_v1.method_async.wrap_method(
+            self.change_parameters: self._wrap_method(
                 self.change_parameters,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.change_renewal_settings: gapic_v1.method_async.wrap_method(
+            self.change_renewal_settings: self._wrap_method(
                 self.change_renewal_settings,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.change_offer: gapic_v1.method_async.wrap_method(
+            self.change_offer: self._wrap_method(
                 self.change_offer,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.start_paid_service: gapic_v1.method_async.wrap_method(
+            self.start_paid_service: self._wrap_method(
                 self.start_paid_service,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.suspend_entitlement: gapic_v1.method_async.wrap_method(
+            self.suspend_entitlement: self._wrap_method(
                 self.suspend_entitlement,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.cancel_entitlement: gapic_v1.method_async.wrap_method(
+            self.cancel_entitlement: self._wrap_method(
                 self.cancel_entitlement,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.activate_entitlement: gapic_v1.method_async.wrap_method(
+            self.activate_entitlement: self._wrap_method(
                 self.activate_entitlement,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.transfer_entitlements: gapic_v1.method_async.wrap_method(
+            self.transfer_entitlements: self._wrap_method(
                 self.transfer_entitlements,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.transfer_entitlements_to_google: gapic_v1.method_async.wrap_method(
+            self.transfer_entitlements_to_google: self._wrap_method(
                 self.transfer_entitlements_to_google,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_channel_partner_links: gapic_v1.method_async.wrap_method(
+            self.list_channel_partner_links: self._wrap_method(
                 self.list_channel_partner_links,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_channel_partner_link: gapic_v1.method_async.wrap_method(
+            self.get_channel_partner_link: self._wrap_method(
                 self.get_channel_partner_link,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_channel_partner_link: gapic_v1.method_async.wrap_method(
+            self.create_channel_partner_link: self._wrap_method(
                 self.create_channel_partner_link,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_channel_partner_link: gapic_v1.method_async.wrap_method(
+            self.update_channel_partner_link: self._wrap_method(
                 self.update_channel_partner_link,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_customer_repricing_config: gapic_v1.method_async.wrap_method(
+            self.get_customer_repricing_config: self._wrap_method(
                 self.get_customer_repricing_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_customer_repricing_configs: gapic_v1.method_async.wrap_method(
+            self.list_customer_repricing_configs: self._wrap_method(
                 self.list_customer_repricing_configs,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_customer_repricing_config: gapic_v1.method_async.wrap_method(
+            self.create_customer_repricing_config: self._wrap_method(
                 self.create_customer_repricing_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_customer_repricing_config: gapic_v1.method_async.wrap_method(
+            self.update_customer_repricing_config: self._wrap_method(
                 self.update_customer_repricing_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_customer_repricing_config: gapic_v1.method_async.wrap_method(
+            self.delete_customer_repricing_config: self._wrap_method(
                 self.delete_customer_repricing_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_channel_partner_repricing_config: gapic_v1.method_async.wrap_method(
+            self.get_channel_partner_repricing_config: self._wrap_method(
                 self.get_channel_partner_repricing_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_channel_partner_repricing_configs: gapic_v1.method_async.wrap_method(
+            self.list_channel_partner_repricing_configs: self._wrap_method(
                 self.list_channel_partner_repricing_configs,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_channel_partner_repricing_config: gapic_v1.method_async.wrap_method(
+            self.create_channel_partner_repricing_config: self._wrap_method(
                 self.create_channel_partner_repricing_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_channel_partner_repricing_config: gapic_v1.method_async.wrap_method(
+            self.update_channel_partner_repricing_config: self._wrap_method(
                 self.update_channel_partner_repricing_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_channel_partner_repricing_config: gapic_v1.method_async.wrap_method(
+            self.delete_channel_partner_repricing_config: self._wrap_method(
                 self.delete_channel_partner_repricing_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_sku_groups: gapic_v1.method_async.wrap_method(
+            self.list_sku_groups: self._wrap_method(
                 self.list_sku_groups,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_sku_group_billable_skus: gapic_v1.method_async.wrap_method(
+            self.list_sku_group_billable_skus: self._wrap_method(
                 self.list_sku_group_billable_skus,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.lookup_offer: gapic_v1.method_async.wrap_method(
+            self.lookup_offer: self._wrap_method(
                 self.lookup_offer,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_products: gapic_v1.method_async.wrap_method(
+            self.list_products: self._wrap_method(
                 self.list_products,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_skus: gapic_v1.method_async.wrap_method(
+            self.list_skus: self._wrap_method(
                 self.list_skus,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_offers: gapic_v1.method_async.wrap_method(
+            self.list_offers: self._wrap_method(
                 self.list_offers,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_purchasable_skus: gapic_v1.method_async.wrap_method(
+            self.list_purchasable_skus: self._wrap_method(
                 self.list_purchasable_skus,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_purchasable_offers: gapic_v1.method_async.wrap_method(
+            self.list_purchasable_offers: self._wrap_method(
                 self.list_purchasable_offers,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.query_eligible_billing_accounts: gapic_v1.method_async.wrap_method(
+            self.query_eligible_billing_accounts: self._wrap_method(
                 self.query_eligible_billing_accounts,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.register_subscriber: gapic_v1.method_async.wrap_method(
+            self.register_subscriber: self._wrap_method(
                 self.register_subscriber,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.unregister_subscriber: gapic_v1.method_async.wrap_method(
+            self.unregister_subscriber: self._wrap_method(
                 self.unregister_subscriber,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_subscribers: gapic_v1.method_async.wrap_method(
+            self.list_subscribers: self._wrap_method(
                 self.list_subscribers,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_entitlement_changes: gapic_v1.method_async.wrap_method(
+            self.list_entitlement_changes: self._wrap_method(
                 self.list_entitlement_changes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(
