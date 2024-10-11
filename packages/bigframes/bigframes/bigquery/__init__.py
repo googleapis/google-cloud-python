@@ -493,8 +493,8 @@ def vector_search(
     )
     if index_col_ids is not None:
         df = query._session.read_gbq(sql, index_col=index_col_ids)
+        df.index.names = index_labels
     else:
         df = query._session.read_gbq(sql)
-    df.index.names = index_labels
 
     return df

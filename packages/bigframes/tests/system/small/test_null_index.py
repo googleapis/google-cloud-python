@@ -21,6 +21,23 @@ import bigframes.pandas as bpd
 from tests.system.utils import skip_legacy_pandas
 
 
+def test_null_index_to_gbq(session, scalars_df_null_index, dataset_id_not_created):
+    dataset_id = dataset_id_not_created
+    destination_table = f"{dataset_id}.scalars_df_unindexed"
+
+    result_table = scalars_df_null_index.to_gbq(
+        destination_table, clustering_columns=["int64_col"]
+    )
+    assert (
+        result_table == destination_table
+        if destination_table
+        else result_table is not None
+    )
+
+    loaded_scalars_df_index = session.read_gbq(result_table)
+    assert not loaded_scalars_df_index.empty
+
+
 def test_null_index_materialize(scalars_df_null_index, scalars_pandas_df_default_index):
     bf_result = scalars_df_null_index.to_pandas()
     pd.testing.assert_frame_equal(
@@ -83,6 +100,23 @@ def test_null_index_aggregate(scalars_df_null_index, scalars_pandas_df_default_i
     )
 
 
+def test_null_index_binop_series_axis_0(
+    scalars_df_null_index, scalars_pandas_df_default_index
+):
+    bf_result = (
+        scalars_df_null_index[["int64_col", "int64_too"]]
+        .add(scalars_df_null_index["int64_col"], axis=0)
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df_default_index[["int64_col", "int64_too"]].add(
+        scalars_pandas_df_default_index.int64_col, axis=0
+    )
+
+    pd.testing.assert_frame_equal(
+        bf_result, pd_result, check_dtype=False, check_index_type=False
+    )
+
+
 def test_null_index_groupby_aggregate(
     scalars_df_null_index, scalars_pandas_df_default_index
 ):
@@ -137,6 +171,25 @@ def test_null_index_merge_left_null_index_object(
     # BigQuery table against small local data, for example.
     assert not got._has_index
     assert got.shape == expected.shape
+
+
+@skip_legacy_pandas
+@pytest.mark.parametrize(
+    ("expr",),
+    [
+        ("new_col = int64_col + int64_too",),
+        ("new_col = (rowindex > 3) | bool_col",),
+        ("int64_too = bool_col\nnew_col2 = rowindex",),
+    ],
+)
+def test_null_index_df_eval(
+    scalars_df_null_index, scalars_pandas_df_default_index, expr
+):
+
+    bf_result = scalars_df_null_index.eval(expr).to_pandas()
+    pd_result = scalars_pandas_df_default_index.eval(expr)
+
+    pd.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
 
 
 def test_null_index_merge_right_null_index_object(

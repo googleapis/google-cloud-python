@@ -38,12 +38,15 @@ def eval(df: dataframe.DataFrame, expr: str, target: Optional[dataframe.DataFram
     Returns:
         Result of evaluation.
     """
-    index_resolver = {
-        vendored_pandas_eval_parsing.clean_column_name(str(name)): EvalSeries(
-            df.index.get_level_values(level).to_series()
-        )
-        for level, name in enumerate(df.index.names)
-    }
+    if df._has_index:
+        index_resolver = {
+            vendored_pandas_eval_parsing.clean_column_name(str(name)): EvalSeries(
+                df.index.get_level_values(level).to_series()
+            )
+            for level, name in enumerate(df.index.names)
+        }
+    else:
+        index_resolver = {}
     column_resolver = {
         vendored_pandas_eval_parsing.clean_column_name(str(name)): EvalSeries(series)
         for name, series in df.items()
