@@ -1,2 +1,0 @@
-recursive-include google/cloud/asset *.py
-recursive-include google/cloud/asset_v1p2beta1 *.py

@@ -24,8 +24,22 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
+from google.api_core import api_core_version
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -39,11 +53,6 @@ from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 
 from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service import (
     AnalyticsHubServiceAsyncClient,
@@ -54,8 +63,22 @@ from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service 
 from google.cloud.bigquery_data_exchange_v1beta1.types import dataexchange
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1183,27 +1206,6 @@ def test_list_data_exchanges(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_data_exchanges_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_data_exchanges), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_data_exchanges()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.ListDataExchangesRequest()
-
-
 def test_list_data_exchanges_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1276,31 +1278,6 @@ def test_list_data_exchanges_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_data_exchanges_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_data_exchanges), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataexchange.ListDataExchangesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_data_exchanges()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.ListDataExchangesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_data_exchanges_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1308,7 +1285,7 @@ async def test_list_data_exchanges_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1347,7 +1324,7 @@ async def test_list_data_exchanges_async(
     transport: str = "grpc_asyncio", request_type=dataexchange.ListDataExchangesRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1417,7 +1394,7 @@ def test_list_data_exchanges_field_headers():
 @pytest.mark.asyncio
 async def test_list_data_exchanges_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1491,7 +1468,7 @@ def test_list_data_exchanges_flattened_error():
 @pytest.mark.asyncio
 async def test_list_data_exchanges_flattened_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1522,7 +1499,7 @@ async def test_list_data_exchanges_flattened_async():
 @pytest.mark.asyncio
 async def test_list_data_exchanges_flattened_error_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1636,7 +1613,7 @@ def test_list_data_exchanges_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_data_exchanges_async_pager():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1688,7 +1665,7 @@ async def test_list_data_exchanges_async_pager():
 @pytest.mark.asyncio
 async def test_list_data_exchanges_async_pages():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1774,27 +1751,6 @@ def test_list_org_data_exchanges(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_org_data_exchanges_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_org_data_exchanges), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_org_data_exchanges()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.ListOrgDataExchangesRequest()
-
-
 def test_list_org_data_exchanges_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1868,31 +1824,6 @@ def test_list_org_data_exchanges_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_org_data_exchanges_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_org_data_exchanges), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataexchange.ListOrgDataExchangesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_org_data_exchanges()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.ListOrgDataExchangesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_org_data_exchanges_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1900,7 +1831,7 @@ async def test_list_org_data_exchanges_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1940,7 +1871,7 @@ async def test_list_org_data_exchanges_async(
     request_type=dataexchange.ListOrgDataExchangesRequest,
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2010,7 +1941,7 @@ def test_list_org_data_exchanges_field_headers():
 @pytest.mark.asyncio
 async def test_list_org_data_exchanges_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2084,7 +2015,7 @@ def test_list_org_data_exchanges_flattened_error():
 @pytest.mark.asyncio
 async def test_list_org_data_exchanges_flattened_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2115,7 +2046,7 @@ async def test_list_org_data_exchanges_flattened_async():
 @pytest.mark.asyncio
 async def test_list_org_data_exchanges_flattened_error_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2229,7 +2160,7 @@ def test_list_org_data_exchanges_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_org_data_exchanges_async_pager():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2281,7 +2212,7 @@ async def test_list_org_data_exchanges_async_pager():
 @pytest.mark.asyncio
 async def test_list_org_data_exchanges_async_pages():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2379,27 +2310,6 @@ def test_get_data_exchange(request_type, transport: str = "grpc"):
     assert response.icon == b"icon_blob"
 
 
-def test_get_data_exchange_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_data_exchange), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_data_exchange()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.GetDataExchangeRequest()
-
-
 def test_get_data_exchange_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2468,37 +2378,6 @@ def test_get_data_exchange_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_data_exchange_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_data_exchange), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataexchange.DataExchange(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                primary_contact="primary_contact_value",
-                documentation="documentation_value",
-                listing_count=1410,
-                icon=b"icon_blob",
-            )
-        )
-        response = await client.get_data_exchange()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.GetDataExchangeRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_data_exchange_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2506,7 +2385,7 @@ async def test_get_data_exchange_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2545,7 +2424,7 @@ async def test_get_data_exchange_async(
     transport: str = "grpc_asyncio", request_type=dataexchange.GetDataExchangeRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2627,7 +2506,7 @@ def test_get_data_exchange_field_headers():
 @pytest.mark.asyncio
 async def test_get_data_exchange_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2701,7 +2580,7 @@ def test_get_data_exchange_flattened_error():
 @pytest.mark.asyncio
 async def test_get_data_exchange_flattened_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2732,7 +2611,7 @@ async def test_get_data_exchange_flattened_async():
 @pytest.mark.asyncio
 async def test_get_data_exchange_flattened_error_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2792,27 +2671,6 @@ def test_create_data_exchange(request_type, transport: str = "grpc"):
     assert response.documentation == "documentation_value"
     assert response.listing_count == 1410
     assert response.icon == b"icon_blob"
-
-
-def test_create_data_exchange_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_data_exchange), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_data_exchange()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.CreateDataExchangeRequest()
 
 
 def test_create_data_exchange_non_empty_request_with_auto_populated_field():
@@ -2887,37 +2745,6 @@ def test_create_data_exchange_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_data_exchange_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_data_exchange), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataexchange.DataExchange(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                primary_contact="primary_contact_value",
-                documentation="documentation_value",
-                listing_count=1410,
-                icon=b"icon_blob",
-            )
-        )
-        response = await client.create_data_exchange()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.CreateDataExchangeRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_data_exchange_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2925,7 +2752,7 @@ async def test_create_data_exchange_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2964,7 +2791,7 @@ async def test_create_data_exchange_async(
     transport: str = "grpc_asyncio", request_type=dataexchange.CreateDataExchangeRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3046,7 +2873,7 @@ def test_create_data_exchange_field_headers():
 @pytest.mark.asyncio
 async def test_create_data_exchange_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3125,7 +2952,7 @@ def test_create_data_exchange_flattened_error():
 @pytest.mark.asyncio
 async def test_create_data_exchange_flattened_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3160,7 +2987,7 @@ async def test_create_data_exchange_flattened_async():
 @pytest.mark.asyncio
 async def test_create_data_exchange_flattened_error_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3221,27 +3048,6 @@ def test_update_data_exchange(request_type, transport: str = "grpc"):
     assert response.documentation == "documentation_value"
     assert response.listing_count == 1410
     assert response.icon == b"icon_blob"
-
-
-def test_update_data_exchange_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_data_exchange), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_data_exchange()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.UpdateDataExchangeRequest()
 
 
 def test_update_data_exchange_non_empty_request_with_auto_populated_field():
@@ -3310,37 +3116,6 @@ def test_update_data_exchange_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_data_exchange_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_data_exchange), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataexchange.DataExchange(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                primary_contact="primary_contact_value",
-                documentation="documentation_value",
-                listing_count=1410,
-                icon=b"icon_blob",
-            )
-        )
-        response = await client.update_data_exchange()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.UpdateDataExchangeRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_data_exchange_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3348,7 +3123,7 @@ async def test_update_data_exchange_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3387,7 +3162,7 @@ async def test_update_data_exchange_async(
     transport: str = "grpc_asyncio", request_type=dataexchange.UpdateDataExchangeRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3469,7 +3244,7 @@ def test_update_data_exchange_field_headers():
 @pytest.mark.asyncio
 async def test_update_data_exchange_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3548,7 +3323,7 @@ def test_update_data_exchange_flattened_error():
 @pytest.mark.asyncio
 async def test_update_data_exchange_flattened_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3583,7 +3358,7 @@ async def test_update_data_exchange_flattened_async():
 @pytest.mark.asyncio
 async def test_update_data_exchange_flattened_error_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3629,27 +3404,6 @@ def test_delete_data_exchange(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_data_exchange_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_data_exchange), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_data_exchange()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.DeleteDataExchangeRequest()
 
 
 def test_delete_data_exchange_non_empty_request_with_auto_populated_field():
@@ -3722,27 +3476,6 @@ def test_delete_data_exchange_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_data_exchange_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_data_exchange), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_data_exchange()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.DeleteDataExchangeRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_data_exchange_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3750,7 +3483,7 @@ async def test_delete_data_exchange_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3789,7 +3522,7 @@ async def test_delete_data_exchange_async(
     transport: str = "grpc_asyncio", request_type=dataexchange.DeleteDataExchangeRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3854,7 +3587,7 @@ def test_delete_data_exchange_field_headers():
 @pytest.mark.asyncio
 async def test_delete_data_exchange_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3926,7 +3659,7 @@ def test_delete_data_exchange_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_data_exchange_flattened_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3955,7 +3688,7 @@ async def test_delete_data_exchange_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_data_exchange_flattened_error_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4001,25 +3734,6 @@ def test_list_listings(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListListingsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_listings_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_listings), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_listings()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.ListListingsRequest()
 
 
 def test_list_listings_non_empty_request_with_auto_populated_field():
@@ -4088,29 +3802,6 @@ def test_list_listings_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_listings_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_listings), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataexchange.ListListingsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_listings()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.ListListingsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_listings_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4118,7 +3809,7 @@ async def test_list_listings_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4157,7 +3848,7 @@ async def test_list_listings_async(
     transport: str = "grpc_asyncio", request_type=dataexchange.ListListingsRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4223,7 +3914,7 @@ def test_list_listings_field_headers():
 @pytest.mark.asyncio
 async def test_list_listings_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4293,7 +3984,7 @@ def test_list_listings_flattened_error():
 @pytest.mark.asyncio
 async def test_list_listings_flattened_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4322,7 +4013,7 @@ async def test_list_listings_flattened_async():
 @pytest.mark.asyncio
 async def test_list_listings_flattened_error_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4432,7 +4123,7 @@ def test_list_listings_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_listings_async_pager():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4482,7 +4173,7 @@ async def test_list_listings_async_pager():
 @pytest.mark.asyncio
 async def test_list_listings_async_pages():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4580,25 +4271,6 @@ def test_get_listing(request_type, transport: str = "grpc"):
     assert response.request_access == "request_access_value"
 
 
-def test_get_listing_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_listing), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_listing()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.GetListingRequest()
-
-
 def test_get_listing_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -4663,37 +4335,6 @@ def test_get_listing_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_listing_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_listing), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataexchange.Listing(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                primary_contact="primary_contact_value",
-                documentation="documentation_value",
-                state=dataexchange.Listing.State.ACTIVE,
-                icon=b"icon_blob",
-                categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
-                request_access="request_access_value",
-            )
-        )
-        response = await client.get_listing()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.GetListingRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_listing_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4701,7 +4342,7 @@ async def test_get_listing_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4740,7 +4381,7 @@ async def test_get_listing_async(
     transport: str = "grpc_asyncio", request_type=dataexchange.GetListingRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4822,7 +4463,7 @@ def test_get_listing_field_headers():
 @pytest.mark.asyncio
 async def test_get_listing_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4892,7 +4533,7 @@ def test_get_listing_flattened_error():
 @pytest.mark.asyncio
 async def test_get_listing_flattened_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4921,7 +4562,7 @@ async def test_get_listing_flattened_async():
 @pytest.mark.asyncio
 async def test_get_listing_flattened_error_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4983,25 +4624,6 @@ def test_create_listing(request_type, transport: str = "grpc"):
     assert response.icon == b"icon_blob"
     assert response.categories == [dataexchange.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
-
-
-def test_create_listing_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_listing), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_listing()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.CreateListingRequest()
 
 
 def test_create_listing_non_empty_request_with_auto_populated_field():
@@ -5070,37 +4692,6 @@ def test_create_listing_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_listing_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_listing), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataexchange.Listing(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                primary_contact="primary_contact_value",
-                documentation="documentation_value",
-                state=dataexchange.Listing.State.ACTIVE,
-                icon=b"icon_blob",
-                categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
-                request_access="request_access_value",
-            )
-        )
-        response = await client.create_listing()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.CreateListingRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_listing_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5108,7 +4699,7 @@ async def test_create_listing_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5147,7 +4738,7 @@ async def test_create_listing_async(
     transport: str = "grpc_asyncio", request_type=dataexchange.CreateListingRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5229,7 +4820,7 @@ def test_create_listing_field_headers():
 @pytest.mark.asyncio
 async def test_create_listing_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5316,7 +4907,7 @@ def test_create_listing_flattened_error():
 @pytest.mark.asyncio
 async def test_create_listing_flattened_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5357,7 +4948,7 @@ async def test_create_listing_flattened_async():
 @pytest.mark.asyncio
 async def test_create_listing_flattened_error_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5426,25 +5017,6 @@ def test_update_listing(request_type, transport: str = "grpc"):
     assert response.request_access == "request_access_value"
 
 
-def test_update_listing_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_listing), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_listing()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.UpdateListingRequest()
-
-
 def test_update_listing_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -5505,37 +5077,6 @@ def test_update_listing_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_listing_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_listing), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataexchange.Listing(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                primary_contact="primary_contact_value",
-                documentation="documentation_value",
-                state=dataexchange.Listing.State.ACTIVE,
-                icon=b"icon_blob",
-                categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
-                request_access="request_access_value",
-            )
-        )
-        response = await client.update_listing()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.UpdateListingRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_listing_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5543,7 +5084,7 @@ async def test_update_listing_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5582,7 +5123,7 @@ async def test_update_listing_async(
     transport: str = "grpc_asyncio", request_type=dataexchange.UpdateListingRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5664,7 +5205,7 @@ def test_update_listing_field_headers():
 @pytest.mark.asyncio
 async def test_update_listing_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5751,7 +5292,7 @@ def test_update_listing_flattened_error():
 @pytest.mark.asyncio
 async def test_update_listing_flattened_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5792,7 +5333,7 @@ async def test_update_listing_flattened_async():
 @pytest.mark.asyncio
 async def test_update_listing_flattened_error_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5840,25 +5381,6 @@ def test_delete_listing(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_listing_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_listing), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_listing()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.DeleteListingRequest()
 
 
 def test_delete_listing_non_empty_request_with_auto_populated_field():
@@ -5925,25 +5447,6 @@ def test_delete_listing_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_listing_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_listing), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_listing()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.DeleteListingRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_listing_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5951,7 +5454,7 @@ async def test_delete_listing_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5990,7 +5493,7 @@ async def test_delete_listing_async(
     transport: str = "grpc_asyncio", request_type=dataexchange.DeleteListingRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6051,7 +5554,7 @@ def test_delete_listing_field_headers():
 @pytest.mark.asyncio
 async def test_delete_listing_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6119,7 +5622,7 @@ def test_delete_listing_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_listing_flattened_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6146,7 +5649,7 @@ async def test_delete_listing_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_listing_flattened_error_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6191,27 +5694,6 @@ def test_subscribe_listing(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataexchange.SubscribeListingResponse)
-
-
-def test_subscribe_listing_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.subscribe_listing), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.subscribe_listing()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.SubscribeListingRequest()
 
 
 def test_subscribe_listing_non_empty_request_with_auto_populated_field():
@@ -6282,29 +5764,6 @@ def test_subscribe_listing_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_subscribe_listing_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.subscribe_listing), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataexchange.SubscribeListingResponse()
-        )
-        response = await client.subscribe_listing()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.SubscribeListingRequest()
-
-
-@pytest.mark.asyncio
 async def test_subscribe_listing_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6312,7 +5771,7 @@ async def test_subscribe_listing_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6351,7 +5810,7 @@ async def test_subscribe_listing_async(
     transport: str = "grpc_asyncio", request_type=dataexchange.SubscribeListingRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6418,7 +5877,7 @@ def test_subscribe_listing_field_headers():
 @pytest.mark.asyncio
 async def test_subscribe_listing_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6492,7 +5951,7 @@ def test_subscribe_listing_flattened_error():
 @pytest.mark.asyncio
 async def test_subscribe_listing_flattened_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6523,7 +5982,7 @@ async def test_subscribe_listing_flattened_async():
 @pytest.mark.asyncio
 async def test_subscribe_listing_flattened_error_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6571,25 +6030,6 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_get_iam_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
 
 
 def test_get_iam_policy_non_empty_request_with_auto_populated_field():
@@ -6656,30 +6096,6 @@ def test_get_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(
-                version=774,
-                etag=b"etag_blob",
-            )
-        )
-        response = await client.get_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_iam_policy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6687,7 +6103,7 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6726,7 +6142,7 @@ async def test_get_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6794,7 +6210,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6876,25 +6292,6 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
     assert response.etag == b"etag_blob"
 
 
-def test_set_iam_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.set_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
-
-
 def test_set_iam_policy_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -6959,30 +6356,6 @@ def test_set_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(
-                version=774,
-                etag=b"etag_blob",
-            )
-        )
-        response = await client.set_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
-
-
-@pytest.mark.asyncio
 async def test_set_iam_policy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6990,7 +6363,7 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7029,7 +6402,7 @@ async def test_set_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7097,7 +6470,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7180,27 +6553,6 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
     assert response.permissions == ["permissions_value"]
 
 
-def test_test_iam_permissions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.test_iam_permissions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
-
-
 def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -7271,31 +6623,6 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_test_iam_permissions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse(
-                permissions=["permissions_value"],
-            )
-        )
-        response = await client.test_iam_permissions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7303,7 +6630,7 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AnalyticsHubServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7343,7 +6670,7 @@ async def test_test_iam_permissions_async(
     request_type=iam_policy_pb2.TestIamPermissionsRequest,
 ):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7413,7 +6740,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7554,17 +6881,818 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = AnalyticsHubServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_transport_kind_grpc():
+    transport = AnalyticsHubServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_data_exchanges_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_exchanges), "__call__"
+    ) as call:
+        call.return_value = dataexchange.ListDataExchangesResponse()
+        client.list_data_exchanges(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.ListDataExchangesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_org_data_exchanges_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_org_data_exchanges), "__call__"
+    ) as call:
+        call.return_value = dataexchange.ListOrgDataExchangesResponse()
+        client.list_org_data_exchanges(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.ListOrgDataExchangesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_data_exchange_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_exchange), "__call__"
+    ) as call:
+        call.return_value = dataexchange.DataExchange()
+        client.get_data_exchange(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.GetDataExchangeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_data_exchange_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_exchange), "__call__"
+    ) as call:
+        call.return_value = dataexchange.DataExchange()
+        client.create_data_exchange(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.CreateDataExchangeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_data_exchange_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_exchange), "__call__"
+    ) as call:
+        call.return_value = dataexchange.DataExchange()
+        client.update_data_exchange(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.UpdateDataExchangeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_data_exchange_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_exchange), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_data_exchange(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.DeleteDataExchangeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_listings_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_listings), "__call__") as call:
+        call.return_value = dataexchange.ListListingsResponse()
+        client.list_listings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.ListListingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_listing_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_listing), "__call__") as call:
+        call.return_value = dataexchange.Listing()
+        client.get_listing(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.GetListingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_listing_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_listing), "__call__") as call:
+        call.return_value = dataexchange.Listing()
+        client.create_listing(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.CreateListingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_listing_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_listing), "__call__") as call:
+        call.return_value = dataexchange.Listing()
+        client.update_listing(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.UpdateListingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_listing_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_listing), "__call__") as call:
+        call.return_value = None
+        client.delete_listing(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.DeleteListingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_subscribe_listing_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.subscribe_listing), "__call__"
+    ) as call:
+        call.return_value = dataexchange.SubscribeListingResponse()
+        client.subscribe_listing(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.SubscribeListingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_iam_policy_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+        client.get_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.GetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_set_iam_policy_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+        client.set_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.SetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_test_iam_permissions_empty_call_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = AnalyticsHubServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_data_exchanges_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_exchanges), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataexchange.ListDataExchangesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_data_exchanges(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.ListDataExchangesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_org_data_exchanges_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_org_data_exchanges), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataexchange.ListOrgDataExchangesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_org_data_exchanges(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.ListOrgDataExchangesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_data_exchange_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_exchange), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataexchange.DataExchange(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                primary_contact="primary_contact_value",
+                documentation="documentation_value",
+                listing_count=1410,
+                icon=b"icon_blob",
+            )
+        )
+        await client.get_data_exchange(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.GetDataExchangeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_data_exchange_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_exchange), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataexchange.DataExchange(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                primary_contact="primary_contact_value",
+                documentation="documentation_value",
+                listing_count=1410,
+                icon=b"icon_blob",
+            )
+        )
+        await client.create_data_exchange(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.CreateDataExchangeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_data_exchange_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_exchange), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataexchange.DataExchange(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                primary_contact="primary_contact_value",
+                documentation="documentation_value",
+                listing_count=1410,
+                icon=b"icon_blob",
+            )
+        )
+        await client.update_data_exchange(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.UpdateDataExchangeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_data_exchange_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_exchange), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_data_exchange(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.DeleteDataExchangeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_listings_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_listings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataexchange.ListListingsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_listings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.ListListingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_listing_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_listing), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataexchange.Listing(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                primary_contact="primary_contact_value",
+                documentation="documentation_value",
+                state=dataexchange.Listing.State.ACTIVE,
+                icon=b"icon_blob",
+                categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
+                request_access="request_access_value",
+            )
+        )
+        await client.get_listing(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.GetListingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_listing_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_listing), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataexchange.Listing(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                primary_contact="primary_contact_value",
+                documentation="documentation_value",
+                state=dataexchange.Listing.State.ACTIVE,
+                icon=b"icon_blob",
+                categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
+                request_access="request_access_value",
+            )
+        )
+        await client.create_listing(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.CreateListingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_listing_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_listing), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataexchange.Listing(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                primary_contact="primary_contact_value",
+                documentation="documentation_value",
+                state=dataexchange.Listing.State.ACTIVE,
+                icon=b"icon_blob",
+                categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
+                request_access="request_access_value",
+            )
+        )
+        await client.update_listing(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.UpdateListingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_listing_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_listing), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_listing(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.DeleteListingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_subscribe_listing_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.subscribe_listing), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataexchange.SubscribeListingResponse()
+        )
+        await client.subscribe_listing(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dataexchange.SubscribeListingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_iam_policy_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        await client.get_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.GetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_set_iam_policy_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        await client.set_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.SetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_test_iam_permissions_empty_call_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse(
+                permissions=["permissions_value"],
+            )
+        )
+        await client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -8186,20 +8314,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
 def test_list_locations(transport: str = "grpc"):
     client = AnalyticsHubServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8227,7 +8341,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8282,7 +8396,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8329,7 +8443,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -8372,7 +8486,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8426,9 +8540,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    client = AnalyticsHubServiceAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8474,7 +8586,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = AnalyticsHubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -8490,21 +8602,29 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = AnalyticsHubServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

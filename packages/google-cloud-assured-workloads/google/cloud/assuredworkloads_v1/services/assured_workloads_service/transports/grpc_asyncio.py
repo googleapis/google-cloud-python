@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -229,6 +230,9 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -536,55 +540,74 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_workload: gapic_v1.method_async.wrap_method(
+            self.create_workload: self._wrap_method(
                 self.create_workload,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_workload: gapic_v1.method_async.wrap_method(
+            self.update_workload: self._wrap_method(
                 self.update_workload,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.restrict_allowed_resources: gapic_v1.method_async.wrap_method(
+            self.restrict_allowed_resources: self._wrap_method(
                 self.restrict_allowed_resources,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_workload: gapic_v1.method_async.wrap_method(
+            self.delete_workload: self._wrap_method(
                 self.delete_workload,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_workload: gapic_v1.method_async.wrap_method(
+            self.get_workload: self._wrap_method(
                 self.get_workload,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_workloads: gapic_v1.method_async.wrap_method(
+            self.list_workloads: self._wrap_method(
                 self.list_workloads,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_violations: gapic_v1.method_async.wrap_method(
+            self.list_violations: self._wrap_method(
                 self.list_violations,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_violation: gapic_v1.method_async.wrap_method(
+            self.get_violation: self._wrap_method(
                 self.get_violation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.acknowledge_violation: gapic_v1.method_async.wrap_method(
+            self.acknowledge_violation: self._wrap_method(
                 self.acknowledge_violation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def get_operation(
